@@ -20,7 +20,7 @@ while [[ -z "$addr" ]]; do
     n=$((n+1))
     [ $((n % 60 )) == 0 ] && echo ""
 done
-echo
+echo ""
 echo "==> Got address: $addr"
 
 # mac=$(virsh dumpxml $target | xq -r '.domain.devices.interface.mac."@address"')
