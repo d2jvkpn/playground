@@ -3,12 +3,9 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-#### reset hostname
-
 #### apt update
 # update /etc/apt/sources.list
-apt update
-apt -y upgrade
+apt update && apt -y upgrade
 
 apt install -y software-properties-common apt-transport-https ca-certificates \
   vim iftop net-tools gnupg-agent gnupg2 tree pigz curl file
