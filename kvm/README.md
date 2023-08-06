@@ -1,4 +1,4 @@
-### Installation Virtual Machines
+### Install Virtual Machines
 ---
 
 #### 1. install kvm
