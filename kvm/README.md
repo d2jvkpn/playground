@@ -25,14 +25,12 @@ virt-install --name=$name \
 ```
 
 #### 3. Ubuntu Installation UI
-...username: hello
-```bash
-hostnamectl hostname kvm
-sed -i '/127.0.1.1/s/ .*/ kvm/' /etc/hosts
-```
+...
 
 #### 4. Config Virtual Machine
 ```bash
+# username: hello
+
 virsh start $name
 virsh net-list
 virsh net-dhcp-leases default
@@ -41,36 +39,17 @@ virsh net-dhcp-leases default
 addr=$(virsh domifaddr $name | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
 ssh hello@$addr
 
-# update /etc/apt/sources.list
-sudo apt update && apt -y upgrade
-
-sudo apt install -y software-properties-common apt-transport-https ca-certificates \
-  vim iftop net-tools gnupg-agent gnupg2 tree pigz curl file
-
-# iotop jq at autossh iputils-ping
-
-sudo timedatectl set-timezone Asia/Shanghai
-
-sudo apt clean && sudo apt autoclean
-sudo apt remove && sudo apt autoremove
-
-sudo echo "hello ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/hello 
-# echo -e "\n\n\nPermitRootLogin yes" >> /etc/ssh/sshd_config
-
-# systemctl restart ssh
-# passwd
+bash scripts/vm_config.sh
 ```
 
-#### 5. Enable Virsh Console Access
-```bash vm
-ssh $target
+#### 5. Archive OS
+```bash
+virt-clone --original ubuntu --name ubuntu --file ubuntu.qcow2
 
-sudo systemctl enable serial-getty@ttyS0.service
-sudo systemctl start serial-getty@ttyS0.service
-```
-
-```bash host
-virsh console target
+virt-install --name ubuntu_clone --import \
+  --memory 2048 --vcpus 2 --disk /var/lib/libvirt/images/ubuntu_clone.qcow2,bus=sata \
+  --os-variant=generic --network default \
+  --nograph
 ```
 
 #### 6. Fix IP of Virtual Machine

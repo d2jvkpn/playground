@@ -57,12 +57,3 @@ ssh $target sudo hostnamectl set-hostname $target
 ssh $target sudo sed -i \'"2s/^127.0.1.1 .*$/127.0.1.1 $target/"\' /etc/hosts
 
 virsh shutdown $target
-
-
-# rm /etc/machine-id
-# dbus-uuidgen --ensure=/etc/machine-id
-
-# rm -v /etc/ssh/ssh_host_*
-# dpkg-reconfigure openssh-server --default-priority
-
-# systemctl restart sshd
