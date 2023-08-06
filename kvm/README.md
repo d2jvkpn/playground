@@ -6,9 +6,6 @@
 grep -Eoc '(vmx|svm)' /proc/cpuinfo
 sudo apt install cpu-checker
 
-cpu-checker
-# 
-
 sudo apt install qemu-system-x86 libvirt-daemon-system libvirt-clients bridge-utils virtinst virt-manager
 
 systemctl is-active libvirtd
@@ -21,8 +18,9 @@ brctl show
 ```bash
 name=ubuntu
 
-virt-install --name=$name --os-variant=generic --vcpus=2 --memory=2048 \
-  --disk path=/var/lib/libvirt/images/$name.qcow2,size=30              \
+virt-install --name=$name \
+  --os-variant=generic --vcpus=2 --memory=2048 \
+  --disk path=/var/lib/libvirt/images/$name.qcow2,size=30 \
   --cdrom=~/kvm/ubuntu-22.04.1-live-server-amd64.iso
 ```
 
@@ -35,8 +33,6 @@ sed -i '/127.0.1.1/s/ .*/ kvm/' /etc/hosts
 
 #### 4. ssh virtual machine
 ```bash
-name=ubuntu
-
 virsh start $name
 virsh net-list
 virsh net-dhcp-leases default
@@ -49,8 +45,9 @@ ssh hello@$addr
 sudo apt update && apt -y upgrade
 
 sudo apt install -y software-properties-common apt-transport-https ca-certificates \
-  vim iftop iotop net-tools gnupg-agent gnupg2 tree jq at autossh pigz        \
-  iputils-ping curl file
+  vim iftop net-tools gnupg-agent gnupg2 tree pigz curl file
+
+# iotop jq at autossh iputils-ping
 
 sudo timedatectl set-timezone Asia/Shanghai
 
@@ -60,7 +57,7 @@ sudo apt remove && sudo apt autoremove
 sudo echo "hello ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/hello 
 # echo -e "\n\n\nPermitRootLogin yes" >> /etc/ssh/sshd_config
 
-systemctl restart ssh
+# systemctl restart ssh
 # passwd
 ```
 
@@ -69,13 +66,14 @@ systemctl restart ssh
 bash scripts/virsh_fix_ip.sh $name
 ```
 
-#### 6. ssh without password
+#### 6. ssh virtal machine from host without password
 ```bash
+name=ubuntu; user=hello
+
 ssh-keygen -t rsa -m PEM -b 2048 -P "" -f ~/.ssh/kvm.pem -C 'ubuntu'
 chmod 0600 ~/.ssh/kvm.pem
 
-name=ubuntu
-user=hello
+addr=$(virsh domifaddr $name | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
 ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 
 cat >> ~/.ssh/config << EOF

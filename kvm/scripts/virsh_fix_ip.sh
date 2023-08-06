@@ -12,16 +12,21 @@ KVM_Network=${KVM_Network:-default}
 virsh start $target || true
 
 ####
-echo "==> Allocating ip for $target"
+echo "==> Allocating ip address for $target"
 addr=""; n=0
 while [[ -z "$addr" ]]; do
-    addr=$(virsh domifaddr $target | awk 'NR>2 && $1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
+    # output of 'virsh domifaddr' may contains multilines 
+    addr=$(
+      virsh domifaddr $target |
+      awk 'NR>2 && $1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}'
+    )
+
     sleep 1 && echo -n "."
     n=$((n+1))
     [ $((n % 60 )) == 0 ] && echo ""
 done
 echo ""
-echo "==> Got address: $addr"
+echo "==> Got ip address: $addr"
 
 # mac=$(virsh dumpxml $target | xq -r '.domain.devices.interface.mac."@address"')
 mac=$(virsh domiflist $target | awk 'NR==3{print $NF}')

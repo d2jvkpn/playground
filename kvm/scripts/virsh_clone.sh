@@ -41,7 +41,7 @@ EOF
 
 ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 
-##### interactive
+#### interactive
 bash ${_path}/wait_for_tcp_port.sh $addr 22
 
 ssh-copy-id -f -i $KVM_SSH_Key $target || true
