@@ -1,7 +1,7 @@
 ### Install Virtual Machines
 ---
 
-#### 1. install kvm
+#### 1. Install KVM
 ```bash
 grep -Eoc '(vmx|svm)' /proc/cpuinfo
 sudo apt install cpu-checker
@@ -14,7 +14,7 @@ usermod -aG kvm $USER
 brctl show
 ```
 
-#### 2. create virtual machine
+#### 2. Create Virtual Machine
 ```bash
 name=ubuntu
 
@@ -24,14 +24,14 @@ virt-install --name=$name \
   --cdrom=~/kvm/ubuntu-22.04.1-live-server-amd64.iso
 ```
 
-#### 3. ubuntu installation UI
+#### 3. Ubuntu Installation UI
 ...username: hello
 ```bash
 hostnamectl hostname kvm
 sed -i '/127.0.1.1/s/ .*/ kvm/' /etc/hosts
 ```
 
-#### 4. ssh virtual machine
+#### 4. Config Virtual Machine
 ```bash
 virsh start $name
 virsh net-list
@@ -61,12 +61,24 @@ sudo echo "hello ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/hello
 # passwd
 ```
 
-#### 5. fix ip of virtual machine
+#### 5. Enable Virsh Console Access
+```bash vm
+ssh $target
+
+sudo systemctl enable serial-getty@ttyS0.service
+sudo systemctl start serial-getty@ttyS0.service
+```
+
+```bash host
+virsh console target
+```
+
+#### 6. Fix IP of Virtual Machine
 ```bash
 bash scripts/virsh_fix_ip.sh $name
 ```
 
-#### 6. ssh virtal machine from host without password
+#### 7. Config SSH Access from Host
 ```bash
 name=ubuntu; user=hello
 
@@ -90,7 +102,7 @@ ssh-copy-id -i ~/.ssh/kvm.pem $name
 # ssh $name
 ```
 
-#### 7. clone ubuntu
+#### 8. Clone VM
 ```bash
 bash scripts/virsh_clone.sh ubuntu node01 hello
 

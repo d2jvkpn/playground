@@ -26,7 +26,11 @@ virt-clone --original $vm_source --name $target --file /var/lib/libvirt/images/$
 ####
 bash ${_path}/virsh_fix_ip.sh $target
 
-addr=$(virsh domifaddr $target | awk 'NR>2 && $1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
+addr=$(
+  virsh domifaddr $target |
+  awk 'NR>2 && $1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}'
+)
+
 echo "==> Got vm addrss: $addr"
 
 cat >> ~/.ssh/config << EOF
@@ -39,12 +43,15 @@ Host $target
     IdentityFile  $KVM_SSH_Key
 EOF
 
-ssh-keyscan -H $addr >> ~/.ssh/known_hosts
+# addr=$(ssh -G $target | awk '/^hostname/{print $2}')
 
-#### interactive
+ssh-keygen -F || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
+# remove: ssh-keygen -f ~/.ssh/known_hosts -R $addr
+
 bash ${_path}/wait_for_tcp_port.sh $addr 22
 
-ssh-copy-id -f -i $KVM_SSH_Key $target || true
+# -f
+ssh-copy-id -i $KVM_SSH_Key $target || true
 
 ssh $target sudo hostnamectl set-hostname $target
 ssh $target sudo sed -i \'"2s/^127.0.1.1 .*$/127.0.1.1 $target/"\' /etc/hosts
