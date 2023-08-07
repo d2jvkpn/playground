@@ -1,0 +1,21 @@
+# /etc/systemd/system/kafka.service
+[Unit]
+Description=Apache Kafka Server
+Documentation=http://kafka.apache.org/documentation.html
+After=network-online.target 
+Requires=network-online.target
+
+[Service]
+Type=simple
+User=kafka
+Group=kafka
+Restart=on-failure
+# WorkingDirectory=/opt/kafka
+WorkingDirectory=/home/d2jvkpn/kafka
+Environment="JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64"
+# ln -s /home/d2jvkpn/kafka/logs /opt/kafka/logs
+ExecStart=/opt/kafka/bin/kafka-server-start.sh /home/d2jvkpn/kafka/configs/server.properties
+ExecStop=/opt/kafka/bin/kafka-server-stop.sh
+
+[Install]
+WantedBy=multi-user.target

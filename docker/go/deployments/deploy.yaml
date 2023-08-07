@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo:6
+    container_name: collector-mongo_${APP_ENV}
+    restart: always
+    networks: ["net"]
+    # ports: ["127.0.0.1:27017:27017"]
+    environment:
+    - MONGO_INITDB_ROOT_USERNAME=root
+    - MONGO_INITDB_ROOT_PASSWORD=root
+    volumes:
+    - ./data/mongo:/data/db
+
+  collector:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/collector:${TAG}
+    container_name: collector-app_${APP_ENV}
+    restart: always
+    depends_on: ["mongo"]
+    networks: ["net", "kafka", "otel"]
+    # network_mode: bridge
+    # network_mode: host
+    ports: ["${PORT}:${PORT}"]
+    environment: ["TZ=Asia/Shanghai"]
+    volumes:
+    - ./configs/:/home/d2jvkpn/collector/configs/
+    - ./logs/:/home/d2jvkpn/collector/logs/
+    # - ./data/:/home/d2jvkpn/collector/data/
+    command: ["./main", "--config=configs/prod.yaml", "--addr=:${PORT}"]
+
+networks:
+  net:
+    name: collector_${APP_ENV}
+    driver: bridge
+    external: false
+  kafka:
+    name: kafka
+    driver: bridge
+    external: true
+  otel:
+    name: otel
+    driver: bridge
+    external: true

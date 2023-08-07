@@ -50,7 +50,7 @@ ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 bash ${_path}/wait_for_tcp_port.sh $addr 22
 
 # -f, -i $KVM_SSH_Key
-ssh-copy-id  $target || true
+ssh-copy-id $target || true
 
 ssh $target sudo hostnamectl set-hostname $target
 ssh $target sudo sed -i \'"2s/^127.0.1.1 .*$/127.0.1.1 $target/"\' /etc/hosts
