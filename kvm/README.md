@@ -44,10 +44,10 @@ bash scripts/vm_config.sh
 
 #### 5. Archive OS
 ```bash
-virt-clone --original ubuntu --name ubuntu --file ubuntu.$(date +'%F').qcow2
+virt-clone --original ubuntu --name ubuntu --file ubuntu-node.$(date +'%F').qcow2
 
 virt-install --name ubuntu --import \
-  --memory 2048 --vcpus 2 --disk /var/lib/libvirt/images/ubuntu.$(date +'%F').qcow2,bus=sata \
+  --memory 2048 --vcpus 2 --disk /var/lib/libvirt/images/ubuntu-node.$(date +'%F').qcow2,bus=sata \
   --os-variant=generic --network default \
   --nograph
 ```
