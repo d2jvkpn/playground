@@ -13,12 +13,11 @@ KVM_SSH_Key="${KVM_SSH_Key:-~/.ssh/kvm.pem}"
 echo "==> Shutting down $vm_source"
 virsh shutdown $vm_source 2>/dev/null || true
 
-state=""
-while [[ "$state" != "shut off" ]]; do
-    state=$(virsh domstate --domain $vm_source | awk 'NR==1{print $0; exit}')
+while [[ "$(virsh domstate --domain $vm_source | awk 'NR==1{print $0; exit}')" != "shut off" ]]; do
     echo -n "."; sleep 1
 done
-echo
+echo ""
+echo "==> VM is shut off"
 
 virt-clone --original $vm_source --name $target --file /var/lib/libvirt/images/$target.qcow2
 # virt-clone --original $vm_source --vm_source $target --auto-clone
