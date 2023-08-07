@@ -65,6 +65,7 @@ Host $target
     IdentityFile  ~/.ssh/kvm.pem
 EOF
 
+# must todo
 ssh-copy-id -i ~/.ssh/kvm.pem $target
 # ssh $target
 ```

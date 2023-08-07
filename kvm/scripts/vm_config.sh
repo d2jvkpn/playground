@@ -7,14 +7,20 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # hostnamectl hostname node
 # sed -i '/127.0.1.1/s/ .*/ node/' /etc/hosts
 
-mkdir -p ~/Apps/bin
-cat > ~/.bash_aliases <<EOF
+# root: bash vm_config.sh ubuntu
+user=$1
+
+mkdir -p /home/$user/Apps/bin
+
+cat > /home/$user/.bash_aliases <<EOF
 for d in $(ls -d ~/Apps/*/ 2>/dev/null); do
     d=${d%/}
     [ -d $d/bin ] && d=$d/bin
     export PATH=$d:$PATH
 done
 EOF
+
+chown -R $user:$user /home/$user
 
 timedatectl set-timezone Asia/Shanghai
 
