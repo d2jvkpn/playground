@@ -1,5 +1,5 @@
 # playground
-practise kvm, docker, k8s, microservice...
+practise kvm, docker, k8s, microservice, ansible, etc.
 
 
 #### 1. git
