@@ -12,7 +12,7 @@ user=$1
 
 mkdir -p /home/$user/Apps/bin
 
-cat > /home/$user/.bash_aliases <<EOF
+cat > /home/$user/.bash_aliases <<'EOF'
 for d in $(ls -d ~/Apps/*/ 2>/dev/null); do
     d=${d%/}
     [ -d $d/bin ] && d=$d/bin
@@ -29,6 +29,8 @@ echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu
 
 #### apt update
 # update /etc/apt/sources.list
+export DEBIAN_FRONTEND=noninteractive
+
 apt update && apt -y upgrade
 
 apt install -y software-properties-common apt-transport-https ca-certificates \

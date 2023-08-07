@@ -4,13 +4,12 @@
 #### 1. Install KVM
 ```bash
 grep -Eoc '(vmx|svm)' /proc/cpuinfo
-sudo apt install cpu-checker
 
 sudo apt install qemu-system-x86 libvirt-daemon-system libvirt-clients bridge-utils virtinst virt-manager
 
 systemctl is-active libvirtd
-usermod -aG libvirt $USER
-usermod -aG kvm $USER
+usermod -aG libvirt $USER && usermod -aG kvm $USER
+
 brctl show
 ```
 
@@ -25,7 +24,9 @@ virt-install --name=$target \
 ```
 
 #### 3. Ubuntu Installation UI
-...install openssh-server
+- Mirror address: http://cn.archive.ubuntu.com/ubuntu
+- Install openssh-server
+- Username: ubuntu, Hostname: node
 
 #### 4. Config Virtual Machine
 ```bash
@@ -46,8 +47,10 @@ bash scripts/vm_config.sh
 ```bash
 target=ubuntu; user=ubuntu
 
-ssh-keygen -t rsa -m PEM -b 2048 -P "" -f ~/.ssh/kvm.pem -C 'ubuntu'
-chmod 0600 ~/.ssh/kvm.pem
+if [ ! -f ~/.ssh/kvm.pem ]; then
+    ssh-keygen -t rsa -m PEM -b 2048 -P "" -f ~/.ssh/kvm.pem -C 'ubuntu'
+    chmod 0600 ~/.ssh/kvm.pem
+fi
 
 addr=$(virsh domifaddr $target | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
 
@@ -68,6 +71,8 @@ EOF
 # must todo
 ssh-copy-id -i ~/.ssh/kvm.pem $target
 # ssh $target
+
+virsh shutdown $target
 ```
 
 #### 7. Archive OS
