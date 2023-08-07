@@ -7,8 +7,8 @@ target=$1
 KVM_Network=${KVM_Network:-default}
 
 # virsh dumpxml $target
-# virsh dumpxml --domain $name
-# virsh net-dumpxml KVM_Network
+# virsh dumpxml --domain $target
+# virsh net-dumpxml $KVM_Network
 
 source_file=$(virsh dumpxml --domain $target | grep -o "/.*.qcow2")
 echo "==> Source file: $source_file"

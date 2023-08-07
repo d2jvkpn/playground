@@ -16,27 +16,27 @@ brctl show
 
 #### 2. Create Virtual Machine
 ```bash
-name=ubuntu
+target=ubuntu
 
-virt-install --name=$name \
+virt-install --name=$target \
   --os-variant=generic --vcpus=2 --memory=2048 \
-  --disk path=/var/lib/libvirt/images/$name.qcow2,size=30 \
+  --disk path=/var/lib/libvirt/images/$target.qcow2,size=30 \
   --cdrom=~/kvm/ubuntu-22.04.1-live-server-amd64.iso
 ```
 
 #### 3. Ubuntu Installation UI
-...
+...install openssh-server
 
 #### 4. Config Virtual Machine
 ```bash
 # username: ubuntu
 
-virsh start $name
+virsh start $target
 virsh net-list
 virsh net-dhcp-leases default
 # rm /var/lib/libvirt/dnsmasq/virbr0.*
 
-addr=$(virsh domifaddr $name | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
+addr=$(virsh domifaddr $target | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
 ssh ubuntu@$addr
 
 bash scripts/vm_config.sh
@@ -44,19 +44,19 @@ bash scripts/vm_config.sh
 
 #### 6. Config SSH Access from Host
 ```bash
-name=ubuntu; user=ubuntu
+target=ubuntu; user=ubuntu
 
 ssh-keygen -t rsa -m PEM -b 2048 -P "" -f ~/.ssh/kvm.pem -C 'ubuntu'
 chmod 0600 ~/.ssh/kvm.pem
 
-addr=$(virsh domifaddr $name | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
+addr=$(virsh domifaddr $target | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
 
-bash scripts/virsh_fix_ip.sh $name
+bash scripts/virsh_fix_ip.sh $target
 
-ssh-keyscan -H $addr >> ~/.ssh/known_hosts
+sshkeygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 
 cat >> ~/.ssh/config << EOF
-Host $name
+Host $target
     HostName      $addr
     User          ubuntu
     Port          22
@@ -65,8 +65,8 @@ Host $name
     IdentityFile  ~/.ssh/kvm.pem
 EOF
 
-ssh-copy-id -i ~/.ssh/kvm.pem $name
-# ssh $name
+ssh-copy-id -i ~/.ssh/kvm.pem $target
+# ssh $target
 ```
 
 #### 7. Archive OS

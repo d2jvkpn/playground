@@ -3,21 +3,7 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-#### apt update
-# update /etc/apt/sources.list
-apt update && apt -y upgrade
-
-apt install -y software-properties-common apt-transport-https ca-certificates \
-  vim net-tools tree pigz curl file
-# iftop iotop jq at autossh iputils-ping gnupg-agent gnupg2
-
-apt clean && sudo apt autoclean
-apt remove && sudo apt autoremove
-
-# reboot now
-# dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {}
-
-#### 
+#### config
 # hostnamectl hostname node
 # sed -i '/127.0.1.1/s/ .*/ node/' /etc/hosts
 
@@ -34,6 +20,20 @@ timedatectl set-timezone Asia/Shanghai
 
 echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu
 # echo -e "\n\n\nPermitRootLogin yes" >> /etc/ssh/sshd_config
+
+#### apt update
+# update /etc/apt/sources.list
+apt update && apt -y upgrade
+
+apt install -y software-properties-common apt-transport-https ca-certificates \
+  vim net-tools tree pigz curl file
+# iftop iotop jq at autossh iputils-ping gnupg-agent gnupg2
+
+apt clean && apt autoclean
+apt remove && apt autoremove
+
+# reboot now
+# dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {}
 
 #### enable virsh Console access, 
 systemctl enable serial-getty@ttyS0.service

@@ -7,7 +7,7 @@ vm_source=$1; target=$2
 
 ####
 KVM_User="${KVM_User:-ubuntu}"
-KVM_SSH_Key="${KVM_SSH_Key:-~/.ssh/kvm.pem}"
+KVM_SSH_Key="${KVM_SSH_Key:-$HOME/.ssh/kvm.pem}"
 
 ####
 echo "==> Shutting down $vm_source"
@@ -21,9 +21,6 @@ echo "==> VM is shut off"
 
 virt-clone --original $vm_source --name $target --file /var/lib/libvirt/images/$target.qcow2
 # virt-clone --original $vm_source --vm_source $target --auto-clone
-
-####
-# TODO:
 
 ####
 bash ${_path}/virsh_fix_ip.sh $target
@@ -57,5 +54,3 @@ ssh-copy-id -i $KVM_SSH_Key $target || true
 
 ssh $target sudo hostnamectl set-hostname $target
 ssh $target sudo sed -i \'"2s/^127.0.1.1 .*$/127.0.1.1 $target/"\' /etc/hosts
-
-virsh shutdown $target
