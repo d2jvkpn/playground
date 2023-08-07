@@ -8,8 +8,8 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 apt update && apt -y upgrade
 
 apt install -y software-properties-common apt-transport-https ca-certificates \
-  vim iftop net-tools gnupg-agent gnupg2 tree pigz curl file
-# iotop jq at autossh iputils-ping
+  vim net-tools tree pigz curl file
+# iftop iotop jq at autossh iputils-ping gnupg-agent gnupg2
 
 apt clean && sudo apt autoclean
 apt remove && sudo apt autoremove
@@ -18,12 +18,21 @@ apt remove && sudo apt autoremove
 # dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {}
 
 #### 
-# hostnamectl hostname kvm
-# sed -i '/127.0.1.1/s/ .*/ kvm/' /etc/hosts
+# hostnamectl hostname node
+# sed -i '/127.0.1.1/s/ .*/ node/' /etc/hosts
+
+mkdir -p ~/Apps/bin
+cat > ~/.bash_aliases <<EOF
+for d in $(ls -d ~/Apps/*/ 2>/dev/null); do
+    d=${d%/}
+    [ -d $d/bin ] && d=$d/bin
+    export PATH=$d:$PATH
+done
+EOF
 
 timedatectl set-timezone Asia/Shanghai
 
-echo "hello ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/hello 
+echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu
 # echo -e "\n\n\nPermitRootLogin yes" >> /etc/ssh/sshd_config
 
 #### enable virsh Console access, 

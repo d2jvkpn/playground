@@ -29,7 +29,7 @@ virt-install --name=$name \
 
 #### 4. Config Virtual Machine
 ```bash
-# username: hello
+# username: ubuntu
 
 virsh start $name
 virsh net-list
@@ -37,7 +37,7 @@ virsh net-dhcp-leases default
 # rm /var/lib/libvirt/dnsmasq/virbr0.*
 
 addr=$(virsh domifaddr $name | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
-ssh hello@$addr
+ssh ubuntu@$addr
 
 bash scripts/vm_config.sh
 ```
@@ -59,7 +59,7 @@ bash scripts/virsh_fix_ip.sh $name
 
 #### 7. Config SSH Access from Host
 ```bash
-name=ubuntu; user=hello
+name=ubuntu; user=ubuntu
 
 ssh-keygen -t rsa -m PEM -b 2048 -P "" -f ~/.ssh/kvm.pem -C 'ubuntu'
 chmod 0600 ~/.ssh/kvm.pem
@@ -70,7 +70,7 @@ ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 cat >> ~/.ssh/config << EOF
 Host $name
     HostName      $addr
-    User          hello
+    User          ubuntu
     Port          22
     LogLevel      INFO
     Compression   yes
@@ -83,9 +83,9 @@ ssh-copy-id -i ~/.ssh/kvm.pem $name
 
 #### 8. Clone VM
 ```bash
-bash scripts/virsh_clone.sh ubuntu node01 hello
+bash scripts/virsh_clone.sh ubuntu node01 ubuntu
 
-bash scripts/virsh_clone.sh ubuntu node02 hello
+bash scripts/virsh_clone.sh ubuntu node02 ubuntu
 
-bash scripts/virsh_clone.sh ubuntu node03 hello
+bash scripts/virsh_clone.sh ubuntu node03 ubuntu
 ```

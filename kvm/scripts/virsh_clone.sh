@@ -6,7 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 vm_source=$1; target=$2
 
 ####
-KVM_User="${KVM_User:-hello}"
+KVM_User="${KVM_User:-ubuntu}"
 KVM_SSH_Key="${KVM_SSH_Key:-~/.ssh/kvm.pem}"
 
 ####
