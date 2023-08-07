@@ -42,22 +42,7 @@ ssh ubuntu@$addr
 bash scripts/vm_config.sh
 ```
 
-#### 5. Archive OS
-```bash
-virt-clone --original ubuntu --name ubuntu --file ubuntu-node.$(date +'%F').qcow2
-
-virt-install --name ubuntu --import \
-  --memory 2048 --vcpus 2 --disk /var/lib/libvirt/images/ubuntu-node.$(date +'%F').qcow2,bus=sata \
-  --os-variant=generic --network default \
-  --nograph
-```
-
-#### 6. Fix IP of Virtual Machine
-```bash
-bash scripts/virsh_fix_ip.sh $name
-```
-
-#### 7. Config SSH Access from Host
+#### 6. Config SSH Access from Host
 ```bash
 name=ubuntu; user=ubuntu
 
@@ -65,6 +50,9 @@ ssh-keygen -t rsa -m PEM -b 2048 -P "" -f ~/.ssh/kvm.pem -C 'ubuntu'
 chmod 0600 ~/.ssh/kvm.pem
 
 addr=$(virsh domifaddr $name | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
+
+bash scripts/virsh_fix_ip.sh $name
+
 ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 
 cat >> ~/.ssh/config << EOF
@@ -79,6 +67,16 @@ EOF
 
 ssh-copy-id -i ~/.ssh/kvm.pem $name
 # ssh $name
+```
+
+#### 7. Archive OS
+```bash
+virt-clone --original ubuntu --name ubuntu --file ubuntu-node.$(date +'%F').qcow2
+
+virt-install --name ubuntu --import \
+  --memory 2048 --vcpus 2 --disk /var/lib/libvirt/images/ubuntu-node.$(date +'%F').qcow2,bus=sata \
+  --os-variant=generic --network default \
+  --nograph
 ```
 
 #### 8. Clone VM
