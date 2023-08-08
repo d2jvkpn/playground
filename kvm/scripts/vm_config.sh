@@ -18,6 +18,12 @@ for d in $(ls -d ~/Apps/*/ 2>/dev/null); do
     [ -d $d/bin ] && d=$d/bin
     export PATH=$d:$PATH
 done
+
+for d in $(ls -d /opt/*/ 2> /dev/null); do
+    d=${d%/}
+    [[ -d $d/bin ]] && d=$d/bin
+    export PATH=$d:$PATH
+done
 EOF
 
 chown -R $user:$user /home/$user

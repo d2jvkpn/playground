@@ -3,15 +3,17 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
+export DEBIAN_FRONTEND=noninteractive
 
 ####
 apt update
 apt -y upgrade
 apt install -y containerd runc
 
-# containerd config default | grep SystemdCgroup
-# containerd config default | grep sandbox_image
+containerd config default | grep SystemdCgroup
+containerd config default | grep sandbox_image
 
+####
 pause=$(kubeadm config images list | grep pause)
 sudo mkdir -p /etc/containerd
 
@@ -24,7 +26,8 @@ containerd config default | sed '/SystemdCgroup/{s/false/true/}'   |
 systemctl restart containerd
 systemctl status containerd
 
-cat <<EOF | tee /etc/crictl.yaml
+####
+cat > /etc/crictl.yaml <<EOF
 runtime-endpoint: unix:///run/containerd/containerd.sock
 image-endpoint: unix:///run/containerd/containerd.sock
 timeout: 5
