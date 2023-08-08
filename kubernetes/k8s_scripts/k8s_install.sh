@@ -31,7 +31,8 @@ key_file=/etc/apt/keyrings/kubernetes.gpg
 curl -fsSL https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg |
   gpg --dearmor -o $key_file
 
-echo "deb [signed-by=$key_file] https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
+echo "deb [signed-by=$key_file] https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main" |
+  sudo tee /etc/apt/sources.list.d/kubernetes.list
 
 apt-get update
 # sudo apt-get install -y kubectl kubelet kubeadm
