@@ -1,4 +1,4 @@
-### Ansible K8S
+### Kubernetes
 
 #### 1. Prepare
 ```bash
@@ -17,3 +17,11 @@ ansible kvm -m shell -a "sudo bash k8s_scripts/containerd_install.sh"
 
 ansible kvm -m shell -a "sudo bash k8s_scripts/k8s_apps.sh"
 ```
+
+#### 3. Control Panel
+
+
+#### 4.
+
+
+#### 5.
