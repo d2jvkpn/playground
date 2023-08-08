@@ -11,8 +11,7 @@ cidr=$(yq .networking.podSubnet kubeadm-config.yaml)
 kubectl get nodes
 # kubectl patch node k8scp01 -p '{"spec":{"podCIDR":"'"$cidr"'"}}'
 # or
-sed "s#10.244.0.0/16#$cidr#" k8s_apps/kube-flannel.yaml > kube-flannel.yaml
+sed "s#10.244.0.0/16#$cidr#" k8s_apps/kube-flannel.yaml | kubectl apply -f -
 
-kubectl apply -f kube-flannel.yaml
 # kubectl -n kube-flannel get pods -o wide
 # kubectl describe -n kube-flannel pod kube-flannel-ds-rfw2t

@@ -40,7 +40,7 @@ virsh net-dhcp-leases default
 addr=$(virsh domifaddr $target | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
 ssh ubuntu@$addr
 
-bash scripts/vm_config.sh
+bash kvm_scripts/vm_config.sh
 ```
 
 #### 6. Config SSH Access from Host
@@ -54,7 +54,7 @@ fi
 
 addr=$(virsh domifaddr $target | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
 
-bash scripts/virsh_fix_ip.sh $target
+bash kvm_scripts/virsh_fix_ip.sh $target
 
 sshkeygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 
@@ -87,9 +87,9 @@ virt-install --name ubuntu --import \
 
 #### 8. Clone VM
 ```bash
-bash scripts/virsh_clone.sh ubuntu node01 ubuntu
+bash kvm_scripts/virsh_clone.sh ubuntu node01 ubuntu
 
-bash scripts/virsh_clone.sh ubuntu node02 ubuntu
+bash kvm_scripts/virsh_clone.sh ubuntu node02 ubuntu
 
-bash scripts/virsh_clone.sh ubuntu node03 ubuntu
+bash kvm_scripts/virsh_clone.sh ubuntu node03 ubuntu
 ```

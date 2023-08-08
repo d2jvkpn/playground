@@ -32,8 +32,10 @@ wget -O k8s_apps/yq_linux_amd64.tar.gz \
 wget -O k8s_apps/ingress-nginx_cloud.yaml \
   https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
-sed -i '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml
-ingress_images=$(awk '/image:/{print $NF}' k8s_apps/ingress-nginx_cloud.yaml | sort -u)
+ingress_images=$(
+  awk '/image:/{sub("@.*", "", $NF); print $NF}' k8s_apps/ingress-nginx_cloud.yaml |
+  sort -u
+)
 
 for img in $ingress_images; do
      docker pull $img
