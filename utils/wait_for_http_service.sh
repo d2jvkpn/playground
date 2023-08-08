@@ -8,9 +8,13 @@ addr=$1
 
 echo "==> Waiting service $addr to launch..."
 
+n=0
 while ! curl --output /dev/null --silent --head --fail $addr; do
     sleep 1 && echo -n .
-done
 
+    n=$((n+1))
+    [ $((n % 60 )) == 0 ] && echo ""
+done
 echo ""
+
 echo "==> Service $addr launched"
