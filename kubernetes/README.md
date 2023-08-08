@@ -34,9 +34,9 @@ ansible k8s_cp -m shell -a "sudo bash k8s_scripts/kube-ingress-nginx.sh"
 export cp_node_name=k8scp01 cp_node_ip=192.168.122.55 token=tx1h53.b1ghhx5u1b95il13
 export cert_hash=sha256:854edd3408cbe0018aba72b772da1f5fe2bd4413a0375f35e59763ecdde91e8c
 
-envsubst > wk_data/00_k8s_worker-node.sh < k8s_scripts/k8s_worker-node.sh
-ansible k8s_all --one-line -m copy -a "src=wk_data/0x_k8s_worker-node.sh dest=k8s_scripts/"
-ansible k8s_wk -m shell -a "sudo bash k8s_scripts/0x_k8s_worker-node.sh"
+envsubst > wk_data/0x_k8s_worker-node.sh < k8s_scripts/_k8s_worker-node.sh
+ansible k8s_all --one-line -m copy -a "src=wk_data/0x_k8s_worker-node.sh dest=./"
+ansible k8s_wk -m shell -a "sudo bash 0x_k8s_worker-node.sh && rm 0x_k8s_worker-node.sh"
 ```
 
 #### 5. Config
