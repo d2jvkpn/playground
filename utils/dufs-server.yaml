@@ -1,0 +1,5 @@
+dufs:
+  port: 5001
+  username: hello
+  password: world
+  subpath: /

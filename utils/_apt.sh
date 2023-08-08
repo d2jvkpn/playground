@@ -8,5 +8,4 @@ apt update && apt -y upgrade
 apt clean && apt -y autoclean
 apt remove && apt -y autoremove
 
-
 dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {}
