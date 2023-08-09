@@ -25,7 +25,7 @@ kind: ClusterConfiguration
 kubernetesVersion: $version
 controlPlaneEndpoint: "$node_name:6443"
 kubeletConfiguration:
-  allowSwap: true
+  allowSwap: false
 networking:
   podSubnet: ${pod_subnet}
 EOF

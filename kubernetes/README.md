@@ -18,6 +18,8 @@ ansible k8s_all --one-line -m copy -a "src=k8s_scripts dest=./"
 #### 2. Installation
 ```bash
 ansible k8s_all -m shell -a "sudo bash k8s_scripts/k8s_install.sh 1.27.4"
+# ?? sysctl: setting key "net.ipv4.conf.all.accept_source_route": Invalid argument
+# ?? sysctl: setting key "net.ipv4.conf.all.promote_secondaries": Invalid argument
 
 ansible k8s_all -m shell -a "sudo bash k8s_scripts/containerd_install.sh"
 

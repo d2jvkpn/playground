@@ -48,6 +48,9 @@ kubectl completion bash > /etc/bash_completion.d/kubectl
 cp /etc/systemd/system/kubelet.service.d/10-kubeadm.conf \
   /etc/systemd/system/kubelet.service.d/10-kubeadm.conf.bk
 
+# sed -i '/$KUBELET_EXTRA_ARGS/s/$/ --fail-swap-on=false/' \
+#   /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+
 systemctl daemon-reload
 systemctl enable kubelet.service
 systemctl status kubelet.service || true
