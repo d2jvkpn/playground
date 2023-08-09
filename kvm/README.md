@@ -45,7 +45,7 @@ bash kvm_scripts/vm_config.sh
 
 #### 6. Config SSH Access from Host
 ```bash
-target=ubuntu; user=ubuntu
+target=ubuntu; username=ubuntu
 
 if [ ! -f ~/.ssh/kvm.pem ]; then
     ssh-keygen -t rsa -m PEM -b 2048 -P "" -f ~/.ssh/kvm.pem -C 'ubuntu'
@@ -61,7 +61,7 @@ sshkeygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 cat >> ~/.ssh/config << EOF
 Host $target
     HostName      $addr
-    User          ubuntu
+    User          $username
     Port          22
     LogLevel      INFO
     Compression   yes

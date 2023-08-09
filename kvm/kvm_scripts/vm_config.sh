@@ -8,11 +8,11 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # sed -i '/127.0.1.1/s/ .*/ node/' /etc/hosts
 
 # root: bash vm_config.sh ubuntu
-user=$1
+username=$1
 
-mkdir -p /home/$user/Apps/bin
+mkdir -p /home/$username/Apps/bin
 
-cat > /home/$user/.bash_aliases <<'EOF'
+cat > /home/$username/.bash_aliases <<'EOF'
 for d in $(ls -d ~/Apps/*/ 2>/dev/null); do
     d=${d%/}
     [ -d $d/bin ] && d=$d/bin
@@ -26,7 +26,7 @@ for d in $(ls -d /opt/*/ 2> /dev/null); do
 done
 EOF
 
-chown -R $user:$user /home/$user
+chown -R $username:$username /home/$username
 
 timedatectl set-timezone Asia/Shanghai
 
