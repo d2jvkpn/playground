@@ -5,7 +5,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 export DEBIAN_FRONTEND=noninteractive
 
-####
+#### 1.
 apt update
 apt -y upgrade
 apt install -y containerd runc
@@ -13,7 +13,7 @@ apt install -y containerd runc
 containerd config default | grep SystemdCgroup
 containerd config default | grep sandbox_image
 
-####
+#### 2.
 sudo mkdir -p /etc/containerd
 
 pause=$(kubeadm config images list | grep pause)
@@ -31,7 +31,7 @@ containerd config default | sed '/SystemdCgroup/{s/false/true/}'  |
 sudo systemctl restart containerd
 sudo systemctl status containerd
 
-####
+#### 3.
 cat <<EOF | sudo tee /etc/crictl.yaml
 runtime-endpoint: unix:///run/containerd/containerd.sock
 image-endpoint: unix:///run/containerd/containerd.sock
