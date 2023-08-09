@@ -5,10 +5,14 @@
 # bash k8s_scripts/k8s_downloads.sh
 # mkdir -p wk_data && mv k8s_apps wk_data/
 
+ansible k8s_all --one-line -m ping
+ansible k8s_all --one-line -m shell -a 'echo "Hello, world!"'
+
 ansible k8s_all --one-line -m copy -a "src=wk_data/k8s_apps dest=./"
 
-# ansible k8s_all --one-line -m file -a "path=./k8s_scripts state=directory"
 ansible k8s_all --one-line -m copy -a "src=k8s_scripts dest=./"
+
+# ansible k8s_all --one-line -m file -a "path=./k8s_scripts state=directory"
 ```
 
 #### 2. Installation
@@ -22,11 +26,14 @@ ansible k8s_all -m shell -a "sudo bash k8s_scripts/k8s_apps.sh"
 
 #### 3. Control Panel nodes
 ```bash
-ansible k8s_cp -m shell -a "sudo bash k8s_scripts/k8s_node-cp.sh k8scp01"
+ansible node01 -m shell -a "sudo bash k8s_scripts/k8s_node-cp.sh k8scp01"
+# ansible node01 -m shell -a "sudo kubeadm reset -f"
 
-ansible k8s_cp -m shell -a "sudo bash k8s_scripts/kube-flannel.sh"
+ansible node01 -m shell -a "cat kubeadm-init.out"
 
-ansible k8s_cp -m shell -a "sudo bash k8s_scripts/kube-ingress-nginx.sh"
+ansible node01 -m shell -a "sudo bash k8s_scripts/kube-flannel.sh"
+
+ansible node01 -m shell -a "sudo bash k8s_scripts/kube-ingress-nginx.sh"
 ```
 
 #### 4. Worker nodes

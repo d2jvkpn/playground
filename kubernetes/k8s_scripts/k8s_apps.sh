@@ -12,6 +12,8 @@ for f in $(ls k8s_apps/images/*.tar.gz); do
     pigz -dc $f | sudo ctr -n=k8s.io image import -
 done
 
+# sudo crictl images
+
 #### 2. nerdctl
 nerdctl_version=${nerdctl_version:-1.5.0}
 nerdctl_out=nerdctl-full-${nerdctl_version}-linux-amd64.tar.gz

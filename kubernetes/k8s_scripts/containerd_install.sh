@@ -29,7 +29,8 @@ containerd config default | sed '/SystemdCgroup/{s/false/true/}'  |
 # grep pause: /etc/containerd/config.toml
 
 sudo systemctl restart containerd
-sudo systemctl status containerd
+systemctl status containerd
+# journalctl -fexu containerd
 
 #### 3.
 cat <<EOF | sudo tee /etc/crictl.yaml
