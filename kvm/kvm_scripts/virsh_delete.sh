@@ -19,11 +19,13 @@ virsh undefine $target 2>/dev/null || true
 
 sudo rm $source_file
 
-sed 's/^Host/\n&/' ~/.ssh/config | sed '/^Host '"$target"'$/,/^$/d; /^$/d' > ssh.tmp.config
-mv ssh.tmp.config ~/.ssh/config
+sed 's/^Host/\n&/' ~/.ssh/config | sed '/^Host '"$target"'$/,/^$/d; /^$/d' > ~/.ssh/config.tmp
+mv ~/.ssh/config.tmp ~/.ssh/config
 
 virsh net-dumpxml $KVM_Network | grep -v "name='$target'" > $KVM_Network.xml
+
 virsh net-define $KVM_Network.xml
 virsh net-destroy $KVM_Network
 virsh net-start $KVM_Network
+
 rm $KVM_Network.xml

@@ -3,7 +3,17 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-vm_source=$1; target=$2
+vm_source=$1
+
+if [ $# -gt 2 ]; then
+    # recursion
+    shift
+    for target in $*; do
+        bash $0 $vm_source $target
+    done
+else
+    target=$2
+fi
 
 ####
 KVM_User="${KVM_User:-ubuntu}"
@@ -17,7 +27,7 @@ while [[ "$(virsh domstate --domain $vm_source | awk 'NR==1{print $0; exit}')" !
     echo -n "."; sleep 1
 done
 echo ""
-echo "==> VM is shut off"
+echo "==> $vm_source is shut off"
 
 virt-clone --original $vm_source --name $target --file /var/lib/libvirt/images/$target.qcow2
 # virt-clone --original $vm_source --vm_source $target --auto-clone
