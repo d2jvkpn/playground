@@ -4,7 +4,7 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 #### install, https://github.com/acmesh-official/acme.sh
-curl https://get.acme.sh  | sh
+curl https://get.acme.sh | sh
 
 access_key_file=ALIYUN_access_key.json
 email=YOUR_Email@domain.xyz
