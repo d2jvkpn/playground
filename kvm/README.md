@@ -75,17 +75,7 @@ ssh-copy-id -i ~/.ssh/kvm.pem $target
 virsh shutdown $target
 ```
 
-#### 7. Archive OS
-```bash
-virt-clone --original ubuntu --name ubuntu --file ubuntu-node.$(date +'%F').qcow2
-
-virt-install --name ubuntu --import \
-  --memory 2048 --vcpus 2 --disk /var/lib/libvirt/images/ubuntu-node.$(date +'%F').qcow2,bus=sata \
-  --os-variant=generic --network default \
-  --nograph
-```
-
-#### 8. Clone VM
+#### 7. Clone VM
 ```bash
 bash kvm_scripts/virsh_clone.sh ubuntu node01 ubuntu
 

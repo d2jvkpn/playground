@@ -1,8 +1,9 @@
-### More Virsh Commandlines
----
+#! /usr/bin/env bash
+set -eu -o pipefail
+_wd=$(pwd)
+_path=$(dirname $0 | xargs -i readlink -f {})
 
 #### 1. extend disk size
-```bash
 vm=vm1
 
 # virsh domblklist $vm
@@ -22,10 +23,8 @@ vgdisplay
 fdisk -l | grep -- "--lv"
 lvextend -L +10G /dev/mapper/ubuntu--vg-ubuntu--lv
 resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
-```
 
 #### 2. more vrish commands
-```bash
 virsh edit $VHOST
 
 virsh setvcpus vm1 2 --config
@@ -47,4 +46,3 @@ virsh dumpxml foo
 virsh define foo
 virsh destroy foo_new
 virsh undefine foo_new
-```
