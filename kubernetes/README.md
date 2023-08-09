@@ -24,28 +24,37 @@ ansible k8s_all -m shell -a "sudo bash k8s_scripts/k8s_install.sh 1.27.4"
 ansible k8s_all -m shell -a "sudo bash k8s_scripts/containerd_install.sh"
 
 ansible k8s_all -m shell -a "sudo bash k8s_scripts/k8s_apps.sh"
+
+ansible k8s_all -m shell -a "sudo swapoff --all"
 ```
 
 #### 3. Control Panel nodes
 ```bash
-ansible node01 -m shell -a "sudo bash k8s_scripts/k8s_node-cp.sh k8scp01"
-# ansible node01 -m shell -a "sudo kubeadm reset -f"
+cp_node=node01
 
-ansible node01 -m shell -a "cat kubeadm-init.out"
+ansible $cp_node -m shell -a "sudo bash k8s_scripts/k8s_control-plane.sh k8scp01"
+# ansible $cp_node -m shell -a "sudo kubeadm reset -f"
 
-ansible node01 -m shell -a "sudo bash k8s_scripts/kube-flannel.sh"
+ansible $cp_node --one-line -m fetch -a "src=kubeadm-init.yaml dest=wk_data/"
 
-ansible node01 -m shell -a "sudo bash k8s_scripts/kube-ingress-nginx.sh"
+cp wk_data/node01/kubeadm-init.yaml wk_data/k8s_control-plane_join.yaml
+grep -v cert_key wk_data/node01/kubeadm-init.yaml wk_data/k8s_worker_join.yaml
+
+ansible $cp_node -m shell -a 'sudo bash k8s_scripts/kube-config.sh $USER'
+# ansible node01 -m shell -a "cat kubeadm-init.out"
+
+ansible $cp_node -m shell -a "bash k8s_scripts/kube-flannel.sh"
+ansible $cp_node -m shell -a "bash k8s_scripts/kube-ingress-nginx.sh"
 ```
 
-#### 4. Worker nodes
+#### 4. Other nodes
 ```bash
-export cp_node_name=k8scp01 cp_node_ip=192.168.122.55 token=tx1h53.b1ghhx5u1b95il13
-export cert_hash=sha256:854edd3408cbe0018aba72b772da1f5fe2bd4413a0375f35e59763ecdde91e8c
+ansible k8s_all --one-line -m copy -a "src=wk_data/k8s_worker_join.yaml dest=./"
+ansible k8s_workers -m shell -a "bash k8s_scripts/k8s_node.sh worker"
 
-envsubst > wk_data/0x_k8s_node-worker.sh < k8s_scripts/k8s_node-worker.sh
-ansible k8s_all --one-line -m copy -a "src=wk_data/0x_k8s_node-worker.sh dest=./"
-ansible k8s_wk -m shell -a "sudo bash 0x_k8s_node-worker.sh && rm 0x_k8s_node-worker.sh"
+ansible k8s_all --one-line -m copy -a "src=wk_data/k8s_control-plane_join.yaml dest=./"
+ansible node02,node03 -m shell -a "sudo bash k8s_scripts/k8s_node.sh control-plane"
+ansible node02,node03 -m shell -a 'sudo bash k8s_scripts/kube-config.sh $USER'
 ```
 
 #### 5. Config

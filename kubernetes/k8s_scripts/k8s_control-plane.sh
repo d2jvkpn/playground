@@ -32,6 +32,18 @@ EOF
 
 sudo kubeadm init --config=kubeadm-config.yaml --upload-certs -v 5 | tee kubeadm-init.out
 
+token=$(grep -o "\-\-token [^ ]*" kubeadm-init.out | awk '{print $2; exit}')
+cert_hash=$(grep -o "\-\-discovery-token-ca-cert-hash [^ ]*" kubeadm-init.out | awk '{print $2; exit}')
+cert_key=$(grep -o "\-\-certificate-key [^ ]*" kubeadm-init.out | awk '{print $2; exit}')
+
+cat > kubeadm-init.yaml <<EOF
+cp_node_ip: $ip
+cp_node_name: $node_name
+token: $token
+cert_hash: $cert_hash
+cert_key: $cert_key
+EOF
+
 exit
 
 kubeadm reset -f
@@ -54,3 +66,5 @@ nerdctl -n k8s.io ps
 # kubectl delete clusterrolebinding kubeadm:node-autoapprove-bootstrap
 # kubectl get csr
 # kubectl certificate approve node-csr-c69HXe7aYcqkS1bKmH4faEnHAWxn6i2bHZ2mD04jZyQ
+
+# curl -k https://localhost:6443
