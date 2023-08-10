@@ -26,6 +26,7 @@ ansible k8s_all -m shell -a "sudo bash k8s_scripts/containerd_install.sh"
 ansible k8s_all -m shell -a "sudo bash k8s_scripts/k8s_apps.sh"
 
 ansible k8s_all -m shell -a "sudo swapoff --all"
+# ansible k8s_all -m shell -a "sudo sed -i '/swap/s/^/# /' /etc/fstab"
 ```
 
 #### 3. Control Panel nodes
