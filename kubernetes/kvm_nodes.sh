@@ -16,8 +16,9 @@ EOF
 mkdir -p configs
 
 virsh net-dumpxml $KVM_Network |
-  awk '/host/{print $3, $4}' |
-  sed 's#\x27##g; s#/>##; s#name=##; s#ip=##' |
+  awk 'BEFIN{print "# k8s nodes"} /host/{print $4, $3}' |
+  sed 's#\x27##g; s#/>##; s#name=##; s#ip=##' > configs/etc_hosts
+
+awk '{print $2, "ansible_host="$1}' configs/etc_hosts |
   sed 's#$# ansible_port=22 ansible_user=ubuntu ansible_user=ubuntu#' |
-  awk 'BEGIN{print "[k8s_all]"}
-  /node/{$2="ansible_host="$2; print} END{print; print "[k8s_workers]"}' > configs/hosts.ini
+  sed '1i[k8s_all]' > configs/hosts.ini

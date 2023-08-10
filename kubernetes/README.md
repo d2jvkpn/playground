@@ -57,7 +57,12 @@ ansible node02,node03 -m shell -a "sudo bash k8s_scripts/k8s_node.sh control-pla
 ansible node02,node03 -m shell -a 'sudo bash k8s_scripts/kube-config.sh $USER'
 ```
 
-#### 5. Config
+#### 5. Storage
+```bash
+ansible node01 -m shell -a "bash k8s_scripts/kube-nfs.sh k8scp01 10Gi"
+```
+
+#### 6. Config
 ```bash
 ansible k8s_cp -m shell -a 'sudo bash k8s_scripts/kube-config.sh $USER'
 
