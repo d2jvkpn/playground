@@ -15,6 +15,6 @@ else
 fi
 
 echo "==> arg: $arg"
-sleep 1
+sleep 0.42
 
-#### ...more codes
+#### more codes...
