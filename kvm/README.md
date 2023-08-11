@@ -56,7 +56,7 @@ addr=$(virsh domifaddr $target | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{
 
 bash kvm_scripts/virsh_fix_ip.sh $target
 
-sshkeygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
+ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 
 cat >> ~/.ssh/config << EOF
 Host $target
