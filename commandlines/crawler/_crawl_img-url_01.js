@@ -23,7 +23,7 @@ var data = {
 
 var link = document.createElement("a");
 link.href = `data:text/json,${encodeURIComponent(JSON.stringify(data))}`;
-link.download = `scrap_${url.hostname}_${day}T${clock}.json`;
+link.download = `${url.hostname}_${day}T${clock}.json`;
 link.click();
 
 // jq -r .links[] scrap_*.json | xargs -n 1 -P 8 -i wget -c {}

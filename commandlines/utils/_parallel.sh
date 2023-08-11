@@ -3,6 +3,7 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
+####
 add() {
     a=$1
     b=$2
@@ -16,6 +17,7 @@ seq -s ' ' 1 42 | xargs -P 4 -n 2 -r bash -c 'add "$@"' _
 
 exit
 
+####
 cmd_file=$1
 
 # -n 1
