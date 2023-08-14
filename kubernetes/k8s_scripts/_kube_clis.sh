@@ -3,6 +3,7 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
+####
 kubectl get node --show-labels
 kubectl get nodes --show-labels -o wide
 
@@ -24,3 +25,30 @@ kubectl describe node/$node
 systemctl status kubelet
 journalctl -xefu kubelet
 ls -1 /var/log/pods
+
+
+####
+kubeadm config print init-defaults
+
+kubeadm reset -f
+
+systemctl status containerd
+systemctl status kubelet
+
+journalctl -fxeu containerd
+journalctl -fxeu kubelet
+
+nerdctl -n k8s.io ps
+
+kubeadm token list
+kubeadm token create --print-join-command
+
+kubectl -n kube-system describe pod/kube-scheduler-vm2
+
+#### Turning off auto-approval of node client certificates
+## https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-join/
+kubectl delete clusterrolebinding kubeadm:node-autoapprove-bootstrap
+kubectl get csr
+kubectl certificate approve node-csr-c69HXe7aYcqkS1bKmH4faEnHAWxn6i2bHZ2mD04jZyQ
+
+curl -k https://localhost:6443

@@ -21,5 +21,3 @@ sed "/k8s,bgp/a\ ${s11}- name: IP_AUTODETECTION_METHOD\n   ${s11}value: \"interf
 # sed -i '/image:/s#docker.io/##' calico.yaml
 # grep "image:" calico.yaml
 # awk '/image:/{print $NF}' calico.yaml | sort -u
-
-# kubectl -n kube-system describe pod/calico-node-d8nxw
