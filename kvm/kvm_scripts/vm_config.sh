@@ -34,7 +34,7 @@ chown -R $username:$username /home/$username
 
 timedatectl set-timezone Asia/Shanghai
 
-echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu
+echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$username
 # echo -e "\n\n\nPermitRootLogin yes" >> /etc/ssh/sshd_config
 
 #### apt update
@@ -52,7 +52,7 @@ apt remove && apt autoremove
 # reboot now
 # dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {}
 
-#### enable virsh Console access, 
+#### enable virsh Console access
 systemctl enable serial-getty@ttyS0.service
 systemctl start serial-getty@ttyS0.service
 # allow longin "virsh console target" from host machine
