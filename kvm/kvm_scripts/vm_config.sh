@@ -3,6 +3,8 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
+export DEBIAN_FRONTEND=noninteractive
+
 #### config
 # hostnamectl hostname node
 # sed -i '/127.0.1.1/s/ .*/ node/' /etc/hosts
@@ -10,9 +12,11 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # root: bash vm_config.sh ubuntu
 username=$1
 
-mkdir -p /home/$username/Apps/bin
+# mkdir -p /home/$username/Apps/bin
 
-cat > /home/$username/.bash_aliases <<'EOF'
+mkdir -p ~/Apps/bin
+
+cat > ~/.bash_aliases <<'EOF'
 for d in $(ls -d ~/Apps/*/ 2>/dev/null); do
     d=${d%/}
     [ -d $d/bin ] && d=$d/bin
@@ -35,7 +39,6 @@ echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu
 
 #### apt update
 # update /etc/apt/sources.list
-export DEBIAN_FRONTEND=noninteractive
 
 apt update && apt -y upgrade
 
