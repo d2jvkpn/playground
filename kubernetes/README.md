@@ -36,10 +36,7 @@ cp_node=node01
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/k8s_node_control-plane.sh k8scp01"
 # ansible $cp_node -m shell -a "sudo kubeadm reset -f"
 
-ansible $cp_node --one-line -m fetch -a "src=kubeadm-init.yaml dest=wk_data/"
-
-cp wk_data/node01/kubeadm-init.yaml wk_data/k8s_control-plane_join.yaml
-grep -v cert_key wk_data/node01/kubeadm-init.yaml wk_data/k8s_worker_join.yaml
+ansible $cp_node --one-line -m fetch -a "flat=true src=kubeadm-init.yaml dest=wk_data/"
 
 ansible $cp_node -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh $USER'
 # ansible node01 -m shell -a "cat kubeadm-init.out"
@@ -50,17 +47,26 @@ ansible $cp_node -m shell -a "bash k8s_scripts/kube_apply_ingress-nginx.sh"
 
 #### 4. Other nodes
 ```bash
-ansible k8s_all --one-line -m copy -a "src=wk_data/k8s_worker_join.yaml dest=./"
-ansible k8s_workers -m shell -a "bash k8s_scripts/k8s_node.sh worker"
+# worker nodes
+ansible k8s_workers --one-line -m copy -a "src=wk_data/kubeadm-init.yaml dest=./"
+ansible k8s_workers -m shell -a "bash k8s_scripts/k8s_node_join.sh worker"
 
-ansible k8s_all --one-line -m copy -a "src=wk_data/k8s_control-plane_join.yaml dest=./"
-ansible node02,node03 -m shell -a "sudo bash k8s_scripts/k8s_node_join.sh control-plane"
-ansible node02,node03 -m shell -a 'sudo bash k8s_scripts/kube-copy.sh $USER'
+# other control-plane nodes
+nodes=node02,node03
+
+ansible $nodes --one-line -m copy -a "src=wk_data/kubeadm-init.yaml dest=./"
+ansible $nodes -m shell -a "sudo bash k8s_scripts/k8s_node_join.sh control-plane"
+ansible $nodes -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh $USER'
+
+# remove kubeadm-init.yaml
+ansible k8s_workers,$nodes -m shell -a "rm -f kubeadm-init.yaml"
 ```
 
 #### 5. Storage
 ```bash
-ansible node01 -m shell -a "bash k8s_scripts/kube_storage-nfs.sh k8scp01 10Gi"
+cp_node=node01
+
+ansible $cp_node -m shell -a "bash k8s_scripts/kube_storage-nfs.sh k8scp01 10Gi"
 ```
 
 #### 6. Config
