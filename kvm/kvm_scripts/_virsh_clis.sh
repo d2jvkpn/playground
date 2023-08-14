@@ -30,6 +30,7 @@ virsh edit $VHOST
 virsh setvcpus vm1 2 --config
 
 virsh net-list --all
+virsh net-info default
 virsh net-dhcp-leases default
 
 man virsh
@@ -46,3 +47,10 @@ virsh dumpxml foo
 virsh define foo
 virsh destroy foo_new
 virsh undefine foo_new
+
+virsh net-dumpxml default |
+  xmllint --xpath "//network//ip//dhcp//child::*[position()>1]//@ip" - |
+  sed 's/ip="//; s/"//'
+
+virsh list --all
+

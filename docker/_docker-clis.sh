@@ -12,3 +12,9 @@ done &> /dev/null
 ####
 docker ps -f status=exited -q | xargs -i docker rm {}
 docker images -f dangling=true -q | xargs -i docker rmi {}
+
+####
+docker ps -q |
+  xargs docker inspect --format "{{.Name}}  {{.NetworkSettings.IPAddress}}" |
+  sed '1i Name IPAddress' |
+  column -t -s'  '

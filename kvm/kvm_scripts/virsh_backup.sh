@@ -19,7 +19,7 @@ if [ "$op" == "backup" ]; then
     zip -r $base.zip $base
     rm -r $base
 elif [ "$op" == "restore" ]; then
-    ls $target.kvm.xml $target.kvm.raw &> /dev/null
+    ls $target.kvm.xml $target.kvm.raw > /dev/null
     virsh define $target.kvm.xml
     sudo qemu-img convert -O qcow2 $target.kvm.raw /var/lib/libvirt/images/$target.qcow2
 else
