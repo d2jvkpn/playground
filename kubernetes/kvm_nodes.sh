@@ -15,9 +15,14 @@ EOF
 
 mkdir -p configs
 
+# virsh net-dumpxml $KVM_Network |
+#   awk 'BEFIN{print "# k8s nodes"} /host/{print $4, $3}' |
+#   sed 's#\x27##g; s#/>##; s#name=##; s#ip=##' > configs/etc_hosts
+
 virsh net-dumpxml $KVM_Network |
-  awk 'BEFIN{print "# k8s nodes"} /host/{print $4, $3}' |
-  sed 's#\x27##g; s#/>##; s#name=##; s#ip=##' > configs/etc_hosts
+  grep "<host" |
+  sed "s#^.*name='##; s#ip='##; s#/>##; s#'##g" |
+  awk '{print $2, "k8s_"$1}' > configs/etc_hosts
 
 awk '{print $2, "ansible_host="$1}' configs/etc_hosts |
   sed 's#$# ansible_port=22 ansible_user=ubuntu ansible_user=ubuntu#' |
