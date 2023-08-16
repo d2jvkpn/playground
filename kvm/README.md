@@ -80,9 +80,5 @@ virsh shutdown $target
 
 #### 7. Clone VM
 ```bash
-bash kvm_scripts/virsh_clone.sh ubuntu node01 ubuntu
-
-bash kvm_scripts/virsh_clone.sh ubuntu node02 ubuntu
-
-bash kvm_scripts/virsh_clone.sh ubuntu node03 ubuntu
+bash kvm_scripts/virsh_clone.sh ubuntu node01 node02 node03
 ```

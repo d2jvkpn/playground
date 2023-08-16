@@ -14,14 +14,14 @@ source_file=$(virsh dumpxml --domain $target | grep -o "/.*.qcow2")
 echo "==> Source file: $source_file"
 
 virsh shutdown $target 2>/dev/null || true
-# virsh destroy $target
-virsh undefine $target 2>/dev/null || true
-
 sudo rm $source_file
 
 conf="$HOME/.ssh/kvm.conf"
 sed 's/^Host/\n&/' $conf | sed '/^Host '"$target"'$/,/^$/d; /^$/d' > $conf.tmp
 mv $conf.tmp $conf
+
+# virsh destroy $target
+virsh undefine $target 2>/dev/null || true
 
 virsh net-dumpxml $KVM_Network | grep -v "name='$target'" > $KVM_Network.xml
 

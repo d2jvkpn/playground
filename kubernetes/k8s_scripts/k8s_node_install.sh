@@ -3,7 +3,7 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-# version=1.27.4
+# version=1.28.0
 version=$1
 export DEBIAN_FRONTEND=noninteractive
 
@@ -44,8 +44,8 @@ apt-mark unhold kubelet kubeadm kubectl
 kubectl completion bash > /etc/bash_completion.d/kubectl
 # kubeadm config images list
 
-cp /etc/systemd/system/kubelet.service.d/10-kubeadm.conf \
-  /etc/systemd/system/kubelet.service.d/10-kubeadm.conf.bk
+# cp /etc/systemd/system/kubelet.service.d/10-kubeadm.conf \
+#   /etc/systemd/system/kubelet.service.d/10-kubeadm.conf.bk
 
 # sed -i '/$KUBELET_EXTRA_ARGS/s/$/ --fail-swap-on=false/' \
 #   /etc/systemd/system/kubelet.service.d/10-kubeadm.conf

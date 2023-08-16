@@ -13,6 +13,7 @@ kubeadm config images list | xargs -i docker pull {}
 for img in $(kubeadm config images list); do
     base=$(basename $img | sed 's/:/_/')
     docker save $img | pigz -c > k8s_apps/images/$base.tar.gz
+    docker rmi $img
 done
 
 #### 2. nerdctl
@@ -41,6 +42,7 @@ for img in $ingress_images; do
      docker pull $img
      base=$(basename $img | sed 's/:/_/') 
      docker save $img | pigz -c > k8s_apps/images/$base.tar.gz
+     docker rmi $img
 done
 
 #### 5. calico and flannel
@@ -48,3 +50,10 @@ wget -O k8s_apps/calico.yaml https://docs.projectcalico.org/manifests/calico.yam
 
 wget -O k8s_apps/kube-flannel.yaml \
   https://raw.githubusercontent.com/flannel-io/flannel/v0.20.2/Documentation/kube-flannel.yml
+
+#### 6. zip
+kubeadm version -o json > k8s_apps/version.json
+version=$(jq -r .clientVersion.gitVersion k8s_apps/version.json)
+
+zip -r k8s_apps_$version.zip k8s_apps
+rm -r k8s_apps

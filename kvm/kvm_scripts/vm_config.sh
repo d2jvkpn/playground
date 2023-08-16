@@ -12,11 +12,16 @@ export DEBIAN_FRONTEND=noninteractive
 # root: bash vm_config.sh ubuntu
 username=$1
 
-# mkdir -p /home/$username/Apps/bin
-
 mkdir -p ~/Apps/bin
 
 cat > ~/.bash_aliases <<'EOF'
+# path: ~/.bash_aliases
+
+export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%:z "
+export PROMPT_DIRTRIM=2
+
+export PATH=~/.local/bin:$PATH
+
 for d in $(ls -d ~/Apps/*/ 2>/dev/null); do
     d=${d%/}
     [ -d $d/bin ] && d=$d/bin
