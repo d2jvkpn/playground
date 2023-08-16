@@ -12,6 +12,8 @@ set -x
 mkdir -p $base
 
 if [ "$op" == "backup" ]; then
+    virsh shutdown $target || true
+
     virsh dumpxml $target > $base/$target.kvm.xml
     sudo qemu-img convert -O raw /var/lib/libvirt/images/$target.qcow2 $base/$target.kvm.raw
     sudo chown -R $username:$username $base

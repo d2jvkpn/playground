@@ -1,5 +1,6 @@
 wk*/
 configs/
+logs/
 
 *.ini
 docker-compose.yaml

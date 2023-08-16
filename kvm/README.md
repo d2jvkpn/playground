@@ -48,8 +48,8 @@ bash kvm_scripts/vm_config.sh
 target=ubuntu; username=ubuntu
 
 if [ ! -f ~/.ssh/kvm.pem ]; then
-    ssh-keygen -t rsa -m PEM -b 2048 -P "" -f ~/.ssh/kvm.pem -C 'ubuntu'
-    chmod 0600 ~/.ssh/kvm.pem
+    ssh-keygen -t rsa -m PEM -b 2048 -P "" -f ~/.ssh/kvm.pem -C 'host_machine'
+    chmod 0400 ~/.ssh/kvm.pem
 fi
 
 addr=$(virsh domifaddr $target | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
@@ -58,7 +58,10 @@ bash kvm_scripts/virsh_fix_ip.sh $target
 
 ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 
-cat >> ~/.ssh/config << EOF
+record="Include ${HOME}/.ssh/kvm.conf"
+[ $(grep -c "$record" ~/.ssh/config) -eq 0 ] && sed -i "1i $record" ~/.ssh/config
+
+cat >> ~/.ssh/kvm.conf << EOF
 Host $target
     HostName      $addr
     User          $username

@@ -42,7 +42,7 @@ addr=$(
 
 echo "==> Got vm addrss: $addr"
 
-cat >> ~/.ssh/config << EOF
+cat >> ~/.ssh/kvm.conf << EOF
 Host $target
     HostName      $addr
     User          $KVM_User

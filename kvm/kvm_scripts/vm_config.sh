@@ -48,9 +48,9 @@ apt install -y software-properties-common apt-transport-https ca-certificates \
 
 apt clean && apt autoclean
 apt remove && apt autoremove
+dpkg -l | awk '/^rc/{print $2}' | xargs -i sudo dpkg -P {}
 
 # reboot now
-# dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {}
 
 #### enable virsh Console access
 systemctl enable serial-getty@ttyS0.service
