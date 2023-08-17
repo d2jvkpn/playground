@@ -14,7 +14,6 @@ cp_endpoint=$(yq .cp_endpoint kubeadm-init.yaml)
 token=$(yq .token kubeadm-init.yaml)
 cert_hash=$(yq .cert_hash kubeadm-init.yaml)
 cert_key=$(yq .cert_key kubeadm-init.yaml)
-addr=${cp_ip}:6443
 
 record="$cp_ip $cp_node"
 if [[ -z "$(grep "^$record$" /etc/hosts)" ]]; then

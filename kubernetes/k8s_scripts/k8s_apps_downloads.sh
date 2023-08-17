@@ -3,7 +3,9 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-# env args: nerdctl_version=1.5.0 yq_version=4.34.2
+yq_version=${yq_version:-4.34.2}
+nerdctl_version=${nerdctl_version:-1.5.0}
+
 set -x
 
 mkdir -p k8s_apps/kube_images k8s_apps/ingress-nginx_images
@@ -44,11 +46,11 @@ wget -O k8s_apps/kube-flannel.yaml \
 
 #### 4. yq
 yq_version=${yq_version:-4.34.2}
+yq_dir=k8s_apps/yq-${yq_version}-linux-amd64
 
 wget -O k8s_apps/yq_linux_amd64.tar.gz \
   https://github.com/mikefarah/yq/releases/download/v$yq_version/yq_linux_amd64.tar.gz
 
-yq_dir=k8s_apps/yq-${yq_version}-linux-amd64
 mkdir -p $yq_dir
 tar -xf k8s_apps/yq_linux_amd64.tar.gz -C $yq_dir
 mv $yq_dir/yq_linux_amd64 $yq_dir/yq
@@ -60,6 +62,7 @@ exit
 
 #### 5. nerdctl
 nerdctl_version=${nerdctl_version:-1.5.0}
+
 nerdctl_tgz=nerdctl-full-${nerdctl_version}-linux-amd64.tar.gz
 
 wget -O k8s_apps/$nerdctl_tgz\

@@ -4,12 +4,12 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 ####
-# cp_node=k8s_node01
+pod_subnet=${pod_subnet:-10.244.0.0/16}
+# cp_node=k8scp01
 cp_node=$1
 
 cp_ip=$(hostname -I | awk '{print $1}')
 cp_endpoint=$cp_node:6443
-pod_subnet=${pod_subnet:-10.244.0.0/16}
 echo "==> cp_ip: $cp_ip, cp_node: $cp_node, cp_endpoint: $cp_endpoint, pod_subnet: $pod_subnet"
 
 # version=1.28.0

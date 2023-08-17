@@ -16,16 +16,13 @@ apt-get -y install apt-transport-https ca-certificates gnupg lsb-release curl jq
   socat conntrack nfs-kernel-server nfs-common nftables
 
 #### 2. apt k8s
-# key_file=/etc/apt/keyrings/kubernetes.gpg
+key_file=/etc/apt/keyrings/kubernetes.gpg
+[ -f $key_file ] && rm -f $key_file
 
 # curl -fsSL https://dl.k8s.io/apt/doc/apt-key.gpg | sudo gpg --dearmor -o $key_file
 
 # echo "deb [signed-by=$key_file] https://apt.kubernetes.io/ kubernetes-xenial main" |
 #   sudo tee /etc/apt/sources.list.d/kubernetes.list
-
-#### 2. apt k8s
-key_file=/etc/apt/keyrings/kubernetes.gpg
-[ -f $key_file ] && rm -f $key_file
 
 curl -fsSL https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg |
   gpg --dearmor -o $key_file
