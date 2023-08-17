@@ -5,6 +5,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 yq_version=${yq_version:-4.34.2}
 nerdctl_version=${nerdctl_version:-1.5.0}
+flannel_version=${flannel_version:-0.22.1}
 
 set -x
 
@@ -39,16 +40,17 @@ wget -O k8s_apps/ingress-nginx_cloud.yaml \
 
 download_images k8s_apps/ingress-nginx_cloud.yaml k8s_apps/ingress-nginx_images
 
+
 wget -O k8s_apps/kube-flannel.yaml \
-  https://raw.githubusercontent.com/flannel-io/flannel/v0.20.2/Documentation/kube-flannel.yml
+  https://raw.githubusercontent.com/flannel-io/flannel/v$flannel_version/Documentation/kube-flannel.yml
 
 download_images k8s_apps/kube-flannel.yaml k8s_apps/flannel_images
+
 
 # wget -O k8s_apps/calico.yaml https://docs.projectcalico.org/manifests/calico.yaml
 # download_images k8s_apps/calico.yaml k8s_apps/calico_images
 
 #### 4. yq
-yq_version=${yq_version:-4.34.2}
 yq_dir=k8s_apps/yq-${yq_version}-linux-amd64
 
 wget -O k8s_apps/yq_linux_amd64.tar.gz \
@@ -64,8 +66,6 @@ rm -rf $yq_dir k8s_apps/yq_linux_amd64.tar.gz
 exit
 
 #### 5. nerdctl
-nerdctl_version=${nerdctl_version:-1.5.0}
-
 nerdctl_tgz=nerdctl-full-${nerdctl_version}-linux-amd64.tar.gz
 
 wget -O k8s_apps/$nerdctl_tgz\
