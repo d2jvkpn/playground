@@ -3,9 +3,6 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-yq_path=$(ls -d /opt/yq*)
-export PATH=$yq_path:$PATH
-
 node_kind=$1
 
 cp_ip=$(yq .cp_ip kubeadm-init.yaml)
