@@ -50,12 +50,18 @@ ansible $node --one-line -m fetch -a "flat=true src=kubeadm-init.yaml dest=wk_da
 
 ansible $node -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh $USER'
 # ansible node01 -m shell -a "cat kubeadm-init.out"
-
-ansible $node -m shell -a "bash k8s_scripts/kube_apply_flannel.sh"
-ansible $node -m shell -a "bash k8s_scripts/kube_apply_ingress-nginx.sh"
 ```
 
-#### 4. Other nodes
+#### 4. Apply flannel and ingress-nginx
+```bash
+node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
+ingress_node=$(ansible k8s_workers[0] --list-hosts | awk 'NR==2{print $1}')
+
+ansible $node -m shell -a "bash k8s_scripts/kube_apply_flannel.sh"
+ansible $node -m shell -a "bash k8s_scripts/kube_apply_ingress-nginx.sh $ingress_node"
+```
+
+#### 5. Other nodes
 ```bash
 # worker nodes
 ansible k8s_workers --one-line -m copy -a "src=wk_data/kubeadm-init.yaml dest=./"
@@ -70,7 +76,7 @@ ansible k8s_cps[1:] -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh $USER
 ansible k8s_workers,k8s_cps[1:] -m shell -a "rm -f kubeadm-init.yaml"
 ```
 
-#### 5. Storage
+#### 6. Storage
 ```bash
 node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
 cp_node=k8s$node
@@ -80,8 +86,12 @@ ansible $node -m shell -a "bash k8s_scripts/kube_storage-nfs.sh $cp_node 10Gi"
 
 #### 6. Config
 ```bash
-ansible k8s_cp -m shell -a 'kubectl get pods --all-namespaces -o wide'
-ansible k8s_cp -m shell -a 'kubectl get componentstatuses'
-ansible k8s_cp -m shell -a 'kubectl get node'
-ansible k8s_cp -m shell -a 'kubectl describe node/k8scp01'
+ansible k8s_all -m shell -a 'top -n 1'
+
+ansible k8s_cps[0] -m shell -a 'kubectl get node -o wide'
+ansible k8s_cps[0] -m shell -a 'kubectl get ep --all-namespaces'
+
+ansible k8s_cps[0] -m shell -a 'kubectl get pods --all-namespaces -o wide'
+ansible k8s_cps[0] -m shell -a 'kubectl get componentstatuses'
+ansible k8s_cps[0] -m shell -a 'kubectl describe node/k8scp01'
 ```
