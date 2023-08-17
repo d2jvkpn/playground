@@ -9,10 +9,10 @@ for f in $(ls k8s_apps/*_images/*.tar.gz); do
 done
 
 #### 2. yq
-mkdir -p k8s_apps/yq_linux_amd64
-tar -xf k8s_apps/yq_linux_amd64.tar.gz -C k8s_apps/yq_linux_amd64
-mv k8s_apps/yq_linux_amd64/yq /usr/bin/
-rm -r k8s_apps/yq_linux_amd64
+mkdir -p k8s_apps/yq_dir
+tar -xf k8s_apps/yq_linux_amd64.tar.gz -C k8s_apps/yq_dir
+mv k8s_apps/yq_dir/yq_linux_amd64 /usr/bin/yq
+rm -r k8s_apps/yq_dir
 
 exit
 
