@@ -3,7 +3,8 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-export PATH=/opt/bin:$PATH
+yq_path=$(ls -d /opt/yq*)
+export PATH=$yq_path:$PATH
 
 grep -w Network k8s_apps/kube-flannel.yaml
 

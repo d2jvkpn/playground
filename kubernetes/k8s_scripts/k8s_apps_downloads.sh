@@ -3,33 +3,24 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
+# env args: nerdctl_version=1.5.0 yq_version=4.34.2
 set -x
 
-mkdir -p k8s_apps/images
+mkdir -p k8s_apps/kube_images k8s_apps/ingress-nginx_images
 
 #### 1. k8s_images
 kubeadm config images list | xargs -i docker pull {}
 
-for img in $(kubeadm config images list); do
+kube_version=$(kubeadm version -o json | jq -r .clientVersion.gitVersion)
+kubeadm config images list > k8s_apps/kube_$kube_version.txt
+
+for img in $(cat k8s_apps/kube_$kube_version.txt); do
     base=$(basename $img | sed 's/:/_/')
-    docker save $img | pigz -c > k8s_apps/images/$base.tar.gz
+    docker save $img | pigz -c > k8s_apps/kube_images/$base.tar.gz
     docker rmi $img
 done
 
-#### 2. nerdctl
-nerdctl_version=${nerdctl_version:-1.5.0}
-nerdctl_out=nerdctl-full-${nerdctl_version}-linux-amd64.tar.gz
-
-wget -O k8s_apps/$nerdctl_out \
-  https://github.com/containerd/nerdctl/releases/download/v${nerdctl_version}/$nerdctl_out
-
-#### 3. yq
-yq_version=${yq_version:-4.34.2}
-
-wget -O k8s_apps/yq_linux_amd64.tar.gz \
-  https://github.com/mikefarah/yq/releases/download/v$yq_version/yq_linux_amd64.tar.gz
-
-#### 4. ingress-nginx
+#### 2. ingress-nginx
 wget -O k8s_apps/ingress-nginx_cloud.yaml \
   https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
@@ -41,19 +32,35 @@ ingress_images=$(
 for img in $ingress_images; do
      docker pull $img
      base=$(basename $img | sed 's/:/_/') 
-     docker save $img | pigz -c > k8s_apps/images/$base.tar.gz
+     docker save $img | pigz -c > k8s_apps/ingress-nginx_images/$base.tar.gz
      docker rmi $img
 done
 
-#### 5. calico and flannel
+#### 3. calico and flannel
 wget -O k8s_apps/calico.yaml https://docs.projectcalico.org/manifests/calico.yaml
 
 wget -O k8s_apps/kube-flannel.yaml \
   https://raw.githubusercontent.com/flannel-io/flannel/v0.20.2/Documentation/kube-flannel.yml
 
-#### 6. zip
-kubeadm version -o json > k8s_apps/version.json
-version=$(jq -r .clientVersion.gitVersion k8s_apps/version.json)
+#### 4. yq
+yq_version=${yq_version:-4.34.2}
 
-zip -r k8s_apps_$version.zip k8s_apps
-rm -r k8s_apps
+wget -O k8s_apps/yq_linux_amd64.tar.gz \
+  https://github.com/mikefarah/yq/releases/download/v$yq_version/yq_linux_amd64.tar.gz
+
+yq_dir=k8s_apps/yq-${yq_version}-linux-amd64
+mkdir -p $yq_dir
+tar -xf k8s_apps/yq_linux_amd64.tar.gz -C $yq_dir
+mv $yq_dir/yq_linux_amd64 $yq_dir/yq
+
+tar -C k8s_apps -czf $yq_dir.tar.gz yq-${yq_version}-linux-amd64
+rm -rf $yq_dir k8s_apps/yq_linux_amd64.tar.gz
+
+exit
+
+#### 5. nerdctl
+nerdctl_version=${nerdctl_version:-1.5.0}
+nerdctl_tgz=nerdctl-full-${nerdctl_version}-linux-amd64.tar.gz
+
+wget -O k8s_apps/$nerdctl_tgz\
+  https://github.com/containerd/nerdctl/releases/download/v${nerdctl_version}/$nerdctl_tgz

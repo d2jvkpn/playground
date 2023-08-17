@@ -14,21 +14,21 @@ containerd config default | grep SystemdCgroup
 containerd config default | grep sandbox_image
 
 #### 2.
-sudo mkdir -p /etc/containerd
+mkdir -p /etc/containerd
 
-pause=$(kubeadm config images list | grep pause)
+pause=$(kubeadm config images list | awk '/pause/{sub(".*/", ""); print}')
 
 # containerd config default | sed '/SystemdCgroup/{s/false/true/}'   |
 #   awk -v pause=$pause '/k8s.gcr.io\/pause/{sub("k8s.gcr.io/pause.*", pause"\"")} {print}' \
 #   > /etc/containerd/config.toml
 
 containerd config default | sed '/SystemdCgroup/{s/false/true/}'  |
-  awk -v pause=$pause '/registry.k8s.io\/pause/{sub("registry.k8s.io/pause.*", pause"\"")} {print}' |
+  awk -v pause=$pause '/sandbox_image/{sub("pause:[0-9.]*", pause)} {print}' |
   sudo tee /etc/containerd/config.toml
 
 # grep pause: /etc/containerd/config.toml
 
-sudo systemctl restart containerd
+systemctl restart containerd
 systemctl status containerd
 # journalctl -fexu containerd
 

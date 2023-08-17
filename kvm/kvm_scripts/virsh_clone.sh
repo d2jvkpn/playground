@@ -19,6 +19,8 @@ fi
 KVM_User="${KVM_User:-ubuntu}"
 KVM_SSH_Key="${KVM_SSH_Key:-$HOME/.ssh/kvm.pem}"
 
+echo "==> clone $vm_source into $target, KVM_User: $KVM_User, KVM_SSH_Key: $KVM_SSH_Key"
+
 ####
 echo "==> Shutting down $vm_source"
 virsh shutdown $vm_source 2>/dev/null || true

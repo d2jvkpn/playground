@@ -12,8 +12,8 @@ export DEBIAN_FRONTEND=noninteractive
 #### 1. apt install
 apt-get update
 
-apt-get -y install apt-transport-https ca-certificates gnupg lsb-release \
-  socat conntrack curl jq nfs-kernel-server nfs-common nftables
+apt-get -y install apt-transport-https ca-certificates gnupg lsb-release curl jq \
+  socat conntrack nfs-kernel-server nfs-common nftables
 
 #### 2. apt k8s
 # key_file=/etc/apt/keyrings/kubernetes.gpg
@@ -38,7 +38,7 @@ apt-get update
 apt install -y kubelet=${version}-00 kubeadm=${version}-00 kubectl=${version}-00
 
 apt-mark hold kubelet kubeadm kubectl
-apt-mark unhold kubelet kubeadm kubectl
+# apt-mark unhold kubelet kubeadm kubectl
 # systemctl disable kubelet
 
 kubectl completion bash > /etc/bash_completion.d/kubectl

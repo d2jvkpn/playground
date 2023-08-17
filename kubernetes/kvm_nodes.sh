@@ -5,6 +5,8 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 KVM_Network=${KVM_Network:-default}
 
+# bash kvm_scripts/virsh_clone.sh ubuntu cp01 cp02 node01 node02
+
 mkdir -p logs configs
 
 [ ! -f ansible.cfg ] && \
@@ -21,7 +23,7 @@ EOF
 #   sed 's#\x27##g; s#/>##; s#name=##; s#ip=##' > configs/etc_hosts
 
 virsh net-dumpxml $KVM_Network |
-  grep "<host.*name='node" |
+  awk "/<host.*name='node/{print} /<host.*name='cp/{print}" |
   sed "s#^.*name='##; s#ip='##; s#/>##; s#'##g" |
   awk '{print $2, $1}' > configs/etc_hosts
 

@@ -4,8 +4,7 @@
 ```bash
 # bash k8s_scripts/k8s_apps_downloads.sh
 # mkdir -p wk_data && mv k8s_apps wk_data/
-
-ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {}
+# ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {}
 
 ansible k8s_all --one-line -m ping
 # ansible k8s_all[0] --one-line -m ping
@@ -39,7 +38,9 @@ ansible k8s_all --forks 2 -m shell -a "sudo bash k8s_scripts/k8s_apps_install.sh
 #### 3. Control Panel nodes
 ```bash
 node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
-cp_node=$(echo $node | sed 's/[a-z]*/k8s/')
+# node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
+# cp_node=$(echo $node | sed 's/[a-z]*/k8s/')
+cp_node=k8s$node
 cp_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$node.ansible_host")
 
 ansible $node -m shell -a "sudo bash k8s_scripts/k8s_node_control-plane.sh $cp_node"
@@ -58,24 +59,23 @@ ansible $node -m shell -a "bash k8s_scripts/kube_apply_ingress-nginx.sh"
 ```bash
 # worker nodes
 ansible k8s_workers --one-line -m copy -a "src=wk_data/kubeadm-init.yaml dest=./"
-ansible k8s_workers -m shell -a "bash k8s_scripts/k8s_node_join.sh worker"
+ansible k8s_workers -m shell -a "sudo bash k8s_scripts/k8s_node_join.sh worker"
 
 # other control-plane nodes
-nodes=node02,node03
-
-ansible $nodes --one-line -m copy -a "src=wk_data/kubeadm-init.yaml dest=./"
-ansible $nodes -m shell -a "sudo bash k8s_scripts/k8s_node_join.sh control-plane"
-ansible $nodes -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh $USER'
+ansible k8s_cps[1:] --one-line -m copy -a "src=wk_data/kubeadm-init.yaml dest=./"
+ansible k8s_cps[1:] -m shell -a "sudo bash k8s_scripts/k8s_node_join.sh control-plane"
+ansible k8s_cps[1:] -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh $USER'
 
 # remove kubeadm-init.yaml
-ansible k8s_workers,$nodes -m shell -a "rm -f kubeadm-init.yaml"
+ansible k8s_workers,k8s_cps[1:] -m shell -a "rm -f kubeadm-init.yaml"
 ```
 
 #### 5. Storage
 ```bash
-cp_node=node01
+node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
+cp_node=k8s$node
 
-ansible $cp_node -m shell -a "bash k8s_scripts/kube_storage-nfs.sh k8scp01 10Gi"
+ansible $node -m shell -a "bash k8s_scripts/kube_storage-nfs.sh $cp_node 10Gi"
 ```
 
 #### 6. Config
