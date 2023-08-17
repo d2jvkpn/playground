@@ -8,7 +8,6 @@ nerdctl_version=${nerdctl_version:-1.5.0}
 flannel_version=${flannel_version:-0.22.1}
 
 set -x
-
 mkdir -p k8s_apps/kube_images k8s_apps/ingress-nginx_images
 
 function download_images() {

@@ -3,13 +3,12 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-# sudo apt update && apt -y upgrade && apt install -y nfs-kernel-server nfs-common
-
 name=vol01; cap=10Gi
+mkdir -p k8s_data
 
 kubecte create ns dev || true
 
-cat > pv_$name.yaml <<EOF
+cat > k8s_data/pv_$name.yaml <<EOF
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -36,7 +35,7 @@ spec:
   volumeName: $name
 EOF
 
-kubectl apply -f pv_$name.yaml
+kubectl apply -f k8s_data/pv_$name.yaml
 
 # kubectl -n dev delete pvc/$name
 # kubectl delete pv/$name

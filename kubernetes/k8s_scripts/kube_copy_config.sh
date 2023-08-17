@@ -4,8 +4,8 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 username=$1
-
 kube_dir=/home/$username/.kube
+
 mkdir -p $kube_dir
 
 cp -f /etc/kubernetes/admin.conf $kube_dir/config

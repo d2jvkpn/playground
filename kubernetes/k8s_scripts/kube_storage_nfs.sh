@@ -7,6 +7,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 # name=k8scp01; cap=10Gi
 name=$1; cap=$2
+sudo mkdir -p k8s_data
 
 #### 1. NFS
 nfs=/data/nfs/$name
@@ -27,7 +28,7 @@ echo "Hello, world!" | sudo tee $nfs/hello.txt
 #### 2. PersistentVolume
 echo "==> create pv: $name"
 
-cat > pv_$name.yaml << EOF
+cat > k8s_data/pv_$name.yaml << EOF
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -40,7 +41,7 @@ spec:
   nfs: { path: /data/nfs/$name, server: $name, readOnly: false }
 EOF
 
-kubectl create -f pv_$name.yaml 
+kubectl create -f k8s_data/pv_$name.yaml
 
 # kubectl delete pv/$name
 
@@ -51,7 +52,7 @@ kubectl create ns dev || true
 #### 4. PersistentVolumeClaim
 echo "==> create pvc: $name"
 
-cat > pvc_dev_$name.yaml << EOF
+cat > k8s_data/pvc_dev_$name.yaml << EOF
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -66,7 +67,7 @@ spec:
   volumeName: $name
 EOF
 
-kubectl create -f pvc_dev_$name.yaml
+kubectl create -f k8s_data/pvc_dev_$name.yaml
 
 # kubectl -n dev delete pvc/$name
 kubectl -n dev get pvc --show-labels

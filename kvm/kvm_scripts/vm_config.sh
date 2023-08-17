@@ -49,8 +49,7 @@ echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$username
 apt update && apt -y upgrade
 
 apt install -y software-properties-common apt-transport-https ca-certificates \
-  vim net-tools tree pigz curl file
-# iftop iotop jq at autossh iputils-ping gnupg-agent gnupg2
+  lsb-release gnupg net-tools vim tree pigz file curl jq
 
 apt clean && apt autoclean
 apt remove && apt autoremove

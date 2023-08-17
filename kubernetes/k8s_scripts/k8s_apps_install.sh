@@ -3,8 +3,6 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-set -x
-
 #### 1. k8s images
 for f in $(ls k8s_apps/*_images/*.tar.gz); do
     pigz -dc $f | sudo ctr -n=k8s.io image import -
