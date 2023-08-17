@@ -10,39 +10,42 @@ set -x
 
 mkdir -p k8s_apps/kube_images k8s_apps/ingress-nginx_images
 
+function download_images() {
+    yf=$1; save_dir=$2
+    mkdir -p $save_dir
+
+    images=$(awk '$1=="image:"{sub("@.*", "", $2); print $2}' $yf | sort -u)
+
+    for img in $images; do
+        docker pull $img
+        base=$(basename $img | sed 's/:/_/')
+        docker save $img | pigz -c > $save_dir/$base.tar.gz
+        echo "==> saved $save_dir/$base.tar.gz"
+        docker rmi $img
+    done
+}
+
 #### 1. k8s_images
 kubeadm config images list | xargs -i docker pull {}
 
 kube_version=$(kubeadm version -o json | jq -r .clientVersion.gitVersion)
-kubeadm config images list > k8s_apps/kube_$kube_version.txt
+kubeadm config images list | sed 's/^/image: /' > k8s_apps/kube_$kube_version.txt
 
-for img in $(cat k8s_apps/kube_$kube_version.txt); do
-    base=$(basename $img | sed 's/:/_/')
-    docker save $img | pigz -c > k8s_apps/kube_images/$base.tar.gz
-    docker rmi $img
-done
+download_images k8s_apps/kube_$kube_version.txt k8s_apps/kube_images
 
-#### 2. ingress-nginx
+#### 2. ingress-nginx and flannel
 wget -O k8s_apps/ingress-nginx_cloud.yaml \
   https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
-ingress_images=$(
-  awk '/image:/{sub("@.*", "", $NF); print $NF}' k8s_apps/ingress-nginx_cloud.yaml |
-  sort -u
-)
-
-for img in $ingress_images; do
-     docker pull $img
-     base=$(basename $img | sed 's/:/_/') 
-     docker save $img | pigz -c > k8s_apps/ingress-nginx_images/$base.tar.gz
-     docker rmi $img
-done
-
-#### 3. calico and flannel
-wget -O k8s_apps/calico.yaml https://docs.projectcalico.org/manifests/calico.yaml
+download_images k8s_apps/ingress-nginx_cloud.yaml k8s_apps/ingress-nginx_images
 
 wget -O k8s_apps/kube-flannel.yaml \
   https://raw.githubusercontent.com/flannel-io/flannel/v0.20.2/Documentation/kube-flannel.yml
+
+download_images k8s_apps/kube-flannel.yaml k8s_apps/flannel_images
+
+# wget -O k8s_apps/calico.yaml https://docs.projectcalico.org/manifests/calico.yaml
+# download_images k8s_apps/calico.yaml k8s_apps/calico_images
 
 #### 4. yq
 yq_version=${yq_version:-4.34.2}
