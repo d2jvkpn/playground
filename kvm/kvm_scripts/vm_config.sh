@@ -17,7 +17,8 @@ mkdir -p ~/Apps/bin
 cat > ~/.bash_aliases <<'EOF'
 # path: ~/.bash_aliases
 
-export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%:z "
+export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
+# %Y-%m-%dT%H:%M:%S%:z doesn't work
 export PROMPT_DIRTRIM=2
 
 export PATH=~/.local/bin:$PATH
