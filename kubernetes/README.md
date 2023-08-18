@@ -71,6 +71,7 @@ ansible k8s_workers -m shell -a "sudo bash k8s_scripts/k8s_node_join.sh worker"
 ansible k8s_cps[1:] --one-line -m copy -a "src=k8s_data/kubeadm-init.yaml dest=./"
 ansible k8s_cps[1:] -m shell -a "sudo bash k8s_scripts/k8s_node_join.sh control-plane"
 ansible k8s_cps[1:] -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh $USER'
+ansible k8s_cps[1:] -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root'
 
 # remove kubeadm-init.yaml
 ansible k8s_workers,k8s_cps[1:] -m shell -a "rm -f kubeadm-init.yaml"
@@ -81,7 +82,7 @@ ansible k8s_workers,k8s_cps[1:] -m shell -a "rm -f kubeadm-init.yaml"
 node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
 cp_node=k8s$node
 
-ansible $node -m shell -a "bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
+ansible $node -m shell -a "sudo bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
 ```
 
 #### 6. Config
