@@ -57,8 +57,8 @@ ansible $node -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
 ingress_node=$(ansible k8s_workers[0] --list-hosts | awk 'NR==2{print $1}')
 
-ansible $node -m shell -a "bash k8s_scripts/kube_apply_flannel.sh"
-ansible $node -m shell -a "bash k8s_scripts/kube_apply_ingress-nginx.sh $ingress_node"
+ansible $node -m shell -a "sudo bash k8s_scripts/kube_apply_flannel.sh"
+ansible $node -m shell -a "sudo bash k8s_scripts/kube_apply_ingress-nginx.sh $ingress_node"
 ```
 
 #### 5. Other nodes
