@@ -23,8 +23,8 @@ ansible k8s_all --forks 2 --one-line -m copy -a "src=k8s_data/k8s_apps dest=./"
 
 #### 2. Installation
 ```bash
-ansible k8s_all -m shell -a "sudo swapoff --all && sudo rm -f /swap.img"
-ansible k8s_all -m shell -a "sudo sed -i '/swap/s/^/# /' /etc/fstab"
+ansible k8s_all -m shell -a \
+  "sudo swapoff --all && sudo rm -f /swap.img && sudo sed -i '/swap/s/^/# /' /etc/fstab"
 
 ansible k8s_all --forks 2 -m shell -a "sudo bash k8s_scripts/k8s_node_install.sh 1.28.0"
 # ?? sysctl: setting key "net.ipv4.conf.all.accept_source_route": Invalid argument
