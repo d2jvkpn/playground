@@ -3,7 +3,13 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-username=$1
+if [ $# -gt 1 ]; then
+    for arg in $*; do
+        bash $0 $arg
+    done
+else
+    username=$1
+fi
 
 if [ "$username" == "root" ]; then
     kube_dir=/root/.kube

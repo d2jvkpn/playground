@@ -48,7 +48,7 @@ ansible $node -m shell -a "sudo bash k8s_scripts/k8s_node_control-plane.sh $cp_n
 
 ansible $node --one-line -m fetch -a "flat=true src=k8s_data/kubeadm-init.yaml dest=k8s_data/"
 
-ansible $node -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh $USER'
+ansible $node -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 # ansible node01 -m shell -a "cat kubeadm-init.out"
 ```
 
@@ -70,8 +70,7 @@ ansible k8s_workers -m shell -a "sudo bash k8s_scripts/k8s_node_join.sh worker"
 # other control-plane nodes
 ansible k8s_cps[1:] --one-line -m copy -a "src=k8s_data/kubeadm-init.yaml dest=./"
 ansible k8s_cps[1:] -m shell -a "sudo bash k8s_scripts/k8s_node_join.sh control-plane"
-ansible k8s_cps[1:] -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh $USER'
-ansible k8s_cps[1:] -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root'
+ansible k8s_cps[1:] -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 
 # remove kubeadm-init.yaml
 ansible k8s_workers,k8s_cps[1:] -m shell -a "rm -f kubeadm-init.yaml"
