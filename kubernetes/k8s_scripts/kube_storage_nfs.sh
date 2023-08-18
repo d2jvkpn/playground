@@ -42,7 +42,7 @@ spec:
   nfs: { path: /data/nfs/$name, server: $name, readOnly: false }
 EOF
 
-kubectl create -f k8s_data/pv_$name.yaml
+sudo kubectl create -f k8s_data/pv_$name.yaml
 
 # kubectl delete pv/$name
 
@@ -68,8 +68,8 @@ spec:
   volumeName: $name
 EOF
 
-kubectl create -f k8s_data/pvc_dev_$name.yaml
+sudo kubectl create -f k8s_data/pvc_dev_$name.yaml
 
 # kubectl -n dev delete pvc/$name
-kubectl -n dev get pvc --show-labels
-kubectl -n dev describe pvc/$name
+# kubectl -n dev get pvc --show-labels
+# kubectl -n dev describe pvc/$name
