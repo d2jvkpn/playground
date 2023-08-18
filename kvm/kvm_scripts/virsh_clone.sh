@@ -54,13 +54,12 @@ Host $target
     IdentityFile  $KVM_SSH_Key
 EOF
 
-# addr=$(ssh -G $target | awk '/^hostname/{print $2}')
-
-ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
-# remove: ssh-keygen -f ~/.ssh/known_hosts -R $addr
-
 bash ${_path}/wait_for_tcp_port.sh $addr 22
 
+# addr=$(ssh -G $target | awk '/^hostname/{print $2}')
+ssh-keygen -f ~/.ssh/known_hosts -R $addr
+ssh-keyscan -H $addr >> ~/.ssh/known_hosts
+# ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 ssh-copy-id -i $KVM_SSH_Key $target
 
 ssh $target sudo hostnamectl set-hostname $target
