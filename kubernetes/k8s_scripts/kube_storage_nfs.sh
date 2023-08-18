@@ -7,16 +7,13 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 # name=k8scp01; cap=10Gi
 name=$1; cap=$2
-mkdir -p k8s_data
+sudo mkdir -p k8s_data
 
 #### 1. NFS
 nfs=/data/nfs/$name
 
-mkdir -p $nfs
-chmod 1777 /data/nfs
-
-[[ -f /etc/exports && ! -f /etc/exports.bk ]] && \
-  cp /etc/exports /etc/exports.bk
+sudo mkdir -p $nfs
+sudo chmod 1777 /data/nfs
 
 record="$nfs *(rw,sync,no_root_squash,subtree_check)"
 [ -z "$(grep "^$record$" /etc/exports)" ]  | sudo tee -a /etc/exports
@@ -26,10 +23,14 @@ sudo showmount -e $name
 
 echo "Hello, world!" | sudo tee $nfs/hello.txt
 
-#### 2. PersistentVolume
+#### 2. namespace de
+echo "==> create ns: dev"
+kubectl create ns dev || true
+
+#### 3. PersistentVolume
 echo "==> create pv: $name"
 
-cat > k8s_data/pv_$name.yaml << EOF
+cat | kubectl apply -f - << EOF
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -41,19 +42,12 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs: { path: /data/nfs/$name, server: $name, readOnly: false }
 EOF
-
-sudo kubectl create -f k8s_data/pv_$name.yaml
-
 # kubectl delete pv/$name
-
-#### 3. namespace
-echo "==> create ns: dev"
-kubectl create ns dev || true
 
 #### 4. PersistentVolumeClaim
 echo "==> create pvc: $name"
 
-cat > k8s_data/pvc_dev_$name.yaml << EOF
+cat | kubectl apply -f - << EOF
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -67,9 +61,7 @@ spec:
   # mannual bound
   volumeName: $name
 EOF
-
-sudo kubectl create -f k8s_data/pvc_dev_$name.yaml
-
 # kubectl -n dev delete pvc/$name
+
 # kubectl -n dev get pvc --show-labels
 # kubectl -n dev describe pvc/$name
