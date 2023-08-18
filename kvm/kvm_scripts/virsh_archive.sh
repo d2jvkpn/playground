@@ -3,17 +3,17 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-op=$1; target=$2
+op=$1
 username=$(whoami)
-base=${target}_kvm_$(date +%F)
 
 set -x
 
-mkdir -p $base
-
 if [ "$op" == "backup" ]; then
-    virsh shutdown $target || true
+    target=$2
+    base=${target}_kvm_$(date +%F)
+    mkdir -p $base
 
+    virsh shutdown $target || true
     virsh dumpxml $target > $base/$target.kvm.xml
     sudo qemu-img convert -O raw /var/lib/libvirt/images/$target.qcow2 $base/$target.kvm.raw
     sudo chown -R $username:$username $base
@@ -21,10 +21,12 @@ if [ "$op" == "backup" ]; then
     zip -r $base.zip $base
     rm -r $base
 elif [ "$op" == "restore" ]; then
-    ls $target.kvm.xml $target.kvm.raw > /dev/null
-    virsh define $target.kvm.xml
-    base=$(basename $target)
-    sudo qemu-img convert -O qcow2 $target.kvm.raw /var/lib/libvirt/images/$base.qcow2
+    base=$2
+    ls $base.kvm.xml $base.kvm.raw > /dev/null
+
+    virsh define $base.kvm.xml
+    target=$(basename $base)
+    sudo qemu-img convert -O qcow2 $base.kvm.raw /var/lib/libvirt/images/$target.qcow2
 else
     echo "invalid operation" >&2
     exit 1
