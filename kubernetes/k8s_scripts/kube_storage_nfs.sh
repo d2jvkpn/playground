@@ -28,7 +28,7 @@ echo "Hello, world!" | sudo tee $nfs/hello.txt
 #### 2. PersistentVolume
 echo "==> create pv: $name"
 
-cat > k8s_data/pv_$name.yaml << EOF
+cat | sudo tee k8s_data/pv_$name.yaml << EOF
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -52,7 +52,7 @@ kubectl create ns dev || true
 #### 4. PersistentVolumeClaim
 echo "==> create pvc: $name"
 
-cat > k8s_data/pvc_dev_$name.yaml << EOF
+cat | sudo tee k8s_data/pvc_dev_$name.yaml << EOF
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
