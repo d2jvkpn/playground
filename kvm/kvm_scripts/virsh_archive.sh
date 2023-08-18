@@ -23,7 +23,8 @@ if [ "$op" == "backup" ]; then
 elif [ "$op" == "restore" ]; then
     ls $target.kvm.xml $target.kvm.raw > /dev/null
     virsh define $target.kvm.xml
-    sudo qemu-img convert -O qcow2 $target.kvm.raw /var/lib/libvirt/images/$target.qcow2
+    base=$(basename $target)
+    sudo qemu-img convert -O qcow2 $target.kvm.raw /var/lib/libvirt/images/$base.qcow2
 else
     echo "invalid operation" >&2
     exit 1
