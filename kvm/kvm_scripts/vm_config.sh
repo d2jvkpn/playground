@@ -12,7 +12,7 @@ export DEBIAN_FRONTEND=noninteractive
 # root: bash vm_config.sh ubuntu
 username=$1
 
-mkdir -p ~/Apps/bin
+mkdir -p ~/Apps/bin ~/.local/bin
 
 cat > ~/.bash_aliases <<'EOF'
 # path: ~/.bash_aliases
@@ -20,7 +20,6 @@ cat > ~/.bash_aliases <<'EOF'
 export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
 # %Y-%m-%dT%H:%M:%S%:z doesn't work
 export PROMPT_DIRTRIM=2
-
 export PATH=~/.local/bin:$PATH
 
 for d in $(ls -d ~/Apps/*/ 2>/dev/null); do
