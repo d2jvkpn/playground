@@ -2,6 +2,8 @@
 
 #### 1. Prepare
 ```bash
+# ../kvm/kvm_scripts/virsh_clone.sh ubuntu cp{01..03} ingress01 node{01..03}
+
 # bash k8s_scripts/k8s_apps_downloads.sh
 # mkdir -p k8s_data && mv k8s_apps k8s_data/
 # ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {}
@@ -55,10 +57,11 @@ ansible $node -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 #### 4. Apply flannel and ingress-nginx
 ```bash
 node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
-ingress_node=$(ansible k8s_workers[0] --list-hosts | awk 'NR==2{print $1}')
+
+# ingress_node=$(ansible k8s_workers[0] --list-hosts | awk 'NR==2{print $1}')
 
 ansible $node -m shell -a "sudo bash k8s_scripts/kube_apply_flannel.sh"
-ansible $node -m shell -a "sudo bash k8s_scripts/kube_apply_ingress-nginx.sh $ingress_node"
+ansible $node -m shell -a "sudo bash k8s_scripts/kube_apply_ingress-nginx.sh ingress01"
 ```
 
 #### 5. Other nodes
