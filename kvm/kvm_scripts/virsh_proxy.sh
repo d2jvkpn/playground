@@ -15,7 +15,7 @@ ports=$* # LOCAL_Port:VM_Port...
 # TODO: wait for ssh port of node to be ready
 # virsh autostart $node; virsh autostart --disable $node
 
-node_ip=$(ssh -G $node | awk '$1=="hostname"{print $2}')
+node_ip=$(ssh -G $node | awk '$1=="hostname"{print $2; exit;}')
 
 listenings=$(
   echo $ports | awk -v node_ip=$node_ip '{
