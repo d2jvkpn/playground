@@ -9,17 +9,36 @@ ingress_node=$1
 mkdir -p k8s_data
 
 ip=$(kubectl get node/$ingress_node -o wide | awk 'NR==2{print $6}')
-kubectl label nodes/$ingress_node ingress-ready=true
 
-# https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+#### by lable node
+# kubectl label nodes/$ingress_node ingress-ready=yes
+
+# # https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+# sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
+#   awk 'BEGIN{RS=ORS="---"}
+#   /Deployment/{sub("nodeSelector:", "nodeSelector:\n        ingress-ready: \"yes\"")}
+#   { print }' > k8s_data/ingress-nginx.yaml
+
+#### by taint node
+kubectl taint nodes $ingress_node ingress-ready=yes:NoSchedule
+# kubectl taint nodes $ingress_node ingress-ready=yes:NoSchedule-
+
+# tolerations='tolerations: [{key: "ingress-ready", value: "yes", effect: "NoSchedule"}]'
+
+tolerations='''
+      tolerations:
+      - key: "ingress-ready"
+        value: "yes"
+        effect: "NoSchedule"
+'''
+
 sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
-  awk 'BEGIN{RS=ORS="---"}
-  /Deployment/{sub("nodeSelector:", "nodeSelector:\n        ingress-ready: \"true\"")}
-  { print }' > k8s_data/ingress-nginx.yaml
+  awk -v tolerations="$tolerations" 'BEGIN{RS=ORS="---"}
+  /Deployment/{$0=$0""tolerations}
+  {print}'> k8s_data/ingress-nginx.yaml
 
 kubectl apply -f k8s_data/ingress-nginx.yaml
-
-# kubectl delete -f k8s_apps/ingress-nginx_cloud.yaml
+# kubectl delete -f k8s_apps/ingress-nginx.yaml
 
 kubectl -n ingress-nginx patch svc/ingress-nginx-controller \
   -p "$(printf '{"spec":{"externalIPs":["%s"]}}' $ip)"
