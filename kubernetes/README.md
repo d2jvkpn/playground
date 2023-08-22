@@ -76,7 +76,8 @@ ansible k8s_cps[1:] -m shell -a "sudo bash k8s_scripts/k8s_node_join.sh control-
 ansible k8s_cps[1:] -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 
 # remove kubeadm-init.yaml
-ansible k8s_workers,k8s_cps[1:] -m shell -a "rm -f kubeadm-init.yaml"
+# ansible k8s_workers,k8s_cps[1:] -m shell -a "rm -f kubeadm-init.yaml"
+ansible k8s_workers,k8s_cps[1:] -m file -a "path=kubeadm-init.yaml state=absent"
 ```
 
 #### 6. Storage

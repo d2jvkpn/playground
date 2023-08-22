@@ -52,3 +52,7 @@ token: $token
 cert_hash: $cert_hash
 cert_key: $cert_key
 EOF
+
+exit
+
+kubeadm token create --print-join-command
