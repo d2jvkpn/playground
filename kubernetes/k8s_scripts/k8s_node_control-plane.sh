@@ -56,3 +56,5 @@ EOF
 exit
 
 kubeadm token create --print-join-command
+
+# kubeadm token list
