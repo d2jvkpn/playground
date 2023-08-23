@@ -20,16 +20,14 @@ ip=$(kubectl get node/$ingress_node -o wide | awk 'NR==2{print $6}')
 #   { print }' > k8s_data/ingress-nginx.yaml
 
 #### by taint node
-kubectl taint nodes $ingress_node ingress-ready=yes:NoSchedule
-# kubectl taint nodes $ingress_node ingress-ready=yes:NoSchedule-
+kubectl taint nodes $ingress_node node-role.k8s.local/ingress=:NoSchedule
+# kubectl taint nodes $ingress_node node-role.k8s.local/ingress=:NoSchedule-
 
-# tolerations='tolerations: [{key: "ingress-ready", value: "yes", effect: "NoSchedule"}]'
+# tolerations='tolerations: [{key: "node-role.k8s.local/ingress", value: "", effect: "NoSchedule"}]'
 
 tolerations='''
       tolerations:
-      - key: "ingress-ready"
-        value: "yes"
-        effect: "NoSchedule"
+      - { key: "node-role.k8s.local/ingress", value: "", effect: "NoSchedule" }
 '''
 
 sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
@@ -42,9 +40,10 @@ kubectl apply -f k8s_data/ingress-nginx.yaml
 
 kubectl -n ingress-nginx patch svc/ingress-nginx-controller \
   -p "$(printf '{"spec":{"externalIPs":["%s"]}}' $ip)"
+# '{"spec":{"externalIPs":["'$ip'"]}}'
 
+kubectl -n ingress-nginx get deploy
 kubectl -n ingress-nginx get pods --field-selector status.phase=Running -o wide
-
 kubectl -n ingress-nginx get svc/ingress-nginx-controller
 
 exit
