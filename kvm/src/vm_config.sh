@@ -49,6 +49,7 @@ apt update && apt -y upgrade
 
 apt install -y software-properties-common apt-transport-https ca-certificates \
   lsb-release gnupg net-tools vim tree pigz file curl jq
+# landscape-common
 
 apt clean && apt autoclean
 apt remove && apt autoremove

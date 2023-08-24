@@ -40,7 +40,7 @@ virsh net-dhcp-leases default
 addr=$(virsh domifaddr $target | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
 ssh ubuntu@$addr
 
-bash kvm_scripts/vm_config.sh
+bash src/vm_config.sh
 ```
 
 #### 6. Config SSH Access from Host
@@ -54,7 +54,7 @@ fi
 
 addr=$(virsh domifaddr $target | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
 
-bash kvm_scripts/virsh_fix_ip.sh $target
+bash src/virsh_fix_ip.sh $target
 
 ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 
@@ -80,5 +80,5 @@ virsh shutdown $target
 
 #### 7. Clone VM
 ```bash
-bash kvm_scripts/virsh_clone.sh ubuntu node01 node02 node03
+bash src/virsh_clone.sh ubuntu node01 node02 node03
 ```

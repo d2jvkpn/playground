@@ -2,7 +2,7 @@
 
 #### 1. Prepare
 ```bash
-# ../kvm/kvm_scripts/virsh_clone.sh ubuntu cp{01..03} ingress01 node{01..03}
+# ../kvm/src/virsh_clone.sh ubuntu cp{01..03} ingress01 node{01..03}
 
 # bash k8s_scripts/k8s_apps_downloads.sh
 # mkdir -p k8s_data && mv k8s_apps k8s_data/
