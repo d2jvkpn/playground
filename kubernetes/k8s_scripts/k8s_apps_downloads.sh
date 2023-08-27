@@ -4,7 +4,6 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 yq_version=${yq_version:-4.34.2}
-nerdctl_version=${nerdctl_version:-1.5.0}
 flannel_version=${flannel_version:-0.22.1}
 
 set -x
@@ -17,11 +16,15 @@ function download_images() {
     images=$(awk '$1=="image:"{sub("@.*", "", $2); print $2}' $yf | sort -u)
 
     for img in $images; do
-        docker pull $img
         base=$(basename $img | sed 's/:/_/')
-        docker save $img | pigz -c > $save_dir/$base.tar.gz
+        [ -f $save_dir/$base.tar.gz ] && continue
+
+        docker pull $img
+        docker save $img | pigz -c > $save_dir/$base.tar.gz.tmp
+        mv $save_dir/$base.tar.gz.tmp $save_dir/$base.tar.gz
+        docker rmi $img || true
+
         echo "==> saved $save_dir/$base.tar.gz"
-        docker rmi $img
     done
 }
 
@@ -62,7 +65,8 @@ tar -C k8s_apps -czf $yq_dir.tar.gz yq-${yq_version}-linux-amd64
 rm -rf $yq_dir k8s_apps/yq_linux_amd64.tar.gz
 
 #### 5. nerdctl
+nerdctl_version=${nerdctl_version:-1.5.0}
 nerdctl_tgz=nerdctl-full-${nerdctl_version}-linux-amd64.tar.gz
 
-wget -O k8s_apps/$nerdctl_tgz\
+wget -O k8s_apps/$nerdctl_tgz \
   https://github.com/containerd/nerdctl/releases/download/v${nerdctl_version}/$nerdctl_tgz

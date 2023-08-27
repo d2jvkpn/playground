@@ -3,6 +3,21 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
+#### k8s upgrade
+# version=1.28.1
+version=$1
+
+apt-mark unhold kubeadm
+apt-get update
+
+apt-get install -y kubeadm=${version}-00
+apt-mark hold kubeadm
+# kubeadm version
+
+kubeadm upgrade plan
+
+# kubeadm upgrade apply v$version
+
 ####
 kubectl get node --show-labels
 kubectl get nodes --show-labels -o wide
