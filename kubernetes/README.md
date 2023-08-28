@@ -3,7 +3,6 @@
 #### 1. Prepare
 ```bash
 # ../kvm/src/virsh_clone.sh ubuntu cp{01..03} ingress01 node{01..03}
-
 # bash k8s_scripts/k8s_apps_downloads.sh
 # mkdir -p k8s_data && mv k8s_apps k8s_data/
 # ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {}
@@ -89,7 +88,24 @@ cp_node=k8s$node
 ansible $node -m shell -a "sudo bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
 ```
 
-#### 6. Config
+#### 7. Upgrade nodes
+```bash
+version=1.28.1
+
+# control-plane
+for node in $(ansible k8s_cps --list-hosts | sed '1d'); do
+    ansible $node -m shell -a "sudo bash k8s_scripts/k8s_upgrade_control-plane.sh $version $node"
+done
+
+# workers
+for node in $(ansible workers --list-hosts | sed '1d'); do
+    ansible k8s_cps[0] -m shell -a "sudo bash k8s_scripts/k8s_upgrade_workers.sh $version $node 1"
+    ansible $node -m shell -a "sudo bash k8s_scripts/k8s_upgrade_workers.sh $version $node 2"
+    ansible k8s_cps[0] -m shell -a "sudo bash k8s_scripts/k8s_upgrade_workers.sh $version $node 3"
+done
+```
+
+#### 8. Config
 ```bash
 ansible k8s_all -m shell -a 'top -n 1'
 
