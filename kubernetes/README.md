@@ -47,7 +47,7 @@ node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys 
 cp_node=${node#k8s-}
 cp_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$node.ansible_host")
 
-ansible $node -m shell -a "sudo bash k8s_scripts/k8s_node_control-plane.sh $cp_node"
+ansible $node -m shell -a "sudo bash k8s_scripts/k8s_node_control-plane.sh $cp_node $cp_ip"
 # ansible $node -m shell -a "sudo kubeadm reset -f"
 
 ansible $node --one-line -m fetch -a "flat=true src=k8s_data/kubeadm-init.yaml dest=k8s_data/"

@@ -7,8 +7,9 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 pod_subnet=${pod_subnet:-10.244.0.0/16}
 # cp_node=k8scp01
 cp_node=$1
+# cp_ip=$(hostname -I | awk '{print $1}')
+cp_ip=$2
 
-cp_ip=$(hostname -I | awk '{print $1}')
 cp_endpoint=$cp_node:6443
 # version=1.28.0
 version=$(kubeadm version --output=json 2> /dev/null | jq -r .clientVersion.gitVersion)
@@ -56,5 +57,4 @@ EOF
 exit
 
 kubeadm token create --print-join-command
-
 # kubeadm token list
