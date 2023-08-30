@@ -5,7 +5,12 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 KVM_Network=${KVM_Network:-default}
 
-bash ../kvm/src/virsh_clone.sh ubuntu k8s-cp{01..03} k8s-node{01..03} k8s-ingress01
+# bash ../kvm/src/virsh_clone.sh ubuntu k8s-cp{01..03} k8s-node{01..03} k8s-ingress01
+
+for vm in ubuntu k8s-cp{01..03} k8s-node{01..03} k8s-ingress01; do
+    [ -z $(virsh list --all | awk -v vm=$vm '$2==vm{print 1}') ] || continue
+    bash ../kvm/src/virsh_clone.sh $vm
+done
 
 mkdir -p logs configs
 
