@@ -21,7 +21,7 @@ EOF
 #   sed 's#\x27##g; s#/>##; s#name=##; s#ip=##' > configs/etc_hosts
 
 virsh net-dumpxml $KVM_Network |
-  awk "/<host.*name='node/{print} /<host.*name='cp/{print} /<host.*name='ingress/{print}" |
+  awk "/<host.*name='k8s-/{print}" |
   sed "s#^.*name='##; s#ip='##; s#/>##; s#'##g" |
   awk 'BEGIN{OFS="\t"; print "hostname", "ip"} {print $1, $2}' > configs/hosts.tsv
 

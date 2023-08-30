@@ -2,7 +2,7 @@
 
 #### 1. Prepare
 ```bash
-# bash ../kvm/src/virsh_clone.sh ubuntu cp{01..03} ingress01 node{01..03}
+# bash ../kvm/src/virsh_clone.sh ubuntu k8s-cp{01..03} k8s-node{01..03} k8s-ingress01
 
 # bash k8s_scripts/k8s_apps_downloads.sh
 # mkdir -p k8s_data && mv k8s_apps k8s_data/
@@ -42,10 +42,11 @@ ansible k8s_all --forks 2 -m shell -a "sudo bash k8s_scripts/k8s_apps_install.sh
 
 #### 3. Control Panel nodes
 ```bash
+# node=k8s-cp01
 node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
 # node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
 # cp_node=$(echo $node | sed 's/[a-z]*/k8s/')
-cp_node=k8s$node
+cp_node=${node#k8s-}
 cp_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$node.ansible_host")
 
 ansible $node -m shell -a "sudo bash k8s_scripts/k8s_node_control-plane.sh $cp_node"
@@ -62,7 +63,7 @@ ansible $node -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
 
 # ingress_node=$(ansible k8s_workers[0] --list-hosts | awk 'NR==2{print $1}')
-ingress_node=ingress01
+ingress_node=k8s-ingress01
 
 ansible $node -m shell -a "sudo bash k8s_scripts/kube_apply_flannel.sh"
 ansible $node -m shell -a "sudo bash k8s_scripts/kube_apply_ingress-nginx.sh $ingress_node"
