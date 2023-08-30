@@ -22,21 +22,23 @@ EOF
 
 virsh net-dumpxml $KVM_Network |
   awk "/<host.*name='k8s-/{print}" |
-  sed "s#^.*name='##; s#ip='##; s#/>##; s#'##g" > configs/hosts.tmp
+  sed "s#^.*name='##; s#ip='##; s#/>##; s#'##g" |
+  awk '{print $2, $1}' > configs/hosts.txt
 
-[ -s configs/hosts.tmp ] || { >&2 echo "vm k8s-xx not found!"; exit 1; }
+[ -s configs/hosts.txt ] || { >&2 echo "vm k8s-xx not found!"; exit 1; }
 
-sed 's/ / ansible_host=/; s/$/ ansible_port=22 ansible_user=ubuntu/' configs/hosts.tmp |
-  sed '1i [k8s_all]' > configs/hosts.ini
+text=$(awk '{print $2," ansible_host="$1" ansible_port=22 ansible_user=ubuntu"}' configs/hosts.txt)
 
 {
-    echo -e "\n[k8s_cps]"
-    grep "^k8s-cp" configs/hosts.ini
+    echo "[k8s_all]"
+    echo "$text"
+    echo ""
 
-    echo -e "\n[k8s_workers]"
-    grep "^k8s-node" configs/hosts.ini
-    grep "^k8s-ingress" configs/hosts.ini
-} > configs/hosts.tmp
+    echo "[k8s_cps]"
+    echo "$text" | grep "^k8s-cp"
+    echo ""
 
-cat configs/hosts.tmp >> configs/hosts.ini
-rm configs/hosts.tmp
+    echo "[k8s_workers]"
+    echo "$text" | grep "^k8s-node"
+    echo "$text" | grep "^k8s-ingress"
+} > configs/hosts.ini
