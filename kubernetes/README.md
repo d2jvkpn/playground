@@ -2,7 +2,8 @@
 
 #### 1. Prepare
 ```bash
-# ../kvm/src/virsh_clone.sh ubuntu cp{01..03} ingress01 node{01..03}
+# bash ../kvm/src/virsh_clone.sh ubuntu cp{01..03} ingress01 node{01..03}
+
 # bash k8s_scripts/k8s_apps_downloads.sh
 # mkdir -p k8s_data && mv k8s_apps k8s_data/
 # ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {}
@@ -24,10 +25,13 @@ ansible k8s_all --forks 2 --one-line -m copy -a "src=k8s_data/k8s_apps dest=./"
 
 #### 2. Installation
 ```bash
-ansible k8s_all -m shell -a \
-  "sudo swapoff --all && sudo rm -f /swap.img && sudo sed -i '/swap/s/^/# /' /etc/fstab"
+# free -m
+# ls /swap.img
+ansible k8s_all -m shell -a "sudo swapoff --all && sudo sed -i '/swap/s/^/# /' /etc/fstab"
 
-ansible k8s_all --forks 2 -m shell -a "sudo bash k8s_scripts/k8s_node_install.sh 1.28.0"
+version=1.28.0
+
+ansible k8s_all --forks 2 -m shell -a "sudo bash k8s_scripts/k8s_node_install.sh $version"
 # ?? sysctl: setting key "net.ipv4.conf.all.accept_source_route": Invalid argument
 # ?? sysctl: setting key "net.ipv4.conf.all.promote_secondaries": Invalid argument
 
