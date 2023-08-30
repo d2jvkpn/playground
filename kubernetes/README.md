@@ -56,7 +56,24 @@ ansible $node -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 # ansible node01 -m shell -a "cat kubeadm-init.out"
 ```
 
-#### 4. Apply flannel and ingress-nginx
+#### 4. Worker nodes
+```bash
+# worker nodes
+ansible k8s_workers --one-line -m copy -a "src=k8s_data/kubeadm-init.yaml dest=./"
+ansible k8s_workers -m shell -a "sudo bash k8s_scripts/k8s_node_join.sh worker"
+ansible k8s_workers -m file -a "path=kubeadm-init.yaml state=absent"
+
+# other control-plane nodes
+ansible k8s_cps[1:] --one-line -m copy -a "src=k8s_data/kubeadm-init.yaml dest=./"
+ansible k8s_cps[1:] -m shell -a "sudo bash k8s_scripts/k8s_node_join.sh control-plane"
+ansible k8s_cps[1:] -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
+ansible k8s_cps[1:] -m file -a "path=kubeadm-init.yaml state=absent"
+
+# remove kubeadm-init.yaml
+# ansible k8s_workers,k8s_cps[1:] -m shell -a "rm -f kubeadm-init.yaml"
+```
+
+#### 5. Apply flannel and ingress-nginx
 ```bash
 node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
 
@@ -67,33 +84,29 @@ ansible $node -m shell -a "sudo bash k8s_scripts/kube_apply_flannel.sh"
 ansible $node -m shell -a "sudo bash k8s_scripts/kube_apply_ingress-nginx.sh $ingress_node"
 ```
 
-#### 5. Other nodes
-```bash
-# worker nodes
-ansible k8s_workers --one-line -m copy -a "src=k8s_data/kubeadm-init.yaml dest=./"
-ansible k8s_workers -m shell -a "sudo bash k8s_scripts/k8s_node_join.sh worker"
-
-# other control-plane nodes
-ansible k8s_cps[1:] --one-line -m copy -a "src=k8s_data/kubeadm-init.yaml dest=./"
-ansible k8s_cps[1:] -m shell -a "sudo bash k8s_scripts/k8s_node_join.sh control-plane"
-ansible k8s_cps[1:] -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
-
-# remove kubeadm-init.yaml
-# ansible k8s_workers,k8s_cps[1:] -m shell -a "rm -f kubeadm-init.yaml"
-ansible k8s_workers,k8s_cps[1:] -m file -a "path=kubeadm-init.yaml state=absent"
-```
-
 #### 6. Storage
 ```bash
 node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
-cp_node=k8s$node
+cp_node=${node#k8s-}
 
 ansible $node -m shell -a "sudo bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
 ```
 
-#### 7. Upgrade nodes
+#### 7. Explore
 ```bash
-version=1.28.1
+ansible k8s_all -m shell -a 'top -n 1'
+
+ansible k8s_cps[0] -m shell -a 'kubectl get node -o wide'
+ansible k8s_cps[0] -m shell -a 'kubectl get ep --all-namespaces'
+
+ansible k8s_cps[0] -m shell -a 'kubectl get pods --all-namespaces -o wide'
+ansible k8s_cps[0] -m shell -a 'kubectl get componentstatuses'
+ansible k8s_cps[0] -m shell -a 'kubectl describe node/k8scp01'
+```
+
+#### 8. Upgrade nodes
+```bash
+version=1.28.x
 
 # control-plane
 for node in $(ansible k8s_cps --list-hosts | sed '1d'); do
@@ -106,16 +119,4 @@ for node in $(ansible workers --list-hosts | sed '1d'); do
     ansible $node -m shell -a "sudo bash k8s_scripts/k8s_upgrade_workers.sh $version $node 2"
     ansible k8s_cps[0] -m shell -a "sudo bash k8s_scripts/k8s_upgrade_workers.sh $version $node 3"
 done
-```
-
-#### 8. Config
-```bash
-ansible k8s_all -m shell -a 'top -n 1'
-
-ansible k8s_cps[0] -m shell -a 'kubectl get node -o wide'
-ansible k8s_cps[0] -m shell -a 'kubectl get ep --all-namespaces'
-
-ansible k8s_cps[0] -m shell -a 'kubectl get pods --all-namespaces -o wide'
-ansible k8s_cps[0] -m shell -a 'kubectl get componentstatuses'
-ansible k8s_cps[0] -m shell -a 'kubectl describe node/k8scp01'
 ```
