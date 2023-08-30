@@ -15,6 +15,12 @@ source_file=$(virsh dumpxml --domain $target | grep -o "/.*.qcow2")
 echo "==> Source file: $source_file"
 
 virsh shutdown $target 2>/dev/null || true
+
+while [ $(virsh list --state-running | awk -v target=$target '$2==target{print 1}') == "1" ]; do
+    sleep 1 && echo -n .
+done
+echo ""
+
 sudo rm $source_file
 
 ##### virsh destroy $target
