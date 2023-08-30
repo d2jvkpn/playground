@@ -5,6 +5,8 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 KVM_Network=${KVM_Network:-default}
 
+bash ../kvm/src/virsh_clone.sh ubuntu k8s-cp{01..03} k8s-node{01..03} k8s-ingress01
+
 mkdir -p logs configs
 
 [ ! -f ansible.cfg ] && \

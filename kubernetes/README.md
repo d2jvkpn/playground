@@ -2,8 +2,6 @@
 
 #### 1. Prepare
 ```bash
-# bash ../kvm/src/virsh_clone.sh ubuntu k8s-cp{01..03} k8s-node{01..03} k8s-ingress01
-
 # bash k8s_scripts/k8s_apps_downloads.sh
 # mkdir -p k8s_data && mv k8s_apps k8s_data/
 # ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {}
