@@ -16,26 +16,26 @@ ansible k8s_all --one-line -m shell -a 'echo "Hello, world!"'
 
 ansible k8s_all --one-line -m copy -a "src=k8s_scripts dest=./"
 
-ansible k8s_all --forks 2 --one-line -m copy -a "src=k8s_data/k8s_apps dest=./"
+ansible k8s_all --forks 4 --one-line -m copy -a "src=k8s_data/k8s_apps dest=./"
 
 # ansible k8s_all --one-line -m file -a "path=./k8s_scripts state=directory"
+
+# free -m
+# ls /swap.img
+ansible k8s_all -m shell -a "sudo swapoff --all && sudo sed -i '/swap/s/^/# /' /etc/fstab"
 ```
 
 #### 2. Installation
 ```bash
-# free -m
-# ls /swap.img
-ansible k8s_all -m shell -a "sudo swapoff --all && sudo sed -i '/swap/s/^/# /' /etc/fstab"
+version=1.28.1
+ansible k8s_all --forks 4 -m shell -a "sudo bash k8s_scripts/k8s_node_install.sh $version"
 
-version=1.28.0
-
-ansible k8s_all --forks 2 -m shell -a "sudo bash k8s_scripts/k8s_node_install.sh $version"
 # ?? sysctl: setting key "net.ipv4.conf.all.accept_source_route": Invalid argument
 # ?? sysctl: setting key "net.ipv4.conf.all.promote_secondaries": Invalid argument
 
-ansible k8s_all --forks 2 -m shell -a "sudo bash k8s_scripts/k8s_apps_containerd.sh"
+ansible k8s_all --forks 4 -m shell -a "sudo bash k8s_scripts/k8s_apps_containerd.sh"
 
-ansible k8s_all --forks 2 -m shell -a "sudo bash k8s_scripts/k8s_apps_install.sh"
+ansible k8s_all --forks 4 -m shell -a "sudo bash k8s_scripts/k8s_apps_install.sh"
 ```
 
 #### 3. Control Panel nodes

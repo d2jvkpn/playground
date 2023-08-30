@@ -11,7 +11,8 @@ elif [ $# -eq 1 ]; then
 else
     for arg in $*; do
         bash $0 $arg
-    done    
+    done
+    exit 0
 fi
 
 echo "==> arg: $arg"

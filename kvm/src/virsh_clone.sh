@@ -11,6 +11,7 @@ if [ $# -gt 2 ]; then
     for target in $*; do
         bash $0 $vm_source $target
     done
+    exit 0
 else
     target=$2
 fi
