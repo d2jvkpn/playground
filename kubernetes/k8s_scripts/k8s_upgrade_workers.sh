@@ -24,5 +24,5 @@ elif [ "$step" == "3" ]; then
     #### on a cp node
     kubectl uncordon $node
 else
-    >&2 echo "unknown step:" $step 
+    >&2 echo "unknown step: $step"
 fi

@@ -28,7 +28,7 @@ elif [ "$op" == "restore" ]; then
     target=$(basename $base)
     sudo qemu-img convert -O qcow2 $base.kvm.raw /var/lib/libvirt/images/$target.qcow2
 else
-    echo "invalid operation" >&2
+    >&2 echo "invalid operation"
     exit 1
 fi
 

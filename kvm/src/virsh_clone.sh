@@ -20,7 +20,7 @@ fi
 KVM_User="${KVM_User:-ubuntu}"
 KVM_SSH_Key="${KVM_SSH_Key:-$HOME/.ssh/kvm.pem}"
 
-echo "==> clone $vm_source into $target, KVM_User: $KVM_User, KVM_SSH_Key: $KVM_SSH_Key"
+echo "==> Cloning $vm_source into $target, KVM_User: $KVM_User, KVM_SSH_Key: $KVM_SSH_Key"
 
 ####
 echo "==> Shutting down $vm_source"
@@ -30,7 +30,7 @@ while [[ "$(virsh domstate --domain $vm_source | awk 'NR==1{print $0; exit}')" !
     echo -n "."; sleep 1
 done
 echo ""
-echo "==> $vm_source is shut off"
+echo "==> VM $vm_source is shut off"
 
 virt-clone --original $vm_source --name $target --file /var/lib/libvirt/images/$target.qcow2
 # virt-clone --original $vm_source --vm_source $target --auto-clone

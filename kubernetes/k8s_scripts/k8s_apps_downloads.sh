@@ -24,7 +24,7 @@ function download_images() {
         mv $save_dir/$base.tar.gz.tmp $save_dir/$base.tar.gz
         docker rmi $img || true
 
-        echo "==> saved $save_dir/$base.tar.gz"
+        echo "==> Saved $save_dir/$base.tar.gz"
     done
 }
 

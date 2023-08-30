@@ -24,11 +24,11 @@ sudo showmount -e $name
 echo "Hello, world!" | sudo tee $nfs/hello.txt
 
 #### 2. namespace de
-echo "==> create ns: dev"
+echo "==> Creating ns: dev"
 kubectl create ns dev || true
 
 #### 3. PersistentVolume
-echo "==> create pv: $name"
+echo "==> Creating pv: $name"
 
 cat > k8s_data/pv_$name.yaml << EOF
 apiVersion: v1
@@ -47,7 +47,7 @@ kubectl apply -f k8s_data/pv_$name.yaml
 # kubectl delete pv/$name
 
 #### 4. PersistentVolumeClaim
-echo "==> create pvc: $name"
+echo "==> Creating pvc: $name"
 
 cat > k8s_data/pv_$name.yaml << EOF
 apiVersion: v1
