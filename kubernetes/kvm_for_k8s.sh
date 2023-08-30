@@ -39,5 +39,4 @@ sed 's/ / ansible_host=/; s/$/ ansible_port=22 ansible_user=ubuntu/' configs/hos
 } > configs/hosts.tmp
 
 cat configs/hosts.tmp >> configs/hosts.ini
-
 rm configs/hosts.tmp
