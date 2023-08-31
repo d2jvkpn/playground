@@ -34,18 +34,21 @@ virsh net-dumpxml $KVM_Network |
 
 [ -s configs/hosts.txt ] || { >&2 echo "vm k8s-xx not found!"; exit 1; }
 
-text=$(awk '{print $2," ansible_host="$1" ansible_port=22 ansible_user=ubuntu"}' configs/hosts.txt)
+text=$(awk '{print $2, "ansible_host="$1, "ansible_port=22 ansible_user=ubuntu"}' configs/hosts.txt)
 
 {
-    echo "[k8s_all]"
     echo "$text"
     echo ""
 
+    echo "[k8s_all]"
+    echo "$text" | awk '$1!=""{print $1}'
+    echo ""
+
     echo "[k8s_cps]"
-    echo "$text" | grep "^k8s-cp"
+    echo "$text" | awk '/^k8s-cp/{print $1}'
     echo ""
 
     echo "[k8s_workers]"
-    echo "$text" | grep "^k8s-node"
-    echo "$text" | grep "^k8s-ingress"
+    echo "$text" | awk '/^k8s-node/{print $1}'
+    echo "$text" | awk '/^k8s-ingress/{print $1}'
 } > configs/hosts.ini
