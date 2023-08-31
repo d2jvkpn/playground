@@ -14,9 +14,9 @@ mkdir -p k8s_data
 intf=$(ip -o -4 route show to default | awk '{print $5}')
 # grep -A 8 'value: "k8s,bgp"' calico.yaml
 
-s11="$(printf ' %.0s' {1..11})"
+s10="$(printf ' %.0s' {1..10})"
 
-sed "/k8s,bgp/a\ ${s11}- name: IP_AUTODETECTION_METHOD\n   ${s11}value: \"interface=${intf}\"" \
+sed "/k8s,bgp/a\  ${s10}- name: IP_AUTODETECTION_METHOD\n    ${s10}value: \"interface=${intf}\"" \
   k8s_apps/calico.yaml > k8s_data/calico.yaml
 
 kubectl apply -f k8s_data/calico.yaml

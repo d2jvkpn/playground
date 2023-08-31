@@ -14,7 +14,7 @@ ansible k8s_all --one-line -m shell -a 'echo "Hello, world!"'
 # ansible k8s_all[0] --list-hosts
 
 ansible k8s_all --one-line -m copy -a "src=k8s_scripts dest=./"
-ansible k8s_all --forks 4 --one-line -m copy -a "src=k8s_data/k8s_apps dest=./"
+ansible k8s_all --forks 4 --one-line -m copy -a "src=./k8s_apps dest=./"
 # ansible k8s_all --one-line -m file -a "path=./k8s_scripts state=directory"
 
 # free -m
