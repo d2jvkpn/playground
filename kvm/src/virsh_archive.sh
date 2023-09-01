@@ -8,9 +8,10 @@ username=$(whoami)
 
 set -x
 
-if [ "$op" == "backup" ]; then
+if [[ "$op" == "backup" ]]; then
     target=$2
     base=${target}_kvm_$(date +%F)
+    echo "==> backup $target"
     mkdir -p $base
 
     virsh shutdown $target || true
@@ -20,8 +21,9 @@ if [ "$op" == "backup" ]; then
 
     zip -r $base.zip $base
     rm -r $base
-elif [ "$op" == "restore" ]; then
+elif [[ "$op" == "restore" ]]; then
     base=$2
+    echo "==> restore $base"
     ls $base.kvm.xml $base.kvm.raw > /dev/null
 
     virsh define $base.kvm.xml
