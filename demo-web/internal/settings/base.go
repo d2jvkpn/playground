@@ -11,10 +11,12 @@ import (
 
 var (
 	_Project *viper.Viper
+	_Config  *viper.Viper
 	Meta     map[string]any
 	Logger   *logging.Logger
 )
 
+// #### project
 func SetProject(bts []byte) (err error) {
 	_Project = viper.New()
 	_Project.SetConfigType("yaml")
@@ -33,4 +35,23 @@ func SetProject(bts []byte) (err error) {
 
 func ProjectString(key string) string {
 	return _Project.GetString(key)
+}
+
+// #### config
+func SetConfig(config string) (err error) {
+	_Config = viper.New()
+	_Config.SetConfigType("yaml")
+	_Config.SetConfigFile(config)
+
+	if err = _Config.ReadInConfig(); err != nil {
+		return err
+	}
+
+	// _Config.SetDefault("hello.world", 42)
+
+	return nil
+}
+
+func ConfigField(key string) *viper.Viper {
+	return _Config.Sub(key)
 }

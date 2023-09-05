@@ -8,9 +8,14 @@ git_branch = $(shell git rev-parse --abbrev-ref HEAD)
 # git_commit_id = $(shell git rev-parse --verify HEAD)
 # git_commit_time = $(shell git log -1 --format="%at" | xargs -I{} date -d @{} +%FT%T%:z)
 
+#### run
 run:
 	go run main.go --config=configs/local.yaml --addr=0.0.0.0:5031
 
+run-dev:
+	echo "TODO"
+
+#### build
 build:
 	echo ">>> git branch: $(git_branch)"
 	mkdir -p target
@@ -21,3 +26,10 @@ docker-build:
 	# env: GIT_Pull=false DOCKER_Pull=false REGION=cn
 	ssh -F configs/ssh.conf build_host \
 	  "cd docker_build/playground/demo-web && git pull && bash deployments/docker_build.sh dev"
+
+#### database
+create-db:
+	echo "TODO"
+
+connect-db:
+	echo "TODO"

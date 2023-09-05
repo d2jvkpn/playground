@@ -17,6 +17,9 @@ func Load(config string, release bool) (err error) {
 		engine *gin.Engine
 	)
 
+	if err = settings.SetConfig(config); err != nil {
+		return err
+	}
 	_Relase = release
 
 	// #### logging
