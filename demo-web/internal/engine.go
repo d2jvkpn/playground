@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"demo-web/internal/services/api"
 	"demo-web/internal/settings"
 
 	"github.com/d2jvkpn/gotk"
@@ -73,7 +74,7 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 	static.StaticFS("/", http.FS(fsys))
 
 	// #### biz handlers
-	// TODO:
+	api.LoadV1_Open(router, settings.ApiLogger(settings.Logger.Logger, "api"))
 
 	return engine, nil
 }

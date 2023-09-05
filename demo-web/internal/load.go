@@ -27,6 +27,9 @@ func Load(config string, release bool) (err error) {
 	} else {
 		settings.Logger, err = logging.NewLogger(log_file, zap.DebugLevel, 512)
 	}
+	settings.Logger.Logger = settings.Logger.Logger.With(
+		zap.String("version", settings.ProjectString("version")),
+	)
 	_Logger = settings.Logger.Named("internal")
 
 	if err != nil {
