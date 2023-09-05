@@ -8,9 +8,8 @@ kubectl config set-context --current --namespace=dev
 sudo mkdir -p /data/local/demo-web
 sudo chmod -R 777 /data/local
 
-# kubectl -n dev create configmap demo-web --from-file=config.dev.yaml
-
-kubectl create configmap demo-web --from-file=config.dev.yaml
+# kubectl -n dev create configmap demo-web --from-file=dev.yaml
+kubectl create configmap demo-web --from-file=dev.yaml
 
 kubectl apply -f deploy.yaml
 
