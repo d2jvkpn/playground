@@ -1,6 +1,6 @@
-app: lite-web
+app: demo-web
 repository: https://github.com/d2jvkpn/playground
-image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/playground/lite-web
+image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-web
 version: 0.1.0
 
 # configs/{{.APP_ENV}}.yaml

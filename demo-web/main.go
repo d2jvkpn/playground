@@ -48,7 +48,7 @@ func main() {
 	}
 
 	flag.StringVar(&config, "config", "configs/local.yaml", "configuration file(yaml) path")
-	flag.StringVar(&addr, "addr", "0.0.0.0:8080", "listening address")
+	flag.StringVar(&addr, "addr", "0.0.0.0:5031", "listening address")
 	flag.BoolVar(&release, "release", false, "run in release mode")
 
 	flag.Usage = func() {

@@ -74,7 +74,7 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 	static.StaticFS("/", http.FS(fsys))
 
 	// #### biz handlers
-	api.LoadV1_Open(router, settings.ApiLogger(settings.Logger.Logger, "api"))
+	api.LoadV1_Open(router, settings.ApiLogger("api"))
 
 	return engine, nil
 }

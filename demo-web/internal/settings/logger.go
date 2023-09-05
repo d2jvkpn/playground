@@ -8,8 +8,8 @@ import (
 	"go.uber.org/zap"
 )
 
-func ApiLogger(lg *zap.Logger, name string) gin.HandlerFunc {
-	logger := lg.Named(name)
+func ApiLogger(name string) gin.HandlerFunc {
+	logger := Logger.Named(name)
 
 	return func(ctx *gin.Context) {
 		var (

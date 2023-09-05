@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  demo-web:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-web:${TAG}
+    container_name: demo-web_${APP_ENV}
+    restart: always
+    # depends_on: ["mongo"]
+    networks: ["net"]
+    # network_mode: bridge
+    # network_mode: host
+    ports: ["${PORT}:${PORT}"]
+    environment: ["TZ=Asia/Shanghai"]
+    volumes:
+    - ./configs/:/home/d2jvkpn/demo-web/configs/
+    - ./logs/:/home/d2jvkpn/demo-web/logs/
+    # - ./data/:/home/d2jvkpn/demo-web/data/
+    command: ["./main", "--config=configs/prod.yaml", "--addr=:${PORT}"]
+
+networks:
+  net:
+    name: demo-web_${APP_ENV}
+    driver: bridge
+    external: false
