@@ -43,11 +43,11 @@ spec:
           valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "metadata.name" } }
         - { name: TZ, value: Asia/Shanghai }
         volumeMounts:
-        - { name: config, mountPath: /opt/demo-web/configs/ } # not /opt/demo-web/configs/dev.yaml
-        - { name: local, subPathExpr: "logs/$(POD_NAME)", mountPath: "/opt/demo-web/logs" }
-        - { name: "app-data", subPathExpr: "demo-web/data/$(POD_NAME)", mountPath: "/opt/demo-web/data" }
+        - { name: config, mountPath: /home/d2jvkpn/demo-web/configs/ } # not /home/d2jvkpn/demo-web/configs/dev.yaml
+        - { name: local, subPathExpr: "logs/$(POD_NAME)", mountPath: "/home/d2jvkpn/demo-web/logs" }
+        - { name: "app-data", subPathExpr: "demo-web/data/$(POD_NAME)", mountPath: "/home/d2jvkpn/demo-web/data" }
         ports:
-        - { name: "http", containerPort: 8080, protocol: "TCP" }
+        - { name: "http", containerPort: 5030, protocol: "TCP" }
         # command: [ tail, -f, /etc/hosts ]
         command: [ "./main" ]
-        args: [ "--addr=:8080", "--release" ]
+        args: [ "--addr=:5030", "--release"]
