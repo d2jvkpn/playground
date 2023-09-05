@@ -19,15 +19,15 @@ spec:
       volumes:
       - name: config
         configMap: { name: demo-web }
-      # - name: local
-      #   hostPath: { path: "/data/local/demo-web", type: "DirectoryOrCreate" }
+      - name: local
+        hostPath: { path: "/data/local/demo-web", type: "DirectoryOrCreate" }
       - name: app-data
         persistentVolumeClaim: { claimName: "nfs" }
       containers:
       - name: demo-web
         image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-web:dev
         # IfNotPresent, Always, Never
-        imagePullPolicy: "Always"
+        imagePullPolicy: "IfNotPresent"
         #resources:
         #  requests: { cpu: "200m", memory: "128Mi" }
         #  limits: { cpu: "500m", memory: "256Mi" }
