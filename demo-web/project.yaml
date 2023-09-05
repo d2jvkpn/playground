@@ -1,0 +1,17 @@
+app: lite-web
+repository: https://github.com/d2jvkpn/playground
+image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/playground/lite-web
+version: 0.1.0
+
+# configs/{{.APP_ENV}}.yaml
+config: |
+  service_name: lite-web
+  #
+  grpc:
+    tls: false
+    cert: configs/server.pem
+    key: configs/server.key
+
+consul: |
+    #
+    TODO:
