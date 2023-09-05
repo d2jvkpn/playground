@@ -18,7 +18,6 @@ build:
 	  -X main.git_branch=$(git_branch) -X main.git_commit_id=unknown" main.go
 
 docker-build:
-	# GIT_Pull, DOCKER_Pull
-	# REGION=cn bash deployments/docker_build.sh dev
+	# env: GIT_Pull=false DOCKER_Pull=false REGION=cn
 	ssh -F configs/ssh.conf build_host \
-	  "cd docker_build//playground/demo-web && git pull && bash deployments/docker_build.sh dev"
+	  "cd docker_build/playground/demo-web && git pull && bash deployments/docker_build.sh dev"
