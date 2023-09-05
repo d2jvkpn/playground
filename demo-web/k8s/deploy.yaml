@@ -22,7 +22,7 @@ spec:
       - name: local
         hostPath: { path: "/data/local/demo-web", type: "DirectoryOrCreate" }
       - name: app-data
-        persistentVolumeClaim: { claimName: "nfs" }
+        persistentVolumeClaim: { claimName: "cp01" }
       containers:
       - name: demo-web
         image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-web:master-0.1.0
@@ -43,11 +43,11 @@ spec:
           valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "metadata.name" } }
         - { name: TZ, value: Asia/Shanghai }
         volumeMounts:
-        - { name: config, mountPath: /home/d2jvkpn/demo-web/configs/ } # not /home/d2jvkpn/demo-web/configs/dev.yaml
+        - { name: config, mountPath: /home/d2jvkpn/demo-web/configs } # not /home/d2jvkpn/demo-web/configs/dev.yaml
         - { name: local, subPathExpr: "logs/$(POD_NAME)", mountPath: "/home/d2jvkpn/demo-web/logs" }
         - { name: "app-data", subPathExpr: "demo-web/data/$(POD_NAME)", mountPath: "/home/d2jvkpn/demo-web/data" }
         ports:
         - { name: "http", containerPort: 5030, protocol: "TCP" }
         # command: [ tail, -f, /etc/hosts ]
         command: [ "./main" ]
-        args: [ "--addr=:5030", "--release"]
+        args: [ "--addr=:5030", "--release", "--config=configs/dev.yaml"]
