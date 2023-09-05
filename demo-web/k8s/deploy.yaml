@@ -25,7 +25,7 @@ spec:
         persistentVolumeClaim: { claimName: "nfs" }
       containers:
       - name: demo-web
-        image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-web:dev
+        image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-web:master-0.1.0
         # IfNotPresent, Always, Never
         imagePullPolicy: "IfNotPresent"
         #resources:
