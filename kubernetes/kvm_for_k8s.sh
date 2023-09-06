@@ -12,7 +12,7 @@ for vm in ubuntu k8s-cp{01..03} k8s-node{01..03} k8s-ingress01; do
     bash ../kvm/src/virsh_clone.sh $vm
 done
 
-mkdir -p logs configs
+mkdir -p logs configs k8s_data
 
 [ ! -f ansible.cfg ] && \
 cat > ansible.cfg <<EOF
@@ -30,11 +30,11 @@ EOF
 virsh net-dumpxml $KVM_Network |
   awk "/<host.*name='k8s-/{print}" |
   sed "s#^.*name='##; s#ip='##; s#/>##; s#'##g" |
-  awk '{print $2, $1}' > configs/hosts.txt
+  awk '{print $2, $1}' > k8s_data/hosts.txt
 
-[ -s configs/hosts.txt ] || { >&2 echo "vm k8s-xx not found!"; exit 1; }
+[ -s k8s_data/hosts.txt ] || { >&2 echo "vm k8s-xx not found!"; exit 1; }
 
-text=$(awk '{print $2, "ansible_host="$1, "ansible_port=22 ansible_user=ubuntu"}' configs/hosts.txt)
+text=$(awk '{print $2, "ansible_host="$1, "ansible_port=22 ansible_user=ubuntu"}' k8s_data/hosts.txt)
 
 {
     echo "$text"
