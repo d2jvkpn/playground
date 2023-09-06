@@ -3,7 +3,7 @@ module demo-web
 go 1.21.0
 
 require (
-	github.com/d2jvkpn/gotk v0.0.0-20230607124326-189a26bff1fb
+	github.com/d2jvkpn/gotk v0.0.0-20230905023948-41105def6fee
 	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230905023948-41105def6fee
 	github.com/d2jvkpn/gotk/ginx v0.0.0-20230905023948-41105def6fee
 	github.com/gin-gonic/gin v1.9.1

@@ -21,7 +21,7 @@ ADD ./main.go ./go.mod ./go.sum ./project.yaml  ./
 COPY ./internal ./internal
 # COPY ./pkg      ./pkg
 # COPY ./proto    ./proto
-# COPY ./vendor     ./vendor
+COPY ./vendor     ./vendor
 
 # in alpine, date doesn't parse %:z
 RUN go build -o main -ldflags="-w -s ${GO_ldflags}" main.go

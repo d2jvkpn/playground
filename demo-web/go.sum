@@ -58,8 +58,8 @@ github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDk
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20200629203442-efcf912fb354/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
-github.com/d2jvkpn/gotk v0.0.0-20230607124326-189a26bff1fb h1:h/IkF7Nakem5SgxfK0SO3akgXtU0Bbh5OOBPrj/T0IE=
-github.com/d2jvkpn/gotk v0.0.0-20230607124326-189a26bff1fb/go.mod h1:Y8Ep8EIDfUPP8SLYIBbPrgfUFRJYYOL14pNTQrqF+gQ=
+github.com/d2jvkpn/gotk v0.0.0-20230905023948-41105def6fee h1:T2kqsp9A5jZ0ZIL9cJkj1ynEZApuPiNsDM3ic9Ttp/E=
+github.com/d2jvkpn/gotk v0.0.0-20230905023948-41105def6fee/go.mod h1:1vgyq4QEu/hUeuybnE7Lb93Qpd2QxCgwhfT+BMpE7+o=
 github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230905023948-41105def6fee h1:CkcRDUW+FNJ1qTUhgu8Dsd2oxzrWfGHfAVla76wuThU=
 github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230905023948-41105def6fee/go.mod h1:qZRoemwvy1V8sznrtYsvKp4abeRE7BTLOD3SeCw+p6M=
 github.com/d2jvkpn/gotk/ginx v0.0.0-20230905023948-41105def6fee h1:YUNhi3hnGwqZMyQ8aQZCnUHOohL2i79gn5FR4AOXWuA=
