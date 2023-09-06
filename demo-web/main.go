@@ -69,7 +69,7 @@ func main() {
 	settings.Meta["config"] = config
 	settings.Meta["address"] = addr
 	settings.Meta["release"] = release
-	settings.Meta["startupTime"] = time.Now().Format(time.RFC3339)
+	settings.Meta["startup_time"] = time.Now().Format(time.RFC3339)
 
 	// logger.Info("Hello", "world", 42, "key", "value")
 
