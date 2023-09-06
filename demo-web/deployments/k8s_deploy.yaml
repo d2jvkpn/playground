@@ -46,7 +46,7 @@ spec:
         volumeMounts:
         - { name: config, mountPath: /home/d2jvkpn/demo-web/configs } # not /home/d2jvkpn/demo-web/configs/dev.yaml
         - { name: logs, subPathExpr: "demo-web/$(POD_NAME)", mountPath: "/home/d2jvkpn/demo-web/logs" }
-        - { name: "data", subPathExpr: "demo-web/data/$(POD_NAME)", mountPath: "/home/d2jvkpn/demo-web/data" }
+        - { name: "data", subPathExpr: "demo-web/$(POD_NAME)", mountPath: "/home/d2jvkpn/demo-web/data" }
         ports:
         - { name: "http", containerPort: 5030, protocol: "TCP" }
         # command: [ tail, -f, /etc/hosts ]
