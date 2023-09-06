@@ -5,7 +5,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 ####
 pod_subnet=${pod_subnet:-10.244.0.0/16}
-# cp_node=k8scp01
+# cp_node=k8s-cp01
 cp_node=$1
 # cp_ip=$(hostname -I | awk '{print $1}')
 cp_ip=$2

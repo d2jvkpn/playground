@@ -98,7 +98,7 @@ ansible k8s_cps[0] -m shell -a 'kubectl get ep --all-namespaces'
 
 ansible k8s_cps[0] -m shell -a 'kubectl get pods --all-namespaces -o wide'
 ansible k8s_cps[0] -m shell -a 'kubectl get componentstatuses'
-ansible k8s_cps[0] -m shell -a 'kubectl describe node/k8scp01'
+ansible k8s_cps[0] -m shell -a 'kubectl describe node/k8s-cp01'
 ```
 
 #### 8. Upgrade nodes
