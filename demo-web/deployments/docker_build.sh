@@ -18,7 +18,7 @@ REGION=$(printenv REGION || true)
 
 #### git
 function on_exit {
-    [ ! -z $(git branch -a | awk '$1=="dev"{print 1; exit}') ] && git checkout dev # --force
+    # git checkout dev # --force
 }
 trap on_exit EXIT
 
