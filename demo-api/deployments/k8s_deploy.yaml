@@ -21,7 +21,7 @@ spec:
         configMap: { name: demo-api }
       - name: local
         hostPath: { path: "/data/local", type: "DirectoryOrCreate" }
-      - name: pvc-nfs
+      - name: pvc
         persistentVolumeClaim: { claimName: "cp01" }
       containers:
       - name: demo-api
@@ -47,7 +47,7 @@ spec:
         # not /home/d2jvkpn/demo-api/configs/dev.yaml
         - { name: config, mountPath: /home/d2jvkpn/demo-api/configs }
         - { name: local, subPathExpr: "$(POD_NAME)/logs", mountPath: "/home/d2jvkpn/demo-api/logs" }
-        - { name: pvc-nfs, subPathExpr: "$(POD_NAME)/data", mountPath: "/home/d2jvkpn/demo-api/data" }
+        - { name: pvc, subPathExpr: "$(POD_NAME)/data", mountPath: "/home/d2jvkpn/demo-api/data" }
         ports:
         - { name: "http", containerPort: 5030, protocol: "TCP" }
         # command: [ tail, -f, /etc/hosts ]
