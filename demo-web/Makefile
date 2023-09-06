@@ -22,14 +22,12 @@ build:
 	go build -o target/main -ldflags="-X main.build_time=$(build_time) \
 	  -X main.git_branch=$(git_branch) -X main.git_commit_id=unknown" main.go
 
-docker-build:
-	# env: GIT_Pull=false DOCKER_Pull=false REGION=cn
-	GIT_Pull=false DOCKER_Pull=false REGION=cn bash deployments/docker-build.sh master
+docker_build:
+	GIT_Pull=false DOCKER_Pull=false REGION=cn bash deployments/docker_build.sh master
 
-docker-build_remote:
-	# env: GIT_Pull=false DOCKER_Pull=false REGION=cn
+docker_build_remote:
 	ssh -F configs/ssh.conf build_host \
-	  "cd docker_build/playground/demo-web && git pull && bash deployments/docker-build.sh master"
+	  "cd docker_build/playground/demo-web && git pull && bash deployments/docker_build.sh master"
 
 #### database
 create-db:
