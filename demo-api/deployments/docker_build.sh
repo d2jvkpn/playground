@@ -69,7 +69,7 @@ docker build --no-cache --file ${_path}/Dockerfile \
   --build-arg=GO_ldflags="$GO_ldflags" \
   --tag $image:$tag ./
 
-docker image prune --force --filter label=stage=${app}_builder &> /dev/null
+docker image prune --force --filter label=stage=${app_name}_builder &> /dev/null
 
 #### push image
 echo ">>> push image: $image:$tag..."
