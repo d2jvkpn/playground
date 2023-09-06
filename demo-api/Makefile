@@ -23,7 +23,7 @@ build:
 	  -X main.git_branch=$(git_branch) -X main.git_commit_id=unknown" main.go
 
 build_local:
-	GIT_Pull=false DOCKER_Region=cn DOCKER_Pull=false DOCKER_Tag=dev \
+	GIT_Pull=false BUILD_Region=cn DOCKER_Pull=false DOCKER_Tag=dev \
 	  bash deployments/docker_build.sh master
 
 build_remote:

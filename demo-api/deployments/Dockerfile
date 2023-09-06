@@ -1,15 +1,15 @@
 FROM golang:1-alpine AS builder
 
-ARG DOCKER_Region=${DOCKER_Region}
+ARG BUILD_Region=${BUILD_Region}
 ARG GO_ldflags=${GO_ldflags}
 ARG APP_Name=${APP_Name}
 ARG APP_Version=${APP_Version}
-ENV TZ="Asia/Shanghai"
+ENV TZ=${TZ:-Asia/Shanghai}
 
 LABEL stage=${APP_Name}_builder
 
-RUN if [ "$DOCKER_Region" = "cn" ]; then \
-    echo "==> DOCKER_Region: $DOCKER_Region"; \
+RUN if [ "$BUILD_Region" = "cn" ]; then \
+    echo "==> BUILD_Region: $BUILD_Region"; \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
     go env -w GOPROXY="https://goproxy.cn,direct"; \
   fi
@@ -30,13 +30,13 @@ RUN go build -o main -ldflags="-w -s ${GO_ldflags}" main.go
 ####
 FROM alpine
 
-ARG DOCKER_Region=${DOCKER_Region}
+ARG BUILD_Region=${BUILD_Region}
 ARG APP_Name=${APP_Name}
 ARG APP_Version=${APP_Version}
-ENV TZ="Asia/Shanghai"
+ENV TZ=${TZ:-Asia/Shanghai}
 
-RUN if [ "$DOCKER_Region" = "cn" ]; then \
-    echo "==> DOCKER_Region: $DOCKER_Region"; \
+RUN if [ "$BUILD_Region" = "cn" ]; then \
+    echo "==> BUILD_Region: $BUILD_Region"; \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
   fi
 
