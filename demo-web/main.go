@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"demo-web/internal"
 	"demo-web/internal/settings"
@@ -68,6 +69,7 @@ func main() {
 	settings.Meta["config"] = config
 	settings.Meta["address"] = addr
 	settings.Meta["release"] = release
+	settings.Meta["startupTime"] = time.Now().Format(time.RFC3339)
 
 	// logger.Info("Hello", "world", 42, "key", "value")
 
