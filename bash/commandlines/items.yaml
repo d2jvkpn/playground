@@ -1,0 +1,8 @@
+names:
+- ip, arp, iptunnel, nameif, route
+- netstat, iftop, iotop
+- ssh, sudo, sftp, scp
+- grep, awk, sed
+- ufw
+- ss
+- mount
