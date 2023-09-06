@@ -3,14 +3,14 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-####
+#### copy demo-web to node k8s-cp01 and create /data/logs on all worker nodes
 ansible k8s-cp01 -m copy -a 'src=../demo-web dest=./'
 ansible k8s_workers -m shell -a 'sudo mkdir -p /data/logs && sudo chmod -R 777 /data/logs'
 
 ssh k8s-cp01
 cd demo-web/k8s
 
-####
+#### deployment
 kubectl config set-context --current --namespace=dev
 # kubectl config view --minify -o jsonpath='{..namespace}'
 kubectl config view | grep namespace
@@ -32,9 +32,31 @@ pod=$(kubectl get pods | awk '/^demo-web-/{print $1; exit}')
 kubectl get pod/$pod -o wide
 kubectl exec -it $pod -- sh
 
-####
+#### services and ingress-http
 kubectl apply -f cluster-ip.yaml
 kubectl apply -f ingress.http.yaml
 
 # curl -H 'Host: demo-web.dev.noreply.local' k8s-ingress01/api/v1/open/hello
 # curl -H 'Host: demo-web.dev.noreply.local' k8s-ingress01/api/v1/open/world
+
+####
+kubectl create secret tls noreply.local --key noreply.local.key --cert noreply.local.cer
+# noreply.local.key domains: *.dev.noreply.local, *.test.noreply.local
+
+kubectl -n prod get secret/noreply.local
+
+#### create secret and ingress-https
+_update_cert="""
+kubectl create secret tls noreply.local \
+  --key noreply.local.key --cert noreply.local.cer -o yaml --dry-run=client |
+  kubectl apply -f -
+"""
+
+_registry_cert="""
+kubectl create secret docker-registry noreply.local \
+  --docker-server=registry.noreply.local --docker-email=EMAIL \
+  --docker-username=USERNAME --docker-password=PASSWORD
+"""
+
+# curl -k -H 'Host: demo-web.dev.noreply.local' https://k8s-ingress01/api/v1/open/hello
+# curl -H 'Host: demo-web.dev.noreply.local' https://k8s-ingress01/api/v1/open/world
