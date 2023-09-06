@@ -19,9 +19,9 @@ spec:
       volumes:
       - name: config
         configMap: { name: demo-web }
-      - name: logs
-        hostPath: { path: "/data/local/logs", type: "DirectoryOrCreate" }
-      - name: data
+      - name: local
+        hostPath: { path: "/data/local", type: "DirectoryOrCreate" }
+      - name: pvc-nfs
         persistentVolumeClaim: { claimName: "cp01" }
       containers:
       - name: demo-web
@@ -45,8 +45,8 @@ spec:
         - { name: TZ, value: Asia/Shanghai }
         volumeMounts:
         - { name: config, mountPath: /home/d2jvkpn/demo-web/configs } # not /home/d2jvkpn/demo-web/configs/dev.yaml
-        - { name: logs, subPathExpr: "demo-web/$(POD_NAME)", mountPath: "/home/d2jvkpn/demo-web/logs" }
-        - { name: "data", subPathExpr: "demo-web/$(POD_NAME)", mountPath: "/home/d2jvkpn/demo-web/data" }
+        - { name: local, subPathExpr: "$(POD_NAME)/logs", mountPath: "/home/d2jvkpn/demo-web/logs" }
+        - { name: vc-nfs, subPathExpr: "$(POD_NAME)/data", mountPath: "/home/d2jvkpn/demo-web/data" }
         ports:
         - { name: "http", containerPort: 5030, protocol: "TCP" }
         # command: [ tail, -f, /etc/hosts ]
