@@ -9,6 +9,7 @@ git_branch=$1
 app=$(yq .app project.yaml)
 image=$(yq .image project.yaml)
 tag=${git_branch}-$(yq .version project.yaml)
+tag=${DOCKER_Tag:-$tag}
 
 # env variables
 GIT_Pull=$(printenv GIT_Pull || true)

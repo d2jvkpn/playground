@@ -25,7 +25,8 @@ spec:
         persistentVolumeClaim: { claimName: "cp01" }
       containers:
       - name: demo-web
-        image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-web:master-0.1.0
+        # image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-web:master-0.1.0
+        image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-web:dev
         # IfNotPresent, Always, Never
         imagePullPolicy: "IfNotPresent"
         #resources:
