@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"demo-web/internal/settings"
+
 	"go.uber.org/zap"
 )
 
