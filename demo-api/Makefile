@@ -23,7 +23,8 @@ build:
 	  -X main.git_branch=$(git_branch) -X main.git_commit_id=unknown" main.go
 
 build_local:
-	GIT_Pull=false REGION=cn DOCKER_Pull=false DOCKER_Tag=dev bash deployments/docker_build.sh master
+	GIT_Pull=false DOCKER_Region=cn DOCKER_Pull=false DOCKER_Tag=dev \
+	  bash deployments/docker_build.sh master
 
 build_remote:
 	ssh -F configs/ssh.conf build_host "cd docker_build/playground/demo-api && \
