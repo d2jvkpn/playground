@@ -5,6 +5,8 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 ####
 ansible k8s-cp01 -m copy -a 'src=../demo-web dest=./'
+ansible k8s_workers -m shell -a 'sudo mkdir -p /data/logs && sudo chmod -R 777 /data/logs'
+
 ssh k8s-cp01
 
 cd demo-web/k8s
@@ -18,9 +20,13 @@ kubectl config view | grep namespace
 kubectl create configmap demo-web --from-file=dev.yaml
 
 kubectl apply -f deploy.yaml
-kubectl get pods | awk '/^demo-web-/{print "pod/"$1; exit}' | xargs -i kubectl describe {}
+kubectl get pods | awk '/^demo-web-/{print $1; exit}' | xargs -i kubectl describe pod/{}
 
 kubectl get deploy/demo-web
 kubectl describe deploy/demo-web
 
 kubectl scale --replicas=2 deploy/demo-web
+
+pod=$(kubectl get pods | awk '/^demo-web-/{print $1; exit}')
+kubectl get pod/$pod -o wide
+kubectl exec -it $pod -- sh
