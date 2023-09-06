@@ -30,3 +30,6 @@ kubectl scale --replicas=2 deploy/demo-web
 pod=$(kubectl get pods | awk '/^demo-web-/{print $1; exit}')
 kubectl get pod/$pod -o wide
 kubectl exec -it $pod -- sh
+
+####
+
