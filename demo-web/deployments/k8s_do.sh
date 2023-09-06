@@ -6,8 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 #### copy demo-web to node k8s-cp01 and create /data/logs on all worker nodes
 ansible k8s-cp01 -m copy -a 'src=../demo-web dest=./'
 
-ansible k8s_workers -m shell -a \
-  'sudo mkdir -p /data/local/logs && sudo chmod -R 777 /data/local/logs'
+ansible k8s_workers -m shell -a 'sudo mkdir -p /data/local && sudo chmod -R 777 /data/local'
 
 ssh k8s-cp01
 cd demo-web
