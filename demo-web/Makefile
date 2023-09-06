@@ -24,12 +24,12 @@ build:
 
 docker-build:
 	# env: GIT_Pull=false DOCKER_Pull=false REGION=cn
-	GIT_Pull=false DOCKER_Pull=false REGION=cn bash deployments/docker_build.sh master
+	GIT_Pull=false DOCKER_Pull=false REGION=cn bash deployments/docker-build.sh master
 
 docker-build_remote:
 	# env: GIT_Pull=false DOCKER_Pull=false REGION=cn
 	ssh -F configs/ssh.conf build_host \
-	  "cd docker_build/playground/demo-web && git pull && bash deployments/docker_build.sh master"
+	  "cd docker_build/playground/demo-web && git pull && bash deployments/docker-build.sh master"
 
 #### database
 create-db:
