@@ -19,10 +19,10 @@ spec:
       volumes:
       - name: config
         configMap: { name: demo-web }
+      - name: logs
+        hostPath: { path: "/data/logs/demo-web", type: "DirectoryOrCreate" }
       - name: app-data
         persistentVolumeClaim: { claimName: "cp01" }
-      # - name: logs
-      #   hostPath: { path: "/data/logs/demo-web", type: "DirectoryOrCreate" }
       containers:
       - name: demo-web
         image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-web:master-0.1.0
@@ -44,8 +44,8 @@ spec:
         - { name: TZ, value: Asia/Shanghai }
         volumeMounts:
         - { name: config, mountPath: /home/d2jvkpn/demo-web/configs } # not /home/d2jvkpn/demo-web/configs/dev.yaml
-        - { name: "app-data", subPathExpr: "demo-web/data/$(POD_NAME)", mountPath: "/home/d2jvkpn/demo-web/data" }
-        # - { name: logs, subPathExpr: "$(POD_NAME)", mountPath: "/home/d2jvkpn/demo-web/logs" }
+        - { name: logs, subPathExpr: "$(POD_NAME)", mountPath: "/home/d2jvkpn/demo-web/logs" }
+        # - { name: "app-data", subPathExpr: "demo-web/data/$(POD_NAME)", mountPath: "/home/d2jvkpn/demo-web/data" }
         ports:
         - { name: "http", containerPort: 5030, protocol: "TCP" }
         # command: [ tail, -f, /etc/hosts ]

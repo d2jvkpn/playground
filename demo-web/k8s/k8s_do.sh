@@ -3,15 +3,20 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-kubectl config set-context --current --namespace=dev
+####
+ansible k8s-cp01 -m copy -a 'src=../demo-web dest=./'
+ssh k8s-cp01
 
-sudo mkdir -p /data/local/demo-web
-sudo chmod -R 777 /data/local
+cd demo-web/k8s
+
+####
+kubectl config set-context --current --namespace=dev
 
 # kubectl -n dev create configmap demo-web --from-file=dev.yaml
 kubectl create configmap demo-web --from-file=dev.yaml
 
 kubectl apply -f deploy.yaml
+kubectl get pods | awk '/^demo-web-/{print "pod/"$1; exit}' | xargs -i kubectl describe {}
 
 kubectl get deploy/demo-web
 
