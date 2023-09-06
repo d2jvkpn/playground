@@ -5,8 +5,10 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 # sudo apt update && apt -y upgrade && apt install -y nfs-kernel-server nfs-common
 
-# name=k8s-cp01; cap=10Gi
-name=$1; cap=$2
+# name=cp01 # k8s node name
+name=$1
+# cap=10Gi
+cap=$2
 node_ip=$(ip route show default | awk '/default/ {print $9}')
 
 mkdir -p k8s_data
@@ -18,7 +20,7 @@ mkdir -p $nfs
 chmod 1777 /data/nfs
 
 record="$nfs *(rw,sync,no_root_squash,subtree_check)"
-[ -z "$(grep "^$record$" /etc/exports)" ]  | sudo tee -a /etc/exports
+[ -z "$(grep "^$record$" /etc/exports)" ] && echo "$record" | sudo tee -a /etc/exports
 
 sudo exportfs -ra
 sudo showmount -e $name
