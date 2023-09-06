@@ -27,7 +27,7 @@ docker_build_local:
 
 docker_build_remote:
 	ssh -F configs/ssh.conf build_host \
-	  "cd docker_build/playground/demo-web && git pull && bash deployments/docker_build.sh master"
+	  "cd docker_build/playground/demo-web && git pull && DOCKER_Tag=dev bash deployments/docker_build.sh master"
 
 #### database
 create-db:
