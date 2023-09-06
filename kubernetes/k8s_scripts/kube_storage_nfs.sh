@@ -5,8 +5,10 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 # sudo apt update && apt -y upgrade && apt install -y nfs-kernel-server nfs-common
 
-# name=k8scp01; cap=10Gi
+# name=k8s-cp01; cap=10Gi
 name=$1; cap=$2
+node_ip=$(ip route show default | awk '/default/ {print $9}')
+
 mkdir -p k8s_data
 
 #### 1. NFS
@@ -40,7 +42,8 @@ spec:
   capacity: { storage: $cap }
   accessModes: [ ReadWriteMany ]
   persistentVolumeReclaimPolicy: Retain
-  nfs: { path: /data/nfs/$name, server: $name, readOnly: false }
+  # nfs: { path: /data/nfs/$name, server: $name, readOnly: false }
+  nfs: { path: /data/nfs/$name, server: $node_ip, readOnly: false }
 EOF
 
 kubectl apply -f k8s_data/pv_$name.yaml
