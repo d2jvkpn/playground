@@ -32,14 +32,14 @@ pod=$(kubectl get pods | awk '/^demo-web-/{print $1; exit}')
 kubectl get pod/$pod -o wide
 kubectl exec -it $pod -- sh
 
-#### services and ingress-http
+#### services and ingress http
 kubectl apply -f deployments/k8s_cluster-ip.yaml
-kubectl apply -f deployments/ingress.http.yaml
+kubectl apply -f deployments/ingress_http.yaml
 
 # curl -H 'Host: demo-web.dev.noreply.local' k8s-ingress01/api/v1/open/hello
 # curl -H 'Host: demo-web.dev.noreply.local' k8s-ingress01/api/v1/open/world
 
-####
+#### ingress tls(https)
 kubectl create secret tls noreply.local --key noreply.local.key --cert noreply.local.cer
 # noreply.local.key domains: *.dev.noreply.local, *.test.noreply.local
 
@@ -53,6 +53,8 @@ kubectl create secret tls noreply.local \
 kubectl create secret docker-registry noreply.local \
   --docker-server=registry.noreply.local --docker-email=EMAIL \
   --docker-username=USERNAME --docker-password=PASSWORD
+
+kubectl apply -f deployments/ingress_tls.yaml
 
 # curl -k -H 'Host: demo-web.dev.noreply.local' https://k8s-ingress01/api/v1/open/hello
 # curl -H 'Host: demo-web.dev.noreply.local' https://k8s-ingress01/api/v1/open/world
