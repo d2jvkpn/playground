@@ -1,7 +1,7 @@
 app: demo-api
+version: 0.1.0
 repository: https://github.com/d2jvkpn/playground
 image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api
-version: 0.1.0
 
 # configs/{{.APP_ENV}}.yaml
 config: |
