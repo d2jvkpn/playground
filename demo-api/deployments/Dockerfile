@@ -2,10 +2,11 @@ FROM golang:1-alpine AS builder
 
 ARG DOCKER_Region=${DOCKER_Region}
 ARG GO_ldflags=${GO_ldflags}
-ARG APP=${APP}
+ARG APP_Name=${APP_Name}
+ARG APP_Version=${APP_Version}
 ENV TZ="Asia/Shanghai"
 
-LABEL stage=${APP}_builder
+LABEL stage=${APP_Name}_builder
 
 RUN if [ "$DOCKER_Region" = "cn" ]; then \
     echo "==> DOCKER_Region: $DOCKER_Region"; \
@@ -15,7 +16,7 @@ RUN if [ "$DOCKER_Region" = "cn" ]; then \
 
 RUN { apk --no-cache update && apk --no-cache upgrade; } &> /dev/null
 
-WORKDIR /opt/$APP
+WORKDIR /opt/$APP_Name
 
 ADD ./main.go ./go.mod ./go.sum ./project.yaml  ./
 COPY ./internal ./internal
@@ -30,7 +31,8 @@ RUN go build -o main -ldflags="-w -s ${GO_ldflags}" main.go
 FROM alpine
 
 ARG DOCKER_Region=${DOCKER_Region}
-ARG APP=${APP}
+ARG APP_Name=${APP_Name}
+ARG APP_Version=${APP_Version}
 ENV TZ="Asia/Shanghai"
 
 RUN if [ "$DOCKER_Region" = "cn" ]; then \
@@ -42,9 +44,9 @@ RUN { apk --no-cache update && apk --no-cache upgrade && apk --no-cache add tzda
 
 RUN adduser -D -u 1000 d2jvkpn
 USER d2jvkpn
-WORKDIR /home/d2jvkpn/$APP
+WORKDIR /home/d2jvkpn/$APP_Name
 
-COPY --from=builder /opt/$APP/main ./main
+COPY --from=builder /opt/$APP_Name/main ./main
 # COPY ./migrations ./migrations
 
 EXPOSE 5030

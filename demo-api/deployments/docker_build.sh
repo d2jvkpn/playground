@@ -5,8 +5,10 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 #### load
 [ $# -eq 0 ] && { >&2 echo "Argument {branch} is required!"; exit 1; }
+
 git_branch=$1
-app=$(yq .app project.yaml)
+app_name=$(yq .app project.yaml)
+app_version=$(yq .version project.yaml)
 image=$(yq .image project.yaml)
 tag=${git_branch}-$(yq .version project.yaml)
 tag=${DOCKER_Tag:-$tag}
@@ -62,7 +64,8 @@ GO_ldflags="-X main.build_time=$build_time \
 
 docker build --no-cache --file ${_path}/Dockerfile \
   --build-arg=DOCKER_Region="$DOCKER_Region" \
-  --build-arg=APP="$app" \
+  --build-arg=APP_Name="$app_name" \
+  --build-arg=APP_Version="$app_version" \
   --build-arg=GO_ldflags="$GO_ldflags" \
   --tag $image:$tag ./
 
