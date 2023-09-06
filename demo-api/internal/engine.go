@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"time"
 
-	"demo-web/internal/services/api"
-	"demo-web/internal/settings"
+	"demo-api/internal/services/api"
+	"demo-api/internal/settings"
 
 	"github.com/d2jvkpn/gotk"
 	"github.com/d2jvkpn/gotk/ginx"

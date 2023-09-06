@@ -26,8 +26,8 @@ build_local:
 	GIT_Pull=false REGION=cn DOCKER_Pull=false DOCKER_Tag=dev bash deployments/docker_build.sh master
 
 build_remote:
-	ssh -F configs/ssh.conf build_host \
-	  "cd docker_build/playground/demo-web && git pull && DOCKER_Tag=dev bash deployments/docker_build.sh master"
+	ssh -F configs/ssh.conf build_host "cd docker_build/playground/demo-api && \
+	  git pull && DOCKER_Tag=dev bash deployments/docker_build.sh master"
 
 #### database
 create-db:

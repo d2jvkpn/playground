@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"demo-web/internal/settings"
+	"demo-api/internal/settings"
 
 	"go.uber.org/zap"
 )

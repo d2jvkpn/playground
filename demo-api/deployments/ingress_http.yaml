@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: dev
-  name: demo-web
+  name: demo-api
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /
@@ -14,10 +14,10 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: demo-web.dev.noreply.local
+  - host: demo-api.dev.noreply.local
     http:
       paths:
       - pathType: Prefix
         path: /
         backend:
-          service: { name: demo-web, port: { number: 5030 } }
+          service: { name: demo-api, port: { number: 5030 } }

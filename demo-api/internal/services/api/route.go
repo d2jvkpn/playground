@@ -4,7 +4,7 @@ import (
 	// "fmt"
 	"net/http"
 
-	"demo-web/internal/settings"
+	"demo-api/internal/settings"
 
 	"github.com/gin-gonic/gin"
 )

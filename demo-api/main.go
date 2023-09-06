@@ -10,8 +10,8 @@ import (
 	"syscall"
 	"time"
 
-	"demo-web/internal"
-	"demo-web/internal/settings"
+	"demo-api/internal"
+	"demo-api/internal/settings"
 
 	"github.com/d2jvkpn/gotk"
 )

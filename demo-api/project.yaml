@@ -1,11 +1,11 @@
-app: demo-web
+app: demo-api
 repository: https://github.com/d2jvkpn/playground
-image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-web
+image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api
 version: 0.1.0
 
 # configs/{{.APP_ENV}}.yaml
 config: |
-  service_name: demo-web
+  service_name: demo-api
   #
   hello:
     world: 52

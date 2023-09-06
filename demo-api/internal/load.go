@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"demo-web/internal/settings"
+	"demo-api/internal/settings"
 
 	"github.com/d2jvkpn/gotk/cloud-logging"
 	"github.com/gin-gonic/gin"

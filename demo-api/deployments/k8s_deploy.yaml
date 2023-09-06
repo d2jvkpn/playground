@@ -2,31 +2,31 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: dev
-  name: demo-web
-  labels: { app: "demo-web" }
+  name: demo-api
+  labels: { app: "demo-api" }
 spec:
   replicas: 3
   selector:
-    matchLabels: { app: "demo-web" }
+    matchLabels: { app: "demo-api" }
   strategy:
     rollingUpdate: { maxSurge: 1, maxUnavailable: 0 }
     type: RollingUpdate
   template:
     metadata:
-      labels: { app: "demo-web" }
+      labels: { app: "demo-api" }
     spec:
       restartPolicy: Always
       volumes:
       - name: config
-        configMap: { name: demo-web }
+        configMap: { name: demo-api }
       - name: local
         hostPath: { path: "/data/local", type: "DirectoryOrCreate" }
       - name: pvc-nfs
         persistentVolumeClaim: { claimName: "cp01" }
       containers:
-      - name: demo-web
-        # image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-web:master-0.1.0
-        image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-web:dev
+      - name: demo-api
+        # image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:master-0.1.0
+        image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:dev
         # IfNotPresent, Always, Never
         imagePullPolicy: "Always"
         #resources:
@@ -44,9 +44,10 @@ spec:
           valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "metadata.name" } }
         - { name: TZ, value: Asia/Shanghai }
         volumeMounts:
-        - { name: config, mountPath: /home/d2jvkpn/demo-web/configs } # not /home/d2jvkpn/demo-web/configs/dev.yaml
-        - { name: local, subPathExpr: "$(POD_NAME)/logs", mountPath: "/home/d2jvkpn/demo-web/logs" }
-        - { name: pvc-nfs, subPathExpr: "$(POD_NAME)/data", mountPath: "/home/d2jvkpn/demo-web/data" }
+        # not /home/d2jvkpn/demo-api/configs/dev.yaml
+        - { name: config, mountPath: /home/d2jvkpn/demo-api/configs }
+        - { name: local, subPathExpr: "$(POD_NAME)/logs", mountPath: "/home/d2jvkpn/demo-api/logs" }
+        - { name: pvc-nfs, subPathExpr: "$(POD_NAME)/data", mountPath: "/home/d2jvkpn/demo-api/data" }
         ports:
         - { name: "http", containerPort: 5030, protocol: "TCP" }
         # command: [ tail, -f, /etc/hosts ]

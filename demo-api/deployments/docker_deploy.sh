@@ -3,7 +3,7 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-name=demo-web
+name=demo-api
 mkdir -p configs logs data
 
 export TAG=$1 APP_ENV=$2 PORT=$3
