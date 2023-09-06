@@ -21,7 +21,7 @@ chmod 1777 /data/nfs
 
 record="$nfs *(rw,sync,no_root_squash,subtree_check)"
 
-[ -z "$(grep "^$record$" /etc/exports)" ] &&
+[ -z "$(grep "^$nfs " /etc/exports)" ] &&
   echo "$record" | sudo tee -a /etc/exports
 
 sudo exportfs -ra

@@ -20,7 +20,7 @@ kubectl config view | grep namespace
 # kubectl -n dev create configmap demo-web --from-file=deployments/dev.yaml
 kubectl create configmap demo-web --from-file=deployments/dev.yaml
 
-kubectl apply -f deployments/deploy.yaml
+kubectl apply -f deployments/k8s_deploy.yaml
 kubectl get pods | awk '/^demo-web-/{print $1; exit}' | xargs -i kubectl describe pod/{}
 
 kubectl get pods | awk 'NR>1{print $1}' | xargs -i kubectl logs pod/{}
