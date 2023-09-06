@@ -5,7 +5,7 @@ metadata:
   name: demo-web
 spec:
   type: ClusterIP
-  clusterIP: 10.107.98.176
+  # clusterIP: 10.107.98.176
   selector: { app: demo-web }
   ports:
   - { name: demo-web, protocol: TCP, port: 5030, targetPort: 5030 }
