@@ -1,2 +1,4 @@
+service_name: demo-api
+
 hello:
   world: 42
