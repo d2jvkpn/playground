@@ -17,8 +17,10 @@ DOCKER_Pull=$(printenv DOCKER_Pull || true)
 REGION=$(printenv REGION || true)
 
 #### git
-function on_exit {
-    # git checkout dev # --force
+function on_exit() {
+    if [ ! -z $(git branch -a | awk '$1=="dev"{print 1; exit}') ]; then
+        git checkout dev # --force
+    fi
 }
 trap on_exit EXIT
 
