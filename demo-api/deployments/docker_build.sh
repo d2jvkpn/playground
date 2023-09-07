@@ -7,11 +7,13 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 [ $# -eq 0 ] && { >&2 echo "Argument {branch} is required!"; exit 1; }
 
 git_branch=$1
+
 app_name=$(yq .app project.yaml)
 app_version=$(yq .version project.yaml)
 image=$(yq .image project.yaml)
 tag=${git_branch}-$(yq .version project.yaml)
 tag=${DOCKER_Tag:-$tag}
+build_time=$(date +'%FT%T%:z')
 
 # env variables
 GIT_Pull=$(printenv GIT_Pull || true)
@@ -32,7 +34,6 @@ if [[ "$GIT_Pull" != "false" ]]; then
     git pull --no-edit
 fi
 
-build_time=$(date +'%FT%T%:z')
 git_branch="$(git rev-parse --abbrev-ref HEAD)" # current branch
 git_commit_id=$(git rev-parse --verify HEAD) # git log --pretty=format:'%h' -n 1
 git_commit_time=$(git log -1 --format="%at" | xargs -I{} date -d @{} +%FT%T%:z)
@@ -40,7 +41,9 @@ git_tree_state="clean"
 
 uncommitted=$(git status --short)
 unpushed=$(git diff origin/$git_branch..HEAD --name-status)
-[[ ! -z "$uncommitted$unpushed" ]] && git_tree_state="dirty"
+# [[ ! -z "$uncommitted$unpushed" ]] && git_tree_state="dirty"
+[[ ! -z "$uncommitted" ]] && git_tree_state="uncommitted"
+[[ ! -z "$unpushed" ]] && git_tree_state="unpushed"
 
 ####
 echo "==> docker build $image:$tag"
