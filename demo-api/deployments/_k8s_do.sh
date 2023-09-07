@@ -36,7 +36,7 @@ kubectl get pod/$pod -o wide
 
 #### services and ingress http
 kubectl apply -f deployments/k8s_cluster-ip.yaml
-kubectl apply -f deployments/ingress_http.yaml
+kubectl apply -f deployments/k8s_ingress_http.yaml
 
 curl -H 'Host: demo-api.dev.noreply.local' k8s-ingress01/api/v1/open/hello
 curl -H 'Host: demo-api.dev.noreply.local' k8s-ingress01/api/v1/open/meta
@@ -58,7 +58,7 @@ kubectl create secret docker-registry noreply.local \
   --docker-server=registry.noreply.local --docker-email=EMAIL \
   --docker-username=USERNAME --docker-password=PASSWORD
 
-kubectl apply -f deployments/ingress_tls.yaml
+kubectl apply -f deployments/k8s_ingress_tls.yaml
 
 curl -k -H 'Host: demo-api.dev.noreply.local' https://k8s-ingress01/api/v1/open/hello
 curl -H 'Host: demo-api.dev.noreply.local' https://k8s-ingress01/api/v1/open/world
