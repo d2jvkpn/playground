@@ -3,8 +3,8 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-export TAG=$1 APP_ENV=$2 PORT=$3
 app_name=$(yq .app project.yaml)
+export TAG=$1 APP_ENV=$2 PORT=$3 APP_Name=$app_name
 
 mkdir -p configs logs data
 envsubst < ${_path}/docker_deploy.yaml > docker-compose.yaml

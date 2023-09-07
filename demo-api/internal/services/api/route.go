@@ -1,15 +1,16 @@
 package api
 
 import (
-	// "fmt"
+	"fmt"
 	"net/http"
 
 	"demo-api/internal/settings"
 
+	"github.com/d2jvkpn/gotk"
 	"github.com/gin-gonic/gin"
 )
 
-func LoadV1_Open(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
+func Load_OpenV1(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 	open := router.Group("/api/v1/open", handlers...)
 
 	//
@@ -28,4 +29,12 @@ func LoadV1_Open(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 			"code": 0, "msg": "ok", "data": gin.H{"meta": settings.Meta},
 		})
 	})
+}
+
+func Load_Debug(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
+	debug := router.Group("/debug")
+
+	for k, f := range gotk.PprofHandlerFuncs() {
+		debug.GET(fmt.Sprintf("/pprof/%s", k), gin.WrapF(f))
+	}
 }

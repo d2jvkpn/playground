@@ -73,8 +73,11 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 	static := router.Group("/static", ginx.CacheControl(3600))
 	static.StaticFS("/", http.FS(fsys))
 
+	// #### debug apis
+	api.Load_Debug(router)
+
 	// #### biz handlers
-	api.LoadV1_Open(router, settings.ApiLogger("api"))
+	api.Load_OpenV1(router, settings.ApiLogger("api"))
 
 	return engine, nil
 }

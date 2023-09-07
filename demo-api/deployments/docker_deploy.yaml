@@ -2,8 +2,8 @@ version: '3'
 
 services:
   demo-api:
-    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:${TAG}
-    container_name: demo-api_${APP_ENV}
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/${APP_Name}:${TAG}
+    container_name: ${APP_Name}_${APP_ENV}
     restart: always
     # depends_on: ["mongo"]
     networks: ["net"]
@@ -12,13 +12,13 @@ services:
     ports: ["${PORT}:${PORT}"]
     environment: ["TZ=Asia/Shanghai"]
     volumes:
-    - ./configs/:/home/d2jvkpn/demo-api/configs/
-    - ./logs/:/home/d2jvkpn/demo-api/logs/
+    - ./configs/:/home/d2jvkpn/${APP_Name}/configs/
+    - ./logs/:/home/d2jvkpn/${APP_Name}/logs/
     # - ./data/:/home/d2jvkpn/demo-api/data/
     command: ["./main", "--config=configs/prod.yaml", "--addr=:${PORT}"]
 
 networks:
   net:
-    name: demo-api_${APP_ENV}
+    name: ${APP_Name}_${APP_ENV}
     driver: bridge
     external: false
