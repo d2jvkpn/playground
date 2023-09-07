@@ -4,7 +4,7 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 if [ $# -eq 0 ]; then
-    echo "arg(s) not provided" 1>&2
+    >&2 echo "arg(s) not provided"
     exit 1
 elif [ $# -eq 1 ]; then
     arg=$1
@@ -15,7 +15,6 @@ else
     exit 0
 fi
 
-echo "[$(date +%FT%T.%N%:z)] ==> arg: $arg"
+>&2 echo "[$(date +%FT%T.%N%:z)] ==> arg: $arg"
 sleep 0.42
-
 #### more codes...
