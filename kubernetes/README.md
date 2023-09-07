@@ -17,7 +17,7 @@ ansible k8s_all --forks 4 --one-line -m copy -a "src=./k8s_apps dest=./"
 
 ansible k8s_all -m file -a "path=./k8s_data state=directory"
 ansible k8s_all -m copy --become -a "src=./configs/hosts.txt dest=./k8s_data/"
-ansible k8s_all -m shell --become -a "cat ./k8s_data/hosts.txt >> /etc/hosts"
+ansible k8s_all -m shell --become -a "sed '1i \\n# kvm nodes' ./k8s_data/hosts.txt >> /etc/hosts"
 
 # free -m
 # ls /swap.img

@@ -22,7 +22,7 @@ echo "==> cp_ip: $cp_ip, cp_node: $cp_node, cp_endpoint: $cp_endpoint, pod_subne
 
 record="$cp_ip $cp_node"
 if [[ -z "$(grep "^$record$" /etc/hosts)" ]]; then
-    echo -e "\n$record" | sudo tee -a /etc/hosts
+    echo -e "\n# k8s nodes\n$record" | sudo tee -a /etc/hosts
 fi
 
 ####
