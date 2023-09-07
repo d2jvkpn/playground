@@ -43,7 +43,7 @@ func Run(addr string) (errch chan error, err error) {
 	errch = make(chan error, 2)
 	once = new(sync.Once)
 
-	_Logger.Info("service is starting", zap.Any("meta", settings.Meta))
+	_Logger.Info("service_start", zap.Any("meta", settings.Meta))
 	go func() {
 		if err := _Server.Serve(listener); err != http.ErrServerClosed {
 			shutdown()
@@ -62,7 +62,7 @@ func Run(addr string) (errch chan error, err error) {
 }
 
 func onExit() (err error) {
-	_Logger.Info("service is shutting down")
+	_Logger.Info("service_shutdown")
 
 	if settings.Logger != nil {
 		err = errors.Join(err, settings.Logger.Down())

@@ -30,7 +30,9 @@ func ApiLogger(name string) gin.HandlerFunc {
 		}
 
 		push(zap.String("ip", ctx.ClientIP()))
-		push(zap.String("query", ctx.Request.URL.RawQuery))
+		if ctx.Request.URL.RawQuery != "" {
+			push(zap.String("query", ctx.Request.URL.RawQuery))
+		}
 
 		statusCode = ctx.Writer.Status()
 		latency := fmt.Sprintf("%.3fs", float64(time.Since(start).Microseconds())/1e3)
