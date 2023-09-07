@@ -46,7 +46,7 @@ node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys 
 cp_node=${node#k8s-}
 cp_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$node.ansible_host")
 
-ansible $node -m shell -a "sudo bash k8s_scripts/k8s_node_control-plane.sh $cp_node $cp_ip"
+ansible $node -m shell -a "sudo bash k8s_scripts/k8s_node_cp.sh $cp_node $cp_ip"
 # ansible $node -m shell -a "sudo kubeadm reset -f"
 
 ansible $node --one-line -m fetch -a "flat=true src=k8s_data/kubeadm-init.yaml dest=k8s_data/"
@@ -109,13 +109,13 @@ version=1.28.x
 
 # control-plane
 for node in $(ansible k8s_cps --list-hosts | sed '1d'); do
-    ansible $node -m shell -a "sudo bash k8s_scripts/k8s_upgrade_control-plane.sh $version $node"
+    ansible $node -m shell -a "sudo bash k8s_scripts/k8s_upgrade_cp.sh $version $node"
 done
 
 # workers
 for node in $(ansible workers --list-hosts | sed '1d'); do
-    ansible k8s_cps[0] -m shell -a "sudo bash k8s_scripts/k8s_upgrade_workers.sh $version $node 1"
-    ansible $node -m shell -a "sudo bash k8s_scripts/k8s_upgrade_workers.sh $version $node 2"
-    ansible k8s_cps[0] -m shell -a "sudo bash k8s_scripts/k8s_upgrade_workers.sh $version $node 3"
+    ansible k8s_cps[0] -m shell -a "sudo bash k8s_scripts/k8s_upgrade_worker.sh $version $node 1"
+    ansible $node -m shell -a "sudo bash k8s_scripts/k8s_upgrade_worker.sh $version $node 2"
+    ansible k8s_cps[0] -m shell -a "sudo bash k8s_scripts/k8s_upgrade_worker.sh $version $node 3"
 done
 ```

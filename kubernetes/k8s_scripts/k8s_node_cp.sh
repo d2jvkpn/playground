@@ -3,7 +3,7 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-####
+#### control-plane
 pod_subnet=${pod_subnet:-10.244.0.0/16}
 # cp_node=k8s-cp01
 cp_node=$1
