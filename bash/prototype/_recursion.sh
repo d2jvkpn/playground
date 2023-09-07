@@ -21,3 +21,7 @@ fi
 sleep 0.42
 
 #### more codes...
+
+exit 0
+
+Hello, world!

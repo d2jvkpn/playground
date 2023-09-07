@@ -20,26 +20,28 @@ kubectl config view | grep namespace
 kubectl create configmap demo-api --from-file=deployments/dev.yaml
 
 kubectl apply -f deployments/k8s_deploy.yaml
-kubectl get pods | awk '/^demo-api-/{print $1; exit}' | xargs -i kubectl describe pod/{}
-# kubectl rollout restart deploy/demo-api
-
-kubectl get pods | awk 'NR>1{print $1}' | xargs -i kubectl logs pod/{}
-
 kubectl get deploy/demo-api
 kubectl describe deploy/demo-api
+
+kubectl get pods -o wide
+kubectl get pods | awk '/^demo-api-/{print $1; exit}' | xargs -i kubectl describe pod/{}
+# kubectl rollout restart deploy/demo-api
+kubectl get pods | awk 'NR>1{print $1}' | xargs -i kubectl logs pod/{}
 
 kubectl scale --replicas=2 deploy/demo-api
 
 pod=$(kubectl get pods | awk '/^demo-api-/{print $1; exit}')
 kubectl get pod/$pod -o wide
-kubectl exec -it $pod -- sh
+# kubectl exec -it $pod -- sh
 
 #### services and ingress http
 kubectl apply -f deployments/k8s_cluster-ip.yaml
 kubectl apply -f deployments/ingress_http.yaml
 
-# curl -H 'Host: demo-api.dev.noreply.local' k8s-ingress01/api/v1/open/hello
-# curl -H 'Host: demo-api.dev.noreply.local' k8s-ingress01/api/v1/open/world
+curl -H 'Host: demo-api.dev.noreply.local' k8s-ingress01/api/v1/open/hello
+curl -H 'Host: demo-api.dev.noreply.local' k8s-ingress01/api/v1/open/meta
+
+exit
 
 #### ingress tls(https)
 kubectl create secret tls noreply.local --key noreply.local.key --cert noreply.local.cer
@@ -58,5 +60,5 @@ kubectl create secret docker-registry noreply.local \
 
 kubectl apply -f deployments/ingress_tls.yaml
 
-# curl -k -H 'Host: demo-api.dev.noreply.local' https://k8s-ingress01/api/v1/open/hello
-# curl -H 'Host: demo-api.dev.noreply.local' https://k8s-ingress01/api/v1/open/world
+curl -k -H 'Host: demo-api.dev.noreply.local' https://k8s-ingress01/api/v1/open/hello
+curl -H 'Host: demo-api.dev.noreply.local' https://k8s-ingress01/api/v1/open/world
