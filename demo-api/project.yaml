@@ -5,10 +5,8 @@ image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api
 
 # configs/{{.APP_ENV}}.yaml
 config: |
-  service_name: demo-api
-  #
   hello:
-    world: 52
+    world: 42
   #
   grpc:
     tls: false
