@@ -15,7 +15,7 @@ else
     exit 0
 fi
 
-echo "==> arg: $arg"
+echo "[$(date +%FT%T.%N%:z)] ==> arg: $arg"
 sleep 0.42
 
 #### more codes...
