@@ -39,56 +39,47 @@ ansible k8s_all --forks 4 -m shell -a "sudo bash k8s_scripts/k8s_apps_install.sh
 
 #### 3. Control Panel nodes
 ```bash
-# node=k8s-cp01
-node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
-# node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
-# cp_node=$(echo $node | sed 's/[a-z]*/k8s/')
-cp_node=${node#k8s-}
+# cp_node=k8s-cp01
+cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
+# cp_node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
 cp_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$node.ansible_host")
 
-ansible $node -m shell -a "sudo bash k8s_scripts/k8s_node_cp.sh $cp_node $cp_ip"
-# ansible $node -m shell -a "sudo kubeadm reset -f"
+ansible $cp_node -m shell -a "sudo bash k8s_scripts/k8s_node_cp.sh $cp_ip"
+# ansible $cp_node -m shell -a "sudo kubeadm reset -f"
 
-ansible $node --one-line -m fetch -a "flat=true src=k8s_data/kubeadm-init.yaml dest=k8s_data/"
+ansible $cp_node --one-line -m fetch -a "flat=true src=k8s_data/kubeadm-init.yaml dest=k8s_data/"
 
-ansible $node -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
-# ansible node01 -m shell -a "cat kubeadm-init.out"
+ansible $cp_node -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 ```
 
 #### 4. Worker nodes
 ```bash
 # worker nodes
-ansible k8s_workers --one-line -m copy -a "src=k8s_data/kubeadm-init.yaml dest=./"
-ansible k8s_workers -m shell -a "sudo bash k8s_scripts/k8s_node_join.sh worker"
-ansible k8s_workers -m file -a "path=kubeadm-init.yaml state=absent"
+command=$(bash k8s_scripts/k8s_node_join.sh worker)
+ansible k8s_workers -m shell -a "sudo bash $command"
 
 # other control-plane nodes
-ansible k8s_cps[1:] --one-line -m copy -a "src=k8s_data/kubeadm-init.yaml dest=./"
-ansible k8s_cps[1:] -m shell -a "sudo bash k8s_scripts/k8s_node_join.sh control-plane"
+command=$(bash k8s_scripts/k8s_node_join.sh control-plane)
+ansible k8s_cps[1:] -m shell -a "sudo bash $command"
 ansible k8s_cps[1:] -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
-ansible k8s_cps[1:] -m file -a "path=kubeadm-init.yaml state=absent"
-
-# remove kubeadm-init.yaml
-# ansible k8s_workers,k8s_cps[1:] -m shell -a "rm -f kubeadm-init.yaml"
 ```
 
 #### 5. Apply flannel and ingress-nginx
 ```bash
-node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
+cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
 
 # ingress_node=$(ansible k8s_workers[0] --list-hosts | awk 'NR==2{print $1}')
 ingress_node=k8s-ingress01
 
-ansible $node -m shell -a "sudo bash k8s_scripts/kube_apply_flannel.sh"
-ansible $node -m shell -a "sudo bash k8s_scripts/kube_apply_ingress-nginx.sh $ingress_node"
+ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_flannel.sh"
+ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_ingress-nginx.sh $ingress_node"
 ```
 
 #### 6. Storage
 ```bash
-node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
-cp_node=${node#k8s-}
+cp_node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
 
-ansible $node -m shell -a "sudo bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
+ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
 ```
 
 #### 7. Explore
