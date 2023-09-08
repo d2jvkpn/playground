@@ -4,7 +4,7 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 #### copy demo-api to node k8s-cp01 and create /data/logs on all worker nodes
-ansible k8s-cp01 -m copy -a 'src=../demo-api dest=./'
+ansible k8s-cp01 -m copy -a 'src=../demo-api/deployments dest=./demo-api'
 
 ansible k8s_workers -m shell -a 'sudo mkdir -p /data/local && sudo chmod -R 777 /data/local'
 
