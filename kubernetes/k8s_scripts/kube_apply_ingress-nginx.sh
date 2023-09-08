@@ -12,10 +12,10 @@ node_ip=$(kubectl get node/$ingress_node -o wide | awk 'NR==2{print $6}')
 
 # https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
-kubectl label nodes/$ingress_node node-type=ingress
+kubectl label nodes/$ingress_node --overwrite node-type=ingress
 # kubectl label nodes/$ingress_node node-type-
 
-kubectl taint nodes $ingress_node node-type=ingress:NoSchedule
+kubectl taint nodes $ingress_node --overwrite node-type=ingress:NoSchedule
 # kubectl taint nodes $ingress_node node-type=ingress:NoSchedule-
 
 # kubectl get nodes/$ingress_node -o yaml

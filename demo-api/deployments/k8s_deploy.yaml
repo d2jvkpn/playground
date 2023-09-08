@@ -22,7 +22,7 @@ spec:
       - name: local
         hostPath: { path: "/data/local", type: "DirectoryOrCreate" }
       - name: pvc
-        persistentVolumeClaim: { claimName: "cp01" }
+        persistentVolumeClaim: { claimName: "k8s-cp01" }
       containers:
       - name: demo-api
         # image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:master-0.1.0

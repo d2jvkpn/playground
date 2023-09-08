@@ -3,9 +3,14 @@
 #### 1. Prepare
 ```bash
 # bash k8s_scripts/k8s_apps_downloads.sh
-# ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {}
 
-ansible k8s_all --one-line -m shell -a 'echo "Hello, world!"'
+ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {}
+
+while ! ansible k8s_all --one-line -m shell -a 'echo "Hello, world!"'; do
+    echo -e "." && sleep 1
+done
+echo ""
+
 # ansible k8s_all --one-line -m ping
 # ansible k8s_all[0] --one-line -m ping
 # ansible k8s_all[1:] --one-line -m ping
@@ -13,11 +18,11 @@ ansible k8s_all --one-line -m shell -a 'echo "Hello, world!"'
 # ansible k8s_all[0] --list-hosts
 
 ansible k8s_all --one-line -m copy -a "src=k8s_scripts dest=./"
-ansible k8s_all --forks 4 --one-line -m copy -a "src=./k8s_apps dest=./"
+ansible k8s_all --forks 2 -m copy -a "src=./k8s_apps dest=./"
 
 ansible k8s_all -m file -a "path=./k8s_data state=directory"
 ansible k8s_all -m copy --become -a "src=./configs/hosts.txt dest=./k8s_data/"
-ansible k8s_all -m shell --become -a "sed '1i \\n# kvm nodes' ./k8s_data/hosts.txt >> /etc/hosts"
+ansible k8s_all -m shell --become -a "sed '1i \\\n# kvm nodes' ./k8s_data/hosts.txt >> /etc/hosts"
 
 # free -m
 # ls /swap.img
@@ -27,22 +32,20 @@ ansible k8s_all -m shell -a "sudo swapoff --all && sudo sed -i '/swap/s/^/# /' /
 #### 2. Installation
 ```bash
 version=1.28.1
-ansible k8s_all --forks 4 -m shell -a "sudo bash k8s_scripts/k8s_node_install.sh $version"
-
+ansible k8s_all --forks 2 -m shell -a "sudo bash k8s_scripts/k8s_node_install.sh $version"
 # ?? sysctl: setting key "net.ipv4.conf.all.accept_source_route": Invalid argument
 # ?? sysctl: setting key "net.ipv4.conf.all.promote_secondaries": Invalid argument
 
-ansible k8s_all --forks 4 -m shell -a "sudo bash k8s_scripts/k8s_apps_containerd.sh"
-
-ansible k8s_all --forks 4 -m shell -a "sudo bash k8s_scripts/k8s_apps_install.sh"
+ansible k8s_all --forks 2 -m shell -a "sudo bash k8s_scripts/k8s_apps_containerd.sh"
+ansible k8s_all --forks 2 -m shell -a "sudo bash k8s_scripts/k8s_apps_install.sh"
 ```
 
 #### 3. Control Panel nodes
 ```bash
 # cp_node=k8s-cp01
-cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
 # cp_node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
-cp_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$node.ansible_host")
+cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
+cp_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$cp_node.ansible_host")
 
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/k8s_node_cp.sh $cp_ip"
 # ansible $cp_node -m shell -a "sudo kubeadm reset -f"
@@ -55,20 +58,15 @@ ansible $cp_node -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $US
 #### 4. Worker nodes
 ```bash
 # worker nodes
-command=$(bash k8s_scripts/k8s_node_join.sh worker)
-ansible k8s_workers -m shell -a "sudo bash $command"
+ansible k8s_workers -m shell -a "sudo $(bash k8s_scripts/k8s_node_join.sh worker)"
 
 # other control-plane nodes
-command=$(bash k8s_scripts/k8s_node_join.sh control-plane)
-ansible k8s_cps[1:] -m shell -a "sudo bash $command"
+ansible k8s_cps[1:] -m shell -a "sudo $(bash k8s_scripts/k8s_node_join.sh control-plane)"
 ansible k8s_cps[1:] -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 ```
 
 #### 5. Apply flannel and ingress-nginx
 ```bash
-cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
-
-# ingress_node=$(ansible k8s_workers[0] --list-hosts | awk 'NR==2{print $1}')
 ingress_node=k8s-ingress01
 
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_flannel.sh"
@@ -77,8 +75,6 @@ ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_ingress-nginx.sh 
 
 #### 6. Storage
 ```bash
-cp_node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
-
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
 ```
 
