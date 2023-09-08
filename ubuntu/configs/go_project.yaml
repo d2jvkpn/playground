@@ -1,0 +1,16 @@
+# path: ./project.yaml
+
+app: demo-api
+version: 0.1.0
+repository: https://github.com/d2jvkpn/playground
+image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api
+
+# configs/{{.APP_ENV}}.yaml
+config: |
+  hello:
+    world: 42
+  #
+  tls:
+    enable: false
+    cert: configs/server.pem
+    key: configs/server.key
