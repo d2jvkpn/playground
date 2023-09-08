@@ -16,7 +16,7 @@ version=${version#v}
 mkdir -p k8s_data
 
 ####
-echo "==> cp_ip: $cp_ip, cp_node: $cp_node, cp_endpoint: $cp_endpoint, pod_subnet: $pod_subnet"
+echo "==> cp_endpoint: $cp_endpoint, pod_subnet: $pod_subnet, version: $version"
 
 cat > k8s_data/kubeadm-config.yaml << EOF
 apiVersion: kubeadm.k8s.io/v1beta3
@@ -38,6 +38,9 @@ cert_hash=$(grep -o "\-\-discovery-token-ca-cert-hash [^ ]*" k8s_data/kubeadm-in
 cert_key=$(grep -o "\-\-certificate-key [^ ]*" k8s_data/kubeadm-init.out | awk '{print $2; exit}')
 
 cat > k8s_data/kubeadm-init.yaml <<EOF
+version: $version
+date_time: $(date +'%FT%T.%N%:z')
+pod_subnet: $pod_subnet
 cp_endpoint: $cp_endpoint
 token: $token
 cert_hash: $cert_hash
