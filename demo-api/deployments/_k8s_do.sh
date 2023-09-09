@@ -14,7 +14,7 @@ cd demo-api
 #### deployment
 kubectl config set-context --current --namespace=dev
 # kubectl config view --minify -o jsonpath='{..namespace}'
-kubectl config view | grep namespace
+# kubectl config view | grep namespace
 
 # kubectl -n dev create configmap demo-api --from-file=deployments/dev.yaml
 kubectl create configmap demo-api --from-file=deployments/dev.yaml
