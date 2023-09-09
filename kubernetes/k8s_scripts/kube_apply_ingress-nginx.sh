@@ -5,11 +5,13 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 # ingress_node=k8s-ingress01
 ingress_node=$1
-
-mkdir -p k8s_data
+# node=$(hostname | tr '[:upper:]' '[:lower:]')
+# kubectl describe node/$node
 
 node_ip=$(kubectl get node/$ingress_node -o wide | awk 'NR==2{print $6}')
+# node_ip=$(hostname -I | awk '{print $1; exit}')
 
+mkdir -p k8s_data
 # https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
 kubectl label nodes/$ingress_node --overwrite node-type=ingress
@@ -52,17 +54,7 @@ kubectl -n ingress-nginx patch svc/ingress-nginx-controller \
 kubectl -n ingress-nginx get deploy
 kubectl -n ingress-nginx get pods --field-selector status.phase=Running -o wide
 kubectl -n ingress-nginx get svc/ingress-nginx-controller
+# kubectl -n ingress-nginx get pod -o wide
+# kubectl -n ingress-nginx describe pod
 
-exit
-
-####
-node=$(hostname | tr '[:upper:]' '[:lower:]')
-kubectl describe node/$node
-
-kubectl -n ingress-nginx get pod
-kubectl -n ingress-nginx describe pod
-
-# ip=$(hostname -I | awk '{print $1; exit}')
-
-####
-curl -i -H "Host: Your.Domain" $node_ip
+# curl -i $node_ip
