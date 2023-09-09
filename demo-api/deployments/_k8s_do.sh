@@ -50,9 +50,8 @@ kubectl create secret tls noreply.local --key noreply.local.key --cert noreply.l
 kubectl -n prod get secret/noreply.local
 
 #### create secret and ingress-https
-kubectl create secret tls noreply.local \
-  --key noreply.local.key --cert noreply.local.cer -o yaml --dry-run=client |
-  kubectl apply -f -
+kubectl create secret tls noreply.local --key noreply.local.key --cert noreply.local.cer \
+  --dry-run=client -o yaml | kubectl apply -f -
 
 kubectl create secret docker-registry noreply.local \
   --docker-server=registry.noreply.local --docker-email=EMAIL \
@@ -61,4 +60,4 @@ kubectl create secret docker-registry noreply.local \
 kubectl apply -f deployments/k8s_ingress_tls.yaml
 
 curl -k -H 'Host: demo-api.dev.noreply.local' https://k8s-ingress01/api/v1/open/hello
-curl -H 'Host: demo-api.dev.noreply.local' https://k8s-ingress01/api/v1/open/world
+curl -H 'Host: demo-api.dev.noreply.local' https://k8s-ingress01/api/v1/open/meta
