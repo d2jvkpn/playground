@@ -16,6 +16,6 @@ elif [ "$node_kind" == "control-plane" ]; then
     echo kubeadm join $cp_endpoint --token ${token} --discovery-token-ca-cert-hash ${cert_hash} \
       --control-plane --certificate-key $cert_key
 else
-   >&2 echo "unknown node_kind"
-   exit 1
+    >&2 echo "unknown node_kind"
+    exit 1
 fi
