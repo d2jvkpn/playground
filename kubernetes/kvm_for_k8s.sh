@@ -6,7 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 KVM_Network=${KVM_Network:-default}
 
 # bash ../kvm/src/virsh_clone.sh ubuntu k8s-cp{01..03} k8s-node{01..03} k8s-ingress01
-[ $# -eq 0 ] && { >&2 echo "vm(s) not provided"; exit 1;  }
+[ $# -eq 0 ] && { >&2 echo "vm name(s) not provided"; exit 1;  }
 
 for vm in $*; do
     [ ! -z $(virsh list --all | awk -v vm=$vm '$2==vm{print 1}') ] && continue
@@ -23,10 +23,6 @@ private_key_file = ~/.ssh/kvm.pem
 log_path = ./logs/ansible.log
 # roles_path = /path/to/roles
 EOF
-
-# virsh net-dumpxml $KVM_Network |
-#   awk 'BEFIN{print "# k8s nodes"} /host/{print $4, $3}' |
-#   sed 's#\x27##g; s#/>##; s#name=##; s#ip=##' > configs/etc_hosts
 
 virsh net-dumpxml $KVM_Network |
   awk "/<host.*name='k8s-/{print}" |
