@@ -12,8 +12,8 @@ export DEBIAN_FRONTEND=noninteractive
 #### 1. apt install
 apt-get update
 
-# apt-transport-https ca-certificates gnupg curl jq lsb-release
-apt-get -y install socat conntrack nfs-kernel-server nfs-common nftables
+apt-get -y install apt-transport-https ca-certificates lsb-release gnupg pigz curl jq \
+  socat conntrack nfs-kernel-server nfs-common nftables
 
 #### 2. apt k8s
 key_file=/etc/apt/keyrings/kubernetes.gpg
