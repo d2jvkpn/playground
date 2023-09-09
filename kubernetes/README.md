@@ -58,10 +58,10 @@ ansible $cp_node -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $US
 #### 4. Worker nodes
 ```bash
 # worker nodes
-ansible k8s_workers -m shell -a "sudo $(bash k8s_scripts/k8s_node_join.sh worker)"
+ansible k8s_workers -m shell -a "sudo $(bash k8s_scripts/k8s_join_command.sh worker)"
 
 # other control-plane nodes
-ansible k8s_cps[1:] -m shell -a "sudo $(bash k8s_scripts/k8s_node_join.sh control-plane)"
+ansible k8s_cps[1:] -m shell -a "sudo $(bash k8s_scripts/k8s_join_command.sh control-plane)"
 ansible k8s_cps[1:] -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 ```
 
