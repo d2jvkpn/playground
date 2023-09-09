@@ -39,7 +39,7 @@ cert_key=$(grep -o "\-\-certificate-key [^ ]*" k8s_data/kubeadm-init.out | awk '
 
 cat > k8s_data/kubeadm-init.yaml <<EOF
 version: $version
-date_time: $(date +'%FT%T.%N%:z')
+datetime: $(date +'%FT%T.%N%:z')
 pod_subnet: $pod_subnet
 cp_endpoint: $cp_endpoint
 token: $token
