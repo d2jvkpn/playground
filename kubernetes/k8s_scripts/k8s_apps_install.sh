@@ -3,6 +3,8 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
+region=${region:-unknown}
+
 #### 1. yq
 if [ ! -f /usr/bin/yq ]; then
     mkdir -p k8s_apps/yq_dir
@@ -11,7 +13,14 @@ if [ ! -f /usr/bin/yq ]; then
     rm -r k8s_apps/yq_dir
 fi
 
-#### 2. nerdctl
+#### 2. k8s images
+if [ "$region" == "cn" ]; then
+    for f in $(ls k8s_apps/*_images/*.tar.gz); do
+        pigz -dc $f | sudo ctr -n=k8s.io image import -
+    done
+fi
+
+#### 3. nerdctl
 # sudo crictl images
 # tar -xf k8s_apps/nerdctl-*-linux-amd64.tar.gz -C /opts/
 # mv /opts/nerdctl-*-linux-amd64/libexec/cni /opt/
@@ -19,8 +28,3 @@ fi
 # nerdctl -n k8s.io images
 # nerdctl ps -a
 # nerdctl -n k8s.io ps -a
-
-#### 3. k8s images
-for f in $(ls k8s_apps/*_images/*.tar.gz); do
-    pigz -dc $f | sudo ctr -n=k8s.io image import -
-done

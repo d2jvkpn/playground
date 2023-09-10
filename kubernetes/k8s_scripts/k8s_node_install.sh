@@ -6,6 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # version=1.28.0
 version=$1
 export DEBIAN_FRONTEND=noninteractive
+region=${region:-unknown}
 
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 
@@ -19,16 +20,18 @@ apt-get -y install apt-transport-https ca-certificates lsb-release gnupg pigz cu
 key_file=/etc/apt/keyrings/kubernetes.gpg
 [ -f $key_file ] && rm -f $key_file
 
-# curl -fsSL https://dl.k8s.io/apt/doc/apt-key.gpg | sudo gpg --dearmor -o $key_file
+if [ "$region" == "cn" ]; then
+    curl -fsSL https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg |
+      sudo gpg --dearmor -o $key_file
 
-# echo "deb [signed-by=$key_file] https://apt.kubernetes.io/ kubernetes-xenial main" |
-#   sudo tee /etc/apt/sources.list.d/kubernetes.list
+    echo "deb [signed-by=$key_file] https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main" |
+      sudo tee /etc/apt/sources.list.d/kubernetes.list
+else
+    curl -fsSL https://dl.k8s.io/apt/doc/apt-key.gpg | sudo gpg --dearmor -o $key_file
 
-curl -fsSL https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg |
-  gpg --dearmor -o $key_file
-
-echo "deb [signed-by=$key_file] https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main" |
-  sudo tee /etc/apt/sources.list.d/kubernetes.list
+    echo "deb [signed-by=$key_file] https://apt.kubernetes.io/ kubernetes-xenial main" |
+      sudo tee /etc/apt/sources.list.d/kubernetes.list
+fi
 
 apt-get update
 # sudo apt-get install -y kubectl kubelet kubeadm
