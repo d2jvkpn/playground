@@ -11,7 +11,8 @@ version=$1; node=$2
 apt-get update
 # apt-cache madison kubeadm | head || true
 apt-mark unhold kubeadm
-apt-get install -y kubeadm=${version}-00
+# apt-get install -y kubeadm=${version}-00
+apt-get upgrade -y kubeadm
 apt-mark hold kubeadm
 # kubeadm version
 
@@ -28,7 +29,8 @@ kubeadm upgrade node
 
 ####
 apt-mark unhold kubelet kubectl
-apt-get install -y kubelet=${version}-00 kubectl=${version}-00
+# apt-get install -y kubelet=${version}-00 kubectl=${version}-00
+apt-get upgrade -y kubelet kubectl
 apt-mark hold kubelet kubectl
 
 systemctl daemon-reload

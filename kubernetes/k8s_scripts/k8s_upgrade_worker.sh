@@ -15,8 +15,10 @@ elif [ "$step" == "2" ]; then
     #### on the worker node
     apt-get update
 
-    apt-mark unhold kubeadm kubelet=${version}-00 kubectl=${version}-00
-    apt-get install -y kubeadm=${version}-00 kubelet=${version}-00 kubectl=${version}-00
+    # apt-mark unhold kubeadm kubelet kubectl
+    # apt-get install -y kubeadm=${version}-00 kubelet=${version}-00 kubectl=${version}-00
+    apt-mark unhold kubeadm kubelet kubectl
+    apt-get upgrade -y kubeadm kubelet kubectl
     apt-mark hold kubeadm kubelet kubectl
     systemctl daemon-reload
     systemctl restart kubelet
