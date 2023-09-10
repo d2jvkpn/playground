@@ -3,7 +3,7 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-# version=1.28.0
+# version=1.28.1
 version=$1
 export DEBIAN_FRONTEND=noninteractive
 region=${region:-unknown}
@@ -17,34 +17,22 @@ apt-get -y install apt-transport-https ca-certificates lsb-release gnupg pigz cu
   socat conntrack nfs-kernel-server nfs-common nftables
 
 #### 2. apt k8s
+# key_url=https://pkgs.k8s.io/core:/stable:/v1.28/deb
+key_url=https://pkgs.k8s.io/core:/stable:/v${version%.*}/deb
 key_file=/etc/apt/keyrings/kubernetes.gpg
 [ -f $key_file ] && rm -f $key_file
 
-case "$region" in
-"cn")
-    curl -fsSL https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg |
-      sudo gpg --dearmor -o $key_file
-
-    echo "deb [signed-by=$key_file] https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main" |
-      sudo tee /etc/apt/sources.list.d/kubernetes.list
-   ;;
-*)
-    curl -fsSL https://dl.k8s.io/apt/doc/apt-key.gpg | sudo gpg --dearmor -o $key_file
-
-    echo "deb [signed-by=$key_file] https://apt.kubernetes.io/ kubernetes-xenial main" |
-      sudo tee /etc/apt/sources.list.d/kubernetes.list
-    ;;
-esac
+curl -fsSL $key_url/Release.key | sudo gpg --dearmor -o $key_file
+echo "deb [signed-by=$key_file] $key_url /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
 apt-get update
-# sudo apt-get install -y kubectl kubelet kubeadm
-apt install -y kubelet=${version}-00 kubeadm=${version}-00 kubectl=${version}-00
+sudo apt-get install -y kubectl kubelet kubeadm
 
 apt-mark hold kubelet kubeadm kubectl
 # apt-mark unhold kubelet kubeadm kubectl
 # systemctl disable kubelet
 
-kubectl completion bash > /etc/bash_completion.d/kubectl
+kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl
 # kubeadm config images list
 
 # cp /etc/systemd/system/kubelet.service.d/10-kubeadm.conf \
