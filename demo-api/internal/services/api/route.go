@@ -15,25 +15,18 @@ func Load_OpenV1(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 
 	open.GET("/nts", gin.WrapF(gotk.NTSFunc(3)))
 
-	open.GET("/ip", func(ctx *gin.Context) {
+	open.GET("/meta", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{
-			"code": 0, "msg": "ok", "data": gin.H{"ip": ctx.ClientIP()},
+			"code": 0, "msg": "ok", "data": gin.H{"meta": settings.Meta},
 		})
 	})
 
 	//
 	value := settings.ConfigField("hello").GetInt64("world")
-
 	open.GET("/hello", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{
-			"code": 0, "msg": "ok", "data": gin.H{"key": "world", "value": value},
-		})
-	})
-
-	//
-	open.GET("/meta", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{
-			"code": 0, "msg": "ok", "data": gin.H{"meta": settings.Meta},
+			"code": 0, "msg": "ok", "data": gin.H{
+				"key": "world", "value": value, "ip": ctx.ClientIP()},
 		})
 	})
 }
