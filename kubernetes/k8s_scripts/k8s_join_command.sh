@@ -5,10 +5,12 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 node_kind=$1
 
-cp_endpoint=$(yq .cp_endpoint k8s_data/kubeadm-init.yaml)
-token=$(yq .token k8s_data/kubeadm-init.yaml)
-cert_hash=$(yq .cert_hash k8s_data/kubeadm-init.yaml)
-cert_key=$(yq .cert_key k8s_data/kubeadm-init.yaml)
+yaml_file=${yaml_file:-k8s_data/kubeadm-init.yaml}
+
+cp_endpoint=$(yq .cp_endpoint $yaml_file)
+token=$(yq .token $yaml_file)
+cert_hash=$(yq .cert_hash $yaml_file)
+cert_key=$(yq .cert_key $yaml_file)
 
 cmd="kubeadm join $cp_endpoint --token ${token} --discovery-token-ca-cert-hash ${cert_hash}"
 
