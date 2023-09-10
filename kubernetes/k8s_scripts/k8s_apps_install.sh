@@ -3,8 +3,6 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-region=${region:-unknown}
-
 #### 1. yq
 if [ ! -f /usr/bin/yq ]; then
     mkdir -p k8s_apps/yq_dir
@@ -14,7 +12,7 @@ if [ ! -f /usr/bin/yq ]; then
 fi
 
 #### 2. k8s images
-if [ "$region" == "cn" ]; then
+if [ "${region:-unknown}" == "cn" ]; then
     for f in $(ls k8s_apps/*_images/*.tar.gz); do
         pigz -dc $f | sudo ctr -n=k8s.io image import -
     done
