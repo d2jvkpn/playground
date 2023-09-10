@@ -3,27 +3,34 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
+k8s_rep=$1
+
 key_file=/etc/apt/keyrings/kubernetes.gpg
-[ -f key_file ] && rm -f key_file
+[ -f key_file ] && sudo rm -f $key_file
 
-#### aliyun repository
-curl -fsSL https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg |
-  sudo gpg --dearmor -o $key_file
+case "$k8s_rep" in
+"aliyun")
+    curl -fsSL https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg |
+      sudo gpg --dearmor -o $key_file
 
-echo "deb [signed-by=$key_file] https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main" |
-  sudo tee /etc/apt/sources.list.d/kubernetes.list
+    echo "deb [signed-by=$key_file] https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main" |
+      sudo tee /etc/apt/sources.list.d/kubernetes.list
+    ;;
+"google")
+    curl -fsSL https://dl.k8s.io/apt/doc/apt-key.gpg | sudo gpg --dearmor -o $key_file
 
-#### google repository
-curl -fsSL https://dl.k8s.io/apt/doc/apt-key.gpg | sudo gpg --dearmor -o $key_file
+    echo "deb [signed-by=$key_file] https://apt.kubernetes.io/ kubernetes-xenial main" |
+      sudo tee /etc/apt/sources.list.d/kubernetes.list
+    ;;
+*)
+    >&2 echo "unknown k8s repository"
+    exit 1
+    ;;
+esac
 
-echo "deb [signed-by=$key_file] https://apt.kubernetes.io/ kubernetes-xenial main" |
-  sudo tee /etc/apt/sources.list.d/kubernetes.list
-
-#### apt install
-apt-get update
-# sudo apt-get install -y kubectl kubelet kubeadm
-apt install -y kubelet=${version}-00 kubeadm=${version}-00 kubectl=${version}-00
-
+sudo apt-get update
+sudo apt install -y kubelet=${version}-00 kubeadm=${version}-00 kubectl=${version}-00
 apt-mark hold kubelet kubeadm kubectl
-# apt-mark unhold kubelet kubeadm kubectl
-# systemctl disable kubelet
+
+exit
+apt-mark unhold kubelet kubeadm kubectl
