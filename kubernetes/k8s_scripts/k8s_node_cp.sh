@@ -6,9 +6,9 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 #### control-plane
 pod_subnet=${pod_subnet:-10.244.0.0/16}
 
-# cp_ip=$(hostname -I | awk '{print $1}')
-cp_ip=$1
-cp_endpoint=$cp_ip:6443
+# cp_endpoint=$(hostname -I | awk '{print $1}'):6443
+cp_endpoint=$1
+
 # version=1.28.0
 version=$(kubeadm version --output=json 2> /dev/null | jq -r .clientVersion.gitVersion)
 version=${version#v}

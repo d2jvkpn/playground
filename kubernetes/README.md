@@ -47,7 +47,7 @@ ansible k8s_all --forks 2 -m shell -a "sudo region=cn bash k8s_scripts/k8s_apps_
 cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
 cp_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$cp_node.ansible_host")
 
-ansible $cp_node -m shell -a "sudo bash k8s_scripts/k8s_node_cp.sh $cp_ip"
+ansible $cp_node -m shell -a "sudo bash k8s_scripts/k8s_node_cp.sh $cp_ip:6443"
 # ansible $cp_node -m shell -a "sudo kubeadm reset -f"
 
 ansible $cp_node --one-line -m fetch -a "flat=true src=k8s_data/kubeadm-init.yaml dest=k8s_data/"
