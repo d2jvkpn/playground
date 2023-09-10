@@ -37,7 +37,9 @@ ansible k8s_all --forks 2 -m shell -a "sudo bash k8s_scripts/k8s_node_install.sh
 # ?? sysctl: setting key "net.ipv4.conf.all.promote_secondaries": Invalid argument
 
 ansible k8s_all --forks 2 -m shell -a "sudo bash k8s_scripts/k8s_apps_containerd.sh"
-ansible k8s_all --forks 2 -m shell -a "sudo region=cn bash k8s_scripts/k8s_apps_install.sh"
+
+ansible k8s_all --forks 2 -m shell \
+  -a "sudo import_local_image=true bash k8s_scripts/k8s_apps_install.sh"
 ```
 
 #### 3. Control Panel nodes
