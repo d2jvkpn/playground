@@ -20,18 +20,21 @@ apt-get -y install apt-transport-https ca-certificates lsb-release gnupg pigz cu
 key_file=/etc/apt/keyrings/kubernetes.gpg
 [ -f $key_file ] && rm -f $key_file
 
-if [ "$region" == "cn" ]; then
+case "$region" in
+"cn")
     curl -fsSL https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg |
       sudo gpg --dearmor -o $key_file
 
     echo "deb [signed-by=$key_file] https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main" |
       sudo tee /etc/apt/sources.list.d/kubernetes.list
-else
+   ;;
+*)
     curl -fsSL https://dl.k8s.io/apt/doc/apt-key.gpg | sudo gpg --dearmor -o $key_file
 
     echo "deb [signed-by=$key_file] https://apt.kubernetes.io/ kubernetes-xenial main" |
       sudo tee /etc/apt/sources.list.d/kubernetes.list
-fi
+    ;;
+esac
 
 apt-get update
 # sudo apt-get install -y kubectl kubelet kubeadm
