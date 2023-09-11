@@ -52,3 +52,6 @@ kubectl get csr
 kubectl certificate approve node-csr-c69HXe7aYcqkS1bKmH4faEnHAWxn6i2bHZ2mD04jZyQ
 
 curl -k https://localhost:6443
+
+#### To generate --certificate-key key, you can use the following command:
+kubeadm certs certificate-key
