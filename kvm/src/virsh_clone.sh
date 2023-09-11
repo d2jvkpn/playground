@@ -19,6 +19,7 @@ fi
 ####
 KVM_User="${KVM_User:-ubuntu}"
 KVM_SSH_Key="${KVM_SSH_Key:-$HOME/.ssh/kvm.pem}"
+KVM_SSH_Config=${KVM_SSH_Config:-$HOME/.ssh/kvm.conf}
 
 echo "==> Cloning $vm_source into $target, KVM_User: $KVM_User, KVM_SSH_Key: $KVM_SSH_Key"
 
@@ -45,7 +46,7 @@ addr=$(
 
 echo "==> Got vm addrss: $addr"
 
-cat >> ~/.ssh/kvm.conf << EOF
+cat >> $KVM_SSH_Config << EOF
 Host $target
     HostName      $addr
     User          $KVM_User
