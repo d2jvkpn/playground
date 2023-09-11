@@ -25,3 +25,7 @@ for img $(docker images | awk '!/none/ && NR>1{print $1":"$2}'); do
     docker save img -o docker_images/$out
     pigz docker_images/$out
 done
+
+#### misc
+docker images --digests
+docker inspect registry.k8s.io/ingress-nginx/controller:v1.8.1 | jq -r '.[0].RepoDigests[0]'
