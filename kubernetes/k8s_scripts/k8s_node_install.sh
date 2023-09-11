@@ -14,7 +14,7 @@ region=${region:-unknown}
 apt-get update
 
 apt-get -y install apt-transport-https ca-certificates lsb-release gnupg pigz curl jq \
-  socat conntrack nfs-kernel-server nfs-common nftables
+  socat conntrack nfs-kernel-server nfs-common nftables etcd-client
 
 #### 2. apt k8s
 # key_url=https://pkgs.k8s.io/core:/stable:/v1.28/deb
