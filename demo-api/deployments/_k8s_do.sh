@@ -25,7 +25,6 @@ kubectl describe deploy/demo-api
 
 kubectl get pods -o wide
 kubectl get pods | awk '/^demo-api-/{print $1; exit}' | xargs -i kubectl describe pod/{}
-# kubectl rollout restart deploy/demo-api
 kubectl get pods | awk 'NR>1{print $1}' | xargs -i kubectl logs pod/{}
 
 kubectl scale --replicas=2 deploy/demo-api
@@ -40,6 +39,23 @@ kubectl apply -f deployments/k8s_ingress_http.yaml
 
 curl -H 'Host: demo-api.dev.noreply.local' k8s-ingress01/api/v1/open/hello
 curl -H 'Host: demo-api.dev.noreply.local' k8s-ingress01/api/v1/open/meta
+
+exit
+# method 1
+kubectl rollout restart deploy/demo-api
+
+# method 2
+kubectl scale --replicas=0 deploy/demo-api
+kubectl scale --replicas=3 deploy/demo-api
+
+# method 3
+# imagePullPolicy: "Always"
+kubectl set image deploy/demo-api \
+  demo-api=registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:dev@xxxxxx
+
+# method 4
+kubectl patch deploy/demo-api -p \
+  '{"spec":{"template":{"spec":{"terminationGracePeriodSeconds":31}}}}'
 
 exit
 
