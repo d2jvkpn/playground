@@ -64,5 +64,7 @@ ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 ssh-copy-id -i $KVM_SSH_Key $target
 
 ssh $target sudo hostnamectl set-hostname $target
+
 ssh $target sudo sed -i \'"2s/^127.0.1.1 .*$/127.0.1.1 $target/"\' /etc/hosts
-# virsh shutdown $target
+
+[ "${shudown_vm:-false}" == "true" ] && virsh shutdown $target

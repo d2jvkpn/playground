@@ -38,7 +38,7 @@ ansible k8s_all -m shell -a "sudo bash k8s_scripts/k8s_node_install.sh $version"
 
 ansible k8s_all -m shell -a "sudo bash k8s_scripts/k8s_apps_containerd.sh"
 
-ansible k8s_all --forks 2 -m shell \
+ansible k8s_all --forks 4 -m shell \
   -a "sudo import_local_image=true bash k8s_scripts/k8s_apps_install.sh"
 ```
 
