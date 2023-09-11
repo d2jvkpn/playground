@@ -3,7 +3,15 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-target=$1
+if [ $# -eq 1 ]; then
+    target=$1
+else
+    for target in $*; do
+        bash $0 $target
+    done
+    exit 0
+fi
+
 KVM_Network=${KVM_Network:-default}
 
 # virsh dumpxml $target
