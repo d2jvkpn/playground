@@ -15,4 +15,4 @@ kubectl drain $node --ignore-daemonsets --delete-local-data
 kubectl delete node $node
 
 # if $node is control-plane node, run this command on $node
-# kubeadm reset
+# kubeadm reset -f

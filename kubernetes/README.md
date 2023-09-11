@@ -20,13 +20,8 @@ echo ""
 ansible k8s_all --one-line -m copy -a "src=k8s_scripts dest=./"
 ansible k8s_all --forks 2 -m copy -a "src=./k8s_apps dest=./"
 
-ansible k8s_all -m file -a "path=./k8s_data state=directory"
-ansible k8s_all -m copy --become -a "src=./configs/hosts.txt dest=./k8s_data/"
-ansible k8s_all -m shell --become -a "sed '1i \\\n# kvm nodes' ./k8s_data/hosts.txt >> /etc/hosts"
-
-# free -m
-# ls /swap.img
-ansible k8s_all -m shell -a "sudo swapoff --all && sudo sed -i '/swap/s/^/# /' /etc/fstab"
+ansible k8s_all -m shell --become \
+  -a "swapoff --all && sed -i '/swap/d' /etc/fstab && rm -f /swap.img"
 ```
 
 #### 2. Installation
@@ -49,10 +44,17 @@ ansible k8s_all --forks 4 -m shell \
 cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
 cp_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$cp_node.ansible_host")
 
-ansible $cp_node -m shell -a "sudo bash k8s_scripts/k8s_node_cp.sh $cp_ip:6443"
+sed "1i \\\n$cp_ip k8s-control-plane" configs/hosts.txt > ./k8s_data/hosts.txt
+ansible k8s_all -m file -a "path=./k8s_data state=directory"
+ansible k8s_all -m copy --become -a "src=./k8s_data/hosts.txt dest=./k8s_data/"
+ansible k8s_all -m shell --become -a "cat ./k8s_data/hosts.txt >> /etc/hosts"
+
+ansible $cp_node -m shell -a "sudo bash k8s_scripts/k8s_node_cp.sh k8s-control-plane:6443"
 # ansible $cp_node -m shell -a "sudo kubeadm reset -f"
 
 ansible $cp_node --one-line -m fetch -a "flat=true src=k8s_data/kubeadm-init.yaml dest=k8s_data/"
+
+sed -i "1i cp_ip: $cp_ip" k8s_data/kubeadm-init.yaml
 
 ansible $cp_node -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 ```
