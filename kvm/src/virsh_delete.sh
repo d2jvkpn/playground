@@ -13,6 +13,7 @@ else
 fi
 
 KVM_Network=${KVM_Network:-default}
+KVM_SSH_Config=${KVM_SSH_Config:-$HOME/.ssh/kvm.conf}
 
 # virsh dumpxml $target
 # virsh dumpxml --domain $target
@@ -43,6 +44,5 @@ virsh net-start $KVM_Network
 rm $KVM_Network.xml
 
 ####
-conf="$HOME/.ssh/kvm.conf"
-sed 's/^Host/\n&/' $conf | sed '/^Host '"$target"'$/,/^$/d; /^$/d' > $conf.tmp
-mv $conf.tmp $conf
+sed 's/^Host/\n&/' $KVM_SSH_Config | sed '/^Host '"$target"'$/,/^$/d; /^$/d' > $KVM_SSH_Config.tmp
+mv $KVM_SSH_Config.tmp $KVM_SSH_Config
