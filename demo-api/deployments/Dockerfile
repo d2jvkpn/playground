@@ -42,6 +42,7 @@ RUN if [ "$BUILD_Region" = "cn" ]; then \
   fi
 
 RUN { apk --no-cache update && apk --no-cache upgrade && apk --no-cache add tzdata; } &> /dev/null
+RUN apk --no-cache add curl &> /dev/null
 
 RUN adduser -D -u 1000 d2jvkpn
 USER d2jvkpn
