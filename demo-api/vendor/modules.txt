@@ -31,7 +31,7 @@ github.com/chenzhuoyu/iasm/x86_64
 # github.com/d2jvkpn/gotk v0.0.0-20230913094638-2ff302b14a22
 ## explicit; go 1.20
 github.com/d2jvkpn/gotk
-# github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230913094638-2ff302b14a22
+# github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230913165726-53754311ff4d
 ## explicit; go 1.20
 github.com/d2jvkpn/gotk/cloud-logging
 # github.com/d2jvkpn/gotk/ginx v0.0.0-20230913165726-53754311ff4d
