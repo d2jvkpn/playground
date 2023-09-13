@@ -7,6 +7,7 @@ import (
 	"demo-api/internal/settings"
 
 	"github.com/d2jvkpn/gotk"
+	"github.com/d2jvkpn/gotk/ginx"
 	"github.com/gin-gonic/gin"
 )
 
@@ -29,18 +30,6 @@ func Load_OpenV1(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 				"key": "world", "value": value, "ip": ctx.ClientIP()},
 		})
 	})
-
-	//
-	open.GET("/should_panic", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{"code": 0, "msg": "ok", "data": gin.H{"ans": shouldPanic()}})
-	})
-}
-
-func shouldPanic() int {
-	a := 1
-	b := 0
-
-	return a / b
 }
 
 func Load_Debug(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
@@ -49,4 +38,32 @@ func Load_Debug(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 	for k, f := range gotk.PprofHandlerFuncs() {
 		debug.GET(fmt.Sprintf("/pprof/%s", k), gin.WrapF(f))
 	}
+}
+
+func Load_Biz(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
+	biz := router.Group("/api/v1/biz", handlers...)
+
+	biz.GET("/world", func(ctx *gin.Context) {
+		ginx.SetRequestId(ctx, "world_001")
+		ginx.SetError(ctx, fmt.Errorf("world_error"))
+		ginx.SetIdentityField(ctx, "biz_id", "world_a")
+		ginx.SetDataField(ctx, "a", "*")
+		ginx.SetDataField(ctx, "b", 42)
+
+		ctx.JSON(http.StatusOK, gin.H{"code": 0, "msg": "ok", "data": gin.H{"ans": 42}})
+	})
+
+	biz.GET("/div_panic", func(ctx *gin.Context) {
+		ginx.SetRequestId(ctx, "div_panic_001")
+		ginx.SetIdentityField(ctx, "biz_id", "div_panci")
+		ginx.SetDataField(ctx, "ans", 42)
+		ctx.JSON(http.StatusOK, gin.H{"code": 0, "msg": "ok", "data": gin.H{"ans": divPanic()}})
+	})
+}
+
+func divPanic() int {
+	a := 1
+	b := 0
+
+	return a / b
 }

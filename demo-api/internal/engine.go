@@ -76,6 +76,7 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 
 	// #### biz handlers
 	api.Load_OpenV1(router, settings.ApiLogger("api"))
+	api.Load_Biz(router, ginx.APILog(settings.Logger.Logger, "api_biz", 5))
 
 	return engine, nil
 }
