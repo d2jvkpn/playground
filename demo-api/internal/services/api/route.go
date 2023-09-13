@@ -29,6 +29,18 @@ func Load_OpenV1(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 				"key": "world", "value": value, "ip": ctx.ClientIP()},
 		})
 	})
+
+	//
+	open.GET("/should_panic", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, gin.H{"code": 0, "msg": "ok", "data": gin.H{"ans": shouldPanic()}})
+	})
+}
+
+func shouldPanic() int {
+	a := 1
+	b := 0
+
+	return a / b
 }
 
 func Load_Debug(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {

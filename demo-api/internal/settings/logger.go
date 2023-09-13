@@ -13,9 +13,9 @@ func ApiLogger(name string) gin.HandlerFunc {
 
 	return func(ctx *gin.Context) {
 		var (
-			start      time.Time
-			msg        string
-			statusCode int
+			start  time.Time
+			msg    string
+			status int
 		)
 
 		start = time.Now()
@@ -25,24 +25,24 @@ func ApiLogger(name string) gin.HandlerFunc {
 
 		// #### logging
 		fields := make([]zap.Field, 0, 3)
-		push := func(field zap.Field) {
-			fields = append(fields, field)
+		pushStr := func(key, val string) {
+			fields = append(fields, zap.String(key, val))
 		}
 
-		push(zap.String("ip", ctx.ClientIP()))
+		pushStr("ip", ctx.ClientIP())
 		if ctx.Request.URL.RawQuery != "" {
-			push(zap.String("query", ctx.Request.URL.RawQuery))
+			pushStr("query", ctx.Request.URL.RawQuery)
 		}
 
-		statusCode = ctx.Writer.Status()
-		latency := fmt.Sprintf("%.3fs", float64(time.Since(start).Microseconds())/1e3)
-		push(zap.String("latency", latency))
+		status = ctx.Writer.Status()
+		latency := fmt.Sprintf("%.3fms", float64(time.Since(start).Microseconds())/1e3)
+		pushStr("latency", latency)
 		// TODO: more fields like identity and biz data
 
 		switch {
-		case statusCode < 400:
+		case status < 400:
 			logger.Info(msg, fields...)
-		case statusCode >= 400 && statusCode < 500:
+		case status >= 400 && status < 500:
 			logger.Warn(msg, fields...)
 		default:
 			logger.Info(msg, fields...)
