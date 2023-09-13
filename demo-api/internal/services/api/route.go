@@ -46,17 +46,17 @@ func Load_Biz(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 	biz.GET("/world", func(ctx *gin.Context) {
 		ginx.SetRequestId(ctx, "world_001")
 		ginx.SetError(ctx, fmt.Errorf("world_error"))
-		ginx.SetIdentityField(ctx, "biz_id", "world_a")
-		ginx.SetDataField(ctx, "a", "*")
-		ginx.SetDataField(ctx, "b", 42)
+		ginx.SetIdentity(ctx, map[string]any{"biz_id": "world_a"})
+		ginx.SetData(ctx, map[string]any{"a": "*"})
+		ginx.SetData(ctx, map[string]any{"b": 42})
 
 		ctx.JSON(http.StatusOK, gin.H{"code": 0, "msg": "ok", "data": gin.H{"ans": 42}})
 	})
 
 	biz.GET("/div_panic", func(ctx *gin.Context) {
 		ginx.SetRequestId(ctx, "div_panic_001")
-		ginx.SetIdentityField(ctx, "biz_id", "div_panci")
-		ginx.SetDataField(ctx, "ans", 42)
+		ginx.SetIdentity(ctx, map[string]any{"biz_id": "div_panci"})
+		ginx.SetData(ctx, map[string]any{"ans": 42})
 		ctx.JSON(http.StatusOK, gin.H{"code": 0, "msg": "ok", "data": gin.H{"ans": divPanic()}})
 	})
 }

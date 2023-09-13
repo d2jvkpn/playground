@@ -3,9 +3,9 @@ module demo-api
 go 1.21.0
 
 require (
-	github.com/d2jvkpn/gotk v0.0.0-20230913094638-2ff302b14a22
-	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230913165726-53754311ff4d
-	github.com/d2jvkpn/gotk/ginx v0.0.0-20230913165726-53754311ff4d
+	github.com/d2jvkpn/gotk v0.0.0-20230913171526-69731e390168
+	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230913171526-69731e390168
+	github.com/d2jvkpn/gotk/ginx v0.0.0-20230913225254-b59f4214261a
 	github.com/gin-gonic/gin v1.9.1
 	github.com/spf13/viper v1.16.0
 	go.uber.org/zap v1.25.0
