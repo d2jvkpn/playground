@@ -30,3 +30,11 @@ ids=i-0011xxxx
 aws --out=json ec2 start-instances --instance-ids $ids
 
 aws --out=json ec2 stop-instances --force --instance-ids $ids
+
+cat > ~/.aws/credentials << EOF
+[default]
+region = ap-northest-1
+output = yaml
+aws_access_key_id = xxxx
+aws_secret_access_key = yyyyyyyy
+EOF
