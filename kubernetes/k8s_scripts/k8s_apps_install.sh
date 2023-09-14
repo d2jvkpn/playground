@@ -13,7 +13,7 @@ fi
 
 #### 2. k8s images
 if [ "${import_local_image:-unknown}" == "true" ]; then
-    for f in $(ls k8s_apps/*_images/*.tar.gz); do
+    for f in $(ls k8s_apps/images/*.tar.gz); do
         pigz -dc $f | sudo ctr -n=k8s.io image import -
     done
 fi

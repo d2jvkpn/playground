@@ -30,38 +30,29 @@ function download_images() {
 
 #### 1. k8s_images
 kubeadm config images list | xargs -i docker pull {}
-
 kube_version=$(kubeadm version -o json | jq -r .clientVersion.gitVersion)
-
-download_images k8s_apps/k8s.yaml k8s_apps/kube_images
 
 #### 2. ingress-nginx and flannel
 wget -O k8s_apps/ingress-nginx_cloud.yaml \
   https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
-
-download_images k8s_apps/ingress-nginx_cloud.yaml k8s_apps/ingress-nginx_images
 
 ingress_images=$(
   awk '$1=="image:"{print $2}' k8s_apps/ingress-nginx_cloud.yaml |
   sort -u
 )
 
-
 wget -O k8s_apps/kube-flannel.yaml \
   https://raw.githubusercontent.com/flannel-io/flannel/v$flannel_version/Documentation/kube-flannel.yml
-
-download_images k8s_apps/kube-flannel.yaml k8s_apps/flannel_images
 
 flannel_images=$(awk '$1=="image:"{print $2}' k8s_apps/kube-flannel.yaml | sort -u)
 
 # wget -O k8s_apps/calico.yaml https://docs.projectcalico.org/manifests/calico.yaml
-# download_images k8s_apps/calico.yaml k8s_apps/calico_images
 
-#### 4. yq
+#### 3. yq
 wget -O k8s_apps/yq_linux_amd64.tar.gz \
   https://github.com/mikefarah/yq/releases/download/v$yq_version/yq_linux_amd64.tar.gz
 
-#### 5. yaml info
+#### 4. yaml info
 cat > k8s_apps/k8s.yaml << EOF
 version: $kube_version"
 images:
@@ -80,6 +71,8 @@ flannel:
 $(echo "$flannel_images" | sed 's/^/  - image: /')
 EOF
 
+download_images k8s_apps/k8s.yaml k8s_apps/images
+
 exit
 yq_dir=k8s_apps/yq-${yq_version}-linux-amd64
 mkdir -p $yq_dir
@@ -88,7 +81,7 @@ tar -xf k8s_apps/yq_linux_amd64.tar.gz -C $yq_dir
 tar -C k8s_apps -czf $yq_dir.tar.gz yq-${yq_version}-linux-amd64
 rm -rf $yq_dir k8s_apps/yq_linux_amd64.tar.gz
 
-#### 6. nerdctl
+#### 5. nerdctl
 nerdctl_version=${nerdctl_version:-1.5.0}
 nerdctl_tgz=nerdctl-full-${nerdctl_version}-linux-amd64.tar.gz
 
