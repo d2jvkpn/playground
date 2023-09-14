@@ -72,12 +72,12 @@ yq:
 
 ingress:
   images:
-$(echo $ingress_images | sed 's/^/  - image: /')
+$(echo "$ingress_images" | sed 's/^/  - image: /')
 
 flannel:
   version: $flannel_version
   images:
-$(echo $flannel_images | sed 's/^/  - image: /')
+$(echo "$flannel_images" | sed 's/^/  - image: /')
 EOF
 
 exit
