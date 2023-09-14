@@ -6,12 +6,12 @@
 
 ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {}
 
-while ! ansible k8s_all --one-line -m shell -a 'echo "Hello, world!"'; do
-    echo -e "." && sleep 1
+while ! ansible k8s_all --one-line -m ping; do
+    sleep 1
 done
 echo ""
 
-# ansible k8s_all --one-line -m ping
+# ansible k8s_all --one-line -m shell -a 'echo "Hello, world!"'
 # ansible k8s_all[0] --one-line -m ping
 # ansible k8s_all[1:] --one-line -m ping
 # ansible k8s_all --one-line -m debug
