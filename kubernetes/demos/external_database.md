@@ -3,7 +3,7 @@
 
 #### 1. Commands
 ```bash
-kubectl apply -f k8s_data/external_database.yaml
+kubectl apply -f k8s_apps/data/external_database.yaml
 
 cat <<EOF | kubectl apply -f -
 apiVersion: v1

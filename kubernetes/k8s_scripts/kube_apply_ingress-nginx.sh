@@ -11,7 +11,7 @@ ingress_node=$1
 node_ip=$(kubectl get node/$ingress_node -o wide | awk 'NR==2{print $6}')
 # node_ip=$(hostname -I | awk '{print $1; exit}')
 
-mkdir -p k8s_data
+mkdir -p k8s_apps/data
 # https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
 kubectl label nodes/$ingress_node --overwrite node-type=ingress
@@ -25,7 +25,7 @@ kubectl taint nodes $ingress_node --overwrite node-type=ingress:NoSchedule
 # sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
 #   awk 'BEGIN{RS=ORS="---"}
 #   /Deployment/{sub("nodeSelector:", "nodeSelector:\n        node-type: ingress")}
-#   { print }' > k8s_data/ingress-nginx.yaml
+#   { print }' > k8s_apps/data/ingress-nginx.yaml
 
 fields='''
       tolerations:
@@ -41,11 +41,11 @@ fields='''
 sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
   awk -v fields="$fields" 'BEGIN{RS=ORS="---"}
   /Deployment/{$0=$0""fields} {print}' |
-  yq --prettyPrint > k8s_data/ingress-nginx.yaml
+  yq --prettyPrint > k8s_apps/data/ingress-nginx.yaml
 
-kubectl apply -f k8s_data/ingress-nginx.yaml
+kubectl apply -f k8s_apps/data/ingress-nginx.yaml
 # kubectl get pods -A -o wide
-# kubectl delete -f k8s_data/ingress-nginx.yaml
+# kubectl delete -f k8s_apps/data/ingress-nginx.yaml
 
 kubectl -n ingress-nginx patch svc/ingress-nginx-controller \
   -p "$(printf '{"spec":{"externalIPs":["%s"]}}' $node_ip)"

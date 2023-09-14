@@ -16,7 +16,7 @@ sudo nginx -t && sudo nginx -s reload
 
 #### 1.2 k8s apply
 ```bash
-kubectl apply -f k8s_data/external_nginx.yaml
+kubectl apply -f k8s_apps/data/external_nginx.yaml
 
 curl -H 'Host: app.nginx.noreply.local' k8s-ingress01
 ```

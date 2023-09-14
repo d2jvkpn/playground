@@ -4,11 +4,11 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 name=vol01; cap=10Gi
-mkdir -p k8s_data
+mkdir -p k8s_apps/data
 
 kubecte create ns dev || true
 
-cat > k8s_data/pv_$name.yaml <<EOF
+cat > k8s_apps/data/pv_$name.yaml <<EOF
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -35,7 +35,7 @@ spec:
   volumeName: $name
 EOF
 
-kubectl apply -f k8s_data/pv_$name.yaml
+kubectl apply -f k8s_apps/data/pv_$name.yaml
 
 # kubectl -n dev delete pvc/$name
 # kubectl delete pv/$name
