@@ -74,12 +74,12 @@ func Run(addr string) (errch chan error, err error) {
 func onExit() (err error) {
 	_Logger.Info("service_shutdown")
 
-	if settings.Logger != nil {
-		err = errors.Join(err, settings.Logger.Down())
-	}
-
 	if _RuntimeInfo != nil {
 		_RuntimeInfo.End()
+	}
+
+	if settings.Logger != nil {
+		err = errors.Join(err, settings.Logger.Down())
 	}
 
 	return err
