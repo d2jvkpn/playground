@@ -13,7 +13,8 @@ function download_images() {
     yf=$1; save_dir=$2
     mkdir -p $save_dir
 
-    images=$(awk '$1=="image:"{sub("@.*", "", $2); print $2}' $yf | sort -u)
+    # images=$(awk '$1=="image:"{sub("@.*", "", $2); print $2}' $yf | sort -u)
+    images=$(awk '/ image:/{sub("@.*", "", $NF); print $NF}' $yf | sort -u)
 
     for img in $images; do
         base=$(basename $img | sed 's/:/_/')
