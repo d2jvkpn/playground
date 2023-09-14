@@ -55,7 +55,7 @@ wget -O k8s_apps/yq_linux_amd64.tar.gz \
 
 #### 4. yaml info
 cat > k8s_apps/k8s.yaml << EOF
-version: $kube_version"
+version: $kube_version
 images:
 $(kubeadm config images list | sed 's/^/ - image: /')
 
