@@ -11,6 +11,7 @@ import (
 
 	"demo-api/internal/settings"
 
+	"github.com/d2jvkpn/gotk"
 	"go.uber.org/zap"
 )
 
@@ -23,6 +24,11 @@ func Run(addr string) (errch chan error, err error) {
 	if listener, err = net.Listen("tcp", addr); err != nil {
 		return nil, fmt.Errorf("net.Listen: %w", err)
 	}
+
+	_RuntimeInfo = gotk.NewRuntimeInfo(func(data map[string]string) {
+		_Logger.Info("runtime", zap.Any("data", data))
+	}, 60)
+	_RuntimeInfo.Start()
 
 	shutdown := func() {
 		if _Server != nil {
@@ -66,6 +72,10 @@ func onExit() (err error) {
 
 	if settings.Logger != nil {
 		err = errors.Join(err, settings.Logger.Down())
+	}
+
+	if _RuntimeInfo != nil {
+		_RuntimeInfo.End()
 	}
 
 	return err

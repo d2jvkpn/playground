@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/d2jvkpn/gotk"
 	"go.uber.org/zap"
 )
 
@@ -32,4 +33,6 @@ var (
 	_Server *http.Server
 
 	_Logger *zap.Logger
+
+	_RuntimeInfo *gotk.RuntimeInfo
 )
