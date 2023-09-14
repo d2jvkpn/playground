@@ -41,7 +41,11 @@ func Run(addr string) (errch chan error, err error) {
 
 		once.Do(func() {
 			err := onExit()
-			_Logger.Error("on exit", zap.Any("error", err))
+			if err == nil {
+				_Logger.Warn("on_exit")
+			} else {
+				_Logger.Error("on_exit", zap.Any("error", err))
+			}
 		})
 		return
 	}
