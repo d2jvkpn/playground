@@ -33,19 +33,16 @@ virsh net-dumpxml $KVM_Network |
 
 text=$(awk '{print $2, "ansible_host="$1, "ansible_port=22 ansible_user=ubuntu"}' configs/hosts.txt)
 
-{
-    echo "$text"
-    echo ""
+cat > configs/hosts.ini <<EOF
+$text
 
-    echo "[k8s_all]"
-    echo "$text" | awk '$1!=""{print $1}'
-    echo ""
+[k8s_all]
+$(echo "$text" | awk '$1!=""{print $1}')
 
-    echo "[k8s_cps]"
-    echo "$text" | awk '/^k8s-cp/{print $1}'
-    echo ""
+[k8s_cps]
+$(echo "$text" | awk '/^k8s-cp/{print $1}')
 
-    echo "[k8s_workers]"
-    echo "$text" | awk '/^k8s-node/{print $1}'
-    echo "$text" | awk '/^k8s-ingress/{print $1}'
-} > configs/hosts.ini
+[k8s_workers]
+$(echo "$text" | awk '/^k8s-node/{print $1}')
+$(echo "$text" | awk '/^k8s-ingress/{print $1}')
+EOF
