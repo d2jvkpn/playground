@@ -4,7 +4,8 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 #### control-plane
-# version=1.28.1; node=cp01
+# version=1.28.2; node=cp01
+# # version=$(yq .version k8s_apps/k8s.yaml)
 version=$1; node=$2
 
 #### 

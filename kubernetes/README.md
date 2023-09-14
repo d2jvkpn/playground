@@ -26,7 +26,9 @@ ansible k8s_all -m shell --become \
 
 #### 2. Installation
 ```bash
-version=1.28.1
+# version: 1.28.2
+version=$(yq .version k8s_apps/k8s.yaml)
+
 ansible k8s_all -m shell -a "sudo bash k8s_scripts/k8s_node_install.sh $version"
 # ?? sysctl: setting key "net.ipv4.conf.all.accept_source_route": Invalid argument
 # ?? sysctl: setting key "net.ipv4.conf.all.promote_secondaries": Invalid argument

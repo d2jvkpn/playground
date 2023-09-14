@@ -3,7 +3,7 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-# version=1.28.1
+# version=$(yq .version k8s_apps/k8s.yaml)
 version=$1
 export DEBIAN_FRONTEND=noninteractive
 region=${region:-unknown}
