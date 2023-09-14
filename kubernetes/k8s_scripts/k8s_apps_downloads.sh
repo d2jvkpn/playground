@@ -33,18 +33,6 @@ kubeadm config images list | xargs -i docker pull {}
 
 kube_version=$(kubeadm version -o json | jq -r .clientVersion.gitVersion)
 
-cat > k8s_apps/k8s.yaml << EOF
-version: $kube_version"
-images:
-$(kubeadm config images list | sed 's/^/ - image: /')
-
-yq:
-  version: $yq_version"
-
-flannel:
-  version: $flannel_version
-EOF
-
 download_images k8s_apps/k8s.yaml k8s_apps/kube_images
 
 #### 2. ingress-nginx and flannel
@@ -53,12 +41,18 @@ wget -O k8s_apps/ingress-nginx_cloud.yaml \
 
 download_images k8s_apps/ingress-nginx_cloud.yaml k8s_apps/ingress-nginx_images
 
+ingress_images=$(
+  awk '$1=="image:"{print $2}' k8s_apps/ingress-nginx_cloud.yaml |
+  sort -u
+)
+
 
 wget -O k8s_apps/kube-flannel.yaml \
   https://raw.githubusercontent.com/flannel-io/flannel/v$flannel_version/Documentation/kube-flannel.yml
 
 download_images k8s_apps/kube-flannel.yaml k8s_apps/flannel_images
 
+flannel_images=$(awk '$1=="image:"{print $2}' k8s_apps/kube-flannel.yaml | sort -u)
 
 # wget -O k8s_apps/calico.yaml https://docs.projectcalico.org/manifests/calico.yaml
 # download_images k8s_apps/calico.yaml k8s_apps/calico_images
@@ -66,6 +60,25 @@ download_images k8s_apps/kube-flannel.yaml k8s_apps/flannel_images
 #### 4. yq
 wget -O k8s_apps/yq_linux_amd64.tar.gz \
   https://github.com/mikefarah/yq/releases/download/v$yq_version/yq_linux_amd64.tar.gz
+
+#### 5. yaml info
+cat > k8s_apps/k8s.yaml << EOF
+version: $kube_version"
+images:
+$(kubeadm config images list | sed 's/^/ - image: /')
+
+yq:
+  version: $yq_version
+
+ingress:
+  images:
+$(echo $ingress_images | sed 's/^/  - image: /')
+
+flannel:
+  version: $flannel_version
+  images:
+$(echo $flannel_images | sed 's/^/  - image: /')
+EOF
 
 exit
 yq_dir=k8s_apps/yq-${yq_version}-linux-amd64
@@ -75,7 +88,7 @@ tar -xf k8s_apps/yq_linux_amd64.tar.gz -C $yq_dir
 tar -C k8s_apps -czf $yq_dir.tar.gz yq-${yq_version}-linux-amd64
 rm -rf $yq_dir k8s_apps/yq_linux_amd64.tar.gz
 
-#### 5. nerdctl
+#### 6. nerdctl
 nerdctl_version=${nerdctl_version:-1.5.0}
 nerdctl_tgz=nerdctl-full-${nerdctl_version}-linux-amd64.tar.gz
 
