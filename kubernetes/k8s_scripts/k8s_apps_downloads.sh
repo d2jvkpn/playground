@@ -31,7 +31,7 @@ function download_images() {
 
 #### 1. k8s_images
 kubeadm config images list | xargs -i docker pull {}
-kube_version=$(kubeadm version -o json | jq -r .clientVersion.gitVersion)
+kube_version=$(kubeadm version -o json | jq -r .clientVersion.gitVersion | sed 's/^v//')
 
 #### 2. ingress-nginx and flannel
 wget -O k8s_apps/ingress-nginx_cloud.yaml \

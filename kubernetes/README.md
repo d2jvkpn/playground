@@ -64,7 +64,7 @@ sed -i "1i cp_ip: $cp_ip" k8s_apps/data/kubeadm-init.yaml
 ansible $cp_node -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 ```
 
-#### 4. Worker nodes
+#### 4. Other nodes
 ```bash
 # worker nodes
 ansible k8s_workers -m shell -a "sudo $(bash k8s_scripts/k8s_join_command.sh worker)"
@@ -72,6 +72,8 @@ ansible k8s_workers -m shell -a "sudo $(bash k8s_scripts/k8s_join_command.sh wor
 # other control-plane nodes
 ansible k8s_cps[1:] -m shell -a "sudo $(bash k8s_scripts/k8s_join_command.sh control-plane)"
 ansible k8s_cps[1:] -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
+
+ansible k8s_cps -m shell -a 'kubectl config set-context --current --namespace=dev'
 ```
 
 #### 5. Apply flannel and ingress-nginx
