@@ -41,31 +41,40 @@ ansible k8s_all --forks 4 -m shell \
   -a "sudo import_local_image=true bash k8s_scripts/k8s_apps_install.sh"
 ```
 
-#### 3. Control Panel nodes
+#### 3. Configuration
 ```bash
 # cp_node=k8s-cp01
 # cp_node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
+
 cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
 cp_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$cp_node.ansible_host")
+ingress_node=k8s-ingress01
+ingress_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$ingress_node.ansible_host")
 
-sed "1i \\\n$cp_ip k8s-control-plane" configs/hosts.txt > ./k8s_apps/data/hosts.txt
+cat > ./k8s_apps/data/hosts.txt << EOF
+
+$cp_ip k8s-control-plane
+$ingress_ip k8s-ingress
+
+$(cat configs/hosts.txt)
+EOF
+
 ansible k8s_all -m file -a "path=./k8s_apps/data state=directory"
 ansible k8s_all -m copy --become -a "src=./k8s_apps/data/hosts.txt dest=./k8s_apps/data/"
 ansible k8s_all -m shell --become -a "cat ./k8s_apps/data/hosts.txt >> /etc/hosts"
+```
 
-ansible $cp_node -m shell -a "sudo bash k8s_scripts/k8s_node_cp.sh k8s-control-plane:6443"
+#### 4. K8s up
+```bash
+#### cp node
+ansible $cp_node -m shell --become -a "bash k8s_scripts/k8s_node_cp.sh k8s-control-plane:6443"
 # ansible $cp_node -m shell -a "sudo kubeadm reset -f"
 
 ansible $cp_node --one-line -m fetch -a \
   "flat=true src=k8s_apps/data/kubeadm-init.yaml dest=k8s_apps/data/"
 
-sed -i "1i cp_ip: $cp_ip" k8s_apps/data/kubeadm-init.yaml
+ansible $cp_node -m shell --become -a 'bash k8s_scripts/kube_copy_config.sh root $USER'
 
-ansible $cp_node -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
-```
-
-#### 4. Other nodes
-```bash
 # worker nodes
 ansible k8s_workers -m shell -a "sudo $(bash k8s_scripts/k8s_join_command.sh worker)"
 
@@ -76,16 +85,10 @@ ansible k8s_cps[1:] -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root 
 ansible k8s_cps -m shell -a 'kubectl config set-context --current --namespace=dev'
 ```
 
-#### 5. Apply flannel and ingress-nginx
+#### 5. Kube up
 ```bash
-ingress_node=k8s-ingress01
-
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_flannel.sh"
-ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_ingress-nginx.sh $ingress_node"
-```
-
-#### 6. Storage
-```bash
+ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_ingress-nginx.sh k8s-ingress"
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
 ```
 
