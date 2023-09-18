@@ -43,18 +43,18 @@ ansible k8s_all --forks 4 -m shell \
 
 #### 3. Configuration
 ```bash
-# cp_node=k8s-cp01
+cp_node=k8s-cp01
 # cp_node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
 
 cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
 cp_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$cp_node.ansible_host")
+
 ingress_node=k8s-ingress01
 ingress_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$ingress_node.ansible_host")
 
 cat > ./k8s_apps/data/hosts.txt << EOF
 
 $cp_ip k8s-control-plane
-$ingress_ip k8s-ingress
 
 $(cat configs/hosts.txt)
 EOF
@@ -73,7 +73,7 @@ ansible $cp_node -m shell --become -a "bash k8s_scripts/k8s_node_cp.sh k8s-contr
 ansible $cp_node --one-line -m fetch -a \
   "flat=true src=k8s_apps/data/kubeadm-init.yaml dest=k8s_apps/data/"
 
-ansible $cp_node -m shell --become -a 'bash k8s_scripts/kube_copy_config.sh root $USER'
+ansible $cp_node -m shel -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 
 # worker nodes
 ansible k8s_workers -m shell -a "sudo $(bash k8s_scripts/k8s_join_command.sh worker)"
@@ -88,7 +88,7 @@ ansible k8s_cps -m shell -a 'kubectl config set-context --current --namespace=de
 #### 5. Kube up
 ```bash
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_flannel.sh"
-ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_ingress-nginx.sh k8s-ingress"
+ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_ingress-nginx.sh $ingress_node"
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
 ```
 
