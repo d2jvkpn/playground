@@ -55,18 +55,3 @@ curl -k https://localhost:6443
 
 #### To generate --certificate-key key, you can use the following command:
 kubeadm certs certificate-key
-
-#### backup and restore
-kubectk get cm -A -o yaml > configmaps.yaml
-kubectk get secrets -A -o yaml > secrets.yaml
-
-sudo apt install etcd-client
-
-mkdir -p etcd
-
-sudo ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379  \
-  --cert=/etc/kubernetes/pki/etcd/server.crt  --key=/etc/kubernetes/pki/etcd/server.key  \
-  --cacert=/etc/kubernetes/pki/etcd/ca.crt snapshot save etcd/snap-$(date +%FT%d-%H-%M).db
-
-sudo ETCDCTL_API=3 etcdctl snapshot restore etcd/snap-2023-09-11T11-13-02.db \
-  --data-dir /var/lib/etcd

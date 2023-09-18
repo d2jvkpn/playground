@@ -92,7 +92,7 @@ ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_ingress-nginx.sh 
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
 ```
 
-#### 7. Explore
+#### 6. Explore
 ```bash
 ansible k8s_all -m shell -a 'top -n 1'
 
@@ -104,7 +104,7 @@ ansible k8s_cps[0] -m shell -a 'kubectl get componentstatuses'
 ansible k8s_cps[0] -m shell -a 'kubectl describe node/k8s-cp01'
 ```
 
-#### 8. Upgrade nodes
+#### 7. Upgrade nodes
 ```bash
 version=1.28.x
 
