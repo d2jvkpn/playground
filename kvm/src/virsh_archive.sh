@@ -18,7 +18,7 @@ if [[ "$op" == "backup" ]]; then
     sudo chown $username:$username data/$target.kvm.raw
 
     zip -j -r $out_zip data/$target.kvm.xml data/$target.kvm.raw
-    rm -rf data/$target.kvm.xml data/$target.kvm.raw
+    rm -f data/$target.kvm.xml data/$target.kvm.raw
     echo "==> saved $out_zip"
 elif [[ "$op" == "restore" ]]; then
     zip_file=$2
@@ -30,6 +30,7 @@ elif [[ "$op" == "restore" ]]; then
 
     virsh define data/$target.kvm.xml
     sudo qemu-img convert -O qcow2 data/$target.kvm.raw /var/lib/libvirt/images/$target.qcow2
+    rm -f data/$target.kvm.xml data/$target.kvm.raw
 else
     >&2 echo "invalid operation"
     exit 1
