@@ -10,7 +10,7 @@ set -x
 
 if [[ "$op" == "backup" ]]; then
     target=$2
-    base=${target}_kvm_$(date +%F)
+    base=data/${target}_kvm_$(date +%FT%H-%M-%S.%N)
     echo "==> backup $target"
     mkdir -p $base
 
