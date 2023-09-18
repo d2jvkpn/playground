@@ -6,29 +6,30 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 op=$1
 username=$(whoami)
 
-set -x
-
 if [[ "$op" == "backup" ]]; then
     target=$2
-    base=data/${target}_kvm_$(date +%FT%H-%M-%S.%N)
-    echo "==> backup $target"
-    mkdir -p $base
+    out_zip=data/${target}_kvm_$(date +%FT%H-%M-%S.%N).zip
+    echo "==> backup $target to $out_zip"
+    mkdir -p data
 
     virsh shutdown $target || true
-    virsh dumpxml $target > $base/$target.kvm.xml
-    sudo qemu-img convert -O raw /var/lib/libvirt/images/$target.qcow2 $base/$target.kvm.raw
-    sudo chown -R $username:$username $base
+    virsh dumpxml $target > data/$target.kvm.xml
+    sudo qemu-img convert -O raw /var/lib/libvirt/images/$target.qcow2 data/$target.kvm.raw
+    sudo chown $username:$username data/$target.kvm.raw
 
-    zip -r $base.zip $base
-    rm -r $base
+    zip -j -r $out_zip data/$target.kvm.xml data/$target.kvm.raw
+    rm -rf data/$target.kvm.xml data/$target.kvm.raw
+    echo "==> saved $out_zip"
 elif [[ "$op" == "restore" ]]; then
-    base=$2
-    echo "==> restore $base"
-    ls $base.kvm.xml $base.kvm.raw > /dev/null
+    zip_file=$2
+    target=$(basename $zip_file | sed 's/_kvm_[1-9]*.*//')
+    mkdir -p data
+    unzip $zip_file -d data
+    echo "==> restore $target"
+    ls data/$target.kvm.xml data/$target.kvm.raw > /dev/null
 
-    virsh define $base.kvm.xml
-    target=$(basename $base)
-    sudo qemu-img convert -O qcow2 $base.kvm.raw /var/lib/libvirt/images/$target.qcow2
+    virsh define data/$target.kvm.xml
+    sudo qemu-img convert -O qcow2 data/$target.kvm.raw /var/lib/libvirt/images/$target.qcow2
 else
     >&2 echo "invalid operation"
     exit 1
