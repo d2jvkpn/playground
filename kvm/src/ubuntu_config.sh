@@ -3,6 +3,13 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
+username=$1
+
+if [ $(id -u) -ne 0 ]; then
+    >&2 echo "Please run as root"
+    exit 1
+fi
+
 export DEBIAN_FRONTEND=noninteractive
 
 #### config
@@ -10,7 +17,6 @@ export DEBIAN_FRONTEND=noninteractive
 # sed -i '/127.0.1.1/s/ .*/ node/' /etc/hosts
 
 # root: bash vm_config.sh ubuntu
-username=$1
 
 mkdir -p ~/Apps/bin ~/.local/bin
 
@@ -38,6 +44,8 @@ EOF
 chown -R $username:$username /home/$username
 
 timedatectl set-timezone Asia/Shanghai
+systemctl disable ubuntu-advantage
+pro config set apt_news=false
 
 echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$username
 # echo -e "\n\n\nPermitRootLogin yes" >> /etc/ssh/sshd_config
@@ -54,9 +62,6 @@ apt install -y software-properties-common apt-transport-https ca-certificates \
 apt clean && apt autoclean
 apt remove && apt autoremove
 dpkg -l | awk '/^rc/{print $2}' | xargs -i sudo dpkg -P {}
-
-systemctl disable ubuntu-advantage
-pro config set apt_news=false
 
 # reboot now
 
