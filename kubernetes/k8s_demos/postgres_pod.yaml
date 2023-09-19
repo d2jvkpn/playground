@@ -23,7 +23,7 @@ spec:
   nodeName: k8s-cp02
   volumes:
   - { name: data, persistentVolumeClaim: { claimName: k8s-cp01 } }
-  # - { name: data, hostPath: { path: "/data/local", type: "DirectoryOrCreate" } }
+  # - { name: data, hostPath: { path: "/data/local/postgres", type: "DirectoryOrCreate" } }
   containers:
   - image: postgres:15-alpine
     imagePullPolicy: Always
@@ -47,5 +47,7 @@ spec:
     - { name: POSTGRES_PASSWORD, value: postgres }
     volumeMounts:
     - { name: data, subPath: postgres, mountPath: /var/lib/postgresql/data/pgdata }
+    # hostPath volume doesn't support subpath
+    # - { name: data, mountPath: /var/lib/postgresql/data/pgdata }
     ports:
     - { containerPort: 5432, name: postgres }

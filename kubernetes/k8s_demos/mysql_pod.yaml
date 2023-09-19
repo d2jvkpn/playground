@@ -1,0 +1,69 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql
+  namespace: dev
+  labels: { app: mysql }
+data:
+  my.cnf: |
+    [mysqld]
+    max_connections = 600
+    read_buffer_size = 1048576
+    net_read_timeout = 360
+    net_write_timeout = 360
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: dev
+spec:
+  type: ClusterIP
+  # clusterIP: None
+  selector: { app: mysql }
+  ports:
+  - { protocol: "TCP", port: 3306, targetPort: 3306 }
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: dev
+  name: mysql
+  labels: { app: mysql }
+spec:
+  nodeName: k8s-cp02
+  volumes:
+  # - { name: data, persistentVolumeClaim: { claimName: k8s-cp01 } }
+  - { name: data, hostPath: { path: "/data/local/mysql", type: "DirectoryOrCreate" } }
+  - { name: config, configMap: { name: mysql } }
+  containers:
+  - image: mysql:8-debian
+    imagePullPolicy: Always
+    name: mysql
+    securityContext: { privileged: true, allowPrivilegeEscalation: true }
+    livenessProbe:
+      tcpSocket: { port: 3306 }
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      successThreshold: 1
+      failureThreshold: 2
+      timeoutSeconds: 3
+    volumeMounts:
+    - { name: config, mountPath: /etc/mysql/ }
+    # - { name: data, subpath: mysql, mountPath: /var/lib/mysql }
+    # hostPath volume doesn't support subpath
+    - { name: data, mountPath: /var/lib/mysql } 
+    env:
+    - name: POD_NAME
+      valueFrom: {fieldRef: { apiVersion: "v1", fieldPath: "metadata.name" } }
+    - { name: MYSQL_ROOT_PASSWORD, value: password }
+    - { name: TZ, value: Asia/Shanghai }
+    - { name: LANG, value: C.UTF-8 }
+    ports:
+    - { containerPort: 3306, name: "mysql" }
+    args:
+    - "--character-set-server=utf8mb4"
+    - "--collation-server=utf8mb4_general_ci"
+    - "--skip-character-set-client-handshake"
