@@ -64,7 +64,7 @@ yq:
 
 ingress:
   images:
-$(echo "$ingress_images" | sed 's/^/- image: /')
+$(echo "$ingress_images" | sed 's/^/  - image: /')
 
 flannel:
   version: $flannel_version
