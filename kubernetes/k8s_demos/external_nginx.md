@@ -1,10 +1,11 @@
 ### External Nginx
 ---
 
-#### 1.1 install nginx on k8s-cp02
+#### 1 install nginx on k8s-cp02
 ```bash
 sudo apt -y install nginx
 systemctl status nginx
+
 ls /etc/nginx/nginx.conf /etc/nginx/conf.d /etc/nginx/sites-enabled
 
 sudo sed 's/listen 80 default_server/listen 1024 default_server/; \
@@ -14,24 +15,9 @@ sudo sed 's/listen 80 default_server/listen 1024 default_server/; \
 sudo nginx -t && sudo nginx -s reload
 ```
 
-#### 1.2 k8s apply
+#### 2 k8s apply
 ```bash
-kubectl apply -f k8s_apps/data/external_nginx.yaml
+kubectl apply -f k8s_demos/external_nginx.yaml
 
 curl -H 'Host: app.nginx.k8s.local' k8s.local
-```
-
-#### 2.1 external name
-```
-cat | kubectl apply -f - <<EOF
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: dev
-  name: k8s.local
-spec:
-  type: ExternalName
-  externalName: k8s.local
-selector: {}
-EOF
 ```

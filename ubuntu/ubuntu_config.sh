@@ -44,7 +44,11 @@ cp configs/npm.conf ~/.npmrc
 
 #### install
 exit
+
 pip3 install requests pandas toml ansible polars
+
 go install github.com/rs/curlie@latest
+
 cargo install cargo-edit cargo-expand dufs tokei delta ripgrep lsd procs fd-find just
-npm install --global gtop serve
+
+npm install --global gtop serve yarn

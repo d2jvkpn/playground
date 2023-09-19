@@ -1,0 +1,51 @@
+## https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: dev
+  name: postgres
+spec:
+  type: ClusterIP
+  # clusterIP: None
+  selector: { app: postgres }
+  ports:
+  - { protocol: TCP, port: 5432, targetPort: 5432 }
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: dev
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  nodeName: k8s-cp02
+  volumes:
+  - { name: data, persistentVolumeClaim: { claimName: k8s-cp01 } }
+  # - { name: data, hostPath: { path: "/data/local", type: "DirectoryOrCreate" } }
+  containers:
+  - image: postgres:15-alpine
+    imagePullPolicy: Always
+    name: postgres
+    securityContext: { privileged: true, allowPrivilegeEscalation: true }
+    livenessProbe:
+      tcpSocket: { port: 5432 }
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      successThreshold: 1
+      failureThreshold: 2
+      timeoutSeconds: 3
+    env:
+    - name: POD_NAME
+      valueFrom: { fieldRef: { apiVersion: v1, fieldPath: metadata.name } }
+    # Use secret in real usage
+    - { name: TZ, value: Asia/Shanghai }
+    - { name: PGTZ, value: Asia/Shanghai }
+    - { name: PGDATA, value: /var/lib/postgresql/data/pgdata }
+    - { name: POSTGRES_USER, value: postgres }
+    - { name: POSTGRES_PASSWORD, value: postgres }
+    volumeMounts:
+    - { name: data, subPath: postgres, mountPath: /var/lib/postgresql/data/pgdata }
+    ports:
+    - { containerPort: 5432, name: postgres }
