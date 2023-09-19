@@ -29,3 +29,17 @@ done
 #### misc
 docker images --digests
 docker inspect registry.k8s.io/ingress-nginx/controller:v1.8.1 | jq -r '.[0].RepoDigests[0]'
+
+## pull lastest images
+# yq -r ".services | .[] | .image" docker-compose.yaml | xargs -i docker pull {}
+docker-compose pull
+docker-compose up -d
+docker-compose up -d service-{01..03}
+docker-compose down
+
+yq -r ".services | keys" docker-compose.yaml
+yq -r ".services | keys[]" docker-compose.yaml
+
+#### get ip address of mysql_service
+docker inspect mysql_service | jq -r ".[0].NetworkSettings.IPAddress"
+mysql -u root -h ${IP} -p
