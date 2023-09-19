@@ -25,13 +25,13 @@ spec:
         persistentVolumeClaim: { claimName: "k8s-cp01" }
       containers:
       - name: demo-api
-        # image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:master-0.1.0
+        # image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:master-0.1.0@sha256xxxx
         image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:dev
         # IfNotPresent, Always, Never
         imagePullPolicy: "Always"
-        #resources:
-        #  requests: { cpu: "200m", memory: "128Mi" }
-        #  limits: { cpu: "500m", memory: "256Mi" }
+        resources:
+          requests: { cpu: "200m", memory: "128Mi" }
+          limits: { cpu: "1000m", memory: "512Mi" }
         livenessProbe:
           # HTTP Status >= 200 and < 400
           httpGet: { path: "/healthz", port: 5030 }
@@ -51,5 +51,5 @@ spec:
         ports:
         - { name: "http", containerPort: 5030, protocol: "TCP" }
         # command: [ tail, -f, /etc/hosts ]
-        command: [ "./main" ]
-        args: [ "--addr=:5030", "--release", "--config=configs/dev.yaml"]
+        command: ["./main"]
+        args: ["--addr=0.0.0.0:5030", "--release", "--config=configs/dev.yaml"]
