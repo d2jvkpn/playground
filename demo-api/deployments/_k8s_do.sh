@@ -50,8 +50,10 @@ kubectl scale --replicas=3 deploy/demo-api
 
 # method 3
 # imagePullPolicy: "Always"
+# imagePullPolicy: "IfNotPresent"
+# imagePullPolicy: "Nerver"
 kubectl set image deploy/demo-api \
-  demo-api=registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:dev@xxxxxx
+  demo-api=registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:dev@sha256:xxxxxx
 
 # method 4
 kubectl patch deploy/demo-api -p \
@@ -77,3 +79,9 @@ kubectl apply -f deployments/k8s_ingress_tls.yaml
 
 curl -k -H 'Host: demo-api.dev.k8s.local' https://k8s.local/api/v1/open/hello
 curl -H 'Host: demo-api.dev.k8s.local' https://k8s.local/api/v1/open/meta
+
+#### get image sha256 of containers
+kubectl get pods -l app=demo-api -o json | jq -r '.items[].status.containerStatuses[0].imageID'
+
+kubectl get pods -l app=demo-api -o json |
+  jq -r '.items[].status | .hostIP + ", " + .containerStatuses[0].imageID + ", " + .phase'
