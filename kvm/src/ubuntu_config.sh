@@ -56,7 +56,7 @@ echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$username
 apt update && apt -y upgrade
 
 apt install -y software-properties-common apt-transport-https ca-certificates \
-  lsb-release gnupg net-tools vim tree file pigz curl jq
+  lsb-release gnupg net-tools vim tree file pigz curl jq zip
 # landscape-common
 
 apt clean && apt autoclean
