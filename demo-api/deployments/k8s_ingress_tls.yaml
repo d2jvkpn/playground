@@ -15,11 +15,11 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - '*.dev.noreply.local'
-    secretName: noreply.local
+    - '*.dev.k8s.local'
+    secretName: k8s.local
 
   rules:
-  - host: demo-api.dev.noreply.local
+  - host: demo-api.dev.k8s.local
     http:
       paths:
       - pathType: Prefix

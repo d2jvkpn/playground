@@ -37,8 +37,8 @@ kubectl get pod/$pod -o wide
 kubectl apply -f deployments/k8s_cluster-ip.yaml
 kubectl apply -f deployments/k8s_ingress_http.yaml
 
-curl -H 'Host: demo-api.dev.noreply.local' k8s-ingress01/api/v1/open/hello
-curl -H 'Host: demo-api.dev.noreply.local' k8s-ingress01/api/v1/open/meta
+curl -H 'Host: demo-api.dev.k8s.local' k8s.local/api/v1/open/hello
+curl -H 'Host: demo-api.dev.k8s.local' k8s.local/api/v1/open/meta
 
 exit
 # method 1
@@ -60,20 +60,20 @@ kubectl patch deploy/demo-api -p \
 exit
 
 #### ingress tls(https)
-kubectl create secret tls noreply.local --key noreply.local.key --cert noreply.local.cer
-# noreply.local.key domains: *.dev.noreply.local, *.test.noreply.local
+kubectl create secret tls k8s.local --key k8s.local.key --cert k8s.local.cer
+# k8s.local.key domains: *.dev.k8s.local, *.test.k8s.local
 
-kubectl -n prod get secret/noreply.local
+kubectl -n prod get secret/k8s.local
 
 #### create secret and ingress-https
-kubectl create secret tls noreply.local --key noreply.local.key --cert noreply.local.cer \
+kubectl create secret tls k8s.local --key k8s.local.key --cert k8s.local.cer \
   --dry-run=client -o yaml | kubectl apply -f -
 
-kubectl create secret docker-registry noreply.local \
-  --docker-server=registry.noreply.local --docker-email=EMAIL \
+kubectl create secret docker-registry k8s.local \
+  --docker-server=registry.k8s.local --docker-email=EMAIL \
   --docker-username=USERNAME --docker-password=PASSWORD
 
 kubectl apply -f deployments/k8s_ingress_tls.yaml
 
-curl -k -H 'Host: demo-api.dev.noreply.local' https://k8s-ingress01/api/v1/open/hello
-curl -H 'Host: demo-api.dev.noreply.local' https://k8s-ingress01/api/v1/open/meta
+curl -k -H 'Host: demo-api.dev.k8s.local' https://k8s.local/api/v1/open/hello
+curl -H 'Host: demo-api.dev.k8s.local' https://k8s.local/api/v1/open/meta

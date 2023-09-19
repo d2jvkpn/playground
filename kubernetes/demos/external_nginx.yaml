@@ -38,7 +38,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: "*.nginx.noreply.local"
+  - host: "*.nginx.k8s.local"
     http:
       paths:
       - pathType: Prefix

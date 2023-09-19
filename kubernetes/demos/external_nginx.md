@@ -18,7 +18,7 @@ sudo nginx -t && sudo nginx -s reload
 ```bash
 kubectl apply -f k8s_apps/data/external_nginx.yaml
 
-curl -H 'Host: app.nginx.noreply.local' k8s-ingress01
+curl -H 'Host: app.nginx.k8s.local' k8s.local
 ```
 
 #### 2.1 external name
@@ -28,10 +28,10 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: dev
-  name: mydomain
+  name: k8s.local
 spec:
   type: ExternalName
-  externalName: mydomain.local
+  externalName: k8s.local
 selector: {}
 EOF
 ```

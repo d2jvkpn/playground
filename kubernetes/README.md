@@ -55,6 +55,7 @@ ingress_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$
 cat > ./k8s_apps/data/hosts.txt << EOF
 
 $cp_ip k8s-control-plane
+$ingress_ip k8s.local
 
 $(cat configs/hosts.txt)
 EOF
@@ -62,6 +63,8 @@ EOF
 ansible k8s_all -m file -a "path=./k8s_apps/data state=directory"
 ansible k8s_all -m copy --become -a "src=./k8s_apps/data/hosts.txt dest=./k8s_apps/data/"
 ansible k8s_all -m shell --become -a "cat ./k8s_apps/data/hosts.txt >> /etc/hosts"
+
+echo "$ingress_ip k8s.local" | sudo tee -a /etc/hosts
 ```
 
 #### 4. K8s up

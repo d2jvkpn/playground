@@ -14,7 +14,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: demo-api.dev.noreply.local
+  - host: demo-api.dev.k8s.local
     http:
       paths:
       - pathType: Prefix
