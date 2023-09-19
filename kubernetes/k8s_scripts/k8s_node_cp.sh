@@ -38,10 +38,10 @@ cert_hash=$(grep -o "\-\-discovery-token-ca-cert-hash [^ ]*" k8s_apps/data/kubea
 cert_key=$(grep -o "\-\-certificate-key [^ ]*" k8s_apps/data/kubeadm-init.out | awk '{print $2; exit}')
 
 cat > k8s_apps/data/kubeadm-init.yaml <<EOF
+version: $version
 datetime: $(date +'%FT%T.%N%:z')
 pod_subnet: $pod_subnet
 cp_endpoint: $cp_endpoint
-version: $version
 token: $token
 cert_hash: $cert_hash
 cert_key: $cert_key

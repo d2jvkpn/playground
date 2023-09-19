@@ -40,7 +40,7 @@ virsh net-dhcp-leases default
 addr=$(virsh domifaddr $target | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
 ssh ubuntu@$addr
 
-bash src/vm_config.sh
+bash src/ubuntu_config.sh
 ```
 
 #### 6. Config SSH Access from Host
