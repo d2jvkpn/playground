@@ -24,14 +24,14 @@ kubectl get deploy/demo-api
 kubectl describe deploy/demo-api
 
 kubectl get pods -o wide
-kubectl get pods | awk '/^demo-api-/{print $1; exit}' | xargs -i kubectl describe pod/{}
-kubectl get pods | awk 'NR>1{print $1}' | xargs -i kubectl logs pod/{}
+kubectl get pods -l app=demo-api | awk 'NR>1{print $1}' | xargs -i kubectl describe pod/{}
+kubectl get pods -l app=demo-api | awk 'NR>1{print $1}' | xargs -i kubectl logs pod/{}
 
 kubectl scale --replicas=2 deploy/demo-api
 
-pod=$(kubectl get pods | awk '/^demo-api-/{print $1; exit}')
+pod=$(kubectl get pods -l app=demo-api | awk 'NR==2{print $1; exit}')
 kubectl get pod/$pod -o wide
-# kubectl exec -it $pod -- sh
+kubectl exec -it $pod -- ls
 
 #### services and ingress http
 kubectl apply -f deployments/k8s_cluster-ip.yaml
