@@ -47,7 +47,7 @@ timedatectl set-timezone Asia/Shanghai
 systemctl disable ubuntu-advantage
 pro config set apt_news=false
 
-echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$username
+echo "$username ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$username
 # echo -e "\n\n\nPermitRootLogin yes" >> /etc/ssh/sshd_config
 
 #### apt update
