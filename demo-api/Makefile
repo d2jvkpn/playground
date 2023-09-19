@@ -22,9 +22,12 @@ build:
 	go build -o target/main -ldflags="-X main.build_time=$(build_time) \
 	  -X main.git_branch=$(git_branch) -X main.git_commit_id=unknown" main.go
 
-build_local:
+build_offline:
 	GIT_Pull=false BUILD_Region=cn DOCKER_Pull=false DOCKER_Tag=dev \
-	  bash deployments/docker_build.sh master
+	bash deployments/docker_build.sh master
+
+build_local:
+	BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master
 
 build_remote:
 	ssh -F configs/ssh.conf build_host "cd docker_build/playground/demo-api && \
