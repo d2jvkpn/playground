@@ -11,14 +11,15 @@ git_branch=$1
 app_name=$(yq .app project.yaml)
 app_version=$(yq .version project.yaml)
 image=$(yq .image project.yaml)
+
 tag=${git_branch}-$(yq .version project.yaml)
 tag=${DOCKER_Tag:-$tag}
-build_time=$(date +'%FT%T%:z')
+build_time=$(date +'%FT%T.%N%:z')
 
 # env variables
 GIT_Pull=$(printenv GIT_Pull || true)
-DOCKER_Pull=$(printenv DOCKER_Pull || true)
-BUILD_Region=$(printenv BUILD_Region || true)
+DOCKER_Pull=${DOCKER_Pull:-"true"}
+BUILD_Region=${BUILD_Region:-""}
 
 #### git
 function on_exit() {
@@ -42,8 +43,8 @@ git_tree_state="clean"
 uncommitted=$(git status --short)
 unpushed=$(git diff origin/$git_branch..HEAD --name-status)
 # [[ ! -z "$uncommitted$unpushed" ]] && git_tree_state="dirty"
-[[ ! -z "$uncommitted" ]] && git_tree_state="uncommitted"
 [[ ! -z "$unpushed" ]] && git_tree_state="unpushed"
+[[ ! -z "$uncommitted" ]] && git_tree_state="uncommitted"
 
 ####
 echo "==> docker build $image:$tag"

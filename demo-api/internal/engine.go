@@ -70,6 +70,7 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 	}
 	static := router.Group("/static", ginx.CacheControl(3600))
 	static.StaticFS("/", http.FS(fsys))
+	ginx.ServeStaticDir("/site", "./site", false)(router)
 
 	// #### debug apis
 	api.Load_Debug(router)

@@ -1,0 +1,5 @@
+configs/
+.git/
+site.
+logs/
+target/
