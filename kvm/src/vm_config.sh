@@ -55,6 +55,9 @@ apt clean && apt autoclean
 apt remove && apt autoremove
 dpkg -l | awk '/^rc/{print $2}' | xargs -i sudo dpkg -P {}
 
+systemctl disable ubuntu-advantage
+pro config set apt_news=false
+
 # reboot now
 
 #### enable virsh Console access

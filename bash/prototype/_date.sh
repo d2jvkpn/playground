@@ -7,6 +7,12 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 date --rfc-3339=seconds | sed "s/ /T/"
 
 date +'%FT%T.%N%:z'
+date +'%FT%H-%M-%S-%N'
+date +'%FT%s'
+
+hostnamectl status
+timedatectl show
+timedatectl set-hostname Asia/Shanghai
 
 TZ='America/Los_Angeles' date +'%w %W %Z %b'
 
