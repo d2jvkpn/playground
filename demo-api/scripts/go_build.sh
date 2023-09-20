@@ -25,8 +25,8 @@ GO_ldflags="-X main.build_time=$build_time \
   -X main.git_tree_state=$git_tree_state"
 
 mkdir -p target
-go build -ldflags="$GO_ldflags" -o target/$app main.go
-echo "saved target/$app"
 
-GOOS=windows GOARCH=amd64 go build -ldflags="$ldflags" -o target/$app.exe main.go
+go build -ldflags="$GO_ldflags" -o target/$app main.go
+GOOS=windows GOARCH=amd64 go build -ldflags="$GO_ldflags" -o target/$app.exe main.go
+
 ls -l ./target/
