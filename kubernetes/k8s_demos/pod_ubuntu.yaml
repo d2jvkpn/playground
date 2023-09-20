@@ -3,8 +3,7 @@ kind: Pod
 metadata:
   namespace: dev
   name: ubuntu
-  labels:
-    app: ubuntu
+  labels: { app: ubuntu }
 spec:
   containers:
   - name: ubuntu

@@ -16,7 +16,7 @@ import (
 	"github.com/d2jvkpn/gotk"
 )
 
-//go:generate bash ./deployments/go_build.sh
+//go:generate bash ./scripts/go_build.sh
 
 var (
 	//go:embed project.yaml

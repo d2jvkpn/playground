@@ -15,6 +15,9 @@ run:
 run-dev:
 	echo "TODO"
 
+protoc:
+	protoc --go-grpc_out=./ --go_out=./ --proto_path=./proto proto/*.proto
+
 #### build
 build:
 	echo ">>> git branch: $(git_branch)"
@@ -24,7 +27,7 @@ build:
 
 build_offline:
 	GIT_Pull=false BUILD_Region=cn DOCKER_Pull=false DOCKER_Tag=dev \
-	bash deployments/docker_build.sh master
+	bash scripts/docker_build.sh master
 
 build_local:
 	BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master

@@ -21,8 +21,8 @@ WORKDIR /opt/$APP_Name
 ADD ./main.go ./go.mod ./go.sum ./project.yaml  ./
 COPY ./internal ./internal
 # COPY ./pkg ./pkg
-# COPY ./proto ./proto
 # COPY ./migrations ./migrations
+COPY ./proto ./proto
 COPY ./vendor ./vendor
 
 # in alpine, date doesn't parse %:z

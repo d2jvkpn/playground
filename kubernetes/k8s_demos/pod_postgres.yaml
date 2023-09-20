@@ -17,8 +17,7 @@ kind: Pod
 metadata:
   namespace: dev
   name: postgres
-  labels:
-    app: postgres
+  labels: { app: postgres }
 spec:
   nodeName: k8s-cp02
   volumes:

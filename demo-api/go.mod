@@ -1,14 +1,16 @@
 module demo-api
 
-go 1.21.0
+go 1.21.1
 
 require (
-	github.com/d2jvkpn/gotk v0.0.0-20230914123942-46d86ddd2c30
-	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230913232555-854f0c4f9070
-	github.com/d2jvkpn/gotk/ginx v0.0.0-20230913232555-854f0c4f9070
+	github.com/d2jvkpn/gotk v0.0.0-20230920062155-e77ae92d8170
+	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230920062155-e77ae92d8170
+	github.com/d2jvkpn/gotk/ginx v0.0.0-20230920062155-e77ae92d8170
 	github.com/gin-gonic/gin v1.9.1
 	github.com/spf13/viper v1.16.0
-	go.uber.org/zap v1.25.0
+	go.uber.org/zap v1.26.0
+	google.golang.org/grpc v1.58.1
+	google.golang.org/protobuf v1.31.0
 )
 
 require (
@@ -22,6 +24,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.15.4 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
@@ -49,7 +52,7 @@ require (
 	golang.org/x/net v0.15.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
-	google.golang.org/protobuf v1.31.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20230913181813-007df8e322eb // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
