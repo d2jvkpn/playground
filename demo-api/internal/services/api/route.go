@@ -9,6 +9,7 @@ import (
 	"github.com/d2jvkpn/gotk"
 	"github.com/d2jvkpn/gotk/ginx"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func Load_OpenV1(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
@@ -44,20 +45,29 @@ func Load_Biz(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 	biz := router.Group("/api/v1/biz", handlers...)
 
 	biz.GET("/world", func(ctx *gin.Context) {
-		ginx.SetRequestId(ctx, "world_001")
+		requestId := uuid.NewString()
+
+		ginx.SetRequestId(ctx, requestId)
 		ginx.SetError(ctx, fmt.Errorf("world_error"))
-		ginx.SetIdentity(ctx, map[string]any{"biz_id": "world_a"})
+		ginx.SetIdentity(ctx, map[string]string{"biz_id": "world_a", "ip": ctx.ClientIP()})
 		ginx.SetData(ctx, map[string]any{"a": "*"})
 		ginx.SetData(ctx, map[string]any{"b": 42})
 
-		ctx.JSON(http.StatusOK, gin.H{"code": 0, "msg": "ok", "data": gin.H{"ans": 42}})
+		ctx.JSON(http.StatusOK, gin.H{
+			"request_id": requestId, "code": 0, "msg": "ok", "data": gin.H{"ans": 42},
+		})
 	})
 
 	biz.GET("/div_panic", func(ctx *gin.Context) {
-		ginx.SetRequestId(ctx, "div_panic_001")
-		ginx.SetIdentity(ctx, map[string]any{"biz_id": "div_panci"})
+		requestId := uuid.NewString()
+
+		ginx.SetRequestId(ctx, requestId)
+		ginx.SetIdentity(ctx, map[string]string{"biz_id": "div_panci"})
 		ginx.SetData(ctx, map[string]any{"ans": 42})
-		ctx.JSON(http.StatusOK, gin.H{"code": 0, "msg": "ok", "data": gin.H{"ans": divPanic()}})
+
+		ctx.JSON(http.StatusOK, gin.H{
+			"request_id": requestId, "code": 0, "msg": "ok", "data": gin.H{"ans": divPanic()},
+		})
 	})
 }
 

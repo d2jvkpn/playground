@@ -34,7 +34,7 @@ github.com/d2jvkpn/gotk
 # github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230920062155-e77ae92d8170
 ## explicit; go 1.20
 github.com/d2jvkpn/gotk/cloud-logging
-# github.com/d2jvkpn/gotk/ginx v0.0.0-20230920062155-e77ae92d8170
+# github.com/d2jvkpn/gotk/ginx v0.0.0-20230920073252-1cd8f32d17c6
 ## explicit; go 1.20
 github.com/d2jvkpn/gotk/ginx
 # github.com/fsnotify/fsnotify v1.6.0
@@ -85,6 +85,9 @@ github.com/golang/protobuf/ptypes
 github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
+# github.com/google/uuid v1.3.1
+## explicit
+github.com/google/uuid
 # github.com/hashicorp/hcl v1.0.0
 ## explicit
 github.com/hashicorp/hcl
