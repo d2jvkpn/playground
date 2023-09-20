@@ -40,7 +40,7 @@ cat > proto/log.proto << EOF
 syntax = "proto3";
 package proto;
 
-// option go_package = "./proto";
+option go_package = "./proto";
 // import "google/protobuf/timestamp.proto";
 
 message LogData {
