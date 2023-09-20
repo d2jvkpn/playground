@@ -86,7 +86,8 @@ func main() {
 	logger.Info("sevice is up", "adderss", addr, "config", config, "release", release)
 
 	quit = make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt, syscall.SIGTERM, syscall.SIGUSR2)
+	// signal.Notify(quit, os.Interrupt, syscall.SIGTERM, syscall.SIGUSR2)
+	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 
 	select {
 	case err = <-errch:

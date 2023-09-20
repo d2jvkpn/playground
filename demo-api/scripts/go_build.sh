@@ -28,5 +28,5 @@ mkdir -p target
 go build -ldflags="$GO_ldflags" -o target/$app main.go
 echo "saved target/$app"
 
-# GOOS=windows GOARCH=amd64 go build -ldflags="$ldflags" -o target/$app.exe main.go
+GOOS=windows GOARCH=amd64 go build -ldflags="$ldflags" -o target/$app.exe main.go
 ls -l ./target/
