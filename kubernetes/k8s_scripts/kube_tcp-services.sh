@@ -11,7 +11,7 @@ kubectl -n ingress-nginx get deploy/ingress-nginx-controller -o yaml |
 tcp_svc_cm=$(
   kubectl -n ingress-nginx get deploy/ingress-nginx-controller -o yaml |
     yq eval '.spec.template.spec.containers[0].args' |
-    grep "tcp-services-configmap"
+    grep "\-\-tcp-services-configmap"
 )
 
 [ -z "$tcp_svc_cm" ] &&
