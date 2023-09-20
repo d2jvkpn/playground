@@ -56,10 +56,10 @@ github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDk
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20200629203442-efcf912fb354/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
-github.com/d2jvkpn/gotk v0.0.0-20230920062155-e77ae92d8170 h1:24zbhTyG4zUmjuBzZNy0YV4Br7B1juVsOgkvQrLkW+A=
-github.com/d2jvkpn/gotk v0.0.0-20230920062155-e77ae92d8170/go.mod h1:1vgyq4QEu/hUeuybnE7Lb93Qpd2QxCgwhfT+BMpE7+o=
-github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230920062155-e77ae92d8170 h1:2zCeFzbTmBBEHQ1GoJ+iPlM+64FKWCWHV7vAw171C2k=
-github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230920062155-e77ae92d8170/go.mod h1:qZRoemwvy1V8sznrtYsvKp4abeRE7BTLOD3SeCw+p6M=
+github.com/d2jvkpn/gotk v0.0.0-20230920073252-1cd8f32d17c6 h1:mnlAYxkVd39AJHDP4hghOj8746Gx8JDvcbPHMAtaXGI=
+github.com/d2jvkpn/gotk v0.0.0-20230920073252-1cd8f32d17c6/go.mod h1:1vgyq4QEu/hUeuybnE7Lb93Qpd2QxCgwhfT+BMpE7+o=
+github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230920073252-1cd8f32d17c6 h1:soEyhwDJyEGQOFMo7WjQfZ8K9IFE/NsxILlfj93O5ws=
+github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230920073252-1cd8f32d17c6/go.mod h1:qZRoemwvy1V8sznrtYsvKp4abeRE7BTLOD3SeCw+p6M=
 github.com/d2jvkpn/gotk/ginx v0.0.0-20230920073252-1cd8f32d17c6 h1:fMkMzV6s30qd3P8YtEyfE5DuhSD2Qn1N+z9N75NBXqw=
 github.com/d2jvkpn/gotk/ginx v0.0.0-20230920073252-1cd8f32d17c6/go.mod h1:xIYR0+3jmpqbgW/QJtP9ZAWynIDnpeWVGEJUMv5F07Q=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
