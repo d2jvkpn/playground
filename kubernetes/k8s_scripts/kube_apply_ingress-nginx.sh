@@ -22,29 +22,24 @@ kubectl taint nodes $ingress_node --overwrite node-type=ingress:NoSchedule
 
 # kubectl get nodes/$ingress_node -o yaml
 
-# sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
-#   awk 'BEGIN{RS=ORS="---"}
-#   /Deployment/{sub("nodeSelector:", "nodeSelector:\n        node-type: ingress")}
-#   { print }' > k8s_apps/data/ingress-nginx.yaml
+sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml > k8s_apps/data/ingress-nginx.yaml
 
 fields='''
-      tolerations:
-      - { key: node-type, value: ingress, operator: Equal, effect: NoSchedule }
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                - { key: node-type, operator: In, values: [ingress] }
-'''
+tolerations:
+- { key: node-type, value: ingress, operator: Equal, effect: NoSchedule }
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - { key: node-type, operator: In, values: [ingress] }'''
 
 sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
-  awk -v fields="$fields" 'BEGIN{RS=ORS="---"}
-  /Deployment/{$0=$0""fields} {print}' |
+  awk -v fields="$(echo "$fields" | sed 's/^/      /')" \
+    'BEGIN{RS=ORS="---"} /Deployment/{$0=$0""fields"\n"} {print}' |
   yq --prettyPrint > k8s_apps/data/ingress-nginx.yaml
 
 kubectl apply -f k8s_apps/data/ingress-nginx.yaml
-# kubectl get pods -A -o wide
 # kubectl delete -f k8s_apps/data/ingress-nginx.yaml
 
 kubectl -n ingress-nginx patch svc/ingress-nginx-controller \
@@ -54,7 +49,14 @@ kubectl -n ingress-nginx patch svc/ingress-nginx-controller \
 kubectl -n ingress-nginx get deploy
 kubectl -n ingress-nginx get pods --field-selector status.phase=Running -o wide
 kubectl -n ingress-nginx get svc/ingress-nginx-controller
-# kubectl -n ingress-nginx get pod -o wide
-# kubectl -n ingress-nginx describe pod
 
 # curl -i $node_ip
+# curl -i k8s.local
+
+####
+exit
+
+sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
+  awk 'BEGIN{RS=ORS="---"}
+  /Deployment/{sub("nodeSelector:", "nodeSelector:\n        node-type: ingress")}
+  { print }' > k8s_apps/data/ingress-nginx.yaml

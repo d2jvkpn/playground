@@ -7,6 +7,7 @@ spec:
    type: ClusterIP
    ports:
    - { protocol: TCP, name: postgres, port: 5432, targetPort: 5432 }
+   - { protocol: TCP, name: mysql, port: 3306, targetPort: 3306 }
 
 ---
 apiVersion: v1
@@ -20,3 +21,4 @@ subsets:
     - ip: 192.168.122.136
     ports:
     - { name: postgres, port: 5432 }
+    - { name: mysql, port: 3306 }
