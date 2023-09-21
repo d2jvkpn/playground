@@ -22,6 +22,9 @@ kubectl -n ingress-nginx get deploy/ingress-nginx-controller -o yaml |
   yq eval '.spec.template.spec.containers[0].args += ['$elem']' |
   kubectl apply -f -
 
+kubectl -n ingress-nginx get deploy/ingress-nginx-controller -o yaml |
+  yq 'del .status' > k8s_apps/data/ingress-nginx.deploy_controller.yaml
+
 ####
 # kubectl -n ingress-nginx get deploy/ingress-nginx-controller -o yaml |
 #   yq eval '.spec.template.spec.containers[0].args += ["--udp-services-configmap=$(POD_NAMESPACE)/udp-services"]' |
@@ -40,6 +43,9 @@ elem='{"name":"'$srv'","protocol":"TCP","port":'$port',"targetPort":'$port'}'
 kubectl -n ingress-nginx get services/ingress-nginx-controller -o yaml |
   yq eval '.spec.ports += ['$elem']' |
   kubectl apply -f -
+
+kubectl -n ingress-nginx get svc/ingress-nginx-controller -o yaml |
+  yq 'del .status' > k8s_apps/data/ingress-nginx.svc_controller.yaml
 
 # kubectl -n ingress-nginx get services/ingress-nginx-controller
 
@@ -62,6 +68,9 @@ kubectl -n ingress-nginx get cm/tcp-services -o yaml |
   kubectl apply -f -
 
 kubectl -n ingress-nginx get cm/tcp-services -o yaml
+
+kubectl -n ingress-nginx get cm/tcp-services -o yaml |
+  yq 'del .metadata' > k8s_apps/data/ingress-nginx.cm_tcp-services.yaml
 
 exit
 

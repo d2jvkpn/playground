@@ -22,20 +22,22 @@ kubectl taint nodes $ingress_node --overwrite node-type=ingress:NoSchedule
 
 # kubectl get nodes/$ingress_node -o yaml
 sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
-  awk -v node="$ingress_node" 'BEGIN{RS=ORS="---"; h="\n      "; } \
-    /Deployment/{
-      $0=$0""h"nodeName: "node;
-      $0=$0""h"tolerations: [{key: node-type,value: ingress,operator: Equal,effect: NoSchedule}]\n"
+  awk -v ingress_node="$ingress_node" -v  node_ip=$node_ip \
+    'BEGIN{RS=ORS="---"; h="\n      "; } \
+    /\nkind: Deployment\n/{
+      $0=$0""h"nodeName: "ingress_node;
+      $0=$0""h"tolerations: [{key: node-type, value: ingress,operator: Equal,effect: NoSchedule}]\n"
     }
+    /\nkind: Service\n/ && /name: ingress-nginx-controller\n/ {$0=$0"  externalIPs: ["node_ip"]\n"}
     {print}' |
   yq --prettyPrint > k8s_apps/data/ingress-nginx.yaml
 
 kubectl apply -f k8s_apps/data/ingress-nginx.yaml
 # kubectl delete -f k8s_apps/data/ingress-nginx.yaml
 
-kubectl -n ingress-nginx patch svc/ingress-nginx-controller \
-  -p "$(printf '{"spec":{"externalIPs":["%s"]}}' $node_ip)"
-# -p '{"spec":{"externalIPs":["'$ip'"]}}'
+# kubectl -n ingress-nginx patch svc/ingress-nginx-controller \
+#   -p "$(printf '{"spec":{"externalIPs":["%s"]}}' $node_ip)"
+#   -p '{"spec":{"externalIPs":["'$node_ip'"]}}'
 
 kubectl -n ingress-nginx get deploy
 kubectl -n ingress-nginx get pods --field-selector status.phase=Running -o wide
