@@ -9,25 +9,25 @@ namespace=${namespace:-dev}
 srv=$1
 port=$2
 
-kubectl -n ingress-nginx get deploy/ingress-nginx-controller -o yaml |
-  yq eval '.spec.template.spec.containers[0].args'
-
-tcp_svc_cm=$(
+####
+found=$(
   kubectl -n ingress-nginx get deploy/ingress-nginx-controller -o yaml |
     yq eval '.spec.template.spec.containers[0].args' |
     grep "\-\-tcp-services-configmap"
 )
 
-[ -z "$tcp_svc_cm" ] &&
+[ -z "$found" ] &&
 kubectl -n ingress-nginx get deploy/ingress-nginx-controller -o yaml |
   yq eval '.spec.template.spec.containers[0].args +=
     ["--tcp-services-configmap=$(POD_NAMESPACE)/tcp-services"]' |
   kubectl apply -f -
 
+####
 # kubectl -n ingress-nginx get deploy/ingress-nginx-controller -o yaml |
 #   yq eval '.spec.template.spec.containers[0].args += ["--udp-services-configmap=$(POD_NAMESPACE)/udp-services"]' |
 #   kubectl apply -f -
 
+####
 found=$(
   kubectl -n ingress-nginx get services/ingress-nginx-controller -o yaml |
     yq eval .spec.ports |
@@ -39,8 +39,9 @@ kubectl -n ingress-nginx get services/ingress-nginx-controller -o yaml |
   yq eval '.spec.ports += [{"name":"'$srv'","protocol":"TCP","port":'$port',"targetPort":'$port'}]' |
   kubectl apply -f -
 
-kubectl -n ingress-nginx get services/ingress-nginx-controller
+# kubectl -n ingress-nginx get services/ingress-nginx-controller
 
+####
 found=$(kubectl -n ingress-nginx get cm/tcp-services || true)
 
 [ -z "$found" ] &&
