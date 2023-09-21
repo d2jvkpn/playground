@@ -67,8 +67,6 @@ kubectl -n ingress-nginx get cm/tcp-services -o yaml |
   yq eval '.data += {"'$port'":"'$namespace/$srv:$port'"}' |
   kubectl apply -f -
 
-kubectl -n ingress-nginx get cm/tcp-services -o yaml
-
 kubectl -n ingress-nginx get cm/tcp-services -o yaml |
   yq 'del .metadata' > k8s_apps/data/ingress-nginx.cm_tcp-services.yaml
 
