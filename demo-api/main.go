@@ -87,10 +87,8 @@ func main() {
 
 	logger.Info(
 		"sevice is up",
-		"adderss", addr,
-		"rpc_address", rpcAddr,
-		"config", config,
-		"release", release,
+		"adderss", addr, "rpc_address", rpcAddr,
+		"config", config, "release", release,
 	)
 
 	quit = make(chan os.Signal, 1)

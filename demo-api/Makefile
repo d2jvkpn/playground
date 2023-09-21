@@ -16,9 +16,8 @@ protoc_run:
 	protoc --go-grpc_out=./ --go_out=./ --proto_path=./proto proto/*.proto
 
 protoc_impl:
-	sed -i '/^\tmustEmbedUnimplemented/s#\t#\t// #' proto/*.pb.go
-	go fmt ./...
-	go vet ./...
+	sed -i '/^\tmustEmbedUnimplemented/s#\t#\t// #' proto/*_grpc.pb.go
+	go fmt ./... && go vet ./...
 
 build_bin:
 	bash scripts/go_build.sh
