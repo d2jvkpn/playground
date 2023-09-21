@@ -6,8 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/*
 
 namespace=${namespace:-dev}
-srv=$1
-port=$2
+srv=$1; port=$2
 
 ####
 found=$(
@@ -16,10 +15,11 @@ found=$(
     grep "\-\-tcp-services-configmap"
 )
 
+elem='"--tcp-services-configmap=$(POD_NAMESPACE)/tcp-services"'
+
 [ -z "$found" ] &&
 kubectl -n ingress-nginx get deploy/ingress-nginx-controller -o yaml |
-  yq eval '.spec.template.spec.containers[0].args +=
-    ["--tcp-services-configmap=$(POD_NAMESPACE)/tcp-services"]' |
+  yq eval '.spec.template.spec.containers[0].args += ['$elem']' |
   kubectl apply -f -
 
 ####
@@ -34,9 +34,11 @@ found=$(
     grep -w $port
 )
 
+elem='{"name":"'$srv'","protocol":"TCP","port":'$port',"targetPort":'$port'}'
+
 [ -z "$found" ] &&
 kubectl -n ingress-nginx get services/ingress-nginx-controller -o yaml |
-  yq eval '.spec.ports += [{"name":"'$srv'","protocol":"TCP","port":'$port',"targetPort":'$port'}]' |
+  yq eval '.spec.ports += ['$elem']' |
   kubectl apply -f -
 
 # kubectl -n ingress-nginx get services/ingress-nginx-controller
@@ -56,14 +58,12 @@ data:
 EOF
 
 kubectl -n ingress-nginx get cm/tcp-services -o yaml |
-  yq eval '.data += {"'$port'": "'$namespace/$srv:$port'"}' |
+  yq eval '.data += {"'$port'":"'$namespace/$srv:$port'"}' |
   kubectl apply -f -
 
 kubectl -n ingress-nginx get cm/tcp-services -o yaml
 
 exit
-
-# psql --host k8s.local --username postgres --port 5432
 
 postgres_port=$(
   kubectl -n ingress-nginx get services/ingress-nginx-controller -o yaml |
@@ -86,3 +86,5 @@ mysql_port=$(
 kubectl -n ingress-nginx get services/ingress-nginx-controller -o yaml |
   yq eval '.spec.ports += [{"name":"mysql","protocol":"TCP","port":3306,"targetPort":3306}]' |
   kubectl apply -f -
+
+# psql --host k8s.local --username postgres --port 5432
