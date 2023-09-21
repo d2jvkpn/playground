@@ -25,14 +25,13 @@ var (
 
 func main() {
 	var (
-		release  bool
-		addr     string
-		grpcAddr string
-		config   string
-		err      error
-		logger   *slog.Logger
-		errch    chan error
-		quit     chan os.Signal
+		release       bool
+		addr, rpcAddr string
+		config        string
+		err           error
+		logger        *slog.Logger
+		errch         chan error
+		quit          chan os.Signal
 	)
 
 	// logger = slog.New(slog.NewTextHandler(os.Stderr, nil))
@@ -73,10 +72,10 @@ func main() {
 		return
 	}
 
-	grpcAddr = settings.ConfigField("rpc").GetString("addr")
+	rpcAddr = settings.ConfigField("rpc").GetString("addr")
 	settings.Meta["config"] = config
 	settings.Meta["address"] = addr
-	settings.Meta["grpc_address"] = grpcAddr
+	settings.Meta["rpc_address"] = rpcAddr
 	settings.Meta["release"] = release
 	settings.Meta["startup_time"] = time.Now().Format(time.RFC3339)
 
@@ -88,7 +87,10 @@ func main() {
 
 	logger.Info(
 		"sevice is up",
-		"adderss", addr, "config", "grpc_address", grpcAddr, config, "release", release,
+		"adderss", addr,
+		"rpc_address", rpcAddr,
+		"config", config,
+		"release", release,
 	)
 
 	quit = make(chan os.Signal, 1)
