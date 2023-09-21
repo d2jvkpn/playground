@@ -21,22 +21,13 @@ kubectl taint nodes $ingress_node --overwrite node-type=ingress:NoSchedule
 # kubectl taint nodes $ingress_node node-type=ingress:NoSchedule-
 
 # kubectl get nodes/$ingress_node -o yaml
-
-sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml > k8s_apps/data/ingress-nginx.yaml
-
-fields='''
-tolerations:
-- { key: node-type, value: ingress, operator: Equal, effect: NoSchedule }
-affinity:
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - { key: node-type, operator: In, values: [ingress] }'''
-
 sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
-  awk -v fields="$(echo "$fields" | sed 's/^/      /')" \
-    'BEGIN{RS=ORS="---"} /Deployment/{$0=$0""fields"\n"} {print}' |
+  awk -v node="$ingress_node" 'BEGIN{RS=ORS="---"; h="\n      "; } \
+    /Deployment/{
+      $0=$0""h"nodeName: "node;
+      $0=$0""h"tolerations: [{key: node-type,value: ingress,operator: Equal,effect: NoSchedule}]\n"
+    }
+    {print}' |
   yq --prettyPrint > k8s_apps/data/ingress-nginx.yaml
 
 kubectl apply -f k8s_apps/data/ingress-nginx.yaml
@@ -55,6 +46,21 @@ kubectl -n ingress-nginx get svc/ingress-nginx-controller
 
 ####
 exit
+
+fields='''
+tolerations:
+- { key: node-type, value: ingress, operator: Equal, effect: NoSchedule }
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - { key: node-type, operator: In, values: [ingress] }'''
+
+sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
+  awk -v fields="$(echo "$fields" | sed 's/^/      /')" \
+    'BEGIN{RS=ORS="---"} /Deployment/{$0=$0""fields"\n"} {print}' |
+  yq --prettyPrint > k8s_apps/data/ingress-nginx.yaml
 
 sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
   awk 'BEGIN{RS=ORS="---"}
