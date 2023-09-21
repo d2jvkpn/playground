@@ -17,11 +17,16 @@ kubectl config set-context --current --namespace=dev
 # kubectl config view | grep namespace
 
 # kubectl -n dev create configmap demo-api --from-file=deployments/dev.yaml
-kubectl create configmap demo-api --from-file=deployments/dev.yaml
+# kubectl create configmap demo-api --from-file=deployments/dev.yaml
+
+kubectl create configmap demo-api --from-file=deployments/dev.yaml -o yaml --dry-run=client |
+  kubectl apply -f -
+
+kubectl get configmap demo-api -o yaml
 
 kubectl apply -f deployments/k8s_deploy.yaml
-kubectl get deploy/demo-api
-kubectl describe deploy/demo-api
+# kubectl get deploy/demo-api
+# kubectl describe deploy/demo-api
 
 kubectl get pods -o wide
 kubectl get pods -l app=demo-api | awk 'NR>1{print $1}' | xargs -i kubectl describe pod/{}
