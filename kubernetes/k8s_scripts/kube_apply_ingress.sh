@@ -14,11 +14,11 @@ node_ip=$(kubectl get node/$ingress_node -o wide | awk 'NR==2{print $6}')
 mkdir -p k8s_apps/data
 # https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
-kubectl label nodes/$ingress_node --overwrite node-type=ingress
-# kubectl label nodes/$ingress_node node-type-
+kubectl label nodes/$ingress_node --overwrite role=ingress
+# kubectl label nodes/$ingress_node role-
 
-kubectl taint nodes $ingress_node --overwrite node-type=ingress:NoSchedule
-# kubectl taint nodes $ingress_node node-type=ingress:NoSchedule-
+kubectl taint nodes $ingress_node --overwrite role=ingress:NoSchedule
+# kubectl taint nodes $ingress_node role=ingress:NoSchedule-
 
 # kubectl get nodes/$ingress_node -o yaml
 sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
@@ -26,7 +26,7 @@ sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
     'BEGIN{RS=ORS="---"; h="\n      "; } \
     /\nkind: Deployment\n/{
       $0=$0""h"nodeName: "ingress_node;
-      $0=$0""h"tolerations: [{key: node-type, value: ingress,operator: Equal,effect: NoSchedule}]\n"
+      $0=$0""h"tolerations: [{key: role, value: ingress, operator: Equal,effect: NoSchedule}]\n"
     }
     /\nkind: Service\n/ && /name: ingress-nginx-controller\n/ {$0=$0"  externalIPs: ["node_ip"]\n"}
     {print}' |
@@ -51,13 +51,13 @@ exit
 
 fields='''
 tolerations:
-- { key: node-type, value: ingress, operator: Equal, effect: NoSchedule }
+- { key: role, value: ingress, operator: Equal, effect: NoSchedule }
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
       nodeSelectorTerms:
       - matchExpressions:
-        - { key: node-type, operator: In, values: [ingress] }'''
+        - { key: role, operator: In, values: [ingress] }'''
 
 sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
   awk -v fields="$(echo "$fields" | sed 's/^/      /')" \
@@ -66,5 +66,5 @@ sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
 
 sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
   awk 'BEGIN{RS=ORS="---"}
-  /Deployment/{sub("nodeSelector:", "nodeSelector:\n        node-type: ingress")}
+  /Deployment/{sub("nodeSelector:", "nodeSelector:\n        role: ingress")}
   { print }' > k8s_apps/data/ingress-nginx.yaml
