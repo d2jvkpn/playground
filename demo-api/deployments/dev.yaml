@@ -1,4 +1,5 @@
-service_name: demo-api
+hello:
+  world: 42
 
 rpc:
   addr: 0.0.0.0:5040
