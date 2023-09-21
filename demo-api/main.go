@@ -25,13 +25,14 @@ var (
 
 func main() {
 	var (
-		release bool
-		addr    string
-		config  string
-		err     error
-		logger  *slog.Logger
-		errch   chan error
-		quit    chan os.Signal
+		release  bool
+		addr     string
+		grpcAddr string
+		config   string
+		err      error
+		logger   *slog.Logger
+		errch    chan error
+		quit     chan os.Signal
 	)
 
 	// logger = slog.New(slog.NewTextHandler(os.Stderr, nil))
@@ -66,24 +67,29 @@ func main() {
 	}
 
 	flag.Parse()
-	settings.Meta["config"] = config
-	settings.Meta["address"] = addr
-	settings.Meta["release"] = release
-	settings.Meta["startup_time"] = time.Now().Format(time.RFC3339)
-
-	// logger.Info("Hello", "world", 42, "key", "value")
 
 	if err = internal.Load(config, release); err != nil {
 		logger.Error("load", "error", err)
 		return
 	}
 
+	grpcAddr = settings.ConfigField("rpc").GetString("addr")
+	settings.Meta["config"] = config
+	settings.Meta["address"] = addr
+	settings.Meta["grpc_address"] = grpcAddr
+	settings.Meta["release"] = release
+	settings.Meta["startup_time"] = time.Now().Format(time.RFC3339)
+
+	// logger.Info("Hello", "world", 42, "key", "value")
 	if errch, err = internal.Run(addr); err != nil {
 		logger.Error("run", "error", err)
 		return
 	}
 
-	logger.Info("sevice is up", "adderss", addr, "config", config, "release", release)
+	logger.Info(
+		"sevice is up",
+		"adderss", addr, "config", "grpc_address", grpcAddr, config, "release", release,
+	)
 
 	quit = make(chan os.Signal, 1)
 	// signal.Notify(quit, os.Interrupt, syscall.SIGTERM, syscall.SIGUSR2)

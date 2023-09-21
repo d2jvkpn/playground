@@ -51,7 +51,7 @@ func (c *logServiceClient) New(ctx context.Context, in *LogData, opts ...grpc.Ca
 // for forward compatibility
 type LogServiceServer interface {
 	New(context.Context, *LogData) (*LogId, error)
-	mustEmbedUnimplementedLogServiceServer()
+	// mustEmbedUnimplementedLogServiceServer()
 }
 
 // UnimplementedLogServiceServer must be embedded to have forward compatible implementations.
@@ -67,7 +67,7 @@ func (UnimplementedLogServiceServer) mustEmbedUnimplementedLogServiceServer() {}
 // Use of this interface is not recommended, as added methods to LogServiceServer will
 // result in compilation errors.
 type UnsafeLogServiceServer interface {
-	mustEmbedUnimplementedLogServiceServer()
+	// mustEmbedUnimplementedLogServiceServer()
 }
 
 func RegisterLogServiceServer(s grpc.ServiceRegistrar, srv LogServiceServer) {

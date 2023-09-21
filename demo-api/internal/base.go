@@ -22,17 +22,14 @@ const (
 )
 
 var (
-	_Relase bool
-
 	//go:embed static
 	_Static embed.FS
-
 	//go:embed templates
 	_Templates embed.FS
 
-	_Server *http.Server
-
-	_Logger *zap.Logger
-
+	_Relase      bool
+	_Logger      *zap.Logger
+	_Server      *http.Server
+	_RPC         *RPCServer
 	_RuntimeInfo *gotk.RuntimeInfo
 )

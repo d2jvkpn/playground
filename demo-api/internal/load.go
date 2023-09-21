@@ -1,7 +1,7 @@
 package internal
 
 import (
-	// "fmt"
+	"fmt"
 	"net/http"
 	"path/filepath"
 
@@ -53,6 +53,15 @@ func Load(config string, release bool) (err error) {
 		MaxHeaderBytes:    HTTP_MaxHeaderBytes,
 		// Addr:              addr,
 		Handler: engine,
+	}
+
+	//
+	rpcConfig := settings.ConfigField("rpc")
+	if rpcConfig == nil {
+		return fmt.Errorf("config.rpc is unset")
+	}
+	if _RPC, err = NewRPCServer(rpcConfig, settings.Logger.Named("rpc"), false); err != nil {
+		return err
 	}
 
 	return nil

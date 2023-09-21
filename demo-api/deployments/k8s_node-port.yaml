@@ -10,3 +10,4 @@ spec:
   # nodePort port range: 30000-32767
   # port: communcation between nodes, targetPort: pod port, nodePort: service node port
   - { protocol: TCP, port: 5030, targetPort: 5030, nodePort: 30030 }
+  - { protocol: TCP, port: 5040, targetPort: 5040, nodePort: 30040 }

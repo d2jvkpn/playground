@@ -50,6 +50,7 @@ spec:
         - { name: pvc, subPathExpr: "$(POD_NAME)/data", mountPath: "/home/d2jvkpn/demo-api/data" }
         ports:
         - { name: "http", containerPort: 5030, protocol: "TCP" }
+        - { name: "rpc", containerPort: 5040, protocol: "TCP" }
         # command: [ tail, -f, /etc/hosts ]
         command: ["./main"]
         args: ["--addr=0.0.0.0:5030", "--release", "--config=configs/dev.yaml"]

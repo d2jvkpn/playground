@@ -12,8 +12,13 @@ git_branch = $(shell git rev-parse --abbrev-ref HEAD)
 run:
 	go run main.go --config=configs/local.yaml --addr=0.0.0.0:5031
 
-protoc:
+protoc_run:
 	protoc --go-grpc_out=./ --go_out=./ --proto_path=./proto proto/*.proto
+
+protoc_impl:
+	sed -i '/^\tmustEmbedUnimplemented/s#\t#\t// #' proto/*.pb.go
+	go fmt ./...
+	go vet ./...
 
 build_bin:
 	bash scripts/go_build.sh

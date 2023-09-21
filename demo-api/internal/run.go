@@ -17,8 +17,9 @@ import (
 
 func Run(addr string) (errch chan error, err error) {
 	var (
-		listener net.Listener
-		once     *sync.Once
+		listener    net.Listener
+		rpcListener net.Listener
+		once        *sync.Once
 	)
 
 	if listener, err = net.Listen("tcp", addr); err != nil {
@@ -30,6 +31,10 @@ func Run(addr string) (errch chan error, err error) {
 	}, 60)
 	_RuntimeInfo.Start()
 
+	if rpcListener, err = net.Listen("tcp", _RPC.Addr()); err != nil {
+		return nil, fmt.Errorf("net.Listen: %w", err)
+	}
+
 	shutdown := func() {
 		if _Server != nil {
 			ctx, cancel := context.WithTimeout(context.TODO(), 5*time.Second)
@@ -38,6 +43,8 @@ func Run(addr string) (errch chan error, err error) {
 			}
 			cancel()
 		}
+
+		_RPC.Shutdown()
 
 		once.Do(func() {
 			err := onExit()
@@ -54,6 +61,14 @@ func Run(addr string) (errch chan error, err error) {
 	once = new(sync.Once)
 
 	_Logger.Info("service_start", zap.Any("meta", settings.Meta))
+
+	go func() {
+		if err := _RPC.Serve(rpcListener); err != nil {
+			shutdown()
+			errch <- err
+		}
+	}()
+
 	go func() {
 		if err := _Server.Serve(listener); err != http.ErrServerClosed {
 			shutdown()

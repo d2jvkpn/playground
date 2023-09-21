@@ -51,5 +51,5 @@ WORKDIR /home/d2jvkpn/$APP_Name
 COPY --from=builder /opt/$APP_Name/main ./main
 # COPY ./migrations ./migrations
 
-EXPOSE 5030
+EXPOSE 5030 5040
 CMD ["./main", "-config=configs/prod.yaml", "-release", "-addr=:5030"]
