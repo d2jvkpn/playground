@@ -68,8 +68,8 @@ github.com/d2jvkpn/gotk v0.0.0-20230921092617-4570de705da5 h1:rq8DZaLUmttbSut1RL
 github.com/d2jvkpn/gotk v0.0.0-20230921092617-4570de705da5/go.mod h1:1vgyq4QEu/hUeuybnE7Lb93Qpd2QxCgwhfT+BMpE7+o=
 github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230921092617-4570de705da5 h1:7qtPEhgVq19QjlR4A9ptKO0v/63eqAkeWRTeiDChtCA=
 github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230921092617-4570de705da5/go.mod h1:QpBiMGmFIUC7BIrFJ+sAx+7JsrnTFug25GEIdQtcdbg=
-github.com/d2jvkpn/gotk/ginx v0.0.0-20230920073252-1cd8f32d17c6 h1:fMkMzV6s30qd3P8YtEyfE5DuhSD2Qn1N+z9N75NBXqw=
-github.com/d2jvkpn/gotk/ginx v0.0.0-20230920073252-1cd8f32d17c6/go.mod h1:xIYR0+3jmpqbgW/QJtP9ZAWynIDnpeWVGEJUMv5F07Q=
+github.com/d2jvkpn/gotk/ginx v0.0.0-20230921092617-4570de705da5 h1:WBNADwQIf8si6UrnadblyTbA7XQb9BiUVaA3PLaK8NA=
+github.com/d2jvkpn/gotk/ginx v0.0.0-20230921092617-4570de705da5/go.mod h1:xIYR0+3jmpqbgW/QJtP9ZAWynIDnpeWVGEJUMv5F07Q=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -589,8 +589,8 @@ google.golang.org/grpc v1.31.1/go.mod h1:N36X2cJ7JwdamYAgDz+s+rVMFjt3numwzf/HckM
 google.golang.org/grpc v1.33.2/go.mod h1:JMHMWHQWaTccqQQlmk3MJZS+GWXOdAesneDmEnv2fbc=
 google.golang.org/grpc v1.34.0/go.mod h1:WotjhfgOW/POjDeRt8vscBtXq+2VjORFy659qA51WJ8=
 google.golang.org/grpc v1.35.0/go.mod h1:qjiiYl8FncCW8feJPdyg3v6XW24KsRHe+dy9BAGRRjU=
-google.golang.org/grpc v1.58.1 h1:OL+Vz23DTtrrldqHK49FUOPHyY75rvFqJfXC84NYW58=
-google.golang.org/grpc v1.58.1/go.mod h1:tgX3ZQDlNJGU96V6yHh1T/JeoBQ2TXdr43YbYSsCJk0=
+google.golang.org/grpc v1.58.2 h1:SXUpjxeVF3FKrTYQI4f4KvbGD5u2xccdYdurwowix5I=
+google.golang.org/grpc v1.58.2/go.mod h1:tgX3ZQDlNJGU96V6yHh1T/JeoBQ2TXdr43YbYSsCJk0=
 google.golang.org/protobuf v0.0.0-20200109180630-ec00e32a8dfd/go.mod h1:DFci5gLYBciE7Vtevhsrf46CRTquxDuWsQurQQe4oz8=
 google.golang.org/protobuf v0.0.0-20200221191635-4d8936d0db64/go.mod h1:kwYJMbMJ01Woi6D6+Kah6886xMZcty6N08ah7+eCXa0=
 google.golang.org/protobuf v0.0.0-20200228230310-ab0ca4ff8a60/go.mod h1:cfTl7dwQJ+fmap5saPgwCLgHXTUD7jkjRqWcaiX5VyM=

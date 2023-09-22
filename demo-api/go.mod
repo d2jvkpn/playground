@@ -5,14 +5,14 @@ go 1.21.1
 require (
 	github.com/d2jvkpn/gotk v0.0.0-20230921092617-4570de705da5
 	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230921092617-4570de705da5
-	github.com/d2jvkpn/gotk/ginx v0.0.0-20230920073252-1cd8f32d17c6
+	github.com/d2jvkpn/gotk/ginx v0.0.0-20230921092617-4570de705da5
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.3.1
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/spf13/viper v1.16.0
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.44.0
 	go.uber.org/zap v1.26.0
-	google.golang.org/grpc v1.58.1
+	google.golang.org/grpc v1.58.2
 	google.golang.org/protobuf v1.31.0
 )
 
