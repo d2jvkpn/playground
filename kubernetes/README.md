@@ -19,6 +19,7 @@ echo ""
 
 ansible k8s_all --one-line -m copy -a "src=k8s_scripts dest=./"
 ansible k8s_all --one-line -m copy -a "src=k8s_demos dest=./"
+
 ansible k8s_all --forks 2 -m copy -a "src=./k8s_apps dest=./"
 
 ansible k8s_all -m shell --become \
@@ -46,8 +47,7 @@ ansible k8s_all --forks 4 -m shell \
 ```bash
 cp_node=k8s-cp01
 # cp_node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
-
-cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
+# cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
 cp_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$cp_node.ansible_host")
 
 ingress_node=k8s-ingress01
@@ -115,7 +115,6 @@ ansible k8s_cps[0] -m shell -a 'kubectl get node -o wide'
 ansible k8s_cps[0] -m shell -a 'kubectl get ep --all-namespaces'
 
 ansible k8s_cps[0] -m shell -a 'kubectl get pods --all-namespaces -o wide'
-ansible k8s_cps[0] -m shell -a 'kubectl get componentstatuses'
 ansible k8s_cps[0] -m shell -a 'kubectl describe node/k8s-cp01'
 ```
 
