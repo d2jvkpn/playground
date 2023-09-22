@@ -58,3 +58,8 @@ kubeadm certs certificate-key
 
 kubeadm token create --print-join-command
 kubeadm token list
+
+kubectl get pods -A -o wide --no-headers
+
+kubectl get pods -A  -o wide \
+  -o custom-columns=POD-NAME:.metadata.name,NAMESPACE:.metadata.namespace,NODE:.spec.nodeName
