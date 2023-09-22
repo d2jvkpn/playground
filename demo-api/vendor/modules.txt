@@ -34,7 +34,7 @@ github.com/d2jvkpn/gotk
 # github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230921092617-4570de705da5
 ## explicit; go 1.20
 github.com/d2jvkpn/gotk/cloud-logging
-# github.com/d2jvkpn/gotk/ginx v0.0.0-20230920073252-1cd8f32d17c6
+# github.com/d2jvkpn/gotk/ginx v0.0.0-20230921092617-4570de705da5
 ## explicit; go 1.20
 github.com/d2jvkpn/gotk/ginx
 # github.com/fsnotify/fsnotify v1.6.0
@@ -284,7 +284,7 @@ golang.org/x/text/unicode/norm
 # google.golang.org/genproto/googleapis/rpc v0.0.0-20230920204549-e6e6cdab5c13
 ## explicit; go 1.19
 google.golang.org/genproto/googleapis/rpc/status
-# google.golang.org/grpc v1.58.1
+# google.golang.org/grpc v1.58.2
 ## explicit; go 1.19
 google.golang.org/grpc
 google.golang.org/grpc/attributes
