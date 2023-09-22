@@ -8,6 +8,11 @@ config: |
   hello:
     world: 42
   #
+  http:
+    tls: false
+    cert: configs/server.pem
+    key: configs/server.key
+  #
   rpc:
     tls: false
     cert: configs/server.pem

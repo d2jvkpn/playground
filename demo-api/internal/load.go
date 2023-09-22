@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"crypto/tls"
 	"fmt"
 	"net/http"
 	"path/filepath"
@@ -15,6 +16,7 @@ import (
 func Load(config string, release bool) (err error) {
 	var (
 		engine *gin.Engine
+		cert   tls.Certificate
 	)
 
 	if err = settings.SetConfig(config); err != nil {
@@ -53,6 +55,20 @@ func Load(config string, release bool) (err error) {
 		MaxHeaderBytes:    HTTP_MaxHeaderBytes,
 		// Addr:              addr,
 		Handler: engine,
+	}
+
+	httpConfig := settings.ConfigField("http")
+	if httpConfig == nil {
+		return fmt.Errorf("config.rpc is unset")
+	}
+	if httpConfig.GetBool("tls") {
+		cert, err = tls.LoadX509KeyPair(httpConfig.GetString("cert"), httpConfig.GetString("key"))
+		if err != nil {
+			return err
+		}
+		_Server.TLSConfig = &tls.Config{
+			Certificates: []tls.Certificate{cert},
+		}
 	}
 
 	//

@@ -4,7 +4,7 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 #### copy demo-api to node k8s-cp01 and create /data/logs on all worker nodes
-ansible k8s-cp01 -m copy -a 'src=../demo-api/deployments dest=./demo-api'
+ansible k8s-cp01 -m copy -a 'src=../demo-api/deployments dest=./demo-api/'
 
 # ansible k8s_workers -m shell --become -a 'mkdir -p /data/local && chmod -R 777 /data/local'
 
@@ -42,8 +42,9 @@ kubectl exec -it $pod -- ls
 kubectl apply -f deployments/k8s_cluster-ip.yaml
 kubectl apply -f deployments/k8s_ingress_http.yaml
 
-curl -H 'Host: demo-api.dev.k8s.local' k8s.local/api/v1/open/hello
-curl -H 'Host: demo-api.dev.k8s.local' k8s.local/api/v1/open/meta
+curl -H 'Host: demo-api.dev.k8s.local' k8s.local/api/v1/open/hello | jq
+
+curl -H 'Host: demo-api.dev.k8s.local' k8s.local/api/v1/open/meta | jq
 
 exit
 # method 1
