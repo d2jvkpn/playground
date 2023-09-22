@@ -4,12 +4,11 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 #### control-plane
+cp_endpoint=$1
+cp_ip=$(hostname -I | awk '{print $1}')
 pod_subnet=${pod_subnet:-10.244.0.0/16}
 
-# cp_endpoint=$(hostname -I | awk '{print $1}'):6443
-cp_endpoint=$1
-
-# version=1.28.0
+# version=1.28.2
 version=$(kubeadm version --output=json 2> /dev/null | jq -r .clientVersion.gitVersion)
 version=${version#v}
 
@@ -41,12 +40,9 @@ cat > k8s_apps/data/kubeadm-init.yaml <<EOF
 version: $version
 datetime: $(date +'%FT%T.%N%:z')
 pod_subnet: $pod_subnet
+cp_ip: $cp_ip
 cp_endpoint: $cp_endpoint
 token: $token
 cert_hash: $cert_hash
 cert_key: $cert_key
 EOF
-
-exit
-kubeadm token create --print-join-command
-kubeadm token list

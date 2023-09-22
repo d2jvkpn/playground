@@ -55,3 +55,6 @@ curl -k https://localhost:6443
 
 #### To generate --certificate-key key, you can use the following command:
 kubeadm certs certificate-key
+
+kubeadm token create --print-join-command
+kubeadm token list

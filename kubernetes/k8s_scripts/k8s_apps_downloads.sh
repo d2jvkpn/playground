@@ -73,12 +73,3 @@ $(echo "$flannel_images" | sed 's/^/  - image: /')
 EOF
 
 download_images k8s_apps/k8s.yaml k8s_apps/images
-
-exit
-
-#### 5. nerdctl
-nerdctl_version=${nerdctl_version:-1.5.0}
-nerdctl_tgz=nerdctl-full-${nerdctl_version}-linux-amd64.tar.gz
-
-wget -O k8s_apps/$nerdctl_tgz \
-  https://github.com/containerd/nerdctl/releases/download/v${nerdctl_version}/$nerdctl_tgz
