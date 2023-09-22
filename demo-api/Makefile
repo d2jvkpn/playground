@@ -10,7 +10,7 @@ git_branch = $(shell git rev-parse --abbrev-ref HEAD)
 
 #### run and build
 run:
-	go run main.go --config=configs/local.yaml --addr=0.0.0.0:5031
+	go run main.go -config=configs/local.yaml -http_addr=0.0.0.0:5031 -rpc_addr=0.0.0.0:5041
 
 protoc_run:
 	protoc --go-grpc_out=./ --go_out=./ --proto_path=./proto proto/*.proto

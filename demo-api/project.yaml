@@ -9,7 +9,6 @@ config: |
     world: 42
   #
   rpc:
-  	addr: 0.0.0.0:5041
     tls: false
     cert: configs/server.pem
     key: configs/server.key

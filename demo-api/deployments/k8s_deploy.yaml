@@ -16,6 +16,9 @@ spec:
       labels: { app: "demo-api" }
     spec:
       restartPolicy: Always
+      # nodeSelector:
+      #   node-role.kubernetes.io/worker: worker
+      #   node-role: worker
       volumes:
       - name: config
         configMap: { name: demo-api }
@@ -53,4 +56,4 @@ spec:
         - { name: "rpc", containerPort: 5040, protocol: "TCP" }
         # command: [ tail, -f, /etc/hosts ]
         command: ["./main"]
-        args: ["--addr=0.0.0.0:5030", "--release", "--config=configs/dev.yaml"]
+        args: ["-release", "-config=configs/dev.yaml", "-http_addr=0.0.0.0:5030", "-rpc_addr=0.0.0.0:5040"]

@@ -2,7 +2,6 @@ hello:
   world: 42
 
 rpc:
-  addr: 0.0.0.0:5040
   tls: false
   cert: configs/server.pem
   key: configs/server.key

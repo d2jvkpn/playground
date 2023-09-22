@@ -25,13 +25,14 @@ var (
 
 func main() {
 	var (
-		release       bool
-		addr, rpcAddr string
-		config        string
-		err           error
-		logger        *slog.Logger
-		errch         chan error
-		quit          chan os.Signal
+		release  bool
+		httpAddr string
+		rpcAddr  string
+		config   string
+		err      error
+		logger   *slog.Logger
+		errch    chan error
+		quit     chan os.Signal
 	)
 
 	// logger = slog.New(slog.NewTextHandler(os.Stderr, nil))
@@ -49,7 +50,8 @@ func main() {
 	}
 
 	flag.StringVar(&config, "config", "configs/local.yaml", "configuration file(yaml) path")
-	flag.StringVar(&addr, "addr", "0.0.0.0:5031", "listening address")
+	flag.StringVar(&httpAddr, "http_addr", "0.0.0.0:5031", "http listening address")
+	flag.StringVar(&rpcAddr, "rpc_addr", "0.0.0.0:5041", "rpc listening address")
 	flag.BoolVar(&release, "release", false, "run in release mode")
 
 	flag.Usage = func() {
@@ -72,22 +74,21 @@ func main() {
 		return
 	}
 
-	rpcAddr = settings.ConfigField("rpc").GetString("addr")
 	settings.Meta["config"] = config
-	settings.Meta["address"] = addr
+	settings.Meta["http_address"] = httpAddr
 	settings.Meta["rpc_address"] = rpcAddr
 	settings.Meta["release"] = release
 	settings.Meta["startup_time"] = time.Now().Format(time.RFC3339)
 
 	// logger.Info("Hello", "world", 42, "key", "value")
-	if errch, err = internal.Run(addr); err != nil {
+	if errch, err = internal.Run(httpAddr, rpcAddr); err != nil {
 		logger.Error("run", "error", err)
 		return
 	}
 
 	logger.Info(
 		"sevice is up",
-		"adderss", addr, "rpc_address", rpcAddr,
+		"http_adderss", httpAddr, "rpc_address", rpcAddr,
 		"config", config, "release", release,
 	)
 

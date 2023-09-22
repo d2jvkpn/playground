@@ -15,25 +15,26 @@ import (
 	"go.uber.org/zap"
 )
 
-func Run(addr string) (errch chan error, err error) {
+func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 	var (
-		listener    net.Listener
-		rpcListener net.Listener
-		once        *sync.Once
+		httpListener net.Listener
+		rpcListener  net.Listener
+		once         *sync.Once
 	)
 
-	if listener, err = net.Listen("tcp", addr); err != nil {
+	if httpListener, err = net.Listen("tcp", httpAddr); err != nil {
+		return nil, fmt.Errorf("net.Listen: %w", err)
+	}
+
+	if rpcListener, err = net.Listen("tcp", _RPC.Addr()); err != nil {
 		return nil, fmt.Errorf("net.Listen: %w", err)
 	}
 
 	_RuntimeInfo = gotk.NewRuntimeInfo(func(data map[string]string) {
 		_Logger.Info("runtime", zap.Any("data", data))
 	}, 60)
-	_RuntimeInfo.Start()
 
-	if rpcListener, err = net.Listen("tcp", _RPC.Addr()); err != nil {
-		return nil, fmt.Errorf("net.Listen: %w", err)
-	}
+	_RuntimeInfo.Start()
 
 	shutdown := func() {
 		if _Server != nil {
@@ -70,7 +71,7 @@ func Run(addr string) (errch chan error, err error) {
 	}()
 
 	go func() {
-		if err := _Server.Serve(listener); err != http.ErrServerClosed {
+		if err := _Server.Serve(httpListener); err != http.ErrServerClosed {
 			shutdown()
 			errch <- err
 		}
