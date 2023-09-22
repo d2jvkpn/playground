@@ -18,6 +18,7 @@ echo ""
 # ansible k8s_all[0] --list-hosts
 
 ansible k8s_all --one-line -m copy -a "src=k8s_scripts dest=./"
+ansible k8s_all --one-line -m copy -a "src=k8s_demos dest=./"
 ansible k8s_all --forks 2 -m copy -a "src=./k8s_apps dest=./"
 
 ansible k8s_all -m shell --become \
@@ -50,7 +51,11 @@ cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | ke
 cp_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$cp_node.ansible_host")
 
 ingress_node=k8s-ingress01
-ingress_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$ingress_node.ansible_host")
+
+ingress_ip=$(
+  ansible-inventory --list --yaml |
+  yq ".all.children.k8s_all.hosts.$ingress_node.ansible_host"
+)
 
 cat > ./k8s_apps/data/hosts.txt << EOF
 
