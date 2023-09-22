@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  coturn:
+    image: coturn/coturn:4-alpine
+    container_name: coturn
+    restart: always
+    working_dir: /app
+    user: root
+    network_mode: host
+
+    volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
+    - ./logs:/app/logs/
+    - ./turnserver.conf:/app/turnserver.conf
+
+    # $ mkdir -p logs
+    command: ["turnserver"]

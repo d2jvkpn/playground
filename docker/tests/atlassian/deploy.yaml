@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: atlassian_mysql
+    restart: always
+
+    # network_mode: bridge
+    networks: ["atlassian"]
+    ports: ["3406:3306"]
+
+    environment:
+    - TZ=Asia/Shanghai
+    - LANG=C.UTF-8
+    - MYSQL_ROOT_PASSWORD=12345678
+
+    volumes:
+    - ./configs/mysql.cnf:/etc/mysql/my.cnf
+    - ./data/mysql:/var/lib/mysql
+
+    command:
+    - "--character-set-server=utf8mb4"
+    - "--collation-server=utf8mb4_general_ci"
+    - "--skip-character-set-client-handshake"
+
+  atlassian:
+    # ubuntu:20.04
+    image: atlassian
+    container_name: atlassian_apps
+    restart: always
+    depends_on: ["mysql"]
+
+
+    # jira, confluence
+    networks: ["atlassian"]
+    ports: ["4001:8080", "127.0.0.1:4002:8005", "4003:8090", "127.0.0.1:4004:8000"]
+
+    environment: ["TZ=Asia/Shanghai"]
+
+    volumes:
+    - ./data/jira:/var/atlassian/application-data/jira
+    - ./data/confluence:/var/atlassian/application-data/confluence/
+
+    command: ["tail", "-f", "/dev/null"]
+
+networks:
+  atlassian: { name: "atlassian", driver: "bridge"}

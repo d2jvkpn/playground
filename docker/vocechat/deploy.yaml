@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  vocechat:
+    image: privoce/vocechat-server:latest
+    restart: always
+    container_name: vocechat_app
+    network_mode: bridge
+    ports: ["127.0.0.1:${PORT}:3000"]
+    volumes:
+    - ./config:/home/vocechat-server/config
+    - ./data:/home/vocechat-server/data

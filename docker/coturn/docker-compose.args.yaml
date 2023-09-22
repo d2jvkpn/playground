@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  coturn:
+    image: coturn/coturn:4-alpine
+    container_name: coturn
+    restart: always
+    working_dir: /app
+    user: root
+
+    network_mode: host
+
+    environment:
+    - REALM=aaaa
+    - USER=bbbb
+    - PASSWORD=cccccccc
+    - PORT=3478
+    - IP=192.168.1.2
+    - MIN_Port=30000
+    - MAX_Port=31000
+
+    volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
+    - ./logs:/app/logs/
+
+    # $ mkdir -p logs
+    command: [
+      "turnserver", "--lt-cred-mech", "--fingerprint", "--verbose", "--mobility",
+      "--no-tls", "--no-dtls", "--new-log-timestamp", "--log-file=logs/turnserver",
+      "--realm=$$REALM", "--user=$$USER:$$PASSWORD", "--external-ip=$$IP",
+      "--listening-port=$$PORT", "--min-port=$$MIN_Port", "--max-port=$$MAX_Port",
+    ]

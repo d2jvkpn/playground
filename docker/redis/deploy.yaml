@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:7-alpine
+    restart: always
+    container_name: redis_db
+    ports:
+    - '127.0.0.1:6379:6379'
+    environment:
+    - TZ=Asia/Shanghai
+    # ALLOW_EMPTY_PASSWORD is recommended only for development.
+    - ALLOW_EMPTY_PASSWORD=yes
+    - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    volumes:
+    # - redis_storage:/data
+    - ./data/redis:/data
+    - ./data/redis.conf:/etc/redis.conf
+    # command: redis-server /etc/redis.conf --save 30 10 --loglevel warning --requirepass d2jvkpn
+    command: redis-server /etc/redis.conf --save 30 10 --loglevel warning
+
+#volumes:
+#  redis_storage:
+#    name: redis_storage
+#    driver: local

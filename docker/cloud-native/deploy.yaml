@@ -1,0 +1,91 @@
+version: "3"
+
+services:
+  node-exporter:
+    image: prom/node-exporter:latest
+    restart: always
+    # restart: unless-stopped
+    container_name: otel-node-exporter
+    networks: ["net"]
+    expose: [9100]
+    volumes:
+    - /proc:/host/proc:ro
+    - /sys:/host/sys:ro
+    - /:/rootfs:ro
+    command:
+    - '--path.procfs=/host/proc'
+    - '--path.rootfs=/rootfs'
+    - '--path.sysfs=/host/sys'
+    - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+
+  prometheus:
+    image: prom/prometheus:main
+    restart: always
+    container_name: otel-prometheus
+    user: 1000:1000
+    networks: ["net", "grafana", "app_dev"]
+    ports: [8051:9090]
+    volumes:
+    - ./configs:/prometheus/configs
+    - ./data/prometheus:/prometheus/data
+    # - prometheus_data:/prometheus/data
+    command:
+    # - '--config.file=/etc/prometheus/prometheus.yaml'
+    - '--config.file=/prometheus/configs/prometheus.yaml'
+    - '--web.config.file=/prometheus/configs/prometheus-web.yaml'
+    - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+    - '--web.console.templates=/usr/share/prometheus/consoles'
+    - '--storage.tsdb.path=/prometheus/data'
+    - '--storage.tsdb.retention.time=15d'
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    restart: always
+    container_name: otel-jaeger
+    networks: ["net"]
+    # ports:
+    # - "16686:16686" # web
+    # - "14250"       # expose to otel-collector
+
+  sidecar-proxy:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/sidecar-proxy:dev
+    restart: always
+    container_name: otel-sidecar-proxy
+    depends_on: ["jaeger"]
+    user: 1000:1000
+    networks: ["net"]
+    ports: ["8052:8052"]
+    volumes:
+    - ./configs/:/home/hello/sidecar-proxy/configs/
+    - ./logs/:/home/hello/sidecar-proxy/logs/
+    command: ["./main", "--config=configs/sidecar-proxy.yaml", "--addr=:8052"]
+
+  opentelemetry-collector:
+    image: otel/opentelemetry-collector:latest
+    restart: always
+    container_name: otel-collector
+    # depends_on: [database]
+    volumes:
+    - ./configs:/otel-collector/configs
+    networks: ["net"]
+    ports:
+    - "4317:4317"   # OTLP gRPC receiver
+    # - "1888:1888"   # pprof extension
+    # - "8888:8888"   # Prometheus metrics exposed by the collector
+    # - "8889:8889"   # Prometheus exporter metrics
+    # - "13133:13133" # health_check extension
+    command: ["--config=/otel-collector/configs/otel-collector.yaml"]
+
+networks:
+  net:
+    name: otel
+    driver: bridge
+    external: false
+  grafana:
+    name: grafana
+    driver: bridge
+    external: true
+  app_dev:
+    name: app_dev
+    driver: bridge
+    external: true

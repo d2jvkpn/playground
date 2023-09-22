@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.8
+    container_name: zookeeper
+    networks: ["kafka_network"]
+    ports: ["2181"]
+    environment:
+    - ALLOW_ANONYMOUS_LOGIN=yes
+
+  broker-1:
+    image: docker.io/bitnami/kafka:3.2
+    depends_on: ["zookeeper"]
+    container_name: broker-1
+    networks: ["kafka_network"]
+    ports: ["9092"]
+    environment:
+    - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+    - KAFKA_CFG_BROKER_ID=1
+    - ALLOW_PLAINTEXT_LISTENER=yes
+    
+  broker-2:
+    image: docker.io/bitnami/kafka:3.2
+    depends_on: ["zookeeper"]
+    container_name: broker-2
+    networks: ["kafka_network"]
+    ports: ["9092"]
+    environment:
+    - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+    - KAFKA_CFG_BROKER_ID=2
+    - ALLOW_PLAINTEXT_LISTENER=yes
+
+  broker-3:
+    image: docker.io/bitnami/kafka:3.2
+    depends_on: ["zookeeper"]
+    container_name: broker-3
+    networks: ["kafka_network"]
+    ports: ["9092"]
+    environment:
+    - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+    - KAFKA_CFG_BROKER_ID=3
+    - ALLOW_PLAINTEXT_LISTENER=yes
+
+networks:
+  kafka_network:
+    name: kafka_network
+    driver: bridge
+    external: false

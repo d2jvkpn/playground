@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  wiznote:
+    image: wiznote/wizserver
+    container_name: wiznote_service
+    restart: always
+    network_mode: bridge
+    ports: ["8080:80", "9269:9269/udp"]
+    volumes: ["./data:/wiz/storage"]
+    environment: ["TZ=Asia/Shanghai"]
+
+# default username: admin@wiz.cn
+# default password: 123456

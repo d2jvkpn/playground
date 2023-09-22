@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: postgres14_db
+    restart: always
+
+    # network_mode: bridge
+    networks: ["postgres"]
+    ports: ["127.0.0.1:${PORT}:5432"]
+
+    volumes:
+    - postgres14_data:/var/lib/postgresql/data
+    # - ./postgresql.conf:/var/lib/postgresql/data/pgdata/postgresql.conf
+    # - ./log:/var/log/postgresql/
+
+    environment:
+    - TZ=Asia/Shanghai
+    - PGTZ=Asia/Shanghai
+    - PGDATA=/var/lib/postgresql/data/pgdata
+    - POSTGRES_USER=${POSTGRES_USER}
+    - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+volumes:
+   postgres14_data:
+
+networks:
+  postgres: { name: "postgres", driver: "bridge", external: false }

@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  node-red:
+    image: nodered/node-red:latest
+    container_name: node-red_service
+    restart: always
+    network_mode: bridge
+    ports: ["${HTTP_Port}:1880"]

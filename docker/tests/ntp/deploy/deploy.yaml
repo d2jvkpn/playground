@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  ntp:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/ntp:${TAG}
+    container_name: ntp_service
+    restart: always
+    network_mode: bridge
+    ports: "${PORT}:${PORT}"
+    command: ./main server --port ${PORT}

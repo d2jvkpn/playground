@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  zookeeper-1:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:3.3.1
+    container_name: zookeeper-1
+    restart: always
+    networks: ["kafka"]
+    ports: ["2181:2181", "9091:9092"]
+    environment: ["TZ=Asia/Shanghai"]
+    volumes:
+    - ./configs/zookeeper.properties:/opt/kafka/zookeeper.properties
+    - ./configs/server.properties:/opt/kafka/server.properties
+    - ./data/logs-1:/opt/kafka/logs
+    - ./data/zoopkeeper-1:/data/zookeeper
+    - ./data/kafka-logs-1:/data/kafka-logs
+    # command: [tail, -f, /etc/hosts]
+    command: [bin/zookeeper-server-start.sh, zookeeper.properties]
+
+  zookeeper-2:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:3.3.1
+    container_name: zookeeper-2
+    restart: always
+    networks: ["kafka"]
+    ports: ["2182:2181", "9092:9092"]
+    environment: ["TZ=Asia/Shanghai"]
+    volumes:
+    - ./configs/zookeeper.properties:/opt/kafka/zookeeper.properties
+    - ./configs/server.properties:/opt/kafka/server.properties
+    - ./data/logs-2:/opt/kafka/logs
+    - ./data/zoopkeeper-2:/data/zookeeper
+    - ./data/kafka-logs-2:/data/kafka-logs
+    command: [bin/zookeeper-server-start.sh, zookeeper.properties]
+
+  zookeeper-3:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:3.3.1
+    container_name: zookeeper-3
+    restart: always
+    networks: ["kafka"]
+    ports: ["2183:2181", "9093:9092"]
+    environment: ["TZ=Asia/Shanghai"]
+    volumes:
+    - ./configs/zookeeper.properties:/opt/kafka/zookeeper.properties
+    - ./configs/server.properties:/opt/kafka/server.properties
+    - ./data/logs-3:/opt/kafka/logs
+    - ./data/zoopkeeper-3:/data/zookeeper
+    - ./data/kafka-logs-3:/data/kafka-logs
+    command: [bin/zookeeper-server-start.sh, zookeeper.properties]
+
+networks:
+  kafka:
+    name: kafka
+    driver: bridge
+    external: false

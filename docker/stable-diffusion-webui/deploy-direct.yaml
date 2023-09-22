@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  sd-webui:
+    image: sd-webui:p2-${TAG}
+    container_name: sd-webui_${APP_ENV}
+    restart: always
+    user: 1000:1000
+    networks: ["net"]
+    ports: ["127.0.0.1:7860:7860"]
+    environment: ["TZ=Asia/Shanghai"]
+    deploy:
+      resources:
+        # limits: { cpus: "4", memory: 15g }
+        reservations:
+          # cpus: "1"
+          # memory: 4g
+          devices:
+          - driver: nvidia
+            # device_ids: ['0', '3']
+            # count: 1
+            count: all
+            capabilities: [gpu]
+    volumes:
+    # - ./config.json:/home/hello/stable-diffusion-webui/config.json
+    - ./models:/home/hello/stable-diffusion-webui/models
+    - ./outputs:/home/hello/stable-diffusion-webui/outputs
+    # - ./cache:/home/.cache
+    # - ./extensions:/home/hello/stable-diffusion-webui/extensions
+    # - ./interrogate:/home/hello/stable-diffusion-webui/interrogate
+    # - ./repositories:/home/hello/stable-diffusion-webui/repositories
+    # ?? :/extensions/sd-webui-controlnet/annotator/downloads/XX/YY, hed, lineart_anime, mlsd, pidinet
+    command: ["/entrypoint.sh", "--listen", "--api", "--port=7860"]
+
+networks:
+  net:
+    name: sd-webui_${APP_ENV}
+    driver: bridge
+    external: false

@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  jupyter:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/jupyter:centos7
+    container_name: jupyter_app
+    restart: always
+
+    # network_mode: bridge
+    networks: ["jupyter"]
+    ports: ["127.0.0.1:${JUPYTER_Port}:${JUPYTER_Port}"]
+
+    volumes:
+    - $HOME/docker_prod/jupyter/data:/mnt/work
+
+    environment:
+    - TZ=Asia/Shanghai
+    - JUPYTER_Port=${JUPYTER_Port}
+    - JUPYTER_Password=${JUPYTER_Password}
+
+networks:
+  jupyter: {name: "jupyter", driver: "bridge"}

@@ -1,0 +1,66 @@
+version: '3'
+
+services:
+  node01:
+    image: postgres:15-alpine
+    container_name: postgres-node01
+    restart: always
+    user: postgres
+    networks: ["net"]
+    ports: ["127.0.0.1:5441:5432"]
+    environment:
+    - TZ=Asia/Shanghai
+    - PGTZ=Asia/Shanghai
+    # - POSTGRES_USER=postgres
+    # - POSTGRES_DB=postgres
+    # - POSTGRES_PASSWORD=postgres
+    # - POSTGRES_PASSWORD_FILE=/run/secrets/postgres-passwd
+    # - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+    - ./data/node01:/var/lib/postgresql/data/pgdata
+    - ./scripts:/data/scripts:ro
+    - ./configs:/data/configs:ro
+    command: [bash, /data/scripts/run.sh, node01]
+
+  node02:
+    image: postgres:15-alpine
+    container_name: postgres-node02
+    restart: always
+    user: postgres
+    depends_on: [node01]
+    networks: [net]
+    ports: ["127.0.0.1:5442:5432"]
+    environment:
+    - TZ=Asia/Shanghai
+    - PGTZ=Asia/Shanghai
+    volumes:
+    - ./data/node02:/var/lib/postgresql/data/pgdata
+    - ./scripts:/data/scripts:ro
+    - ./configs:/data/configs:ro
+    command: [bash, /data/scripts/run.sh, node02]
+
+  node03:
+    image: postgres:15-alpine
+    container_name: postgres-node03
+    restart: always
+    user: postgres
+    depends_on: [node01]
+    networks: [net]
+    ports: ["127.0.0.1:5443:5432"]
+    environment:
+    - TZ=Asia/Shanghai
+    - PGTZ=Asia/Shanghai
+    volumes:
+    - ./data/node03:/var/lib/postgresql/data/pgdata
+    - ./scripts:/data/scripts:ro
+    - ./configs:/data/configs:ro
+    command: [bash, /data/scripts/run.sh, node03]
+
+networks:
+  net:
+    name: postgres_classic
+    driver: bridge
+    external: false
+    ipam:
+      config:
+      - { subnet: 172.25.0.0/16, gateway: 172.25.0.1 }

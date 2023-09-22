@@ -1,0 +1,55 @@
+version: "3"
+
+services:
+  kafka-0:
+    image: docker.io/bitnami/kafka:3.4
+    container_name: kafka-0
+    networks: ["net"]
+    ports: ["9092"]
+    environment:
+    - ALLOW_PLAINTEXT_LISTENER=yes
+    - KAFKA_CFG_NODE_ID=0
+    - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-0:9093,1@kafka-1:9093,2@kafka-2:9093
+    - KAFKA_KRAFT_CLUSTER_ID=${KAFKA_KRAFT_CLUSTER_ID}
+    volumes:
+    - vol-0:/bitnami/kafka
+
+  kafka-1:
+    image: docker.io/bitnami/kafka:3.4
+    container_name: kafka-1
+    networks: ["net"]
+    ports: ["9092"]
+    environment:
+    - ALLOW_PLAINTEXT_LISTENER=yes
+    - KAFKA_CFG_NODE_ID=1
+    - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-0:9093,1@kafka-1:9093,2@kafka-2:9093
+    - KAFKA_KRAFT_CLUSTER_ID=${KAFKA_KRAFT_CLUSTER_ID}
+    volumes:
+    - vol-1:/bitnami/kafka
+
+  kafka-2:
+    image: docker.io/bitnami/kafka:3.4
+    container_name: kafka-2
+    networks: ["net"]
+    ports: ["9092"]
+    environment:
+    - ALLOW_PLAINTEXT_LISTENER=yes
+    - KAFKA_CFG_NODE_ID=2
+    - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka-0:9093,1@kafka-1:9093,2@kafka-2:9093
+    - KAFKA_KRAFT_CLUSTER_ID=${KAFKA_KRAFT_CLUSTER_ID}
+    volumes:
+    - vol-2:/bitnami/kafka
+
+networks:
+  net:
+    name: kafka
+    driver: bridge
+    external: false
+
+volumes:
+  vol-0:
+    driver: local
+  vol-1:
+    driver: local
+  vol-2:
+    driver: local

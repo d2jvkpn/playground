@@ -1,0 +1,129 @@
+version: '3'
+
+services:
+  zookeeper-1:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:3.3.1
+    container_name: zookeeper-1
+    restart: always
+    networks: ["kafka"]
+    ports: ["2181:2181"]
+    environment: ["TZ=Asia/Shanghai"]
+    volumes:
+    - ./configs/zookeeper.properties:/opt/kafka/zookeeper.properties
+    - ./data/zoopkeeper-1:/data/zookeeper
+    # command: [tail, -f, /etc/hosts]
+    command: [bin/zookeeper-server-start.sh, zookeeper.properties]
+
+  zookeeper-2:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:3.3.1
+    container_name: zookeeper-2
+    restart: always
+    networks: ["kafka"]
+    ports: ["2182:2181"]
+    environment: ["TZ=Asia/Shanghai"]
+    volumes:
+    - ./configs/zookeeper.properties:/opt/kafka/zookeeper.properties
+    - ./data/zoopkeeper-2:/data/zookeeper
+    # command: [tail, -f, /etc/hosts]
+    command: [bin/zookeeper-server-start.sh, zookeeper.properties]
+
+  zookeeper-3:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:3.3.1
+    container_name: zookeeper-3
+    restart: always
+    networks: ["kafka"]
+    ports: ["2183:2181"]
+    environment: ["TZ=Asia/Shanghai"]
+    volumes:
+    - ./configs/zookeeper.properties:/opt/kafka/zookeeper.properties
+    - ./data/zoopkeeper-3:/data/zookeeper
+    command: [bin/zookeeper-server-start.sh, zookeeper.properties]
+
+  kafka-1:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:3.3.1
+    container_name: kafka-1
+    restart: always
+    depends_on: [zookeeper-1, zookeeper-2, zookeeper-3]
+    networks: ["kafka"]
+    ports: ["29091:29091"]
+    environment: ["TZ=Asia/Shanghai"]
+    volumes:
+    - ./configs/server.properties:/opt/kafka/server.properties
+    - ./data/logs-1:/opt/kafka/logs
+    - ./data/kafka-logs-1:/data/kafka-logs
+    command:
+    - bin/kafka-server-start.sh
+    - server.properties
+    - --override
+    - broker.id=1
+    - --override
+    - zookeeper.connect=zookeeper-1:2181,zookeeper-2:2181,zookeeper-3:2181/kafka
+    - --override
+    - inter.broker.listener.name=PLAINTEXT
+    - --override
+    - listener.security.protocol.map=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+    - --override
+    - listeners=PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:29091
+    - --override
+    - advertised.listeners=PLAINTEXT://kafka-1:9092,PLAINTEXT_HOST://localhost:29091
+
+  kafka-2:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:3.3.1
+    container_name: kafka-2
+    restart: always
+    depends_on: [zookeeper-1, zookeeper-2, zookeeper-3]
+    networks: ["kafka"]
+    ports: ["29092:29092"]
+    environment: ["TZ=Asia/Shanghai"]
+    volumes:
+    - ./configs/server.properties:/opt/kafka/server.properties
+    - ./data/logs-2:/opt/kafka/logs
+    - ./data/kafka-logs-2:/data/kafka-logs
+    command:
+    - bin/kafka-server-start.sh
+    - server.properties
+    - --override
+    - broker.id=2
+    - --override
+    - zookeeper.connect=zookeeper-1:2181,zookeeper-2:2181,zookeeper-3:2181/kafka
+    - --override
+    - inter.broker.listener.name=PLAINTEXT
+    - --override
+    - listener.security.protocol.map=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+    - --override
+    - listeners=PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:29092
+    - --override
+    - advertised.listeners=PLAINTEXT://kafka-2:9092,PLAINTEXT_HOST://localhost:29092
+
+  kafka-3:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:3.3.1
+    container_name: kafka-3
+    restart: always
+    depends_on: [zookeeper-1, zookeeper-2, zookeeper-3]
+    networks: ["kafka"]
+    ports: ["29093:29093"]
+    environment: ["TZ=Asia/Shanghai"]
+    volumes:
+    - ./configs/server.properties:/opt/kafka/server.properties
+    - ./data/logs-3:/opt/kafka/logs
+    - ./data/kafka-logs-3:/data/kafka-logs
+    command:
+    - bin/kafka-server-start.sh
+    - server.properties
+    - --override
+    - broker.id=3
+    - --override
+    - zookeeper.connect=zookeeper-1:2181,zookeeper-2:2181,zookeeper-3:2181/kafka
+    - --override
+    - inter.broker.listener.name=PLAINTEXT
+    - --override
+    - listener.security.protocol.map=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+    - --override
+    - listeners=PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:29093
+    - --override
+    - advertised.listeners=PLAINTEXT://kafka-3:9092,PLAINTEXT_HOST://localhost:29093
+
+networks:
+  kafka: { name: kafka, driver: bridge, external: false }
+
+# bin/kafka-console-producer.sh --broker-list localhost:29092 --topic test

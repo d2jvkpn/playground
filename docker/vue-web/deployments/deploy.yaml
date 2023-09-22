@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  vue-web:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-web:${TAG}
+    container_name: vue-web_${APP_ENV}
+    restart: always
+    ports: ["${PORT}:80"]
+    environment: ["PORT=80"]

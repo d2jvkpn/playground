@@ -20,8 +20,8 @@ WORKDIR /opt/$APP_Name
 
 ADD ./main.go ./go.mod ./go.sum ./project.yaml  ./
 COPY ./internal ./internal
-# COPY ./pkg ./pkg
-# COPY ./migrations ./migrations
+COPY ./pkg ./pkg
+COPY ./migrations ./migrations
 COPY ./proto ./proto
 COPY ./vendor ./vendor
 

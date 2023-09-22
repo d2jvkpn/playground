@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab_app
+    restart: always
+    # affect gitaly
+    # privileged: true
+
+    # network_mode: bridge
+    networks: ["gitlab"]
+    ports: ["127.0.0.1:${HTTP_Port}:80", "${SSH_Port}:22"]
+
+    volumes:
+    - ./config:/etc/gitlab:Z
+    - ./log:/var/log/gitlab:Z
+    - ./data:/var/opt/gitlab:Z
+
+    environment:
+      # https://docs.gitlab.com/omnibus/settings/memory_constrained_envs.html
+      GITLAB_OMNIBUS_CONFIG: |
+        gitlab_rails['gitlab_shell_ssh_port'] = 22
+        letsencrypt['enabled'] = false
+        sidekiq['max_concurrency'] = 10
+        prometheus_monitoring['enable'] = false
+        node_exporter['enable'] = false
+        redis_exporter['enable'] = false
+    ## inner nginx
+    # nginx['enable'] = true
+    # nginx['listen_https'] = false
+    # nginx['redirect_http_to_https'] = false
+
+## docker network create gitlab
+networks:
+  gitlab: {name: "gitlab", driver: "bridge", external: true}
