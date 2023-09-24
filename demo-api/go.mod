@@ -2,6 +2,8 @@ module demo-api
 
 go 1.21.1
 
+toolchain go1.21.1
+
 require (
 	github.com/d2jvkpn/gotk v0.0.0-20230921092617-4570de705da5
 	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230921092617-4570de705da5
