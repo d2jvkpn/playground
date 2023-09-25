@@ -33,21 +33,23 @@ func NewRPCServer(config *viper.Viper, logger *zap.Logger, otel bool) (srv *RPCS
 	}
 
 	//
-	interceptor := logging.NewGrpcSrvLogger(logger.Named("log"))
-
-	uIntes := []grpc.UnaryServerInterceptor{interceptor.Unary()}
 	if otel {
-		uIntes = append(uIntes, otelgrpc.UnaryServerInterceptor( /*opts ...Option*/ ))
-	}
+		interceptor := logging.NewGrpcSrvLogger(logger.Named("log"))
 
-	sIntes := []grpc.StreamServerInterceptor{interceptor.Stream()}
-	if otel {
-		sIntes = append(sIntes, otelgrpc.StreamServerInterceptor( /*opts ...Option*/ ))
-	}
+		uIntes := []grpc.UnaryServerInterceptor{
+			interceptor.Unary(),
+			otelgrpc.UnaryServerInterceptor( /*opts ...Option*/ ),
+		}
 
-	srv.serverOpts = []grpc.ServerOption{
-		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(uIntes...)),
-		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(sIntes...)),
+		sIntes := []grpc.StreamServerInterceptor{
+			interceptor.Stream(),
+			otelgrpc.StreamServerInterceptor( /*opts ...Option*/ ),
+		}
+
+		srv.serverOpts = []grpc.ServerOption{
+			grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(uIntes...)),
+			grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(sIntes...)),
+		}
 	}
 
 	//
@@ -66,7 +68,7 @@ func NewRPCServer(config *viper.Viper, logger *zap.Logger, otel bool) (srv *RPCS
 	return srv, nil
 }
 
-func (srv *RPCServer) New(ctx context.Context, record *proto.LogData) (*proto.LogId, error) {
+func (srv *RPCServer) Push(ctx context.Context, record *proto.LogData) (*proto.LogId, error) {
 	fields := []zap.Field{
 		zap.String("name", record.Name),
 		zap.String("version", record.Version),
@@ -87,11 +89,7 @@ func (srv *RPCServer) New(ctx context.Context, record *proto.LogData) (*proto.Lo
 		srv.logger.Error(record.Msg, fields...)
 	}
 
-	return &proto.LogId{Id: ""}, nil
-}
-
-func (srv *RPCServer) Addr() string {
-	return srv.config.GetString("addr")
+	return &proto.LogId{Id: "0001"}, nil
 }
 
 func (srv *RPCServer) Serve(listener net.Listener) (err error) {

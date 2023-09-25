@@ -19,14 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	LogService_New_FullMethodName = "/proto.LogService/New"
+	LogService_Push_FullMethodName = "/proto.LogService/Push"
 )
 
 // LogServiceClient is the client API for LogService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LogServiceClient interface {
-	New(ctx context.Context, in *LogData, opts ...grpc.CallOption) (*LogId, error)
+	Push(ctx context.Context, in *LogData, opts ...grpc.CallOption) (*LogId, error)
 }
 
 type logServiceClient struct {
@@ -37,9 +37,9 @@ func NewLogServiceClient(cc grpc.ClientConnInterface) LogServiceClient {
 	return &logServiceClient{cc}
 }
 
-func (c *logServiceClient) New(ctx context.Context, in *LogData, opts ...grpc.CallOption) (*LogId, error) {
+func (c *logServiceClient) Push(ctx context.Context, in *LogData, opts ...grpc.CallOption) (*LogId, error) {
 	out := new(LogId)
-	err := c.cc.Invoke(ctx, LogService_New_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, LogService_Push_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +50,7 @@ func (c *logServiceClient) New(ctx context.Context, in *LogData, opts ...grpc.Ca
 // All implementations must embed UnimplementedLogServiceServer
 // for forward compatibility
 type LogServiceServer interface {
-	New(context.Context, *LogData) (*LogId, error)
+	Push(context.Context, *LogData) (*LogId, error)
 	// mustEmbedUnimplementedLogServiceServer()
 }
 
@@ -58,8 +58,8 @@ type LogServiceServer interface {
 type UnimplementedLogServiceServer struct {
 }
 
-func (UnimplementedLogServiceServer) New(context.Context, *LogData) (*LogId, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method New not implemented")
+func (UnimplementedLogServiceServer) Push(context.Context, *LogData) (*LogId, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Push not implemented")
 }
 func (UnimplementedLogServiceServer) mustEmbedUnimplementedLogServiceServer() {}
 
@@ -74,20 +74,20 @@ func RegisterLogServiceServer(s grpc.ServiceRegistrar, srv LogServiceServer) {
 	s.RegisterService(&LogService_ServiceDesc, srv)
 }
 
-func _LogService_New_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _LogService_Push_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LogData)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LogServiceServer).New(ctx, in)
+		return srv.(LogServiceServer).Push(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: LogService_New_FullMethodName,
+		FullMethod: LogService_Push_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LogServiceServer).New(ctx, req.(*LogData))
+		return srv.(LogServiceServer).Push(ctx, req.(*LogData))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -100,8 +100,8 @@ var LogService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*LogServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "New",
-			Handler:    _LogService_New_Handler,
+			MethodName: "Push",
+			Handler:    _LogService_Push_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -26,7 +26,7 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 		return nil, fmt.Errorf("net.Listen: %w", err)
 	}
 
-	if rpcListener, err = net.Listen("tcp", _RPC.Addr()); err != nil {
+	if rpcListener, err = net.Listen("tcp", rpcAddr); err != nil {
 		return nil, fmt.Errorf("net.Listen: %w", err)
 	}
 

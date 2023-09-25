@@ -65,7 +65,7 @@ message LogId {
 }
 
 service LogService {
-	rpc New(LogData) returns(LogId) {};
+	rpc Push(LogData) returns(LogId) {};
 }
 EOF
 
