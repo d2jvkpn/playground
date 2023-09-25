@@ -53,7 +53,7 @@ func main() {
 	ctx = context.TODO()
 
 	inte := logging.GrpcCliLogger{
-		Headers: map[string]string{},
+		Headers: map[string]string{"hello": "world"},
 	}
 
 	opts := []grpc.DialOption{

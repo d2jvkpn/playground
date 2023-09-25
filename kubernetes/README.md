@@ -83,18 +83,16 @@ ansible $cp_node --one-line -m fetch -a \
 
 ansible $cp_node -m shel -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 
-for node in $(ansible k8s_workers --list-hosts | awk 'BEGIN{ORS=" "} /k8s-node/{print $1}'); do
-    ansible $cp_node --one-line -a "kubectl label node/$node node-role=worker"
-done
-
-# worker nodes
+# kubectl join
 ansible k8s_workers -m shell -a "sudo $(bash k8s_scripts/k8s_command_join.sh worker)"
-
-# other control-plane nodes
 ansible k8s_cps[1:] -m shell -a "sudo $(bash k8s_scripts/k8s_command_join.sh control-plane)"
-ansible k8s_cps[1:] -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
-
+ansible k8s_cps -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root ubuntu'
 ansible k8s_cps -m shell -a 'kubectl config set-context --current --namespace=dev'
+
+# kubectl label
+for node in $(ansible k8s_workers --list-hosts | awk 'BEGIN{ORS=" "} /k8s-node/{print $1}'); do
+    ansible $cp_node --one-line -a "kubectl label node/$node --overwrite node-role=worker"
+done
 ```
 
 #### 5. Kube up

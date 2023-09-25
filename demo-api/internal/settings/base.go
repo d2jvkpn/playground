@@ -10,9 +10,9 @@ import (
 )
 
 var (
+	Meta     map[string]any
 	_Project *viper.Viper
 	_Config  *viper.Viper
-	Meta     map[string]any
 	Logger   *logging.Logger
 )
 

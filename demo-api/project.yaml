@@ -18,5 +18,4 @@ config: |
     cert: configs/server.pem
     key: configs/server.key
   #
-  consul:
-    # TODO
+  consul: TODO
