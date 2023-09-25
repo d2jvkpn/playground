@@ -14,16 +14,26 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
+func Load_Public(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
+	router.GET("/nts", gin.WrapF(gotk.NTSFunc(3)))
+	router.GET("/healthz", ginx.Healthz)
+	router.GET("/prometheus", gin.WrapH(promhttp.Handler()))
+
+	router.GET("/meta", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, gin.H{"meta": settings.Meta})
+	})
+
+	debug := router.Group("/debug", handlers...)
+
+	kfs := gotk.PprofHandlerFuncs()
+
+	for _, k := range gotk.PprofFuncKeys() {
+		debug.GET(fmt.Sprintf("/pprof/%s", k), gin.WrapF(kfs[k]))
+	}
+}
+
 func Load_OpenV1(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 	open := router.Group("/api/v1/open", handlers...)
-
-	open.GET("/nts", gin.WrapF(gotk.NTSFunc(3)))
-
-	open.GET("/meta", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{
-			"code": 0, "msg": "ok", "data": gin.H{"meta": settings.Meta},
-		})
-	})
 
 	//
 	value := settings.ConfigField("hello").GetInt64("world")
@@ -33,18 +43,6 @@ func Load_OpenV1(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 				"key": "world", "value": value, "ip": ctx.ClientIP()},
 		})
 	})
-}
-
-func Load_Debug(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
-	router.GET("/prometheus", gin.WrapH(promhttp.Handler()))
-
-	debug := router.Group("/debug", handlers...)
-
-	kfs := gotk.PprofHandlerFuncs()
-
-	for _, k := range gotk.PprofFuncKeys() {
-		debug.GET(fmt.Sprintf("/pprof/%s", k), gin.WrapF(kfs[k]))
-	}
 }
 
 func Load_Biz(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {

@@ -63,8 +63,7 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 
 	// //go:embed static/assets/favicon.ico
 	// var favicon embed.FS
-	// rg.StaticFileFS("/favicon.ico", "static/assets/favicon.ico", http.FS(favicon))
-	router.GET("/healthz", ginx.Healthz)
+	// router.StaticFileFS("/favicon.ico", "static/assets/favicon.ico", http.FS(favicon))
 
 	// #### static
 	if fsys, err = fs.Sub(_Static, "static"); err != nil {
@@ -74,8 +73,8 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 	static.StaticFS("/", http.FS(fsys))
 	ginx.ServeStaticDir("/site", "./site", false)(router)
 
-	// #### debug apis
-	api.Load_Debug(router)
+	// #### debug
+	api.Load_Public(router)
 
 	// #### biz handlers
 	api.Load_OpenV1(router, ginx.APILog(settings.Logger.Logger, "api_open", 5))

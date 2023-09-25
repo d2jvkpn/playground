@@ -42,9 +42,8 @@ kubectl exec -it $pod -- ls
 kubectl apply -f deployments/k8s_cluster-ip.yaml
 kubectl apply -f deployments/k8s_ingress_http.yaml
 
+curl -H 'Host: demo-api.dev.k8s.local' k8s.local/meta | jq
 curl -H 'Host: demo-api.dev.k8s.local' k8s.local/api/v1/open/hello | jq
-
-curl -H 'Host: demo-api.dev.k8s.local' k8s.local/api/v1/open/meta | jq
 
 exit
 # method 1
@@ -82,9 +81,6 @@ kubectl create secret docker-registry k8s.local \
   --docker-username=USERNAME --docker-password=PASSWORD
 
 kubectl apply -f deployments/k8s_ingress_tls.yaml
-
-curl -k -H 'Host: demo-api.dev.k8s.local' https://k8s.local/api/v1/open/hello
-curl -H 'Host: demo-api.dev.k8s.local' https://k8s.local/api/v1/open/meta
 
 #### get image sha256 of containers
 kubectl get pods -l app=demo-api -o json | jq -r '.items[].status.containerStatuses[0].imageID'
