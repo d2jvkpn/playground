@@ -36,20 +36,23 @@ spec:
           limits: { cpu: "1000m", memory: "512Mi" }
         livenessProbe:
           # HTTP Status >= 200 and < 400
-          httpGet: { path: "/healthz", port: 5030 }
+          # httpGet: { path: "/healthz", port: 5030 }
+          grpc: { port: 5040 }
           initialDelaySeconds: 5
           timeoutSeconds: 1
           periodSeconds: 10
           failureThreshold: 3
         env:
-        - name: K8S_Pod, valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "metadata.name" } }
-        - name: K8S_Node, valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "spec.nodeName" } }
+        - name: K8S_Pod
+          valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "metadata.name" } }
+        - name: K8S_Node
+          valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "spec.nodeName" } }
         - { name: TZ, value: Asia/Shanghai }
         volumeMounts:
         # not /home/d2jvkpn/demo-api/configs/dev.yaml
         - { name: config, mountPath: /home/d2jvkpn/demo-api/configs }
-        - { name: local, subPathExpr: "$(POD_NAME)/logs", mountPath: "/home/d2jvkpn/demo-api/logs" }
-        - { name: pvc, subPathExpr: "$(POD_NAME)/data", mountPath: "/home/d2jvkpn/demo-api/data" }
+        - { name: local, subPathExpr: "$(K8S_Pod)/logs", mountPath: "/home/d2jvkpn/demo-api/logs" }
+        - { name: pvc, subPathExpr: "$(K8S_Pod)/data", mountPath: "/home/d2jvkpn/demo-api/data" }
         ports:
         - { name: "http", containerPort: 5030, protocol: "TCP" }
         - { name: "rpc", containerPort: 5040, protocol: "TCP" }
