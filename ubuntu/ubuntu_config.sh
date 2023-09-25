@@ -42,6 +42,10 @@ cp templates/* ~/Templates/
 mkdir -p ~/Apps/npm
 cp configs/npm.conf ~/.npmrc
 
+####
+mkdir -p ~/.vim
+cp configs/vimrc.conf ~/.vimrc
+
 #### install
 exit
 
