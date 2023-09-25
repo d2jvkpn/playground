@@ -10,6 +10,7 @@ import (
 	"demo-api/internal/services/api"
 	"demo-api/internal/settings"
 
+	"github.com/d2jvkpn/gotk/cloud-metrics"
 	"github.com/d2jvkpn/gotk/ginx"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -17,9 +18,10 @@ import (
 
 func newEngine(release bool) (engine *gin.Engine, err error) {
 	var (
+		fsys   fs.FS
 		tmpl   *template.Template
 		router *gin.RouterGroup
-		fsys   fs.FS
+		prom   gin.HandlerFunc
 	)
 
 	if release {
@@ -77,7 +79,15 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 
 	// #### biz handlers
 	api.Load_OpenV1(router, ginx.APILog(settings.Logger.Logger, "api_open", 5))
-	api.Load_Biz(router, ginx.APILog(settings.Logger.Logger, "api_biz", 5))
+
+	if prom, err = metrics.PromMetrics("http", "api"); err != nil {
+		return nil, err
+	}
+	api.Load_Biz(
+		router,
+		ginx.APILog(settings.Logger.Logger, "api_biz", 5),
+		prom,
+	)
 
 	return engine, nil
 }
