@@ -42,8 +42,8 @@ spec:
           periodSeconds: 10
           failureThreshold: 3
         env:
-        - name: POD_NAME
-          valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "metadata.name" } }
+        - name: K8S_Pod, valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "metadata.name" } }
+        - name: K8S_Node, valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "spec.nodeName" } }
         - { name: TZ, value: Asia/Shanghai }
         volumeMounts:
         # not /home/d2jvkpn/demo-api/configs/dev.yaml

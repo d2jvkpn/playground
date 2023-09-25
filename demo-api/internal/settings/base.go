@@ -29,6 +29,8 @@ func SetProject(bts []byte) (err error) {
 	Meta = gotk.BuildInfo()
 	Meta["app"] = _Project.GetString("app")
 	Meta["version"] = _Project.GetString("version")
+	Meta["k8s_pod"] = os.Getenv("K8S_Pod")
+	Meta["k8s_node"] = os.Getenv("K8S_Node")
 
 	return nil
 }
