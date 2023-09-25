@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	ibiz "demo-api/internal/biz"
+	"demo-api/internal/biz"
 	"demo-api/internal/settings"
 
 	"github.com/d2jvkpn/gotk"
@@ -48,11 +48,11 @@ func Load_Debug(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 }
 
 func Load_Biz(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
-	biz := router.Group("/api/v1/biz", handlers...)
+	bizRouter := router.Group("/api/v1/biz", handlers...)
 
-	biz.GET("/error", func(ctx *gin.Context) {
+	bizRouter.GET("/error", func(ctx *gin.Context) {
 		requestId := uuid.NewString()
-		err := ibiz.BizError()
+		err := biz.BizError()
 
 		ginx.SetRequestId(ctx, requestId)
 		ginx.SetError(ctx, err)
@@ -65,7 +65,7 @@ func Load_Biz(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 		})
 	})
 
-	biz.GET("/div_panic", func(ctx *gin.Context) {
+	bizRouter.GET("/div_panic", func(ctx *gin.Context) {
 		requestId := uuid.NewString()
 
 		ginx.SetRequestId(ctx, requestId)
@@ -73,13 +73,7 @@ func Load_Biz(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 		ginx.SetData(ctx, map[string]any{"ans": 42})
 
 		ctx.JSON(http.StatusOK, gin.H{
-			"request_id": requestId, "code": 0, "msg": "ok", "data": gin.H{"ans": divPanic()},
+			"request_id": requestId, "code": 0, "msg": "ok", "data": gin.H{"ans": biz.DivPanic()},
 		})
 	})
-}
-
-func divPanic() int {
-	a, b := 1, 0
-
-	return a / b
 }
