@@ -84,7 +84,7 @@ ansible $cp_node --one-line -m fetch -a \
 ansible $cp_node -m shel -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 
 for node in $(ansible k8s_workers --list-hosts | awk 'BEGIN{ORS=" "} /k8s-node/{print $1}'); do
-    ansible $cp_node --one-line -a "kubectl label node/$node node-role.kubernetes.io/worker=worker"
+    ansible $cp_node --one-line -a "kubectl label node/$node node-role=worker"
 done
 
 # worker nodes

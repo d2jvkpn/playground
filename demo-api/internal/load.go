@@ -59,7 +59,7 @@ func Load(config string, release bool) (err error) {
 
 	httpConfig := settings.ConfigField("http")
 	if httpConfig == nil {
-		return fmt.Errorf("config.rpc is unset")
+		return fmt.Errorf("config.http is unset")
 	}
 	if httpConfig.GetBool("tls") {
 		cert, err = tls.LoadX509KeyPair(httpConfig.GetString("cert"), httpConfig.GetString("key"))
