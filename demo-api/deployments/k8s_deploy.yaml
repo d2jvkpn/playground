@@ -32,8 +32,8 @@ spec:
         # IfNotPresent, Always, Never
         imagePullPolicy: "Always"
         resources:
-          requests: { cpu: "200m", memory: "128Mi" }
-          limits: { cpu: "1000m", memory: "512Mi" }
+          requests: { cpu: "200m", memory: "128Mi", ephemeral-storage: "2Gi" }
+          limits: { cpu: "1000m", memory: "512Mi", ephemeral-storage: "4Gi" }
         livenessProbe:
           # HTTP Status >= 200 and < 400
           # httpGet: { path: "/healthz", port: 5030 }
@@ -50,7 +50,7 @@ spec:
         - { name: TZ, value: Asia/Shanghai }
         volumeMounts:
         # not /home/d2jvkpn/demo-api/configs/dev.yaml
-        - { name: config, mountPath: /home/d2jvkpn/demo-api/configs }
+        - { name: config, mountPath: /home/d2jvkpn/demo-api/configs, readOnly: true }
         - { name: local, subPathExpr: "$(K8S_Pod)/logs", mountPath: "/home/d2jvkpn/demo-api/logs" }
         - { name: pvc, subPathExpr: "$(K8S_Pod)/data", mountPath: "/home/d2jvkpn/demo-api/data" }
         ports:
