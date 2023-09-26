@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -49,22 +50,31 @@ func main() {
 		return
 	}
 
+	flag.BoolVar(&release, "release", false, "run in release mode")
 	flag.StringVar(&config, "config", "configs/local.yaml", "configuration file(yaml) path")
 	flag.StringVar(&httpAddr, "http_addr", "0.0.0.0:5031", "http listening address")
 	flag.StringVar(&rpcAddr, "rpc_addr", "0.0.0.0:5041", "rpc listening address")
-	flag.BoolVar(&release, "release", false, "run in release mode")
 
 	flag.Usage = func() {
 		output := flag.CommandLine.Output()
 
-		fmt.Fprintf(output, "Usage:\n")
+		fmt.Fprintf(output, "# %s\n\n", settings.ProjectString("app"))
+
+		fmt.Fprintf(output, "#### usage\n```text\n")
 		flag.PrintDefaults()
+		fmt.Fprintf(output, "```\n")
 
 		fmt.Fprintf(
-			output, "\nConfiguration:\n```yaml\n%s```\n",
-			settings.ProjectString("config"),
+			output, "\n#### configuration\n```yaml\n%s```\n",
+			strings.Replace(
+				settings.ProjectString("config"), "\n#\n", "\n\n", -1,
+			),
 		)
-		fmt.Fprintf(output, "\nBuild:\n```text\n%s\n```\n", gotk.BuildInfoText(settings.Meta))
+		fmt.Fprintf(
+			output,
+			"\n#### build\n```text\n%s\n```\n",
+			gotk.BuildInfoText(settings.Meta),
+		)
 	}
 
 	flag.Parse()
@@ -88,8 +98,10 @@ func main() {
 
 	logger.Info(
 		"sevice is up",
-		"http_adderss", httpAddr, "rpc_address", rpcAddr,
-		"config", config, "release", release,
+		"http_adderss", httpAddr,
+		"rpc_address", rpcAddr,
+		"config", config,
+		"release", release,
 	)
 
 	quit = make(chan os.Signal, 1)

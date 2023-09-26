@@ -93,6 +93,11 @@ ansible k8s_cps -m shell -a 'kubectl config set-context --current --namespace=de
 for node in $(ansible k8s_workers --list-hosts | awk 'BEGIN{ORS=" "} /k8s-node/{print $1}'); do
     ansible $cp_node --one-line -a "kubectl label node/$node --overwrite node-role=worker"
 done
+
+# kubectl label node/k8s-ingress01 --overwrite node-role.kubernetes.io/ingress=
+# kubectl label node/k8s-ingress01 --overwrite node-role.kubernetes.io/ingress-
+# kubectl label node/k8s-ingress01 --overwrite node-role.kubernetes.io/worker=
+# kubectl label node/k8s-ingress01 --overwrite node-role.kubernetes.io/worker-
 ```
 
 #### 5. Kube up

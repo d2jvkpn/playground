@@ -9,6 +9,7 @@ config: |
     world: 42
   #
   http:
+    cors: *
     tls: false
     cert: configs/server.pem
     key: configs/server.key

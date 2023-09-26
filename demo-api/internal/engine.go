@@ -42,7 +42,8 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 		return nil, err
 	}
 	engine.SetHTMLTemplate(tmpl)
-	engine.Use(ginx.Cors("*"))
+	cors := settings.ConfigField("http").GetString("cors")
+	engine.Use(ginx.Cors(cors))
 
 	// #### handlers
 	lg := settings.Logger.Named("no_router")
