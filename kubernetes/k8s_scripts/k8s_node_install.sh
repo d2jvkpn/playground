@@ -18,18 +18,22 @@ apt-get -y install apt-transport-https ca-certificates lsb-release gnupg pigz cu
 
 #### 2. apt k8s
 # key_url=https://pkgs.k8s.io/core:/stable:/v1.28/deb
-key_url=https://pkgs.k8s.io/core:/stable:/v${version%.*}/deb
-key_file=/etc/apt/keyrings/kubernetes.gpg
-[ -f $key_file ] && rm -f $key_file
+ver=v${version%.*}
 
-curl -fsSL $key_url/Release.key | sudo gpg --dearmor -o $key_file
+key_url=https://pkgs.k8s.io/core:/stable:/$ver/deb
+key_file=/etc/apt/keyrings/kubernetes.$ver.gpg
+
+if [ ! -f $key_file ]; then
+    curl -fsSL $key_url/Release.key | sudo gpg --dearmor -o $key_file
+fi
+
 echo "deb [signed-by=$key_file] $key_url /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
 apt-get update
-sudo apt-get install -y kubectl kubelet kubeadm
-
-apt-mark hold kubelet kubeadm kubectl
 # apt-mark unhold kubelet kubeadm kubectl
+apt-get install -y kubectl kubelet kubeadm
+apt-mark hold kubelet kubeadm kubectl
+
 # systemctl disable kubelet
 
 kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl

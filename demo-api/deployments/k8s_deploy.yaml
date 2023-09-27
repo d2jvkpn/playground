@@ -48,6 +48,8 @@ spec:
         - name: K8S_Node
           valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "spec.nodeName" } }
         - { name: TZ, value: Asia/Shanghai }
+        # envFrom:
+        # - configMapRef: {name: postgres-config}
         volumeMounts:
         # not /home/d2jvkpn/demo-api/configs/dev.yaml
         - { name: config, mountPath: /home/d2jvkpn/demo-api/configs, readOnly: true }

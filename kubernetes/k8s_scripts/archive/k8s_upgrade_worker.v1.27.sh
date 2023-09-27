@@ -16,17 +16,10 @@ case "$step" in
     ;;
 "2")
     #### on the worker node
-    ver=v${version%.*}
-    key_url=https://pkgs.k8s.io/core:/stable:/$ver/deb
-    key_file=/etc/apt/keyrings/kubernetes.$ver.gpg
-
-    if [ ! -f $key_file ]; then
-        curl -fsSL $key_url/Release.key | sudo gpg --dearmor -o $key_file
-    fi
-
-    echo "deb [signed-by=$key_file] $key_url /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
     apt-get update
 
+    # apt-mark unhold kubeadm kubelet kubectl
+    # apt-get install -y kubeadm=${version}-00 kubelet=${version}-00 kubectl=${version}-00
     apt-mark unhold kubeadm kubelet kubectl
     apt-get upgrade -y kubeadm kubelet kubectl
     apt-mark hold kubeadm kubelet kubectl
