@@ -43,12 +43,27 @@ EOF
 
 chown -R $username:$username /home/$username
 
+echo "$username ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$username
+# echo -e "\n\n\nPermitRootLogin yes" >> /etc/ssh/sshd_config
+
+#### disable ads
 timedatectl set-timezone Asia/Shanghai
 systemctl disable ubuntu-advantage
 pro config set apt_news=false
 
-echo "$username ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$username
-# echo -e "\n\n\nPermitRootLogin yes" >> /etc/ssh/sshd_config
+cp /usr/lib/update-notifier/apt_check.py /usr/lib/update-notifier/apt_check.py.bk
+
+sed -Ezi.orig \
+  -e 's/(def _output_esm_service_status.outstream, have_esm_service, service_type.:\n)/\1    return\n/' \
+  -e 's/(def _output_esm_package_alert.*?\n.*?\n.:\n)/\1    return\n/' \
+  /usr/lib/update-notifier/apt_check.py
+
+/usr/lib/update-notifier/update-motd-updates-available --force
+
+sed -i '/^deb/s/^/#-- /' /var/lib/ubuntu-advantage/apt-esm/etc/apt/sources.list.d/ubuntu-esm-apps.list
+
+sed -i '/ENABLED/s/1/0/' /etc/default/motd-news
+#- sudo sed -i '/=motd.dynamic/s/^/#-- /' /etc/pam.d/sshd
 
 #### apt update
 # update /etc/apt/sources.list
