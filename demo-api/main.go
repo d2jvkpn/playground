@@ -110,12 +110,12 @@ func main() {
 
 	select {
 	case err = <-errch:
-		logger.Error("exit", "error", err)
+		logger.Error("... received from errch", "error", err)
 	case sig := <-quit:
 		// if sig == syscall.SIGUSR2 {...}
-		fmt.Println("... received:", sig)
+		// fmt.Fprintf(os.Stderr, "... received signal: %s\n", sig)
 		errch <- fmt.Errorf(internal.SHUTDOWN)
 		<-errch
-		logger.Info("exit")
+		logger.Info("... received signal", "signal", sig.String())
 	}
 }
