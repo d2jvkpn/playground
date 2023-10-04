@@ -40,6 +40,10 @@ func ProjectString(key string) string {
 	return _Project.GetString(key)
 }
 
+func ProjectField(key string) *viper.Viper {
+	return _Project.Sub(key)
+}
+
 // #### config
 func SetConfig(config string) (err error) {
 	_Config = viper.New()

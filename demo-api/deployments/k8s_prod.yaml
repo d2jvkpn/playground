@@ -1,0 +1,108 @@
+--- Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: prod
+  name: demo-api
+  labels: { app: "demo-api" }
+spec:
+  replicas: 3
+  selector:
+    matchLabels: { app: "demo-api" }
+  strategy:
+    rollingUpdate: { maxSurge: 1, maxUnavailable: 0 }
+    type: RollingUpdate
+  template:
+    metadata:
+      labels: { app: "demo-api" }
+    spec:
+      restartPolicy: Always
+      # nodeSelector:
+      #   node-role: worker
+      volumes:
+      - name: config
+        configMap: { name: demo-api }
+      - name: local
+        hostPath: { path: "/data/local", type: "DirectoryOrCreate" }
+      - name: pvc
+        persistentVolumeClaim: { claimName: "k8s-cp01" }
+      containers:
+      - name: demo-api
+        # image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:master-0.1.0@sha256xxxx
+        # image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:dev
+        image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:master-0.1.0
+        # IfNotPresent, Always, Never
+        imagePullPolicy: "IfNotPresent"
+        resources:
+          requests: { cpu: "200m", memory: "128Mi", ephemeral-storage: "2Gi" }
+          limits: { cpu: "1000m", memory: "512Mi", ephemeral-storage: "4Gi" }
+        livenessProbe:
+          # HTTP Status >= 200 and < 400
+          # httpGet: { path: "/healthz", port: 5030 }
+          grpc: { port: 5040 }
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          periodSeconds: 10
+          failureThreshold: 3
+        env:
+        - name: K8S_Pod
+          valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "metadata.name" } }
+        - name: K8S_Node
+          valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "spec.nodeName" } }
+        - { name: TZ, value: Asia/Shanghai }
+        # envFrom:
+        # - configMapRef: {name: postgres-config}
+        volumeMounts:
+        # not /home/d2jvkpn/demo-api/configs/dev.yaml
+        - { name: config, mountPath: /home/d2jvkpn/demo-api/configs, readOnly: true }
+        - { name: local, subPathExpr: "$(K8S_Pod)/logs", mountPath: "/home/d2jvkpn/demo-api/logs" }
+        - { name: pvc, subPathExpr: "$(K8S_Pod)/data", mountPath: "/home/d2jvkpn/demo-api/data" }
+        ports:
+        - { name: "http", containerPort: 5030, protocol: "TCP" }
+        - { name: "rpc", containerPort: 5040, protocol: "TCP" }
+        # command: [ tail, -f, /etc/hosts ]
+        command: ["./main"]
+        args: ["-release", "-config=configs/dev.yaml", "-http_addr=0.0.0.0:5030", "-rpc_addr=0.0.0.0:5040"]
+
+--- Service
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: prod
+  name: demo-api
+spec:
+  type: ClusterIP
+  # clusterIP: 10.107.98.176
+  selector: { app: demo-api }
+  ports:
+  - { name: http, protocol: TCP, port: 5030, targetPort: 5030 }
+  - { name: rpc, protocol: TCP, port: 5040, targetPort: 5040 }
+
+--- Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: prod
+  name: demo-api
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: "/"
+    ingress.kubernetes.io/limit-connections: "1024"
+    nginx.ingress.kubernetes.io/limit-rps: "256"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/proxy-body-size: "8m"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts: [ "demo-api.k8s.domain" ]
+    secretName: k8s.domain
+
+  rules:
+  - host: demo-api.k8s.domain
+    http:
+      paths:
+      - pathType: Prefix
+        path: /api/
+        backend:
+          service: { name: demo-api, port: { number: 5030 } }
