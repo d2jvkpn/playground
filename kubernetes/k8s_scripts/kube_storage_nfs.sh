@@ -5,12 +5,13 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 # sudo apt update && apt -y upgrade && apt install -y nfs-kernel-server nfs-common
 
-# name=cp01 # k8s node name
+# name=k8s-cp01 # node name as pv name
 name=$1
-# cap=20; pvc_cap=10
+# cap=10Gi
 cap=$2
-pvc_cap=$3
+
 node_ip=$(ip route show default | awk '/default/ {print $9}')
+namespace=${namespace:-dev}
 
 mkdir -p k8s_apps/data
 
@@ -30,15 +31,12 @@ sudo showmount -e $name
 
 echo "Hello, world!" | sudo tee $nfs/hello.txt
 
-#### 2. namespace dev and prod
-echo "==> Creating ns: dev"
-kubectl create ns dev &> /dev/null || true
-
-echo "==> Creating ns: prod"
-kubectl create ns prod &> /dev/null || true
+#### 2. Namespace
+echo "==> Creating Namespace: $namespace"
+kubectl create ns $namespace &> /dev/null || true
 
 #### 3. PersistentVolume
-echo "==> Creating pv: $name"
+echo "==> Creating PersistentVolume: $name"
 
 cat > k8s_apps/data/pv_$name.yaml << EOF
 apiVersion: v1
@@ -47,7 +45,7 @@ metadata:
   name: $name
 spec:
   storageClassName: manual
-  capacity: { storage: ${cap}Gi }
+  capacity: { storage: $cap }
   accessModes: [ ReadWriteMany ]
   persistentVolumeReclaimPolicy: Retain
   # nfs: { path: /data/nfs/$name, server: $name, readOnly: false }
@@ -57,44 +55,26 @@ EOF
 kubectl apply -f k8s_apps/data/pv_$name.yaml
 # kubectl delete pv/$name
 
-#### 4. PersistentVolumeClaim dev
-echo "==> Creating pvc: $name"
+#### 4. PersistentVolumeClaim
+echo "==> Creating PersistentVolumeClaim: $name"
 
-cat > k8s_apps/data/pvc_$name.dev.yaml << EOF
+cat > k8s_apps/data/pvc_$name.$namespace.yaml << EOF
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: $name
-  namespace: dev
+  namespace: $namespace
 spec:
   storageClassName: manual
   accessModes: [ ReadWriteMany ]
   resources:
-    requests: { storage: ${pvc_cap}Gi }
+    requests: { storage: $cap }
   # mannual bound
   volumeName: $name
 EOF
 
-kubectl apply -f k8s_apps/data/pvc_$name.dev.yaml
-# kubectl -n dev delete pvc/$name
-# kubectl -n dev get pvc --show-labels
-# kubectl -n dev describe pvc/$name
+kubectl apply -f k8s_apps/data/pvc_$name.$namespace.yaml
+# kubectl -n $namespace delete pvc/$name
 
-#### 5. PersistentVolumeClaim prod
-cat > k8s_apps/data/pvc_$name.prod.yaml << EOF
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: $name
-  namespace: prod
-spec:
-  storageClassName: manual
-  accessModes: [ ReadWriteMany ]
-  resources:
-    requests: { storage: ${pvc_cap}Gi }
-  # mannual bound
-  volumeName: $name
-EOF
-
-kubectl apply -f k8s_apps/data/pvc_$name.prod.yaml
-# kubectl -n prod delete pvc/$name
+# kubectl -n $namespace get pvc --show-labels
+# kubectl -n $namespace describe pvc/$name
