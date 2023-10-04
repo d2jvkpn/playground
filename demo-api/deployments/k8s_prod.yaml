@@ -29,7 +29,6 @@ spec:
       containers:
       - name: demo-api
         # image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:master-0.1.0@sha256xxxx
-        # image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:dev
         image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:master-0.1.0
         # IfNotPresent, Always, Never
         imagePullPolicy: "IfNotPresent"

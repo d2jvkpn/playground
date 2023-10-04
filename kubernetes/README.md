@@ -107,7 +107,7 @@ ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_flannel.sh"
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_ingress.sh $ingress_node"
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_tcp-services.sh postgres 5432"
 
-ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
+ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_storage_nfs.sh $cp_node 20 10"
 ```
 
 #### 6. Explore
