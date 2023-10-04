@@ -108,6 +108,9 @@ ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_ingress.sh $ingre
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_tcp-services.sh postgres 5432"
 
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
+
+ansible k8s-cp03 -m shell --become -a \
+  "namespace=prod bash k8s_scripts/kube_storage_nfs.sh k8s-cp03 10Gi"
 ```
 
 #### 6. Explore
