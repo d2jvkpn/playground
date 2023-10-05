@@ -19,10 +19,10 @@ metadata:
   name: postgres
   labels: { app: postgres }
 spec:
-  nodeName: k8s-cp03
+  nodeName: k8s-cp02
   volumes:
-  - { name: data, persistentVolumeClaim: { claimName: k8s-cp03 } }
-  # - { name: data, hostPath: { path: "/data/local/postgres", type: "DirectoryOrCreate" } }
+  # - { name: data, persistentVolumeClaim: { claimName: k8s-cp02 } }
+  - { name: data, hostPath: { path: "/data/local/postgres", type: "DirectoryOrCreate" } }
   containers:
   - image: postgres:15-alpine
     imagePullPolicy: Always
@@ -36,7 +36,7 @@ spec:
       failureThreshold: 2
       timeoutSeconds: 3
     env:
-    - name: POD_NAME
+    - name: K8S_Pod
       valueFrom: { fieldRef: { apiVersion: v1, fieldPath: metadata.name } }
     # Use secret in real usage
     - { name: TZ, value: Asia/Shanghai }
@@ -45,8 +45,8 @@ spec:
     - { name: POSTGRES_USER, value: postgres }
     - { name: POSTGRES_PASSWORD, value: postgres }
     volumeMounts:
-    - { name: data, subPath: postgres, mountPath: /var/lib/postgresql/data/pgdata }
-    # hostPath volume doesn't support subpath
-    # - { name: data, mountPath: /var/lib/postgresql/data/pgdata }
+    # - { name: data, subPath: postgres, mountPath: /var/lib/postgresql/data/pgdata }
+    ## hostPath volume doesn't support subpath
+    - { name: data, mountPath: /var/lib/postgresql/data/pgdata }
     ports:
     - { containerPort: 5432, name: postgres }

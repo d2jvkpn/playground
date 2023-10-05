@@ -30,13 +30,13 @@ spec:
       - name: demo-api
         # image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:master-0.1.0@sha256xxxx
         image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:master-0.1.0
-        # IfNotPresent, Always, Never
+        ## imagePullPolicy: IfNotPresent, Always, Never
         imagePullPolicy: "IfNotPresent"
         resources:
           requests: { cpu: "200m", memory: "128Mi", ephemeral-storage: "2Gi" }
           limits: { cpu: "1000m", memory: "512Mi", ephemeral-storage: "4Gi" }
         livenessProbe:
-          # HTTP Status >= 200 and < 400
+          ## HTTP Status >= 200 and < 400
           # httpGet: { path: "/healthz", port: 5030 }
           grpc: { port: 5040 }
           initialDelaySeconds: 5
@@ -52,7 +52,7 @@ spec:
         # envFrom:
         # - configMapRef: {name: postgres-config}
         volumeMounts:
-        # not /home/d2jvkpn/demo-api/configs/dev.yaml
+        ## not /home/d2jvkpn/demo-api/configs/dev.yaml
         - { name: config, mountPath: /home/d2jvkpn/demo-api/configs, readOnly: true }
         - { name: local, subPathExpr: "$(K8S_Pod)/logs", mountPath: "/home/d2jvkpn/demo-api/logs" }
         - { name: pvc, subPathExpr: "$(K8S_Pod)/data", mountPath: "/home/d2jvkpn/demo-api/data" }
