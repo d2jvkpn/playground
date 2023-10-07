@@ -71,7 +71,7 @@ sed -i '/ENABLED/s/1/0/' /etc/default/motd-news
 apt update && apt -y upgrade
 
 apt install -y software-properties-common apt-transport-https ca-certificates \
-  lsb-release gnupg net-tools vim tree file pigz curl jq zip
+  lsb-release gnupg net-tools vim tree file pigz curl jq zip duf
 # landscape-common
 
 apt clean && apt autoclean
