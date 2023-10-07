@@ -24,6 +24,7 @@ services:
     volumes:
     # - ./config.json:/home/hello/stable-diffusion-webui/config.json
     - ./models:/home/hello/stable-diffusion-webui/models
+    - ./models/sd-webui-controlnet:/home/hello/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads
     - ./outputs:/home/hello/stable-diffusion-webui/outputs
     command: ["/entrypoint.sh", "--listen", "--api", "--port=7860"]
 
