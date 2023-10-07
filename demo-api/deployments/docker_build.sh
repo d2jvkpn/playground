@@ -23,6 +23,8 @@ DOCKER_Pull=${DOCKER_Pull:-"true"}
 DOCKER_Push=${DOCKER_Push:-"true"}
 BUILD_Region=${BUILD_Region:-""}
 
+[ -f .env ] && . .env
+
 #### git
 function on_exit() {
     if [ ! -z $(git branch -a | awk '$1=="dev"{print 1; exit}') ]; then
