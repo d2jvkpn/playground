@@ -59,6 +59,10 @@ func SetConfig(config string) (err error) {
 	return nil
 }
 
+func ConfigString(key string) string {
+	return _Config.GetString(key)
+}
+
 func ConfigField(key string) *viper.Viper {
 	return _Config.Sub(key)
 }
