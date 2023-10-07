@@ -23,7 +23,10 @@ DOCKER_Pull=${DOCKER_Pull:-"true"}
 DOCKER_Push=${DOCKER_Push:-"true"}
 BUILD_Region=${BUILD_Region:-""}
 
-[ -f .env ] && . .env
+[ -f .env ] && {
+  2>&1 echo "==> load .env"
+  . .env
+}
 
 #### git
 function on_exit() {
