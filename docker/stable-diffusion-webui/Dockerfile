@@ -37,7 +37,7 @@ RUN python3 -m venv venv/ && \
 RUN mkdir -p extensions && \
   git clone https://github.com/lllyasviel/ControlNet extensions/ControlNet && \
   git clone https://github.com/Mikubill/sd-webui-controlnet extensions/sd-webui-controlnet && \
-  git clone https://github.com/Uminosachi/sd-webui-inpaint-anything extensions/sd-webui-inpaint-anything && \
+  # git clone https://github.com/Uminosachi/sd-webui-inpaint-anything extensions/sd-webui-inpaint-anything && \
   mkdir -p repositories && \
   git clone https://github.com/salesforce/BLIP.git repositories/BLIP && \
   git clone https://github.com/sczhou/CodeFormer.git repositories/CodeFormer && \
