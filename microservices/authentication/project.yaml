@@ -1,0 +1,15 @@
+project: https://github.com/d2jvkpn/microservices
+version: 0.1.0
+
+usage: |
+  authentication usage...
+
+config: |
+  opentelemetry:
+    enable: false
+    address: 127.0.0.1:4317
+    secure: false
+
+  postgres:
+    conn: postgres://USER:PASSWORD@IP:PORT
+    db: authentication

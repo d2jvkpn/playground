@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package="./proto";
+
+message Msg {
+	uint32 http_code = 1;
+	string msg       = 2;
+}
+
+message CreateQ {
+	string password = 1;
+}
+
+message CreateA {
+	Msg    msg = 1;
+	string id  = 2;
+}
+
+message VerifyQ {
+	string id       = 1;
+	string password = 2;
+}
+
+message VerifyA {
+	Msg    msg    = 1;
+	string status = 2;
+}
+
+message GetOrUpdateQ {
+	string id       = 1;
+	string password = 2;
+	string status   = 3;
+}
+
+message GetOrUpdateA {
+	Msg    msg    = 1;
+	string status = 2;
+}
+
+service AuthService {
+	rpc Create(CreateQ) returns (CreateA) {};
+	rpc Verify(VerifyQ) returns (VerifyA) {};
+	rpc GetOrUpdate(GetOrUpdateQ) returns (GetOrUpdateA) {};
+}
