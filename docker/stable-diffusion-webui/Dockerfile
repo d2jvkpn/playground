@@ -48,5 +48,5 @@ RUN mkdir -p extensions && \
   rm -rf /home/hello/.cache/pip
 
 EXPOSE 7860
-# CMD ["python3", "launch.py", "--listen", "--api", "--port=7860"]
-CMD ["/entrypoint.sh", "--listen", "--api", "--port=7860"]
+# python3 launch.py --xformers --listen --api --port=7860 --ckpt=models/Stable-diffusion/realisticVisionV13_v13.safetensors
+CMD ["/entrypoint.sh", "--xformers", "--listen", "--api", "--port=7860"]
