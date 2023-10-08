@@ -40,6 +40,8 @@ curl $addr/sdapi/v1/img2img --silent -H "Content-Type: application/json" \
 curl $addr/sdapi/v1/interrogate --silent -H "Content-Type: application/json" \
   -d @data_clip.json --output /dev/null
 
+# TODO: ControlNet download: extensions/sd-webui-controlnet/annotator/downloads
+
 # copy models from container
 docker exec sd-webui ls /home/hello/.cache \
   /home/hello/stable-diffusion-webui/{models,extensions,interrogate,repositories}
@@ -49,6 +51,6 @@ docker exec sd-webui ls /home/hello/.cache \
 docker exec sd-webui bash -c \
   'rm -r models/BLIP/*.pth models/Stable-diffusion/*.safetensors ~/.cache/pip'
 
-docker commit -p sd-webui sd-webui:p2-${SD_Version}
+docker commit -p sd-webui sd-webui:${SD_Version}
 docker stop sd-webui && docker rm sd-webui
 # docker images sd-webui

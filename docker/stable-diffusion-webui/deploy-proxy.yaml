@@ -26,7 +26,7 @@ services:
     - ./models:/home/hello/stable-diffusion-webui/models
     - ./models/sd-webui-controlnet:/home/hello/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads
     - ./outputs:/home/hello/stable-diffusion-webui/outputs
-    command: ["/entrypoint.sh", "--listen", "--api", "--port=7860"]
+    command: ["/entrypoint.sh", "--ckpt=models/Stable-diffusion/realisticVisionV13_v13.safetensors", "--listen", "--api", "--port=7860"]
 
   proxy:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/sidecar-proxy:dev

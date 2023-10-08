@@ -26,12 +26,12 @@ services:
     - ./models:/home/hello/stable-diffusion-webui/models
     - ./models/sd-webui-controlnet:/home/hello/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads
     - ./outputs:/home/hello/stable-diffusion-webui/outputs
-    # - ./cache:/home/.cache
+    # - ./cache:/home/hello/.cache
     # - ./extensions:/home/hello/stable-diffusion-webui/extensions
     # - ./interrogate:/home/hello/stable-diffusion-webui/interrogate
     # - ./repositories:/home/hello/stable-diffusion-webui/repositories
     # ?? :/extensions/sd-webui-controlnet/annotator/downloads/XX/YY, hed, lineart_anime, mlsd, pidinet
-    command: ["/entrypoint.sh", "--listen", "--api", "--port=7860"]
+    command: ["/entrypoint.sh", "--ckpt=models/Stable-diffusion/realisticVisionV13_v13.safetensors", "--listen", "--api", "--port=7860"]
 
 networks:
   net:
