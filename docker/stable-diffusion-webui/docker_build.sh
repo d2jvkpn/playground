@@ -21,7 +21,7 @@ port=7860
 addr=http://127.0.0.1:$port
 
 docker run -d --name sd-webui --gpus=all -p 127.0.0.1:$port:7860 \
-  sd-webui:p1-$SD_Version /entrypoint.sh --listen --api --port=7860
+  sd-webui:p1-$SD_Version /entrypoint.sh --xformers --listen --api --port=7860
 
 echo "==> Waiting SD service $addr to launch on ..."
 while ! curl --output /dev/null --silent --head --fail $addr; do

@@ -31,7 +31,13 @@ services:
     # - ./interrogate:/home/hello/stable-diffusion-webui/interrogate
     # - ./repositories:/home/hello/stable-diffusion-webui/repositories
     # ?? :/extensions/sd-webui-controlnet/annotator/downloads/XX/YY, hed, lineart_anime, mlsd, pidinet
-    command: ["/entrypoint.sh", "--ckpt=models/Stable-diffusion/realisticVisionV13_v13.safetensors", "--listen", "--api", "--port=7860"]
+    command:
+    - /entrypoint.sh
+    - --xformers
+    # - --ckpt=models/Stable-diffusion/realisticVisionV13_v13.safetensors
+    - --listen
+    - --api
+    - --port=7860
 
 networks:
   net:

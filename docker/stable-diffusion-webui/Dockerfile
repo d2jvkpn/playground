@@ -29,6 +29,7 @@ WORKDIR /home/hello/stable-diffusion-webui
 # git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui ./
 RUN python3 -m venv venv/ && \
   pip3 install -r requirements_versions.txt && \
+  pip3 install -U xformers && \
   pip3 install --upgrade git+https://github.com/huggingface/diffusers.git && \
   rm -rf /home/hello/.cache/pip
 # xformers
@@ -41,8 +42,9 @@ RUN mkdir -p extensions && \
   git clone https://github.com/salesforce/BLIP.git repositories/BLIP && \
   git clone https://github.com/sczhou/CodeFormer.git repositories/CodeFormer && \
   git clone https://github.com/crowsonkb/k-diffusion.git repositories/k-diffusion && \
-  git clone https://github.com/Stability-AI/stablediffusion.git repositories/stablediffusion && \
+  git clone https://github.com/Stability-AI/stablediffusion.git repositories/stable-diffusion-stability-ai && \
   git clone https://github.com/CompVis/taming-transformers.git repositories/taming-transformers && \
+  git clone https://github.com/Stability-AI/generative-models.git repositories/generative-models && \
   rm -rf /home/hello/.cache/pip
 
 EXPOSE 7860
