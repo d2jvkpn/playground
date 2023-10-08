@@ -33,9 +33,9 @@ services:
     command:
     - /entrypoint.sh
     - --xformers
-    # - --ckpt=models/Stable-diffusion/realisticVisionV13_v13.safetensors
     - --listen
     - --api
+    # - --ckpt=models/Stable-diffusion/realisticVisionV13_v13.safetensors
     - --port=7860
 
 networks:

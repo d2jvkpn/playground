@@ -22,11 +22,12 @@ addr=http://127.0.0.1:$port
 
 mkdir -p data/models data/extentions/sd-webui-controlnet data/cache data/interrogate
 
+#  -v $PWD/data/models:/home/hello/stable-diffusion-webui/models \
+#  -v $PWD/data/extentions/sd-webui-controlnet:/home/hello/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads \
+#  -v $PWD/data/cache:/home/hello/.cache \
+#  -v $PWD/data/interrogate:/home/hello/stable-diffusion-webui/interrogate \
+
 docker run -d --name sd-webui --gpus=all -p 127.0.0.1:$port:7860 \
-  -v $PWD/data/models:/home/hello/stable-diffusion-webui/models \
-  -v $PWD/data/extentions/sd-webui-controlnet:/home/hello/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads \
-  -v $PWD/data/cache:/home/hello/.cache \
-  -v $PWD/data/interrogate:/home/hello/stable-diffusion-webui/interrogate \
   sd-webui:p1-$SD_Version /entrypoint.sh --xformers --listen --api --port=7860
 
 echo "==> Waiting SD service $addr to launch on ..."
@@ -56,11 +57,11 @@ curl $addr/sdapi/v1/interrogate --silent -H "Content-Type: application/json" \
 # docker copy sd-webui:/home/hello/stable-diffusion-webui/interrogate ./data/interrogate
 
 #### 5. clean up and save the image
-docker exec sd-webui bash -c 'rm -r models/* ~/.cache/pip'
+docker exec sd-webui bash \
+  -c 'rm -r models/BLIP/*.pth models/Stable-diffusion/*.safetensors ~/.cache/pip'
 
 docker commit -p sd-webui sd-webui:${SD_Version}
 docker stop sd-webui && docker rm sd-webui
-# docker images sd-webui
 exit
 
 docker save sd-webui:${SD_Version} -o sd-webui_${SD_Version}.tar
