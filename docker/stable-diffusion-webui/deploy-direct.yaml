@@ -7,7 +7,8 @@ services:
     restart: always
     user: 1000:1000
     networks: ["net"]
-    ports: ["127.0.0.1:7860:7860"]
+    # ports: ["127.0.0.1:7860:7860"]
+    ports: ["7860:7860"]
     environment: ["TZ=Asia/Shanghai"]
     deploy:
       resources:
@@ -22,15 +23,13 @@ services:
             count: all
             capabilities: [gpu]
     volumes:
-    # - ./config.json:/home/hello/stable-diffusion-webui/config.json
-    - ./models:/home/hello/stable-diffusion-webui/models
-    - ./models/sd-webui-controlnet:/home/hello/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads
+    # - ./configs/config.json:/home/hello/stable-diffusion-webui/config.json
     - ./outputs:/home/hello/stable-diffusion-webui/outputs
-    # - ./cache:/home/hello/.cache
-    # - ./extensions:/home/hello/stable-diffusion-webui/extensions
-    # - ./interrogate:/home/hello/stable-diffusion-webui/interrogate
-    # - ./repositories:/home/hello/stable-diffusion-webui/repositories
-    # ?? :/extensions/sd-webui-controlnet/annotator/downloads/XX/YY, hed, lineart_anime, mlsd, pidinet
+    - ./data/models:/home/hello/stable-diffusion-webui/models
+    # - ./data/extentions/sd-webui-controlnet:/home/hello/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads
+    ## hed, lineart_anime, mlsd, pidinet
+    # - ./data/cache:/home/hello/.cache
+    # - ./data/interrogate:/home/hello/stable-diffusion-webui/interrogate
     command:
     - /entrypoint.sh
     - --xformers
