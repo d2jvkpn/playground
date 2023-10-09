@@ -6,13 +6,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/d2jvkpn/microservices/authentication/internal/settings"
-	. "github.com/d2jvkpn/microservices/authentication/proto"
+	"authentication/internal/settings"
+	. "authentication/proto"
 
-	"github.com/d2jvkpn/go-web/pkg/cloud_native"
+	"github.com/d2jvkpn/gotk/cloud-tracing"
 	"github.com/spf13/viper"
 	. "github.com/stretchr/testify/require"
-
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/status"
@@ -79,9 +78,9 @@ func testSetupOtel(vc *viper.Viper) (closeTracer func(), err error) {
 	str := vc.GetString("opentelemetry.address")
 	secure := vc.GetBool("opentelemetry.secure")
 
-	closeTracer, err = cloud_native.LoadTracer(str, settings.App, 3*time.Second, secure)
+	closeTracer, err = tracing.LoadOtelGrpc(str, settings.App, secure)
 	if err != nil {
-		return nil, fmt.Errorf("cloud_native.LoadTracer: %s, %w, %d", str, err, status.Code(err))
+		return nil, fmt.Errorf("tracing.LoadOtelGrpc: %s, %w, %d", str, err, status.Code(err))
 	}
 
 	return closeTracer, nil

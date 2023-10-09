@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/d2jvkpn/go-web/pkg/wrap"
+	"github.com/d2jvkpn/gotk/cloud-logging"
 	"github.com/spf13/viper"
 )
 
@@ -15,7 +15,7 @@ const (
 
 var (
 	Release bool
-	Logger  *wrap.Logger
+	Logger  *logging.Logger
 	Rng     *rand.Rand
 	Config  *viper.Viper
 )

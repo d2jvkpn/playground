@@ -3,7 +3,7 @@ package internal
 import (
 	"fmt"
 
-	"github.com/d2jvkpn/microservices/authentication/internal/settings"
+	"authentication/internal/settings"
 
 	"github.com/d2jvkpn/go-web/pkg/wrap"
 )

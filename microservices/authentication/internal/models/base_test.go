@@ -7,8 +7,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/d2jvkpn/go-web/pkg/misc"
-	"github.com/d2jvkpn/go-web/pkg/orm"
+	"authentication/pkg/orm"
+
+	"github.com/d2jvkpn/gotk"
 	"github.com/spf13/viper"
 )
 
@@ -32,7 +33,7 @@ func TestMain(m *testing.M) {
 
 	testFlag.Parse(flag.Args())
 	fmt.Printf("~~~ load config %s\n", config)
-	misc.RegisterLogPrinter()
+	gotk.RegisterLogPrinter()
 
 	defer func() {
 		if err != nil {
@@ -41,7 +42,7 @@ func TestMain(m *testing.M) {
 		}
 	}()
 
-	if config, err = misc.RootFile(config); err != nil {
+	if config, err = gotk.RootFile(config); err != nil {
 		return
 	}
 

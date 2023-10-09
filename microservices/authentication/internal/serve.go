@@ -5,9 +5,9 @@ import (
 	"net"
 	"time"
 
-	"github.com/d2jvkpn/microservices/authentication/internal/models"
-	"github.com/d2jvkpn/microservices/authentication/internal/settings"
-	. "github.com/d2jvkpn/microservices/authentication/proto"
+	"authentication/internal/models"
+	"authentication/internal/settings"
+	. "authentication/proto"
 
 	"github.com/d2jvkpn/go-web/pkg/cloud_native"
 	"github.com/d2jvkpn/go-web/pkg/misc"

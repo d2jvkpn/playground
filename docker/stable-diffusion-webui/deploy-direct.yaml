@@ -2,7 +2,7 @@ version: '3'
 
 services:
   sd-webui:
-    image: sd-webui:p2-${TAG}
+    image: sd-webui:${TAG}
     container_name: sd-webui_${APP_ENV}
     restart: always
     user: 1000:1000

@@ -5,15 +5,14 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/d2jvkpn/microservices/authentication/internal/settings"
-	. "github.com/d2jvkpn/microservices/authentication/proto"
+	"authentication/internal/settings"
+	. "authentication/proto"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 	"golang.org/x/crypto/bcrypt"
-
 	"google.golang.org/grpc/codes"
 	// "google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"

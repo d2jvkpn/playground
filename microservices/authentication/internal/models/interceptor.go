@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/d2jvkpn/microservices/authentication/internal/settings"
+	"authentication/internal/settings"
 
 	"go.uber.org/zap"
-
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
