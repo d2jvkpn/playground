@@ -1,4 +1,5 @@
--- Add migration script here
+--- Add migration script here
+
 CREATE TYPE user_status AS ENUM('ok', 'blocked', 'deleted');
 
 CREATE FUNCTION update_now() RETURNS trigger AS $$

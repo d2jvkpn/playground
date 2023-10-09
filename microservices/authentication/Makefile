@@ -4,7 +4,7 @@ at = $(shell date +'%FT%T%:z')
 build:
 	echo ">>> ${at}"
 	bash scripts/go_build.sh authentication
-	ls -lh target/authentication
+	ls -al target/
 
 run:
 	echo ">>> ${at}"

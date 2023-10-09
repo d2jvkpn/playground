@@ -1,0 +1,10 @@
+#! /usr/bin/env expect
+set prompt "#"
+set timeout 60
+
+set password "world"
+
+spawn psql --host 127.0.0.1 --username hello --dbname authentication --password
+expect "Password: "
+send "$password\n"
+interact

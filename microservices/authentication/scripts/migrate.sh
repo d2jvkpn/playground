@@ -3,24 +3,9 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-
-#### 1. install grpc
-sudo apt install -y protobuf-compiler
-
-go get -u google.golang.org/grpc
-go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
-go get -u google.golang.org/grpc/cmd/protoc-gen-go-grpc
-go install google.golang.org/grpc/cmd/protoc-gen-go-grpc
-
-mkdir proto && cd proto
-protoc --go_out=./  --go-grpc_out=./  proto/auth.proto
-sed -i '/^\tmustEmbedUnimplemented/s#\t#\t// #' proto/auth_grpc.pb.go
-
-
-#### 2. install postgres
 # create a postgres instance by using docker:
 # https://github.com/d2jvkpn/deploy/tree/dev/productions/postgresql
-cargo install --version=0.6.2 sqlx-cli --no-default-features --features native-tls,postgres
+cargo install --version=0.7.1 sqlx-cli --no-default-features --features native-tls,postgres
 
 command -v sqlx
 
@@ -32,21 +17,20 @@ sqlx database create
 
 # psql --host 127.0.0.1 --username hello --port 5432 --password --dbname users -c 'SELECT current_database()'
 
-
-#### 3. migrations
 sqlx migrate add create_users_table
 sql_file=$(ls migrations/*_create_users_table.sql | tail -n 1)
-ls 
 
-cat >> $sql_file <<EOF
+cat > $sql_file <<'EOF'
+--- Add migration script here
+
 CREATE TYPE user_status AS ENUM('ok', 'blocked', 'deleted');
 
-CREATE FUNCTION update_now() RETURNS trigger AS \$\$
+CREATE FUNCTION update_now() RETURNS trigger AS $$
 BEGIN
   NEW.updated_at := now();
   RETURN NEW;
 END;
-\$\$LANGUAGE plpgsql;
+$$LANGUAGE plpgsql;
 -- drop function update_now cascade;
 
 CREATE TABLE users (
