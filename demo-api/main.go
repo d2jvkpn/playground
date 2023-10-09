@@ -7,7 +7,6 @@ import (
 	"log/slog"
 	"os"
 	"os/signal"
-	"strings"
 	"syscall"
 	"time"
 
@@ -66,9 +65,7 @@ func main() {
 
 		fmt.Fprintf(
 			output, "\n#### configuration\n```yaml\n%s```\n",
-			strings.Replace(
-				settings.ProjectString("config"), "\n#\n", "\n\n", -1,
-			),
+			settings.ProjectString("config"),
 		)
 		fmt.Fprintf(
 			output,
