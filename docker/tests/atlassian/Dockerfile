@@ -6,6 +6,9 @@ RUN apt -y install openjdk-11-jdk fontconfig fonts-dejavu fonts-noto-cjk-extra f
 RUN apt clean
 
 ####
+# https://www.atlassian.com/software/jira/update
+# https://product-downloads.atlassian.com/software/jira/downloads/atlassian-jira-software-9.11.2.tar.gz
+
 # RUN wget https://product-downloads.atlassian.com/software/jira/downloads/atlassian-jira-software-8.17.1-x64.bin
 # RUN wget https://product-downloads.atlassian.com/software/confluence/downloads/atlassian-confluence-7.13.1-x64.bin
 # RUN wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-8.0.27.tar.gz
