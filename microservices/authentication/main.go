@@ -38,7 +38,7 @@ func main() {
 		log.Fatalln(err)
 	}
 	meta := gotk.BuildInfo()
-	meta["project"] = project.GetString("project")
+	meta["app"] = project.GetString("app")
 	meta["version"] = project.GetString("version")
 
 	flag.StringVar(&addr, "addr", ":20001", "grpc listening address")
@@ -77,9 +77,9 @@ func main() {
 	}
 	flag.Parse()
 
-	meta["-config"] = config
-	meta["-addr"] = addr
-	meta["-release"] = release
+	meta["config"] = config
+	meta["addr"] = addr
+	meta["release"] = release
 	meta["pid"] = os.Getpid()
 
 	if err = internal.Load(config, release); err != nil {
@@ -95,6 +95,7 @@ func main() {
 	}
 
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
+
 	select {
 	case err = <-errch:
 	case <-quit:
