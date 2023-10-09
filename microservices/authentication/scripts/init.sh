@@ -5,7 +5,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 
 #### 1. install grpc
-apt install -y protobuf-compiler
+sudo apt install -y protobuf-compiler
 
 go get -u google.golang.org/grpc
 go get -u github.com/golang/protobuf/{proto,protoc-gen-go}

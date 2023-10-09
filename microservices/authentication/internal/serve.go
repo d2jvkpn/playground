@@ -3,31 +3,28 @@ package internal
 import (
 	"fmt"
 	"net"
-	"time"
+	// "time"
 
 	"authentication/internal/models"
 	"authentication/internal/settings"
+	"authentication/pkg/orm"
 	. "authentication/proto"
 
-	"github.com/d2jvkpn/go-web/pkg/cloud_native"
-	"github.com/d2jvkpn/go-web/pkg/misc"
-	"github.com/d2jvkpn/go-web/pkg/orm"
-	"github.com/d2jvkpn/go-web/pkg/wrap"
+	"github.com/d2jvkpn/gotk/cloud-logging"
+	"github.com/d2jvkpn/gotk/cloud-tracing"
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/spf13/viper"
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-
-	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
-	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 )
 
 // database => tracing => grpc.Server => service registry => logger
 func ServeAsync(addr string, meta map[string]any, errch chan<- error) (err error) {
 	var (
-		otelEnabled   bool
-		consulEnabled bool
-		listener      net.Listener
+		otelEnabled bool
+		listener    net.Listener
 	)
 
 	// database
@@ -52,23 +49,20 @@ func ServeAsync(addr string, meta map[string]any, errch chan<- error) (err error
 	srv := models.NewServer()
 	RegisterAuthServiceServer(_GrpcServer, srv)
 
-	// consul
-	if consulEnabled, err = setupConsul(addr); err != nil {
-		return err
-	}
-
 	// logger
 	if settings.Release {
-		settings.Logger = wrap.NewLogger("logs/authentication.log", zapcore.InfoLevel, 256, nil)
+		settings.Logger, err = logging.NewLogger("logs/authentication.log", zapcore.InfoLevel, 256)
 	} else {
-		settings.Logger = wrap.NewLogger("logs/authentication.log", zapcore.DebugLevel, 256, nil)
+		settings.Logger, err = logging.NewLogger("logs/authentication.log", zapcore.DebugLevel, 256)
+	}
+	if err != nil {
+		return err
 	}
 	_Logger = settings.Logger.Named("server")
 
 	_Logger.Info(
 		"Server is starting",
 		zap.Bool("otelEnabled", otelEnabled),
-		zap.Bool("consulEnabled", consulEnabled),
 		zap.Any("meta", meta),
 	)
 
@@ -101,7 +95,7 @@ func setupInterceptors(enableOtel bool) []grpc.ServerOption {
 	return []grpc.ServerOption{grpc.UnaryInterceptor(uInte), grpc.StreamInterceptor(sInte)}
 }
 
-func setupOtel(vc *viper.Viper) (enabled bool, closeTracer func(), err error) {
+func setupOtel(vc *viper.Viper) (enabled bool, closeTracer func() error, err error) {
 	if !vc.GetBool("opentelemetry.enable") {
 		return false, nil, nil
 	}
@@ -109,30 +103,12 @@ func setupOtel(vc *viper.Viper) (enabled bool, closeTracer func(), err error) {
 	str := vc.GetString("opentelemetry.address")
 	secure := vc.GetBool("opentelemetry.secure")
 
-	closeTracer, err = cloud_native.LoadTracer(str, settings.App, 3*time.Second, secure)
+	closeTracer, err = tracing.LoadOtelGrpc(str, settings.App, secure)
 	if err != nil {
 		return true, nil, fmt.Errorf("cloud_native.LoadTracer: %s, %w", str, err)
 	}
 
 	return true, closeTracer, nil
-}
-
-func setupConsul(addr string) (enabled bool, err error) {
-	var port int
-
-	if enabled = _ConsulClient != nil && _ConsulClient.Registry; !enabled {
-		return false, nil
-	}
-
-	if port, err = misc.PortFromAddr(addr); err != nil {
-		return true, err
-	}
-
-	if err = _ConsulClient.GRPCRegister(port, false, _GrpcServer); err != nil {
-		return true, err
-	}
-
-	return true, nil
 }
 
 // service registry => grpc.Server => tracing => database => logger
@@ -151,14 +127,6 @@ func Shutdown() {
 			return
 		}
 		_Logger.Info(fmt.Sprintf(format, a...))
-	}
-
-	if _ConsulClient != nil && _ConsulClient.Registry {
-		if err = _ConsulClient.Deregister(); err != nil {
-			errorf("consul deregister: %v", err)
-		} else {
-			infof("consul deregister")
-		}
 	}
 
 	if _GrpcServer != nil {

@@ -12,8 +12,7 @@ import (
 
 	"authentication/internal"
 
-	"github.com/d2jvkpn/go-web/pkg/misc"
-	"github.com/d2jvkpn/go-web/pkg/wrap"
+	"github.com/d2jvkpn/gotk"
 	"github.com/spf13/viper"
 )
 
@@ -23,31 +22,33 @@ var (
 )
 
 func init() {
-	misc.RegisterLogPrinter()
+	gotk.RegisterLogPrinter()
 }
 
 func main() {
 	var (
 		release      bool
 		addr, config string
-		consul       string
-		err          error
-		project      *viper.Viper
+		// consul       string
+		err     error
+		project *viper.Viper
 	)
 
-	if project, err = wrap.ConfigFromBytes(_Project, "yaml"); err != nil {
+	if project, err = gotk.LoadYamlBytes(_Project); err != nil {
 		log.Fatalln(err)
 	}
-	meta := misc.BuildInfo()
+	meta := gotk.BuildInfo()
 	meta["project"] = project.GetString("project")
 	meta["version"] = project.GetString("version")
 
 	flag.StringVar(&addr, "addr", ":20001", "grpc listening address")
 	flag.StringVar(&config, "config", "configs/local.yaml", "configuration path")
-	flag.StringVar(
-		&consul, "consul", "",
-		"consul config path, set -config to empty if you needs to read config from consul",
-	)
+	/*
+		flag.StringVar(
+			&consul, "consul", "",
+			"consul config path, set -config to empty if you needs to read config from consul",
+		)
+	*/
 	flag.BoolVar(&release, "release", false, "run in release mode")
 
 	flag.Usage = func() {
@@ -55,7 +56,7 @@ func main() {
 
 		fmt.Fprintf(
 			output, "%s\n\nUsage of %s:\n",
-			misc.BuildInfoText(meta), filepath.Base(os.Args[0]),
+			gotk.BuildInfoText(meta), filepath.Base(os.Args[0]),
 		)
 
 		flag.PrintDefaults()
@@ -66,11 +67,13 @@ func main() {
 			project.GetString("config"),
 		)
 
-		fmt.Fprintf(
-			output,
-			"\nConsul template(configs/consul.yaml):\n```yaml\n%s```\n",
-			wrap.ConsulConfigDemo(),
-		)
+		/*
+			fmt.Fprintf(
+				output,
+				"\nConsul template(configs/consul.yaml):\n```yaml\n%s```\n",
+				wrap.ConsulConfigDemo(),
+			)
+		*/
 	}
 	flag.Parse()
 
@@ -79,7 +82,7 @@ func main() {
 	meta["-release"] = release
 	meta["pid"] = os.Getpid()
 
-	if err = internal.Load(config, consul, release); err != nil {
+	if err = internal.Load(config, release); err != nil {
 		log.Fatalln(err)
 	}
 

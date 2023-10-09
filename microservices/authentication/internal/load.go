@@ -5,30 +5,19 @@ import (
 
 	"authentication/internal/settings"
 
-	"github.com/d2jvkpn/go-web/pkg/wrap"
+	"github.com/d2jvkpn/gotk"
 )
 
-func Load(config string, consul string, release bool) (err error) {
-	if config == "" && consul == "" {
-		return fmt.Errorf("both config and  consul are empty")
-	}
-
-	if consul != "" {
-		if _ConsulClient, err = wrap.NewConsulClient(consul, "consul"); err != nil {
-			return err
-		}
-	}
+func Load(config string, release bool) (err error) {
+	settings.Release = release
 
 	if config == "" {
-		settings.Config, err = _ConsulClient.GetKV(settings.App)
-	} else {
-		settings.Config, err = wrap.OpenConfig(config)
-	}
-	if err != nil {
-		return err
+		return fmt.Errorf("config is empty")
 	}
 
-	settings.Release = release
+	if settings.Config, err = gotk.LoadYamlConfig(config, "project"); err != nil {
+		return err
+	}
 
 	return nil
 }

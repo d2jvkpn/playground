@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"testing"
-	"time"
+	// "time"
 
 	"authentication/internal/settings"
 	. "authentication/proto"
@@ -20,7 +20,7 @@ import (
 func TestClient(t *testing.T) {
 	var (
 		enableOtel  bool
-		closeTracer func()
+		closeTracer func() error
 		err         error
 		conn        *grpc.ClientConn
 		client      AuthServiceClient
@@ -74,7 +74,7 @@ func TestClient(t *testing.T) {
 	NoError(t, err)
 }
 
-func testSetupOtel(vc *viper.Viper) (closeTracer func(), err error) {
+func testSetupOtel(vc *viper.Viper) (closeTracer func() error, err error) {
 	str := vc.GetString("opentelemetry.address")
 	secure := vc.GetBool("opentelemetry.secure")
 

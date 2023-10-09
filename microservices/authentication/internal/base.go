@@ -9,9 +9,8 @@ import (
 )
 
 var (
-	_Logger       *zap.Logger
-	_DB           *gorm.DB
-	_ConsulClient *wrap.ConsulClient
-	_CloseTracer  func()
-	_GrpcServer   *grpc.Server
+	_Logger      *zap.Logger
+	_DB          *gorm.DB
+	_CloseTracer func() error
+	_GrpcServer  *grpc.Server
 )
