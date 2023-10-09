@@ -7,9 +7,8 @@ import (
 	"os"
 	"testing"
 
-	"authentication/pkg/orm"
-
 	"github.com/d2jvkpn/gotk"
+	"github.com/d2jvkpn/gotk/orm"
 	"github.com/spf13/viper"
 )
 

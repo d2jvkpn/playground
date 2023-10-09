@@ -7,11 +7,11 @@ import (
 
 	"authentication/internal/models"
 	"authentication/internal/settings"
-	"authentication/pkg/orm"
 	. "authentication/proto"
 
 	"github.com/d2jvkpn/gotk/cloud-logging"
 	"github.com/d2jvkpn/gotk/cloud-tracing"
+	"github.com/d2jvkpn/gotk/orm"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/spf13/viper"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
