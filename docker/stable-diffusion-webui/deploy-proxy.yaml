@@ -22,7 +22,6 @@ services:
             count: all
             capabilities: [gpu]
     volumes:
-    # - ./configs/config.json:/home/hello/stable-diffusion-webui/config.json
     - ./outputs:/home/hello/stable-diffusion-webui/outputs
     - ./data/models:/home/hello/stable-diffusion-webui/models
     # - ./data/extentions/sd-webui-controlnet:/home/hello/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads
