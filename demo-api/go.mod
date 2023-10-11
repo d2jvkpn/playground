@@ -3,10 +3,11 @@ module demo-api
 go 1.21.2
 
 require (
-	github.com/d2jvkpn/gotk v0.0.0-20230925023207-f923b8bd92bb
-	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20230925023207-f923b8bd92bb
-	github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20230925023207-f923b8bd92bb
-	github.com/d2jvkpn/gotk/ginx v0.0.0-20230925023207-f923b8bd92bb
+	github.com/d2jvkpn/gotk v0.0.0-20231010100316-d8cb0766d7e3
+	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20231010100316-d8cb0766d7e3
+	github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20231010100316-d8cb0766d7e3
+	github.com/d2jvkpn/gotk/ginx v0.0.0-20231010100316-d8cb0766d7e3
+	github.com/d2jvkpn/gotk/impls v0.0.0-20231010100316-d8cb0766d7e3
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.3.1
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
@@ -14,13 +15,13 @@ require (
 	github.com/spf13/viper v1.17.0
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.45.0
 	go.uber.org/zap v1.26.0
-	google.golang.org/grpc v1.58.2
+	google.golang.org/grpc v1.58.3
 	google.golang.org/protobuf v1.31.0
 )
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/bytedance/sonic v1.10.1 // indirect
+	github.com/bytedance/sonic v1.10.2 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.0 // indirect
@@ -67,10 +68,12 @@ require (
 	golang.org/x/arch v0.5.0 // indirect
 	golang.org/x/crypto v0.14.0 // indirect
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
-	golang.org/x/net v0.16.0 // indirect
+	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20231002182017-d307bd883b97 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20231009173412-8bfb1ae86b6c // indirect
+	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

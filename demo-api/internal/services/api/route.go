@@ -9,13 +9,14 @@ import (
 
 	"github.com/d2jvkpn/gotk"
 	"github.com/d2jvkpn/gotk/ginx"
+	"github.com/d2jvkpn/gotk/impls"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func Load_Public(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
-	router.GET("/nts", gin.WrapF(gotk.NTSFunc(3)))
+	router.GET("/nts", gin.WrapF(impls.NTSFunc(3)))
 	router.GET("/healthz", ginx.Healthz)
 	router.GET("/prometheus", gin.WrapH(promhttp.Handler()))
 
