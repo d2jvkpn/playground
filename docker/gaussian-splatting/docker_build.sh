@@ -20,7 +20,13 @@ docker exec $container chmod a+x /opt/bin/conda_app.sh
 docker exec $container bash /opt/app_build.sh
 
 # docker commit -p --change='ENTRYPOINT ["/entrypoint.sh"]' $container gaussian-splatting:latest
-docker commit -p --change='WORKDIR /opt/gaussian-splatting' $container gaussian-splatting:latest
+docker commit -p \
+  --change='ENV TZ=Asia/Shanghai' \
+  --change='ENV CONDA_DIR=/opt/conda' \
+  --change='ENV PATH=/opt/bin:$CONDA_DIR/bin:$PATH' \
+  --change='ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$PATH' \
+  --change='WORKDIR /opt/gaussian-splatting' \
+  $container gaussian-splatting:latest
 
 docker stop $container && docker rm $container
 
@@ -29,11 +35,6 @@ docker save gaussian-splatting:latest -o gaussian-splatting_latest.tar
 pigz gaussian-splatting_latest.tar
 
 docker run --rm -it --gpus=all gaussian-splatting:latest bash
-
-export TZ=Asia/Shanghai
-export CONDA_DIR=/opt/conda
-export PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$PATH
-export PATH=/opt/bin:$CONDA_DIR/bin:$PATH
 
 conda init bash
 exec bash
