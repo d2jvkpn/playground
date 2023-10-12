@@ -34,7 +34,7 @@ container=gaussian-splatting_$(tr -dc '0-9a-z' < /dev/urandom | fold -w 8 | head
     docker stop $container && docker rm $container
 
     echo "==> $(date +'%FT%T%:z') docker build end"
-} > docker_gaussian-splatting.$(date +'%FT%H-%M-%S').log
+} > gaussian-splatting.$(date +'%FT%H-%M-%S').log
 
 docker save gaussian-splatting:latest -o gaussian-splatting_latest.tar
 pigz gaussian-splatting_latest.tar

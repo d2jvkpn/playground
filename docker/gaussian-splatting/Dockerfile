@@ -3,6 +3,8 @@ FROM nvidia/cuda:11.7.1-devel-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=nointeractive
 ENV TZ=Asia/Shanghai
+ENV CONDA_HOME=/opt/conda
+ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$CONDA_HOME/bin:/opt/bin:$PATH
 
 RUN apt update && \
   apt -y upgrade && \
@@ -24,17 +26,12 @@ RUN wget -qO miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-
   /bin/bash miniconda.sh -b -p /opt/conda && \
   rm miniconda.sh
 
-ENV CONDA_DIR=/opt/conda
-ENV PATH=$CONDA_DIR/bin:$PATH
-
 RUN git clone https://github.com/graphdeco-inria/gaussian-splatting \
     --recursive /opt/gaussian-splatting && \
   cd /opt/gaussian-splatting/SIBR_viewers && \
   cmake -Bbuild -G Ninja . -DCMAKE_BUILD_TYPE=Release && \
   cmake --build build -j24 --target install && \
   rm -rf build/
-
-ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$PATH
 
 RUN conda env create --file /opt/gaussian-splatting/environment.yml && conda clean --all --yes
 # conda init bash && \
