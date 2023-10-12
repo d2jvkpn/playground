@@ -2,6 +2,7 @@ FROM nvidia/cuda:11.7.1-devel-ubuntu22.04
 # FROM nvidia/cuda:12.2.0-devel-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=nointeractive
+ENV TZ=Asia/Shanghai
 
 RUN apt update && \
   apt -y upgrade && \
@@ -34,7 +35,7 @@ RUN git clone https://github.com/graphdeco-inria/gaussian-splatting \
 
 ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$PATH
 
-RUN conda env create --file /opt/gaussian-splatting/environment.yml
+RUN conda env create --file /opt/gaussian-splatting/environment.yml && conda clean --all --yes
 # conda init bash && \
 #  exec bash && \
 #  conda activate gaussian_splatting && \

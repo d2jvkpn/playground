@@ -30,7 +30,7 @@ wget -qO miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linu
   rm miniconda.sh
 
 export CONDA_DIR=/opt/conda
-export PATH=$CONDA_DIR/bin:$PATH
+export PATH=$CONDA_DIR/bin:/opt/bin:$PATH
 
 ####
 git clone https://github.com/graphdeco-inria/gaussian-splatting --recursive /opt/gaussian-splatting
@@ -39,10 +39,12 @@ cd /opt/gaussian-splatting/SIBR_viewers && \
   cmake -Bbuild -G Ninja . -DCMAKE_BUILD_TYPE=Release && \
   cmake --build build -j24 --target install
 
-export PATH=/opt/bin:/opt/gaussian-splatting/SIBR_viewers/install/bin:$PATH
+export PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$PATH
 
 conda env create --file /opt/gaussian-splatting/environment.yml
-# conda init bash && \
-# exec bash && \
-# conda activate gaussian_splatting && \
+conda clean --all --yes
+
+# conda init bash
+# exec bash
+# conda activate gaussian_splatting
 # echo "==> conda: CONDA_DEFAULT_ENV=$CONDA_DEFAULT_ENV,  CONDA_PREFIX=$CONDA_PREFIX"

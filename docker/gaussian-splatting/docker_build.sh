@@ -25,8 +25,12 @@ docker commit -p --change='WORKDIR /opt/gaussian-splatting' $container gaussian-
 docker stop $container && docker rm $container
 
 exit
+docker save gaussian-splatting:latest -o gaussian-splatting_latest.tar
+pigz gaussian-splatting_latest.tar
+
 docker run --rm -it --gpus=all gaussian-splatting:latest bash
 
+export TZ=Asia/Shanghai
 export CONDA_DIR=/opt/conda
 export PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$PATH
 export PATH=/opt/bin:$CONDA_DIR/bin:$PATH
