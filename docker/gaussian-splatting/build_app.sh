@@ -37,7 +37,8 @@ git clone https://github.com/graphdeco-inria/gaussian-splatting --recursive /opt
 
 cd /opt/gaussian-splatting/SIBR_viewers && \
   cmake -Bbuild -G Ninja . -DCMAKE_BUILD_TYPE=Release && \
-  cmake --build build -j24 --target install
+  cmake --build build -j24 --target install && \
+  rm -rf build/
 
 export PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$PATH
 
