@@ -13,11 +13,11 @@ docker run -d --name $container --gpus=all nvidia/cuda:11.7.1-devel-ubuntu22.04 
 
 docker exec $container mkdir -p /opt/bin
 
-docker cp ./app_build.sh $container:/opt/app_build.sh
+docker cp ./build_app.sh $container:/opt/build_app.sh
 docker cp ./conda_app.sh $container:/opt/bin/conda_app.sh
 
 docker exec $container chmod a+x /opt/bin/conda_app.sh
-docker exec $container bash /opt/app_build.sh
+docker exec $container bash /opt/build_app.sh
 
 # docker commit -p --change='ENTRYPOINT ["/entrypoint.sh"]' $container gaussian-splatting:latest
 docker commit -p \
