@@ -39,15 +39,16 @@ function stop {
 
 
 cmd=$1
+config=${2:-${_path}/socks5_proxy.yaml}
 
 case $cmd in
 "start")
-    for e in $(yq '.socks5_proxy[] | .host + ":" + .port' ${_path}/socks5_proxy.yaml); do
+    for e in $(yq '.socks5_proxy[] | .host + ":" + .port' $config); do
         start $(echo $e | sed 's/:/ /')
     done
     ;;
 "stop")
-    for port in $(yq .socks5_proxy[].port ${_path}/socks5_proxy.yaml); do
+    for port in $(yq .socks5_proxy[].port $config); do
         stop $port
     done
     ;;
