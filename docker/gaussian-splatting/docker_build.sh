@@ -18,7 +18,7 @@ container=3dgs_$(tr -dc '0-9a-z' < /dev/urandom | fold -w 8 | head -n 1 || true)
 
     docker exec $container mkdir -p /data/workspace
     docker cp ./build_app.sh $container:/opt/build_app.sh
-    docker cp ./conda_env.sh $container:/data/conda_env.sh
+    docker cp ./conda_3dgs.sh $container:/data/conda_3dgs.sh
     docker exec $container bash /opt/build_app.sh
 
     docker commit -p \
