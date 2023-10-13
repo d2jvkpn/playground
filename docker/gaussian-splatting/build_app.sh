@@ -6,8 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 ####
 export DEBIAN_FRONTEND=nointeractive
 export CONDA_HOME=/opt/conda
-export PATH=$CONDA_HOME/bin:$PATH
-export PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$PATH
+export PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$CONDA_HOME/bin:$PATH
 
 apt update && apt -y upgrade &&
   apt install -y git wget zip colmap imagemagick && \
@@ -45,4 +44,5 @@ conda clean --all --yes
 # conda init bash
 # exec bash
 # conda activate gaussian_splatting
-# echo "==> conda: CONDA_DEFAULT_ENV=$CONDA_DEFAULT_ENV,  CONDA_PREFIX=$CONDA_PREFIX"
+
+# echo "==> CONDA_DEFAULT_ENV=$CONDA_DEFAULT_ENV, CONDA_PREFIX=$CONDA_PREFIX, CONDA_HOME=$CONDA_HOME"
