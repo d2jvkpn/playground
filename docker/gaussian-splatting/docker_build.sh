@@ -5,7 +5,9 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 container=3dgs_$(tr -dc '0-9a-z' < /dev/urandom | fold -w 8 | head -n 1 || true)
 
+# nvidia/cuda:11.7.1-devel-ubuntu22.04
 docker run -d --name $container --gpus=all nvidia/cuda:11.8.0-devel-ubuntu22.04 tail -f /etc/hosts
+## don't use image nvidia/cuda:12.2.0-devel-ubuntu22.04
 
 function remove_container() {
     docker rm -f $container
@@ -13,13 +15,8 @@ function remove_container() {
 
 trap 'remove_container' ERR
 
-# nvidia/cuda:11.7.1-devel-ubuntu22.04
 {
     echo "==> $(date +'%FT%T%:z') docker build start"
-    # docker build -f Dockerfile -t 3dgs ./
-
-    ## not working:
-    # docker run -tid --name 3dgs --gpus=all nvidia/cuda:12.2.0-devel-ubuntu22.04 bash
 
     docker exec $container mkdir -p /data/workspace
     docker cp ./build_app.sh $container:/opt/build_app.sh
@@ -42,7 +39,6 @@ docker save 3dgs:latest -o 3dgs_latest.tar && pigz 3dgs_latest.tar
 docker rmi 3dgs:latest
 
 exit
-
 aws s3 cp ./3dgs_latest.tar.gz s3://$bucket/tests/
 aws s3 ls --recursive s3://$bucket/tests
 aws s3 presign s3://$bucket/tests/3dgs_latest.tar.gz
