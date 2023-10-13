@@ -11,22 +11,22 @@ mkdir -p ./truck/distorted
 # colmap gui
 colmap automatic_reconstructor --image_path ./truck/input --workspace_path ./truck/distorted
 ls -d truck/input truck/distorted/{database.db,sparse}
-# zip -r truck.zip truck && rm -r truck
 
 ####
-docker run -d --name 3dgs --gpus=all -v $PWD:/data/workspace gaussian-splatting:latest
+docker run -d --name 3dgs --gpus=all -v $PWD:/data/workspace gaussian-splatting:latest \
+  sleep infinity
+
 docker exec -it 3dgs bash
 
 ####
-. ../
-
-ln -s /opt/gaussian-splatting 3dgs
-# unzip truck.zip
+. /opt/conda_3dgs.sh
 # python 3dgs/convert.py -s ./truck --skip_matching
-python 3dgs/convert.py -s ./truck --magick_executable /usr/bin/convert --skip_matching --resize
+python /opt/3dgs/convert.py -s ./truck --skip_matching --resize --magick_executable /usr/bin/convert
 
 python 3dgs/train.py -s ./truck/ --eval
+
 ## pre-trained
-# python 3dgs/render.py -m ./output/e9c09354-7/ -s <path to COLMAP dataset>
-python 3dgs/render.py -m ./output/e9c09354-7/
-python 3dgs/metrics.py -m ./output/e9c09354-7/
+# python /opt/3dgs/render.py -m ./output/e9c09354-7/ -s <path to COLMAP dataset>
+python /opt/3dgs/render.py -m ./output/e9c09354-7/
+
+python /opt/3dgs/metrics.py -m ./output/e9c09354-7/

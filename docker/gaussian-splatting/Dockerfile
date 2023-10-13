@@ -39,8 +39,8 @@ RUN conda env create --file /opt/gaussian-splatting/environment.yml && conda cle
 #  conda activate gaussian_splatting && \
 #  echo "==> conda: CONDA_DEFAULT_ENV$CONDA_DEFAULT_ENV $CONDA_PREFIX"
 
-RUN mkdir -p /data/workspace
-ADD ./conda_env.sh /data/
-
+RUN ln -s /opt/gaussian-splatting /opt/3dgs && mkdir -p /data/workspace
+ADD ./conda_3dgs.sh /opt/
 WORKDIR /data/workspace
-ENTRYPOINT ["sleep", "infinity"]
+# ADD ./entrypoint.sh /
+# ENTRYPOINT ["/entrypoint.sh"]

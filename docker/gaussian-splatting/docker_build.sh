@@ -3,7 +3,7 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-container=gaussian-splatting_$(tr -dc '0-9a-z' < /dev/urandom | fold -w 8 | head -n 1 || true)
+container=3dgs_$(tr -dc '0-9a-z' < /dev/urandom | fold -w 8 | head -n 1 || true)
 
 # nvidia/cuda:11.7.1-devel-ubuntu22.04
 {
@@ -27,9 +27,7 @@ container=gaussian-splatting_$(tr -dc '0-9a-z' < /dev/urandom | fold -w 8 | head
       --change='ENV PATH=$CONDA_HOME/bin:$PATH' \
       --change='ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$PATH' \
       --change='WORKDIR /data/workspace' \
-      --change='ENTRYPOINT ["sleep", "infinity"]' \
       $container gaussian-splatting:latest
-    # --change='ENTRYPOINT ["tail", "-f", "/etc/hosts"]'
 
     docker stop $container && docker rm $container
 
@@ -47,7 +45,7 @@ aws s3 ls --recursive s3://$bucket/tests
 aws s3 presign s3://$bucket/tests/gaussian-splatting_latest.tar.gz
 aws s3 rm s3://$bucket/tests/gaussian-splatting_latest.tar.gz
 
-docker run --name 3dgs -d --gpus=all gaussian-splatting:latest
+docker run --name 3dgs -d --gpus=all gaussian-splatting:latest tail -f /etc/hosts
 
 cat << 'EOF'
 export TZ=Asia/Shanghai
