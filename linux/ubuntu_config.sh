@@ -46,6 +46,11 @@ cp configs/npm.conf ~/.npmrc
 mkdir -p ~/.vim
 cp configs/vimrc.conf ~/.vimrc
 
+####
+cat >> ~/.profile <<'EOF'
+echo "==> Welcome $(date +%FT%T.%N:%:z)"
+EOF
+
 #### install
 exit
 

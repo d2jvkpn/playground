@@ -5,10 +5,11 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 container=gaussian-splatting_$(tr -dc '0-9a-z' < /dev/urandom | fold -w 8 | head -n 1 || true)
 
+# nvidia/cuda:11.7.1-devel-ubuntu22.04
 {
     echo "==> $(date +'%FT%T%:z') docker build start"
     # docker build -f Dockerfile -t gaussian-splatting ./
-    docker run -d --name $container --gpus=all nvidia/cuda:11.7.1-devel-ubuntu22.04 \
+    docker run -d --name $container --gpus=all nvidia/cuda:11.8.0-devel-ubuntu22.04 \
       tail -f /etc/hosts
 
     ## not working:
@@ -25,8 +26,8 @@ container=gaussian-splatting_$(tr -dc '0-9a-z' < /dev/urandom | fold -w 8 | head
     # docker commit -p --change='ENTRYPOINT ["/entrypoint.sh"]' $container gaussian-splatting:latest
     docker commit -p \
       --change='ENV TZ=Asia/Shanghai' \
-      --change='ENV CONDA_DIR=/opt/conda' \
-      --change='ENV PATH=/opt/bin:$CONDA_DIR/bin:$PATH' \
+      --change='ENV CONDA_HOME=/opt/conda' \
+      --change='ENV PATH=$CONDA_HOME/bin:/opt/bin:$PATH' \
       --change='ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$PATH' \
       --change='WORKDIR /opt/gaussian-splatting' \
       $container gaussian-splatting:latest
@@ -34,10 +35,11 @@ container=gaussian-splatting_$(tr -dc '0-9a-z' < /dev/urandom | fold -w 8 | head
     docker stop $container && docker rm $container
 
     echo "==> $(date +'%FT%T%:z') docker build end"
-} > gaussian-splatting.$(date +'%FT%H-%M-%S').log
+} &> gaussian-splatting.$(date +'%FT%H-%M-%S').log
 
 docker save gaussian-splatting:latest -o gaussian-splatting_latest.tar
 pigz gaussian-splatting_latest.tar
+docker rmi gaussian-splatting:latest
 
 exit
 
