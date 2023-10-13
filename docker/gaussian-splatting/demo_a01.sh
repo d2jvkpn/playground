@@ -6,6 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 ####
 ls -d truck/input
 mkdir -p ./truck/distorted
+
 # sudo apt install -y colmap
 # colmap gui
 colmap automatic_reconstructor --image_path ./truck/input --workspace_path ./truck/distorted
@@ -13,16 +14,11 @@ ls -d truck/input truck/distorted/{database.db,sparse}
 # zip -r truck.zip truck && rm -r truck
 
 ####
-docker run -d --name gaussian-splatting --gpus=all \
-  -v $PWD:/data/workspace \
-  gaussian-splatting:latest sleep infinity
+docker run -d --name 3dgs --gpus=all -v $PWD:/data/workspace gaussian-splatting:latest
+docker exec -it 3dgs bash
 
-docker exec -it gaussian-splatting bash
-
-conda init bash
-exec bash
-conda activate gaussian_splatting
-# echo "==> conda: CONDA_DEFAULT_ENV=$CONDA_DEFAULT_ENV, CONDA_PREFIX=$CONDA_PREFIX"
+####
+. ../
 
 ln -s /opt/gaussian-splatting 3dgs
 # unzip truck.zip

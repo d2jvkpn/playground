@@ -6,7 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 ####
 export DEBIAN_FRONTEND=nointeractive
 export CONDA_HOME=/opt/conda
-export PATH=$CONDA_HOME/bin:/opt/bin:$PATH
+export PATH=$CONDA_HOME/bin:$PATH
 export PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$PATH
 
 apt update && apt -y upgrade &&

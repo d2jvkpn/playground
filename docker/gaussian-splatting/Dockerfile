@@ -4,7 +4,7 @@ FROM nvidia/cuda:11.7.1-devel-ubuntu22.04
 ENV DEBIAN_FRONTEND=nointeractive
 ENV TZ=Asia/Shanghai
 ENV CONDA_HOME=/opt/conda
-ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$CONDA_HOME/bin:/opt/bin:$PATH
+ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$CONDA_HOME/bin:$PATH
 
 RUN apt update && \
   apt -y upgrade && \
@@ -39,9 +39,8 @@ RUN conda env create --file /opt/gaussian-splatting/environment.yml && conda cle
 #  conda activate gaussian_splatting && \
 #  echo "==> conda: CONDA_DEFAULT_ENV$CONDA_DEFAULT_ENV $CONDA_PREFIX"
 
-# COPY entrypoint.sh /entrypoint.sh
-
 RUN mkdir -p /data/workspace
+ADD ./conda_env.sh /data/
 
 WORKDIR /data/workspace
-# ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["sleep", "infinity"]
