@@ -22,6 +22,7 @@ container=gaussian-splatting_$(tr -dc '0-9a-z' < /dev/urandom | fold -w 8 | head
 
     docker exec $container chmod a+x /opt/bin/conda_app.sh
     docker exec $container bash /opt/build_app.sh
+    docker exec $container mkdir -p /data/workspace
 
     # docker commit -p --change='ENTRYPOINT ["/entrypoint.sh"]' $container gaussian-splatting:latest
     docker commit -p \
@@ -29,7 +30,7 @@ container=gaussian-splatting_$(tr -dc '0-9a-z' < /dev/urandom | fold -w 8 | head
       --change='ENV CONDA_HOME=/opt/conda' \
       --change='ENV PATH=$CONDA_HOME/bin:/opt/bin:$PATH' \
       --change='ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$PATH' \
-      --change='WORKDIR /opt/gaussian-splatting' \
+      --change='WORKDIR /data/workspace' \
       $container gaussian-splatting:latest
 
     docker stop $container && docker rm $container
