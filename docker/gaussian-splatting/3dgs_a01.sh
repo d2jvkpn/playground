@@ -13,12 +13,13 @@ colmap automatic_reconstructor --image_path ./truck/input --workspace_path ./tru
 ls -d truck/input truck/distorted/{database.db,sparse}
 
 ####
-docker run -d --name 3dgs --gpus=all -v $PWD:/data/workspace 3dgs:latest sleep infinity
+docker run -d --name 3dgs --gpus=all --user $(id -u) \
+  -v $PWD:/home/d2jvkpn/3dgs 3dgs:latest sleep infinity
 
 docker exec -it 3dgs bash
 
-####
-. /opt/conda_3dgs.sh
+#### . /home/d2jvkpn/conda_3dgs.sh
+. ../conda_3dgs.sh
 
 # python 3dgs/convert.py -s ./truck --skip_matching
 python /opt/3dgs/convert.py -s ./truck --skip_matching --resize --magick_executable /usr/bin/convert

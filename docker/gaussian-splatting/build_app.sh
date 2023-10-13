@@ -8,7 +8,8 @@ export DEBIAN_FRONTEND=nointeractive
 export CONDA_HOME=/opt/conda
 export PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$CONDA_HOME/bin:$PATH
 
-apt update && apt -y upgrade &&
+apt update && \
+  apt -y upgrade && \
   apt install -y git wget zip colmap imagemagick && \
   apt install -y cmake libglew-dev libassimp-dev libboost-all-dev libgtk-3-dev libopencv-dev \
     libglfw3-dev libavdevice-dev libavcodec-dev libeigen3-dev libxxf86vm-dev libembree-dev && \
@@ -40,9 +41,3 @@ cd /opt/gaussian-splatting/SIBR_viewers && \
 
 conda env create --file /opt/gaussian-splatting/environment.yml
 conda clean --all --yes
-
-# conda init bash
-# exec bash
-# conda activate gaussian_splatting
-
-# echo "==> CONDA_DEFAULT_ENV=$CONDA_DEFAULT_ENV, CONDA_PREFIX=$CONDA_PREFIX, CONDA_HOME=$CONDA_HOME"
