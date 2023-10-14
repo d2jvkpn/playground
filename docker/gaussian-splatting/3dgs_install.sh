@@ -37,14 +37,8 @@ git clone https://github.com/graphdeco-inria/gaussian-splatting --recursive /opt
 cd /opt/gaussian-splatting/SIBR_viewers && \
   cmake -Bbuild -G Ninja . -DCMAKE_BUILD_TYPE=Release && \
   cmake --build build -j24 --target install && \
-  rm -rf build/
+  rm -rf build/ && \
+  ln -s /opt/gaussian-splatting /opt/3dgs
 
 conda env create --file /opt/gaussian-splatting/environment.yml
 conda clean --all --yes
-
-exit
-conda init bash
-exec bash
-conda activate gaussian_splatting
-echo "==> CONDA_DEFAULT_ENV$CONDA_DEFAULT_ENV $CONDA_PREFIX, CONDA_HOME=$CONDA_HOME"
-conda deactivate

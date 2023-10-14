@@ -11,3 +11,5 @@ conda activate gaussian_splatting
 
 # echo "==> CONDA_DEFAULT_ENV=$CONDA_DEFAULT_ENV, CONDA_PREFIX=$CONDA_PREFIX, CONDA_HOME=$CONDA_HOME"
 # exec "$@"
+
+# conda deactivate
