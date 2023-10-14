@@ -42,10 +42,10 @@ curl $addr/sdapi/v1/txt2img --silent -H "Content-Type: application/json" \
   -d '{"prompt": "a wooden house"}' --output /dev/null
 
 curl $addr/sdapi/v1/img2img --silent -H "Content-Type: application/json" \
-  -d @data_img2img.json --output /dev/null
+  -d @http_data/img2img.json --output /dev/null
 
 curl $addr/sdapi/v1/interrogate --silent -H "Content-Type: application/json" \
-  -d @data_clip.json --output /dev/null
+  -d @http_data/clip.json --output /dev/null
 
 ## TODO: ControlNet download: extensions/sd-webui-controlnet/annotator/downloads
 
