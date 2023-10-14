@@ -2,6 +2,8 @@ FROM ubuntu:22.04
 
 ARG SD_Version=${SD_Version:-1.6.0}
 
+ENV DEBIAN_FRONTEND=nointeractive
+
 RUN apt update && \
   apt -y upgrade && \
   DEBIAN_FRONTEND=noninteractive apt install -y git wget tzdata pkg-config \
