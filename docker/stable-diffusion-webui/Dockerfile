@@ -2,16 +2,18 @@ FROM ubuntu:22.04
 
 ARG SD_Version=${SD_Version:-1.6.0}
 
-RUN apt update && apt -y upgrade && \
+RUN apt update && \
+  apt -y upgrade && \
   DEBIAN_FRONTEND=noninteractive apt install -y git wget tzdata pkg-config \
     python3 python3-pip python3-venv \
     libgl1 libglib2.0-0 libsm6 libxrender1 libxext6 && \
-  apt remove && apt autoremove && apt clean && apt autoclean && \
+  apt remove && \
+  apt autoremove && \
+  apt clean && \
+  apt autoclean && \
   dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {} && \
   rm -rf /var/lib/apt/lists/*
 
-ADD entrypoint.sh /entrypoint.sh
-RUN chmod a+x /entrypoint.sh
 RUN useradd -u 1000 -m -s /bin/bash hello
 USER hello:hello
 ENV PATH="/home/hello/.local/bin:$PATH"
@@ -22,9 +24,9 @@ RUN sdw=stable-diffusion-webui && \
   https://github.com/AUTOMATIC1111/${sdw}/archive/refs/tags/v${SD_Version}.tar.gz && \
   tar -xf ${sdw}-${SD_Version}.tar.gz && \
   rm ${sdw}-${SD_Version}.tar.gz && \
-  mv ${sdw}-${SD_Version} /home/hello/${sdw}
+  mv ${sdw}-${SD_Version} /home/hello/sd-webui
 
-WORKDIR /home/hello/stable-diffusion-webui
+WORKDIR /home/hello/sd-webui
 
 # git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui ./
 RUN python3 -m venv venv/ && \
@@ -47,6 +49,8 @@ RUN mkdir -p extensions && \
   git clone https://github.com/Stability-AI/generative-models.git repositories/generative-models && \
   rm -rf /home/hello/.cache/pip
 
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod a+x /entrypoint.sh
+
 EXPOSE 7860
-# python3 launch.py --xformers --listen --api --port=7860 --ckpt=models/Stable-diffusion/realisticVisionV13_v13.safetensors
 CMD ["/entrypoint.sh", "--xformers", "--listen", "--api", "--port=7860"]

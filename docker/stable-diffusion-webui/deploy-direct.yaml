@@ -23,12 +23,12 @@ services:
             count: all
             capabilities: [gpu]
     volumes:
-    - ./outputs:/home/hello/stable-diffusion-webui/outputs
-    - ./data/models:/home/hello/stable-diffusion-webui/models
-    # - ./data/extentions/sd-webui-controlnet:/home/hello/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads
+    - ./outputs:/home/hello/sd-webui/outputs
+    - ./data/models:/home/hello/sd-webui/models
+    # - ./data/extentions/sd-webui-controlnet:/home/hello/sd-webui/extensions/sd-webui-controlnet/annotator/downloads
     ## hed, lineart_anime, mlsd, pidinet
     # - ./data/cache:/home/hello/.cache
-    # - ./data/interrogate:/home/hello/stable-diffusion-webui/interrogate
+    # - ./data/interrogate:/home/hello/sd-webui/interrogate
     command:
     - /entrypoint.sh
     - --xformers
