@@ -41,3 +41,9 @@ cd /opt/gaussian-splatting/SIBR_viewers && \
 
 conda env create --file /opt/gaussian-splatting/environment.yml
 conda clean --all --yes
+
+conda init bash
+exec bash
+conda activate gaussian_splatting
+echo "==> CONDA_DEFAULT_ENV$CONDA_DEFAULT_ENV $CONDA_PREFIX, CONDA_HOME=$CONDA_HOME"
+conda deactivate

@@ -37,7 +37,7 @@ RUN conda env create --file /opt/gaussian-splatting/environment.yml && \
   conda clean --all --yes
 
 RUN ln -s /opt/gaussian-splatting /opt/3dgs && mkdir -p /home/d2jvkpn/3dgs
-ADD ./conda_3dgs.sh /home/d2jvkpn/
+ADD ./3dgs_conda.sh /home/d2jvkpn/
 WORKDIR /home/d2jvkpn/3dgs
 # ADD ./entrypoint.sh /
 # ENTRYPOINT ["/entrypoint.sh"]
@@ -46,3 +46,4 @@ WORKDIR /home/d2jvkpn/3dgs
 # exec bash
 # conda activate gaussian_splatting
 # echo "==> CONDA_DEFAULT_ENV$CONDA_DEFAULT_ENV $CONDA_PREFIX, CONDA_HOME=$CONDA_HOME"
+# conda deactivate

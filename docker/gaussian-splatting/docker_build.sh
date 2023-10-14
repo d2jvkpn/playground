@@ -12,16 +12,15 @@ docker run -d --name $container --gpus=all nvidia/cuda:11.8.0-devel-ubuntu22.04 
 function remove_container() {
     docker rm -f $container
 }
-
 trap 'remove_container' ERR
 
 {
     echo "==> $(date +'%FT%T%:z') docker build start"
 
     docker exec $container mkdir -p /home/d2jvkpn/3dgs
-    docker cp ./build_app.sh $container:/opt/build_app.sh
-    docker cp ./conda_3dgs.sh $container:/home/d2jvkpn/
-    docker exec $container bash /opt/build_app.sh
+    docker cp ./3dgs_install.sh $container:/opt/3dgs_install.sh
+    docker cp ./3dgs_conda.sh $container:/home/d2jvkpn/
+    docker exec $container bash /opt/3dgs_install.sh
 
     docker commit -p \
       --change='ENV TZ=Asia/Shanghai' \
