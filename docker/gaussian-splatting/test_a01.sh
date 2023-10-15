@@ -6,10 +6,10 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 a="unknown"
 
 function remove_item() {
-    echo "==> remove item: $a"
+    echo "==> remove item: $a, $1"
 }
-
-trap 'remove_item' ERR
+trap 'remove_item on_error' ERR
+trap 'remove_item on_exit' EXIT
 
 echo "==> Hello, world!"
 
