@@ -3,11 +3,11 @@ FROM ubuntu:22.04
 ARG SD_Version=${SD_Version:-1.6.0}
 
 ENV DEBIAN_FRONTEND=nointeractive
+ENV PATH=/home/hello/.local/bin:$PATH
 
 RUN apt update && \
   apt -y upgrade && \
-  DEBIAN_FRONTEND=noninteractive apt install -y git wget tzdata pkg-config \
-    python3 python3-pip python3-venv \
+  apt install -y git wget tzdata pkg-config python3 python3-pip python3-venv \
     libgl1 libglib2.0-0 libsm6 libxrender1 libxext6 && \
   apt remove && \
   apt autoremove && \
@@ -18,9 +18,9 @@ RUN apt update && \
 
 RUN useradd -u 1000 -m -s /bin/bash hello
 USER hello:hello
-ENV PATH="/home/hello/.local/bin:$PATH"
 
 WORKDIR /home/hello
+
 RUN sdw=stable-diffusion-webui && \
   wget -O ${sdw}-${SD_Version}.tar.gz \
   https://github.com/AUTOMATIC1111/${sdw}/archive/refs/tags/v${SD_Version}.tar.gz && \
