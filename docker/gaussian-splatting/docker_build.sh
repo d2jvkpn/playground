@@ -42,6 +42,7 @@ docker save 3dgs:latest -o 3dgs_latest.tar && pigz -f 3dgs_latest.tar
 exit
 
 [ ! -z "${AWS_Bucket:-""}" ] && aws s3 cp ./3dgs_latest.tar.gz s3://${AWS_Bucket}/tests/
+[ ! -z "${EXIT_Command:=""}" ] && $EXIT_Command
 
 aws s3 ls --recursive s3://${AWS_Bucket}/tests
 aws s3 presign s3://${AWS_Bucket}/tests/3dgs_latest.tar.gz
