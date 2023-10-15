@@ -25,6 +25,7 @@ trap 'remove_container' ERR
     docker exec $container bash /home/d2jvkpn/3dgs_install.sh
 
     docker commit -p \
+      --change='ENV DEBIAN_FRONTEND=nointeractive' \
       --change='ENV TZ=Asia/Shanghai' \
       --change='ENV CONDA_HOME=/opt/conda' \
       --change='ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$CONDA_HOME/bin:$PATH' \

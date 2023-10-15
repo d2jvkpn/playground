@@ -5,6 +5,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 ####
 export DEBIAN_FRONTEND=nointeractive
+export TZ=Asia/Shanghai
 export CONDA_HOME=/opt/conda
 export PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$CONDA_HOME/bin:$PATH
 
