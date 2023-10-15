@@ -30,14 +30,14 @@ RUN git clone https://github.com/graphdeco-inria/gaussian-splatting \
   cd /opt/gaussian-splatting/SIBR_viewers && \
   cmake -Bbuild -G Ninja . -DCMAKE_BUILD_TYPE=Release && \
   cmake --build build -j24 --target install && \
-  rm -rf build/ && \
-  ln -s /opt/gaussian-splatting /opt/3dgs
+  rm -rf build/
 
 RUN conda env create --file /opt/gaussian-splatting/environment.yml && \
   conda clean --all --yes
 
-RUN mkdir -p /home/d2jvkpn/3dgs
+RUN mkdir -p /home/d2jvkpn/3dgs_workspace && ln -s /opt/gaussian-splatting /home/d2jvkpn/3dgs
 ADD ./3dgs_conda.sh /home/d2jvkpn/
-WORKDIR /home/d2jvkpn/3dgs
+
+WORKDIR /home/d2jvkpn/3dgs_workspace
 # ADD ./entrypoint.sh /
 # ENTRYPOINT ["/entrypoint.sh"]

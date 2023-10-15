@@ -17,16 +17,18 @@ trap 'remove_container' ERR
 {
     echo "==> $(date +'%FT%T%:z') docker build start"
 
-    docker exec $container mkdir -p /home/d2jvkpn/3dgs
-    docker cp ./3dgs_install.sh $container:/opt/3dgs_install.sh
+    docker exec $container mkdir -p /home/d2jvkpn/3dgs_workspace
+    docker cp ./3dgs_install.sh $container:/home/d2jvkpn/
     docker cp ./3dgs_conda.sh $container:/home/d2jvkpn/
-    docker exec $container bash /opt/3dgs_install.sh
+
+    docker exec $container ln -s /opt/gaussian-splatting /home/d2jvkpn/3dgs
+    docker exec $container bash /home/d2jvkpn/3dgs_install.sh
 
     docker commit -p \
       --change='ENV TZ=Asia/Shanghai' \
       --change='ENV CONDA_HOME=/opt/conda' \
       --change='ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$CONDA_HOME/bin:$PATH' \
-      --change='WORKDIR /home/d2jvkpn/3dgs' \
+      --change='WORKDIR /home/d2jvkpn/3dgs_workspace' \
       $container 3dgs:latest
 
     docker stop $container && docker rm $container
