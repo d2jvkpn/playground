@@ -11,10 +11,11 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # output: distorted/database.db, distorted/sparse/
 mkdir -p ./truck_1/distorted
 colmap automatic_reconstructor --image_path ./truck_1/images --workspace_path ./truck_1/distorted
+# xvfb-run colmap automatic_reconstructor --image_path ./truck_1/images --workspace_path ./truck_1/distorted
 ls -d truck_1/input truck_1/distorted/{database.db,sparse}
 
 #### 3dgs container
-docker run -d --name 3dgs --gpus=all -v $PWD/truck:/home/d2jvkpn/3dgs_workspace \
+docker run -d --name 3dgs --gpus=all -v $PWD/truck_1:/home/d2jvkpn/3dgs_workspace \
   3dgs:latest sleep infinity
 
 docker exec -it 3dgs bash

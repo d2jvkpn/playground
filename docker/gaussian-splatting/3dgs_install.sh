@@ -11,7 +11,7 @@ export PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$CONDA_HOME/bin:$PA
 
 apt update && \
   apt -y upgrade && \
-  apt install -y git wget zip colmap imagemagick && \
+  apt install -y git wget zip colmap xvfb imagemagick && \
   apt install -y cmake libglew-dev libassimp-dev libboost-all-dev libgtk-3-dev libopencv-dev \
     libglfw3-dev libavdevice-dev libavcodec-dev libeigen3-dev libxxf86vm-dev libembree-dev && \
   apt clean && \
