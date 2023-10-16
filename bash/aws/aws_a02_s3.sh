@@ -9,7 +9,7 @@ bucket=BUCKET01
 aws configure list
 
 ####
-aws s3 ls s3://$bucket/
+aws s3 ls s3://$bucket/  --recursive
 
 echo "Hello, world!" > hello_world.txt
 aws s3 cp hello_world.txt s3://$bucket/
@@ -23,18 +23,3 @@ aws s3 presign s3://$bucket/hello_world.txt
 # http://$bucket.s3-website-ap-northeast-1.amazonaws.com/test/index.html
 
 aws s3 cp html s3://$bucket/test/html --recursive
-
-####
-ids=i-0011xxxx
-
-aws --out=json ec2 start-instances --instance-ids $ids
-
-aws --out=json ec2 stop-instances --force --instance-ids $ids
-
-cat > ~/.aws/credentials << EOF
-[default]
-region = ap-northest-1
-output = yaml
-aws_access_key_id = xxxx
-aws_secret_access_key = yyyyyyyy
-EOF

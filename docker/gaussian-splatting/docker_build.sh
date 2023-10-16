@@ -19,7 +19,6 @@ trap 'remove_container' ERR
 
     docker exec $container mkdir -p /home/d2jvkpn/3dgs_workspace
     docker cp ./3dgs_install.sh $container:/home/d2jvkpn/
-    docker cp ./3dgs_conda.sh $container:/home/d2jvkpn/
 
     docker exec $container ln -s /opt/gaussian-splatting /home/d2jvkpn/3dgs
     docker exec $container bash /home/d2jvkpn/3dgs_install.sh

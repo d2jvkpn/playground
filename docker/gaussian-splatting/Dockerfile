@@ -35,10 +35,12 @@ RUN git clone https://github.com/graphdeco-inria/gaussian-splatting \
 RUN conda env create --file /opt/gaussian-splatting/environment.yml && \
   conda clean --all --yes
 
+# conda init bash
+# exec bash
+# conda activate gaussian_splatting
+
 RUN mkdir -p /home/d2jvkpn/3dgs_workspace && \
   ln -s /opt/gaussian-splatting /home/d2jvkpn/3dgs
-
-ADD ./3dgs_conda.sh /home/d2jvkpn/
 
 WORKDIR /home/d2jvkpn/3dgs_workspace
 # ADD ./entrypoint.sh /
