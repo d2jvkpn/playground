@@ -8,15 +8,17 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # colmap gui
 
 # input: ./truck_1/images/*.png
-# output: distorted/database.db, distorted/sparse/
+# output: ./truck_1/distorted/database.db, ./truck_1/distorted/sparse/
 mkdir -p ./truck_1/distorted
 colmap automatic_reconstructor --image_path ./truck_1/images --workspace_path ./truck_1/distorted
 # xvfb-run colmap automatic_reconstructor --image_path ./truck_1/images --workspace_path ./truck_1/distorted
 ls -d truck_1/input truck_1/distorted/{database.db,sparse}
 
+# zip -r truck_1.zip truck_1
+
 #### 3dgs container
-docker run -d --name 3dgs --gpus=all -v $PWD/truck_1:/home/d2jvkpn/3dgs_workspace \
-  3dgs:latest sleep infinity
+cd truck_1/
+docker run -d --name 3dgs --gpus=all -v $PWD:/home/d2jvkpn/3dgs_workspace 3dgs:latest sleep infinity
 
 docker exec -it 3dgs bash
 
@@ -32,7 +34,7 @@ ln -s images input
 python ../3dgs/convert.py -s ./ --skip_matching --resize --magick_executable /usr/bin/convert
 
 #### train.py
-# input: images/*.png, spare
+# input: images/*.png, sparse
 # output: output/1efa0583-2/{cameras.json,cfg_args,input.ply,point_cloud}
 python ../3dgs/train.py -s ./ --eval
 

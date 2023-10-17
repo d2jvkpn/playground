@@ -42,6 +42,7 @@ RUN conda env create --file /opt/gaussian-splatting/environment.yml && \
 RUN mkdir -p /home/d2jvkpn/3dgs_workspace && \
   ln -s /opt/gaussian-splatting /home/d2jvkpn/3dgs
 
+ADD ./3dgs_pipeline.sh /home/d2jvkpn/
+
 WORKDIR /home/d2jvkpn/3dgs_workspace
-# ADD ./entrypoint.sh /
-# ENTRYPOINT ["/entrypoint.sh"]
+# ENTRYPOINT ["bash", "/home/d2jvkpn/3dgs_pipeline.sh"]

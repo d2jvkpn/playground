@@ -5,9 +5,8 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 container=3dgs_$(tr -dc '0-9a-z' < /dev/urandom | fold -w 8 | head -n 1 || true)
 
-# nvidia/cuda:11.7.1-devel-ubuntu22.04
+## cuda version: 11
 docker run -d --name $container --gpus=all nvidia/cuda:11.8.0-devel-ubuntu22.04 tail -f /etc/hosts
-## don't use image nvidia/cuda:12.2.0-devel-ubuntu22.04
 
 function remove_container() {
     docker rm -f $container
@@ -19,6 +18,7 @@ trap 'remove_container' ERR
 
     docker exec $container mkdir -p /home/d2jvkpn/3dgs_workspace
     docker cp ./3dgs_install.sh $container:/home/d2jvkpn/
+    docker cp ./3dgs_pipeline.sh $container:/home/d2jvkpn/
 
     docker exec $container ln -s /opt/gaussian-splatting /home/d2jvkpn/3dgs
     docker exec $container bash /home/d2jvkpn/3dgs_install.sh
@@ -29,6 +29,7 @@ trap 'remove_container' ERR
       --change='ENV CONDA_HOME=/opt/conda' \
       --change='ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$CONDA_HOME/bin:$PATH' \
       --change='WORKDIR /home/d2jvkpn/3dgs_workspace' \
+      # --change='ENTRYPOINT ["bash", "/home/d2jvkpn/3dgs_pipeline.sh"]' \
       $container 3dgs:latest
 
     docker stop $container && docker rm $container
