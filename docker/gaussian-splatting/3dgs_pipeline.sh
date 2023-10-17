@@ -37,14 +37,13 @@ fi
 ## input: input/*.png distorted/database.db distorted/sparse/0
 ## output: images_2/, images_4/, images_8/, sparse/, stereo/, run-colmap-geometric.sh, run-colmap-photometric.sh
 
-if [ ! -d sparse/0 ]; then
+if [[ ! -d sparse/0 ]]; then
     ln -s images input
 
     {
         date +'==> %FT%T%:z convert.py start'
         conda run -n gaussian_splatting python3 /opt/gaussian-splatting/convert.py \
           -s ./ --skip_matching --resize --magick_executable /usr/bin/convert
-
         date +'==> %FT%T%:z convert.py end'
     } &> convert.log
 
