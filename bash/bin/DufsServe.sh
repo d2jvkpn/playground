@@ -4,15 +4,16 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 # cargo install dufs@0.34
-conf=${_path}/DufsServe.yaml
-[ -f $conf ] || { echo "file not exists: $conf" >&2; exit 1; }
+# config=${_path}/DufsServe.yaml
+config=${config:-~/.local/opt/dufs/config.yaml}
+[ -f $config ] || { >&2 echo "file not exists: $config"; exit 1; }
 
 target=${1:-${_wd}}
 
-port=$(yq .dufs.port $conf)
-username=$(yq .dufs.username $conf)
-password=$(yq .dufs.password $conf)
-subpath=$(yq .dufs.subpath $conf) # ls ${target}${path}
+port=$(yq .dufs.port $config)
+username=$(yq .dufs.username $config)
+password=$(yq .dufs.password $config)
+subpath=$(yq .dufs.subpath $config) # ls ${target}${path}
 
 echo "==> dufs: target=$target, port=$port, subpath=$subpath"
 
