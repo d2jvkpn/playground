@@ -3,9 +3,9 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-#### colmap
-# input: images/*.png
-# output: distorted/database.db, distorted/sparse/0
+#### 1. colmap
+## input: images/*.png
+## output: distorted/database.db, distorted/sparse/0
 
 ls images/* > /dev/null
 mkdir -p distorted
@@ -22,9 +22,9 @@ fi
 # exec bash
 # conda activate gaussian_splatting
 
-#### convert.py
-# input: input/*.png distorted/database.db distorted/sparse/0
-# output: images_2/, images_4/, images_8/, sparse/, stereo/, run-colmap-geometric.sh, run-colmap-photometric.sh
+#### 2. convert.py
+## input: input/*.png distorted/database.db distorted/sparse/0
+## output: images_2/, images_4/, images_8/, sparse/, stereo/, run-colmap-geometric.sh, run-colmap-photometric.sh
 
 ln -s images input
 
@@ -39,9 +39,9 @@ ln -s images input
 
 rm -f input
 
-#### train.py
-# input: images/*.png, sparse
-# output: output/1efa0583-2/{cameras.json,cfg_args,input.ply,point_cloud}
+#### 3. train.py
+## input: images/*.png, sparse
+## output: output/1efa0583-2/{cameras.json,cfg_args,input.ply,point_cloud}
 
 rm -rf output
 
@@ -51,9 +51,9 @@ rm -rf output
     date +'==> %FT%T%:z train.py end'
 } &> train.log
 
-#### render.py
-# input: ./output/XXXX/
-# output: ./output/XXXX/train
+#### 4. render.py
+## input: ./output/XXXX/
+## output: ./output/XXXX/train
 
 result_dir=$(ls -d output/*/)
 
@@ -63,9 +63,9 @@ result_dir=$(ls -d output/*/)
     date +'==> %FT%T%:z render.py end'
 } &> render.log
 
-#### metrics.py
-# input: ./output/XXXX/
-# output: ./output/XXXX/results.json
+#### 5. metrics.py
+## input: ./output/XXXX/
+## output: ./output/XXXX/results.json
 
 {
     date +'==> %FT%T%:z metrics.py start'
