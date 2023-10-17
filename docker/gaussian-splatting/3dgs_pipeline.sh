@@ -19,9 +19,10 @@ fi
 ## output: distorted/database.db, distorted/sparse/0
 
 ls images/* > /dev/null
-mkdir -p distorted
 
 if [[ ! -d sparse/0  && ! -d distorted/sparse/0]]; then
+    mkdir -p distorted
+
     {
         date +'==> %FT%T%:z colmap start'
         xvfb-run colmap automatic_reconstructor --image_path ./images --workspace_path ./distorted
