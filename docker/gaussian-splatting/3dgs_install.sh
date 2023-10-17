@@ -44,6 +44,9 @@ conda env create --file /opt/gaussian-splatting/environment.yml
 conda clean --all --yes
 
 exit
+
 conda init bash
 exec bash
 conda activate gaussian_splatting
+python3 --version
+conda deactivate
