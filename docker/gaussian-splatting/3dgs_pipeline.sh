@@ -10,7 +10,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 ls images/* > /dev/null
 mkdir -p distorted
 
-if [ ! -d distorted/sparse/0 ]; then
+if [[ ! -d sparse/0  && ! -d distorted/sparse/0]]; then
     {
         date +'==> %FT%T%:z colmap start'
         xvfb-run colmap automatic_reconstructor --image_path ./images --workspace_path ./distorted
@@ -26,18 +26,19 @@ fi
 ## input: input/*.png distorted/database.db distorted/sparse/0
 ## output: images_2/, images_4/, images_8/, sparse/, stereo/, run-colmap-geometric.sh, run-colmap-photometric.sh
 
-ln -s images input
+if [ ! -d sparse/0 ]; then
+    ln -s images input
 
-{
-    date +'==> %FT%T%:z convert.py start'
+    {
+        date +'==> %FT%T%:z convert.py start'
+        conda run -n gaussian_splatting python3 /opt/gaussian-splatting/convert.py \
+          -s ./ --skip_matching --resize --magick_executable /usr/bin/convert
 
-    conda run -n gaussian_splatting python3 /opt/gaussian-splatting/convert.py \
-      -s ./ --skip_matching --resize --magick_executable /usr/bin/convert
+        date +'==> %FT%T%:z convert.py end'
+    } &> convert.log
 
-    date +'==> %FT%T%:z convert.py end'
-} &> convert.log
-
-rm -f input
+    rm -f input
+fi
 
 #### 3. train.py
 ## input: images/*.png, sparse

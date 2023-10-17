@@ -5,7 +5,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 # cargo install dufs@0.34
 # config=${_path}/DufsServe.yaml
-config=${config:-~/.local/opt/dufs/config.yaml}
+config=${config:-~/.config/dufs/config.yaml}
 [ -f $config ] || { >&2 echo "file not exists: $config"; exit 1; }
 
 target=${1:-${_wd}}
