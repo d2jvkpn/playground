@@ -10,8 +10,8 @@ function start {
 
     # export AUTOSSH_LOGFILE=$(readlink -f $0).$(date +%F_%s).log
     export AUTOSSH_LOGFILE=${_path}/logs/socks5_proxy.$port.$(date +%Y-%m).log
-    export AUTOSSH_PIDFILE=${_path}/socks5_proxy.$port.pid
-    mkdir -p ${_path}/logs
+    export AUTOSSH_PIDFILE=${_path}/data/socks5_proxy.$port.pid
+    mkdir -p ${_path}/{logs,data}
 
     echo "==> autossh socks5 proxy: host=$host, port=$port"
     # -M 2000:2001
@@ -24,7 +24,7 @@ function start {
 
 function stop {
     port=$1
-    pid_file=${_path}/socks5_proxy.$port.pid
+    pid_file=${_path}/data/socks5_proxy.$port.pid
     [ ! -f $pid_file ] && return
 
     pid=$(cat $pid_file)
@@ -39,7 +39,7 @@ function stop {
 
 
 cmd=$1
-config=${2:-${_path}/socks5_proxy.yaml}
+config=${config:-${_path}/configs/socks5_proxy.yaml}
 
 case $cmd in
 "start")
@@ -59,9 +59,9 @@ esac
 
 exit
 
-${_path}/socks5_proxy.yaml
+configs/socks5_proxy.yaml
 ```yaml
 socks5_proxy:
 - { host: host, port: 1080 }
-- { host: host-01, port: 1081 }
+- { host: remote-a01, port: 1081 }
 ```

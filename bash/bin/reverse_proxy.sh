@@ -6,12 +6,12 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # @reboot bash ~/.cron/reverse_proxy.sh local_ssh
 
 name=$1
-config=${2:-${_path}/reverse_proxy.yaml}
+config=${2:-${_path}/configs/reverse_proxy.yaml}
 
 export AUTOSSH_LOGFILE=${_path}/logs/reverse_proxy.$name.$(date +%Y-%m).log
-export AUTOSSH_PIDFILE=${_path}/reverse_proxy.$name.pid
+export AUTOSSH_PIDFILE=${_path}/data/reverse_proxy.$name.pid
 
-mkdir -p ${_path}/logs
+mkdir -p ${_path}/{logs,data}
 
 ssh_host=$(yq .ssh_host $config)
 
@@ -19,7 +19,7 @@ ssh_username=$(yq .ssh_username $config)
 ssh_ip=$(yq .ssh_ip $config)
 ssh_port=$(yq .ssh_port $config)
 
-port_mappings="-R $(yq '.port_mappings | join(" -R ")' reverse_proxy.yaml)"
+port_mappings="-R $(yq '.port_mappings | join(" -R ")' $config)"
 
 if [[ "$ssh_host" == "null" || "$ssh_host" == "" ]]; then
     echo "==> reverse_proxy: ssh_username=$ssh_username, ssh_ip=$ssh_ip, ssh_port=$ssh_port"
@@ -41,7 +41,7 @@ fi
 
 exit
 
-reverse_proxy.yaml
+configs/reverse_proxy.yaml
 ```yaml
 ssh_username: d2jvkpn
 ssh_ip: 192.168.1.42
