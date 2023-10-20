@@ -16,7 +16,7 @@ case $# in
     done
 
     exit 0
-    ;;    
+    ;;
 esac
 
 date +'==> %FT%T.%N%:z Hello, world!'
