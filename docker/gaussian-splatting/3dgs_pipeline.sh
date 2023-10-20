@@ -5,16 +5,12 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 case $# in
 0)
-    :
     ;;
 1)
     cd "$1"
     ;;
 *)
-    for d in "$@"; do
-        bash "$0" "$d"
-    done
-
+    for d in "$@"; do bash "$0" "$d"; done
     exit 0
     ;;
 esac
