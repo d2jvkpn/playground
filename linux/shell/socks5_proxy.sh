@@ -44,7 +44,7 @@ function stop {
 cmd=$1
 config=${config:-${_path}/configs/socks5_proxy.yaml}
 
-[ -f ${_path}/configs/env ] && . ${_path}/configs/env
+source ~/.bashrc
 
 case $cmd in
 "start")

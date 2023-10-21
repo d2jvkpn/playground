@@ -8,7 +8,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 name=$1
 config=${2:-${_path}/configs/reverse_proxy.yaml}
 
-[ -f ${_path}/configs/env ] && . ${_path}/configs/env
+source ~/.bashrc
 export AUTOSSH_LOGFILE=${_path}/logs/reverse_proxy.$name.$(date +%Y-%m).log
 export AUTOSSH_PIDFILE=${_path}/data/reverse_proxy.$name.pid
 
@@ -55,7 +55,7 @@ port_maps:
 - localhost:2022:localhost:22
 ```
 
-reverse_proxy.yaml
+configs/reverse_proxy.yaml
 ```yaml
 ssh_host: remote_host
 
