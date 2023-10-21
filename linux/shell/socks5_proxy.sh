@@ -64,7 +64,7 @@ esac
 
 exit
 
-~/.config/socks5_proxy/socks5_proxy.yaml
+configs/socks5_proxy.yaml
 ```yaml
 socks5_proxy:
 - { host: host, port: 1080 }
