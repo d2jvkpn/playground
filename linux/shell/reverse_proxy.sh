@@ -8,8 +8,11 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 name=$1
 config=${2:-${_path}/configs/reverse_proxy.yaml}
 
+[ -f ${_path}/configs/env ] && . ${_path}/configs/env
 export AUTOSSH_LOGFILE=${_path}/logs/reverse_proxy.$name.$(date +%Y-%m).log
 export AUTOSSH_PIDFILE=${_path}/data/reverse_proxy.$name.pid
+
+[ -f $AUTOSSH_PIDFILE ] && { >&2 echo "$AUTOSSH_PIDFILE exists"; exit 1; }
 
 mkdir -p ${_path}/{logs,data}
 
