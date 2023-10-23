@@ -21,7 +21,7 @@ esac
 
 ls images/* > /dev/null
 
-if [[ ! -d sparse/0  && ! -d distorted/sparse/0]]; then
+if [[ ! -d sparse/0  && ! -d distorted/sparse/0 ]]; then
     mkdir -p distorted
 
     {
