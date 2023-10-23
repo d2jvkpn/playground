@@ -58,5 +58,5 @@ docker run --name 3dgs -d --gpus=all 3dgs:latest sleep infinity
 project=my-project
 
 docker run -d --gpus=all \
-  --name 3dgs_$project -v $PWD/$project:/home/d2jvkpn/3dgs_workspace \
+  --name $project -v $PWD/$project:/home/d2jvkpn/3dgs_workspace \
   3dgs:latest bash /home/d2jvkpn/3dgs_pipeline.sh
