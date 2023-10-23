@@ -61,7 +61,7 @@ kubectl set image deploy/demo-api \
 
 # method 4
 kubectl patch deploy/demo-api -p \
-  '{"spec":{"template":{"spec":{"terminationGracePeriodSeconds":31}}}}'
+  '{"spec":{"template":{"spec":{"terminationGracePeriodSeconds":30}}}}'
 
 exit
 
