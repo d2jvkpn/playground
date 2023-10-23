@@ -12,39 +12,43 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 ####
 mkdir -p ~/Apps/bin ~/.local/bin
-cp configs/bash.sh ~/.bash_aliases
+cp os_configs/bash.sh ~/.bash_aliases
 
 ####
 mkdir -p ~/.config/pip
-cp configs/pip.conf ~/.config/pip/pip.conf
+cp os_configs/pip.conf ~/.config/pip/pip.conf
 # python3 -m site
 
 ####
 mkdir -p ~/.cargo
-cp configs/cargo.conf ~/.cargo/config
+cp os_configs/cargo.conf ~/.cargo/config
 
 ####
 mkdir -p ~/.ansible
-cp configs/ansible_home.cfg ~/.ansible.cfg
+cp os_configs/ansible_home.cfg ~/.ansible.cfg
 
 ####
 mkdir -p ~/.julia/config
-cp configs/julia.jl ~/.julia/config/startup.jl
+cp os_configs/julia.jl ~/.julia/config/startup.jl
 
 ####
 mkdir -p ~/.go ~/.config/go
-envsubst > ~/.config/go/env < configs/go.env
+envsubst > ~/.config/go/env < os_configs/go.env
+
+####
+mkdir -p ~/.config/mpv
+cp os_configs/mpv.conf ~/.config/mpv/
 
 ####
 cp templates/* ~/Templates/
 
 ####
 mkdir -p ~/Apps/npm
-cp configs/npm.conf ~/.npmrc
+cp os_configs/npm.conf ~/.npmrc
 
 ####
 mkdir -p ~/.vim
-cp configs/vimrc.conf ~/.vimrc
+cp os_configs/vimrc.conf ~/.vimrc
 
 ####
 cat >> ~/.profile <<'EOF'
