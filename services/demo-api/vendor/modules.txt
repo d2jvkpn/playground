@@ -49,8 +49,8 @@ github.com/d2jvkpn/gotk/ginx
 # github.com/d2jvkpn/gotk/impls v0.0.0-20231010100316-d8cb0766d7e3
 ## explicit; go 1.21.2
 github.com/d2jvkpn/gotk/impls
-# github.com/fsnotify/fsnotify v1.6.0
-## explicit; go 1.16
+# github.com/fsnotify/fsnotify v1.7.0
+## explicit; go 1.17
 github.com/fsnotify/fsnotify
 # github.com/gabriel-vasile/mimetype v1.4.3
 ## explicit; go 1.20
