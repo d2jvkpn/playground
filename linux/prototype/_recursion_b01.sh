@@ -3,11 +3,6 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-#! /usr/bin/env bash
-set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
-
 if [ $# -eq 0 ]; then
     :
 elif [ $# -eq 1 ]; then

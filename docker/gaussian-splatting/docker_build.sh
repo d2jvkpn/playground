@@ -20,8 +20,8 @@ trap 'remove_container' ERR
     docker cp ./3dgs_install.sh $container:/home/d2jvkpn/
     docker cp ./3dgs_pipeline.sh $container:/home/d2jvkpn/
 
-    docker exec $container ln -s /opt/gaussian-splatting /home/d2jvkpn/3dgs
     docker exec $container bash /home/d2jvkpn/3dgs_install.sh
+    docker exec $container ln -s /opt/gaussian-splatting /home/d2jvkpn/3dgs
 
     docker commit -p \
       --change='ENV DEBIAN_FRONTEND=nointeractive' \
@@ -49,5 +49,24 @@ aws s3 ls --recursive s3://${AWS_Bucket}/tests
 aws s3 presign s3://${AWS_Bucket}/tests/3dgs_latest.tar.gz
 aws s3 rm s3://${AWS_Bucket}/tests/3dgs_latest.tar.gz
 
-# docker run --name 3dgs -d --gpus=all 3dgs:latest tail -f /etc/hosts
-docker run --name 3dgs -it --gpus=all -v $PWD:/home/d2jvkpn/3dgs 3dgs:latest bash
+####
+docker run --name 3dgs -d --gpus=all 3dgs:latest tail -f /etc/hosts
+
+docker run --name 3dgs -d --gpus=all 3dgs:latest sleep infinity
+
+####
+project=my_project
+
+docker run -d --name 3dgs_$project --gpus=all -v $project:/home/d2jvkpn/aa \
+  3dgs:latest sleep infinity
+
+docker exec -it 3dgs_$project bash
+
+####
+project=my_project
+
+ls $project/images
+
+docker run -d --name 3dgs_$project --gpus=all \
+  -v $project:/home/d2jvkpn/3dgs 3dgs:latest \
+  bash /home/d2jvkpn/3dgs_pipeline.sh
