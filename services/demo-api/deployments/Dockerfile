@@ -32,10 +32,10 @@ RUN go build -o main -ldflags="-w -s ${GO_ldflags}" main.go
 ####
 FROM alpine
 
-ARG BUILD_Region=${BUILD_Region}
+ENV TZ=${TZ:-Asia/Shanghai}
 ARG APP_Name=${APP_Name}
 ARG APP_Version=${APP_Version}
-ENV TZ=${TZ:-Asia/Shanghai}
+ARG BUILD_Region=${BUILD_Region}
 
 RUN if [ "$BUILD_Region" = "cn" ]; then \
     echo "==> BUILD_Region: $BUILD_Region"; \

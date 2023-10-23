@@ -2,8 +2,8 @@ version: '3'
 
 services:
   demo-api:
-    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/${APP_Name}:${TAG}
-    container_name: ${APP_Name}_${APP_ENV}
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/${APP_Name}:${IMAGE_Tag}
+    container_name: ${APP_Name}_${APP_Tag}
     restart: always
     # depends_on: ["mongo"]
     user: ${UID}:${GID}
@@ -11,16 +11,16 @@ services:
     # network_mode: bridge
     # network_mode: host
     # ports: ["127.0.0.1:5030:5030", "127.0.0.1:5040:5040"]
-    ports: ["${HTTP_PORT}:${HTTP_PORT}", "${RPC_PORT}:${RPC_PORT}"]
+    ports: ["${HTTP_Port}:${HTTP_Port}", "${RPC_Port}:${RPC_Port}"]
     environment: ["TZ=Asia/Shanghai"]
     volumes:
     - ./configs/:/home/d2jvkpn/${APP_Name}/configs:ro
     - ./logs/:/home/d2jvkpn/${APP_Name}/logs/
     # - ./data/:/home/d2jvkpn/demo-api/data/
-    command: ["./main", "-config=configs/prod.yaml", "-http_addr=:${HTTP_PORT}", "-rpc_addr=:${RPC_PORT}"]
+    command: ["./main", "-config=configs/prod.yaml", "-http_addr=:${HTTP_Port}", "-rpc_addr=:${RPC_Port}"]
 
 networks:
   net:
-    name: ${APP_Name}_${APP_ENV}
+    name: ${APP_Name}_${APP_Tag}
     driver: bridge
     external: false
