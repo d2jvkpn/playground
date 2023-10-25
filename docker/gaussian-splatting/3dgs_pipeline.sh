@@ -85,3 +85,8 @@ result_dir=$(ls -d output/*/)
     conda run -n gaussian_splatting python /opt/gaussian-splatting/metrics.py -m $result_dir
     date +'==> %FT%T%:z metrics.py end'
 } &> metrics.log
+
+exit
+#### 6. zip results
+zip -r $(basename $PWD)_3dgs_$(date +'%FT%s').zip output
+rm -r output
