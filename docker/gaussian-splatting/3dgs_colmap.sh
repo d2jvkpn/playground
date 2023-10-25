@@ -20,3 +20,7 @@ mkdir -p distorted
     colmap automatic_reconstructor --image_path ./images --workspace_path ./distorted
     date +'==> %FT%T%:z colmap end'
 } &> colmap.log
+
+exit
+
+ffmpeg -i input.webm  -vf "format=yuv444p,scale=1200x790"  -c:a copy output.mp4

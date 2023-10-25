@@ -131,13 +131,13 @@ version=1.28.x
 
 # control-plane
 for node in $(ansible k8s_cps --list-hosts | sed '1d'); do
-    ansible $node -m shell -a "sudo bash k8s_scripts/k8s_upgrade_cp.sh $version $node"
+    ansible $node -m shell -a "sudo bash k8s_scripts/k8s_upgrade_cp.patch.sh $version $node"
 done
 
 # workers
 for node in $(ansible workers --list-hosts | sed '1d'); do
-    ansible k8s_cps[0] -m shell -a "sudo bash k8s_scripts/k8s_upgrade_worker.sh $version $node 1"
-    ansible $node -m shell -a "sudo bash k8s_scripts/k8s_upgrade_worker.sh $version $node 2"
-    ansible k8s_cps[0] -m shell -a "sudo bash k8s_scripts/k8s_upgrade_worker.sh $version $node 3"
+    ansible k8s_cps[0] -m shell -a "sudo bash k8s_scripts/k8s_upgrade_worker.patch.sh $version $node 1"
+    ansible $node -m shell -a "sudo bash k8s_scripts/k8s_upgrade_worker.patch.sh $version $node 2"
+    ansible k8s_cps[0] -m shell -a "sudo bash k8s_scripts/k8s_upgrade_worker.patch.sh $version $node 3"
 done
 ```
