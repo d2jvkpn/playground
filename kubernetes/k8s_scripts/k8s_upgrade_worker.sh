@@ -11,13 +11,12 @@ version=$1; node=$2; step=$3
 
 case "$step" in
 "1")
-    #### on a cp node
+    ## on a cp node
     kubectl get pod -A -o wide | grep $node
     kubectl drain $node --ignore-daemonsets
-    kubectl get pod -A -o wide | grep $node
     ;;
 "2")
-    #### on the worker node
+    ## on the worker node
     apt-get update
 
     apt-mark unhold kubeadm kubelet kubectl
@@ -27,7 +26,7 @@ case "$step" in
     systemctl restart kubelet
     ;;
 "3")
-    #### on a cp node
+    ## on a cp node
     kubectl uncordon $node
     ;;
 *)
