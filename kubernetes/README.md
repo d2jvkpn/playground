@@ -130,12 +130,12 @@ ansible k8s_cps[0] -m shell -a 'kubectl describe node/k8s-cp01'
 version=1.28.x
 
 # control-plane
-ansible k8s_cps -m shell -a "sudo bash k8s_scripts/k8s_upgrade_cp.patch.sh $version"
+ansible k8s_cps -m shell -a "sudo bash k8s_scripts/k8s_upgrade_cp.sh $version"
 
 # workers
-for node in $(ansible workers --list-hosts | sed '1d'); do
-    ansible k8s_cps[0] -m shell -a "sudo bash k8s_scripts/k8s_upgrade_worker.patch.sh $version $node 1"
-    ansible $node -m shell -a "sudo bash k8s_scripts/k8s_upgrade_worker.patch.sh $version $node 2"
-    ansible k8s_cps[0] -m shell -a "sudo bash k8s_scripts/k8s_upgrade_worker.patch.sh $version $node 3"
+for node in $(ansible k8s_workers --list-hosts | sed '1d'); do
+    ansible k8s_cps[0] -m shell -a "sudo bash k8s_scripts/k8s_upgrade_worker.sh $version $node 1"
+    ansible $node -m shell -a "sudo bash k8s_scripts/k8s_upgrade_worker.sh $version $node 2"
+    ansible k8s_cps[0] -m shell -a "sudo bash k8s_scripts/k8s_upgrade_worker.sh $version $node 3"
 done
 ```
