@@ -3,10 +3,12 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
+export DEBIAN_FRONTEND=nointeractive
+
 #### control-plane
-# version=1.28.2; node=cp01
-# # version=$(yq .version k8s_apps/k8s.yaml)
-version=$1; node=$2
+# version=1.28.3
+# version=$(yq .version k8s_apps/k8s.yaml)
+version=$1
 
 #### 
 apt-get update
@@ -22,7 +24,7 @@ kubeadm upgrade diff $version
 
 # kubectl -n kube-system get cm kubeadm-config -o yaml
 # kubeadm upgrade apply v$version
-kubeadm upgrade $node
+kubeadm upgrade node
 # ....
 # kubectl get pod -o wide | grep $node
 # kubectl -n kube-system get cm kubeadm-config -o yaml

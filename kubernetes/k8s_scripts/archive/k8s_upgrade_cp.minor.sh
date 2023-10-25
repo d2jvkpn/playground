@@ -6,7 +6,6 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 #### control-plane
 # version=$(yq .version k8s_apps/k8s.yaml)
 version=$1 # 1.28.3
-node=$2
 
 ver=v${version%.*} # 1.28
 key_url=https://pkgs.k8s.io/core:/stable:/$ver/deb
@@ -26,7 +25,7 @@ apt-mark hold kubeadm
 
 kubeadm upgrade plan
 kubeadm upgrade diff $version
-kubeadm upgrade $node
+kubeadm upgrade node
 # kubectl -n kube-system get cm kubeadm-config -o yaml
 
 ####
