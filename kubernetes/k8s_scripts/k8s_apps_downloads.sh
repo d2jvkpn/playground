@@ -3,8 +3,8 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-yq_version=${yq_version:-4.35.1}
-flannel_version=${flannel_version:-0.22.2}
+yq_version=${yq_version:-4.35.2}
+flannel_version=${flannel_version:-0.22.3}
 
 set -x
 mkdir -p k8s_apps/kube_images k8s_apps/ingress-nginx_images
