@@ -49,11 +49,19 @@ flannel_images=$(awk '$1=="image:"{print $2}' k8s_apps/kube-flannel.yaml | sort 
 
 # wget -O k8s_apps/calico.yaml https://docs.projectcalico.org/manifests/calico.yaml
 
-#### 3. yq
+#### 3. metrics-server
+wget -O k8s_apps/metrics-server_components.yaml \
+  https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+metrics_images=$(
+  awk '$1=="image:"{print $2}' k8s_apps/metrics-server_components.yaml | sort -u
+)
+
+#### 4. yq
 wget -O k8s_apps/yq_linux_amd64.tar.gz \
   https://github.com/mikefarah/yq/releases/download/v$yq_version/yq_linux_amd64.tar.gz
 
-#### 4. yaml info
+#### 5. yaml info
 cat > k8s_apps/k8s.yaml << EOF
 version: $kube_version
 images:
@@ -70,6 +78,10 @@ flannel:
   version: $flannel_version
   images:
 $(echo "$flannel_images" | sed 's/^/  - image: /')
+
+metrics-server:
+   images:
+$(echo "$metrics_images" | sed 's/^/  - image: /')
 EOF
 
 download_images k8s_apps/k8s.yaml k8s_apps/images

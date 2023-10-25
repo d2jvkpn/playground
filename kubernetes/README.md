@@ -100,12 +100,14 @@ done
 # kubectl label node/k8s-ingress01 --overwrite node-role.kubernetes.io/worker-
 ```
 
-#### 5. Kube up
+#### 5. Kube up: flannel, ingress, metrics-serve, storage_nf
 ```bash
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_flannel.sh"
 
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_ingress.sh $ingress_node"
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_tcp-services.sh postgres 5432"
+
+ansible $cp_node -m shell -a "sudo kubeclt apply -f k8s_apps/metrics-server_components.yaml"
 
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
 
