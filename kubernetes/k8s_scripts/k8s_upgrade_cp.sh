@@ -14,10 +14,13 @@ version=$1
 apt-get update
 # apt-cache madison kubeadm | head || true
 apt-mark unhold kubeadm
+# apt policy kubeadm | head
 # apt-get install -y kubeadm=${version}-00
+# apt-get install -y kubeadm=${version}-1.1
+
 apt-get upgrade -y kubeadm
 apt-mark hold kubeadm
-# kubeadm version
+# $(kubectl version -o json | jq -r .clientVersion.gitVersion) == v$version
 
 kubeadm upgrade plan
 kubeadm upgrade diff $version

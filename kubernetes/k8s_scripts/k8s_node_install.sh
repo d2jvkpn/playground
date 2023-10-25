@@ -3,15 +3,17 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
+export DEBIAN_FRONTEND=noninteractive
+
 # version=$(yq .version k8s_apps/k8s.yaml)
 version=$1
-export DEBIAN_FRONTEND=noninteractive
 region=${region:-unknown}
 
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 
 #### 1. apt install
 apt-get update
+apt-get -y upgrade
 
 apt-get -y install apt-transport-https ca-certificates lsb-release gnupg pigz curl jq \
   socat conntrack nfs-kernel-server nfs-common nftables etcd-client
@@ -29,7 +31,6 @@ fi
 
 echo "deb [signed-by=$key_file] $key_url /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
-apt-get update
 # apt-mark unhold kubelet kubeadm kubectl
 apt-get install -y kubectl kubelet kubeadm
 apt-mark hold kubelet kubeadm kubectl
