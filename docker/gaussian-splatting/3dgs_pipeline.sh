@@ -88,5 +88,5 @@ result_dir=$(ls -d output/*/)
 
 exit
 #### 6. zip results
-zip -r $(basename $PWD)_output_$(date +'%FT%s').zip output
+zip -r $(basename $PWD)_output_$(date +'%F-%s').zip output
 rm -r output
