@@ -96,8 +96,9 @@ done
 
 # kubectl label node/k8s-ingress01 --overwrite node-role.kubernetes.io/ingress=
 # kubectl label node/k8s-ingress01 --overwrite node-role.kubernetes.io/ingress-
-# kubectl label node/k8s-ingress01 --overwrite node-role.kubernetes.io/worker=
-# kubectl label node/k8s-ingress01 --overwrite node-role.kubernetes.io/worker-
+
+# kubectl label node/k8s-node01 --overwrite node-role.kubernetes.io/worker=
+# kubectl label node/k8s-node01 --overwrite node-role.kubernetes.io/worker-
 ```
 
 #### 5. Kube up: flannel, ingress, metrics-serve, storage_nf

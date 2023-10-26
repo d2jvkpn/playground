@@ -2,10 +2,10 @@ version: "3"
 
 services:
   kafka-node1:
-    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:3.5.0
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
     restart: always
     container_name: kafka-node1
-    user: 1000:1000
+    user: ${UID}:${GID}
     networks: ["net"]
     environment:
     - TZ=Asia/Shanghai
@@ -16,9 +16,9 @@ services:
     - ./data/kafka-node1:/home/d2jvkpn/kafka
 
   kafka-node2:
-    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:3.5.0
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
     container_name: kafka-node2
-    user: 1000:1000
+    user: ${UID}:${GID}
     networks: ["net"]
     environment:
     - TZ=Asia/Shanghai
@@ -29,9 +29,9 @@ services:
     - ./data/kafka-node2:/home/d2jvkpn/kafka
 
   kafka-node3:
-    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:3.5.0
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
     container_name: kafka-node3
-    user: 1000:1000
+    user: ${UID}:${GID}
     networks: ["net"]
     environment:
     - TZ=Asia/Shanghai

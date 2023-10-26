@@ -3,9 +3,8 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-set -x
-
-kafka_version=3.5.0; [ $# -gt 0 ] && kafka_version=$1
+# set -x
+KAFKA_Version=${1:-3.6.0}
 
 echo "Number of kafka node?"
 read -t 5 num || true
@@ -18,10 +17,12 @@ if ! [[ "$num" =~ $num_re ]] ; then
     exit 1
 fi
 
-image=registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:$kafka_version
+image=registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:$KAFKA_Version
 # cluster_id=$(kafka-storage.sh random-uuid)
 cluster_id=$(docker run --rm $image kafka-storage.sh random-uuid)
 echo "==> Kafka cluster id: $cluster_id, number of nodes: $num"
+
+mkdir -p data
 
 cat > data/kafka.env <<EOF
 export KAFKA_CLUSTER_ID=$cluster_id

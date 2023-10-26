@@ -2,10 +2,10 @@ version: "3"
 
 services:
   kafka-node1:
-    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:3.5.0
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
     restart: always
     container_name: kafka-node1
-    user: 1000:1000
+    user: ${UID}:${GID}
     networks: ["net"]
     ports: ["127.0.0.1:9092:9092"]
     # configs/kafka.env KAFKA_CLUSTER_ID=${KAFKA_CLUSTER_ID}
