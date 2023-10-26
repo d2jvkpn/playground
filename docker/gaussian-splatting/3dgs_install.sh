@@ -45,6 +45,7 @@ conda clean --all --yes
 
 exit
 ####
+rm -f /usr/local/bin/ninja
 apt -y remove git wget zip cmake
 apt -y autoremove
 dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {}
