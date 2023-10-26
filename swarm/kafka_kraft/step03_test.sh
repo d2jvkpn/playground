@@ -6,10 +6,11 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 set -x
 
 #### tests
-# addrs=localhost:29091,localhost:29092,localhost:29093
 # addrs=localhost:29091
 # addrs=kafka-node1:9092,kafka-node2:9092,kafka-node3:9092
-addrs=${1:-localhost:9092}
+# addrs=${1:-localhost:9092}
+
+addrs=localhost:29091,localhost:29092,localhost:29093
 
 topic=test-0001
 
