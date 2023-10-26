@@ -44,7 +44,12 @@ conda env create --file /opt/gaussian-splatting/environment.yml
 conda clean --all --yes
 
 exit
+####
+apt -y remove git wget zip cmake
+apt -y autoremove
+dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {}
 
+####
 conda init bash
 exec bash
 conda activate gaussian_splatting
