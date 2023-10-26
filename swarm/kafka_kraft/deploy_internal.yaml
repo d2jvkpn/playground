@@ -5,7 +5,7 @@ services:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
     restart: always
     container_name: kafka-node1
-    user: ${UID}:${GID}
+    user: ${UserID}:${GroupID}
     networks: ["net"]
     environment:
     - TZ=Asia/Shanghai
@@ -18,7 +18,7 @@ services:
   kafka-node2:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
     container_name: kafka-node2
-    user: ${UID}:${GID}
+    user: ${UserID}:${GroupID}
     networks: ["net"]
     environment:
     - TZ=Asia/Shanghai
@@ -31,7 +31,7 @@ services:
   kafka-node3:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
     container_name: kafka-node3
-    user: ${UID}:${GID}
+    user: ${UserID}:${GroupID}
     networks: ["net"]
     environment:
     - TZ=Asia/Shanghai

@@ -5,7 +5,7 @@ services:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
     restart: always
     container_name: kafka-node1
-    user: ${UID}:${GID}
+    user: ${UserID}:${GroupID}
     networks: ["net"]
     ports: ["127.0.0.1:29091:9092"]
     # configs/kafka.env
@@ -29,7 +29,7 @@ services:
   kafka-node2:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
     container_name: kafka-node2
-    user: ${UID}:${GID}
+    user: ${UserID}:${GroupID}
     networks: ["net"]
     ports: ["127.0.0.1:29092:9092"]
     environment:
@@ -43,7 +43,7 @@ services:
   kafka-node3:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
     container_name: kafka-node3
-    user: ${UID}:${GID}
+    user: ${UserID}:${GroupID}
     networks: ["net"]
     ports: ["127.0.0.1:29093:9092"]
     environment:
