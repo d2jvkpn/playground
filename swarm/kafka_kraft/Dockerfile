@@ -15,7 +15,9 @@ RUN tag=${SCALA_Version}-${KAFKA_Version} && \
   apk --no-cache upgrade && \
   apk --no-cache add tzdata bash openjdk17 wget && \
   wget https://downloads.apache.org/kafka/${KAFKA_Version}/kafka_${tag}.tgz && \
-  tar -xf kafka_${tag}.tgz && mv kafka_${tag} /opt/kafka && rm kafka_${tag}.tgz && \
+  tar -xf kafka_${tag}.tgz && \
+  mv kafka_${tag} /opt/kafka && \
+  rm kafka_${tag}.tgz && \
   apk del wget
 
 # mkdir -p /opt/kafka && tar -xf kafka_${tag}.tgz --strip-components=1 -C /opt/kafka

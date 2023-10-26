@@ -18,6 +18,8 @@ if ! [[ "$num" =~ $num_re ]] ; then
 fi
 
 image=registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:$KAFKA_Version
+docker pull $image
+
 # cluster_id=$(kafka-storage.sh random-uuid)
 cluster_id=$(docker run --rm $image kafka-storage.sh random-uuid)
 echo "==> Kafka cluster id: $cluster_id, number of nodes: $num"
