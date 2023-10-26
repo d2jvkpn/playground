@@ -14,6 +14,7 @@ if [ ! -f ./configs/kafka.env ]; then
 fi
 
 . ./configs/kafka.env
+KAFKA_DATA_DIR=${KAFKA_DATA_DIR:-$(readlink -f ./data)}
 
 #### The scrpit exists if any variable is unset
 # env variables from ./configs/kafka.env
@@ -37,7 +38,7 @@ KAFKA_CONTROLLER_QUORUM_VOTERS=$(printenv KAFKA_CONTROLLER_QUORUM_VOTERS)
 # advertised.listeners=PLAINTEXT://localhost:9092
 # controller.quorum.voters=1@localhost:9093
 cat /opt/kafka/config/kraft/server.properties |
-  sed '/^log.dirs/s#=/.*#=/home/d2jvkpn/kafka/data#' |
+  sed "/^log.dirs/s#=/.*#=$KAFKA_DATA_DIR#" |
   sed "/^node.id=/s#=.*#=$KAFKA_NODE_ID#" |
   sed "/^advertised.listeners=/s#=.*#=$KAFKA_ADVERTISED_LISTENERS#" |
   sed "/^controller.quorum.voters=/s#=.*#=$KAFKA_CONTROLLER_QUORUM_VOTERS#" |
