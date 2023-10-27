@@ -6,7 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 KAFKA_Version=${1:-3.6.0}
 
-echo "==> Number of kafka node?"
+echo "==> Number of kafka node: "
 read -t 5 num || true
 [ -z "$num" ] && num=3
 
