@@ -6,14 +6,14 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 KAFKA_Version=${1:-3.6.0}
 
-echo "Number of kafka node?"
+echo "==> Number of kafka node?"
 read -t 5 num || true
 [ -z "$num" ] && num=3
 
 ####
 num_re='^[1-9]+$'
 if ! [[ "$num" =~ $num_re ]] ; then
-    echo "Error not a valid number: $num" >&2
+    echo '!!! Error not a valid number': $num >&2
     exit 1
 fi
 

@@ -3,6 +3,7 @@ FROM alpine:3
 ARG REGION=${REGION}
 ARG SCALA_Version=${SCALA_Version}
 ARG KAFKA_Version=${KAFKA_Version}
+ARG KAFKA_Tag=${SCALA_Version}-${KAFKA_Version}
 
 COPY bin /opt/bin
 RUN chmod a+x /opt/bin/entrypoint.sh
@@ -10,15 +11,16 @@ RUN chmod a+x /opt/bin/entrypoint.sh
 RUN script=/opt/bin/${REGION}.alpine.sh; \
   if [ -f $script ]; then sh $script; fi
 
-RUN tag=${SCALA_Version}-${KAFKA_Version} && \
+RUN link=https://downloads.apache.org/kafka/${KAFKA_Version}/kafka_${KAFKA_Tag}.tgz; \
   apk --no-cache update && \
   apk --no-cache upgrade && \
   apk --no-cache add tzdata bash openjdk17 wget && \
-  wget https://downloads.apache.org/kafka/${KAFKA_Version}/kafka_${tag}.tgz && \
-  tar -xf kafka_${tag}.tgz && \
-  mv kafka_${tag} /opt/kafka && \
-  rm kafka_${tag}.tgz && \
-  apk del wget
+  wget $link && \
+  apk del wget && \
+  tar -xf kafka_${KAFKA_Tag}.tgz && \
+  mv kafka_${KAFKA_Tag} /opt/kafka && \
+  rm kafka_${KAFKA_Tag}.tgz && \
+  echo $link > /opt/kafka.txt
 
 # mkdir -p /opt/kafka && tar -xf kafka_${tag}.tgz --strip-components=1 -C /opt/kafka
 
