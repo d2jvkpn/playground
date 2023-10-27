@@ -12,7 +12,7 @@ REGION=$(printenv REGION || true)
 name=registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka
 image=$name:$KAFKA_Version
 
-
+docker pull alpine:3
 
 docker build --no-cache \
   --build-arg=SCALA_Version="$SCALA_Version" \
