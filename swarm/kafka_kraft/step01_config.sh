@@ -6,9 +6,10 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 KAFKA_Version=${1:-3.6.0}
 
-echo "==> Number of kafka node: "
-read -t 5 num || true
-[ -z "$num" ] && num=3
+# echo "==> Number of kafka node: "
+# read -t 5 num || true
+# [ -z "$num" ] && num=3
+num=3
 
 ####
 num_re='^[1-9]+$'
@@ -24,9 +25,9 @@ docker pull $image
 cluster_id=$(docker run --rm $image kafka-storage.sh random-uuid)
 echo "==> Kafka cluster id: $cluster_id, number of nodes: $num"
 
-docker run --rm $image cat /opt/kafka/config/kraft/server.properties > data/server.properties
-
 mkdir -p data
+
+docker run --rm $image cat /opt/kafka/config/kraft/server.properties > data/server.properties
 
 cat > data/kafka.env <<EOF
 export KAFKA_CLUSTER_ID=$cluster_id
@@ -38,5 +39,3 @@ for i in $(seq 1 $num); do
     mkdir -p data/$node/{configs,data,logs}
     cp data/kafka.env data/$node/configs
 done
-
-data/kafka.env
