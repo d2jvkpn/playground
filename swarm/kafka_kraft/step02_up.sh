@@ -4,7 +4,7 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 export TAG=3.6.0 GroupID=$(id -g) UserID=$UID
-envsubst > docker-compose.yaml < deploy_external.yaml
+envsubst > docker-compose.yaml < deploy_cluster.yaml
 
 docker-compose up -d
 docker-compose ps

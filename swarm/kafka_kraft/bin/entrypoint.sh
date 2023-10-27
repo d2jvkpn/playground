@@ -8,11 +8,6 @@ if [ -f data/meta.properties ]; then
     exit 0
 fi
 
-if [ ! -f ./configs/kafka.env ]; then
-    >&2 echo "File not eixts: ./configs/kafka.env"
-    exit 1
-fi
-
 . ./configs/kafka.env
 KAFKA_DATA_DIR=${KAFKA_DATA_DIR:-$(readlink -f ./data)}
 
@@ -37,17 +32,17 @@ KAFKA_CONTROLLER_QUORUM_VOTERS=$(printenv KAFKA_CONTROLLER_QUORUM_VOTERS)
 # node.id=1
 # advertised.listeners=PLAINTEXT://localhost:9092
 # controller.quorum.voters=1@localhost:9093
-cat /opt/kafka/config/kraft/server.properties |
-  sed "/^log.dirs/s#=/.*#=$KAFKA_DATA_DIR#" |
-  sed "/^node.id=/s#=.*#=$KAFKA_NODE_ID#" |
-  sed "/^advertised.listeners=/s#=.*#=$KAFKA_ADVERTISED_LISTENERS#" |
-  sed "/^controller.quorum.voters=/s#=.*#=$KAFKA_CONTROLLER_QUORUM_VOTERS#" |
-  sed "/^num.partitions=/s#=.*#=$KAFKA_NUM_PARTITIONS#" > configs/server.properties
+cat /opt/kafka/config/kraft/server.properties | sed \
+  -e "/^log.dirs/s#=/.*#=$KAFKA_DATA_DIR#" \
+  -e "/^node.id=/s#=.*#=$KAFKA_NODE_ID#" \
+  -e "/^advertised.listeners=/s#=.*#=$KAFKA_ADVERTISED_LISTENERS#" \
+  -e "/^controller.quorum.voters=/s#=.*#=$KAFKA_CONTROLLER_QUORUM_VOTERS#" \
+  -e "/^num.partitions=/s#=.*#=$KAFKA_NUM_PARTITIONS#" > configs/server.properties
 
-env | grep "^KAFKA_" > ./kafka.info
-
+# env | grep "^KAFKA_" > ./kafka.info
 mkdir -p data logs
-kafka-storage.sh format -t $KAFKA_CLUSTER_ID --ignore-formatted -c configs/server.properties
+
+kafka-storage.sh format -t $KAFKA_CLUSTER_ID -c configs/server.properties --ignore-formatted
 kafka-server-start.sh configs/server.properties
 
 # cat /opt/kafka/config/kraft/server.properties |

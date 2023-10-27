@@ -24,6 +24,8 @@ docker pull $image
 cluster_id=$(docker run --rm $image kafka-storage.sh random-uuid)
 echo "==> Kafka cluster id: $cluster_id, number of nodes: $num"
 
+docker run --rm $image cat /opt/kafka/config/kraft/server.properties > data/server.properties
+
 mkdir -p data
 
 cat > data/kafka.env <<EOF
@@ -36,3 +38,5 @@ for i in $(seq 1 $num); do
     mkdir -p data/$node/{configs,data,logs}
     cp data/kafka.env data/$node/configs
 done
+
+data/kafka.env
