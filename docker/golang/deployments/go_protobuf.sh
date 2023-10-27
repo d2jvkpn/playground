@@ -3,9 +3,8 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-
 #### install tools
-version=23.2
+version=${1:-23.2}
 
 mkdir -p target
 wget -P target https://github.com/protocolbuffers/protobuf/releases/download/v${version}/protoc-${version}-linux-x86_64.zip
@@ -14,7 +13,7 @@ mkdir -p ~/Apps/protoc-${version}
 unzip target/protoc-${version}-linux-x86_64.zip -d ~/Apps/protoc-${version}
 
 ####
-go get google.golang.org/protobuf@v1.30.0
+go get google.golang.org/protobuf # @v1.30.0
 # go get -u github.com/golang/protobuf/{proto,protoc-gen-go}@v1.30.0
 go get -u google.golang.org/grpc
 
