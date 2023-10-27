@@ -25,3 +25,5 @@ services:
     - -AudioMixer
     - -RenderOffScreen
     - -PixelStreamingURL=${WS_Url}
+    # -PixelStreamingIP=192.168.1.1
+    # -PixelStreamingPort=3031
