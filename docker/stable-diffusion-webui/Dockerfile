@@ -21,12 +21,13 @@ USER hello:hello
 
 WORKDIR /home/hello
 
-RUN sdw=stable-diffusion-webui && \
-  wget -O ${sdw}-${SD_Version}.tar.gz \
-  https://github.com/AUTOMATIC1111/${sdw}/archive/refs/tags/v${SD_Version}.tar.gz && \
+RUN sdw=stable-diffusion-webui; \
+  link=https://github.com/AUTOMATIC1111/${sdw}/archive/refs/tags/v${SD_Version}.tar.gz; \
+  wget -O ${sdw}-${SD_Version}.tar.gz $link && \
   tar -xf ${sdw}-${SD_Version}.tar.gz && \
   rm ${sdw}-${SD_Version}.tar.gz && \
-  mv ${sdw}-${SD_Version} /home/hello/sd-webui
+  mv ${sdw}-${SD_Version} /home/hello/sd-webui && \
+  echo $link > /opt/$sdw.txt
 
 WORKDIR /home/hello/sd-webui
 
