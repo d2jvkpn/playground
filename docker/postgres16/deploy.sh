@@ -6,7 +6,6 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 export APP_Tag=${1:-dev} PORT=${2:-5442}
 
 mkdir -p configs/ data/postgres
-# docker run --rm postgres:16-alpine cat /var/lib/postgresql/data/pgdata/postgresql.conf
 
 envsubst < ${_path}/deploy.yaml > docker-compose.yaml
 
@@ -17,6 +16,7 @@ exit
 
 ####
 docker cp postgres16_${APP_Tag}:/var/lib/postgresql/data/pgdata/postgresql.conf configs/
+docker cp postgres16_${APP_Tag}:/var/lib/postgresql/data/pgdata/pg_hba.conf configs/
 
 docker exec -it postgres_db psql --username postgres --password postgres
 

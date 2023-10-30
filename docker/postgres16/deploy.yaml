@@ -2,7 +2,7 @@ version: '3'
 
 services:
   postgres:
-    image: postgres:15-alpine
+    image: postgres:16-alpine
     container_name: postgres15_${APP_Tag}
     restart: always
     # network_mode: bridge
@@ -27,4 +27,4 @@ services:
 #     driver: local
 
 networks:
-  net: { name: "postgres", driver: "bridge", external: false }
+  net: { name: "postgres16", driver: "bridge", external: false }
