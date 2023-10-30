@@ -11,6 +11,6 @@ docker-compose ps
 
 sleep 5
 
-ls -1 data/kafka-node*/configs/server.properties \
+ls -1 \
    data/kafka-node*/data/meta.properties \
    data/kafka-node*/logs
