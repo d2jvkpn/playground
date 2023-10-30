@@ -3,8 +3,11 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-export PORT=5432
-envsubst < $(dirname $0)/deploy.yaml > docker-compose.yaml
+export APP_Tag=${1:-dev} PORT=${2:-5432}
+
+mkdir -p configs data/postgres
+
+envsubst < ${_path}/deploy.yaml > docker-compose.yaml
 
 docker-compose pull
 docker-compose up -d

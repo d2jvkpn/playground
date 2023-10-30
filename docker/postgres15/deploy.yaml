@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgres15_${APP_Tag}
+    restart: always
+    # network_mode: bridge
+    networks: ["net"]
+    ports: ["127.0.0.1:${PORT}:5432"]
+    environment:
+    - TZ=Asia/Shanghai
+    - PGTZ=Asia/Shanghai
+    - POSTGRES_USER=postgres
+    - POSTGRES_DB=postgres
+    - POSTGRES_PASSWORD=postgres
+    # - POSTGRES_PASSWORD_FILE=/run/secrets/postgres-passwd
+    - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+    # - postgres:/var/lib/postgresql/data
+    - ./data/postgres:/var/lib/postgresql/data
+    # - ./data/postgresql.conf:/var/lib/postgresql/data/pgdata/postgresql.conf
+
+#volums:
+#   postgres:
+#     name: postgres_storage
+#     driver: local
+
+networks:
+  net: { name: "postgres15", driver: "bridge", external: false }

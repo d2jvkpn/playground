@@ -3,7 +3,6 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-
 sed -i '/trust$/s/trust$/scram-sha-256/' pg_hba.conf
 
 cat >> pg_hba.conf <<EOF
