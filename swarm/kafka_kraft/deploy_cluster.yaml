@@ -1,58 +1,38 @@
 version: "3"
 
 services:
-  kafka-node1:
+  kafka-node01:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
     restart: always
-    container_name: kafka-node1
+    container_name: kafka-node01
     user: ${UserID}:${GroupID}
     networks: ["net"]
     ports: ["127.0.0.1:29091:9092"]
-    # configs/kafka.env
-    ##  KAFKA_CLUSTER_ID=${KAFKA_CLUSTER_ID}
-    # overwrite the parameters in configs/server.properties:
-    ##  node.id=1
-    ##  advertised.listeners=PLAINTEXT://localhost:9092
-    ##  controller.quorum.voters=1@localhost:9093
-    ##  log.dirs=/home/d2jvkpn/kafka/data
-    environment:
-    - TZ=Asia/Shanghai
-    - KAFKA_NODE_ID=1
-    # docker network
-    ## - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-node1:9092
-    # host network through port binding
-    - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:29091
-    - KAFKA_CONTROLLER_QUORUM_VOTERS=1@kafka-node1:9093,2@kafka-node2:9093,3@kafka-node3:9093
+    environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./data/kafka-node1:/home/d2jvkpn/kafka
+    - ./data/kafka-node01:/home/d2jvkpn/kafka
 
-  kafka-node2:
+  kafka-node02:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
-    container_name: kafka-node2
+    restart: always
+    container_name: kafka-node02
     user: ${UserID}:${GroupID}
     networks: ["net"]
     ports: ["127.0.0.1:29092:9092"]
-    environment:
-    - TZ=Asia/Shanghai
-    - KAFKA_NODE_ID=2
-    - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:29092
-    - KAFKA_CONTROLLER_QUORUM_VOTERS=1@kafka-node1:9093,2@kafka-node2:9093,3@kafka-node3:9093
+    environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./data/kafka-node2:/home/d2jvkpn/kafka
+    - ./data/kafka-node02:/home/d2jvkpn/kafka
 
-  kafka-node3:
+  kafka-node03:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
-    container_name: kafka-node3
+    restart: always
+    container_name: kafka-node03
     user: ${UserID}:${GroupID}
     networks: ["net"]
     ports: ["127.0.0.1:29093:9092"]
-    environment:
-    - TZ=Asia/Shanghai
-    - KAFKA_NODE_ID=3
-    - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:29093
-    - KAFKA_CONTROLLER_QUORUM_VOTERS=1@kafka-node1:9093,2@kafka-node2:9093,3@kafka-node3:9093
+    environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./data/kafka-node3:/home/d2jvkpn/kafka
+    - ./data/kafka-node03:/home/d2jvkpn/kafka
 
 networks:
   net:

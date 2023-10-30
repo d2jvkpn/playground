@@ -7,14 +7,14 @@ set -x
 
 #### tests
 # addrs=localhost:29091
-# addrs=kafka-node1:9092,kafka-node2:9092,kafka-node3:9092
+# addrs=kafka-node01:9092,kafka-node02:9092,kafka-node03:9092
 # addrs=${1:-localhost:9092}
 
 addrs=localhost:29091,localhost:29092,localhost:29093
 
 topic=test-0001
 
-# docker exec -it kafka-node1 bash
+# docker exec -it kafka-node01 bash
 
 kafka-topics.sh --bootstrap-server $addrs --version
 
