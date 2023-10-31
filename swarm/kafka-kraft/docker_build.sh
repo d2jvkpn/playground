@@ -17,7 +17,7 @@ docker pull alpine:3
 docker build --no-cache \
   --build-arg=SCALA_Version="$SCALA_Version" \
   --build-arg=KAFKA_Version="$KAFKA_Version" \
-  --build-arg=REGION="$REGION" \
+  --build-arg=BUILD_Region="$BUILD_Region" \
   -f ${_path}/Dockerfile -t $image ./
 
 docker images -q -f dangling=true $name | xargs -i docker rmi {}
