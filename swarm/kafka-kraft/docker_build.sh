@@ -7,7 +7,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 KAFKA_Version=${KAFKA_Version:-3.6.0}
 SCALA_Version=${SCALA_Version:-2.13}
 
-REGION=$(printenv REGION || true)
+BUILD_Region=$(printenv BUILD_Region || true)
 
 name=registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka
 image=$name:$KAFKA_Version

@@ -235,6 +235,6 @@ services:
 
 networks:
   net:
-    name: mongo-cluster
+    name: mongo-distributed
     driver: bridge
     external: false

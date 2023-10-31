@@ -1,15 +1,17 @@
 FROM alpine:3
 
-ARG REGION=${REGION}
+ARG BUILD_Region=${BUILD_Region}
 ARG SCALA_Version=${SCALA_Version}
 ARG KAFKA_Version=${KAFKA_Version}
 ARG KAFKA_Tag=${SCALA_Version}-${KAFKA_Version}
 
 COPY bin /opt/bin
-RUN chmod a+x /opt/bin/entrypoint.sh
+RUN chmod a+x /opt/bin/*.sh
 
-RUN script=/opt/bin/${REGION}.alpine.sh; \
-  if [ -f $script ]; then sh $script; fi
+RUN if [ "$BUILD_Region" = "cn" ]; then \
+    echo "==> BUILD_Region: $BUILD_Region"; \
+    sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
+  fi
 
 RUN link=https://downloads.apache.org/kafka/${KAFKA_Version}/kafka_${KAFKA_Tag}.tgz; \
   apk --no-cache update && \
@@ -28,12 +30,10 @@ RUN link=https://downloads.apache.org/kafka/${KAFKA_Version}/kafka_${KAFKA_Tag}.
 #   mkdir -p /opt/kafka/logs && \
 #   chown -R d2jvkpn /home/d2jvkpn/kafka /opt/kafka/logs
 
-RUN kafka_dir=/home/d2jvkpn/kafka; \
-  mkdir -p $kafka_dir/configs $kafka_dir/data $kafka_dir/logs && \
-  ln -s $kafka_dir/logs /opt/kafka/logs
+RUN mkdir -p /app/configs /app/data /app/logs && \
+  ln -s /app/logs /opt/kafka/logs
 
-ENV PATH=/opt/kafka/bin:$PATH
-WORKDIR /home/d2jvkpn/kafka
+WORKDIR /app
 
 EXPOSE 9092 9093
 # ENTRYPOINT ["/opt/bin/entrypoint.sh"]

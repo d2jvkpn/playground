@@ -3,7 +3,7 @@ UserID = $(shell id -u)
 GroupID = $(shell id -g)
 
 build-cn:
-	REGION=cn bash docker_build.sh
+	BUILD_Region=cn bash docker_build.sh
 
 build-local:
 	bash docker_build.sh
