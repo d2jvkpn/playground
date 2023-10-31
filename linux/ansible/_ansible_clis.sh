@@ -20,6 +20,8 @@ ansible kvm -i ./configs/hosts.ini --one-line -m ping
 ####
 ansible kvm --one-line -m shell -a 'echo "Hello, world!"'
 
+ansible kvm -m shell --become -a "dpkg -l | awk '/^rc/{print \$2}' | xargs -i dpkg -P {}"
+
 ####
 mkdir -p wk_data/hello
 echo "Hello, world!" > wk_data/hello/hello.txt
