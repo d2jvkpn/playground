@@ -33,8 +33,16 @@ sudo kubeadm init --config=k8s_apps/data/kubeadm-config.yaml --upload-certs -v 5
 
 ####
 token=$(grep -o "\-\-token [^ ]*" k8s_apps/data/kubeadm-init.out | awk '{print $2; exit}')
-cert_hash=$(grep -o "\-\-discovery-token-ca-cert-hash [^ ]*" k8s_apps/data/kubeadm-init.out | awk '{print $2; exit}')
-cert_key=$(grep -o "\-\-certificate-key [^ ]*" k8s_apps/data/kubeadm-init.out | awk '{print $2; exit}')
+
+cert_hash=$(
+  grep -o "\-\-discovery-token-ca-cert-hash [^ ]*" k8s_apps/data/kubeadm-init.out |
+  awk '{print $2; exit}'
+)
+
+cert_key=$(
+  grep -o "\-\-certificate-key [^ ]*" k8s_apps/data/kubeadm-init.out |
+  awk '{print $2; exit}'
+)
 
 cat > k8s_apps/data/kubeadm-init.yaml <<EOF
 version: $version
