@@ -3,9 +3,30 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-cp deploy.yaml docker-compose.yaml
-docker-compose up -d
-docker-compose logs
+action=$1
+
+case "$action" in
+up)
+    echo "==> docker-compose up"
+    cp deploy.yaml docker-compose.yaml
+    docker-compose up -d
+    docker-compose logs
+    ;;
+down)
+    echo "==> docker-compose down"
+    docker-compose down
+
+    echo '!!! Remove files in data?(yes/no)'
+    read -t 5 ans || true
+    [ "$ans" != "yes" ] && exit 0
+
+    sudo rm -rf data/postgres-node{01..04}
+    ;;
+*)
+    >&2 echo "unknown action: $action"
+    exit 1
+    ;;
+esac
 
 exit
 
@@ -32,13 +53,3 @@ while true; do
     [ $exists -eq 0 ] && { echo "~~~ role replicator doesn't exist"; sleep 1; continue; };
     break
 done
-
-####
-echo "==> docker-compose down"
-docker-compose down
-
-echo '!!! Remove files in data?(yes/no)'
-read -t 5 ans || true
-[ "$ans" != "yes" ] && exit 0
-
-sudo rm -rf data/{node01,node02,node03}
