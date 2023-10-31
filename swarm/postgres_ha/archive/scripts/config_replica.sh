@@ -26,9 +26,12 @@ echo $replicator_password |
 
 cp $data_dir/postgresql.conf $data_dir/postgresql.conf.primary
 
+# primary_conninfo = 'host=primary_host port=5432 user=replicator password=my_password dbname=my_database sslmode=require sslcert=/path/to/client.crt sslkey=/path/to/client.key'
+
 cat > $data_dir/postgresql.conf <<EOF
 primary_conninfo = 'host=$primary_host port=$primary_port user=replicator password=$replicator_password'
-synchronous_standby_names = '$node'
+# synchronous_standby_names = 'standby_server_1, standby_server_2'
+synchronous_commit = on
 EOF
 # application_name=NotWorking
 

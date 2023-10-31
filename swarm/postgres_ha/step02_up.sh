@@ -3,33 +3,15 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-set -x
-
-mkdir -p data/{node01,node02,node03}
-sudo chown 70:70 data/{node01,node02,node03}
-sudo chmod 0750 data/{node01,node02,node03}
-
-ls scripts/{config_primary.sh,config_replica.sh,run.sh} \
-  configs/node{01..03}.env &> /dev/null
-
-if [ ! -s configs/secret_postgres.txt ]; then
-    tr -dc '0-9a-zA-Z._\-' < /dev/urandom | fold -w 32 |
-      head -n 1 > configs/secret_postgres.txt || true
-fi
-
-if [ ! -s configs/secret_replicator.txt ]; then
-    tr -dc '0-9a-zA-Z._\-' < /dev/urandom | fold -w 32 |
-      head -n 1 > configs/secret_replicator.txt || true
-fi
-
 cp deploy.yaml docker-compose.yaml
 docker-compose up -d
 docker-compose logs
 
-sleep 5
+exit
 
+####
 while ! nc -z localhost 5441; do
-    echo "~~~ node01 isn't ready"
+    echo "~~~ postgres-node01 isn't ready"
     sleep 1 && echo -n .
 done
 
@@ -50,3 +32,13 @@ while true; do
     [ $exists -eq 0 ] && { echo "~~~ role replicator doesn't exist"; sleep 1; continue; };
     break
 done
+
+####
+echo "==> docker-compose down"
+docker-compose down
+
+echo '!!! Remove files in data?(yes/no)'
+read -t 5 ans || true
+[ "$ans" != "yes" ] && exit 0
+
+sudo rm -rf data/{node01,node02,node03}

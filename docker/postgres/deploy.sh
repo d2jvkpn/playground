@@ -20,7 +20,7 @@ docker cp postgres16_${APP_Tag}:/var/lib/postgresql/data/pgdata/pg_hba.conf conf
 
 docker exec -it postgres_db psql --username postgres --password postgres
 
-psql --host 127.0.0.1 --port 5432 --username postgres --password postgres
+psql --host 127.0.0.1 --port 5442 --username postgres --password postgres
 
 ```postgres
 alter user postgres with password 'XXXXXXXX';
