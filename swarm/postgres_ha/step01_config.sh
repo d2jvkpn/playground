@@ -4,14 +4,14 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
-primary=postgres-node01
-nodes="postgres-node02 postgres-node03 postgres-node04"
+nodes=(postgres-node{01..04})
 subnet=$(yq .networks.net.ipam.config[0].subnet docker-compose.yaml)
 replicator_user=replicator
 
 mkdir -p configs
 
 #### primary
+primary=${nodes[0]}
 mkdir -p data/$primary
 sudo chown 70:70 data/$primary
 # sudo chmod 0750 data/$primary
@@ -26,8 +26,8 @@ replicator_user: $replicator_user
 replicator_password: $password
 EOF
 
-#### replica
-for node in $nodes; do
+#### replica ${nodes[@]:1:3}
+for node in ${nodes[@]:1}; do
     mkdir -p data/$node
     sudo chown 70:70 data/$node
     sudo chmod 0750 data/$node
