@@ -10,11 +10,11 @@ services:
     environment:
     - TZ=Asia/Shanghai
     volumes:
-    - ./configs:/data/configs:ro
-    - ./scripts:/data/scripts:ro
-    - ./data/configsvr-1a/db:/data/db
-    - ./data/configsvr-1a/logs:/data/logs
-    command: [--config, /data/configs/configsvr-1.conf]
+    - ./configs:/app/configs:ro
+    - ./bin:/app/bin:ro
+    - ./data/configsvr-1a/db:/app/db
+    - ./data/configsvr-1a/logs:/app/logs
+    command: [--config, /app/configs/configsvr-1.conf]
 
   configsvr-1b:
     image: mongo:6
@@ -25,11 +25,11 @@ services:
     environment:
     - TZ=Asia/Shanghai
     volumes:
-    - ./configs:/data/configs:ro
-    - ./scripts:/data/scripts:ro
-    - ./data/configsvr-1b/db:/data/db
-    - ./data/configsvr-1c/logs:/data/logs
-    command: [--config, /data/configs/configsvr-1.conf]
+    - ./configs:/app/configs:ro
+    - ./bin:/app/bin:ro
+    - ./data/configsvr-1b/db:/app/db
+    - ./data/configsvr-1b/logs:/app/logs
+    command: [--config, /app/configs/configsvr-1.conf]
 
   configsvr-1c:
     image: mongo:6
@@ -40,11 +40,11 @@ services:
     environment:
     - TZ=Asia/Shanghai
     volumes:
-    - ./configs:/data/configs:ro
-    - ./scripts:/data/scripts:ro
-    - ./data/configsvr-1c/db:/data/db
-    - ./data/configsvr-1c/logs:/data/logs
-    command: [--config, /data/configs/configsvr-1.conf]
+    - ./configs:/app/configs:ro
+    - ./bin:/app/bin:ro
+    - ./data/configsvr-1c/db:/app/db
+    - ./data/configsvr-1c/logs:/app/logs
+    command: [--config, /app/configs/configsvr-1.conf]
 
   shard-1a:
     image: mongo:6
@@ -55,11 +55,11 @@ services:
     environment:
     - TZ=Asia/Shanghai
     volumes:
-    - ./configs:/data/configs:ro
-    - ./scripts:/data/scripts:ro
-    - ./data/shard-1a/db:/data/db
-    - ./data/shard-1a/logs:/data/logs
-    command: [--config, /data/configs/shard-1.conf]
+    - ./configs:/app/configs:ro
+    - ./bin:/app/bin:ro
+    - ./data/shard-1a/db:/app/db
+    - ./data/shard-1a/logs:/app/logs
+    command: [--config, /app/configs/shard-1.conf]
 
   shard-1b:
     image: mongo:6
@@ -70,11 +70,11 @@ services:
     environment:
     - TZ=Asia/Shanghai
     volumes:
-    - ./configs:/data/configs:ro
-    - ./scripts:/data/scripts:ro
-    - ./data/shard-1b/db:/data/db
-    - ./data/shard-1b/logs:/data/logs
-    command: [--config, /data/configs/shard-1.conf]
+    - ./configs:/app/configs:ro
+    - ./bin:/app/bin:ro
+    - ./data/shard-1b/db:/app/db
+    - ./data/shard-1b/logs:/app/logs
+    command: [--config, /app/configs/shard-1.conf]
 
   shard-1c:
     image: mongo:6
@@ -85,11 +85,11 @@ services:
     environment:
     - TZ=Asia/Shanghai
     volumes:
-    - ./configs:/data/configs:ro
-    - ./scripts:/data/scripts:ro
-    - ./data/shard-1c/db:/data/db
-    - ./data/shard-1c/logs:/data/logs
-    command: [--config, /data/configs/shard-1.conf]
+    - ./configs:/app/configs:ro
+    - ./bin:/app/bin:ro
+    - ./data/shard-1c/db:/app/db
+    - ./data/shard-1c/logs:/app/logs
+    command: [--config, /app/configs/shard-1.conf]
 
   shard-2a:
     image: mongo:6
@@ -100,11 +100,11 @@ services:
     environment:
     - TZ=Asia/Shanghai
     volumes:
-    - ./configs:/data/configs:ro
-    - ./scripts:/data/scripts:ro
-    - ./data/shard-2a/db:/data/db
-    - ./data/shard-2a/logs:/data/logs
-    command: [--config, /data/configs/shard-2.conf]
+    - ./configs:/app/configs:ro
+    - ./bin:/app/bin:ro
+    - ./data/shard-2a/db:/app/db
+    - ./data/shard-2a/logs:/app/logs
+    command: [--config, /app/configs/shard-2.conf]
 
   shard-2b:
     image: mongo:6
@@ -115,11 +115,11 @@ services:
     environment:
     - TZ=Asia/Shanghai
     volumes:
-    - ./configs:/data/configs:ro
-    - ./scripts:/data/scripts:ro
-    - ./data/shard-2b/db:/data/db
-    - ./data/shard-2b/logs:/data/logs
-    command: [--config, /data/configs/shard-2.conf]
+    - ./configs:/app/configs:ro
+    - ./bin:/app/bin:ro
+    - ./data/shard-2b/db:/app/db
+    - ./data/shard-2b/logs:/app/logs
+    command: [--config, /app/configs/shard-2.conf]
 
   shard-2c:
     image: mongo:6
@@ -130,11 +130,11 @@ services:
     environment:
     - TZ=Asia/Shanghai
     volumes:
-    - ./configs:/data/configs:ro
-    - ./scripts:/data/scripts:ro
-    - ./data/shard-2c/db:/data/db
-    - ./data/shard-2c/logs:/data/logs
-    command: [--config, /data/configs/shard-2.conf]
+    - ./configs:/app/configs:ro
+    - ./bin:/app/bin:ro
+    - ./data/shard-2c/db:/app/db
+    - ./data/shard-2c/logs:/app/logs
+    command: [--config, /app/configs/shard-2.conf]
 
   shard-3a:
     image: mongo:6
@@ -145,11 +145,11 @@ services:
     environment:
     - TZ=Asia/Shanghai
     volumes:
-    - ./configs:/data/configs:ro
-    - ./scripts:/data/scripts:ro
-    - ./data/shard-3a/db:/data/db
-    - ./data/shard-3a/logs:/data/logs
-    command: [--config, /data/configs/shard-3.conf]
+    - ./configs:/app/configs:ro
+    - ./bin:/app/bin:ro
+    - ./data/shard-3a/db:/app/db
+    - ./data/shard-3a/logs:/app/logs
+    command: [--config, /app/configs/shard-3.conf]
 
   shard-3b:
     image: mongo:6
@@ -160,11 +160,11 @@ services:
     environment:
     - TZ=Asia/Shanghai
     volumes:
-    - ./configs:/data/configs:ro
-    - ./scripts:/data/scripts:ro
-    - ./data/shard-3b/db:/data/db
-    - ./data/shard-3b/logs:/data/logs
-    command: [--config, /data/configs/shard-3.conf]
+    - ./configs:/app/configs:ro
+    - ./bin:/app/bin:ro
+    - ./data/shard-3b/db:/app/db
+    - ./data/shard-3b/logs:/app/logs
+    command: [--config, /app/configs/shard-3.conf]
 
   shard-3c:
     image: mongo:6
@@ -175,11 +175,11 @@ services:
     environment:
     - TZ=Asia/Shanghai
     volumes:
-    - ./configs:/data/configs:ro
-    - ./scripts:/data/scripts:ro
-    - ./data/shard-3c/db:/data/db
-    - ./data/shard-3c/logs:/data/logs
-    command: [--config, /data/configs/shard-3.conf]
+    - ./configs:/app/configs:ro
+    - ./bin:/app/bin:ro
+    - ./data/shard-3c/db:/app/db
+    - ./data/shard-3c/logs:/app/logs
+    command: [--config, /app/configs/shard-3.conf]
 
   mongos-1:
     image: mongo:6
@@ -191,12 +191,12 @@ services:
     ports: [127.0.0.1:27021:2017]
     environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/data/configs:ro
-    - ./scripts:/data/scripts:ro
-    - ./data/mongos-1/db:/data/db
-    - ./data/mongos-1/logs:/data/logs
+    - ./configs:/app/configs:ro
+    - ./bin:/app/bin:ro
+    - ./data/mongos-1/db:/app/db
+    - ./data/mongos-1/logs:/app/logs
     entrypoint: [mongos]
-    command: [--config, /data/configs/mongos-1.conf]
+    command: [--config, /app/configs/mongos-1.conf]
     # --bind_ip_all
 
   mongos-2:
@@ -209,12 +209,12 @@ services:
     ports: [127.0.0.1:27022:2017]
     environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/data/configs:ro
-    - ./scripts:/data/scripts:ro
-    - ./data/mongos-2/db:/data/db
-    - ./data/mongos-2/logs:/data/logs
+    - ./configs:/app/configs:ro
+    - ./bin:/app/bin:ro
+    - ./data/mongos-2/db:/app/db
+    - ./data/mongos-2/logs:/app/logs
     entrypoint: [mongos]
-    command: [--config, /data/configs/mongos-2.conf]
+    command: [--config, /app/configs/mongos-2.conf]
 
   mongos-3:
     image: mongo:6
@@ -226,12 +226,12 @@ services:
     ports: [127.0.0.1:27023:2017]
     environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/data/configs:ro
-    - ./scripts:/data/scripts:ro
-    - ./data/mongos-3/db:/data/db
-    - ./data/mongos-3/logs:/data/logs
+    - ./configs:/app/configs:ro
+    - ./bin:/app/bin:ro
+    - ./data/mongos-3/db:/app/db
+    - ./data/mongos-3/logs:/app/logs
     entrypoint: [mongos]
-    command: [--config, /data/configs/mongos-3.conf]
+    command: [--config, /app/configs/mongos-3.conf]
 
 networks:
   net:

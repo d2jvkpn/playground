@@ -23,10 +23,10 @@ for idx in {1..3}; do
       --net=mongo-cluster \
       --user=$(id -u):$(id -g) \
       -e TZ=Asia/Shanghai \
-      -v $PWD/configs:/data/configs \
-      -v $PWD/scripts:/data/scripts \
-      -v $PWD/data/$node/db:/data/db \
-      -v $PWD/data/$node/logs:/data/logs \
+      -v $PWD/configs:/app/configs \
+      -v $PWD/bin:/app/bin \
+      -v $PWD/data/$node/db:/app/db \
+      -v $PWD/data/$node/logs:/app/logs \
       --entrypoint=mongos \
-      mongo:6 --config /data/configs/$node.conf
+      mongo:6 --config /app/configs/$node.conf
 done

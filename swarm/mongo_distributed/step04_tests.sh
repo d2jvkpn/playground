@@ -6,7 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 #### create user hello and database backend
 awk '{print $1; exit}' configs/secret.txt | docker exec -i mongo-mongos-1 mongosh \
   mongodb://root@mongo-mongos-1:27017,mongo-mongos-2:27017,mongo-mongos-3:27017/admin \
-  /data/scripts/tests.js
+  /app/bin/tests.js
 
 echo "world" | docker exec -i mongo-mongos-1 mongosh \
   mongodb://hello@mongo-mongos-1:27017,mongo-mongos-2:27017,mongo-mongos-3:27017/backend \
@@ -31,14 +31,14 @@ docker exec -it mongo-mongos-1 mongosh \
 # docker exec -it mongo-mongos-1 mongosh mongodb://root@mongo-configsvr-1a:27017/admin
 
 #### change password
-docker exec -i mongo-mongos-1 mongosh --quiet /data/scripts/change-password.js
+docker exec -i mongo-mongos-1 mongosh --quiet /app/bin/change-password.js
 docker exec -it mongo-configsvr-1a mongosh  mongodb://127.0.0.1:27017/admin --quiet
 
 # db.auth("root", "TheNewPassword");
 
-docker exec -i mongo-shard-1a mongosh --quiet /data/scripts/change-password.js
-docker exec -i mongo-shard-2a mongosh --quiet /data/scripts/change-password.js
-docker exec -i mongo-shard-3a mongosh --quiet /data/scripts/change-password.js
+docker exec -i mongo-shard-1a mongosh --quiet /app/bin/change-password.js
+docker exec -i mongo-shard-2a mongosh --quiet /app/bin/change-password.js
+docker exec -i mongo-shard-3a mongosh --quiet /app/bin/change-password.js
 
 #### db "local" on shard nodes
 docker exec -it mongo-shard-1a mongosh mongodb://root@127.0.0.1:27017/admin \

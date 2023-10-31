@@ -21,7 +21,7 @@ fi
 
 #### configsvr
 ls configs/{configsvr.conf,mongos.conf,shard.conf}\
-  scripts/{configsvr.js,create-root.js,mongos.js,shard.js} &> /dev/null
+  bin/{configsvr.js,create-root.js,mongos.js,shard.js} &> /dev/null
 
 configsvr_id=configsvr-1
 

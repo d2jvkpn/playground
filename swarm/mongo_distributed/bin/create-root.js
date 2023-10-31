@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const password = fs.readFileSync("/data/configs/secret.txt", 'utf8').split(/\s+/g)[0].trim();
+const password = fs.readFileSync("/app/configs/secret.txt", 'utf8').split(/\s+/g)[0].trim();
 const db = connect('admin');
 
 // db.getUsers({filter: {'user': 'root'}}).users.length == 0
