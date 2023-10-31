@@ -33,6 +33,8 @@ RUN link=https://downloads.apache.org/kafka/${KAFKA_Version}/kafka_${KAFKA_Tag}.
 RUN mkdir -p /app/configs /app/data /app/logs && \
   ln -s /app/logs /opt/kafka/logs
 
+ENV PATH=/opt/kafka/bin:$PATH
+
 WORKDIR /app
 
 EXPOSE 9092 9093
