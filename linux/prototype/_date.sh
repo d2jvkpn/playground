@@ -10,6 +10,7 @@ date +'%FT%T.%N%:z'
 date +'%FT%H-%M-%ST%N'
 
 date +'%FT%s'
+date +'%sT%F'
 date +'%F-%s'
 date +'%F-%s%N'
 
