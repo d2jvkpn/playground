@@ -80,7 +80,7 @@ flannel:
 $(echo "$flannel_images" | sed 's/^/  - image: /')
 
 metrics-server:
-   images:
+  images:
 $(echo "$metrics_images" | sed 's/^/  - image: /')
 EOF
 
