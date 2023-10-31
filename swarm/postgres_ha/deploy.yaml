@@ -67,7 +67,7 @@ services:
 
 networks:
   net:
-    name: postgres_classic
+    name: postgres_ha
     driver: bridge
     external: false
     ipam:

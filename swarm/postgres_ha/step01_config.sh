@@ -8,7 +8,7 @@ nodes=(postgres-node{01..04})
 subnet=$(yq .networks.net.ipam.config[0].subnet docker-compose.yaml)
 replicator_user=replicator
 
-mkdir -p configs
+mkdir -p configs data
 
 #### primary
 primary=${nodes[0]}
