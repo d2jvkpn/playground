@@ -15,9 +15,9 @@ services:
     # - POSTGRES_PASSWORD_FILE=/run/secrets/postgres-passwd
     # - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
-    - ./data/postgres-node01:/var/lib/postgresql/data/pgdata
     - ./bin:/app/bin:ro
     - ./configs/postgres-node01.yaml:/app/configs/psql.yaml:ro
+    - ./data/postgres-node01:/app/data
     command: [bash, /app/bin/psql_primary.sh]
 
   postgres-node02:
@@ -30,9 +30,9 @@ services:
     ports: ["127.0.0.1:5442:5432"]
     environment: [TZ=Asia/Shanghai, PGTZ=Asia/Shanghai]
     volumes:
-    - ./data/postgres-node02:/var/lib/postgresql/data/pgdata
     - ./bin:/app/bin:ro
     - ./configs/postgres-node02.yaml:/app/configs/psql.yaml:ro
+    - ./data/postgres-node02:/app/data
     command: [bash, /app/bin/psql_replica.sh]
 
   postgres-node03:
@@ -45,9 +45,9 @@ services:
     ports: ["127.0.0.1:5443:5432"]
     environment: [TZ=Asia/Shanghai, PGTZ=Asia/Shanghai]
     volumes:
-    - ./data/postgres-node03:/var/lib/postgresql/data/pgdata
     - ./bin:/app/bin:ro
     - ./configs/postgres-node03.yaml:/app/configs/psql.yaml:ro
+    - ./data/postgres-node03:/app/data
     command: [bash, /app/bin/psql_replica.sh]
 
   postgres-node04:
@@ -60,9 +60,9 @@ services:
     ports: ["127.0.0.1:5444:5432"]
     environment: [TZ=Asia/Shanghai, PGTZ=Asia/Shanghai]
     volumes:
-    - ./data/postgres-node04:/var/lib/postgresql/data/pgdata
     - ./bin:/app/bin:ro
     - ./configs/postgres-node04.yaml:/app/configs/psql.yaml:ro
+    - ./data/postgres-node04:/app/data
     command: [bash, /app/bin/psql_replica.sh]
 
 networks:
