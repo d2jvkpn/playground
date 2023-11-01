@@ -17,12 +17,11 @@ trap 'remove_container' EXIT
 {
     date +'==> %FT%T%:z docker build start'
 
-    docker exec $container mkdir -p /home/d2jvkpn/3dgs_workspace
-    docker cp ./3dgs_install.sh $container:/home/d2jvkpn/
-    docker cp ./3dgs_pipeline.sh $container:/home/d2jvkpn/
+    docker exec $container mkdir -p /app/workspace
+    docker cp bin $container:/app/bin
 
-    docker exec $container bash /home/d2jvkpn/3dgs_install.sh
-    docker exec $container ln -s /opt/gaussian-splatting /home/d2jvkpn/3dgs
+    docker exec $container bash /app/bin/3dgs_install.sh
+    docker exec $container ln -s /opt/gaussian-splatting /app/3dgs
 
     docker commit -p \
       --change='ENV DEBIAN_FRONTEND=nointeractive' \
@@ -31,7 +30,7 @@ trap 'remove_container' EXIT
       --change='ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$CONDA_HOME/bin:$PATH' \
       --change='WORKDIR /home/d2jvkpn/3dgs_workspace' \
       $container 3dgs:latest
-      # --change='ENTRYPOINT ["bash", "/home/d2jvkpn/3dgs_pipeline.sh"]' \
+      # --change='ENTRYPOINT ["bash", "/app/bin/3dgs_pipeline.sh"]' \
 
     date +'==> %FT%T%:z docker build end'
 } &> 3dgs.$(date +'%FT%H-%M-%S').log
@@ -58,5 +57,5 @@ docker run --name 3dgs -d --gpus=all 3dgs:latest sleep infinity
 project=my-project
 
 docker run -d --gpus=all \
-  --name $project -v $PWD/$project:/home/d2jvkpn/3dgs_workspace \
-  3dgs:latest bash /home/d2jvkpn/3dgs_pipeline.sh
+  --name $project -v $PWD/$project:/app/workspace \
+  3dgs:latest bash /app/bin/3dgs_pipeline.sh
