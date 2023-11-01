@@ -28,7 +28,7 @@ trap 'remove_container' EXIT
       --change='ENV TZ=Asia/Shanghai' \
       --change='ENV CONDA_HOME=/opt/conda' \
       --change='ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$CONDA_HOME/bin:$PATH' \
-      --change='WORKDIR /home/d2jvkpn/3dgs_workspace' \
+      --change='WORKDIR /app/workspace' \
       $container 3dgs:latest
       # --change='ENTRYPOINT ["bash", "/app/bin/3dgs_pipeline.sh"]' \
 
