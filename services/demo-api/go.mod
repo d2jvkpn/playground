@@ -3,13 +3,13 @@ module demo-api
 go 1.21.3
 
 require (
-	github.com/d2jvkpn/gotk v0.0.0-20231010100316-d8cb0766d7e3
-	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20231010100316-d8cb0766d7e3
-	github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20231010100316-d8cb0766d7e3
-	github.com/d2jvkpn/gotk/ginx v0.0.0-20231010100316-d8cb0766d7e3
-	github.com/d2jvkpn/gotk/impls v0.0.0-20231010100316-d8cb0766d7e3
+	github.com/d2jvkpn/gotk v0.0.0-20231031091240-824392c259a2
+	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20231031091240-824392c259a2
+	github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20231031091240-824392c259a2
+	github.com/d2jvkpn/gotk/ginx v0.0.0-20231031091240-824392c259a2
+	github.com/d2jvkpn/gotk/impls v0.0.0-20231031091240-824392c259a2
 	github.com/gin-gonic/gin v1.9.1
-	github.com/google/uuid v1.3.1
+	github.com/google/uuid v1.4.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/prometheus/client_golang v1.17.0
 	github.com/spf13/viper v1.17.0
@@ -28,7 +28,7 @@ require (
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/go-logr/logr v1.2.4 // indirect
+	github.com/go-logr/logr v1.3.0 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
@@ -71,7 +71,7 @@ require (
 	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20231016165738-49dd2c1f3d0b // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20231030173426-d783a09b4405 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
