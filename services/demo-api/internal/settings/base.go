@@ -30,8 +30,13 @@ func SetProject(bts []byte) (err error) {
 	Meta = gotk.BuildInfo()
 	Meta["app"] = _Project.GetString("app")
 	Meta["version"] = _Project.GetString("version")
-	Meta["k8s_pod"] = os.Getenv("K8S_Pod")
-	Meta["k8s_node"] = os.Getenv("K8S_Node")
+
+	Meta["k8s"] = map[string]string{
+		"namespace": os.Getenv("K8S_Namespace"),
+		"node_name": os.Getenv("K8S_NodeName"),
+		"pod_name":  os.Getenv("K8S_PodName"),
+		"pod_ip":    os.Getenv("K8S_PodIP"),
+	}
 
 	return nil
 }

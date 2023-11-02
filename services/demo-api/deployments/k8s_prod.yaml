@@ -48,13 +48,19 @@ spec:
           #   - { name: Custom-Header, value: Awesome }
           grpc: { port: 5040 }
         env:
-        - name: K8S_Pod
-          valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "metadata.name" } }
-        - name: K8S_Node
+        # https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/
+        - name: K8S_Namespace
+          valueFrom: { fieldRef: { fieldPath: metadata.namespace } }
+        - name: K8S_NodeName
           valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "spec.nodeName" } }
         - { name: TZ, value: Asia/Shanghai }
+        - name: K8S_PodName
+          valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "metadata.name" } }
+        - name: K8S_PodIP
+          valueFrom: { fieldRef: { fieldPath: status.podIP } }
+        - name: TZ, value: Asia/Shanghai
         # envFrom:
-        # - configMapRef: {name: postgres-config}
+        # - configMapRef: { name: postgres-config }
         volumeMounts:
         ## not /app/configs/dev.yaml
         - { name: config, mountPath: /app/configs, readOnly: true }
