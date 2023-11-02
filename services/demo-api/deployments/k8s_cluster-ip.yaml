@@ -8,5 +8,5 @@ spec:
   # clusterIP: 10.107.98.176
   selector: { app: demo-api }
   ports:
-  - { name: http, protocol: TCP, port: 5030, targetPort: 5030 }
-  - { name: rpc, protocol: TCP, port: 5040, targetPort: 5040 }
+  - { name: http, protocol: TCP, port: 5032, targetPort: 5032 }
+  - { name: rpc, protocol: TCP, port: 5042, targetPort: 5042 }

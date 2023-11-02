@@ -36,13 +36,17 @@ spec:
           requests: { cpu: "200m", memory: "128Mi", ephemeral-storage: "2Gi" }
           limits: { cpu: "1000m", memory: "512Mi", ephemeral-storage: "4Gi" }
         livenessProbe:
-          ## HTTP Status >= 200 and < 400
-          # httpGet: { path: "/healthz", port: 5030 }
-          grpc: { port: 5040 }
           initialDelaySeconds: 5
           timeoutSeconds: 1
           periodSeconds: 10
           failureThreshold: 3
+          ## HTTP Status >= 200 and < 400
+          # httpGet:
+          #   path: "/healthz"
+          #   port: 5030
+          #   httpHeaders:
+          #   - { name: Custom-Header, value: Awesome }
+          grpc: { port: 5040 }
         env:
         - name: K8S_Pod
           valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "metadata.name" } }
@@ -61,7 +65,7 @@ spec:
         - { name: "rpc", containerPort: 5040, protocol: "TCP" }
         # command: [ tail, -f, /etc/hosts ]
         command: ["./target/main"]
-        args: ["-release", "-config=configs/dev.yaml", "-http_addr=0.0.0.0:5030", "-rpc_addr=0.0.0.0:5040"]
+        args: ["-release", "-config=configs/prod.yaml", "-http_addr=0.0.0.0:5030", "-rpc_addr=0.0.0.0:5040"]
 
 ---
 apiVersion: v1

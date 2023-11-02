@@ -20,4 +20,4 @@ spec:
       - pathType: Prefix
         path: /
         backend:
-          service: { name: demo-api, port: { number: 5030 } }
+          service: { name: demo-api, port: { number: 5032 } }
