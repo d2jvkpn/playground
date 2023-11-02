@@ -28,7 +28,8 @@ build_offline:
 	bash scripts/docker_build.sh master
 
 build_local:
-	BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master
+	# BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master
+	DOCKER_Tag=dev bash deployments/docker_build.sh master
 
 build_remote:
 	ssh -F configs/ssh.conf build_host "cd docker_build/playground/demo-api && \
