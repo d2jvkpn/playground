@@ -17,7 +17,7 @@ RUN if [ "$BUILD_Region" = "cn" ]; then \
 RUN apk --no-cache update && \
   apk --no-cache upgrade
 
-WORKDIR /opt/$APP_Name
+WORKDIR /app
 
 ADD ./main.go ./go.mod ./go.sum ./project.yaml  ./
 COPY ./internal ./internal
@@ -27,7 +27,8 @@ COPY ./proto ./proto
 COPY ./vendor ./vendor
 
 # in alpine, date doesn't parse %:z
-RUN go build -o main -ldflags="-w -s ${GO_ldflags}" main.go
+RUN mkdir -p target && \
+  go build -o target/main -ldflags="-w -s ${GO_ldflags}" main.go
 
 ####
 FROM alpine
@@ -48,11 +49,11 @@ RUN apk --no-cache update && \
 
 # RUN adduser -D -u 1000 d2jvkpn
 # USER d2jvkpn
-RUN mkdir -p /home/d2jvkpn/$APP_Name
-WORKDIR /home/d2jvkpn/$APP_Name
+RUN mkdir -p /app/target
+WORKDIR /app
 
-COPY --from=builder /opt/$APP_Name/main ./main
+COPY --from=builder /app/target/main /app/target/main
 COPY ./migrations ./migrations
 
 EXPOSE 5030 5040
-CMD ["./main", "-config=configs/prod.yaml", "-release", "-http_addr=:5030", "-rpc_addr=:5040"]
+CMD ["./target/main", "-config=configs/prod.yaml", "-release", "-http_addr=:5030", "-rpc_addr=:5040"]
