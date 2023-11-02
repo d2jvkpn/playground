@@ -4,7 +4,7 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 export APP_Name=$(yq .app project.yaml)
-export IMAGE_Tag=$1 APP_Tag=$2 HTTP_Port=$3 RPC_Port=$4
+export IMAGE_Tag=$1 APP_Tag=$2 HTTP_Port=$3 RPC_Port=$4 UserID=$(id -u) GroupID=$(id -g)
 
 container=${APP_Name}_${APP_Tag}
 

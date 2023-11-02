@@ -6,7 +6,7 @@ services:
     container_name: ${APP_Name}_${APP_Tag}
     restart: always
     # depends_on: ["mongo"]
-    user: ${UID}:${GID}
+    user: ${UserID}:${GroupID}
     networks: ["net"]
     # network_mode: bridge
     # network_mode: host
@@ -14,10 +14,10 @@ services:
     ports: ["${HTTP_Port}:${HTTP_Port}", "${RPC_Port}:${RPC_Port}"]
     environment: ["TZ=Asia/Shanghai"]
     volumes:
-    - ./configs/:/home/d2jvkpn/${APP_Name}/configs:ro
-    - ./logs/:/home/d2jvkpn/${APP_Name}/logs/
-    # - ./data/:/home/d2jvkpn/demo-api/data/
-    command: ["./main", "-config=configs/prod.yaml", "-http_addr=:${HTTP_Port}", "-rpc_addr=:${RPC_Port}"]
+    - ./configs/:/app/configs:ro
+    - ./logs/:/app/logs/
+    # - ./data/:/app/data/
+    command: ["./target/main", "-config=configs/prod.yaml", "-http_addr=:${HTTP_Port}", "-rpc_addr=:${RPC_Port}"]
 
 networks:
   net:

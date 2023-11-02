@@ -52,15 +52,15 @@ spec:
         # envFrom:
         # - configMapRef: {name: postgres-config}
         volumeMounts:
-        ## not /home/d2jvkpn/demo-api/configs/dev.yaml
-        - { name: config, mountPath: /home/d2jvkpn/demo-api/configs, readOnly: true }
-        - { name: local, subPathExpr: "$(K8S_Pod)/logs", mountPath: "/home/d2jvkpn/demo-api/logs" }
-        - { name: pvc, subPathExpr: "$(K8S_Pod)/data", mountPath: "/home/d2jvkpn/demo-api/data" }
+        ## not /app/configs/dev.yaml
+        - { name: config, mountPath: /app/configs, readOnly: true }
+        - { name: local, subPathExpr: "$(K8S_Pod)/logs", mountPath: "/app/logs" }
+        - { name: pvc, subPathExpr: "$(K8S_Pod)/data", mountPath: "/app/data" }
         ports:
         - { name: "http", containerPort: 5030, protocol: "TCP" }
         - { name: "rpc", containerPort: 5040, protocol: "TCP" }
         # command: [ tail, -f, /etc/hosts ]
-        command: ["./main"]
+        command: ["./target/main"]
         args: ["-release", "-config=configs/dev.yaml", "-http_addr=0.0.0.0:5030", "-rpc_addr=0.0.0.0:5040"]
 
 ---
