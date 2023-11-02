@@ -21,6 +21,7 @@ trap 'remove_container' EXIT
     docker cp bin $container:/app/bin
 
     docker exec $container bash /app/bin/3dgs_install.sh
+    docker exec $container 'chmod a+x /app/bin/*.sh'
     docker exec $container ln -s /opt/gaussian-splatting /app/3dgs
 
     docker commit -p \
