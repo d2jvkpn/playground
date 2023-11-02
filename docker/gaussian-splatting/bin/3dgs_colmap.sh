@@ -17,7 +17,15 @@ mkdir -p distorted
 
 {
     date +'==> %FT%T%:z colmap start'
-    colmap automatic_reconstructor --image_path ./images --workspace_path ./distorted
+
+    if [ $(command -v xvfb-run) ]; then
+        run="xvfb-run"
+    else
+        $run=""
+    fi
+
+    $run colmap automatic_reconstructor --image_path ./images --workspace_path ./distorted
+
     date +'==> %FT%T%:z colmap end'
 } &> colmap.log
 

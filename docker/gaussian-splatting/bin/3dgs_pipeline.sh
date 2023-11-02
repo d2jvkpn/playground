@@ -24,9 +24,15 @@ ls images/* > /dev/null
 if [[ ! -d sparse/0  && ! -d distorted/sparse/0 ]]; then
     mkdir -p distorted
 
+    if [ $(command -v xvfb-run) ]; then
+        run="xvfb-run"
+    else
+        $run=""
+    fi
+
     {
         date +'==> %FT%T%:z colmap start'
-        xvfb-run colmap automatic_reconstructor --image_path ./images --workspace_path ./distorted
+        $run colmap automatic_reconstructor --image_path ./images --workspace_path ./distorted
         date +'==> %FT%T%:z colmap end'
     } &> colmap.log
 fi
