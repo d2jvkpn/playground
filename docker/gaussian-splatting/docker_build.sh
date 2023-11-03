@@ -60,3 +60,9 @@ project=my-project
 docker run -d --gpus=all \
   --name $project -v $PWD/$project:/app/workspace \
   3dgs:latest bash /app/bin/3dgs_pipeline.sh
+
+ls -d project01/ project02/ project03/
+
+docker run -d --gpus=all \
+  --name $project -v $PWD:/app/workspace \
+  3dgs:latest bash /app/bin/3dgs_pipeline.sh project01 project02 project03
