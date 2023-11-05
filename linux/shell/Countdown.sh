@@ -13,6 +13,11 @@ secs=$1
 shift
 cmd="$*"
 
+if [ $# -eq 0 ]; then
+    >&2 echo "no command(s) provided!"
+    exit 1
+fi
+
 if [[ ! "$secs" =~ ^[0-9]+(m|s)$ ]]; then
     echo "invalid time interval" >&2
     exit 1
@@ -22,8 +27,11 @@ elif [[ "$secs" == *"m" ]]; then
     secs=$((${secs%m} * 60))
 fi
 
+date +'==> %FT%T%:z'
+
 sp='|/-\'
 j=0
+
 
 for i in $(seq 1 $secs | tac); do
     c=${sp:j++%${#sp}:1}
@@ -33,8 +41,4 @@ done
 
 echo -e "\r= $(date +%FT%T:%:z) END\n"
 
-if [[ ! -z "$cmd" ]]; then
-    $cmd
-elif [[ -f ${_path}/Countdown.default.sh ]]; then
-    bash ${_path}/Countdown.default.sh
-fi
+$cmd
