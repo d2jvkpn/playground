@@ -4,12 +4,12 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 if [[ $# -eq 0 || "$1" == *"-h"* ]]; then
-    echo "$(basename $0) [timeout] [command] [args...]"
-    echo -e "e.g.\n    timeout: 5s, 1m\n    Countdown.sh 15s mpv ~/Downloads/sounds/01.wav"
+    echo "$(basename $0) [duration] [command] [args...]"
+    echo -e "e.g.\n    duration: 5s, 1m\n    Countdown.sh 15s mpv ~/Downloads/sounds/01.wav"
     exit 0
 fi
 
-dur=$1
+duration=$1
 shift
 cmd="$*"
 
@@ -23,16 +23,16 @@ if [ $# -eq 0 ]; then
     fi
 fi
 
-if [[ ! "$dur" =~ ^[0-9]+(|m|s)$ ]]; then
+if [[ ! "$duration" =~ ^[0-9]+(|m|s)$ ]]; then
     echo "invalid time interval" >&2
     exit 1
-elif [[ "$dur" == *"s" ]]; then
-    secs=${dur%s}
-elif [[ "$dur" == *"m" ]]; then
-    secs=$((${dur%m} * 60))
+elif [[ "$duration" == *"s" ]]; then
+    secs=${duration%s}
+elif [[ "$duration" == *"m" ]]; then
+    secs=$((${duration%m} * 60))
 fi
 
-date +"==> %FT%T%:z: $dur $cmd"
+date +"==> %FT%T%:z: $duration $cmd"
 
 ####
 sp='|/-\'
