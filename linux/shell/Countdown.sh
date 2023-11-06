@@ -9,29 +9,34 @@ if [[ $# -eq 0 || "$1" == *"-h"* ]]; then
     exit 0
 fi
 
-secs=$1
+dur=$1
 shift
 cmd="$*"
 
+####
 if [ $# -eq 0 ]; then
-    >&2 echo "no command(s) provided!"
-    exit 1
+    if [ ! -f ~/.config/Countdown/default.sh ]; then
+        >&2 echo "no command(s) and ~/.config/Countdown/default.sh provided!"
+        exit 1
+    else
+        cmd="bash ~/.config/Countdown/default.sh"
+    fi
 fi
 
-if [[ ! "$secs" =~ ^[0-9]+(m|s)$ ]]; then
+if [[ ! "$dur" =~ ^[0-9]+(|m|s)$ ]]; then
     echo "invalid time interval" >&2
     exit 1
-elif [[ "$secs" == *"s" ]]; then
-    secs=${secs%s}
-elif [[ "$secs" == *"m" ]]; then
-    secs=$((${secs%m} * 60))
+elif [[ "$dur" == *"s" ]]; then
+    secs=${dur%s}
+elif [[ "$dur" == *"m" ]]; then
+    secs=$((${dur%m} * 60))
 fi
 
-date +'==> %FT%T%:z'
+date +"==> %FT%T%:z: $dur $cmd"
 
+####
 sp='|/-\'
 j=0
-
 
 for i in $(seq 1 $secs | tac); do
     c=${sp:j++%${#sp}:1}
@@ -40,5 +45,10 @@ for i in $(seq 1 $secs | tac); do
 done
 
 echo -e "\r= $(date +%FT%T:%:z) END\n"
+eval $cmd
 
-$cmd
+exit
+
+cat > ~/.config/Countdown/default.sh <<EOF
+mpv ${_path}/sounds/01.wav
+EOF
