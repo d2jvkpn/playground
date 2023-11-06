@@ -8,6 +8,7 @@ cf=$1
 mkdir -p target
 out=./target/$(basename ${cf%.cpp})
 
-g++ -std=gnu++20 $cf -o $out
+# -std=gnu++20
+g++ $cf -g -o $out
 
 $out
