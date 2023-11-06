@@ -23,6 +23,8 @@ if [ $# -eq 0 ]; then
     fi
 fi
 
+secs=$duration
+
 if [[ ! "$duration" =~ ^[0-9]+(|m|s)$ ]]; then
     echo "invalid time interval" >&2
     exit 1
