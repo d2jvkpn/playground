@@ -9,5 +9,5 @@ spec:
   ports:
   ## nodePort port range: 30000-32767
   ## port: communcation between nodes, targetPort: pod port, nodePort: service node port
-  - { protocol: TCP, port: 5032, targetPort: 5032, nodePort: 30032 }
-  - { protocol: TCP, port: 5042, targetPort: 5042, nodePort: 30042 }
+  - { name: http, protocol: TCP, port: 5032, targetPort: 5032, nodePort: 30032 }
+  - { name: grpc, protocol: TCP, port: 5042, targetPort: 5042, nodePort: 30042 }
