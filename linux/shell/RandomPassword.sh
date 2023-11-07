@@ -3,14 +3,20 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-length=${1:-16}
+if [ $# -gt 0 ]; then
+    >&2 echo 'RandomPassword.sh default parameters:
+    length: 16, special: false, clipboard: false, chars: "0-9a-zA-Z"'
+    exit 2
+fi
+
+length=${length:-16}
 special=${special:-false}
 clipboard=${clipboard:-false}
-chars='0-9a-zA-Z'
+chars=${chars:-"0-9a-zA-Z"}
 
 [ "$special" == "true" ] && chars=$chars'!@#$%^&*()'
 
-echo "==> chars: '$chars', length: $length, clipboard: $clipboard" >&2
+>&2 echo "==> chars: '$chars', length: $length, clipboard: $clipboard"
 
 if [ "$clipboard" == "true" ]; then
     password=$(tr -dc "$chars" < /dev/urandom | fold -w "$length" | head -n 1 || true)
