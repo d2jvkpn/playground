@@ -4,7 +4,7 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 ####
-add() {
+function add() {
     a=$1
     b=$2
 
