@@ -5,9 +5,8 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
 container=$(yq .services.postgres.container_name docker-compose.yaml)
-password=$(cat configs/postgres.secret)
 
-cat > configs/connnect.exp <<EOF
+cat > configs/connect.exp  <<EOF
 #!/usr/bin/expect
 set prompt "#"
 set timeout 60
@@ -29,7 +28,7 @@ interact
 # expect eof
 EOF
 
-echo "==> saved configs/connnect.exp"
-chmod a+x configs/connnect.exp
+echo "==> saved configs/connect.exp"
+chmod a+x configs/connect.exp
 
-./configs/connnect.exp  
+./configs/connect.exp
