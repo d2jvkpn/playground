@@ -37,8 +37,12 @@ printf "$password\r\n$password\r\n" |
 
 echo "==> restart container $container"
 
-docker exec -u postgres -w /var/lib/postgresql/data/ $container \
-  bash -c "cp pg_hba.conf pg_hba.conf.bk && sed -i 's/trust$/scram-sha-256/' pg_hba.conf"
+docker exec -u postgres -w /var/lib/postgresql/data/ $container bash -c \
+  "cp pg_hba.conf pg_hba.conf.bk && sed -i 's/trust$/scram-sha-256/' pg_hba.conf"
+
+docker exec -u postgres -w /var/lib/postgresql/data/ $container bash -c \
+  "cp postgresql.conf postgresql.conf.bk && \
+  echo -e '\nlog_destination = jsonlog\nlogging_collector = on' >> postgresql.conf"
 
 docker-compose down && docker-compose up -d
 

@@ -6,7 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 container=$(yq .services.postgres.container_name docker-compose.yaml)
 
-cat > configs/connect.exp  <<EOF
+cat > configs/connect.exp <<EOF
 #!/usr/bin/expect
 set prompt "#"
 set timeout 60
