@@ -5,12 +5,12 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 export APP_Tag=${1:-dev} PORT=${2:-5432}
 
-container=postgres_$APP_Tag
+container=postgres_${APP_Tag}
 mkdir -p configs data/postgres
 
 if [ ! -s configs/postgres.secret ]; then
-    password=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 32 | head -n1 || true)
-    echo $password > configs/postgres.secret
+    tr -dc 'a-zA-Z0-9' < /dev/urandom |
+      fold -w 32 | head -n1 || true > configs/postgres.secret
 fi
 password=$(cat configs/postgres.secret)
 
@@ -38,19 +38,11 @@ printf "$password\r\n$password\r\n" |
 echo "==> restart container $container"
 
 docker exec -u postgres -w /var/lib/postgresql/data/ $container \
-  cp pg_hba.conf pg_hba.conf.bk
-
-docker exec -u postgres -w /var/lib/postgresql/data/ $container \
-  sed -i 's/trust$/scram-sha-256/' pg_hba.conf
+  bash -c "cp pg_hba.conf pg_hba.conf.bk && sed -i 's/trust$/scram-sha-256/' pg_hba.conf"
 
 docker-compose down && docker-compose up -d
 
 exit
-container=$(yq .services.postgres.container_name docker-compose.yaml)
-
-# docker exec -it $container psql --username postgres --password postgres
-docker exec -it $container psql postgres://postgres@localhost:5432/postgres
-
 ####
 docker cp $container:/var/lib/postgresql/data/postgresql.conf configs/
 docker cp $container:/var/lib/postgresql/data/pg_hba.conf configs/
