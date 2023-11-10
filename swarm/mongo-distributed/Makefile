@@ -20,7 +20,7 @@ tests:
 	bash step04_tests.sh
 
 connect:
-	expect connect.expect
+	expect connect.exp
 
 down:
 	echo no | bash step05_down.sh

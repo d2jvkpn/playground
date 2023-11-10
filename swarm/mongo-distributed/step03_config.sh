@@ -42,7 +42,7 @@ done
 
 docker exec mongo-mongos-1 mongosh /app/bin/mongos.js
 
-awk '{print $1; exit}' configs/secret.txt |
+awk '{print $1; exit}' configs/mongo.secret |
   docker exec -i mongo-mongos-1 mongosh mongodb://root@localhost:27017/admin \
   --eval "db.adminCommand({listShards: 1})"
 

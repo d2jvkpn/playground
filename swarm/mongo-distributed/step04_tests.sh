@@ -4,7 +4,7 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 #### create user hello and database backend
-awk '{print $1; exit}' configs/secret.txt | docker exec -i mongo-mongos-1 mongosh \
+awk '{print $1; exit}' configs/mongo.secret | docker exec -i mongo-mongos-1 mongosh \
   mongodb://root@mongo-mongos-1:27017,mongo-mongos-2:27017,mongo-mongos-3:27017/admin \
   /app/bin/tests.js
 

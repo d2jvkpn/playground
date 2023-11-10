@@ -14,9 +14,9 @@ if [ ! -s configs/mongo_cluster.key ]; then
     chmod 600 configs/mongo_cluster.key
 fi
 
-if [ ! -s configs/secret.txt ]; then
-    tr -dc '0-9a-zA-Z._\-' < /dev/urandom | fold -w 32 |
-      head -n 1 > configs/secret.txt || true
+if [ ! -s configs/mongo.secret ]; then
+    tr -dc '0-9a-zA-Z' < /dev/urandom | fold -w 32 |
+      head -n 1 > configs/mongo.secret || true
 fi
 
 #### configsvr
