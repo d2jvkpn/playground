@@ -1,8 +1,12 @@
 #! /usr/bin/env bash
 set -eu -o pipefail
+_wd=$(pwd)
+_path=$(dirname $0 | xargs -i readlink -f {})
+# set -x
 
-export PORT=3306
-envsubst < $(dirname $0)/deploy.yaml > docker-compose.yaml
+export APP_Tag=${1:-dev} PORT=${2:-3306}
+
+envsubst < ${_wd}/deploy.yaml > docker-compose.yaml
 
 mkdir -p data/mysql
 docker-compose pull
