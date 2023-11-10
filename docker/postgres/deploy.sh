@@ -5,12 +5,21 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 export APP_Tag=${1:-dev} PORT=${2:-5442}
 
-mkdir -p configs/ data/postgres
+container=postgres_$APP_Tag
+mkdir -p configs data/postgres
+
+password=""
+if [ ! -s configs/postgres.secret ]; then
+    password=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 32 | head -n1)
+    echo $password > configs/postgres.secret
+fi
 
 envsubst < ${_path}/deploy.yaml > docker-compose.yaml
 
 docker-compose pull
 docker-compose up -d
+
+docker exec -it -u postgres $container psql -x -c '\password postgres'
 
 exit
 
@@ -19,6 +28,8 @@ docker cp postgres16_${APP_Tag}:/var/lib/postgresql/data/pgdata/postgresql.conf 
 docker cp postgres16_${APP_Tag}:/var/lib/postgresql/data/pgdata/pg_hba.conf configs/
 
 docker exec -it postgres_db psql --username postgres --password postgres
+
+docker exec -it --user postgres postgres_db psql --password postgres
 
 psql --host 127.0.0.1 --port 5442 --username postgres --password postgres
 
