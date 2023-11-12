@@ -4,11 +4,25 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
+exp=${exp:-./configs/mysql.exp}
+
+if [ -f $exp ]; then
+    echo "==> execute existing $exp"
+    $exp
+    exit 0
+fi
+
 container=$(yq .services.mysql.container_name docker-compose.yaml)
+
+if [ "$(docker container inspect -f '{{.State.Running}}' $container)" != "true" ]; then
+    >&2 echo '!!! '"$container isn't running"
+    exit 1
+fi
+
 
 mkdir -p configs/
 
-cat > configs/mysql.exp <<EOF
+cat > $exp <<EOF
 #!/usr/bin/expect
 set prompt "#"
 set timeout 60
@@ -30,7 +44,7 @@ interact
 # expect eof
 EOF
 
-echo "==> saved configs/mysql.exp"
-chmod a+x configs/mysql.exp
+echo "==> saved $exp"
+chmod a+x $exp
 
-./configs/mysql.exp
+$exp
