@@ -8,11 +8,16 @@ export APP_Tag=${1:-dev} PORT=${2:-5432}
 container=postgres_${APP_Tag}
 mkdir -p configs data/postgres
 
-if [ ! -s configs/postgres.secret ]; then
+secret_file=configs/postgres.secret
+if [ ! -s "$secret_file" ]; then
     tr -dc 'a-zA-Z0-9' < /dev/urandom |
-      fold -w 32 | head -n1 || true > configs/postgres.secret
+      fold -w 32 |
+      head -n1 > "$secret_file" || true
+      echo "==> create secret $secret_file"
+else
+    echo "==> using existing secret $secret_file"
 fi
-password=$(cat configs/postgres.secret)
+password=$(cat $secret_file)
 
 envsubst < ${_path}/deploy.yaml > docker-compose.yaml
  
@@ -48,6 +53,8 @@ docker-compose down && docker-compose up -d
 
 exit
 ####
+container=$(yq .services.postgres.container_name docker-compose.yaml)
+
 docker cp $container:/var/lib/postgresql/data/postgresql.conf configs/
 docker cp $container:/var/lib/postgresql/data/pg_hba.conf configs/
 

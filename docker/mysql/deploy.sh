@@ -5,16 +5,49 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
 export APP_Tag=${1:-dev} PORT=${2:-3306}
+container=mysql_${APP_Tag}
 
-envsubst < ${_wd}/deploy.yaml > docker-compose.yaml
+envsubst < ${_path}/deploy.yaml > docker-compose.yaml
 
-mkdir -p data/mysql
-docker-compose pull
+mkdir -p configs data/mysql
+
+if [ ! -s configs/mysql.secret ]; then
+    tr -dc 'a-zA-Z0-9' < /dev/urandom |
+      fold -w 32 |
+      head -n1 > configs/mysql.secret || true
+      echo "==> create secret configs/mysql.secret"
+else
+    echo "==> using existing secret configs/mysql.secret"
+fi
+password=$(cat configs/mysql.secret)
+
+cat > configs/mysql.env <<EOF
+export MYSQL_ROOT_PASSWORD=$password
+EOF
+
+# docker-compose pull
 docker-compose up -d
+
+echo "==> sleep 5"
+sleep 5
+
+docker-compose down
+sed -i '/mysql.env/d' docker-compose.yaml
+docker-compose up -d
+
+rm configs/mysql.env
 
 exit
 
-docker exec -it mysql_db mysql -u root -p
+container=$(yq .services.mysql.container_name docker-compose.yaml)
+docker exec -it $container mysql -u root -p
+
+# sudo apt install -y mysql-client
+
+mysql -h 127.0.0.1 -P ${PORT:-3306} -u root -pmysql \
+  -e "ALTER USER 'root'@'%' IDENTIFIED BY '$password'; FLUSH PRIVILEGES"
+
+mysql -h 127.0.0.1 -P ${PORT:-3306} -u root -p
 
 ```mysql
 --

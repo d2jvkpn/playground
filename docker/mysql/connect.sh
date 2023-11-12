@@ -4,11 +4,11 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
-container=$(yq .services.postgres.container_name docker-compose.yaml)
+container=$(yq .services.mysql.container_name docker-compose.yaml)
 
 mkdir -p configs/
 
-cat > configs/postgres.exp <<EOF
+cat > configs/mysql.exp <<EOF
 #!/usr/bin/expect
 set prompt "#"
 set timeout 60
@@ -17,20 +17,20 @@ set timeout 60
 # set username [lindex \$argv 0];
 # set password [lindex \$argv 1];
 
-set fh [open "./configs/postgres.secret" r]
+set fh [open "./configs/mysql.secret" r]
 set password [read -nonewline \$fh]
 close \$fh
 
-spawn docker exec -it $container psql postgres://postgres@localhost:5432/postgres
+spawn docker exec -it $container mysql -u root -p
 
-expect "Password for user postgres:"
+expect "Enter password:"
 
 send "\$password\r"
 interact
 # expect eof
 EOF
 
-echo "==> saved configs/postgres.exp"
-chmod a+x configs/postgres.exp
+echo "==> saved configs/mysql.exp"
+chmod a+x configs/mysql.exp
 
-./configs/postgres.exp
+./configs/mysql.exp
