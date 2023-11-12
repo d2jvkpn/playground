@@ -10,7 +10,7 @@ services:
     ports: ["127.0.0.1:${PORT}:3306"]
     volumes:
     - ./data/mysql:/var/lib/mysql
-    # - ./data/mysql.cnf:/etc/mysql/my.cnf
+    # - ./configs/mysql.cnf:/etc/mysql/my.cnf
     environment:
     - TZ=Asia/Shanghai
     - LANG=C.UTF-8
