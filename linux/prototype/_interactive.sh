@@ -26,4 +26,5 @@ echo -e "\n"
 
 echo "----------------"
 
-echo "Your answers: 1. $name, 2. $ans, 3. $language."
+
+printf 'Your answers: 1. "%s", 2. "%s", 3. "%s".\n' $name $ans $language
