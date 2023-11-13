@@ -3,7 +3,7 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-export TAG=3.6.0 GroupID=$(id -g) UserID=$UID
+export TAG=3.6.0 UserID=$UID GroupID=$(id -g)
 envsubst > docker-compose.yaml < deploy_cluster.yaml
 
 docker-compose up -d
