@@ -40,11 +40,10 @@ services:
     # - data:/var/lib/postgresql/data
     - ./data/postgres:/var/lib/postgresql/data
     # - ./configs/postgresql.conf:/var/lib/postgresql/data/pgdata/postgresql.conf
+    # - ./configs/pg_hba.conf:/var/lib/postgresql/data/pgdata/pg_hba.conf
 
 # volums:
-#   data:
-#     name: postgres_storage
-#     driver: local
+#   data: { name: postgres_storage, driver: local }
 
 networks:
   net: { name: "postgres_${APP_Tag}", driver: "bridge", external: false }'''
