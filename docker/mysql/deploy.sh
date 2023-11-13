@@ -5,19 +5,23 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
-####
 export APP_Tag=${1:-dev} PORT=${2:-3306}
+
+####
 container=mysql_${APP_Tag}
 
-envsubst < ${_path}/deploy.yaml > docker-compose.yaml
+found=$(docker ps -a | awk -v c=$container 'NR>1 && $NF==c{print 1; exit}')
+[ ! -z $found ] && { >&2 echo '!!! '"container $container exists" ; exit 1; }
 
+envsubst < ${_path}/deploy.yaml > docker-compose.yaml
 mkdir -p configs data/mysql
 
 if [ ! -s configs/mysql.secret ]; then
+    echo "==> create secret configs/mysql.secret"
+
     tr -dc 'a-zA-Z0-9' < /dev/urandom |
       fold -w 32 |
       head -n1 > configs/mysql.secret || true
-      echo "==> create secret configs/mysql.secret"
 else
     echo "==> using existing secret configs/mysql.secret"
 fi
@@ -39,7 +43,7 @@ while ! printf "$password\n" | docker exec -i $container \
   mysql -u root -p -e "select 'Hello, world'" &> /dev/null; do
     sleep 1; echo -n "."; n=$((n+1))
     [ $((n%60)) -eq 0 ] && echo ""
-    [ $n -ge 180 ] && { abort="true"; break; }
+    [ $n -ge 300 ] && { abort="true"; break; }
 done
 echo -e "\n$n second(s) elapsed\n"
 [ ! -z "$abort" ] && { >&2 echo '!!! abort'; exit 1; }

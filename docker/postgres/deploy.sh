@@ -8,6 +8,11 @@ export APP_Tag=${1:-dev} PORT=${2:-5432}
 
 ####
 container=postgres_${APP_Tag}
+
+found=$(docker ps -a | awk -v c=$container 'NR>1 && $NF==c{print 1; exit}')
+[ ! -z $found ] && { >&2 echo '!!! '"container $container exists" ; exit 1; }
+
+envsubst < ${_path}/deploy.yaml > docker-compose.yaml
 mkdir -p configs data/postgres
 
 secret_file=configs/postgres.secret
@@ -20,8 +25,6 @@ else
     echo "==> using existing secret $secret_file"
 fi
 password=$(cat $secret_file)
-
-envsubst < ${_path}/deploy.yaml > docker-compose.yaml
  
 # docker-compose pull
 echo "==> starting container $container"
@@ -34,7 +37,7 @@ echo "==> container $container: the database is initializing"
 while ! docker exec $container pg_isready -U postres -d postres &> /dev/null; do
     sleep 1; echo -n "."; n=$((n+1))
     [ $((n%60)) -eq 0 ] && echo ""
-    [ $n -ge 180 ] && { abort="true"; break; }
+    [ $n -ge 300 ] && { abort="true"; break; }
 done
 echo -e "\n$n second(s) elapsed\n"
 [ ! -z "$abort" ] && { >&2 echo '!!! abort'; exit 1; }
