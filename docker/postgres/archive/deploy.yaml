@@ -33,4 +33,4 @@ services:
 #     driver: local
 
 networks:
-  net: { name: "postgres", driver: "bridge", external: false }
+  net: { name: "postgres_${APP_Tag}", driver: "bridge", external: false }

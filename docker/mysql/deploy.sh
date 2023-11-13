@@ -13,7 +13,36 @@ container=mysql_${APP_Tag}
 found=$(docker ps -a | awk -v c=$container 'NR>1 && $NF==c{print 1; exit}')
 [ ! -z $found ] && { >&2 echo '!!! '"container $container exists" ; exit 1; }
 
-envsubst < ${_path}/deploy.yaml > docker-compose.yaml
+# envsubst < ${_path}/deploy.yaml > docker-compose.yaml
+template='''version: "3"
+
+services:
+  mysql:
+    image: mysql:8-debian
+    container_name: mysql_${APP_Tag}
+    restart: always
+    networks: ["net"]
+    # network_mode: bridge
+    ports: ["127.0.0.1:${PORT}:3306"]
+    volumes:
+    - ./data/mysql:/var/lib/mysql
+    # - ./configs/mysql.cnf:/etc/mysql/my.cnf
+    environment:
+    - TZ=Asia/Shanghai
+    - LANG=C.UTF-8
+    # - MYSQL_ROOT_PASSWORD=mysql
+    env_file: [./configs/mysql.env]
+    # -- SHOW VARIABLES LIKE 'character%';
+    # make sure character_set_client, character_set_connection, character_set_results is utf8mb4 rather than latin1
+    command:
+    - "--character-set-server=utf8mb4"
+    - "--collation-server=utf8mb4_general_ci"
+    - "--skip-character-set-client-handshake"
+
+networks:
+  net: { name: "mysql_${APP_Tag}", driver: "bridge", external: false }'''
+
+echo "$template" | envsubst > docker-compose.yaml
 mkdir -p configs data/mysql
 
 if [ ! -s configs/mysql.secret ]; then

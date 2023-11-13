@@ -47,7 +47,7 @@ services:
 #     driver: local
 
 networks:
-  net: { name: "postgres", driver: "bridge", external: false }'''
+  net: { name: "postgres_${APP_Tag}", driver: "bridge", external: false }'''
 
 # envsubst < ${_path}/deploy.yaml > docker-compose.yaml
 echo "$template" | envsubst > docker-compose.yaml
