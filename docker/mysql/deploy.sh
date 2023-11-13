@@ -5,6 +5,7 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
+####
 export APP_Tag=${1:-dev} PORT=${2:-3306}
 container=mysql_${APP_Tag}
 
@@ -29,6 +30,7 @@ EOF
 # docker-compose pull
 docker-compose up -d
 
+####
 n=0; abort=""
 echo "==> container $container: the database is initializing"
 
@@ -42,11 +44,13 @@ done
 echo -e "\n$n second(s) elapsed\n"
 [ ! -z "$abort" ] && { >&2 echo '!!! abort'; exit 1; }
 
-docker-compose down
+####
+echo "==> restart container $container"
 sed -i '/mysql.env/d' docker-compose.yaml
-docker-compose up -d
-
 rm configs/mysql.env
+
+docker-compose down
+docker-compose up -d
 
 exit
 

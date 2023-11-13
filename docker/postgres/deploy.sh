@@ -1,10 +1,12 @@
 #! /usr/bin/env bash
 set -eu -o pipefail
+
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 export APP_Tag=${1:-dev} PORT=${2:-5432}
 
+####
 container=postgres_${APP_Tag}
 mkdir -p configs data/postgres
 
@@ -25,6 +27,7 @@ envsubst < ${_path}/deploy.yaml > docker-compose.yaml
 echo "==> starting container $container"
 docker-compose up -d
 
+####
 n=0; abort=""
 echo "==> container $container: the database is initializing"
 
@@ -36,6 +39,7 @@ done
 echo -e "\n$n second(s) elapsed\n"
 [ ! -z "$abort" ] && { >&2 echo '!!! abort'; exit 1; }
 
+####
 echo "==> change password of postgres"
 
 # docker exec -it -u postgres -w /var/lib/postgresql/data/ $container bash
@@ -43,6 +47,7 @@ echo "==> change password of postgres"
 printf "$password\r\n$password\r\n" |
   docker exec -i -u postgres $container psql -x -c '\password postgres'
 
+####
 echo "==> restart container $container"
 
 docker exec -u postgres -w /var/lib/postgresql/data/ $container bash -c \
@@ -52,7 +57,8 @@ docker exec -u postgres -w /var/lib/postgresql/data/ $container bash -c \
   "cp postgresql.conf postgresql.conf.bk && \
   echo -e '\nlog_destination = jsonlog\nlogging_collector = on' >> postgresql.conf"
 
-docker-compose down && docker-compose up -d
+docker-compose down
+docker-compose up -d
 
 exit
 ####
