@@ -7,7 +7,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 kafka_version=${kafka_version:-3.6.0}
 template=${template:-kafka-node%02d}
 port_zero=${port_zero:-29090}
-data_dir=/app/data
+data_dir=${data_dir:-/app/data}
 num_partitions=${num_partitions:-3}
 
 num=$1
