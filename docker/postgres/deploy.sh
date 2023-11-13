@@ -25,13 +25,16 @@ envsubst < ${_path}/deploy.yaml > docker-compose.yaml
 echo "==> starting container $container"
 docker-compose up -d
 
-n=0
-while ! docker exec $container pg_isready -U postres -d postres; do
-    echo "~~~ container $container isn't ready"
-    sleep 1 && echo -n .
-    n=$((n+1))
-    [ $n -ge 30 ] && { '!!! abort'; exit 1; }
+n=0; abort=""
+echo "==> container $container: the database is initializing"
+
+while ! docker exec $container pg_isready -U postres -d postres &> /dev/null; do
+    sleep 1; echo -n "."; n=$((n+1))
+    [ $((n%60)) -eq 0 ] && echo ""
+    [ $n -ge 180 ] && { abort="true"; break; }
 done
+echo -e "\n$n second(s) elapsed\n"
+[ ! -z "$abort" ] && { >&2 echo '!!! abort'; exit 1; }
 
 echo "==> change password of postgres"
 

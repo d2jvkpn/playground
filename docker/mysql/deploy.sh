@@ -1,5 +1,6 @@
 #! /usr/bin/env bash
 set -eu -o pipefail
+
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
@@ -28,8 +29,18 @@ EOF
 # docker-compose pull
 docker-compose up -d
 
-echo "==> sleep 5"
-sleep 5
+n=0; abort=""
+echo "==> container $container: the database is initializing"
+
+# while [ $(docker logs $container 2>&1 | grep -c "InnoDB initialization has ended.") -eq 0 ]; do
+while ! printf "$password\n" | docker exec -i $container \
+  mysql -u root -p -e "select 'Hello, world'" &> /dev/null; do
+    sleep 1; echo -n "."; n=$((n+1))
+    [ $((n%60)) -eq 0 ] && echo ""
+    [ $n -ge 180 ] && { abort="true"; break; }
+done
+echo -e "\n$n second(s) elapsed\n"
+[ ! -z "$abort" ] && { >&2 echo '!!! abort'; exit 1; }
 
 docker-compose down
 sed -i '/mysql.env/d' docker-compose.yaml
