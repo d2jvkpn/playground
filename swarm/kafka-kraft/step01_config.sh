@@ -62,7 +62,7 @@ for node_id in $(seq 1 $num); do
       -e "/^node.id=/s#=.*#=$node_id#" \
       -e "/^advertised.listeners=/s#=.*#=$advertised_listeners#" \
       -e "/^controller.quorum.voters=/s#=.*#=$controller_quorum_voters#" \
-      -e "/^num.partitions=/s#=.*#=$num_partitions#" > data/$node/server.properties
+      -e "/^num.partitions=/s#=.*#=$num_partitions#" > data/$node/configs/server.properties
 
 cat > data/$node/configs/kafka.yaml <<EOF
 $(cat data/kafka.yaml)

@@ -25,10 +25,21 @@ kafka-topics.sh --bootstrap-server $addrs --create --topic $topic
 
 kafka-topics.sh --bootstrap-server $addrs --describe --topic $topic
 
-kafka-console-producer.sh --broker-list $addrs --topic $topic
+# kafka-console-producer.sh --broker-list $addrs --topic $topic
 
-kafka-console-consumer.sh --bootstrap-server $addrs --topic $topic --from-beginning
+# sudo apt -y install kafkacat
 
-kafka-console-consumer.sh --bootstrap-server $addrs --topic $topic --partition 0 --offset 0
+kafkacat -b $addrs -t $topic -D/ -P <<EOF
+this is a string message
+with a line break/this is
+another message with two
+line breaks!
+EOF
+
+kafka-console-consumer.sh --bootstrap-server $addrs --topic $topic \
+  --from-beginning --max-messages 7
+
+# kafka-console-consumer.sh --bootstrap-server $addrs --topic $topic \
+#   --partition 0 --offset 0 --max-messages 7
 
 kafka-topics.sh --bootstrap-server $addrs --delete --topic $topic
