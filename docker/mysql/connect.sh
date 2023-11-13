@@ -6,7 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 exp=${exp:-./configs/mysql.exp}
 
-if [ -f $exp ]; then
+if [ -s $exp ]; then
     echo "==> execute existing $exp"
     $exp
     exit 0
