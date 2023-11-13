@@ -7,7 +7,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 kafka_version=${kafka_version:-3.6.0}
 template=${template:-kafka-node%02d}
 port_zero=${port_zero:-29090}
-data_dir=/home/d2jvkpn/kafka/data
+data_dir=/app/data
 num_partitions=${num_partitions:-3}
 
 num=$1
@@ -55,7 +55,7 @@ for node_id in $(seq 1 $num); do
     # advertised.listeners=PLAINTEXT://localhost:29092
     advertised_listeners=PLAINTEXT://localhost:$(($port_zero + $node_id))
 
-    mkdir -p data/$node/{data,logs}
+    mkdir -p data/$node/{configs,data,logs}
 
     cat data/server.properties | sed \
       -e "/^log.dirs/s#=/.*#=$data_dir#" \
@@ -64,7 +64,7 @@ for node_id in $(seq 1 $num); do
       -e "/^controller.quorum.voters=/s#=.*#=$controller_quorum_voters#" \
       -e "/^num.partitions=/s#=.*#=$num_partitions#" > data/$node/server.properties
 
-cat > data/$node/kafka.yaml <<EOF
+cat > data/$node/configs/kafka.yaml <<EOF
 $(cat data/kafka.yaml)
 
 node_id: $node_id
@@ -72,5 +72,5 @@ advertised_listeners: $advertised_listeners
 controller_quorum_voters: $controller_quorum_voters
 EOF
 
-    echo "==> node: $node, config: data/$node/kafka.yaml"
+    echo "==> node: $node, config: data/$node/configs/{kafka.yaml,server.properties}"
 done
