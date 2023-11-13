@@ -13,7 +13,4 @@ services:
     - ./data/kafka-node01:/app
 
 networks:
-  net:
-    name: kafka-kraft
-    driver: bridge
-    external: false
+  net: { name: kafka-kraft, driver: bridge, external: false }
