@@ -12,7 +12,45 @@ container=postgres_${APP_Tag}
 found=$(docker ps -a | awk -v c=$container 'NR>1 && $NF==c{print 1; exit}')
 [ ! -z $found ] && { >&2 echo '!!! '"container $container exists" ; exit 1; }
 
-envsubst < ${_path}/deploy.yaml > docker-compose.yaml
+template='''version: "3"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres_${APP_Tag}
+    restart: always
+    # network_mode: bridge
+    networks: ["net"]
+    ports: ["127.0.0.1:${PORT}:5432"]
+    healthcheck:
+      test: pg_isready --username postgres -d postgres
+      start_period: 10s
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    environment:
+    - TZ=Asia/Shanghai
+    - PGTZ=Asia/Shanghai
+    - POSTGRES_USER=postgres
+    - POSTGRES_DB=postgres
+    - POSTGRES_PASSWORD=postgres
+    # - POSTGRES_PASSWORD_FILE=/run/secrets/postgres-passwd
+    - PGDATA=/var/lib/postgresql/data
+    volumes:
+    # - data:/var/lib/postgresql/data
+    - ./data/postgres:/var/lib/postgresql/data
+    # - ./configs/postgresql.conf:/var/lib/postgresql/data/pgdata/postgresql.conf
+
+# volums:
+#   data:
+#     name: postgres_storage
+#     driver: local
+
+networks:
+  net: { name: "postgres", driver: "bridge", external: false }'''
+
+# envsubst < ${_path}/deploy.yaml > docker-compose.yaml
+echo "$template" | envsubst > docker-compose.yaml
 mkdir -p configs data/postgres
 
 secret_file=configs/postgres.secret
