@@ -2,8 +2,11 @@ FROM alpine:3
 
 ARG BUILD_Region=${BUILD_Region}
 ARG SCALA_Version=${SCALA_Version}
+ARG KAFKA_Version=${KAFKA_Version}
+ARG KAFKA_Tag=${SCALA_Version}-${KAFKA_Version}
+
 ENV KAFKA_Version=${KAFKA_Version}
-ENV KAFKA_Tag=${SCALA_Version}-${KAFKA_Version}
+ENV KAFKA_Tag=${KAFKA_Tag}
 
 COPY bin /opt/bin
 RUN chmod a+x /opt/bin/*.sh
