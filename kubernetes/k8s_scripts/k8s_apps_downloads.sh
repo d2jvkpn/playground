@@ -58,9 +58,7 @@ metrics_images=$(
 )
 
 #### 4. yq
-# wget -O k8s_apps/yq_linux_amd64.tar.gz \
-#   https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64.tar.gz
-
+# https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64.tar.gz
 wget -O k8s_apps/yq https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64
 
 #### 5. yaml info
