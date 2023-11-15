@@ -12,7 +12,7 @@ function start {
     export AUTOSSH_LOGFILE=${_path}/logs/socks5_proxy.$port.$(date +%Y-%m).log
     export AUTOSSH_PIDFILE=${_path}/data/socks5_proxy.$port.pid
 
-    [ -f $AUTOSSH_PIDFILE ] && { >&2 echo "$AUTOSSH_PIDFILE exists"; return; }
+    # [ -f $AUTOSSH_PIDFILE ] && { >&2 echo "$AUTOSSH_PIDFILE exists"; return; }
 
     mkdir -p ${_path}/{logs,data}
 

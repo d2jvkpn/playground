@@ -12,7 +12,7 @@ source ~/.bashrc
 export AUTOSSH_LOGFILE=${_path}/logs/reverse_proxy.$name.$(date +%Y-%m).log
 export AUTOSSH_PIDFILE=${_path}/data/reverse_proxy.$name.pid
 
-[ -f $AUTOSSH_PIDFILE ] && { >&2 echo "$AUTOSSH_PIDFILE exists"; exit 1; }
+# [ -f $AUTOSSH_PIDFILE ] && { >&2 echo "$AUTOSSH_PIDFILE exists"; exit 1; }
 
 mkdir -p ${_path}/{logs,data}
 
