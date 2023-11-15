@@ -14,4 +14,4 @@ echo "$new_name"
 exit 0
 
 sum=$(md5sum "$file_name" | awk '{print $1}')
-echo $sum.$new_name.$(date +%s)
+echo $new_name.$(date +%s).$sum

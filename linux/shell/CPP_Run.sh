@@ -12,3 +12,7 @@ out=./target/$(basename ${cf%.cpp})
 g++ $cf -g -o $out
 
 $out
+
+exit 0
+
+gdb $out
