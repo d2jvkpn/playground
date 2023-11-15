@@ -43,7 +43,7 @@ ingress_images=$(
 )
 
 wget -O k8s_apps/kube-flannel.yaml \
-  https://raw.githubusercontent.com/flannel-io/flannel/v$flannel_version/Documentation/kube-flannel.yml
+  https://raw.githubusercontent.com/flannel-io/flannel/v${flannel_version}/Documentation/kube-flannel.yml
 
 flannel_images=$(awk '$1=="image:"{print $2}' k8s_apps/kube-flannel.yaml | sort -u)
 
@@ -58,8 +58,10 @@ metrics_images=$(
 )
 
 #### 4. yq
-wget -O k8s_apps/yq_linux_amd64.tar.gz \
-  https://github.com/mikefarah/yq/releases/download/v$yq_version/yq_linux_amd64.tar.gz
+# wget -O k8s_apps/yq_linux_amd64.tar.gz \
+#   https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64.tar.gz
+
+wget -O k8s_apps/yq https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64
 
 #### 5. yaml info
 cat > k8s_apps/k8s.yaml << EOF

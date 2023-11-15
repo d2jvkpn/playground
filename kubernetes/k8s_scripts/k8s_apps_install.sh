@@ -5,10 +5,13 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 #### 1. yq
 if [ ! -f /usr/bin/yq ]; then
-    mkdir -p k8s_apps/yq_dir
-    tar -xf k8s_apps/yq_linux_amd64.tar.gz -C k8s_apps/yq_dir
-    mv k8s_apps/yq_dir/yq_linux_amd64 /usr/bin/yq
-    rm -r k8s_apps/yq_dir
+    # mkdir -p k8s_apps/yq_dir
+    # tar -xf k8s_apps/yq_linux_amd64.tar.gz -C k8s_apps/yq_dir
+    # mv k8s_apps/yq_dir/yq_linux_amd64 /usr/bin/yq
+    # rm -r k8s_apps/yq_dir
+
+    chmod a+x k8s_apps/yq
+    mv k8s_apps/yq /usr/bin/yq
 fi
 
 #### 2. k8s images
