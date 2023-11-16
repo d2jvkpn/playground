@@ -74,7 +74,7 @@ while ! printf "$password\n" | docker exec -i $container \
     [ $((n%60)) -eq 0 ] && echo ""
     [ $n -ge 300 ] && { abort="true"; break; }
 done
-echo -e "\n$n second(s) elapsed\n"
+echo -e "\n==> $((n/60))m$((n%60))s elapsed\n"
 [ ! -z "$abort" ] && { >&2 echo '!!! abort'; exit 1; }
 
 ####
