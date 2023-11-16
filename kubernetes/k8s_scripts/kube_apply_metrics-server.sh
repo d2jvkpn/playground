@@ -1,7 +1,9 @@
 #! /usr/bin/env bash
 set -eu -o pipefail
+
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
+# set -x
 
 ## https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/
 ## https://www.kubecost.com/kubernetes-autoscaling/kubernetes-hpa/

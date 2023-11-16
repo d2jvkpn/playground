@@ -1,7 +1,9 @@
 #! /usr/bin/env bash
 set -eu -o pipefail
+
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
+# set -x
 
 # ingress_node=k8s-ingress01
 ingress_node=$1

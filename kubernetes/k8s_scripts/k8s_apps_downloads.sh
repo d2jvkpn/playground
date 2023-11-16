@@ -1,5 +1,6 @@
 #! /usr/bin/env bash
 set -eu -o pipefail
+
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
@@ -7,7 +8,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 yq_version=${yq_version:-4.35.2}
 flannel_version=${flannel_version:-0.22.3}
 
-mkdir -p k8s_apps/kube_images k8s_apps/ingress-nginx_images
+mkdir -p k8s_apps/images
 
 function download_images() {
     yf=$1; save_dir=$2

@@ -1,7 +1,9 @@
 #! /usr/bin/env bash
 set -eu -o pipefail
+
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
+# set -x
 
 endpoints=${1:-127.0.0.1:2379}
 

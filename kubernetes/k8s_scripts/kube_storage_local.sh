@@ -1,7 +1,9 @@
 #! /usr/bin/env bash
 set -eu -o pipefail
+
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
+# set -x
 
 name=vol01; cap=10Gi
 mkdir -p k8s_apps/data
