@@ -54,7 +54,7 @@ psql --username postgres \
   -c "CREATE USER $replicator_user REPLICATION LOGIN ENCRYPTED PASSWORD '$replicator_password'";
 # select rolpassword from pg_authid where rolname = 'replicator';
 
-pg_ctl -D $data_dir stop
+pg_ctl -D $data_dir stop -m fast
 # pg_ctl -D $data_dir start
 # pg_ctl -D $data_dir restart
 postgres -D $data_dir
