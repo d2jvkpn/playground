@@ -11,6 +11,8 @@ build_remote:
 ipython:
 	mkdir -p data
 
-	docker run --rm -it -v $(shell pwd)/data:/app/data \
+	docker run --rm -it \
+	  -v $(shell pwd)/data:/app/data \
+	  --user $(shell id -u):$(shell id -g) \
 	  --name ipython_$(shell tr -dc '0-9a-zA-Z' < /dev/urandom | fold -w 8 | head -n1) \
 	  registry.cn-shanghai.aliyuncs.com/d2jvkpn/ipython:dev ipython
