@@ -62,8 +62,6 @@ fi
 ## input: images/*.png, sparse
 ## output: output/1efa0583-2/{cameras.json,cfg_args,input.ply,point_cloud}
 
-rm -rf output
-
 {
     date +'==> %FT%T%:z train.py start'
     conda run -n gaussian_splatting python3 /opt/gaussian-splatting/train.py -s ./ --eval
@@ -94,5 +92,5 @@ result_dir=$(ls -d output/*/)
 
 exit
 #### 6. zip results
-zip -r $(basename $PWD)_output_$(date +'%F-%s').zip output
+zip -r $(basename $PWD)_output.$(date +'%s-%F').zip output
 rm -r output
