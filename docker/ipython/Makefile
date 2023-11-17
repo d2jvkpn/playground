@@ -1,9 +1,9 @@
-build:
-	bash build.sh
+build_local:
+	bash docker_build.sh
 
 build_cn:
-	REGION=cn bash build.sh
+	REGION=cn bash docker_build.sh
 
-docker_build:
+build_remote:
 	ssh -F configs/ssh.conf build_host \
-	  "cd docker_build/deploy/productions/ipython && git pull && bash build.sh"
+	  "cd docker_build/playground/docker/ipython && git pull && bash docker_build.sh"
