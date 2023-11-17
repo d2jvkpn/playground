@@ -18,8 +18,8 @@ mkdir -p logs configs
 [ ! -f ansible.cfg ] && \
 cat > ansible.cfg <<EOF
 [defaults]
-inventory = ./configs/hosts.ini
-private_key_file = ~/.ssh/kvm.pem
+inventory = ./configs/kvm_k8s.ini
+private_key_file = ~/.ssh/kvm_k8s.pem
 log_path = ./logs/ansible.log
 # roles_path = /path/to/roles
 EOF
@@ -33,7 +33,7 @@ virsh net-dumpxml $KVM_Network |
 
 text=$(awk '{print $2, "ansible_host="$1, "ansible_port=22 ansible_user=ubuntu"}' configs/hosts.txt)
 
-cat > configs/hosts.ini <<EOF
+cat > configs/kvm_k8s.ini <<EOF
 $text
 
 [k8s_all]

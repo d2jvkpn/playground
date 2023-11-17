@@ -48,7 +48,7 @@ bash src/ubuntu_config.sh
 target=ubuntu; username=ubuntu
 
 if [ ! -f ~/.ssh/kvm.pem ]; then
-    ssh-keygen -t rsa -m PEM -b 2048 -P "" -f ~/.ssh/kvm.pem -C 'host_machine'
+    ssh-keygen -t rsa -m PEM -b 2048 -P "" -f ~/.ssh/kvm.pem -C $HOMENAME
     chmod 0400 ~/.ssh/kvm.pem
 fi
 
