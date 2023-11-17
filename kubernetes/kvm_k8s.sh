@@ -27,11 +27,11 @@ EOF
 virsh net-dumpxml $KVM_Network |
   awk "/<host.*name='k8s-/{print}" |
   sed "s#^.*name='##; s#ip='##; s#/>##; s#'##g" |
-  awk '{print $2, $1}' > configs/hosts.txt
+  awk '{print $2, $1}' > configs/kvm_k8s.txt
 
-[ -s configs/hosts.txt ] || { >&2 echo "k8s-xx not found!"; exit 1; }
+[ -s configs/kvm_k8s.txt ] || { >&2 echo "k8s-xx not found!"; exit 1; }
 
-text=$(awk '{print $2, "ansible_host="$1, "ansible_port=22 ansible_user=ubuntu"}' configs/hosts.txt)
+text=$(awk '{print $2, "ansible_host="$1, "ansible_port=22 ansible_user=ubuntu"}' configs/kvm_k8s.txt)
 
 cat > configs/kvm_k8s.ini <<EOF
 $text
@@ -46,3 +46,5 @@ $(echo "$text" | awk '/^k8s-cp/{print $1}')
 $(echo "$text" | awk '/^k8s-node/{print $1}')
 $(echo "$text" | awk '/^k8s-ingress/{print $1}')
 EOF
+
+rm configs/kvm_k8s.txt
