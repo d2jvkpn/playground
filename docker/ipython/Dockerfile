@@ -7,7 +7,10 @@ ENV TZ=${TZ}
 COPY bin /opt/bin
 RUN chmod a+x /opt/bin/entrypoint.sh
 
-RUN script=/opt/bin/${REGION}.debian.sh; if [ -s "$script" ]; then bash $script; fi
+RUN if [ "$BUILD_Region" = "cn" ]; then \
+    echo "==> BUILD_Region: $BUILD_Region"; \
+    bash /opt/bin/${REGION}.debian.sh; \
+  fi
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -33,7 +36,10 @@ USER d2jvkpn
 ENV PATH=/home/d2jvkpn/.local/bin:$PATH
 WORKDIR /home/d2jvkpn
 
-RUN script=/opt/bin/${REGION}.pip.sh; if [ -s "$script" ]; then bash $script; fi
+RUN if [ "$BUILD_Region" = "cn" ]; then \
+    echo "==> BUILD_Region: $BUILD_Region"; \
+    bash /opt/bin/${REGION}.pip.sh; \
+  fi
 
 RUN pip3 install --upgrade -r /opt/bin/pip_requirements.txt && \
   rm -rf .cache/pip
