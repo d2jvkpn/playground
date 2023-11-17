@@ -4,12 +4,12 @@ ARG TZ=${TZ:-Asia/Shanghai}
 ARG REGION=${REGION}
 ENV TZ=${TZ}
 
-COPY bin /app/bin
-RUN chmod a+x /app/bin/*.sh
+COPY bin /opt/bin
+RUN chmod a+x /opt/bin/entrypoint.sh
 
 RUN if [ "$BUILD_Region" = "cn" ]; then \
     echo "==> BUILD_Region: $BUILD_Region"; \
-    bash /app/bin/${REGION}.debian.sh; \
+    bash /opt/bin/${REGION}.debian.sh; \
   fi
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -27,18 +27,22 @@ RUN apt update && \
 
 ENV DEBIAN_FRONTEND=dialog
 
+RUN useradd -u 1000 -m -s /bin/bash d2jvkpn && \
+  usermod -aG sudo d2jvkpn && \
+  mkdir -p /etc/sudoers.d && \
+  echo "d2jvkpn ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/d2jvkpn
+
+USER d2jvkpn
+ENV PATH=/home/d2jvkpn/.local/bin:$PATH
+WORKDIR /home/d2jvkpn
+
 RUN if [ "$BUILD_Region" = "cn" ]; then \
     echo "==> BUILD_Region: $BUILD_Region"; \
-    bash /app/bin/${REGION}.pip.sh; \
+    bash /opt/bin/${REGION}.pip.sh; \
   fi
 
-WORKDIR /app
-
-RUN mkdir -p venv && \
-  python3 -m venv venv/ && \
-  pip3 install --upgrade -r /app/bin/pip.txt && \
-  rm -rf ~/.cache/pip
+RUN pip3 install --upgrade -r /opt/bin/pip_requirements.txt && \
+  rm -rf .cache/pip
 
 # EXPOSE 8080
-# CMD ["/app/bin/entrypoint.sh"]
-ENTRYPOINT ["/app/bin/entrypoint.sh"]
+CMD ["/opt/bin/entrypoint.sh"]

@@ -1,9 +1,7 @@
 pip
 ipython
-
 pyyaml
 requests
-
 numpy
 scipy
 pandas

@@ -20,6 +20,4 @@ docker build --no-cache -f ${_path}/Dockerfile \
 docker push $image
 # docker images $image_name
 
-for img in $(docker images --filter "dangling=true" --quiet $image_name); do
-    docker rmi $img || true
-done &> /dev/null
+docker images --filter "dangling=true" --quiet $image_name | xargs -i docker rmi {} || true
