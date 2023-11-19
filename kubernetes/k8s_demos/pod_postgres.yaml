@@ -24,7 +24,7 @@ spec:
   # - { name: data, persistentVolumeClaim: { claimName: k8s-cp02 } }
   - { name: data, hostPath: { path: "/data/local/postgres", type: "DirectoryOrCreate" } }
   containers:
-  - image: postgres:15-alpine
+  - image: postgres:16-alpine
     imagePullPolicy: Always
     name: postgres
     securityContext: { privileged: true, allowPrivilegeEscalation: true }
