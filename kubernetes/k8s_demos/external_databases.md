@@ -14,7 +14,7 @@ version: '3'
 
 services:
   postgres:
-    image: postgres:15-alpine
+    image: postgres:16-alpine
     container_name: postgres_dev
     restart: always
     # network_mode: bridge
@@ -28,16 +28,15 @@ services:
     - POSTGRES_DB=postgres
     - POSTGRES_PASSWORD=postgres
     # - POSTGRES_PASSWORD_FILE=/run/secrets/postgres-passwd
-    - PGDATA=/var/lib/postgresql/data/pgdata
+    - PGDATA=/var/lib/postgresql/data
     volumes:
     - ./data/postgres:/var/lib/postgresql/data
     # - postgres:/var/lib/postgresql/data
-    # - ./data/postgresql.conf:/var/lib/postgresql/data/pgdata/postgresql.conf
+    # - ./configs/postgresql.conf:/var/lib/postgresql/data/pgdata/postgresql.conf
+    # - ./configs/pg_hba.conf:/var/lib/postgresql/data/pgdata/pg_hba.conf
 
-#volums:
-#   postgres:
-#     name: postgres_storage
-#     driver: local
+# volums:
+#   postgres: { name: postgres_storage, driver: local }
 
 networks:
   net: { name: "postgres", driver: "bridge", external: false }
