@@ -12,7 +12,6 @@ SD_Version=${1:-1.6.0}
 ls http_data/data_clip.json http_data/data_img2img.json Dockerfile entrypoint.sh > /dev/null
 
 docker pull ubuntu:22.04
-
 docker build --no-cache --build-arg=SD_Version="$SD_Version" -t sd-webui:p1-$SD_Version  ./
 # docker history sd-webui:p1-$SD_Version
 
@@ -22,13 +21,13 @@ addr=http://127.0.0.1:$port
 
 mkdir -p data/models data/extentions/sd-webui-controlnet data/cache data/interrogate
 
-#  -v $PWD/data/models:/home/hello/sd-webui/models \
-#  -v $PWD/data/extentions/sd-webui-controlnet:/home/hello/sd-webui/extensions/sd-webui-controlnet/annotator/downloads \
-#  -v $PWD/data/cache:/home/hello/.cache \
-#  -v $PWD/data/interrogate:/home/hello/sd-webui/interrogate \
+#  -v $PWD/data/models:/app/sd-webui/models \
+#  -v $PWD/data/extentions/sd-webui-controlnet:/app/sd-webui/extensions/sd-webui-controlnet/annotator/downloads \
+#  -v $PWD/data/interrogate:/app/sd-webui/interrogate \
+#  -v $PWD/data/cache:/root/.cache \
 
-docker run -d --name sd-webui --gpus=all -p 127.0.0.1:$port:7860 \
-  sd-webui:p1-$SD_Version /entrypoint.sh --xformers --listen --api --port=7860
+docker run -d --name sd-webui --gpus=all -p 127.0.0.1:$port:7860 sd-webui:p1-$SD_Version \
+  /app/bin/entrypoint.sh --xformers --listen --api --port=7860
 
 echo "==> Waiting SD service $addr to launch on ..."
 while ! curl --output /dev/null --silent --head --fail $addr; do
@@ -51,10 +50,10 @@ curl $addr/sdapi/v1/interrogate --silent -H "Content-Type: application/json" \
 
 #### 4. copy models from container
 # mkdir -p data
-# docker copy sd-webui:/home/hello/sd-webui/models ./data/models
-# docker copy sd-webui:/home/hello/.cache ./data/cache
-# docker copy sd-webui:/home/hello/sd-webui/extensions/sd-webui-controlnet/annotator/downloads ./data/extensions/sd-webui-controlnet
-# docker copy sd-webui:/home/hello/sd-webui/interrogate ./data/interrogate
+# docker copy sd-webui:/app/sd-webui/models ./data/models
+# docker copy sd-webui:/app/.cache ./data/cache
+# docker copy sd-webui:/app/sd-webui/extensions/sd-webui-controlnet/annotator/downloads ./data/extensions/sd-webui-controlnet
+# docker copy sd-webui:/app/sd-webui/interrogate ./data/interrogate
 
 #### 5. clean up and save the image
 docker exec sd-webui bash \

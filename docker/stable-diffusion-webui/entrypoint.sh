@@ -3,8 +3,10 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
+# path: /app/bin/entrypoint.sh
+
 mkdir -p /tmp/gradio
-python3 -m venv venv/
+source venv/bin/activate
 
 python3 launch.py "$@"
 
