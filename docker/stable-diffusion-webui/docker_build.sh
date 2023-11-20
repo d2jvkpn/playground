@@ -9,7 +9,7 @@ SD_Version=${1:-1.6.0}
 # convert 00000-170371915.png -resize 128x128 01.png
 # echo '{"init_images": ["'"$(base64 -w0 01.png)"'"]}' > data_img2img.json
 # echo '{"image": "'"$(base64 -w0 01.png)"'", "model": "clip"}' > data_clip.json
-ls data_clip.json data_img2img.json Dockerfile entrypoint.sh > /dev/null
+ls http_data/data_clip.json http_data/data_img2img.json Dockerfile entrypoint.sh > /dev/null
 
 docker pull ubuntu:22.04
 

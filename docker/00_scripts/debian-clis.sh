@@ -3,6 +3,21 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
+export DEBIAN_FRONTEND=noninteractive
+
+apt update && \
+  apt -y upgrade && \
+  apt install -y tzdata pkg-config && \
+  apt remove && \
+  apt autoremove && \
+  apt clean && \
+  apt autoclean && \
+  dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {} && \
+  rm -rf /var/lib/apt/lists/*
+
+useradd -u 1000 -m -s /bin/bash hello
+
+
 deb_src=/etc/apt/sources.list.d/debian.sources
 ubuntu_src=/etc/apt/sources.list
 
