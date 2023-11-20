@@ -26,7 +26,8 @@ mkdir -p data/models data/extentions/sd-webui-controlnet data/cache data/interro
 #  -v $PWD/data/interrogate:/app/sd-webui/interrogate \
 #  -v $PWD/data/cache:/root/.cache \
 
-docker run -d --name sd-webui --gpus=all -p 127.0.0.1:$port:7860 sd-webui:p1-$SD_Version \
+docker run -d --name sd-webui --gpus=all -p 127.0.0.1:$port:7860 \
+  sd-webui:p1-$SD_Version \
   /app/bin/entrypoint.sh --xformers --listen --api --port=7860
 
 echo "==> Waiting SD service $addr to launch on ..."
