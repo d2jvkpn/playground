@@ -62,6 +62,7 @@ Host $target
 EOF
 
 bash ${_path}/wait_for_tcp_port.sh $addr 22
+sleep 5
 
 set -x
 
