@@ -64,8 +64,6 @@ EOF
 bash ${_path}/wait_for_tcp_port.sh $addr 22
 sleep 5
 
-set -x
-
 # addr=$(ssh -G $target | awk '/^hostname/{print $2}')
 ssh-keygen -f ~/.ssh/known_hosts -R $addr
 ssh-keyscan -H $addr >> ~/.ssh/known_hosts
