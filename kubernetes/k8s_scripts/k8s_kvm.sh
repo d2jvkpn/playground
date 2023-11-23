@@ -9,9 +9,9 @@ vm_src=${vm_src:-ubuntu}
 # args: k8s-cp{01..03} k8s-node{01..04}
 [ $# -eq 0 ] && { >&2 echo "vm name(s) not provided"; exit 1;  }
 
-target=$1
-shift
-vms="$*"
+array=($*)
+target=${array[@]:0:1}
+nodes=${array[@]:1}
 
 mkdir -p logs configs
 
@@ -55,9 +55,9 @@ ansible $target --forks 4 -m shell \
 ansible $target -m file -a "path=./k8s_apps/images state=absent"
 
 #### 3. clone nodes
-for vm in $vms; do
-    [ ! -z $(virsh list --all | awk -v vm=$vm '$2==vm{print 1}') ] && continue
-    bash ../kvm/src/virsh_clone.sh $target $vm
+for node in $nodes; do
+    [ ! -z $(virsh list --all | awk -v node=$node '$2==node{print 1}') ] && continue
+    bash ../kvm/src/virsh_clone.sh $target $node
 done
 
 virsh start $target
