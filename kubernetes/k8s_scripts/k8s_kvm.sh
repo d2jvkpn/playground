@@ -16,8 +16,8 @@ vms="$*"
 mkdir -p logs configs
 
 #### 1. create the first node
-if [ -z $(virsh list --all | awk -v vm=$vm '$2==vm{print 1}') ]; then
-    bash ../kvm/src/virsh_clone.sh $vm_src $vm
+if [ -z $(virsh list --all | awk -v vm=$target '$2==vm{print 1}') ]; then
+    bash ../kvm/src/virsh_clone.sh $vm_src $target
 fi
 
 while ! ansible $target --one-line -m ping; do

@@ -6,7 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
 host=$1; port=$2
-timeout=${3:-0}
+timeout=${3:-15}
 
 exec 1>&2
 echo "==> Waiting for TCP $host:$port to open..."
@@ -20,7 +20,7 @@ while ! nc -z $host $port; do
 
     if [[ "$timeout" -gt 0 && $n -ge "$timeout" ]]; then
         echo ""
-        echo "==> Timeout" >&2
+        >&2 echo "==> Timeout"
         exit 1
     fi
 done
