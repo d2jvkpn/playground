@@ -64,7 +64,7 @@ EOF
 # wait_for_tcp_port.sh $addr 22
 
 # ERROR: "System is booting up. Unprivileged users are not permitted to log in yet. Please come back later..."
-while ! ssh -q $target exit; do
+while ! ssh -o StrictHostKeyChecking=no $target exit; do
     sleep 1
 done
 
@@ -75,6 +75,5 @@ ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 ssh-copy-id -i $ssh_key $target
 
 ssh -t $target "sudo hostnamectl set-hostname $target"
-
 ssh -t $target 'sudo sed -i "2s/^127.0.1.1 .*$/127.0.1.1 '$target'/" /etc/hosts'
 # virsh shutdown $target
