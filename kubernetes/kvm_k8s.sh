@@ -4,16 +4,18 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 KVM_Network=${KVM_Network:-default}
+vm_src=${vm_src:-ubuntu}
 
 # bash ../kvm/src/virsh_clone.sh ubuntu k8s-cp{01..03} k8s-node{01..04}
 [ $# -eq 0 ] && { >&2 echo "vm name(s) not provided"; exit 1;  }
-
-for vm in $*; do
-    [ ! -z $(virsh list --all | awk -v vm=$vm '$2==vm{print 1}') ] && continue
-    bash ../kvm/src/virsh_clone.sh ubuntu $vm
-done
+vms="$*"
 
 mkdir -p logs configs
+
+for vm in $vms; do
+    [ ! -z $(virsh list --all | awk -v vm=$vm '$2==vm{print 1}') ] && continue
+    bash ../kvm/src/virsh_clone.sh $vm_src $vm
+done
 
 [ ! -f ansible.cfg ] && \
 cat > ansible.cfg <<EOF
