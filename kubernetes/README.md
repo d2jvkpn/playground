@@ -22,9 +22,10 @@ bash k8s_scripts/k8s_kvm.sh k8s-cp{01..03} k8s-node{01..04}
 ```bash
 mkdir -p k8s_apps/data
 
-cp_node=k8s-cp01
 # cp_node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
 # cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
+
+cp_node=k8s-cp01
 cp_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$cp_node.ansible_host")
 
 ingress_node=k8s-node01
@@ -88,8 +89,7 @@ ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_storage_nfs.sh $cp_node
 
 node=k8s-cp02
 
-ansible $node -m shell --become -a \
-  "namespace=prod bash k8s_scripts/kube_storage_nfs.sh $node 10Gi"
+ansible $node -m shell --become -a "namespace=prod bash k8s_scripts/kube_storage_nfs.sh $node 10Gi"
 ```
 
 #### 5. Explore
