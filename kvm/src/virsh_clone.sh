@@ -64,7 +64,9 @@ EOF
 bash ${_path}/wait_for_tcp_port.sh $addr 22
 
 # ERROR: "System is booting up. Unprivileged users are not permitted to log in yet. Please come back later..."
-sleep 5
+while ! ssh -q $target exit; do
+    sleep 1
+done
 
 # addr=$(ssh -G $target | awk '/^hostname/{print $2}')
 ssh-keygen -f ~/.ssh/known_hosts -R $addr
