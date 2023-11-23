@@ -5,8 +5,8 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
-yq_version=${yq_version:-4.35.2}
-flannel_version=${flannel_version:-0.22.3}
+# yq_version=${yq_version:-4.35.2}
+# flannel_version=${flannel_version:-0.23.0}
 
 mkdir -p k8s_apps/images
 
@@ -43,8 +43,9 @@ ingress_images=$(
   sort -u
 )
 
+# https://raw.githubusercontent.com/flannel-io/flannel/v${flannel_version}/Documentation/kube-flannel.yml
 wget -O k8s_apps/kube-flannel.yaml \
-  https://raw.githubusercontent.com/flannel-io/flannel/v${flannel_version}/Documentation/kube-flannel.yml
+  https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 
 flannel_images=$(awk '$1=="image:"{print $2}' k8s_apps/kube-flannel.yaml | sort -u)
 
@@ -60,7 +61,8 @@ metrics_images=$(
 
 #### 4. yq
 # https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64.tar.gz
-wget -O k8s_apps/yq https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64
+# https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64
+wget -O k8s_apps/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
 
 #### 5. yaml info
 cat > k8s_apps/k8s.yaml << EOF
@@ -68,15 +70,11 @@ version: $kube_version
 images:
 $(kubeadm config images list | sed 's/^/- image: /')
 
-yq:
-  version: $yq_version
-
 ingress:
   images:
 $(echo "$ingress_images" | sed 's/^/  - image: /')
 
 flannel:
-  version: $flannel_version
   images:
 $(echo "$flannel_images" | sed 's/^/  - image: /')
 
