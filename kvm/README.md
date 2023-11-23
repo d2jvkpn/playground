@@ -51,8 +51,10 @@ KVM_SSH_Dir=${KVM_SSH_Dir:-$HOME/.ssh/kvm}
 base=$(basename $KVM_SSH_Dir)
 ssh_key="$KVM_SSH_Dir/$base.pem"
 
+mkdir -p $KVM_SSH_Dir
+chmod 700 $KVM_SSH_Dir
+
 if [ ! -f $ssh_key ]; then
-    mkdir -p $KVM_SSH_Dir
     ssh-keygen -t rsa -m PEM -b 2048 -P "" -f $ssh_key -C $HOMENAME
     chmod 0400 $ssh_key
 fi
