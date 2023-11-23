@@ -26,6 +26,8 @@ done
 echo ""
 
 ####
+set -x
+
 ansible $target --one-line -m copy -a "src=k8s_scripts dest=./"
 ansible $target --one-line -m copy -a "src=k8s_demos dest=./"
 ansible $target --forks 2 -m copy -a "src=./k8s_apps dest=./"
@@ -47,6 +49,7 @@ ansible $target -m shell -a "sudo bash k8s_scripts/k8s_apps_containerd.sh"
 ansible $target --forks 4 -m shell \
   -a "sudo import_local_image=true bash k8s_scripts/k8s_apps_install.sh"
 
+set +x
 
 #### 3. clone nodes
 for vm in $vms; do
