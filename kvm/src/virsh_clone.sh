@@ -62,6 +62,8 @@ Host $target
 EOF
 
 bash ${_path}/wait_for_tcp_port.sh $addr 22
+
+# ERROR: "System is booting up. Unprivileged users are not permitted to log in yet. Please come back later..."
 sleep 5
 
 # addr=$(ssh -G $target | awk '/^hostname/{print $2}')
