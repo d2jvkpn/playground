@@ -11,7 +11,7 @@
 # ansible k8s_all --one-line -m debug
 # ansible k8s_all[0] --list-hosts
 
-bash k8s_scripts/kvm_k8s.sh
+bash k8s_scripts/k8s_kvm.sh k8s-cp{01..03} k8s-node{01..04}
 ```
 
 #### 2. Configuration

@@ -16,7 +16,7 @@ while ! nc -z $host $port; do
     # wait for 0.1(1/10) of the second before check again
     sleep 1 && echo -n .
     n=$((n+1))
-    [ $((n % 60 )) == 0 ] && echo ""
+    [ $((n % 60)) == 0 ] && echo ""
 
     if [[ "$timeout" -gt 0 && $n -ge "$timeout" ]]; then
         echo ""
