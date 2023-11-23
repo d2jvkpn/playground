@@ -4,7 +4,7 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 #### copy demo-api to node k8s-cp01 and create /data/logs on all worker nodes
-ansible k8s-cp01 -m copy -a 'src=../demo-api/deployments dest=./demo-api/'
+ansible k8s-cp01 -m copy -a 'src=../services/demo-api/deployments dest=./demo-api/'
 
 # ansible k8s_workers -m shell --become -a 'mkdir -p /data/local && chmod -R 777 /data/local'
 
@@ -18,7 +18,8 @@ kubectl config set-context --current --namespace=dev
 # kubectl -n dev create configmap demo-api --from-file=deployments/dev.yaml
 # kubectl create configmap demo-api --from-file=deployments/dev.yaml
 
-kubectl create configmap demo-api --from-file=demo-api/deployments/dev.yaml -o yaml --dry-run=client |
+kubectl create configmap demo-api --from-file=demo-api/deployments/dev.yaml \
+  -o yaml --dry-run=client |
   kubectl apply -f -
 
 kubectl get configmap demo-api -o yaml
@@ -40,6 +41,7 @@ kubectl exec -it $pod -- ls
 #### services and ingress http
 kubectl apply -f demo-api/deployments/k8s_cluster-ip.yaml
 kubectl apply -f demo-api/deployments/k8s_ingress_http.yaml
+kubectl apply -f demo-api/deployments/k8s_hpa.yaml
 
 curl -H 'Host: demo-api.dev.k8s.local' k8s.local/meta | jq
 curl -H 'Host: demo-api.dev.k8s.local' k8s.local/api/v1/open/hello | jq
