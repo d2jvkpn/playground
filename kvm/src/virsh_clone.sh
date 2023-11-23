@@ -71,7 +71,7 @@ ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 # ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 ssh-copy-id -i $ssh_key $target
 
-ssh $target sudo hostnamectl set-hostname $target
+ssh $target "sudo hostnamectl set-hostname $target"
 
-ssh $target sudo sed -i \'"2s/^127.0.1.1 .*$/127.0.1.1 $target/"\' /etc/hosts
+# ssh $target sudo sed -i \'"2s/^127.0.1.1 .*$/127.0.1.1 $target/"\' /etc/hosts
 # virsh shutdown $target
