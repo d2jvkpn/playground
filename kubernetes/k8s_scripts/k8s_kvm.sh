@@ -54,8 +54,6 @@ ansible $target --forks 4 -m shell \
 
 ansible $target -m file -a "path=./k8s_apps/images state=absent"
 
-set +x
-
 #### 3. clone nodes
 for vm in $vms; do
     [ ! -z $(virsh list --all | awk -v vm=$vm '$2==vm{print 1}') ] && continue
