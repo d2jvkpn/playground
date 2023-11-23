@@ -35,7 +35,8 @@ set -x
 
 ansible $target --one-line -m copy -a "src=k8s_scripts dest=./"
 ansible $target --one-line -m copy -a "src=k8s_demos dest=./"
-ansible $target --forks 2 -m copy -a "src=./k8s_apps dest=./"
+ansible $target --one-line -m copy -a "src=k8s_apps dest=./"
+# ansible $target --forks 2 -m copy -a "src=k8s_apps dest=./"
 
 ansible $target -m shell --become \
   -a "swapoff --all && sed -i '/swap/d' /etc/fstab && rm -f /swap.img"
