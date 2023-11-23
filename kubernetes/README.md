@@ -3,13 +3,7 @@
 #### 1. Prepare
 ```bash
 # bash k8s_scripts/k8s_apps_downloads.sh
-
-ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {}
-
-while ! ansible k8s_all --one-line -m ping; do
-    sleep 1
-done
-echo ""
+# ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {}
 
 # ansible k8s_all --one-line -m shell -a 'echo "Hello, world!"'
 # ansible k8s_all[0] --one-line -m ping
@@ -17,33 +11,13 @@ echo ""
 # ansible k8s_all --one-line -m debug
 # ansible k8s_all[0] --list-hosts
 
-ansible k8s_all --one-line -m copy -a "src=k8s_scripts dest=./"
-ansible k8s_all --one-line -m copy -a "src=k8s_demos dest=./"
-ansible k8s_all --forks 2 -m copy -a "src=./k8s_apps dest=./"
+bash kvm_k8s.sh
+```
 
-ansible k8s_all -m shell --become \
-  -a "swapoff --all && sed -i '/swap/d' /etc/fstab && rm -f /swap.img"
-
+#### 2. Configuration
+```bash
 mkdir -p k8s_apps/data
-```
 
-#### 2. Installation
-```bash
-# version: 1.28.2
-version=$(yq .version k8s_apps/k8s.yaml)
-
-ansible k8s_all -m shell -a "sudo bash k8s_scripts/k8s_node_install.sh $version"
-# ?? sysctl: setting key "net.ipv4.conf.all.accept_source_route": Invalid argument
-# ?? sysctl: setting key "net.ipv4.conf.all.promote_secondaries": Invalid argument
-
-ansible k8s_all -m shell -a "sudo bash k8s_scripts/k8s_apps_containerd.sh"
-
-ansible k8s_all --forks 4 -m shell \
-  -a "sudo import_local_image=true bash k8s_scripts/k8s_apps_install.sh"
-```
-
-#### 3. Configuration
-```bash
 cp_node=k8s-cp01
 # cp_node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
 # cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
@@ -61,7 +35,7 @@ cat > ./k8s_apps/data/hosts.txt << EOF
 $cp_ip k8s-control-plane
 $ingress_ip k8s.local
 
-$(cat configs/hosts.txt)
+$(cat configs/kvm_k8s.txt)
 EOF
 
 ansible k8s_all -m file -a "path=./k8s_apps/data state=directory"
@@ -71,7 +45,7 @@ ansible k8s_all -m shell --become -a "cat ./k8s_apps/data/hosts.txt >> /etc/host
 echo "$ingress_ip k8s.local" | sudo tee -a /etc/hosts
 ```
 
-#### 4. K8s up
+#### 3. K8s up
 ```bash
 #### cp node
 ansible $cp_node -m shell --become -a "bash k8s_scripts/k8s_node_cp.sh k8s-control-plane:6443"
@@ -80,12 +54,11 @@ ansible $cp_node -m shell --become -a "bash k8s_scripts/k8s_node_cp.sh k8s-contr
 ansible $cp_node --one-line -m fetch -a \
   "flat=true src=k8s_apps/data/kubeadm-init.yaml dest=k8s_apps/data/"
 
-ansible $cp_node -m shel -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
-
 # kubectl join
 ansible k8s_workers -m shell -a "sudo $(bash k8s_scripts/k8s_command_join.sh worker)"
 ansible k8s_cps[1:] -m shell -a "sudo $(bash k8s_scripts/k8s_command_join.sh control-plane)"
-ansible k8s_cps -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root ubuntu'
+
+ansible k8s_cps -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 ansible k8s_cps -m shell -a 'kubectl config set-context --current --namespace=dev'
 
 # kubectl label node/$ingress_node --overwrite node-role.kubernetes.io/ingress=
@@ -98,7 +71,7 @@ for node in $(ansible k8s_workers --list-hosts | awk 'BEGIN{ORS=" "} /k8s-node/{
 done
 ```
 
-#### 5. Kube up: flannel, ingress, metrics-serve, storage_nf
+#### 4. Kube up: flannel, ingress, metrics-serve, storage_nf
 ```bash
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_flannel.sh"
 
@@ -114,7 +87,7 @@ ansible $node -m shell --become -a \
   "namespace=prod bash k8s_scripts/kube_storage_nfs.sh $node 10Gi"
 ```
 
-#### 6. Explore
+#### 5. Explore
 ```bash
 ansible k8s_all -m shell -a 'top -n 1'
 
@@ -125,7 +98,7 @@ ansible k8s_cps[0] -m shell -a 'kubectl get pods --all-namespaces -o wide'
 ansible k8s_cps[0] -m shell -a 'kubectl describe node/k8s-cp01'
 ```
 
-#### 7. Upgrade nodes
+#### 6. Upgrade nodes
 ```bash
 version=1.28.x
 

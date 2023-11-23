@@ -6,18 +6,56 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 KVM_Network=${KVM_Network:-default}
 vm_src=${vm_src:-ubuntu}
 
-# bash ../kvm/src/virsh_clone.sh ubuntu k8s-cp{01..03} k8s-node{01..04}
+# args: k8s-cp{01..03} k8s-node{01..04}
 [ $# -eq 0 ] && { >&2 echo "vm name(s) not provided"; exit 1;  }
+
+target=$1
+shift
 vms="$*"
 
 mkdir -p logs configs
 
+#### 1. create the first node
+if [ -z $(virsh list --all | awk -v vm=$vm '$2==vm{print 1}') ]; then
+    bash ../kvm/src/virsh_clone.sh $vm_src $vm
+fi
+
+while ! ansible $target --one-line -m ping; do
+    sleep 1
+done
+echo ""
+
+####
+ansible $target --one-line -m copy -a "src=k8s_scripts dest=./"
+ansible $target --one-line -m copy -a "src=k8s_demos dest=./"
+ansible $target --forks 2 -m copy -a "src=./k8s_apps dest=./"
+
+ansible $target -m shell --become \
+  -a "swapoff --all && sed -i '/swap/d' /etc/fstab && rm -f /swap.img"
+
+ansible $target -m file -a "path=./k8s_apps/images state=absent"
+
+#### 2. k8s installation
+version=$(yq .version k8s_apps/k8s.yaml)
+
+ansible $target -m shell -a "sudo bash k8s_scripts/k8s_node_install.sh $version"
+# ?? sysctl: setting key "net.ipv4.conf.all.accept_source_route": Invalid argument
+# ?? sysctl: setting key "net.ipv4.conf.all.promote_secondaries": Invalid argument
+
+ansible $target -m shell -a "sudo bash k8s_scripts/k8s_apps_containerd.sh"
+
+ansible $target --forks 4 -m shell \
+  -a "sudo import_local_image=true bash k8s_scripts/k8s_apps_install.sh"
+
+
+#### 3. clone nodes
 for vm in $vms; do
     [ ! -z $(virsh list --all | awk -v vm=$vm '$2==vm{print 1}') ] && continue
-    bash ../kvm/src/virsh_clone.sh $vm_src $vm
+    bash ../kvm/src/virsh_clone.sh $target $vm
 done
 
-[ ! -f ansible.cfg ] && \
+#### 4. generate configs/kvm_k8s.ini
+[ ! -s ansible.cfg ] && \
 cat > ansible.cfg <<EOF
 [defaults]
 inventory = ./configs/kvm_k8s.ini
@@ -47,5 +85,3 @@ $(echo "$text" | awk '/^k8s-cp/{print $1}')
 [k8s_workers]
 $(echo "$text" | awk '/^k8s-node/{print $1}')
 EOF
-
-rm configs/kvm_k8s.txt
