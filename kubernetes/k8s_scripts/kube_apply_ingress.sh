@@ -16,13 +16,13 @@ node_ip=$(kubectl get node/$node_name -o wide | awk 'NR==2{print $6}')
 mkdir -p k8s_apps/data
 # https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
-# kubectl label nodes/$node_name --overwrite node-role=ingress
-# kubectl label nodes/$node_name node-role-
-kubectl label node/$node_name --overwrite node-role.kubernetes.io/ingress=
+# kubectl label nodes $node_name --overwrite node-role=ingress
+# kubectl label nodes $node_name node-role-
+kubectl label node $node_name --overwrite node-role.kubernetes.io/ingress=
 
-# kubectl taint nodes/$node_name --overwrite node-role=ingress:NoSchedule
+# kubectl taint nodes $node_name --overwrite node-role=ingress:NoSchedule
 # kubectl taint nodes $node_name node-role=ingress:NoSchedule-
-kubectl taint nodes/$node_name --overwrite node-role.kubernetes.io/ingress=:NoSchedule
+kubectl taint nodes $node_name --overwrite node-role.kubernetes.io/ingress=:NoSchedule
 
 sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
   awk -v node_name="$node_name" -v  node_ip=$node_ip \
