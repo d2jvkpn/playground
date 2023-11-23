@@ -47,9 +47,14 @@ bash src/ubuntu_config.sh
 ```bash
 target=ubuntu; username=ubuntu
 
-if [ ! -f ~/.ssh/kvm.pem ]; then
-    ssh-keygen -t rsa -m PEM -b 2048 -P "" -f ~/.ssh/kvm.pem -C $HOMENAME
-    chmod 0400 ~/.ssh/kvm.pem
+KVM_SSH_Dir=${KVM_SSH_Dir:-$HOME/.ssh/kvm}
+base=$(basename $KVM_SSH_Dir)
+ssh_key="$KVM_SSH_Dir/$base.pem"
+
+if [ ! -f $ssh_key ]; then
+    mkdir -p $KVM_SSH_Dir
+    ssh-keygen -t rsa -m PEM -b 2048 -P "" -f $ssh_key -C $HOMENAME
+    chmod 0400 $ssh_key
 fi
 
 addr=$(virsh domifaddr $target | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
@@ -58,23 +63,22 @@ bash src/virsh_fix_ip.sh $target
 
 ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 
-record="Include ${HOME}/.ssh/kvm.conf"
+record="Include ${HOME}/.ssh/kvm/*.conf"
 [ $(grep -c "$record" ~/.ssh/config) -eq 0 ] && sed -i "1i $record" ~/.ssh/config
 
-cat >> ~/.ssh/kvm.conf << EOF
+cat > $KVM_SSH_Dir/$target.conf << EOF
 Host $target
     HostName      $addr
     User          $username
     Port          22
     LogLevel      INFO
     Compression   yes
-    IdentityFile  ~/.ssh/kvm.pem
+    IdentityFile  $ssh_key
 EOF
 
 # must todo
-ssh-copy-id -i ~/.ssh/kvm.pem $target
+ssh-copy-id -i $ssh_key $target
 # ssh $target
-
 virsh shutdown $target
 ```
 

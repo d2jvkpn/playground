@@ -19,7 +19,7 @@ mkdir -p logs configs
 cat > ansible.cfg <<EOF
 [defaults]
 inventory = ./configs/kvm_k8s.ini
-private_key_file = ~/.ssh/kvm_k8s.pem
+private_key_file = ~/.ssh/kvm/kvm.pem
 log_path = ./logs/ansible.log
 # roles_path = /path/to/roles
 EOF

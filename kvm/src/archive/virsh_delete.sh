@@ -15,7 +15,7 @@ else
 fi
 
 KVM_Network=${KVM_Network:-default}
-KVM_SSH_Dir=${KVM_SSH_Dir:-$HOME/.ssh/kvm}
+KVM_SSH_Config=${KVM_SSH_Config:-$HOME/.ssh/kvm.conf}
 
 # virsh dumpxml $target
 # virsh dumpxml --domain $target
@@ -36,6 +36,7 @@ sudo rm $source_file
 
 ##### virsh destroy $target
 virsh undefine $target 2>/dev/null || true
+
 virsh net-dumpxml $KVM_Network | grep -v "name='$target'" > $KVM_Network.xml
 
 virsh net-define $KVM_Network.xml
@@ -43,4 +44,7 @@ virsh net-destroy $KVM_Network
 virsh net-start $KVM_Network
 
 rm $KVM_Network.xml
-rm $KVM_SSH_Dir/$target.conf
+
+####
+sed 's/^Host/\n&/' $KVM_SSH_Config | sed '/^Host '"$target"'$/,/^$/d; /^$/d' > $KVM_SSH_Config.tmp
+mv $KVM_SSH_Config.tmp $KVM_SSH_Config

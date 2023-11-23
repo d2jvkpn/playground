@@ -20,11 +20,10 @@ fi
 
 ####
 KVM_User="${KVM_User:-ubuntu}"
-KVM_SSH_Dir=${KVM_SSH_Dir:-$HOME/.ssh/kvm}
-base=$(basename $KVM_SSH_Dir)
-ssh_key="$KVM_SSH_Dir/$base.pem"
+KVM_SSH_Key="${KVM_SSH_Key:-$HOME/.ssh/kvm.pem}"
+KVM_SSH_Config=${KVM_SSH_Config:-$HOME/.ssh/kvm.conf}
 
-echo "==> Cloning $vm_source into $target, KVM_User: $KVM_User, ssh_key: $ssh_key"
+echo "==> Cloning $vm_source into $target, KVM_User: $KVM_User, KVM_SSH_Key: $KVM_SSH_Key"
 
 ####
 echo "==> Shutting down $vm_source"
@@ -49,16 +48,14 @@ addr=$(
 
 echo "==> Got vm addrss: $addr"
 
-mkdir -p $KVM_SSH_Dir
-
-cat > $KVM_SSH_Dir/$target.conf << EOF
+cat >> $KVM_SSH_Config << EOF
 Host $target
     HostName      $addr
     User          $KVM_User
     Port          22
     LogLevel      INFO
     Compression   yes
-    IdentityFile  $ssh_key
+    IdentityFile  $KVM_SSH_Key
 EOF
 
 bash ${_path}/wait_for_tcp_port.sh $addr 22
@@ -67,7 +64,7 @@ bash ${_path}/wait_for_tcp_port.sh $addr 22
 ssh-keygen -f ~/.ssh/known_hosts -R $addr
 ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 # ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
-ssh-copy-id -i $ssh_key $target
+ssh-copy-id -i $KVM_SSH_Key $target
 
 ssh $target sudo hostnamectl set-hostname $target
 
