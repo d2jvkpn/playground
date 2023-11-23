@@ -19,7 +19,6 @@ echo ""
 
 ansible k8s_all --one-line -m copy -a "src=k8s_scripts dest=./"
 ansible k8s_all --one-line -m copy -a "src=k8s_demos dest=./"
-
 ansible k8s_all --forks 2 -m copy -a "src=./k8s_apps dest=./"
 
 ansible k8s_all -m shell --become \

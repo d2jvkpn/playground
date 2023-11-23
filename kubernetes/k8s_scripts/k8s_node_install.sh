@@ -33,6 +33,8 @@ fi
 
 echo "deb [signed-by=$key_file] $key_url /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
+apt-get update
+
 # apt-mark unhold kubelet kubeadm kubectl
 apt-get install -y kubectl kubelet kubeadm
 apt-mark hold kubelet kubeadm kubectl
