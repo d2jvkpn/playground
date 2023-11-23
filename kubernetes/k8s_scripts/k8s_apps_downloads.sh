@@ -35,29 +35,27 @@ kubeadm config images list | xargs -i docker pull {}
 kube_version=$(kubeadm version -o json | jq -r .clientVersion.gitVersion | sed 's/^v//')
 
 #### 2. ingress-nginx and flannel
-wget -O k8s_apps/ingress-nginx_cloud.yaml \
-  https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+link=https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+wget -O k8s_apps/ingress-nginx_cloud.yaml $link
+sed -i "1i # link: $link\n" k8s_apps/ingress-nginx_cloud.yaml
 
-ingress_images=$(
-  awk '$1=="image:"{print $2}' k8s_apps/ingress-nginx_cloud.yaml |
-  sort -u
-)
+ingress_images=$(awk '$1=="image:"{print $2}' k8s_apps/ingress-nginx_cloud.yaml | sort -u)
 
 # https://raw.githubusercontent.com/flannel-io/flannel/v${flannel_version}/Documentation/kube-flannel.yml
-wget -O k8s_apps/kube-flannel.yaml \
-  https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+link=https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+wget -O k8s_apps/kube-flannel.yaml $link
+sed -i "1i # link: $link\n" k8s_apps/kube-flannel.yaml
 
 flannel_images=$(awk '$1=="image:"{print $2}' k8s_apps/kube-flannel.yaml | sort -u)
 
 # wget -O k8s_apps/calico.yaml https://docs.projectcalico.org/manifests/calico.yaml
 
 #### 3. metrics-server
-wget -O k8s_apps/metrics-server_components.yaml \
-  https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+link=https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+wget -O k8s_apps/metrics-server_components.yaml $link
+sed -i "1i # link: $link\n" k8s_apps/metrics-server_components.yaml
 
-metrics_images=$(
-  awk '$1=="image:"{print $2}' k8s_apps/metrics-server_components.yaml | sort -u
-)
+metrics_images=$(awk '$1=="image:"{print $2}' k8s_apps/metrics-server_components.yaml | sort -u)
 
 #### 4. yq
 # https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64.tar.gz
