@@ -50,7 +50,7 @@ cp_node=k8s-cp01
 # cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
 cp_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$cp_node.ansible_host")
 
-ingress_node=k8s-ingress01
+ingress_node=k8s-node01
 
 ingress_ip=$(
   ansible-inventory --list --yaml |
@@ -89,16 +89,14 @@ ansible k8s_cps[1:] -m shell -a "sudo $(bash k8s_scripts/k8s_command_join.sh con
 ansible k8s_cps -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root ubuntu'
 ansible k8s_cps -m shell -a 'kubectl config set-context --current --namespace=dev'
 
+# kubectl label node/$ingress_node --overwrite node-role.kubernetes.io/ingress=
+# kubectl label node/$ingress_node --overwrite node-role.kubernetes.io/ingress-
+
 # kubectl label
 for node in $(ansible k8s_workers --list-hosts | awk 'BEGIN{ORS=" "} /k8s-node/{print $1}'); do
-    ansible $cp_node --one-line -a "kubectl label node/$node --overwrite node-role=worker"
+    if [ "$node" == "$ingress_node" ]; then continue; fi
+    ansible $cp_node --one-line -a "kubectl label node/$node --overwrite node-role.kubernetes.io/worker="
 done
-
-# kubectl label node/k8s-ingress01 --overwrite node-role.kubernetes.io/ingress=
-# kubectl label node/k8s-ingress01 --overwrite node-role.kubernetes.io/ingress-
-
-# kubectl label node/k8s-node01 --overwrite node-role.kubernetes.io/worker=
-# kubectl label node/k8s-node01 --overwrite node-role.kubernetes.io/worker-
 ```
 
 #### 5. Kube up: flannel, ingress, metrics-serve, storage_nf

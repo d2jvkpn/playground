@@ -5,7 +5,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 KVM_Network=${KVM_Network:-default}
 
-# bash ../kvm/src/virsh_clone.sh ubuntu k8s-cp{01..03} k8s-node{01..03} k8s-ingress01
+# bash ../kvm/src/virsh_clone.sh ubuntu k8s-cp{01..03} k8s-node{01..04}
 [ $# -eq 0 ] && { >&2 echo "vm name(s) not provided"; exit 1;  }
 
 for vm in $*; do
@@ -44,7 +44,6 @@ $(echo "$text" | awk '/^k8s-cp/{print $1}')
 
 [k8s_workers]
 $(echo "$text" | awk '/^k8s-node/{print $1}')
-$(echo "$text" | awk '/^k8s-ingress/{print $1}')
 EOF
 
 rm configs/kvm_k8s.txt
