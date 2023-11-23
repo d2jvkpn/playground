@@ -61,7 +61,7 @@ Host $target
     IdentityFile  $ssh_key
 EOF
 
-bash ${_path}/wait_for_tcp_port.sh $addr 22
+# wait_for_tcp_port.sh $addr 22
 
 # ERROR: "System is booting up. Unprivileged users are not permitted to log in yet. Please come back later..."
 while ! ssh -q $target exit; do

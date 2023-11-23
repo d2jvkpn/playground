@@ -20,10 +20,13 @@ found=$(
 elem='"--tcp-services-configmap=$(POD_NAMESPACE)/tcp-services"'
 # elem='"--udp-services-configmap=$(POD_NAMESPACE)/udp-services"'
 
-[ -z "$found" ] &&
-kubectl -n ingress-nginx get deploy/ingress-nginx-controller -o yaml |
-  yq eval '.spec.template.spec.containers[0].args += ['$elem']' |
-  kubectl apply -f -
+if [ -z "$found" ]; then
+    kubectl -n ingress-nginx get deploy/ingress-nginx-controller -o yaml |
+      yq eval '.spec.template.spec.containers[0].args += ['$elem']' > ingress.temp.yaml
+
+    kubectl apply -f ingress.temp.yaml
+    rm -f ingress.temp.yaml
+fi
 
 ####
 found=$(
@@ -34,18 +37,21 @@ found=$(
 
 elem='{"name":"'$srv'","protocol":"TCP","port":'$port',"targetPort":'$port'}'
 
-[ -z "$found" ] &&
-kubectl -n ingress-nginx get services/ingress-nginx-controller -o yaml |
-  yq eval '.spec.ports += ['$elem']' |
-  kubectl apply -f -
+if [ -z "$found" ]; then
+    kubectl -n ingress-nginx get services/ingress-nginx-controller -o yaml |
+      yq eval '.spec.ports += ['$elem']' > ingress.temp.yaml
+
+    kubectl apply -f ingress.temp.yaml
+    rm -f ingress.temp.yaml
+fi
 
 # kubectl -n ingress-nginx get services/ingress-nginx-controller
 
 ####
 found=$(kubectl -n ingress-nginx get cm/tcp-services || true)
 
-[ -z "$found" ] &&
-cat | kubectl apply -f - <<EOF
+if [ -z "$found" ]; then
+cat > tcp-services.temp.yaml <<EOF
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -54,11 +60,13 @@ metadata:
 data:
   "$port": $namespace/$srv:$port
 EOF
+    kubectl apply -f tcp-services.temp.yaml
+    rm -f tcp-services.temp.yaml
+fi
 
-[ -z "$found" ] ||
-kubectl -n ingress-nginx get cm/tcp-services -o yaml |
-  yq eval '.data += {"'$port'":"'$namespace/$srv:$port'"}' |
-  kubectl apply -f -
+# kubectl -n ingress-nginx get cm/tcp-services -o yaml |
+#   yq eval '.data += {"'$port'":"'$namespace/$srv:$port'"}'
+#   kubectl apply -f -
 
 ####
 {
