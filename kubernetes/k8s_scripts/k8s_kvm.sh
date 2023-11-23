@@ -63,6 +63,8 @@ for vm in $vms; do
     bash ../kvm/src/virsh_clone.sh $target $vm
 done
 
+virsh start $target
+
 #### 4. generate configs/kvm_k8s.ini
 [ ! -s ansible.cfg ] && \
 cat > ansible.cfg <<EOF
