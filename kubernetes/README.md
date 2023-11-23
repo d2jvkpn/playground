@@ -88,6 +88,7 @@ ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_metrics-server.sh
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
 
 node=k8s-cp02
+
 ansible $node -m shell --become -a \
   "namespace=prod bash k8s_scripts/kube_storage_nfs.sh $node 10Gi"
 ```

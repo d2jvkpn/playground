@@ -52,7 +52,7 @@ metadata:
   namespace: ingress-nginx
   name: tcp-services
 data:
-  "$port": dev/$srv:$port
+  "$port": $namespace/$srv:$port
 EOF
 
 [ -z "$found" ] ||
