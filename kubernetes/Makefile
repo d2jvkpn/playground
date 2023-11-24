@@ -25,6 +25,6 @@ down:
 	ansible k8s_all -m shell --become -a 'shutdown now'
 
 erase:
-	for node in $(shell awk '{print $2}' configs/kvm_k8s.txt); do
+	for node in $(shell awk '{print \$2}' configs/kvm_k8s.txt); do
 	    bash ../kvm/src/virsh_delete.sh $node
 	done
