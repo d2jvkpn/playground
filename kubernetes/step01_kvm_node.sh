@@ -30,18 +30,18 @@ while ! ansible $target --one-line -m ping; do
     sleep 1
 done
 
-####
+#### 2. copy assets
 set -x
 
 ansible $target --one-line -m copy -a "src=k8s_scripts dest=./"
 ansible $target --one-line -m copy -a "src=k8s_demos dest=./"
-ansible $target --one-line -m copy -a "src=k8s_apps dest=./"
-# ansible $target --forks 2 -m copy -a "src=k8s_apps dest=./"
+# ansible $target --one-line --forks 2 -m copy -a "src=k8s_apps dest=./"
+rsync -arPv ./k8s_apps $target:k8s_apps
 
 ansible $target -m shell --become \
   -a "swapoff --all && sed -i '/swap/d' /etc/fstab && rm -f /swap.img"
 
-#### 2. k8s installation
+#### 3. k8s installation
 version=$(yq .version k8s_apps/k8s.yaml)
 
 ansible $target -m shell -a "sudo bash k8s_scripts/k8s_node_install.sh $version"
