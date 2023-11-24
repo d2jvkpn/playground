@@ -12,3 +12,7 @@ awk '/image: /{
   sub("@sha256.*", "", $NF); sub(":", "_", $NF); sub(".*/", "", $NF);
   print "k8s_apps/images/"$NF".tar.gz";
 }' k8s_apps/k8s.yaml | xargs -i ls {} > /dev/null
+
+command -v yq
+command -v ansible
+command -v virsh

@@ -23,7 +23,7 @@ for node in $nodes; do
 done
 
 #### 2. restart target node
-virsh start $target
+virsh start $target || true
 
 for node in $nodes $target; do
     while ! ssh -o StrictHostKeyChecking=no $node exit; do sleep 1; done
