@@ -26,5 +26,5 @@ down:
 
 erase:
 	for node in $(shell awk '{print \$2}' configs/kvm_k8s.txt); do
-	    bash ../kvm/src/virsh_delete.sh $node
+	    bash ../kvm/src/virsh_delete.sh $node || true
 	done
