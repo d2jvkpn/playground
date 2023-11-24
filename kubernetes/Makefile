@@ -3,7 +3,7 @@ check:
 
 up:
 	mkdir -p logs
-	echo "================================================================" >> logs/k8s_up.log
+	echo "================================================================" > logs/k8s_up.log
 
 	date +"==> %FT%T%:z: step01_kvm_nodes.sh" >> logs/k8s_up.log
 
