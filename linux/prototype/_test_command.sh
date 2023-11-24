@@ -6,7 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 cmd=$1
 
-echo "==> test command: $cmd"
+>&2 echo "==> test command: $cmd"
 
 if [ $(command -v "$cmd") ]; then
     echo "YES"
@@ -14,4 +14,4 @@ else
     echo "NO"
 fi
 
-echo "==> exit"
+>&2 echo "==> exit"

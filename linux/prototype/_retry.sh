@@ -20,4 +20,5 @@ while ! my_func; do
 
     n=$((n+1))
     [ $n -gt 5 ] && { >&2 echo '!!! my_func failed'; exit 1; }
+    sleep 1
 done
