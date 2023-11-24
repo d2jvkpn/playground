@@ -8,9 +8,21 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 export DEBIAN_FRONTEND=noninteractive
 
 #### 1.
-apt update
-apt -y upgrade
-apt install -y containerd runc
+function apt_install() {
+    apt update
+    apt -y upgrade
+    apt install -y containerd runc
+
+    return 0
+}
+
+n=1
+while ! apt_install; do
+    echo "...try again: apt_install"
+    n=$((n+1))
+    [ $n -gt 5 ] && { >&2 echo "apt_install failed"; exit 1; }
+    sleep 1.42
+done
 
 containerd config default | grep SystemdCgroup
 containerd config default | grep sandbox_image
