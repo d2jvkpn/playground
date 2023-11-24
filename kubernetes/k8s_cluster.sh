@@ -7,8 +7,10 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 action=$1
 
+msg="exit"
+
 function on_exit() {
-    date +"==> %FT%T%:z exit" >> logs/k8s_cluster_up.log
+    date +"==> %FT%T%:z $msg" >> logs/k8s_cluster_up.log
 }
 
 case $action in
@@ -48,6 +50,8 @@ case $action in
 
     date +"==> %FT%T%:z step04_kube_apply.sh" >> logs/k8s_cluster_up.log
     bash step04_kube_apply.sh k8s-cp01 k8s-node01
+
+    msg="done"
     ;;
 
 "down")
