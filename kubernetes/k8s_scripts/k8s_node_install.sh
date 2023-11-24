@@ -40,9 +40,10 @@ function apt_install() {
 
 n=1
 while ! apt_install; do
-    echo "...apt_install try again"
+    echo "...try again: apt_install"
     n=$((n+1))
     if [ $n -gt 5 ]; then >&2 echo "apt_install failed"; exit 1; fi
+    sleep 1.42
 done
 
 # systemctl disable kubelet

@@ -8,6 +8,7 @@ a="unknown"
 function remove_item() {
     echo "==> remove item: $a, $1"
 }
+
 trap 'remove_item on_error' ERR
 trap 'remove_item on_exit' EXIT
 

@@ -9,8 +9,10 @@ action=$1
 
 msg="exit"
 
-function on_exit() {
+function up_on_exit() {
     date +"==> %FT%T%:z $msg" >> logs/k8s_cluster_up.log
+
+    cat logs/k8s_cluster_up.log
 }
 
 case $action in
@@ -35,7 +37,7 @@ case $action in
 
     mkdir -p logs
     echo "================================================================" >> logs/k8s_cluster_up.log
-    trap on_exit EXIT
+    trap up_on_exit EXIT
 
     date +"==> %FT%T%:z step01_kvm_node.sh" >> logs/k8s_cluster_up.log
     bash step01_kvm_node.sh ubuntu k8s-cp01
