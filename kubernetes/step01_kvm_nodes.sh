@@ -63,7 +63,7 @@ done
 #### 4. restart target node
 virsh start $target
 
-while ! ansible k8s_all --one-line -m ping; do
+while ! ansible k8s_all --one-line -m debug; do
     sleep 1
 done
 

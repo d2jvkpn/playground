@@ -20,7 +20,7 @@ target=ubuntu
 virt-install --name=$target \
   --os-variant=generic --vcpus=2 --memory=2048 \
   --disk path=/var/lib/libvirt/images/$target.qcow2,size=30 \
-  --cdrom=~/kvm/ubuntu-22.04.1-live-server-amd64.iso
+  --cdrom=~/kvm/ubuntu-22.04.3-live-server-amd64.iso
 ```
 
 #### 3. Ubuntu Installation UI
@@ -56,6 +56,7 @@ chmod 700 $KVM_SSH_Dir
 
 if [ ! -f $ssh_key ]; then
     ssh-keygen -t rsa -m PEM -b 2048 -P "" -f $ssh_key -C $HOMENAME
+    ssh-keygen -y -f $ssh_key > $ssh_key.pub
     chmod 0400 $ssh_key
 fi
 
@@ -66,7 +67,7 @@ bash src/virsh_fix_ip.sh $target
 ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 
 record="Include ${HOME}/.ssh/kvm/*.conf"
-[ $(grep -c "$record" ~/.ssh/config) -eq 0 ] && sed -i "1i $record" ~/.ssh/config
+[ -z "$(grep -c "$record" ~/.ssh/config)"] && sed -i "1i $record" ~/.ssh/config
 
 cat > $KVM_SSH_Dir/$target.conf << EOF
 Host $target
@@ -77,6 +78,8 @@ Host $target
     Compression   yes
     IdentityFile  $ssh_key
 EOF
+
+
 
 # must todo
 ssh-copy-id -i $ssh_key $target
