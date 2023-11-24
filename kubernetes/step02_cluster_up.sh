@@ -28,7 +28,7 @@ ingress_ip=$(
   yq ".all.children.k8s_all.hosts.$ingress_node.ansible_host"
 )
 
-cat > ./k8s_apps/data/hosts.txt << EOF
+cat > ./k8s_apps/data/etc_hosts.txt << EOF
 
 $cp_ip k8s-control-plane
 $ingress_ip k8s.local
