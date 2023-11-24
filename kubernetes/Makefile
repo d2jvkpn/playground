@@ -1,3 +1,6 @@
+check:
+	bash check.sh
+
 up:
 	bash step01_kvm_nodes.sh \
 	  k8s-cp01 k8s-cp02 k8s-cp03 \
