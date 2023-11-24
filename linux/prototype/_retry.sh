@@ -18,5 +18,5 @@ n=1
 while ! my_func; do
     echo "...try again: my_func"
     n=$((n+1))
-    if [ $n -gt 5 ]; then >&2 echo '!!! my_func failed'; exit 1; fi
+    [ $n -gt 5 ] && { >&2 echo '!!! my_func failed'; exit 1; }
 done

@@ -29,7 +29,7 @@ n=1
 while ! ssh -o StrictHostKeyChecking=no $target exit; do
     sleep 1;
     n=$((n+1))
-    if [ $n -gt 15 ]; then >&2 echo "can't access node $target"; exit 1; fi
+    [ $n -gt 15 ] && { >&2 echo "can't access node $target"; exit 1; }
 done
 
 #### 2. copy assets

@@ -30,7 +30,7 @@ for node in $nodes $target; do
     while ! ssh -o StrictHostKeyChecking=no $node exit; do
         sleep 1
         n=$((n+1))
-        if [ $n -gt 15 ]; then >&2 echo "can't access node $node"; exit 1; fi
+        [ $n -gt 15 ] && { >&2 echo "can't access node $node"; exit 1; }
     done
 done
 

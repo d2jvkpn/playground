@@ -42,7 +42,7 @@ n=1
 while ! apt_install; do
     echo "...try again: apt_install"
     n=$((n+1))
-    if [ $n -gt 5 ]; then >&2 echo "apt_install failed"; exit 1; fi
+    [ $n -gt 5 ] && { >&2 echo "apt_install failed"; exit 1; }
     sleep 1.42
 done
 
