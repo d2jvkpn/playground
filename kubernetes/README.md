@@ -7,10 +7,6 @@
 
 
 bash k8s_scripts/k8s_kvm_nodes.sh k8s-cp{01..03} k8s-node{01..04}
-
-while ! ansible k8s_all --one-line -m ping; do
-    sleep 1
-done
 ```
 
 #### 2. Configuration

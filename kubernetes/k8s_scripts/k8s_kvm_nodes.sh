@@ -60,9 +60,14 @@ for node in $nodes; do
     bash ../kvm/src/virsh_clone.sh $target $node
 done
 
+#### 4. restart target node
 virsh start $target
 
-#### 4. generate configs/kvm_k8s.ini
+while ! ansible k8s_all --one-line -m ping; do
+    sleep 1
+done
+
+#### 5. generate configs/kvm_k8s.ini
 [ ! -s ansible.cfg ] && \
 cat > ansible.cfg <<EOF
 [defaults]
