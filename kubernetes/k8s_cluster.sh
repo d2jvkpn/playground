@@ -7,7 +7,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 action=$1
 
-case $cation in
+case $action in
 "check")
     ls k8s_apps/{k8s.yaml,kube-flannel.yaml} \
       k8s_apps/{ingress-nginx_cloud.yaml,metrics-server_components.yaml} > /dev/null
@@ -45,7 +45,7 @@ case $cation in
 	ansible k8s_all -m shell --become -a 'shutdown now'
 	;;
 "erase")
-    for node in $(shell awk '{print $2}' configs/kvm_k8s.txt); do
+    for node in $(awk '{print $2}' configs/kvm_k8s.txt); do
 	    bash ../kvm/src/virsh_delete.sh $node || true
 	done
 	;;

@@ -1,11 +1,11 @@
 check:
-	bash help.sh check
+	bash k8s_cluster.sh check
 
 up:
-	bash help.sh up
+	bash k8s_cluster.sh up
 
 down:
-	bash help.sh down
+	bash k8s_cluster.sh down
 
 erase:
-	bash help.sh erase
+	bash k8s_cluster.sh erase
