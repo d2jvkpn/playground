@@ -40,7 +40,8 @@ function apt_install() {
 
 n=1
 while ! apt_install; do
-    echo "...try again: apt_install"
+    >&2 echo "...try again: apt_install"
+
     n=$((n+1))
     [ $n -gt 5 ] && { >&2 echo "apt_install failed"; exit 1; }
     sleep 1.42

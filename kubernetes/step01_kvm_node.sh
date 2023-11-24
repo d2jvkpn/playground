@@ -28,6 +28,7 @@ n=1
 # while ! ansible $target --one-line -m ping; do
 while ! ssh -o StrictHostKeyChecking=no $target exit; do
     sleep 1;
+
     n=$((n+1))
     [ $n -gt 15 ] && { >&2 echo "can't access node $target"; exit 1; }
 done
