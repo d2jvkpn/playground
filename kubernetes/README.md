@@ -1,16 +1,14 @@
 ### Kubernetes
 
-#### 1. Prepare
+#### 1. K8s Cluster
 ```bash
 # bash k8s_scripts/k8s_apps_downloads.sh
 # ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {}
 
 bash step01_kvm_nodes.sh k8s-cp{01..03} k8s-node{01..04}
-
 bash step02_cluster_up.sh
 
-[ -z "$(grep -w "k8s.local" /etc/hosts)" ] && \
-  echo "$ingress_ip k8s.local" | sudo tee -a /etc/hosts
+[ -z "$(grep -w "k8s.local" /etc/hosts)" ] && echo "$ingress_ip k8s.local" | sudo tee -a /etc/hosts
 ```
 
 #### 2. Storage
