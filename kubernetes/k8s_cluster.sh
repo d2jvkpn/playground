@@ -44,9 +44,7 @@ case $action in
     bash step01_kvm_node.sh ubuntu k8s-cp01
 
     date +"==> %FT%T%:z step02_clone_nodes.sh" >> logs/k8s_cluster_up.log
-    bash step02_clone_nodes.sh k8s-cp01 \
-      k8s-cp02 k8s-cp03 \
-      k8s-node01 k8s-node02 k8s-node03 k8s-node04
+    bash step02_clone_nodes.sh k8s-cp01 k8s-cp{02,03} k8s-node{01..04}
 
     date +"==> %FT%T%:z step03_cluster_up.sh" >> logs/k8s_cluster_up.log
     bash step03_cluster_up.sh k8s-cp01 k8s-node01
