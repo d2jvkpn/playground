@@ -22,14 +22,19 @@ for node in $nodes; do
     bash ../kvm/src/virsh_clone.sh $target $node
 done
 
-#### 2. restart target node
 virsh start $target || true
+sleep 5
 
 for node in $nodes $target; do
-    while ! ssh -o StrictHostKeyChecking=no $node exit; do sleep 1; done
+    n=1
+    while ! ssh -o StrictHostKeyChecking=no $node exit; do
+        sleep 1
+        n=$((n+1))
+        if [ $n -gt 15 ]; then >&2 echo "can't access node $node"; exit 1; fi
+    done
 done
 
-#### 3. generate configs/kvm_k8s.ini
+#### 2. generate configs/kvm_k8s.ini
 [ ! -s ansible.cfg ] && \
 cat > ansible.cfg <<EOF
 [defaults]

@@ -24,10 +24,12 @@ virsh net-dumpxml $KVM_Network |
   sed "s#^.*name='##; s#ip='##; s#/>##; s#'##g" |
   awk '{print $1, "ansible_host="$2, "ansible_port=22 ansible_user=ubuntu"}' > configs/kvm_k8s.ini
 
-virsh start $target || true
-
-while ! ansible $target --one-line -m ping; do
-    sleep 1
+n=1
+# while ! ansible $target --one-line -m ping; do
+while ! ssh -o StrictHostKeyChecking=no $target exit; do
+    sleep 1;
+    n=$((n+1))
+    if [ $n -gt 15 ]; then >&2 echo "can't access node $target"; exit 1; fi
 done
 
 #### 2. copy assets
