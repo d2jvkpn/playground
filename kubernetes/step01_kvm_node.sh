@@ -15,7 +15,7 @@ vm_src=$1; target=$2
 mkdir -p logs configs
 
 #### 1. create the first node
-if [ -z $(virsh list --all | awk -v vm=$target '$2==vm{print 1}') ]; then
+if [ -z "$(virsh list --all | awk -v vm=$target '$2==vm{print 1}')" ]; then
     bash ../kvm/src/virsh_clone.sh $vm_src $target
 fi
 
@@ -23,6 +23,8 @@ virsh net-dumpxml $KVM_Network |
   awk "/<host.*name='k8s-/{print}" |
   sed "s#^.*name='##; s#ip='##; s#/>##; s#'##g" |
   awk '{print $1, "ansible_host="$2, "ansible_port=22 ansible_user=ubuntu"}' > configs/kvm_k8s.ini
+
+virsh start $target || true
 
 while ! ansible $target --one-line -m ping; do
     sleep 1

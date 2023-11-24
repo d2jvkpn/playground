@@ -8,7 +8,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 KVM_Network=${KVM_Network:-default}
 vm_src=${vm_src:-ubuntu}
 
-# args: k8s-cp01 k8s-cp{02..03} k8s-node{01..04}
+# args: k8s-cp01 k8s-cp{02,03} k8s-node{01..04}
 [ $# -eq 0 ] && { >&2 echo "vm name(s) not provided"; exit 1;  }
 
 array=($*)
