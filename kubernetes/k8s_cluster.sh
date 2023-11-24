@@ -21,12 +21,16 @@ case $action in
       print "k8s_apps/images/"$NF".tar.gz";
     }' k8s_apps/k8s.yaml | xargs -i ls {} > /dev/null
 
-    command -v yq
-    command -v ansible
-    command -v virsh
+    {
+        command -v yq
+        command -v ansible
+        command -v virsh
+    } > /dev/null
     ;;
 
 "up")
+    bash $0 check
+
     mkdir -p logs
     echo "================================================================" >> logs/k8s_cluster_up.log
     trap on_exit EXIT
