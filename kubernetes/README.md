@@ -5,17 +5,12 @@
 # bash k8s_scripts/k8s_apps_downloads.sh
 # ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {}
 
-# ansible k8s_all --one-line -m shell -a 'echo "Hello, world!"'
-# ansible k8s_all[0] --one-line -m ping
-# ansible k8s_all[1:] --one-line -m ping
-# ansible k8s_all --one-line -m debug
-# ansible k8s_all[0] --list-hosts
+
+bash k8s_scripts/k8s_kvm_nodes.sh k8s-cp{01..03} k8s-node{01..04}
 
 while ! ansible k8s_all --one-line -m ping; do
     sleep 1
 done
-
-bash k8s_scripts/k8s_kvm.sh k8s-cp{01..03} k8s-node{01..04}
 ```
 
 #### 2. Configuration
@@ -47,7 +42,8 @@ ansible k8s_all -m file -a "path=./k8s_apps/data state=directory"
 ansible k8s_all -m copy --become -a "src=./k8s_apps/data/hosts.txt dest=./k8s_apps/data/"
 ansible k8s_all -m shell --become -a "cat ./k8s_apps/data/hosts.txt >> /etc/hosts"
 
-echo "$ingress_ip k8s.local" | sudo tee -a /etc/hosts
+[ -z "$(grep -w "k8s.local" /etc/hosts)" ] && \
+  echo "$ingress_ip k8s.local" | sudo tee -a /etc/hosts
 ```
 
 #### 3. K8s up
