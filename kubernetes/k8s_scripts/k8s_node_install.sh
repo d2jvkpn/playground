@@ -13,31 +13,37 @@ region=${region:-unknown}
 
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 
-#### 1. apt install
-apt-get update
-apt-get -y upgrade
-
-apt-get -y install apt-transport-https ca-certificates lsb-release gnupg pigz curl jq \
-  socat conntrack nfs-kernel-server nfs-common nftables etcd-client
-
-#### 2. apt k8s
+#### 1. set k8s repository
 # key_url=https://pkgs.k8s.io/core:/stable:/v1.28/deb
 ver=v${version%.*}
 
 key_url=https://pkgs.k8s.io/core:/stable:/$ver/deb
 key_file=/etc/apt/keyrings/kubernetes.$ver.gpg
 
-if [ ! -f $key_file ]; then
-    curl -fsSL $key_url/Release.key | sudo gpg --dearmor -o $key_file
-fi
+[ ! -f $key_file ] && curl -fsSL $key_url/Release.key | sudo gpg --dearmor -o $key_file
+echo "deb [signed-by=$key_file] $key_url /" | sudo tee /etc/apt/sources.list.d/kubernetes.$ver.list
 
-echo "deb [signed-by=$key_file] $key_url /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+#### 2. apt install
+function apt_install() {
+    apt-get update
+    apt-get -y upgrade
 
-apt-get update
+    apt-get -y install apt-transport-https ca-certificates lsb-release gnupg pigz curl jq \
+      socat conntrack nfs-kernel-server nfs-common nftables etcd-client
 
-# apt-mark unhold kubelet kubeadm kubectl
-apt-get install -y kubectl kubelet kubeadm
-apt-mark hold kubelet kubeadm kubectl
+    # apt-mark unhold kubelet kubeadm kubectl
+    apt-get install -y kubectl kubelet kubeadm
+    apt-mark hold kubelet kubeadm kubectl
+
+    return 0
+}
+
+n=1
+while ! apt_install; do
+   echo "...apt_install try again"
+   n=$((n+1))
+   if [ $n -gt 5 ]; then >&2 echo "apt_install failed"; exit 1; fi
+done
 
 # systemctl disable kubelet
 
