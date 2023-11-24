@@ -1,24 +1,15 @@
 #! /usr/bin/env bash
 set -eu -o pipefail
+
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
-
 set -x
 
+cp_node=$1; ingress_node=$2
 mkdir -p k8s_apps/data
 
 # cp_node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
 # cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
-
-cp_node=${cp_node:-k8s-cp01}
-ingress_node=${ingress_node:-k8s-node01}
-
-mkdir -p configs
-
-cat > configs/k8s_config.yaml << EOF
-cp_node: $cp_node
-ingress_node: $ingress_node
-EOF
 
 #### 1.
 cp_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$cp_node.ansible_host")

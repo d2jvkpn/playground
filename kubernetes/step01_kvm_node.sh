@@ -1,17 +1,16 @@
 #! /usr/bin/env bash
 set -eu -o pipefail
+
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
+# set -x
 
 KVM_Network=${KVM_Network:-default}
-vm_src=${vm_src:-ubuntu}
 
-# args: k8s-cp{01..03} k8s-node{01..04}
+# args: ubuntu k8s-cp01
 [ $# -eq 0 ] && { >&2 echo "vm name(s) not provided"; exit 1;  }
 
-array=($*)
-target=${array[@]:0:1}
-nodes=${array[@]:1}
+vm_src=$1; target=$2
 
 mkdir -p logs configs
 
@@ -53,52 +52,3 @@ ansible $target --forks 4 -m shell \
   -a "sudo import_local_image=true bash k8s_scripts/k8s_apps_install.sh"
 
 ansible $target -m file -a "path=./k8s_apps/images state=absent"
-
-#### 3. clone nodes
-for node in $nodes; do
-    [ ! -z $(virsh list --all | awk -v node=$node '$2==node{print 1}') ] && continue
-    bash ../kvm/src/virsh_clone.sh $target $node
-done
-
-#### 4. restart target node
-virsh start $target
-
-# while ! ansible k8s_all --one-line -m debug; do
-#     sleep 1
-# done
-
-for node in $nodes $target; do
-    while ! ssh -o StrictHostKeyChecking=no $node exit; do sleep 1; done
-done
-
-#### 5. generate configs/kvm_k8s.ini
-[ ! -s ansible.cfg ] && \
-cat > ansible.cfg <<EOF
-[defaults]
-inventory = ./configs/kvm_k8s.ini
-private_key_file = ~/.ssh/kvm/kvm.pem
-log_path = ./logs/ansible.log
-# roles_path = /path/to/roles
-EOF
-
-virsh net-dumpxml $KVM_Network |
-  awk "/<host.*name='k8s-/{print}" |
-  sed "s#^.*name='##; s#ip='##; s#/>##; s#'##g" |
-  awk '{print $2, $1}' > configs/kvm_k8s.txt
-
-[ -s configs/kvm_k8s.txt ] || { >&2 echo "k8s-xx not found!"; exit 1; }
-
-text=$(awk '{print $2, "ansible_host="$1, "ansible_port=22 ansible_user=ubuntu"}' configs/kvm_k8s.txt)
-
-cat > configs/kvm_k8s.ini <<EOF
-$text
-
-[k8s_all]
-$(echo "$text" | awk '$1!=""{print $1}')
-
-[k8s_cps]
-$(echo "$text" | awk '/^k8s-cp/{print $1}')
-
-[k8s_workers]
-$(echo "$text" | awk '/^k8s-node/{print $1}')
-EOF
