@@ -53,7 +53,6 @@ ansible $target -m shell -a "sudo bash k8s_scripts/k8s_node_install.sh $version"
 
 ansible $target -m shell -a "sudo bash k8s_scripts/k8s_apps_containerd.sh"
 
-ansible $target --forks 4 -m shell \
-  -a "sudo import_local_image=true bash k8s_scripts/k8s_apps_install.sh"
+ansible $target --forks 4 -m shell -a "sudo import_image=true bash k8s_scripts/k8s_apps_install.sh"
 
 ansible $target -m file -a "path=./k8s_apps/images state=absent"
