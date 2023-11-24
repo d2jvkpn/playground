@@ -37,7 +37,9 @@ case $action in
     bash $0 check
 
     mkdir -p logs
-    echo "================================================================" >> logs/k8s_cluster_up.log
+    echo "================================================================" \
+      >> logs/k8s_cluster_up.log
+
     trap up_on_exit EXIT
 
     date +"==> %FT%T%:z step01_kvm_node.sh" >> logs/k8s_cluster_up.log
@@ -68,4 +70,5 @@ case $action in
 *)
     >&2 echo "unknown action"
     exit 1
+    ;;
 esac

@@ -51,7 +51,7 @@ virsh net-dumpxml $KVM_Network |
 
 [ -s configs/kvm_k8s.txt ] || { >&2 echo "k8s-xx not found!"; exit 1; }
 
-text=$(awk '{print $2, "ansible_host="$1, "ansible_port=22 ansible_user=ubuntu"}' configs/kvm_k8s.txt)
+text=$(awk '{print $2,"ansible_host="$1,"ansible_port=22 ansible_user=ubuntu"}' configs/kvm_k8s.txt)
 
 cat > configs/kvm_k8s.ini <<EOF
 $text

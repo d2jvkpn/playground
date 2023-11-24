@@ -87,7 +87,7 @@ postgres_port=$(
     grep -w 5432 || true
 )
 
-[ -z "$postgres_port" ] &&
+[ -z "$postgres_port" ] && \
 kubectl -n ingress-nginx get services/ingress-nginx-controller -o yaml |
   yq eval '.spec.ports += [{"name":"postgres","protocol":"TCP","port":5432,"targetPort":5432}]' |
   kubectl apply -f -

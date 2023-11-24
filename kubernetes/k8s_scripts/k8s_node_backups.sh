@@ -17,7 +17,7 @@ kubectl get secrets -A -o yaml > k8s_apps/backups/secrets.$tag.yaml
 db=k8s_apps/backups/etcd_snapshot.$tag.db
 
 sudo ETCDCTL_API=3 etcdctl --endpoints=$endpoints  \
-  --cert=/etc/kubernetes/pki/etcd/server.crt  --key=/etc/kubernetes/pki/etcd/server.key  \
+  --cert=/etc/kubernetes/pki/etcd/server.crt  --key=/etc/kubernetes/pki/etcd/server.key \
   --cacert=/etc/kubernetes/pki/etcd/ca.crt snapshot save $db
 
 sudo ETCDCTL_API=3 etcdctl --write-out=table snapshot status $db

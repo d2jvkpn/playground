@@ -6,7 +6,6 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
 node_kind=$1
-
 yaml_file=${yaml_file:-k8s_apps/data/kubeadm-init.yaml}
 
 cp_endpoint=$(yq .cp_endpoint $yaml_file)

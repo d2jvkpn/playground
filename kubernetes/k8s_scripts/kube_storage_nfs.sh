@@ -8,9 +8,8 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # sudo apt update && apt -y upgrade && apt install -y nfs-kernel-server nfs-common
 
 # name=k8s-cp01 # node name as pv name
-name=$1
 # cap=10Gi
-cap=$2
+name=$1; cap=$2
 
 node_ip=$(ip route show default | awk '/default/ {print $9}')
 namespace=${namespace:-dev}
@@ -25,7 +24,7 @@ chmod 1777 /data/nfs
 
 record="$nfs *(rw,sync,no_root_squash,subtree_check)"
 
-[ -z "$(grep "^$nfs " /etc/exports)" ] &&
+[ -z "$(grep "^$nfs " /etc/exports)" ] && \
   echo "$record" | sudo tee -a /etc/exports
 
 sudo exportfs -ra

@@ -9,15 +9,15 @@ export DEBIAN_FRONTEND=nointeractive
 
 # version=1.28.2; node=node01
 # version=$(yq .version k8s_apps/k8s.yaml)
-version=$1; node=$2; step=$3
+version=$1; node=$2; action=$3
 
-case "$step" in
-"1")
+case "$action" in
+"1" | "drain")
     ## on a cp node
     kubectl get pod -A -o wide | grep $node
     kubectl drain $node --ignore-daemonsets
     ;;
-"2")
+"2" | "upgrade")
     ## on the worker node
     apt-get update
 
@@ -27,7 +27,7 @@ case "$step" in
     systemctl daemon-reload
     systemctl restart kubelet
     ;;
-"3")
+"3" | "uncordon")
     ## on a cp node
     kubectl uncordon $node
     ;;
