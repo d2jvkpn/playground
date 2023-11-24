@@ -3,7 +3,7 @@ check:
 
 up:
 	mkdir -p logs
-	echo "================" >> logs/k8s_up.log
+	echo "================================================================" >> logs/k8s_up.log
 
 	date +"==> %FT%T%:z: step01_kvm_nodes.sh" >> logs/k8s_up.log
 
@@ -19,3 +19,8 @@ up:
 
 	date +"==> %FT%T%:z: done" >> logs/k8s_up.log
 
+down:
+	ansible k8s_all -m shell --become -a 'shutdown now'
+
+erase:
+	awk '{print $2}' configs/kvm_k8s.txt | xargs -i ../kvm/src/virsh_delete.sh {}

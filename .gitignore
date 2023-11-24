@@ -6,3 +6,4 @@ target/
 *.ini
 docker-compose.yaml
 docker-compose.yml
+nohup.out

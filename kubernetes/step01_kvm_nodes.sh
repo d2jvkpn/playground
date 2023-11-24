@@ -63,8 +63,12 @@ done
 #### 4. restart target node
 virsh start $target
 
-while ! ansible k8s_all --one-line -m debug; do
-    sleep 1
+# while ! ansible k8s_all --one-line -m debug; do
+#     sleep 1
+# done
+
+for node in $nodes $target; do
+    while ! ssh -o StrictHostKeyChecking=no $node exit; do sleep 1; done
 done
 
 #### 5. generate configs/kvm_k8s.ini

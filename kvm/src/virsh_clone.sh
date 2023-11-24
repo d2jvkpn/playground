@@ -63,7 +63,7 @@ EOF
 
 # wait_for_tcp_port.sh $addr 22
 
-# ERROR: "System is booting up. Unprivileged users are not permitted to log in yet. Please come back later..."
+# ERROR: "System is booting up. Unprivileged users are not permitted to log in yet. Please come back later. For technical details, see pam_nologin(8)."
 while ! ssh -o StrictHostKeyChecking=no $target exit; do
     sleep 1
 done
