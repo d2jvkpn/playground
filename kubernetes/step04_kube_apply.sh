@@ -14,4 +14,5 @@ ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_tcp-services.sh postgre
 
 ansible $cp_node -m shell -a "sudo bash k8s_scripts/kube_apply_metrics-server.sh"
 
-rsync -arPv $cp_node:k8s_apps/data/ k8s_apps/data/
+# rsync -arPv $cp_node:k8s_apps/data/ k8s_apps/data/
+ansible $cp_node -m synchronize -a "mode=pull src=k8s_apps/data/ dest=./k8s_apps/data"

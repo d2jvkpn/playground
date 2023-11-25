@@ -29,7 +29,7 @@ case $action in
         command -v yq
         command -v ansible
         command -v virsh
-        command -v rsync
+        # command -v rsync
     } > /dev/null
     ;;
 
