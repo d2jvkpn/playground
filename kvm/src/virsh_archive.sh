@@ -17,22 +17,24 @@ mkdir -p data
 
 if [[ "$op" == "backup" ]]; then
     target=$2
-    out_zip=data/${target}_kvm_$(date +%FT%H-%M-%S.%N).zip
-    echo "==> backup $target to $out_zip"
+    out_file=data/${target}_kvm_$(date +%FT%H-%M-%S.%N).tgz
+    echo "==> backup $target to $out_file"
 
     virsh shutdown $target || true
     virsh dumpxml $target > data/$target.kvm.xml
     qemu-img convert -O raw /var/lib/libvirt/images/$target.qcow2 data/$target.kvm.raw
     # sudo chown $username:$username data/$target.kvm.raw
 
-    zip -j -r $out_zip data/$target.kvm.xml data/$target.kvm.raw
+    # zip -j -r $out_file data/$target.kvm.xml data/$target.kvm.raw
+    tar -I pigz -cf $out_file data/$target.kvm.xml data/$target.kvm.raw
     rm -f data/$target.kvm.xml data/$target.kvm.raw
-    echo "==> saved $out_zip"
+    echo "==> saved $out_file"
 elif [[ "$op" == "restore" ]]; then
-    zip_file=$2
-    target=$(basename $zip_file | sed 's/_kvm_[1-9]*.*//')
+    input=$2
+    target=$(basename $input_file | sed 's/_kvm_[1-9]*.*//')
 
-    unzip $zip_file -d data
+    # unzip $input_file -d data
+    pigz -dc $input_file | tar xf -
     echo "==> restore $target"
     ls data/$target.kvm.xml data/$target.kvm.raw > /dev/null
 
