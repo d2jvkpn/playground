@@ -17,7 +17,7 @@ mkdir -p data
 
 if [[ "$op" == "backup" ]]; then
     target=$2
-    out_file=data/${target}_kvm_$(date +%FT%H-%M-%S.%N).tgz
+    out_file=data/${target}.kvm.$(date +%S-%F).tgz
     echo "==> backup $target to $out_file"
 
     virsh shutdown $target || true
@@ -30,7 +30,7 @@ if [[ "$op" == "backup" ]]; then
     rm -f data/$target.kvm.xml data/$target.kvm.raw
     echo "==> saved $out_file"
 elif [[ "$op" == "restore" ]]; then
-    input=$2
+    input_file=$2
     target=$(basename $input_file | sed 's/_kvm_[1-9]*.*//')
 
     # unzip $input_file -d data
