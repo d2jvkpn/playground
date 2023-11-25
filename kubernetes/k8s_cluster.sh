@@ -33,7 +33,7 @@ case $action in
     } > /dev/null
     ;;
 
-"up")
+"create")
     bash $0 check
 
     mkdir -p logs
@@ -57,6 +57,13 @@ case $action in
     msg="done"
     ;;
 
+"start")
+    ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {} || true
+
+    while ! ansible k8s_all --one-line -m ping; do
+         sleep 1
+    done
+    ;;
 "down")
     ansible k8s_all -m shell --become -a 'shutdown now'
     ;;

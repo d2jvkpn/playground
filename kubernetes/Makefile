@@ -1,8 +1,11 @@
 check:
 	bash k8s_cluster.sh check
 
-up:
-	bash k8s_cluster.sh up
+create:
+	bash k8s_cluster.sh create
+
+start:
+	bash k8s_cluster.sh start
 
 down:
 	bash k8s_cluster.sh down
