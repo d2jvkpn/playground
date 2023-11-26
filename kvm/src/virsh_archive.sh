@@ -21,7 +21,15 @@ if [[ "$op" == "backup" ]]; then
     virsh dumpxml $target > data/$target.kvm.xml
 
     sudo cp /var/lib/libvirt/images/$target.qcow2 data/
-    tar -I pigz -cf $out_file data/$target.kvm.xml data/$target.qcow2
+    sudo chown -R $USER:$USER data
+
+    if [[ -s  ~/.ssh/kvm/$target.conf ]]; then
+        cp ~/.ssh/kvm/$target.conf data
+        tar -I pigz -cf $out_file data/$target.kvm.xml data/$target.qcow2 data/$target.conf
+    else
+        tar -I pigz -cf $out_file data/$target.kvm.xml data/$target.qcow2
+    fi
+
     rm -f data/$target.kvm.xml data/$target.qcow2
     echo "==> saved $out_file"
 elif [[ "$op" == "restore" ]]; then
@@ -33,8 +41,7 @@ elif [[ "$op" == "restore" ]]; then
     echo "==> restore $target"
     sudo mv data/$target.qcow2 /var/lib/libvirt/images/
 
-    virsh define data/$target.kvm.xml
-    rm -f data/$target.kvm.xml
+    virsh define data/$target.kvm.xml && rm -f data/$target.kvm.xml
 else
     >&2 echo "invalid operation"
     exit 1
