@@ -14,7 +14,7 @@ mkdir -p data
 
 if [[ "$op" == "backup" ]]; then
     target=$2
-    out_file=data/${target}.kvm.$(date +%S-%F).tgz
+    out_file=data/${target}.kvm.$(date +%s-%F).tgz
     echo "==> backup $target to $out_file"
 
     virsh shutdown $target || true

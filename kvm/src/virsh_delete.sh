@@ -14,8 +14,6 @@ else
     exit 0
 fi
 
-[[ $(id -u) -ne 0 ]] && { >&2 echo '''Please run as root!!!'; exit 1; }
-
 KVM_Network=${KVM_Network:-default}
 KVM_SSH_Dir=${KVM_SSH_Dir:-$HOME/.ssh/kvm}
 
@@ -34,7 +32,7 @@ while [[ $(virsh list --state-running | awk -v t=$target '$2==t{print 1}') == "1
 done
 echo ""
 
-rm $source_file
+sudo rm $source_file
 
 ##### virsh destroy $target
 virsh undefine $target 2>/dev/null || true
