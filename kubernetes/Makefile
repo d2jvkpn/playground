@@ -1,3 +1,6 @@
+download:
+	bash k8s_cluster.sh download
+
 check:
 	bash k8s_cluster.sh check
 
