@@ -15,11 +15,11 @@ function creation_on_exit() {
     cat $creation_log
 }
 
-function wait_until_shutoff() {
-    node=$1
+function vm_state_until() {
+    node=$1; state=$2
 
-    echo "==> shutting down $node"
-    while [[ "$(virsh domstate --domain $node | awk 'NR==1{print $0; exit}')" != "shut off" ]]; do
+    echo "==> vm_state_until: $node, $state"
+    while [[ "$(virsh domstate --domain "$node" | awk 'NR==1{print $0; exit}')" != "$state" ]]; do
         echo -n "."; sleep 1
     done
 
@@ -94,7 +94,7 @@ case $action in
     ansible k8s_all -m shell --become -a 'shutdown -h now' || true
 
     for node in $(awk '$2 !=""{print $2}' configs/k8s_hosts.txt); do
-        wait_until_shutoff $node
+        vm_state_until $node "shut off"
     done
     ;;
 
