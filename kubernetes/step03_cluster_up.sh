@@ -5,6 +5,7 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 set -x
 
+# cp_node=k8s-cp01; ingress_node=k8s-node01
 cp_node=$1; ingress_node=$2
 mkdir -p k8s_apps/data
 
@@ -21,15 +22,16 @@ ingress_ip=$(
 
 cat > ./k8s_apps/data/etc_hosts.txt << EOF
 
+#### kubernetes
 $cp_ip k8s-control-plane
 $ingress_ip k8s.local
-
-$(cat configs/kvm_k8s.txt)
+# ----
+$(cat configs/k8s_hosts.txt)
 EOF
 
 ansible k8s_all -m file -a "path=./k8s_apps/data state=directory"
-ansible k8s_all -m copy --become -a "src=./k8s_apps/data/etc_hosts.txt dest=./k8s_apps/data/"
-ansible k8s_all -m shell --become -a "cat ./k8s_apps/data/etc_hosts.txt >> /etc/hosts"
+ansible k8s_all -m copy --become -a "src=k8s_apps/data/etc_hosts.txt dest=./k8s_apps/data/"
+ansible k8s_all -m shell --become -a 'cat k8s_apps/data/etc_hosts.txt >> /etc/hosts'
 
 #### 2. k8s init and join the cluster
 ansible $cp_node -m shell --become -a "bash k8s_scripts/k8s_node_cp.sh k8s-control-plane:6443"

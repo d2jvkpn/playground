@@ -62,12 +62,13 @@ case $action in
          sleep 1
     done
     ;;
+
 "down")
-    ansible k8s_all -m shell --become -a 'shutdown now'
+    ansible k8s_all -m shell --become -a 'shutdown -h now'
     ;;
 
 "erase")
-    for node in $(awk '{print $2}' configs/kvm_k8s.txt); do
+    for node in $(awk '{print $2}' configs/k8s_hosts.txt); do
         bash ../kvm/src/virsh_delete.sh $node || true
     done
     ;;
