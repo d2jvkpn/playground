@@ -22,6 +22,7 @@ function vm_state_until() {
     while [[ "$(virsh domstate --domain "$node" | awk 'NR==1{print $0; exit}')" != "$state" ]]; do
         echo -n "."; sleep 1
     done
+    echo ""
 
     echo "==> successed: $node"
 }

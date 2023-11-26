@@ -17,6 +17,11 @@ fi
 KVM_Network=${KVM_Network:-default}
 KVM_SSH_Dir=${KVM_SSH_Dir:-$HOME/.ssh/kvm}
 
+if [[ $(id -u) -ne 0 ]]; then
+    >&2 echo "please run as sudo user"
+    exit 1
+fi
+
 # virsh dumpxml $target
 # virsh dumpxml --domain $target
 # virsh net-dumpxml $KVM_Network
@@ -32,7 +37,7 @@ while [[ $(virsh list --state-running | awk -v t=$target '$2==t{print 1}') == "1
 done
 echo ""
 
-sudo rm $source_file
+rm $source_file
 
 ##### virsh destroy $target
 virsh undefine $target 2>/dev/null || true
