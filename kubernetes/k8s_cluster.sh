@@ -18,13 +18,13 @@ function creation_on_exit() {
 function vm_state_until() {
     node=$1; state=$2
 
-    echo "==> vm_state_until: $node, $state"
+    echo "==> vm_state_until: node=$node, state=$state"
     while [[ "$(virsh domstate --domain "$node" | awk 'NR==1{print $0; exit}')" != "$state" ]]; do
         echo -n "."; sleep 1
     done
     echo ""
 
-    echo "==> successed: $node"
+    echo "==> successed: node=$node, state=$state"
 }
 
 case $action in
