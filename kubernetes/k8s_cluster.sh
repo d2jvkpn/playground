@@ -100,6 +100,8 @@ case $action in
     ;;
 
 "erase")
+    [[ $(id -u) -ne 0 ]] && { >&2 echo '''Please run as root!!!'; exit 1; }
+
     for node in $(awk '{print $2}' configs/k8s_hosts.txt); do
         bash ../kvm/src/virsh_delete.sh $node || true
     done

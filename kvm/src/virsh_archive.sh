@@ -8,10 +8,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 op=$1
 # username=$(whoami)
 
-if [ $(id -u) -ne 0 ]; then
-    >&2 echo "Please run as root"
-    exit 1
-fi
+[[ $(id -u) -ne 0 ]] && { >&2 echo '''Please run as root!!!'; exit 1; }
 
 mkdir -p data
 

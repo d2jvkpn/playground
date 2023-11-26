@@ -14,13 +14,10 @@ else
     exit 0
 fi
 
+[[ $(id -u) -ne 0 ]] && { >&2 echo '''Please run as root!!!'; exit 1; }
+
 KVM_Network=${KVM_Network:-default}
 KVM_SSH_Dir=${KVM_SSH_Dir:-$HOME/.ssh/kvm}
-
-if [[ $(id -u) -ne 0 ]]; then
-    >&2 echo "please run as sudo user"
-    exit 1
-fi
 
 # virsh dumpxml $target
 # virsh dumpxml --domain $target
