@@ -40,7 +40,7 @@ ansible $target --one-line -m copy -a "src=k8s_scripts dest=./"
 ansible $target --one-line -m copy -a "src=k8s_demos dest=./"
 # ansible $target --one-line --forks 2 -m copy -a "src=k8s_apps dest=./"
 # rsync -arPv ./k8s_apps $target:./
-ansible $cp_node -m synchronize -a "mode=push src=k8s_apps dest=./"
+ansible $target -m synchronize -a "mode=push src=k8s_apps dest=./"
 
 ansible $target -m shell --become \
   -a "swapoff --all && sed -i '/swap/d' /etc/fstab && rm -f /swap.img"

@@ -1,8 +1,14 @@
 check:
 	bash k8s_cluster.sh check
 
-create:
-	bash k8s_cluster.sh create
+create-mini:
+	bash k8s_cluster.sh create mini
+
+create-full:
+	bash k8s_cluster.sh create full
+
+list:
+	bash k8s_cluster.sh list
 
 start:
 	bash k8s_cluster.sh start
