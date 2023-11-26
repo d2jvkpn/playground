@@ -7,12 +7,12 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 action=$1
 
-msg="exit"
+creation_msg="exit"
+creation_log=k8s_cluster.log
 
-function up_on_exit() {
-    date +"==> %FT%T%:z $msg" >> logs/k8s_cluster_up.log
-
-    cat logs/k8s_cluster_up.log
+function creation_on_exit() {
+    date +"==> %FT%T%:z $creation_msg" >> $creation_log
+    cat $creation_log
 }
 
 case $action in
@@ -37,24 +37,22 @@ case $action in
     bash $0 check
 
     mkdir -p logs
-    echo "================================================================" \
-      >> logs/k8s_cluster_up.log
+    echo "================================================================" >> $creation_log
+    trap creation_on_exit EXIT
 
-    trap up_on_exit EXIT
-
-    date +"==> %FT%T%:z step01_kvm_node.sh" >> logs/k8s_cluster_up.log
+    date +"==> %FT%T%:z step01_kvm_node.sh" >> $creation_log
     bash step01_kvm_node.sh ubuntu k8s-cp01
 
-    date +"==> %FT%T%:z step02_clone_nodes.sh" >> logs/k8s_cluster_up.log
+    date +"==> %FT%T%:z step02_clone_nodes.sh" >> $creation_log
     bash step02_clone_nodes.sh k8s-cp01 k8s-cp{02,03} k8s-node{01..04}
 
-    date +"==> %FT%T%:z step03_cluster_up.sh" >> logs/k8s_cluster_up.log
+    date +"==> %FT%T%:z step03_cluster_up.sh" >> $creation_log
     bash step03_cluster_up.sh k8s-cp01 k8s-node01
 
-    date +"==> %FT%T%:z step04_kube_apply.sh" >> logs/k8s_cluster_up.log
+    date +"==> %FT%T%:z step04_kube_apply.sh" >> $creation_log
     bash step04_kube_apply.sh k8s-cp01 k8s-node01
 
-    msg="done"
+    creation_msg="done"
     ;;
 
 "start")
