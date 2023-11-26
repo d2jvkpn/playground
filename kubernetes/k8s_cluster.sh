@@ -15,6 +15,16 @@ function creation_on_exit() {
     cat $creation_log
 }
 
+function wait_until_shutoff() {
+    node=$1
+
+    echo "==> shutting down $node"
+    while [[ "$(virsh domstate --domain $node | awk 'NR==1{print $0; exit}')" != "shut off" ]]; do
+        echo -n "."; sleep 1
+    done
+    echo "==> successed: $node"
+}
+
 case $action in
 "check")
     ls k8s_apps/{k8s.yaml,kube-flannel.yaml} \
@@ -64,7 +74,11 @@ case $action in
     ;;
 
 "down")
-    ansible k8s_all -m shell --become -a 'shutdown -h now'
+    ansible k8s_all -m shell --become -a 'shutdown -h now' || true
+
+    for node in $(awk '$2 !=""{print $2}' configs/k8s_hosts.txt); do
+        wait_until_shutoff $node
+    done
     ;;
 
 "erase")
