@@ -19,10 +19,12 @@ if [[ "$op" == "backup" ]]; then
 
     virsh shutdown $target || true
     virsh dumpxml $target > data/$target.kvm.xml
+    qemu-img convert -O raw /var/lib/libvirt/images/$target.qcow2 data/$target.kvm.raw
+    # sudo chown $username:$username data/$target.kvm.raw
 
-    sudo cp /var/lib/libvirt/images/$target.qcow2 data/
-    tar -I pigz -cf $out_file data/$target.kvm.xml data/$target.qcow2
-    rm -f data/$target.kvm.xml data/$target.qcow2
+    # zip -j -r $out_file data/$target.kvm.xml data/$target.kvm.raw
+    tar -I pigz -cf $out_file data/$target.kvm.xml data/$target.kvm.raw
+    rm -f data/$target.kvm.xml data/$target.kvm.raw
     echo "==> saved $out_file"
 elif [[ "$op" == "restore" ]]; then
     input_file=$2
@@ -31,10 +33,11 @@ elif [[ "$op" == "restore" ]]; then
     # unzip $input_file -d data
     pigz -dc $input_file | tar xf -
     echo "==> restore $target"
-    sudo mv data/$target.qcow2 /var/lib/libvirt/images/
+    ls data/$target.kvm.xml data/$target.kvm.raw > /dev/null
 
     virsh define data/$target.kvm.xml
-    rm -f data/$target.kvm.xml
+    qemu-img convert -O qcow2 data/$target.kvm.raw /var/lib/libvirt/images/$target.qcow2
+    rm -f data/$target.kvm.xml data/$target.kvm.raw
 else
     >&2 echo "invalid operation"
     exit 1
@@ -42,15 +45,7 @@ fi
 
 exit 0
 
-####
 virt-clone --original ubuntu --name ubuntu-node --file ubuntu-node.qcow2
 
 virt-install --name ubuntu --import --os-variant=generic --network default --nograph \
   --memory 2048 --vcpus 2 --disk /var/lib/libvirt/images/ubuntu-node.qcow2,bus=sata
-
-####
-target=ubuntu
-
-qemu-img convert -O raw /var/lib/libvirt/images/$target.qcow2 data/$target.kvm.raw
-
-qemu-img convert -O qcow2 data/$target.kvm.raw /var/lib/libvirt/images/$target.qcow2
