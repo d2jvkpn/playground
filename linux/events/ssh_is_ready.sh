@@ -11,7 +11,7 @@ timeout_secs=${2:-0}
 n=1
 # while ! ansible $target --one-line -m ping; do
 while ! ssh -o StrictHostKeyChecking=no $target exit; do
-    sleep 1;
+    sleep 1
 
     n=$((n+1))
     if [[ "$timeout_secs" -gt 0 && $n -gt "$timeout_secs" ]]; then

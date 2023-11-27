@@ -8,7 +8,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 KVM_Network=${KVM_Network:-default}
 
 # args: ubuntu k8s-cp01
-[ $# -eq 0 ] && { >&2 echo "vm name(s) not provided"; exit 1;  }
+[ $# -eq 0 ] && { >&2 echo "vm name(s) not provided"; exit 1; }
 
 vm_src=$1; target=$2
 
@@ -27,7 +27,7 @@ virsh net-dumpxml $KVM_Network |
 n=1
 # while ! ansible $target --one-line -m ping; do
 while ! ssh -o StrictHostKeyChecking=no $target exit; do
-    sleep 1;
+    sleep 1
 
     n=$((n+1))
     [ $n -gt 15 ] && { >&2 echo "can't access node $target"; exit 1; }

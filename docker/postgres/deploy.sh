@@ -72,8 +72,9 @@ n=0; abort=""
 echo "==> container $container: the database is initializing"
 
 while ! docker exec $container pg_isready -U postres -d postres &> /dev/null; do
-    sleep 1; echo -n "."; n=$((n+1))
-    [ $((n%60)) -eq 0 ] && echo ""
+    sleep 1; echo -n "."
+
+    n=$((n+1)); [ $((n%60)) -eq 0 ] && echo ""
     [ $n -ge 300 ] && { abort="true"; break; }
 done
 echo -e "\n==> $((n/60))m$((n%60))s elapsed\n"

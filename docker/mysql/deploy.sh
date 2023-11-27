@@ -70,8 +70,9 @@ echo "==> container $container: the database is initializing"
 # while [ $(docker logs $container 2>&1 | grep -c "InnoDB initialization has ended.") -eq 0 ]; do
 while ! printf "$password\n" | docker exec -i $container \
   mysql -u root -p -e "select 'Hello, world'" &> /dev/null; do
-    sleep 1; echo -n "."; n=$((n+1))
-    [ $((n%60)) -eq 0 ] && echo ""
+    sleep 1; echo -n "."
+
+    n=$((n+1)); [ $((n%60)) -eq 0 ] && echo ""
     [ $n -ge 300 ] && { abort="true"; break; }
 done
 echo -e "\n==> $((n/60))m$((n%60))s elapsed\n"
