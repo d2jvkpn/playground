@@ -7,8 +7,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 op=$1
 # username=$(whoami)
-
-[[ $(id -u) -ne 0 ]] && { >&2 echo '''Please run as root!!!'; exit 1; }
+# [[ $(id -u) -ne 0 ]] && { >&2 echo '''Please run as root!!!'; exit 1; }
 
 mkdir -p data
 
@@ -18,30 +17,26 @@ if [[ "$op" == "backup" ]]; then
     echo "==> backup $target to $out_file"
 
     virsh shutdown $target || true
-    virsh dumpxml $target > data/$target.kvm.xml
+    virsh dumpxml $target > data/$target.xml
 
     sudo cp /var/lib/libvirt/images/$target.qcow2 data/
-    sudo chown -R $USER:$USER data
+    sudo chown $USER:$USER data/$target.qcow2
 
-    if [[ -s  ~/.ssh/kvm/$target.conf ]]; then
-        cp ~/.ssh/kvm/$target.conf data
-        tar -I pigz -cf $out_file data/$target.kvm.xml data/$target.qcow2 data/$target.conf
-    else
-        tar -I pigz -cf $out_file data/$target.kvm.xml data/$target.qcow2
-    fi
+    tar -I pigz -C data -cf $out_file $target.xml $target.qcow2
+    rm -f data/$target.xml data/$target.qcow2
 
-    rm -f data/$target.kvm.xml data/$target.qcow2
     echo "==> saved $out_file"
 elif [[ "$op" == "restore" ]]; then
     input_file=$2
-    target=$(basename $input_file | sed 's/.kvm.[1-9]*.*//')
+    target=$(basename $input_file | sed 's/.kvm.*$//')
 
     # unzip $input_file -d data
-    pigz -dc $input_file | tar xf -
+    pigz -dc $input_file | tar xf -C data -
+    ls data/$target.xml data/$target.qcow2 > /dev/null
+
     echo "==> restore $target"
     sudo mv data/$target.qcow2 /var/lib/libvirt/images/
-
-    virsh define data/$target.kvm.xml && rm -f data/$target.kvm.xml
+    virsh define data/$target.xml && rm -f data/$target.xml
 else
     >&2 echo "invalid operation"
     exit 1
