@@ -22,7 +22,7 @@ fi
 virsh net-dumpxml $KVM_Network |
   awk "/<host.*name='k8s-/{print}" |
   sed "s#^.*name='##; s#ip='##; s#/>##; s#'##g" |
-  awk '{print $1, "ansible_host="$2, "ansible_port=22 ansible_user=ubuntu"}' > configs/kvm_k8s.ini
+  awk '{print $1, "ansible_host="$2, "ansible_port=22 ansible_user=ubuntu"}' > configs/k8s_hosts.ini
 
 n=1
 # while ! ansible $target --one-line -m ping; do

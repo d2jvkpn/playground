@@ -36,11 +36,11 @@ for node in $nodes $target; do
     done
 done
 
-#### 2. generate configs/kvm_k8s.ini
+#### 2. generate configs/k8s_hosts.ini
 [ ! -s ansible.cfg ] && \
 cat > ansible.cfg <<EOF
 [defaults]
-inventory = ./configs/kvm_k8s.ini
+inventory = ./configs/k8s_hosts.ini
 private_key_file = ~/.ssh/kvm/kvm.pem
 log_path = ./logs/ansible.log
 # roles_path = /path/to/roles
@@ -58,7 +58,7 @@ text=$(
 )
 
 
-cat > configs/kvm_k8s.ini <<EOF
+cat > configs/k8s_hosts.ini <<EOF
 $text
 
 [k8s_all]
@@ -71,11 +71,11 @@ $(echo "$text" | awk '/^k8s-cp/{print $1}')
 $(echo "$text" | awk '/^k8s-node/{print $1}')
 EOF
 
-cat configs/kvm_k8s.ini
+cat configs/k8s_hosts.ini
 
 exit
 
-cat < configs/kvm_k8s.ini << EOF
+cat < configs/k8s_hosts.ini << EOF
 k8s-cp01 ansible_host=192.168.122.11 ansible_port=22 ansible_user=ubuntu
 k8s-cp02 ansible_host=192.168.122.12 ansible_port=22 ansible_user=ubuntu
 k8s-cp03 ansible_host=192.168.122.13 ansible_port=22 ansible_user=ubuntu
