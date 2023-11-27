@@ -5,13 +5,14 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
-vm_source=$1
+vm_src=$1
+shutdown_vm=${shutdown_vm:-"true"}
 
 if [ $# -gt 2 ]; then
     # recursion
     shift
     for target in $*; do
-        bash $0 $vm_source $target
+        bash $0 $vm_src $target
     done
     exit 0
 else
@@ -24,20 +25,27 @@ KVM_SSH_Dir=${KVM_SSH_Dir:-$HOME/.ssh/kvm}
 base=$(basename $KVM_SSH_Dir)
 ssh_key="$KVM_SSH_Dir/$base.pem"
 
-echo "==> Cloning $vm_source into $target, KVM_User: $KVM_User, ssh_key: $ssh_key"
+function vm_state_until() {
+    node=$1; state=$2
+
+    echo "==> vm_state_until: node=$node, state=$state"
+    while [[ "$(virsh domstate --domain "$node" | awk 'NR==1{print $0; exit}')" != "$state" ]]; do
+        echo -n "."; sleep 1
+    done
+    echo ""
+
+    echo "==> successed: node=$node, state=$state"
+}
+
+echo "==> Cloning $vm_src into $target, KVM_User: $KVM_User, ssh_key: $ssh_key"
 
 ####
-echo "==> Shutting down $vm_source"
-virsh shutdown $vm_source 2>/dev/null || true
+echo "==> Shutting down $vm_src"
+virsh shutdown $vm_src 2>/dev/null || true
+vm_state_until $vm_src "shut off"
 
-while [[ "$(virsh domstate --domain $vm_source | awk 'NR==1{print $0; exit}')" != "shut off" ]]; do
-    echo -n "."; sleep 1
-done
-echo ""
-echo "==> VM $vm_source is shut off"
-
-virt-clone --original $vm_source --name $target --file /var/lib/libvirt/images/$target.qcow2
-# virt-clone --original $vm_source --vm_source $target --auto-clone
+virt-clone --original $vm_src --name $target --file /var/lib/libvirt/images/$target.qcow2
+# virt-clone --original $vm_src --vm_src $target --auto-clone
 
 ####
 bash ${_path}/virsh_fix_ip.sh $target
@@ -76,4 +84,9 @@ ssh-copy-id -i $ssh_key $target
 
 ssh -t $target "sudo hostnamectl set-hostname $target"
 ssh -t $target 'sudo sed -i "2s/^127.0.1.1 .*$/127.0.1.1 '$target'/" /etc/hosts'
-# virsh shutdown $target
+
+####
+if [[ "$shutdown_vm" != "false" ]]; then
+    virsh shutdown $target
+    vm_state_until $target "shut off"
+fi

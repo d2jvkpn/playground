@@ -15,18 +15,6 @@ function creation_on_exit() {
     cat $creation_log
 }
 
-function vm_state_until() {
-    node=$1; state=$2
-
-    echo "==> vm_state_until: node=$node, state=$state"
-    while [[ "$(virsh domstate --domain "$node" | awk 'NR==1{print $0; exit}')" != "$state" ]]; do
-        echo -n "."; sleep 1
-    done
-    echo ""
-
-    echo "==> successed: node=$node, state=$state"
-}
-
 case $action in
 "download")
     bash k8s_scripts/k8s_apps_download.sh
@@ -99,13 +87,13 @@ case $action in
     ansible k8s_all -m shell --become -a 'shutdown -h now' || true
 
     for node in $(awk '$2 !=""{print $2}' configs/k8s_hosts.txt); do
-        vm_state_until $node "shut off"
+        bash ../kvm/virsh_wait_until.sh $node "shut off"
     done
     ;;
 
 "erase")
     for node in $(awk '{print $2}' configs/k8s_hosts.txt); do
-        bash ../kvm/src/virsh_delete.sh $node || true
+        bash ../kvm/virsh_delete.sh $node || true
     done
     ;;
 

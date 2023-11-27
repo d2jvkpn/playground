@@ -19,9 +19,11 @@ mkdir -p logs configs
 #### 1. clone nodes
 for node in $nodes; do
     [ ! -z $(virsh list --all | awk -v node=$node '$2==node{print 1}') ] && continue
-    bash ../kvm/src/virsh_clone.sh $target $node
+    echo "==> cloning $target into node"
+    shutdown_vm=false bash ../kvm/virsh_clone.sh $target $node
 done
 
+echo "==> start $target"
 virsh start $target || true
 sleep 5
 
@@ -68,6 +70,8 @@ $(echo "$text" | awk '/^k8s-cp/{print $1}')
 [k8s_workers]
 $(echo "$text" | awk '/^k8s-node/{print $1}')
 EOF
+
+cat configs/kvm_k8s.ini
 
 exit
 
