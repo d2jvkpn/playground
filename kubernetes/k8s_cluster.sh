@@ -6,6 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
 action=$1
+base_vm=${base_vm:-ubuntu}
 
 creation_msg="exit"
 creation_log=logs/k8s_cluster.log
@@ -29,12 +30,25 @@ case $action in
       print "k8s_apps/images/"$NF".tar.gz";
     }' k8s_apps/k8s.yaml | xargs -i ls {} > /dev/null
 
-    {
-        command -v yq
-        command -v ansible
-        command -v virsh
-        # command -v rsync
-    } > /dev/null
+    { command -v yq; command -v ansible; command -v virsh; } > /dev/null
+    # command -v rsync
+
+    ls ~/.ssh/kvm/$base_vm.conf > /dev/null
+
+    virsh start $base_vm
+    bash ../kvm/virsh_wait_until.sh $base_vm "running" 60
+
+    n=1
+    while ! ssh -o StrictHostKeyChecking=no $base_vm exit; do
+        sleep 1
+
+        n=$((n+1))
+        [ $n -gt 5 ] && { >&2 echo "ssh can't access vm $base_vm"; exit 1; }
+    done
+    echo "==> ssh $base_vm: ok"
+
+    virsh shutdown $base_vm
+    bash ../kvm/virsh_wait_until.sh $base_vm "shut off"
     ;;
 
 "create")
@@ -44,20 +58,20 @@ case $action in
         exit 1
     fi
 
-    bash $0 check
+    # bash $0 check
 
     mkdir -p logs
     echo "================================================================" >> $creation_log
     trap creation_on_exit EXIT
 
     date +"==> %FT%T%:z step01_kvm_node.sh" >> $creation_log
-    bash step01_kvm_node.sh ubuntu k8s-cp01
+    bash step01_kvm_node.sh $base_vm k8s-cp01
 
     date +"==> %FT%T%:z step02_clone_nodes.sh" >> $creation_log
 
     if [[ "$mode" = "mini" ]]; then
         bash step02_clone_nodes.sh k8s-cp01 k8s-cp02 k8s-node{01..02}
-    else
+    else # [[ "$mode" = "full" ]]
         bash step02_clone_nodes.sh k8s-cp01 k8s-cp{02,03} k8s-node{01..04}
     fi
 

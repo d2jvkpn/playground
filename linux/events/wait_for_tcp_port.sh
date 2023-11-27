@@ -4,7 +4,7 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 host=$1; port=$2
-timeout_secs=${3:-0}
+timeout_secs=${3:-300}
 
 echo "==> Waiting for TCP $host:$port to open..."
 
