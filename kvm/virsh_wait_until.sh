@@ -15,7 +15,7 @@ while [[ "$(virsh domstate --domain "$node" | awk 'NR==1{print $0; exit}')" != "
 
     n=$((n+1))
     if [[ "$timeout_secs" -gt 0 && $n -gt "$timeout_secs" ]]; then
-        >&2 echo 'virsh_wait_until abort'
+        >&2 echo 'virsh_wait_until abort!!!'
         exit 1
     fi
 done
