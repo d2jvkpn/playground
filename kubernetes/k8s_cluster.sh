@@ -21,6 +21,7 @@ case $action in
     bash k8s_scripts/k8s_apps_download.sh
     ls -al k8s_apps
     ;;
+
 "check")
     ls k8s_apps/{k8s.yaml,kube-flannel.yaml} \
       k8s_apps/{ingress-nginx_cloud.yaml,metrics-server_components.yaml} > /dev/null
