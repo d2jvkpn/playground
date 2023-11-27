@@ -31,7 +31,7 @@ elif [[ "$op" == "restore" ]]; then
     target=$(basename $input_file | sed 's/.kvm.*$//')
 
     # unzip $input_file -d data
-    pigz -dc $input_file | tar xf -C data -
+    tar -I pigz -xf $input_file -C data
     ls data/$target.xml data/$target.qcow2 > /dev/null
 
     echo "==> restore $target"
