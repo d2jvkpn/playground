@@ -7,12 +7,11 @@ url=$1
 timeout_secs=${2:-300}
 curl_args=${curl_args:-""}
 
-n=1
-# --connect-timeout
-
 echo "==> $(date +%FT%T%:z) http_check start: timeout_secs=$timeout_secs, curl_args=\"$curl_args\""
 
-while [[ $(2>&1 curl -s -I --max-time 3 $url $curl_args | awk 'NR==1{print $2; exit}') != "200" ]]; do
+n=1 # --connect-timeout
+while [[ $(2>&1 curl -s -I --max-time 3 $url $curl_args | awk 'NR==1{print $2; exit}') != "200" ]];
+    do
     sleep 1; echo -n "."
 
     n=$((n+1)); [ $((n%60)) -eq 0 ] && echo ""
