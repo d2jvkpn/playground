@@ -32,7 +32,7 @@ while [[ $(virsh list --state-running | awk -v t=$target '$2==t{print 1}') == "1
 done
 echo ""
 
-sudo rm $source_file
+sudo rm -f $source_file
 
 ##### virsh destroy $target
 virsh undefine $target 2>/dev/null || true
