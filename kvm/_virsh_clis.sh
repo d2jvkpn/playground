@@ -23,7 +23,7 @@ lsblk
 pvs
 vgdisplay
 fdisk -l | grep -- "--lv"
-lvextend -L +10G /dev/mapper/ubuntu--vg-ubuntu--lv
+lvextend -L +14G /dev/mapper/ubuntu--vg-ubuntu--lv
 resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
 
 #### 2. more vrish commands

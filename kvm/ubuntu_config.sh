@@ -7,12 +7,8 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 username=$1
 
-if [ $(id -u) -ne 0 ]; then
-    >&2 echo "Please run as root"
-    exit 1
-fi
-
 export DEBIAN_FRONTEND=noninteractive
+[ $(id -u) -ne 0 ] && { >&2 echo "Please run as root"; exit 1; }
 
 #### config
 # hostnamectl hostname node
@@ -20,9 +16,9 @@ export DEBIAN_FRONTEND=noninteractive
 
 # root: bash vm_config.sh ubuntu
 
-mkdir -p ~/Apps/bin ~/.local/bin
+mkdir -p /home/$username/Apps/bin /home/$username/.local/bin
 
-cat > ~/.bash_aliases <<'EOF'
+cat > /home/$username/.bash_aliases <<'EOF'
 # path: ~/.bash_aliases
 
 export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
@@ -30,22 +26,16 @@ export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
 export PROMPT_DIRTRIM=2
 export PATH=~/.local/bin:$PATH
 
-for d in $(ls -d ~/Apps/*/ 2>/dev/null); do
+for d in $(ls -d ~/Apps/*/ /opt/*/ 2>/dev/null); do
     d=${d%/}
     [ -d $d/bin ] && d=$d/bin
-    export PATH=$d:$PATH
-done
-
-for d in $(ls -d /opt/*/ 2> /dev/null); do
-    d=${d%/}
-    [[ -d $d/bin ]] && d=$d/bin
     export PATH=$d:$PATH
 done
 EOF
 
 chown -R $username:$username /home/$username
 
-echo "$username ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$username
+echo "$username ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/$username
 # echo -e "\n\n\nPermitRootLogin yes" >> /etc/ssh/sshd_config
 
 #### disable ads

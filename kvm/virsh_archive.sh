@@ -23,7 +23,8 @@ case "$op" in
     sudo cp /var/lib/libvirt/images/$target.qcow2 data/
     sudo chown $USER:$USER data/$target.qcow2
 
-    tar -I pigz -C data -cf $out_file $target.xml $target.qcow2
+    tar -I pigz -C data -cf $out_file.temp $target.xml $target.qcow2
+    mv $out_file.temp $out_file
     rm -f data/$target.xml data/$target.qcow2
 
     echo "==> saved $out_file"
@@ -57,6 +58,6 @@ virt-install --name ubuntu --import --os-variant=generic --network default --nog
 ####
 target=ubuntu
 
-qemu-img convert -O raw /var/lib/libvirt/images/$target.qcow2 data/$target.kvm.raw
+sudo qemu-img convert -O raw /var/lib/libvirt/images/$target.qcow2 data/$target.raw
 
-qemu-img convert -O qcow2 data/$target.kvm.raw /var/lib/libvirt/images/$target.qcow2
+sudo qemu-img convert -O qcow2 data/$target.raw data/$target.qcow2
