@@ -11,7 +11,8 @@ op=$1
 
 mkdir -p data
 
-if [[ "$op" == "backup" ]]; then
+case "$op" in
+"backup")
     target=$2
     out_file=data/${target}.kvm.$(date +%s-%F).tgz
     echo "==> backup $target to $out_file"
@@ -26,7 +27,8 @@ if [[ "$op" == "backup" ]]; then
     rm -f data/$target.xml data/$target.qcow2
 
     echo "==> saved $out_file"
-elif [[ "$op" == "restore" ]]; then
+    ;;
+"restore")
     input_file=$2
     target=$(basename $input_file | sed 's/.kvm.*$//')
 
@@ -37,10 +39,12 @@ elif [[ "$op" == "restore" ]]; then
     echo "==> restore $target"
     sudo mv data/$target.qcow2 /var/lib/libvirt/images/
     virsh define data/$target.xml && rm -f data/$target.xml
-else
+    ;;
+*)
     >&2 echo "invalid operation"
     exit 1
-fi
+    ;;
+esac
 
 exit 0
 
