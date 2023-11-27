@@ -96,7 +96,7 @@ case $action in
     ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {} || true
 
     while ! ansible k8s_all --one-line -m ping; do
-         sleep 1
+        sleep 1
     done
     ;;
 
