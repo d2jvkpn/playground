@@ -22,7 +22,12 @@ for f in $(ls k8s_apps/images/*.tar.gz); do
     pigz -dc $f | sudo ctr -n=k8s.io image import -
 done
 
-#### 3. nerdctl
+#### 3. apt
+apt clean && apt autoclean
+apt remove && apt autoremove
+dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {}
+
+#### 4. nerdctl
 # sudo crictl images
 # tar -xf k8s_apps/nerdctl-*-linux-amd64.tar.gz -C /opts/
 # mv /opts/nerdctl-*-linux-amd64/libexec/cni /opt/
