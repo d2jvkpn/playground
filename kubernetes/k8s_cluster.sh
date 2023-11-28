@@ -13,7 +13,6 @@ creation_log=logs/k8s_cluster.log
 
 function creation_on_exit() {
     date +"==> %FT%T%:z $creation_msg" >> $creation_log
-    cat $creation_log
 }
 
 case $action in
@@ -23,6 +22,11 @@ case $action in
     ;;
 
 "check")
+    ####
+    { command -v yq; command -v ansible; command -v virsh; } > /dev/null
+    # command -v rsync
+
+    ####
     ls k8s_apps/{k8s.yaml,kube-flannel.yaml} \
       k8s_apps/{ingress-nginx_cloud.yaml,metrics-server_components.yaml} > /dev/null
 
@@ -33,9 +37,7 @@ case $action in
       print "k8s_apps/images/"$NF".tar.gz";
     }' k8s_apps/k8s.yaml | xargs -i ls {} > /dev/null
 
-    { command -v yq; command -v ansible; command -v virsh; } > /dev/null
-    # command -v rsync
-
+    ####
     ls ~/.ssh/kvm/$base_vm.conf > /dev/null
 
     virsh start $base_vm
@@ -46,12 +48,12 @@ case $action in
         sleep 1
 
         n=$((n+1))
-        [ $n -gt 5 ] && { >&2 echo "ssh can't access vm $base_vm"; exit 1; }
+        [ $n -gt 30 ] && { >&2 echo "ssh can't access vm $base_vm"; exit 1; }
     done
     echo "==> ssh $base_vm: ok"
 
     virsh shutdown $base_vm
-    bash ../kvm/virsh_wait_until.sh $base_vm "shut off"
+    bash ../kvm/virsh_wait_until.sh $base_vm "shut off" 180
     ;;
 
 "create")
@@ -95,8 +97,11 @@ case $action in
 "start")
     ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {} || true
 
+    n=1
     while ! ansible k8s_all --one-line -m ping; do
         sleep 1
+        n=$((n+1))
+        [ $n -gt 180 ] && { >&2 echo "failed to start virtual machines"; exit 1; }
     done
     ;;
 
@@ -104,7 +109,7 @@ case $action in
     ansible k8s_all -m shell --become -a 'shutdown -h now' || true
 
     for node in $(awk '$2 !=""{print $2}' configs/k8s_hosts.txt); do
-        bash ../kvm/virsh_wait_until.sh $node "shut off"
+        bash ../kvm/virsh_wait_until.sh $node "shut off" 180
     done
     ;;
 

@@ -27,10 +27,12 @@ echo "==> Source file: $source_file"
 
 virsh shutdown $target 2>/dev/null || true
 
-while [[ $(virsh list --state-running | awk -v t=$target '$2==t{print 1}') == "1" ]]; do
-    sleep 1 && echo -n .
-done
-echo ""
+# while [[ $(virsh list --state-running | awk -v t=$target '$2==t{print 1}') == "1" ]]; do
+#     sleep 1 && echo -n .
+# done
+# echo ""
+
+bash ${_path}/virsh_wait_until.sh $target "shut off" 180
 
 sudo rm -f $source_file
 
@@ -43,4 +45,4 @@ virsh net-destroy $KVM_Network
 virsh net-start $KVM_Network
 
 rm $KVM_Network.xml
-rm $KVM_SSH_Dir/$target.conf
+[ -f $KVM_SSH_Dir/$target.conf ] && rm -f $KVM_SSH_Dir/$target.conf

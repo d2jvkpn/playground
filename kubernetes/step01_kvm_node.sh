@@ -30,7 +30,7 @@ while ! ssh -o StrictHostKeyChecking=no $target exit; do
     sleep 1
 
     n=$((n+1))
-    [ $n -gt 15 ] && { >&2 echo "can't access node $target"; exit 1; }
+    [ $n -gt 30 ] && { >&2 echo "can't access node $target"; exit 1; }
 done
 
 #### 2. copy assets
@@ -60,4 +60,4 @@ ansible $target -m file -a "path=./k8s_apps/images state=absent"
 
 #### 4. shutdown
 virsh shutdown $target
-bash ../kvm/virsh_wait_until.sh $target "shut off"
+bash ../kvm/virsh_wait_until.sh $target "shut off" 180

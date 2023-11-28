@@ -24,8 +24,9 @@ while [[ -z "$addr" ]]; do
     )
 
     sleep 1 && echo -n "."
-    n=$((n+1))
-    [ $((n % 60 )) == 0 ] && echo ""
+
+    n=$((n+1)); [ $((n % 60 )) == 0 ] && echo ""
+    [ $n -gt 180 ] && { >&2 echo "failed to get ip of $target"; exit 1; }
 done
 echo ""
 echo "==> Got ip address: $addr"

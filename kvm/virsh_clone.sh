@@ -25,24 +25,12 @@ KVM_SSH_Dir=${KVM_SSH_Dir:-$HOME/.ssh/kvm}
 base=$(basename $KVM_SSH_Dir)
 ssh_key="$KVM_SSH_Dir/$base.pem"
 
-function vm_state_until() {
-    node=$1; state=$2
-
-    echo "==> vm_state_until: node=$node, state=$state"
-    while [[ "$(virsh domstate --domain "$node" | awk 'NR==1{print $0; exit}')" != "$state" ]]; do
-        echo -n "."; sleep 1
-    done
-    echo ""
-
-    echo "==> successed: node=$node, state=$state"
-}
-
 echo "==> Cloning $vm_src into $target, KVM_User: $KVM_User, ssh_key: $ssh_key"
 
 ####
 echo "==> Shutting down $vm_src"
 virsh shutdown $vm_src 2>/dev/null || true
-vm_state_until $vm_src "shut off"
+bash ${_path}/virsh_wait_until.sh $vm_src "shut off" 180
 
 virt-clone --original $vm_src --name $target --file /var/lib/libvirt/images/$target.qcow2
 # virt-clone --original $vm_src --vm_src $target --auto-clone
@@ -72,8 +60,11 @@ EOF
 # wait_for_tcp_port.sh $addr 22
 
 # ERROR: "System is booting up. Unprivileged users are not permitted to log in yet. Please come back later. For technical details, see pam_nologin(8)."
+n=1
 while ! ssh -o StrictHostKeyChecking=no $target exit; do
     sleep 1
+    n=$((n+1))
+    [ $n -gt 30 ] && { >&2 echo "can't access node $target"; exit 1; }
 done
 
 # addr=$(ssh -G $target | awk '/^hostname/{print $2}')
