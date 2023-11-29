@@ -4,7 +4,7 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 host=$1; port=$2
-timeout_secs=${3:-300}
+retries=${3:-300}
 
 echo "==> Waiting for TCP $host:$port to open..."
 
@@ -15,11 +15,7 @@ while ! nc -z $host $port; do
     n=$((n+1))
     [ $((n % 60 )) == 0 ] && echo ""
 
-    if [[ "$timeout_secs" -gt 0 && $n -ge "$timeout_secs" ]]; then
-        echo ""
-        echo "==> Timeout" >&2
-        exit 1
-    fi
+    [ "$retries" -gt 0 && $n -ge "$retries" ] && { >&2 echo "==> abort"; exit 1; }
 done
 echo ""
 

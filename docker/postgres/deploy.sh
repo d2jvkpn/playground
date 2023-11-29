@@ -19,15 +19,15 @@ services:
     image: postgres:16-alpine
     container_name: postgres_${APP_Tag}
     restart: always
-    # network_mode: bridge
-    networks: ["net"]
-    ports: ["127.0.0.1:${PORT}:5432"]
     healthcheck:
       test: pg_isready --username postgres -d postgres
       start_period: 10s
       interval: 30s
       timeout: 3s
       retries: 3
+    # network_mode: bridge
+    networks: ["net"]
+    ports: ["127.0.0.1:${PORT}:5432"]
     environment:
     - TZ=Asia/Shanghai
     - PGTZ=Asia/Shanghai

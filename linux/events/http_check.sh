@@ -4,10 +4,9 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 url=$1
-timeout_secs=${2:-300}
-curl_args=${curl_args:-""}
+retries=${2:-15}; curl_args=${curl_args:-""}
 
-echo "==> $(date +%FT%T%:z) http_check start: timeout_secs=$timeout_secs, curl_args=\"$curl_args\""
+echo "==> $(date +%FT%T%:z) http_check start: retries=$retries, curl_args=\"$curl_args\""
 
 n=1 # --connect-timeout
 while [[ $(2>&1 curl -s -I --max-time 3 $url $curl_args | awk 'NR==1{print $2; exit}') != "200" ]];
@@ -16,10 +15,7 @@ while [[ $(2>&1 curl -s -I --max-time 3 $url $curl_args | awk 'NR==1{print $2; e
 
     n=$((n+1)); [ $((n%60)) -eq 0 ] && echo ""
 
-    if [[ $timeout_secs -gt 0 && $n -gt $timeout_secs ]]; then
-        >&2 echo 'http_check abort!!!'
-        exit 1
-    fi
+    [ $retries -gt 0 && $n -gt $retries ] && { >&2 echo 'http_check abort!!!'; exit 1; }
 done
 echo ""
 

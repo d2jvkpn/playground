@@ -5,7 +5,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 # target=/data/ok
 target=$1
-timeout_secs=${2:-300}
+retries=${2:-300}
 
 echo "==> checking file $target"
 
@@ -16,10 +16,7 @@ until [ ! -f $target ]; do
 
     n=$((n+1)); [ $((n%60)) == 0 ] && echo ""
 
-    if [[ $timeout_secs -gt 0 && $n -gt "$timeout_secs" ]]; then
-        >&2 echo "file not exists: $target"
-        exit 1
-    fi
+    [ $retries -gt 0 && $n -gt "$retries" ] && { >&2 echo "file not exists: $target"; exit 1; }
 done
 echo ""
 
