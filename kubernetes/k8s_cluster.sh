@@ -23,8 +23,7 @@ case $action in
 
 "check")
     ####
-    { command -v yq; command -v ansible; command -v virsh; } > /dev/null
-    # command -v rsync
+    { command -v yq; command -v ansible; command -v virsh; command -v rsync; } > /dev/null
 
     ####
     ls k8s_apps/{k8s.yaml,kube-flannel.yaml} \

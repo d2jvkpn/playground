@@ -30,7 +30,11 @@ $(cat configs/k8s_hosts.txt)
 EOF
 
 ansible k8s_all -m file -a "path=./k8s_apps/data state=directory"
-ansible k8s_all -m copy --become -a "src=k8s_apps/data/etc_hosts.txt dest=./k8s_apps/data/"
+# ansible k8s_all -m copy --become -a "src=k8s_apps/data/etc_hosts.txt dest=./k8s_apps/data/"
+
+ansible k8s_all -m synchronize --become \
+  -a "mode=push src=k8s_apps/data/etc_hosts.txt dest=./k8s_apps/data/"
+
 ansible k8s_all -m shell --become -a 'cat k8s_apps/data/etc_hosts.txt >> /etc/hosts'
 
 #### 2. k8s init and join the cluster
@@ -46,7 +50,8 @@ ansible k8s_cps[1:] -m shell -a "sudo $(bash k8s_scripts/k8s_command_join.sh con
 
 
 #### 3. post
-ansible k8s_cps -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
+# ansible k8s_cps -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
+ansible k8s_cps -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root ubuntu'
 ansible k8s_cps -m shell -a 'kubectl config set-context --current --namespace=dev'
 
 # kubectl label node/$ingress_node --overwrite node-role.kubernetes.io/ingress=
