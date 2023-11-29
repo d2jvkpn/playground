@@ -52,7 +52,6 @@ case $action in
     echo "==> ssh $base_vm: ok"
 
     virsh shutdown $base_vm
-    bash ../kvm/virsh_wait_until.sh $base_vm "shut off" 180
     ;;
 
 "create")
