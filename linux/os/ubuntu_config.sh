@@ -12,7 +12,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 ####
 mkdir -p ~/Apps/bin ~/.local/bin
-cp os_configs/bash.sh ~/.bash_aliases
+cp os_configs/bash_aliases.sh ~/.bash_aliases
 
 ####
 mkdir -p ~/.config/pip
