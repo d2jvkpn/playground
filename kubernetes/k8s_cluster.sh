@@ -10,7 +10,7 @@ base_vm=${base_vm:-ubuntu}
 
 creation_msg="exit"
 creation_log=logs/k8s_cluster.log
-ts=$(date +%s)
+creation_ts=$(date +%s)
 
 function elapsed() {
     t0=$1
@@ -21,7 +21,7 @@ function elapsed() {
 }
 
 function creation_on_exit() {
-    date +"==> %FT%T%:z $creation_msg, elapsed $(elapsed $ts)" >> $creation_log
+    date +"==> %FT%T%:z $creation_msg, elapsed $(elapsed $creation_ts)" >> $creation_log
 }
 
 case $action in
@@ -122,6 +122,7 @@ case $action in
     n=1
     while ! ansible k8s_all --one-line -m ping; do
         sleep 1
+
         n=$((n+1))
         [ $n -gt 180 ] && { >&2 echo "failed to start virtual machines"; exit 1; }
     done
@@ -139,6 +140,8 @@ case $action in
     for node in $(awk '{print $2}' configs/k8s_hosts.txt); do
         bash ../kvm/virsh_delete.sh $node || true
     done
+
+    rm configs/{k8s_hosts.ini,k8s_hosts.txt}
     ;;
 
 *)
