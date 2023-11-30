@@ -30,6 +30,8 @@ function download_images() {
     done
 }
 
+{ command -v kubeadm; command -v wget; command -v docker; } > /dev/null
+
 #### 1. k8s_images
 kubeadm config images list | xargs -i docker pull {}
 kube_version=$(kubeadm version -o json | jq -r .clientVersion.gitVersion | sed 's/^v//')
