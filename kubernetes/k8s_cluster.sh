@@ -10,10 +10,7 @@ base_vm=${base_vm:-ubuntu}
 
 creation_msg="exit"
 creation_log=logs/k8s_cluster.log
-
-function creation_on_exit() {
-    date +"==> %FT%T%:z $creation_msg" >> $creation_log
-}
+ts=$(date +%s)
 
 function elapsed() {
     t0=$1
@@ -21,6 +18,10 @@ function elapsed() {
     delta=$(($t1 - $t0))
 
     echo "$((delta/60))m$((delta%60))s"
+}
+
+function creation_on_exit() {
+    date +"==> %FT%T%:z $creation_msg, elapsed $(elapsed $ts)" >> $creation_log
 }
 
 case $action in
