@@ -46,11 +46,13 @@ case $action in
     }' k8s_apps/k8s.yaml | xargs -i ls {} > /dev/null
 
     ####
+    # echo "Include ~/.ssh/kvm/*.conf" >> ~/.ssh/config
     ls ~/.ssh/kvm/$base_vm.conf > /dev/null
 
     virsh start $base_vm
     bash ../kvm/virsh_wait_until.sh $base_vm "running" 60
 
+    # authentication(public key) has already been set up ahead: ssh-copy-id -i ~/.ssh/kvm/kvm.pem $base_vm
     n=1
     while ! ssh -o StrictHostKeyChecking=no $base_vm exit; do
         sleep 1
