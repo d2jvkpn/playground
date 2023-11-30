@@ -30,8 +30,8 @@ networking:
   podSubnet: ${pod_subnet}
 EOF
 
-sudo kubeadm init --config=k8s_apps/data/kubeadm-config.yaml --upload-certs -v 5 |
-  sudo tee k8s_apps/data/kubeadm-init.out
+sudo kubeadm init --config=k8s_apps/data/kubeadm-config.yaml \
+  --upload-certs -v 5 &> k8s_apps/data/kubeadm-init.out
 
 ####
 token=$(grep -o "\-\-token [^ ]*" k8s_apps/data/kubeadm-init.out | awk '{print $2; exit}')

@@ -23,6 +23,7 @@ case "$node_kind" in
     echo $cmd --control-plane --certificate-key $cert_key
     ;;
 *)
-    >&2 echo "unknown node_kind"
+    >&2 echo "unknown node_kind: $node_kind"
     exit 1
+    ;;
 esac

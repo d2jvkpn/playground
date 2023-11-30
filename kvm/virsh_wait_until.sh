@@ -13,9 +13,9 @@ n=1
 while [[ "$(virsh domstate --domain "$node" | awk 'NR==1{print $0; exit}')" != "$state" ]]; do
     sleep 1; echo -n "."
 
-    n=$((n+1)); [ $((n%60)) -eq 0 ] && echo ""
+    n=$((n+1)); [[ $((n%60)) -eq 0 ]] && echo ""
 
-    [ $retries -gt 0 && $n -gt "$retries" ] && { >&2 echo 'virsh_wait_until abort!!!'; exit 1; }
+    [[ $retries -gt 0 && $n -gt "$retries" ]] && { >&2 echo 'virsh_wait_until abort!!!'; exit 1; }
 done
 echo ""
 

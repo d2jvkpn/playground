@@ -3,26 +3,25 @@ set -eu -o pipefail
 
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
-set -x
+# set -x
 
 # cp_node=k8s-cp01; ingress_node=k8s-node01
 cp_node=$1; ingress_node=$2
-mkdir -p k8s_apps/data
 
 # cp_node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
 # cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
 
 #### 1. set hosts
-cp_ip=$(ansible-inventory --list --yaml | yq ".all.children.k8s_all.hosts.$cp_node.ansible_host")
+hosts_yaml=$(ansible-inventory --list --yaml | yq .all.children.k8s_all.hosts)
 
-ingress_ip=$(
-  ansible-inventory --list --yaml |
-  yq ".all.children.k8s_all.hosts.$ingress_node.ansible_host"
-)
+cp_ip=$(echo "$hosts_yaml" | yq ".$cp_node.ansible_host")
+ingress_ip=$(echo "$hosts_yaml" | yq ".$ingress_node.ansible_host")
+
+mkdir -p k8s_apps/data
 
 cat > ./k8s_apps/data/etc_hosts.txt << EOF
 
-#### kubernetes
+#### 1. prepare
 $cp_ip k8s-control-plane
 $ingress_ip k8s.local
 # ----
@@ -48,17 +47,18 @@ ansible $cp_node --one-line -m fetch \
 ansible k8s_workers -m shell -a "sudo $(bash k8s_scripts/k8s_command_join.sh worker)"
 ansible k8s_cps[1:] -m shell -a "sudo $(bash k8s_scripts/k8s_command_join.sh control-plane)"
 
-
 #### 3. post
-# ansible k8s_cps -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
-ansible k8s_cps -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root ubuntu'
+ansible k8s_cps -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 ansible k8s_cps -m shell -a 'kubectl config set-context --current --namespace=dev'
 
 # kubectl label node/$ingress_node --overwrite node-role.kubernetes.io/ingress=
 # kubectl label node/$ingress_node --overwrite node-role.kubernetes.io/ingress-
 
 # kubectl label
-for node in $(ansible k8s_workers --list-hosts | awk 'BEGIN{ORS=" "} /k8s-node/{print $1}'); do
-    if [ "$node" == "$ingress_node" ]; then continue; fi
-    ansible $cp_node --one-line -a "kubectl label node/$node --overwrite node-role.kubernetes.io/worker="
+# echo "$hosts_yaml" | yq 'keys() | join(" ")'
+for node in $(ansible k8s_workers --list-hosts | sed '1d'); do
+    [ "$node" == "$ingress_node" ] && continue
+
+    ansible $cp_node --one-line \
+      -a "kubectl label node/$node --overwrite node-role.kubernetes.io/worker="
 done

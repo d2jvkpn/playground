@@ -15,7 +15,7 @@ while ! nc -z $host $port; do
     n=$((n+1))
     [ $((n % 60 )) == 0 ] && echo ""
 
-    [ "$retries" -gt 0 && $n -ge "$retries" ] && { >&2 echo "==> abort"; exit 1; }
+    [[ "$retries" -gt 0 && $n -ge "$retries" ]] && { >&2 echo "==> abort"; exit 1; }
 done
 echo ""
 

@@ -15,6 +15,14 @@ function creation_on_exit() {
     date +"==> %FT%T%:z $creation_msg" >> $creation_log
 }
 
+function elapsed() {
+    t0=$1
+    t1=$(date +%s)
+    delta=$(($t1 - $t0))
+
+    echo "$((delta/60))m$((delta%60))s"
+}
+
 case $action in
 "download")
     bash k8s_scripts/k8s_apps_download.sh
@@ -67,22 +75,37 @@ case $action in
     echo "================================================================" >> $creation_log
     trap creation_on_exit EXIT
 
-    date +"==> %FT%T%:z step01_kvm_node.sh" >> $creation_log
-    bash step01_kvm_node.sh $base_vm k8s-cp01
+    ####
+    echo "==> $(date +%FT%T%:z) step01_kvm_node.sh" >> $creation_log
+    t0=$(date +%s)
 
-    date +"==> %FT%T%:z step02_clone_nodes.sh" >> $creation_log
+    bash step01_kvm_node.sh $base_vm k8s-cp01
+    echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
+
+    ####
+    echo "==> $(date +%FT%T%:z) step02_clone_nodes.sh" >> $creation_log
+    t0=$(date +%s)
 
     if [[ "$mode" = "mini" ]]; then
         bash step02_clone_nodes.sh k8s-cp01 k8s-cp02 k8s-node{01..02}
     else # [[ "$mode" = "full" ]]
         bash step02_clone_nodes.sh k8s-cp01 k8s-cp{02,03} k8s-node{01..04}
     fi
+    echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
 
-    date +"==> %FT%T%:z step03_cluster_up.sh" >> $creation_log
+    ####
+    echo "==> $(date +%FT%T%:z) step03_cluster_up.sh" >> $creation_log
+    t0=$(date +%s)
+
     bash step03_cluster_up.sh k8s-cp01 k8s-node01
+    echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
 
-    date +"==> %FT%T%:z step04_kube_apply.sh" >> $creation_log
+    ####
+    echo "==> $(date +%FT%T%:z) step04_kube_apply.sh" >> $creation_log
+    t0=$(date +%s)
+
     bash step04_kube_apply.sh k8s-cp01 k8s-node01
+    echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
 
     creation_msg="done"
     ;;
@@ -118,7 +141,8 @@ case $action in
     ;;
 
 *)
-    >&2 echo "unknown action"
+    >&2 echo "unknown action: $action"
     exit 1
     ;;
+
 esac

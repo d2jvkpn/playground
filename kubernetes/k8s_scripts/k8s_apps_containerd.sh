@@ -39,7 +39,7 @@ pause=$(kubeadm config images list | awk '/pause/{sub(".*/", ""); print}')
 
 containerd config default | sed '/SystemdCgroup/{s/false/true/}'  |
   awk -v pause=$pause '/sandbox_image/{sub("pause:[0-9.]*", pause)} {print}' |
-  sudo tee /etc/containerd/config.toml
+  sudo tee /etc/containerd/config.toml > /dev/null
 
 # grep pause: /etc/containerd/config.toml
 
@@ -48,7 +48,7 @@ systemctl status containerd
 # journalctl -fexu containerd
 
 #### 3.
-cat <<EOF | sudo tee /etc/crictl.yaml
+cat <<EOF | sudo tee /etc/crictl.yaml > /dev/null
 runtime-endpoint: unix:///run/containerd/containerd.sock
 image-endpoint: unix:///run/containerd/containerd.sock
 timeout: 5

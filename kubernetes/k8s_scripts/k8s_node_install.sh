@@ -21,7 +21,9 @@ key_url=https://pkgs.k8s.io/core:/stable:/$ver/deb
 key_file=/etc/apt/keyrings/kubernetes.$ver.gpg
 
 [ ! -f $key_file ] && curl -fsSL $key_url/Release.key | sudo gpg --dearmor -o $key_file
-echo "deb [signed-by=$key_file] $key_url /" | sudo tee /etc/apt/sources.list.d/kubernetes.$ver.list
+
+echo "deb [signed-by=$key_file] $key_url /" |
+  sudo tee /etc/apt/sources.list.d/kubernetes.$ver.list > /dev/null
 
 #### 2. apt install
 function apt_install() {
@@ -49,7 +51,7 @@ done
 
 # systemctl disable kubelet
 
-kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl
+kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
 # kubeadm config images list
 
 # cp /etc/systemd/system/kubelet.service.d/10-kubeadm.conf \
@@ -64,7 +66,7 @@ systemctl status kubelet.service || true
 #!! kubelet.server will started by kubeadm init
 
 #### 3. k8s config
-cat <<EOF | sudo tee /etc/modules-load.d/kubernetes.conf
+cat <<EOF | sudo tee /etc/modules-load.d/kubernetes.conf > /dev/null
 overlay
 br_netfilter
 EOF
@@ -75,7 +77,7 @@ modprobe br_netfilter
 lsmod | grep overlay
 lsmod | grep br_netfilter
 
-cat <<EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
+cat <<EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf > /dev/null
 net.bridge.bridge-nf-call-iptables  = 1
 net.ipv4.ip_forward                 = 1
 net.bridge.bridge-nf-call-ip6tables = 1

@@ -13,5 +13,6 @@ while ! $cmd; do
     n=$((n+1))
 
     [ $n -gt $retries ] && { >&2 echo '!!!' "$(date +%FT%T%:z) abort"; exit 1; }
+
     >&2 echo "--> $(date +%FT%T%:z) try again: $n/$retries"
 done

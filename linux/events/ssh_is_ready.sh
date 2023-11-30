@@ -14,5 +14,5 @@ while ! ssh -o StrictHostKeyChecking=no $target exit; do
     sleep 1
 
     n=$((n+1))
-    [ $retries -gt 0 && $n -gt "$retries" ] && { >&2 echo "ssh can't access: $target"; exit 1; }
+    [[ $retries -gt 0 && $n -gt "$retries" ]] && { >&2 echo "ssh can't access: $target"; exit 1; }
 done

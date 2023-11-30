@@ -8,10 +8,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 KVM_Network=${KVM_Network:-default}
 
 # args: ubuntu k8s-cp01
-[ $# -eq 0 ] && { >&2 echo "vm name(s) not provided"; exit 1; }
-
 vm_src=$1; target=$2
-
 mkdir -p logs configs
 
 #### 1. create a new node
@@ -34,8 +31,6 @@ while ! ssh -o StrictHostKeyChecking=no $target exit; do
 done
 
 #### 2. copy assets
-set -x
-
 # ansible $target --one-line -m copy -a "src=k8s_scripts dest=./"
 # ansible $target --one-line -m copy -a "src=k8s_demos dest=./"
 # ansible $target --one-line --forks 2 -m copy -a "src=k8s_apps dest=./"
@@ -58,7 +53,6 @@ ansible $target -m shell -a "sudo bash k8s_scripts/k8s_node_install.sh $version"
 ansible $target -m shell -a "sudo bash k8s_scripts/k8s_apps_containerd.sh"
 
 ansible $target --forks 4 -m shell -a "sudo import_image=true bash k8s_scripts/k8s_apps_install.sh"
-
 ansible $target -m file -a "path=./k8s_apps/images state=absent"
 
 #### 4. shutdown

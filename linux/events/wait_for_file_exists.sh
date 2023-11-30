@@ -16,7 +16,7 @@ until [ ! -f $target ]; do
 
     n=$((n+1)); [ $((n%60)) == 0 ] && echo ""
 
-    [ $retries -gt 0 && $n -gt "$retries" ] && { >&2 echo "file not exists: $target"; exit 1; }
+    [[ $retries -gt 0 && $n -gt "$retries" ]] && { >&2 echo "file not exists: $target"; exit 1; }
 done
 echo ""
 

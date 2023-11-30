@@ -15,7 +15,7 @@ while [[ $(2>&1 curl -s -I --max-time 3 $url $curl_args | awk 'NR==1{print $2; e
 
     n=$((n+1)); [ $((n%60)) -eq 0 ] && echo ""
 
-    [ $retries -gt 0 && $n -gt $retries ] && { >&2 echo 'http_check abort!!!'; exit 1; }
+    [[ $retries -gt 0 && $n -gt $retries ]] && { >&2 echo 'http_check abort!!!'; exit 1; }
 done
 echo ""
 

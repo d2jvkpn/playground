@@ -14,7 +14,7 @@ while ! curl --output /dev/null --silent --head --fail $addr; do
     sleep 1 && echo -n .
 
     n=$((n+1)); [ $((n % 60 )) == 0 ] && echo ""
-    [ $retries -gt 0 && $n -gt "$retries" ] && { >&2 echo '!!! abort'; exit 1; }
+    [[ $retries -gt 0 && $n -gt "$retries" ]] && { >&2 echo '!!! abort'; exit 1; }
 done
 echo ""
 

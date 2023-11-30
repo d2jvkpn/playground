@@ -6,28 +6,27 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
 KVM_Network=${KVM_Network:-default}
-vm_src=${vm_src:-ubuntu}
 
 # args: k8s-cp01 k8s-cp{02,03} k8s-node{01..04}
-[ $# -eq 0 ] && { >&2 echo "vm name(s) not provided"; exit 1; }
+[ $# -lt 2 ] && { >&2 echo "vm source and target(s) are not provided"; exit 1; }
 
 array=($*)
-target=${array[@]:0:1}; nodes=${array[@]:1}
+vm_src=${array[@]:0:1}; nodes=${array[@]:1}
 
 mkdir -p logs configs
 
 #### 1. clone nodes
 for node in $nodes; do
     [ ! -z $(virsh list --all | awk -v node=$node '$2==node{print 1}') ] && continue
-    echo "==> cloning $target into node"
-    shutdown_vm=false bash ../kvm/virsh_clone.sh $target $node
+    echo "==> Cloning $vm_src into $node"
+    shutdown_vm=false bash ../kvm/virsh_clone.sh $vm_src $node
 done
 
-echo "==> start $target"
-virsh start $target || true
+echo "==> Starting vm $vm_src"
+virsh start $vm_src || true
 sleep 5
 
-for node in $nodes $target; do
+for node in $nodes $vm_src; do
     n=1
     while ! ssh -o StrictHostKeyChecking=no $node exit; do
         sleep 1
@@ -71,7 +70,7 @@ $(echo "$text" | awk '/^k8s-cp/{print $1}')
 $(echo "$text" | awk '/^k8s-node/{print $1}')
 EOF
 
-cat configs/k8s_hosts.ini
+echo "==> Generated configs/k8s_hosts.ini"
 
 exit
 
