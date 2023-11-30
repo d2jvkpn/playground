@@ -8,14 +8,13 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 export DEBIAN_FRONTEND=noninteractive
 
 # version=$(yq .version k8s_apps/k8s.yaml)
-version=$1
-region=${region:-unknown}
+version=$1 # 1.28.4
 
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 
 #### 1. set k8s repository
 # key_url=https://pkgs.k8s.io/core:/stable:/v1.28/deb
-ver=v${version%.*}
+ver=v${version%.*} # 1.28
 
 key_url=https://pkgs.k8s.io/core:/stable:/$ver/deb
 key_file=/etc/apt/keyrings/kubernetes.$ver.gpg
@@ -31,7 +30,8 @@ function apt_install() {
     apt-get -y upgrade
 
     apt-get -y install apt-transport-https ca-certificates lsb-release gnupg pigz curl jq \
-      socat conntrack nfs-kernel-server nfs-common nftables etcd-client
+      socat conntrack nfs-kernel-server nfs-common nftables \
+      etcd-client containerd runc
 
     # apt-mark unhold kubelet kubeadm kubectl
     apt-get install -y kubectl kubelet kubeadm
@@ -87,3 +87,32 @@ net.ipv4.conf.all.promote_secondaries = 1
 EOF
 
 sysctl --system
+
+#### 4. containerd
+containerd config default | grep SystemdCgroup
+containerd config default | grep sandbox_image
+
+mkdir -p /etc/containerd
+pause=$(kubeadm config images list | awk '/pause/{sub(".*/", ""); print}')
+
+# containerd config default | sed '/SystemdCgroup/{s/false/true/}'   |
+#   awk -v pause=$pause '/k8s.gcr.io\/pause/{sub("k8s.gcr.io/pause.*", pause"\"")} {print}' \
+#   > /etc/containerd/config.toml
+
+containerd config default | sed '/SystemdCgroup/{s/false/true/}'  |
+  awk -v pause=$pause '/sandbox_image/{sub("pause:[0-9.]*", pause)} {print}' |
+  sudo tee /etc/containerd/config.toml > /dev/null
+
+# grep pause: /etc/containerd/config.toml
+
+cat <<EOF | sudo tee /etc/crictl.yaml > /dev/null
+runtime-endpoint: unix:///run/containerd/containerd.sock
+image-endpoint: unix:///run/containerd/containerd.sock
+timeout: 5
+debug: false
+pull-image-on-create: false
+EOF
+
+systemctl restart containerd
+# systemctl status containerd
+# journalctl -fexu containerd

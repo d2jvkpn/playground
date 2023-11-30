@@ -50,11 +50,6 @@ ansible $target -m shell --become \
 version=$(yq .version k8s_apps/k8s.yaml)
 
 ansible $target -m shell -a "sudo bash k8s_scripts/k8s_node_install.sh $version"
-# ?? sysctl: setting key "net.ipv4.conf.all.accept_source_route": Invalid argument
-# ?? sysctl: setting key "net.ipv4.conf.all.promote_secondaries": Invalid argument
-
-ansible $target -m shell -a "sudo bash k8s_scripts/k8s_apps_containerd.sh"
-
 ansible $target --forks 4 -m shell -a "sudo import_image=true bash k8s_scripts/k8s_apps_install.sh"
 ansible $target -m file -a "path=./k8s_apps/images state=absent"
 

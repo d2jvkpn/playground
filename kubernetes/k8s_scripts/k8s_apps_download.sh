@@ -50,9 +50,11 @@ sed -i "1i # link: $link\n" k8s_apps/kube-flannel.yaml
 
 flannel_images=$(awk '$1=="image:"{print $2}' k8s_apps/kube-flannel.yaml | sort -u)
 
-# wget -O k8s_apps/calico.yaml https://docs.projectcalico.org/manifests/calico.yaml
+#### 3. calico
+wget -O k8s_apps/calico.yaml https://docs.projectcalico.org/manifests/calico.yaml
+calico_images=$(awk '$1=="image:"{print $2}' k8s_apps/calico.yaml | sort -u)
 
-#### 3. metrics-server
+#### 4. metrics-server
 link=https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 wget -O k8s_apps/metrics-server_components.yaml $link
 sed -i "1i # link: $link\n" k8s_apps/metrics-server_components.yaml
