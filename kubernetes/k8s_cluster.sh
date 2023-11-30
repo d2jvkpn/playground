@@ -87,7 +87,7 @@ case $action in
     t0=$(date +%s)
 
     if [[ "$mode" = "mini" ]]; then
-        bash step02_clone_nodes.sh k8s-cp01 k8s-cp02 k8s-node{01..02}
+        bash step02_clone_nodes.sh k8s-cp01 k8s-node{01..02}
     else # [[ "$mode" = "full" ]]
         bash step02_clone_nodes.sh k8s-cp01 k8s-cp{02,03} k8s-node{01..04}
     fi

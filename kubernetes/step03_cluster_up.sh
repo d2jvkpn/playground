@@ -21,10 +21,10 @@ mkdir -p k8s_apps/data
 
 cat > ./k8s_apps/data/etc_hosts.txt << EOF
 
-#### 1. prepare
+#### kubernetes
 $cp_ip k8s-control-plane
 $ingress_ip k8s.local
-# ----
+## ----
 $(cat configs/k8s_hosts.txt)
 EOF
 
