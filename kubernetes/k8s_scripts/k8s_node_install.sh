@@ -19,7 +19,7 @@ ver=v${version%.*} # 1.28
 key_url=https://pkgs.k8s.io/core:/stable:/$ver/deb
 key_file=/etc/apt/keyrings/kubernetes.$ver.gpg
 
-[ ! -f $key_file ] && curl -fsSL $key_url/Release.key | sudo gpg --dearmor -o $key_file
+[ ! -s $key_file ] && curl -fsSL $key_url/Release.key | sudo gpg --dearmor -o $key_file
 
 echo "deb [signed-by=$key_file] $key_url /" |
   sudo tee /etc/apt/sources.list.d/kubernetes.$ver.list > /dev/null
@@ -44,8 +44,8 @@ n=1
 while ! apt_install; do
     >&2 echo "...try again: apt_install"
     sleep 1.42
-    n=$((n+1))
 
+    n=$((n+1))
     [ $n -gt 5 ] && { >&2 echo "apt_install failed"; exit 1; }
 done
 
