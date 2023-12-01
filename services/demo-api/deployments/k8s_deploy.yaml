@@ -16,6 +16,7 @@ spec:
       labels: { app: "demo-api" }
     spec:
       restartPolicy: Always
+      # affinity: ...
       # nodeSelector:
       #   node-role: worker
       volumes:
