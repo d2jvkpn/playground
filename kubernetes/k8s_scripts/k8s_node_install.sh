@@ -26,16 +26,16 @@ echo "deb [signed-by=$key_file] $key_url /" |
 
 #### 2. apt install
 function apt_install() {
-    apt-get update
-    apt-get -y upgrade
+    apt-get update || return 1
+    apt-get -y upgrade || return 1
 
     apt-get -y install apt-transport-https ca-certificates lsb-release gnupg pigz curl jq \
       socat conntrack nfs-kernel-server nfs-common nftables \
-      etcd-client containerd runc
+      etcd-client containerd runc || return 1
 
     # apt-mark unhold kubelet kubeadm kubectl
-    apt-get install -y kubectl kubelet kubeadm
-    apt-mark hold kubelet kubeadm kubectl
+    apt-get install -y kubectl kubelet kubeadm || return 1
+    apt-mark hold kubelet kubeadm kubectl || return 1
 
     return 0
 }
@@ -99,7 +99,7 @@ pause=$(kubeadm config images list | awk '/pause/{sub(".*/", ""); print}')
 #   awk -v pause=$pause '/k8s.gcr.io\/pause/{sub("k8s.gcr.io/pause.*", pause"\"")} {print}' \
 #   > /etc/containerd/config.toml
 
-containerd config default | sed '/SystemdCgroup/{s/false/true/}'  |
+containerd config default | sed '/SystemdCgroup/{s/false/true/}' |
   awk -v pause=$pause '/sandbox_image/{sub("pause:[0-9.]*", pause)} {print}' |
   sudo tee /etc/containerd/config.toml > /dev/null
 
