@@ -86,7 +86,7 @@ case $action in
     echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
 
     ####
-    echo "==> $(date +%FT%T%:z) step02_clone_nodes.sh" >> $creation_log
+    echo "==> $(date +%FT%T%:z) step02_clone_nodes.sh $mode" >> $creation_log
     t0=$(date +%s)
 
     if [[ "$mode" = "mini" ]]; then
