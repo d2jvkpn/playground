@@ -77,6 +77,9 @@ modprobe br_netfilter
 lsmod | grep overlay
 lsmod | grep br_netfilter
 
+# cat /proc/sys/fs/inotify/max_user_watches
+# echo fs.inotify.max_user_watches=524288 | sudo tee /etc/sysctl.d/50_max_user_watches.conf > /dev/null
+
 cat <<EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf > /dev/null
 net.bridge.bridge-nf-call-iptables  = 1
 net.ipv4.ip_forward                 = 1
@@ -85,6 +88,8 @@ net.bridge.bridge-nf-call-ip6tables = 1
 net.ipv4.conf.all.accept_source_route = 0
 net.ipv4.conf.all.promote_secondaries = 1
 EOF
+# sysctl: setting key "net.ipv4.conf.all.accept_source_route": Invalid argument
+# sysctl: setting key "net.ipv4.conf.all.promote_secondaries": Invalid argument
 
 sysctl --system
 
