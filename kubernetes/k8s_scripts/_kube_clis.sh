@@ -4,6 +4,11 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 ####
+kubectl get pod -A
+
+kubectl get all -A
+
+####
 kubectl get node --show-labels
 kubectl get nodes --show-labels -o wide
 

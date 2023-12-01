@@ -1,0 +1,48 @@
+demo-api: &demo-api 
+  # image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:master-0.1.0@sha256xxxx
+  image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api:dev
+  ## imagePullPolicy: IfNotPresent, Always, Never
+  imagePullPolicy: "Always"
+  resources:
+    requests: { cpu: "200m", memory: "128Mi", ephemeral-storage: "2Gi" }
+    limits: { cpu: "1000m", memory: "512Mi", ephemeral-storage: "4Gi" }
+  livenessProbe:
+    initialDelaySeconds: 5
+    timeoutSeconds: 1
+    periodSeconds: 10
+    failureThreshold: 3
+    ## HTTP Status >= 200 and < 400
+    # httpGet:
+    #   path: "/healthz"
+    #   port: 5032
+    #   httpHeaders:
+    #   - { name: Custom-Header, value: Awesome }
+    grpc: { port: 5042 }
+  env:
+  # https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/
+  - name: K8S_Namespace
+    valueFrom: { fieldRef: { fieldPath: metadata.namespace } }
+  - name: K8S_NodeName
+    valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "spec.nodeName" } }
+  - { name: TZ, value: Asia/Shanghai }
+  - name: K8S_PodName
+    valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "metadata.name" } }
+  - name: K8S_PodIP
+    valueFrom: { fieldRef: { fieldPath: status.podIP } }
+  - { name: TZ, value: Asia/Shanghai }
+  # - name: MongoPassword
+  #   valueFrom: { secretKeyRef: {name: "mongo-secret", key: password} }
+  # envFrom:
+  # - configMapRef: { name: postgres-config }
+  volumeMounts:
+  ## not /app/configs/dev.yaml
+  - { name: config, mountPath: /app/configs, readOnly: true }
+  - { name: local, subPathExpr: "$(K8S_PodName)/logs", mountPath: "/app/logs" }
+  - { name: pvc, subPathExpr: "$(K8S_PodName)/data", mountPath: "/app/data" }
+  ports:
+  - { name: "http", containerPort: 5032, protocol: "TCP" }
+  - { name: "rpc", containerPort: 5042, protocol: "TCP" }
+  # command: [ tail, -f, /etc/hosts ]
+  command: ["./target/main"]
+  args: ["-release", "-config=configs/dev.yaml", "-http_addr=0.0.0.0:5032", "-rpc_addr=0.0.0.0:5042"]
+

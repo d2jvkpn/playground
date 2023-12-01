@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: dev
+  name: demo-api
+  labels: { app: "demo-api" }
+spec:
+  replicas: 3
+  selector:
+    matchLabels: { app: "demo-api" }
+  strategy:
+    rollingUpdate: { maxSurge: 1, maxUnavailable: 0 }
+    type: RollingUpdate
+  template:
+    metadata:
+      labels: { app: "demo-api" }
+    spec:
+      restartPolicy: Always
+      # affinity: ...
+      # nodeSelector:
+      #   node-role: worker
+      volumes:
+      - name: config
+        configMap: { name: demo-api }
+      - name: local
+        hostPath: { path: "/data/local", type: "DirectoryOrCreate" }
+      - name: pvc
+        persistentVolumeClaim: { claimName: "k8s-cp01" }
+      containers:
+      - *demo-api
