@@ -16,6 +16,10 @@ check:
 	go fmt ./...
 	go vet ./...
 
+site:
+	mkdir -p site
+	echo "Hello, world!" > site/a.txt
+
 protoc_run:
 	protoc --go-grpc_out=./ --go_out=./ --proto_path=./proto proto/*.proto
 	sed -i '/^\tmustEmbedUnimplemented/s#\t#\t// #' proto/*_grpc.pb.go
