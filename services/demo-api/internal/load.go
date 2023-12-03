@@ -36,11 +36,11 @@ func Load(config string, release bool) (err error) {
 	// 	zap.String("version", settings.ProjectString("version")),
 	// )
 
-	_Logger = settings.Logger.Named("internal")
-
 	if err != nil {
 		return err
 	}
+
+	_InternalLogger = settings.Logger.Named("internal")
 
 	// #### server
 	if engine, err = newEngine(release); err != nil {
@@ -62,8 +62,9 @@ func Load(config string, release bool) (err error) {
 		return fmt.Errorf("config.http is unset")
 	}
 	if httpConfig.GetBool("tls") {
-		cert, err = tls.LoadX509KeyPair(httpConfig.GetString("cert"), httpConfig.GetString("key"))
-		if err != nil {
+		certFile, keyFile := httpConfig.GetString("cert"), httpConfig.GetString("key")
+
+		if cert, err = tls.LoadX509KeyPair(certFile, keyFile); err != nil {
 			return err
 		}
 		_Server.TLSConfig = &tls.Config{

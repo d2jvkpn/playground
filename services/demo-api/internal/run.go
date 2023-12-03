@@ -31,7 +31,7 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 	}
 
 	_RuntimeInfo = gotk.NewRuntimeInfo(func(data map[string]string) {
-		_Logger.Info("runtime", zap.Any("data", data))
+		_InternalLogger.Info("runtime", zap.Any("data", data))
 	}, 60)
 
 	_RuntimeInfo.Start()
@@ -40,7 +40,7 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 		if _Server != nil {
 			ctx, cancel := context.WithTimeout(context.TODO(), 5*time.Second)
 			if err := _Server.Shutdown(ctx); err != nil {
-				_Logger.Error(fmt.Sprintf("server shutdown: %v", err))
+				_InternalLogger.Error(fmt.Sprintf("server shutdown: %v", err))
 			}
 			cancel()
 		}
@@ -50,9 +50,9 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 		once.Do(func() {
 			err := onExit()
 			if err == nil {
-				_Logger.Warn("on_exit")
+				_InternalLogger.Warn("on_exit")
 			} else {
-				_Logger.Error("on_exit", zap.Any("error", err))
+				_InternalLogger.Error("on_exit", zap.Any("error", err))
 			}
 		})
 		return
@@ -61,7 +61,7 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 	errch = make(chan error, 2)
 	once = new(sync.Once)
 
-	_Logger.Info("service_start", zap.Any("meta", settings.Meta))
+	_InternalLogger.Info("service_start", zap.Any("meta", settings.Meta))
 
 	go func() {
 		if err := _RPC.Serve(rpcListener); err != nil {
@@ -88,7 +88,7 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 }
 
 func onExit() (err error) {
-	_Logger.Info("service_shutdown")
+	_InternalLogger.Info("service_shutdown")
 
 	if _RuntimeInfo != nil {
 		_RuntimeInfo.End()
