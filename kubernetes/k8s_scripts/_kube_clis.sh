@@ -8,6 +8,8 @@ kubectl get pod -A
 
 kubectl get all -A
 
+kubectl explain pods --recursive
+
 ####
 kubectl get node --show-labels
 kubectl get nodes --show-labels -o wide
