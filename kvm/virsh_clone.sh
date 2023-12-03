@@ -79,5 +79,5 @@ ssh -t $target 'sudo sed -i "2s/^127.0.1.1 .*$/127.0.1.1 '$target'/" /etc/hosts'
 ####
 if [[ "$shutdown_vm" != "false" ]]; then
     virsh shutdown $target
-    vm_state_until $target "shut off"
+    ${_path}/virsh_wait_until.sh $target "shut off" 30
 fi
