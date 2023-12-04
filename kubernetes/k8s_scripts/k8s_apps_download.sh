@@ -51,7 +51,10 @@ sed -i "1i # link: $link\n" k8s_apps/kube-flannel.yaml
 flannel_images=$(awk '$1=="image:"{print $2}' k8s_apps/kube-flannel.yaml | sort -u)
 
 #### 3. calico
-wget -O k8s_apps/calico.yaml https://docs.projectcalico.org/manifests/calico.yaml
+link=https://docs.projectcalico.org/manifests/calico.yaml
+wget -O k8s_apps/calico.yaml $link
+sed -i "1i # link: $link\n" k8s_apps/calico.yaml
+
 calico_images=$(awk '$1=="image:"{print $2}' k8s_apps/calico.yaml | sort -u)
 
 #### 4. metrics-server
