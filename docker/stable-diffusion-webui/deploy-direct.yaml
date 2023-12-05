@@ -23,7 +23,7 @@ services:
             count: all
             capabilities: [gpu]
     volumes:
-    - ./outputs:/app/sd-webui/outputs
+    - ./data/outputs:/app/sd-webui/outputs
     - ./data/models:/app/sd-webui/models
     # - ./data/extentions/sd-webui-controlnet:/app/sd-webui/extensions/sd-webui-controlnet/annotator/downloads
     ## hed, lineart_anime, mlsd, pidinet
