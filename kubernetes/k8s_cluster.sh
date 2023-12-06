@@ -110,6 +110,13 @@ case $action in
     bash step04_kube_apply.sh k8s-cp01 k8s-node01
     echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
 
+    ####
+    echo "==> $(date +%FT%T%:z) step05_post.sh" >> $creation_log
+    t0=$(date +%s)
+
+    bash step05_post.sh k8s-cp01
+    echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
+
     creation_msg="done"
     ;;
 
