@@ -6,16 +6,10 @@ export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
 export PROMPT_DIRTRIM=2
 # export PATH=~/.local/bin:$PATH
 
-for d in $(ls -d ~/Apps/*/ 2>/dev/null); do
+for d in $(ls -d ~/Apps/*/ /opt/*/ 2>/dev/null); do
     d=${d%/}
     b=$(basename $d)
     [ "${b:0:1}" == "_" ] && continue
-    [ -d $d/bin ] && d=$d/bin
-    export PATH=$d:$PATH
-done
-
-for d in $(ls -d /opt/*/ 2>/dev/null); do
-    d=${d%/}
     [ -d $d/bin ] && d=$d/bin
     export PATH=$d:$PATH
 done

@@ -65,3 +65,8 @@ go install github.com/rs/curlie@latest
 cargo install cargo-edit cargo-expand dufs tokei delta ripgrep lsd procs fd-find just
 
 npm install --global gtop serve yarn
+
+# gedit plugins: Code Comment, Embedded Terminal, File Browser Panel
+# gedit settings: click View->enable Bottom Panel
+# gedit preferences: Disply line numbers, Display right margin at column: 100, Display statusbar,
+#   Disaply overview map, Display grid pattern

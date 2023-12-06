@@ -15,14 +15,17 @@ RUN apt update && \
   dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {} && \
   rm -rf /var/lib/apt/lists/*
 
-RUN  mkdir -p /app/bin
+RUN mkdir -p /app/bin
+ADD entrypoint.sh /app/bin/entrypoint.sh
+RUN chmod a+x /app/bin/entrypoint.sh
+
+WORKDIR /app
 
 RUN sdw=stable-diffusion-webui; \
   link=https://github.com/AUTOMATIC1111/${sdw}/archive/refs/tags/v${SD_Version}.tar.gz; \
   wget -O ${sdw}-${SD_Version}.tar.gz $link && \
   tar -xf ${sdw}-${SD_Version}.tar.gz && \
-  rm ${sdw}-${SD_Version}.tar.gz && \
-  mv ${sdw}-${SD_Version} /app/sd-webui
+  mv ${sdw}-${SD_Version} sd-webui
 
 WORKDIR /app/sd-webui
 
@@ -45,9 +48,6 @@ RUN mkdir -p extensions && \
   git clone https://github.com/CompVis/taming-transformers.git repositories/taming-transformers && \
   git clone https://github.com/Stability-AI/generative-models.git repositories/generative-models && \
   rm -rf /root/.cache/pip
-
-ADD entrypoint.sh /app/bin/entrypoint.sh
-RUN chmod a+x /app/bin/entrypoint.sh
 
 EXPOSE 7860
 CMD ["/app/bin/entrypoint.sh", "--xformers", "--listen", "--api", "--port=7860"]
