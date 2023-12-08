@@ -9,7 +9,7 @@ SD_Version=${1:-1.6.0}
 # convert 00000-170371915.png -resize 128x128 01.png
 # echo '{"init_images": ["'"$(base64 -w0 01.png)"'"]}' > data_img2img.json
 # echo '{"image": "'"$(base64 -w0 01.png)"'", "model": "clip"}' > data_clip.json
-ls http_data/clip.json http_data/img2img.json Dockerfile entrypoint.sh > /dev/null
+ls Dockerfile http_data/{clip.json,img2img.json} bin/{entrypoint.sh,install.sh} > /dev/null
 
 docker pull ubuntu:22.04
 docker build --no-cache --build-arg=SD_Version="$SD_Version" -t sd-webui:p1-$SD_Version  ./
@@ -31,8 +31,16 @@ docker run -d --name sd-webui --gpus=all -p 127.0.0.1:$port:7860 \
   /app/bin/entrypoint.sh --xformers --listen --api --port=7860
 
 echo "==> Waiting SD service $addr to launch on ..."
+n=1
 while ! curl --output /dev/null --silent --head --fail $addr; do
     sleep 1 && echo -n .
+    [ $((n%60)) -eq 0 ] && echo ""
+    n=$((n+1))
+
+    if [[ "$(docker container inspect -f '{{.State.Running}}' sd-webui)" != "true" ]]; then
+        >&2 echo "container isn't running"
+        exit 1
+    fi
 done
 echo ""
 echo "==> SD Service $addr launched"

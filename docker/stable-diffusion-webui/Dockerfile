@@ -16,8 +16,8 @@ RUN apt update && \
   rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /app/bin
-ADD entrypoint.sh /app/bin/entrypoint.sh
-RUN chmod a+x /app/bin/entrypoint.sh
+COPY bin /app/bin
+RUN chmod a+x /app/bin/*.sh
 
 WORKDIR /app
 
@@ -28,26 +28,7 @@ RUN sdw=stable-diffusion-webui; \
   mv ${sdw}-${SD_Version} sd-webui
 
 WORKDIR /app/sd-webui
-
-# git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui ./
-RUN python3 -m venv venv/ && \
-  pip3 install -r requirements_versions.txt && \
-  pip3 install -U xformers && \
-  pip3 install --upgrade git+https://github.com/huggingface/diffusers.git && \
-  rm -rf /root/.cache/pip
-
-RUN mkdir -p extensions && \
-  git clone https://github.com/lllyasviel/ControlNet extensions/ControlNet && \
-  git clone https://github.com/Mikubill/sd-webui-controlnet extensions/sd-webui-controlnet && \
-  # git clone https://github.com/Uminosachi/sd-webui-inpaint-anything extensions/sd-webui-inpaint-anything && \
-  mkdir -p repositories && \
-  git clone https://github.com/salesforce/BLIP.git repositories/BLIP && \
-  git clone https://github.com/sczhou/CodeFormer.git repositories/CodeFormer && \
-  git clone https://github.com/crowsonkb/k-diffusion.git repositories/k-diffusion && \
-  git clone https://github.com/Stability-AI/stablediffusion.git repositories/stable-diffusion-stability-ai && \
-  git clone https://github.com/CompVis/taming-transformers.git repositories/taming-transformers && \
-  git clone https://github.com/Stability-AI/generative-models.git repositories/generative-models && \
-  rm -rf /root/.cache/pip
+RUN bash /app/bin/install.sh
 
 EXPOSE 7860
 CMD ["/app/bin/entrypoint.sh", "--xformers", "--listen", "--api", "--port=7860"]
