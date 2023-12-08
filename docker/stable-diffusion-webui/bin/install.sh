@@ -9,9 +9,8 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 python3 -m venv venv/ && \
   source venv/bin/activate && \
-  pip3 install httpx==0.24.1 && \
+  pip3 install httpx==0.24.1 xformers && \
   pip3 install -r requirements_versions.txt && \
-  pip3 install xformers && \
   pip3 install --upgrade git+https://github.com/huggingface/diffusers.git && \
   rm -rf ~/.cache/pip
 
