@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  sd-webui:
+    image: sd-webui:1.6.0
+    container_name: sd-webui_dev
+    restart: always
+    # network_mode: bridge
+    networks: ["net"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            # device_ids: ['0', '3']
+            # count: 1
+            count: all
+            capabilities: [gpu]
+    # ports: ["127.0.0.1:7860:7860"]
+    ports: ["7861:7861"]
+    environment: ["TZ=Asia/Shanghai"]
+    volumes:
+    - ./data/models:/home/hello/stable-diffusion-webui/models
+    - ./data/extensions/sd-webui-controlnet:/home/hello/stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads
+    # - ../resources/cache:/home/hello/.cache
+    - ./data/outputs:/home/hello/stable-diffusion-webui/outputs
+    command:
+    - /entrypoint.sh
+    - --xformers
+    - --listen
+    - --api
+    - --port=7861
+    - --ckpt=models/Stable-diffusion/realisticVisionV13_v13.safetensors
+    # - --ckpt=models/Stable-diffusion/sd_xl_turbo_1.0_fp16.safetensors
+# no webui: --nowebui
+# address: http://localhost:7860/?__theme=dark
+
+networks:
+  net:
+    name: sd-webui_dev
+    driver: bridge
+    external: false

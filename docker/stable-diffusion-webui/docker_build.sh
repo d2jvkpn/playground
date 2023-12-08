@@ -9,7 +9,7 @@ SD_Version=${1:-1.6.0}
 # convert 00000-170371915.png -resize 128x128 01.png
 # echo '{"init_images": ["'"$(base64 -w0 01.png)"'"]}' > data_img2img.json
 # echo '{"image": "'"$(base64 -w0 01.png)"'", "model": "clip"}' > data_clip.json
-ls http_data/data_clip.json http_data/data_img2img.json Dockerfile entrypoint.sh > /dev/null
+ls http_data/clip.json http_data/img2img.json Dockerfile entrypoint.sh > /dev/null
 
 docker pull ubuntu:22.04
 docker build --no-cache --build-arg=SD_Version="$SD_Version" -t sd-webui:p1-$SD_Version  ./
