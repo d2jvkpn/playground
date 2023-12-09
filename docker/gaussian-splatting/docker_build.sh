@@ -20,8 +20,8 @@ trap 'remove_container' EXIT
     docker exec $container mkdir -p /app/workspace
     docker cp bin $container:/app/bin
 
-    docker exec $container bash /app/bin/3dgs_install.sh
-    docker exec $container 'chmod a+x /app/bin/*.sh'
+    docker exec $container bash -c 'chmod a+x /app/bin/*.sh'
+    docker exec $container bash /app/bin/install.sh
     docker exec $container ln -s /opt/gaussian-splatting /app/3dgs
 
     docker commit -p \
@@ -31,7 +31,7 @@ trap 'remove_container' EXIT
       --change='ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$CONDA_HOME/bin:$PATH' \
       --change='WORKDIR /app/workspace' \
       $container 3dgs:latest
-      # --change='ENTRYPOINT ["bash", "/app/bin/3dgs_pipeline.sh"]' \
+      # --change='ENTRYPOINT ["bash", "/app/bin/pipeline.sh"]' \
 
     date +'==> %FT%T%:z docker build end'
 } &> 3dgs.$(date +'%FT%H-%M-%S').log
@@ -59,10 +59,10 @@ project=my-project
 
 docker run -d --gpus=all \
   --name $project -v $PWD/$project:/app/workspace \
-  3dgs:latest bash /app/bin/3dgs_pipeline.sh
+  3dgs:latest bash /app/bin/pipeline.sh
 
 ls -d project01/ project02/ project03/
 
 docker run -d --gpus=all \
   --name $project -v $PWD:/app/workspace \
-  3dgs:latest bash /app/bin/3dgs_pipeline.sh project01 project02 project03
+  3dgs:latest bash /app/bin/pipeline.sh project01 project02 project03

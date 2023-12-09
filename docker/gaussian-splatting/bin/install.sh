@@ -11,10 +11,15 @@ export PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$CONDA_HOME/bin:$PA
 
 apt update && \
   apt -y upgrade && \
-  apt install -y git wget zip cmake colmap xvfb imagemagick ffmpeg && \
-  apt install -y libglew-dev libassimp-dev libboost-all-dev libgtk-3-dev libopencv-dev \
+  apt install -y --no-install-recommends \
+    git wget zip cmake colmap xvfb imagemagick ffmpeg \
+    libglew-dev libassimp-dev libboost-all-dev libgtk-3-dev libopencv-dev \
     libglfw3-dev libavdevice-dev libavcodec-dev libeigen3-dev libxxf86vm-dev libembree-dev && \
+  apt remove && \
+  apt autoremove && \
   apt clean && \
+  apt autoclean && \
+  dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {} && \
   rm -rf /var/lib/apt/lists/*
 
 wget -qO ninja.gz \

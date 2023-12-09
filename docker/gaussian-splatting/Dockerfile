@@ -8,7 +8,7 @@ ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$CONDA_HOME/bin:$PATH
 RUN mkdir -p /app/workspace
 COPY bin /app/bin
 
-RUN bash /app/bin/3dgs_install.sh
+RUN bash /app/bin/install.sh
 
 WORKDIR /app/workspace
-# ENTRYPOINT ["bash", "/app/bin/3dgs_pipeline.sh"]
+# ENTRYPOINT ["bash", "/app/bin/pipeline.sh"]

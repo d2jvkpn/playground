@@ -6,7 +6,8 @@ ENV DEBIAN_FRONTEND=nointeractive
 
 RUN apt update && \
   apt -y upgrade && \
-  apt install -y git wget tzdata pkg-config python3 python3-pip python3-venv \
+  apt install -y --no-install-recommends \
+    git wget tzdata pkg-config python3 python3-pip python3-venv \
     libgl1 libglib2.0-0 libsm6 libxrender1 libxext6 && \
   apt remove && \
   apt autoremove && \
