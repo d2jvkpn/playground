@@ -1,4 +1,5 @@
 FROM nvidia/cuda:11.8.0-devel-ubuntu22.04
+# FROM nvidia/cuda:11.8.0-base-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=nointeractive
 ENV TZ=Asia/Shanghai
