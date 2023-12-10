@@ -9,15 +9,8 @@ COPY bin /app/bin
 RUN chmod a+x /app/bin/*.sh
 
 WORKDIR /app
-
-RUN sdw=stable-diffusion-webui; \
-  link=https://github.com/AUTOMATIC1111/${sdw}/archive/refs/tags/v${SD_Version}.tar.gz; \
-  wget -O ${sdw}-${SD_Version}.tar.gz $link && \
-  tar -xf ${sdw}-${SD_Version}.tar.gz && \
-  mv ${sdw}-${SD_Version} sd-webui
-
+RUN bash /app/bin/install.sh $SD_Version
 WORKDIR /app/sd-webui
-RUN bash /app/bin/install.sh
 
 EXPOSE 7860
 CMD ["/app/bin/entrypoint.sh", "--xformers", "--listen", "--api", "--port=7860"]
