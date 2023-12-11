@@ -1,4 +1,7 @@
 var target = document.querySelectorAll(".AnswerCard")[0];
+if (!target) {
+    target = document.querySelectorAll(".RichContent")[0];
+}
 
 // var target = document.querySelectorAll(".MoreAnswers")[0];
 

@@ -6,10 +6,10 @@ ENV TZ=Asia/Shanghai
 ENV CONDA_HOME=/opt/conda
 ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$CONDA_HOME/bin:$PATH
 
-RUN mkdir -p /app/workspace
+RUN mkdir -p /app/3dgs
 COPY bin /app/bin
 
 RUN bash /app/bin/install.sh
 
-WORKDIR /app/workspace
+WORKDIR /app/3dgs
 # ENTRYPOINT ["bash", "/app/bin/pipeline.sh"]

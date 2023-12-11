@@ -17,7 +17,7 @@ trap 'remove_container' EXIT
 {
     date +'==> %FT%T%:z docker build start'
 
-    docker exec $container mkdir -p /app/workspace
+    docker exec $container mkdir -p /app/3dgs
     docker cp bin $container:/app/bin
 
     docker exec $container bash -c 'chmod a+x /app/bin/*.sh'
@@ -29,7 +29,7 @@ trap 'remove_container' EXIT
       --change='ENV TZ=Asia/Shanghai' \
       --change='ENV CONDA_HOME=/opt/conda' \
       --change='ENV PATH=/opt/gaussian-splatting/SIBR_viewers/install/bin:$CONDA_HOME/bin:$PATH' \
-      --change='WORKDIR /app/workspace' \
+      --change='WORKDIR /app/3dgs' \
       $container 3dgs:latest
       # --change='ENTRYPOINT ["bash", "/app/bin/pipeline.sh"]' \
 
@@ -58,11 +58,11 @@ docker run --name 3dgs -d --gpus=all 3dgs:latest sleep infinity
 project=my-project
 
 docker run -d --gpus=all \
-  --name $project -v $PWD/$project:/app/workspace \
+  --name $project -v $PWD/$project:/app/3dgs \
   3dgs:latest bash /app/bin/pipeline.sh
 
 ls -d project01/ project02/ project03/
 
 docker run -d --gpus=all \
-  --name $project -v $PWD:/app/workspace \
+  --name $project -v $PWD:/app/3dgs \
   3dgs:latest bash /app/bin/pipeline.sh project01 project02 project03

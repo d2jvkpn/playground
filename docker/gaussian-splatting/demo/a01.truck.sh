@@ -18,7 +18,7 @@ ls -d truck_1/input truck_1/distorted/{database.db,sparse}
 
 #### 3dgs container
 cd truck_1/
-docker run -d --name 3dgs --gpus=all -v $PWD:/app/workspace 3dgs:latest sleep infinity
+docker run -d --name 3dgs --gpus=all -v $PWD:/app/3dgs 3dgs:latest sleep infinity
 
 docker exec -it 3dgs bash
 
