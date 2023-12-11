@@ -33,8 +33,8 @@ RUN link=https://downloads.apache.org/kafka/${KAFKA_Version}/kafka_${KAFKA_Tag}.
 #   mkdir -p /opt/kafka/logs && \
 #   chown -R d2jvkpn /home/d2jvkpn/kafka /opt/kafka/logs
 
-RUN mkdir -p /app/configs /app/data /app/logs && \
-  ln -s /app/logs /opt/kafka/logs
+RUN mkdir -p /app/kafka/configs /app/kafka/data /app/kafka/logs && \
+  ln -s /app/kafka/logs /opt/kafka/logs
 
 ENV PATH=/opt/kafka/bin:$PATH
 WORKDIR /app
