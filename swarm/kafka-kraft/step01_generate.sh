@@ -38,8 +38,8 @@ EOF
 
 # controller.quorum.voters=1@localhost:9093
 # controller.quorum.voters=1@kafka-node1:9093,2@kafka-node2:9093,3@kafka-node3:9093
-controller_quorum_voters=$(for i in $(seq 1 $num); do echo $(printf %d@$template:9093 $i $i); done)
-controller_quorum_voters=$(echo $controller_quorum_voters | sed 's/ /,/g')
+controller_quorum_voters=$(for i in $(seq 1 $num); do printf "%d@$template:9093," $i $i; done)
+controller_quorum_voters=${controller_quorum_voters%,}
 
 echo "==> controller_quorum_voters: $controller_quorum_voters"
 
