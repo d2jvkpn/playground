@@ -4,7 +4,7 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 # set -x
-KAFKA_Version=${KAFKA_Version:-3.6.0}
+KAFKA_Version=${KAFKA_Version:-3.6.1}
 SCALA_Version=${SCALA_Version:-2.13}
 
 BUILD_Region=$(printenv BUILD_Region || true)

@@ -4,7 +4,7 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
-kafka_version=${kafka_version:-3.6.0}
+kafka_version=${kafka_version:-3.6.1}
 template=${template:-kafka-node%02d}
 port_zero=${port_zero:-29090}
 data_dir=${data_dir:-/app/data}
