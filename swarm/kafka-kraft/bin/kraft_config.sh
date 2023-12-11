@@ -14,8 +14,8 @@ num_partitions=$(awk '/^num_partitions: /{print $2; exit}' $yaml_config)
 data_dir=$(awk '/^data_dir: /{print $2; exit}' $yaml_config)
 
 node_id=$(awk '/^node_id: /{print $2; exit}' $yaml_config)
-advertised_listeners=$(awk '/^advertised_listeners: /{print $2; exit}' $advertised_listeners)
-controller_quorum_voters=$(awk '/^controller_quorum_voters: /{print $2; exit}' $controller_quorum_voters)
+advertised_listeners=$(awk '/^advertised_listeners: /{print $2; exit}' $yaml_config)
+controller_quorum_voters=$(awk '/^controller_quorum_voters: /{print $2; exit}' $yaml_config)
 
 
 ##### TODO: validate variables: $((${#a} * ${#b} * ${#c})) -eq 0
