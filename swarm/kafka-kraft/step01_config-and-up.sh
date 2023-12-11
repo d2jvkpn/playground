@@ -25,6 +25,7 @@ fi
 image=registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:$kafka_version
 docker pull $image
 
+#### 1. generate configs
 # cluster_id=$(kafka-storage.sh random-uuid)
 cluster_id=$(docker run --rm $image kafka-storage.sh random-uuid)
 echo "==> Kafka cluster id: $cluster_id, number of nodes: $num"
@@ -74,3 +75,18 @@ EOF
 
     echo "==> node: $node, config: data/$node/configs/{kafka.yaml,server.properties}"
 done
+
+#### 2. generate docker-compose.yaml
+export TAG=$kafka_version UserID=$UID GroupID=$(id -g)
+envsubst > docker-compose.yaml < deploy_cluster.yaml
+
+echo "==> docker-compose.yaml created"
+exit
+
+docker-compose up -d
+docker-compose ps
+sleep 5
+
+ls -1 \
+   data/kafka-node*/data/meta.properties \
+   data/kafka-node*/logs
