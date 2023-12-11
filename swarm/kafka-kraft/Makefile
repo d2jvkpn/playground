@@ -12,5 +12,8 @@ build-remote:
 	ssh -F configs/ssh.conf build_host \
 	  "cd docker_build/playground/swarm/kafka_kraft && git pull && bash docker_build.sh"
 
+generate:
+	bash step01_generate.sh
+
 echo:
 	echo ${GroupID}, ${UserID}
