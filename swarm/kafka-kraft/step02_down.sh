@@ -8,6 +8,6 @@ docker-compose down
 
 echo '!!! Remove files in data?(yes/no)'
 read -t 5 ans || true
-[ "$ans" != "yes" ] && exit 0
+[[ "$ans" != "yes" && "$ans" != "y" ]] && exit 0
 
 rm -rf data/kafka-node*
