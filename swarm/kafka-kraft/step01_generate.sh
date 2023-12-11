@@ -30,17 +30,6 @@ docker pull $image
 cluster_id=$(docker run --rm $image kafka-storage.sh random-uuid)
 echo "==> Kafka cluster id: $cluster_id, number of nodes: $num"
 
-mkdir -p data
-
-docker run --rm $image cat /opt/kafka/config/kraft/server.properties > data/server.properties
-
-cat > data/kafka.yaml <<EOF
-version: $kafka_version
-cluster_id: $cluster_id
-data_dir: $data_dir
-num_partitions: $num_partitions
-EOF
-
 # controller.quorum.voters=1@localhost:9093
 # controller.quorum.voters=1@kafka-node1:9093,2@kafka-node2:9093,3@kafka-node3:9093
 controller_quorum_voters=$(for i in $(seq 1 $num); do echo $(printf %d@$template:9093 $i $i); done)
@@ -59,14 +48,17 @@ for node_id in $(seq 1 $num); do
     mkdir -p data/$node/{data,logs}
 
 cat > data/$node/kafka.yaml <<EOF
-$(cat data/kafka.yaml)
+version: $kafka_version
+data_dir: $data_dir
+num_partitions: $num_partitions
+cluster_id: $cluster_id
 
 node_id: $node_id
 advertised_listeners: $advertised_listeners
 controller_quorum_voters: $controller_quorum_voters
 EOF
 
-    echo "==> node: $node, config: data/$node/{kafka.yaml,server.properties}"
+    echo "==> node: $node, config: data/$node/kafka.yaml"
 done
 
 #### 2. generate docker-compose.yaml
