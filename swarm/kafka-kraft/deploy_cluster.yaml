@@ -10,7 +10,9 @@ services:
     ports: ["127.0.0.1:29091:9092"]
     environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./data/kafka-node01:/app
+    - ./data/kafka-node01/configs:/app/configs
+    - ./data/kafka-node01/data:/app/data
+    - ./data/kafka-node01/logs:/app/logs
 
   kafka-node02:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
@@ -21,7 +23,9 @@ services:
     ports: ["127.0.0.1:29092:9092"]
     environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./data/kafka-node02:/app
+    - ./data/kafka-node02/configs:/app/configs
+    - ./data/kafka-node02/data:/app/data
+    - ./data/kafka-node02/logs:/app/logs
 
   kafka-node03:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
@@ -32,7 +36,9 @@ services:
     ports: ["127.0.0.1:29093:9092"]
     environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./data/kafka-node03:/app
+    - ./data/kafka-node03/configs:/app/configs
+    - ./data/kafka-node03/data:/app/data
+    - ./data/kafka-node03/logs:/app/logs
 
 networks:
   net: { name: kafka-kraft, driver: bridge, external: false }

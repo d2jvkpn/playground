@@ -10,7 +10,9 @@ services:
     ports: ["127.0.0.1:9092:9092"]
     environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./data/kafka-node01:/app
+    - ./data/kafka-node01/configs:/app/configs
+    - ./data/kafka-node01/data:/app/data
+    - ./data/kafka-node01/logs:/app/logs
 
 networks:
   net: { name: kafka-kraft, driver: bridge, external: false }
