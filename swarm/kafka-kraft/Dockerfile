@@ -29,11 +29,7 @@ RUN link=https://downloads.apache.org/kafka/${KAFKA_Version}/kafka_${KAFKA_Tag}.
 
 # mkdir -p /opt/kafka && tar -xf kafka_${tag}.tgz --strip-components=1 -C /opt/kafka
 
-# RUN mkdir -p /home/d2jvkpn/kafka/configs /home/d2jvkpn/kafka/data && \
-#   mkdir -p /opt/kafka/logs && \
-#   chown -R d2jvkpn /home/d2jvkpn/kafka /opt/kafka/logs
-
-RUN mkdir -p /app/kafka/configs /app/kafka/data /app/kafka/logs && \
+RUN mkdir -p /app/kafka/data /app/kafka/logs && \
   ln -s /app/kafka/logs /opt/kafka/logs
 
 ENV PATH=/opt/kafka/bin:$PATH

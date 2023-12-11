@@ -4,11 +4,15 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
 # PWD: /app
-cluster_id=$(awk '/^cluster_id: /{print $2; exit}' ./kafka/configs/kafka.yaml)
+yaml_config=./kafka/kafka.yaml
+config=./kafka/server.properties
 
-[ -z "$cluster_id" ] && { >&2 echo "cluster_id is unset in ./kafka/configs/kafka.yaml"; exit 1; }
+cluster_id=$(awk '/^cluster_id: /{print $2; exit}' $yaml_config)
+[ -z "$cluster_id" ] && { >&2 echo "cluster_id is unset in $yaml_config"; exit 1; }
 
-kafka-storage.sh format --ignore-formatted -t $cluster_id -c ./kafka/configs/server.properties
+[ ! -f "$config" ] && ${_path}/kraft_config.sh $yaml_config $config
 
-kafka-server-start.sh ./kafka/configs/server.properties
-# kafka-server-start.sh -daemon ./kafka/configs/server.properties
+kafka-storage.sh format --ignore-formatted -t $cluster_id -c $config # --add-scram
+
+kafka-server-start.sh $config "$@"
+# kafka-server-start.sh -daemon $config

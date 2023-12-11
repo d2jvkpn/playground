@@ -7,7 +7,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 kafka_version=${kafka_version:-3.6.1}
 template=${template:-kafka-node%02d}
 port_zero=${port_zero:-29090}
-data_dir=${data_dir:-/app/data}
+data_dir=${data_dir:-/app/kafka/data}
 num_partitions=${num_partitions:-3}
 
 # echo "==> Number of kafka node: "
@@ -56,16 +56,9 @@ for node_id in $(seq 1 $num); do
     # advertised.listeners=PLAINTEXT://localhost:29092
     advertised_listeners=PLAINTEXT://localhost:$(($port_zero + $node_id))
 
-    mkdir -p data/$node/{configs,data,logs}
+    mkdir -p data/$node/{data,logs}
 
-    cat data/server.properties | sed \
-      -e "/^log.dirs/s#=/.*#=$data_dir#" \
-      -e "/^node.id=/s#=.*#=$node_id#" \
-      -e "/^advertised.listeners=/s#=.*#=$advertised_listeners#" \
-      -e "/^controller.quorum.voters=/s#=.*#=$controller_quorum_voters#" \
-      -e "/^num.partitions=/s#=.*#=$num_partitions#" > data/$node/configs/server.properties
-
-cat > data/$node/configs/kafka.yaml <<EOF
+cat > data/$node/kafka.yaml <<EOF
 $(cat data/kafka.yaml)
 
 node_id: $node_id
@@ -73,7 +66,7 @@ advertised_listeners: $advertised_listeners
 controller_quorum_voters: $controller_quorum_voters
 EOF
 
-    echo "==> node: $node, config: data/$node/configs/{kafka.yaml,server.properties}"
+    echo "==> node: $node, config: data/$node/{kafka.yaml,server.properties}"
 done
 
 #### 2. generate docker-compose.yaml
