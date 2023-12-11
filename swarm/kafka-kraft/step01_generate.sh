@@ -17,10 +17,7 @@ num=3
 
 ####
 num_re='^[1-9]+$'
-if ! [[ "$num" =~ $num_re ]] ; then
-    echo '!!! Error not a valid number': $num >&2
-    exit 1
-fi
+[[ ! "$num" =~ $num_re ]] && { >&2 echo '!!! Error not a valid number': $num; exit 1; }
 
 image=registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:$kafka_version
 docker pull $image
@@ -49,9 +46,6 @@ echo "==> controller_quorum_voters: $controller_quorum_voters"
 for node_id in $(seq 1 $num); do
     node=$(printf $template $node_id)
     node_id=$node_id
-
-    # advertised.listeners=PLAINTEXT://kafka-node1:9092
-    # advertised.listeners=PLAINTEXT://localhost:29092
     advertised_listeners=PLAINTEXT://localhost:$(($port_zero + $node_id))
 
     mkdir -p data/$node/{data,logs}
