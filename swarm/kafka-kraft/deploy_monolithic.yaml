@@ -11,6 +11,8 @@ services:
     environment: [TZ=Asia/Shanghai]
     volumes:
     - ./data/kafka-node01:/app/kafka
+    command:
+    - "/app/bin/entrypoint.sh"
 
 networks:
   net: { name: kafka-kraft, driver: bridge, external: false }
