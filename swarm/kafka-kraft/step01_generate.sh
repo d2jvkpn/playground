@@ -30,6 +30,15 @@ docker pull $image
 cluster_id=$(docker run --rm $image kafka-storage.sh random-uuid)
 echo "==> Kafka cluster id: $cluster_id, number of nodes: $num"
 
+mkdir -p data
+
+cat > data/kafka.yaml <<EOF
+version: $kafka_version
+data_dir: $data_dir
+num_partitions: $num_partitions
+cluster_id: $cluster_id
+EOF
+
 # controller.quorum.voters=1@localhost:9093
 # controller.quorum.voters=1@kafka-node1:9093,2@kafka-node2:9093,3@kafka-node3:9093
 controller_quorum_voters=$(for i in $(seq 1 $num); do echo $(printf %d@$template:9093 $i $i); done)
@@ -48,10 +57,7 @@ for node_id in $(seq 1 $num); do
     mkdir -p data/$node/{data,logs}
 
 cat > data/$node/kafka.yaml <<EOF
-version: $kafka_version
-data_dir: $data_dir
-num_partitions: $num_partitions
-cluster_id: $cluster_id
+$(cat data/kafka.yaml)
 
 node_id: $node_id
 advertised_listeners: $advertised_listeners
