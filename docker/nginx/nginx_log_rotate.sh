@@ -14,20 +14,20 @@ set -eu -o pipefail
 
 
 {
-  date +">>> %FT%T%z"
+    date +">>> %FT%T%z"
 
-  yesterday=$(date -d 'yesterday' '+%Y-%m-%d')
-  pid=$(cat /var/run/nginx.pid)
+    yesterday=$(date -d 'yesterday' '+%Y-%m-%d')
+    pid=$(cat /var/run/nginx.pid)
 
-  for f in $(ls ${HOME}/nginx/logs/*.log); do
-    test -s $f || continue || true
-    out=${f%\.log}.${yesterday}.log
-    echo "    saving $out"
-    mv $f $out
-    pigz $out &
-  done
+    for f in $(ls ${HOME}/nginx/logs/*.log); do
+        test -s $f || continue || true
+        out=${f%\.log}.${yesterday}.log
+        echo "    saving $out"
+        mv $f $out
+        pigz $out &
+    done
 
-  kill -USR1 $pid
+    kill -USR1 $pid
 
-  wait
+    wait
 } >> $(dirname $0)/nginx_log_rotate.$(date +"%Y-%m").log 2>&1
