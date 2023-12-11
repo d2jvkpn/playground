@@ -8,8 +8,8 @@ ARG KAFKA_Tag=${SCALA_Version}-${KAFKA_Version}
 ENV KAFKA_Version=${KAFKA_Version}
 ENV KAFKA_Tag=${KAFKA_Tag}
 
-COPY bin /opt/bin
-RUN chmod a+x /opt/bin/*.sh
+COPY bin /app/bin
+RUN chmod a+x /app/bin/*.sh
 
 RUN if [ "$BUILD_Region" = "cn" ]; then \
     echo "==> BUILD_Region: $BUILD_Region"; \
@@ -36,10 +36,8 @@ RUN link=https://downloads.apache.org/kafka/${KAFKA_Version}/kafka_${KAFKA_Tag}.
 RUN mkdir -p /app/configs /app/data /app/logs && \
   ln -s /app/logs /opt/kafka/logs
 
-ENV PATH=/opt/kafka/bin:$PATH
-
 WORKDIR /app
 
 EXPOSE 9092 9093
-# ENTRYPOINT ["/opt/bin/entrypoint.sh"]
-CMD ["/opt/bin/entrypoint.sh"]
+# ENTRYPOINT ["/app/bin/entrypoint.sh"]
+CMD ["/app/bin/entrypoint.sh"]
