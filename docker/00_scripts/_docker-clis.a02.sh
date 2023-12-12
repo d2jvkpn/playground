@@ -18,3 +18,5 @@ pip3 install docker-squash
 docker-squash $image
 
 docker system prune -a
+
+docker system df

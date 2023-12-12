@@ -5,20 +5,35 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
-#SD_Version=1.6.0
+export DEBIAN_FRONTEND=nointeractive
 
-#apt install -y --no-install-recommends \
-#  git wget tzdata pkg-config python3 python3-pip python3-venv \
-#  libgl1 libglib2.0-0 libsm6 libxrender1 libxext6
+version=$1
+out_dir=$2
 
-#sdw=stable-diffusion-webui; \
-#  link=https://github.com/AUTOMATIC1111/${sdw}/archive/refs/tags/v${SD_Version}.tar.gz; \
-#  wget -O ${sdw}-${SD_Version}.tar.gz $link && \
-#  tar -xf ${sdw}-${SD_Version}.tar.gz && \
-#  mv ${sdw}-${SD_Version} sd-webui
+####
+apt update && \
+  apt -y upgrade && \
+  apt install -y --no-install-recommends \
+    git wget tzdata pkg-config python3 python3-pip python3-venv \
+    libgl1 libglib2.0-0 libsm6 libxrender1 libxext6 && \
+  apt remove && \
+  apt autoremove && \
+  apt clean && \
+  apt autoclean && \
+  dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {} && \
+  rm -rf /var/lib/apt/lists/*
 
-#cd sd-webui
+####
+name=stable-diffusion-webui-${version}
 
+wget -O $name.tar.gz https://github.com/AUTOMATIC1111/stable-diffusion-webui/archive/refs/tags/v${version}.tar.gz
+tar -xf $name.tar.gz
+
+mkdir -p $(dirname $out_dir)
+mv $name $out_dir
+cd $out_dir
+
+####
 # git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui ./
 
 python3 -m venv venv/ && \
