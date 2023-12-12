@@ -15,6 +15,7 @@ data_dir=$(awk '/^data_dir: /{print $2; exit}' $yaml_config)
 
 node_id=$(awk '/^node_id: /{print $2; exit}' $yaml_config)
 advertised_listeners=$(awk '/^advertised_listeners: /{print $2; exit}' $yaml_config)
+process_roles=$(awk '/^process_roles: /{print $2; exit}' $yaml_config)
 controller_quorum_voters=$(awk '/^controller_quorum_voters: /{print $2; exit}' $yaml_config)
 
 
@@ -26,6 +27,7 @@ cat $config_template | sed \
   -e "/^log.dirs/s#=/.*#=$data_dir#" \
   -e "/^node.id=/s#=.*#=$node_id#" \
   -e "/^advertised.listeners=/s#=.*#=$advertised_listeners#" \
+  -e "/^process.roles=/s#=.*#=$process_roles#" \
   -e "/^controller.quorum.voters=/s#=.*#=$controller_quorum_voters#" > $config_output
 
 exit

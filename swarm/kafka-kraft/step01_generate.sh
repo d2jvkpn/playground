@@ -58,6 +58,7 @@ $(cat data/kafka.yaml)
 
 node_id: $node_id
 advertised_listeners: $advertised_listeners
+process_roles: broker,controller
 controller_quorum_voters: $controller_quorum_voters
 EOF
 
@@ -66,7 +67,7 @@ done
 
 #### 2. generate docker-compose.yaml
 export TAG=$kafka_version UserID=$UID GroupID=$(id -g)
-envsubst > docker-compose.yaml < docker_deploy.yaml
+envsubst > docker-compose.yaml < deploy.yaml
 
 echo "==> docker-compose.yaml created"
 exit
