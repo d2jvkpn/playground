@@ -38,8 +38,8 @@ cluster_id: $cluster_id
 # node_id: 1
 # advertised_listeners: PLAINTEXT://kafka-node1:9092
 # advertised_listeners: PLAINTEXT://localhost:29091
+# process_roles: broker,controller
 # controller_quorum_voters: 1@kafka-node01:9093,2@kafka-node02:9093,3@kafka-node03:9093
-# process_roles: ["broker", "controller"]
 EOF
 
 controller_quorum_voters=$(for i in $(seq 1 $num); do printf "%d@$template:9093," $i $i; done)
