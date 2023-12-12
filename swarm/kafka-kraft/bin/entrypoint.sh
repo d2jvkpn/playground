@@ -12,6 +12,8 @@ cluster_id=$(awk '/^cluster_id: /{print $2; exit}' $yaml_config)
 
 [ ! -f "$config" ] && ${_path}/kraft_config.sh $yaml_config $config
 
+mkdir -p kafka/{data,logs}
+
 kafka-storage.sh format --ignore-formatted -t $cluster_id -c $config # --add-scram
 
 kafka-server-start.sh $config "$@"

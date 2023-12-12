@@ -37,7 +37,7 @@ data_dir: /app/kafka/data
 num_partitions: 3
 
 node_id: 1
-# advertised.listeners=PLAINTEXT://kafka-node1:9092
+# advertised.listeners: PLAINTEXT://kafka-node1:9092
 advertised_listeners: PLAINTEXT://localhost:29091
 controller_quorum_voters: 1@kafka-node01:9093,2@kafka-node02:9093,3@kafka-node03:9093
 EOF

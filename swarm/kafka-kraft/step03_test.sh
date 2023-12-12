@@ -20,8 +20,8 @@ kafka-topics.sh --bootstrap-server $addrs --version
 
 kafka-topics.sh --bootstrap-server $addrs --list
 
+# --partitions 3 --replication-factor 3
 kafka-topics.sh --bootstrap-server $addrs --create --topic $topic
-# kafka-topics.sh --bootstrap-server $addrs --create --topic test --partitions 3 --replication-factor 3
 
 kafka-topics.sh --bootstrap-server $addrs --describe --topic $topic
 
@@ -43,3 +43,8 @@ kafka-console-consumer.sh --bootstrap-server $addrs --topic $topic \
 #   --partition 0 --offset 0 --max-messages 7
 
 kafka-topics.sh --bootstrap-server $addrs --delete --topic $topic
+
+####
+kafka-metadata-quorum.sh --bootstrap-server  localhost:29091 describe --status
+
+# kafka-dump-log.sh --cluster-metadata-decoder --files tmp/kraft-combined-logs/_cluster_metadata-0/00000000000000023946.log
