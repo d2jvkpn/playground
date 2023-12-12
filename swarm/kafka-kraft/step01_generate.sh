@@ -36,13 +36,12 @@ num_partitions: $num_partitions
 cluster_id: $cluster_id
 
 # node_id: 1
-# advertised.listeners: PLAINTEXT://kafka-node1:9092
+# advertised_listeners: PLAINTEXT://kafka-node1:9092
 # advertised_listeners: PLAINTEXT://localhost:29091
 # controller_quorum_voters: 1@kafka-node01:9093,2@kafka-node02:9093,3@kafka-node03:9093
+# process_roles: ["broker", "controller"]
 EOF
 
-# controller.quorum.voters=1@localhost:9093
-# controller.quorum.voters=1@kafka-node1:9093,2@kafka-node2:9093,3@kafka-node3:9093
 controller_quorum_voters=$(for i in $(seq 1 $num); do printf "%d@$template:9093," $i $i; done)
 controller_quorum_voters=${controller_quorum_voters%,}
 
@@ -53,7 +52,8 @@ for node_id in $(seq 1 $num); do
     node_id=$node_id
     advertised_listeners=PLAINTEXT://localhost:$(($port_zero + $node_id))
 
-cat | sed '/^#/d' > data/$node/kafka.yaml <<EOF
+    mkdir -p data/$node
+cat > data/$node/kafka.yaml <<EOF
 $(cat data/kafka.yaml)
 
 node_id: $node_id

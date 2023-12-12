@@ -5,11 +5,11 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 # PWD: /app
 yaml_config=./kafka/kafka.yaml
-config=./kafka/server.properties
+config=./kafka/kafka.properties
 
 cluster_id=$(awk '/^cluster_id: /{print $2; exit}' $yaml_config)
-[ -z "$cluster_id" ] && { >&2 echo "cluster_id is unset in $yaml_config"; exit 1; }
 
+[ -z "$cluster_id" ] && { >&2 echo "cluster_id is unset in $yaml_config"; exit 1; }
 [ ! -f "$config" ] && ${_path}/kraft_config.sh $yaml_config $config
 
 mkdir -p kafka/{data,logs}
