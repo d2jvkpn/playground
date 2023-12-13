@@ -9,7 +9,8 @@ mkdir -p target
 out=./target/$(basename ${cf%.cpp})
 
 # -std=gnu++20, -std=c++20
-g++ "$cf" -g -o "$out"
+set -x
+g++ -g -fmodules-ts -std=gnu++20 -o "$out" $@
 "$out"
 
 exit 0
