@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"log"
 	"net"
@@ -11,6 +12,7 @@ import (
 
 func main() {
 	var (
+		addr    string
 		token   string
 		message string
 		err     error
@@ -18,7 +20,10 @@ func main() {
 		conn    net.Conn
 	)
 
-	if conn, err = net.Dial("tcp", os.Args[1]); err != nil {
+	flag.StringVar(&addr, "addr", "localhost:8000", "tcp server address")
+	flag.Parse()
+
+	if conn, err = net.Dial("tcp", addr); err != nil {
 		log.Fatalln(err)
 	}
 

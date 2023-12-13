@@ -3,33 +3,42 @@ package main
 import (
 	"bufio"
 	// "fmt"
+	"flag"
 	"log"
 	"net"
-	"os"
 	"strings"
 )
 
-var correctToken = "hello:world"
+var (
+	_CorrectToken = "hello:world"
+)
 
 func handle(conn net.Conn) {
 	defer conn.Close()
 
-	reader := bufio.NewReader(conn)
-	data, err := reader.ReadString('\n')
-	if err != nil {
+	var (
+		data   string
+		token  string
+		err    error
+		reader *bufio.Reader
+	)
+
+	reader = bufio.NewReader(conn)
+
+	if data, err = reader.ReadString('\n'); err != nil {
 		log.Println(err)
 		return
 	}
 
-	token := strings.TrimSpace(data)
+	token = strings.TrimSpace(data)
 	log.Printf("~~~ Got token: %s\n", token)
-	if token != correctToken {
+
+	if token != _CorrectToken {
 		conn.Write([]byte("Authorization failed!\n"))
 		return
 	}
 
 	conn.Write([]byte("Authorized successfully!\n"))
-	conn.Close()
 }
 
 func main() {
@@ -39,7 +48,9 @@ func main() {
 		listener net.Listener
 	)
 
-	addr = os.Args[1]
+	flag.StringVar(&addr, "addr", ":8000", "listening address")
+	flag.Parse()
+
 	if listener, err = net.Listen("tcp", addr); err != nil {
 		log.Fatalln(err)
 	}
