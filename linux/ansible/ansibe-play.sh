@@ -9,6 +9,4 @@ script=$2 # yaml file path
 host_file=${_path}/configs/hosts.ini
 
 # -vv -vvv
-ansible-playbook -v $script \
-  --inventory=$host_file \
-  --extra-vars="host=$host"
+ansible-playbook $script -v --inventory=$host_file --extra-vars="host=$host"

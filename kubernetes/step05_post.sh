@@ -22,6 +22,6 @@ ansible k8s_all -m apt --become -a 'upgrade=yes'
 ansible k8s_all -m apt --become -a 'clean=yes autoclean=yes autoremove=yes'
 
 # --inventory=configs/k8s_hosts.ini
-ansible-playbook -v reboot-required.yaml --extra-vars="host=k8s_all"
+ansible-playbook reboot-required.yaml -v --extra-vars="host=k8s_all"
 
 ansible k8s_all -a 'uptime'
