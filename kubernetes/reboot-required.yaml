@@ -10,7 +10,7 @@
     _hd: "{{lookup('env', 'HOME')}}"
 
   tasks:
-  - name: required_file_exists
+  - name: required_file
     register: required
     stat:
       path: /var/run/reboot-required
