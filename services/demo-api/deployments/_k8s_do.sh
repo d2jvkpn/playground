@@ -24,7 +24,7 @@ kubectl create configmap demo-api --from-file=demo-api/deployments/dev.yaml \
 
 kubectl get configmap demo-api -o yaml
 
-kubectl apply -f demo-api/deployments/k8s_deploy.yaml
+kubectl apply -f demo-api/deployments/k8s_app.yaml
 # kubectl get deploy/demo-api
 # kubectl describe deploy/demo-api
 
@@ -38,8 +38,7 @@ pod=$(kubectl get pods -l app=demo-api | awk 'NR==2{print $1; exit}')
 kubectl get pod/$pod -o wide
 kubectl exec -it $pod -- ls
 
-#### services and ingress http
-kubectl apply -f demo-api/deployments/k8s_cluster-ip.yaml
+#### ingress(http) and hpa
 kubectl apply -f demo-api/deployments/k8s_ingress_http.yaml
 kubectl apply -f demo-api/deployments/k8s_hpa.yaml
 
