@@ -14,9 +14,14 @@ exit
 # ansible k8s_all -m shell --become -a 'apt update'
 # ansible k8s_all -m shell --become -a 'DEBIAN_FRONTEND=nointeractive apt -y upgrade'
 
+# https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+
 ansible k8s_all -m apt --become -a 'update_cache=yes'
 ansible k8s_all -m apt --become -a 'upgrade=yes'
 
 ansible k8s_all -m apt --become -a 'clean=yes autoclean=yes autoremove=yes'
 
-ansible-playbook -v reboot-required.yaml --inventory=configs/k8s_hosts.ini --extra-vars="host=k8s_all"
+# --inventory=configs/k8s_hosts.ini
+ansible-playbook -v reboot-required.yaml --extra-vars="host=k8s_all"
+
+ansible k8s_all -a 'uptime'
