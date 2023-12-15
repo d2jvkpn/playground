@@ -8,7 +8,8 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # yq_version=${yq_version:-4.35.2}
 # flannel_version=${flannel_version:-0.23.0}
 
-mkdir -p k8s_apps/images
+# 1.29.0
+version=$1
 
 function download_images() {
     yf=$1; save_dir=$2
@@ -30,11 +31,17 @@ function download_images() {
     done
 }
 
-{ command -v kubeadm; command -v wget; command -v docker; } > /dev/null
+{ command -v kubeadm; command -v wget; command -v docker; command -v yq; } > /dev/null
+
+current=$(kubeadm version -o yaml | yq .clientVersion.gitVersion | sed 's/^v//')
+# kube_version=$(kubeadm version -o json | jq -r .clientVersion.gitVersion | sed 's/^v//')
+[ "$version" != "$current" ] && { >&2 echo '!!! '"unexpected version: $current"; exit 1; }
+
+mkdir -p k8s_apps/images
 
 #### 1. k8s_images
-kubeadm config images list | xargs -i docker pull {}
-kube_version=$(kubeadm version -o json | jq -r .clientVersion.gitVersion | sed 's/^v//')
+# kubeadm config images list | xargs -i docker pull {}
+k8s_images=$(kubeadm config images list)
 
 #### 2. ingress-nginx and flannel
 link=https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
@@ -71,9 +78,9 @@ wget -O k8s_apps/yq https://github.com/mikefarah/yq/releases/latest/download/yq_
 
 #### 5. yaml info
 cat > k8s_apps/k8s.yaml << EOF
-version: $kube_version
+version: $version
 images:
-$(kubeadm config images list | sed 's/^/- image: /')
+$(echo "$k8s_images" | sed 's/^/- image: /')
 
 ingress:
   images:

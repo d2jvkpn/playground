@@ -26,7 +26,7 @@ function creation_on_exit() {
 
 case $action in
 "download")
-    bash k8s_scripts/k8s_apps_download.sh
+    bash k8s_scripts/k8s_apps_download.sh 1.29.0
     ls -al k8s_apps
     ;;
 
