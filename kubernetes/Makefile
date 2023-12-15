@@ -1,5 +1,6 @@
+# make download version=1.29.0
 download:
-	bash k8s_cluster.sh download
+	bash k8s_cluster.sh download $(version)
 
 check:
 	bash k8s_cluster.sh check
