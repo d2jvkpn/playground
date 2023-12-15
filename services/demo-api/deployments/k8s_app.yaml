@@ -72,7 +72,6 @@ spec:
           valueFrom: { fieldRef: { apiVersion: "v1", fieldPath: "metadata.name" } }
         - name: K8S_PodIP
           valueFrom: { fieldRef: { fieldPath: status.podIP } }
-        - { name: TZ, value: Asia/Shanghai }
         # - name: MongoPassword
         #   valueFrom: { secretKeyRef: {name: "mongo-secret", key: password} }
         # envFrom:

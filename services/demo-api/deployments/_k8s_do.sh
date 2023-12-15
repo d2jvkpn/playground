@@ -11,14 +11,10 @@ ansible k8s-cp01 -m copy -a 'src=../services/demo-api/deployments dest=./demo-ap
 ssh k8s-cp01
 
 #### deployment
-kubectl config set-context --current --namespace=dev
-# kubectl config view --minify -o jsonpath='{..namespace}'
-# kubectl config view | grep namespace
-
-# kubectl -n dev create configmap demo-api --from-file=deployments/dev.yaml
+# kubectl -n dev create configmap demo-api --from-file=demo-api/deployments/dev.yaml
 # kubectl create configmap demo-api --from-file=deployments/dev.yaml
 
-kubectl create configmap demo-api --from-file=demo-api/deployments/dev.yaml \
+kubectl -n dev create configmap demo-api --from-file=demo-api/deployments/dev.yaml \
   -o yaml --dry-run=client |
   kubectl apply -f -
 
@@ -32,14 +28,14 @@ kubectl get pods -o wide
 kubectl get pods -l app=demo-api | awk 'NR>1{print $1}' | xargs -i kubectl describe pod/{}
 kubectl get pods -l app=demo-api | awk 'NR>1{print $1}' | xargs -i kubectl logs pod/{}
 
-kubectl scale --replicas=2 deploy/demo-api
+kubectl scale --replicas=1 deploy/demo-api
 
 pod=$(kubectl get pods -l app=demo-api | awk 'NR==2{print $1; exit}')
 kubectl get pod/$pod -o wide
 kubectl exec -it $pod -- ls
 
 #### ingress(http) and hpa
-kubectl apply -f demo-api/deployments/k8s_ingress_http.yaml
+kubectl apply -f demo-api/deployments/k8s_ingress.yaml
 kubectl apply -f demo-api/deployments/k8s_hpa.yaml
 
 curl -H 'Host: demo-api.dev.k8s.local' k8s.local/meta | jq

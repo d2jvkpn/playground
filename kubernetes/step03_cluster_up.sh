@@ -48,9 +48,6 @@ ansible k8s_workers -m shell -a "sudo $(bash k8s_scripts/k8s_command_join.sh wor
 ansible k8s_cps[1:] -m shell -a "sudo $(bash k8s_scripts/k8s_command_join.sh control-plane)"
 
 #### 3. post
-ansible k8s_cps -m shell -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
-ansible k8s_cps -m shell -a 'kubectl config set-context --current --namespace=dev'
-
 # kubectl label node/$ingress_node --overwrite node-role.kubernetes.io/ingress=
 # kubectl label node/$ingress_node --overwrite node-role.kubernetes.io/ingress-
 
