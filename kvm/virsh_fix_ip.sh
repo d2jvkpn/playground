@@ -42,7 +42,7 @@ virsh net-update $KVM_Network add ip-dhcp-host "$record" --live --config
 # virsh net-dumpxml $KVM_Network | xq .network.ip.dhcp.host
 virsh net-dumpxml $KVM_Network | grep $target
 
-[ -f ~/.ssh/kvm/kvm ] || exit 0
+[ -f ~/.ssh/kvm/kvm.pem ] || exit 0
 
 mkdir -p ~/.ssh/kvm
 
