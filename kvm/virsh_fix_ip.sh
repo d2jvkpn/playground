@@ -42,6 +42,22 @@ virsh net-update $KVM_Network add ip-dhcp-host "$record" --live --config
 # virsh net-dumpxml $KVM_Network | xq .network.ip.dhcp.host
 virsh net-dumpxml $KVM_Network | grep $target
 
+[ -f ~/.ssh/kvm/kvm ] || exit 0
+
+mkdir -p ~/.ssh/kvm
+
+cat > ~/.ssh/kvm/$target.conf <<EOF
+Host $target
+	HostName      $addr
+	# User          ubuntu
+	# Port          22
+	LogLevel      INFO
+	Compression   yes
+	IdentityFile  ~/.ssh/kvm/kvm.pem
+EOF
+
+echo "Created ~/.ssh/kvm/$taregt.conf, please set User and Port fields. Bye!"
+
 ####
 # virsh net-dumpxml $KVM_Network
 # virsh net-edit $KVM_Network
