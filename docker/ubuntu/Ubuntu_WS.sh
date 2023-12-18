@@ -16,10 +16,12 @@ echo "==> mount_path: $mount_path"
 # set -x
 
 if [ -z "$mount_path" ]; then
-    docker run -d --name $container_name -u $uid:$gid  -w /app ubuntu:22.04 tail -f /etc/hosts
+    docker run -d --name $container_name -u $uid:$gid -w /app \
+      ubuntu:22.04 tail -f /etc/hosts
 else
     mount_path=$(readlink -f $mount_path)
-    docker run -d --name $container_name -u $uid:$gid -w /app -v $mount_path:/app ubuntu:22.04 sleep infinity
+    docker run -d --name $container_name -u $uid:$gid -w /app -v $mount_path:/app \
+      ubuntu:22.04 sleep infinity
 fi
 
 echo "docker exec -it $container_name bash"
