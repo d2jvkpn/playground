@@ -15,7 +15,7 @@
     stat:
       path: /var/run/reboot-required
 
-  - name: reboot_required
+  - name: reboot_if_required
     become: yes
     when: required.stat.exists == true
     reboot:
