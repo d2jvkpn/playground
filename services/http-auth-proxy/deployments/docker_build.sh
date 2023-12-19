@@ -8,7 +8,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 git_branch=$1
 
 image="registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy"
-tag=${git_branch}-$(yq .version bin/project.yaml)
+tag=${git_branch}-$(yq .version project.yaml)
 tag=${DOCKER_Tag:-$tag}
 name=http-auth-proxy
 BUILD_Region=cn=${BUILD_Region:-""}
