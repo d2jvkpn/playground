@@ -3,7 +3,9 @@ package settings
 import (
 	"bytes"
 	// "fmt"
+	"math/rand"
 	"os"
+	"time"
 
 	"github.com/d2jvkpn/gotk"
 	"github.com/d2jvkpn/gotk/cloud-logging"
@@ -11,9 +13,10 @@ import (
 )
 
 var (
-	Meta     map[string]any
 	_Project *viper.Viper
 	_Config  *viper.Viper
+	Lifetime <-chan time.Time
+	Meta     map[string]any
 	Logger   *logging.Logger
 )
 
@@ -58,6 +61,28 @@ func SetConfig(config string) (err error) {
 	if err = _Config.ReadInConfig(); err != nil {
 		return err
 	}
+
+	//
+	/*
+		if !_Config.IsSet("lifetime") {
+			return fmt.Errorf("lifetime is unset")
+		}
+	*/
+
+	_Config.SetDefault("lifetime", "0m")
+	lifetime := _Config.GetDuration("lifetime")
+
+	if lifetime > 0 {
+		if lifetime < 15*time.Minute {
+			lifetime = 15 * time.Minute
+		}
+
+		random := rand.New(rand.NewSource(time.Now().UnixNano()))
+		lifetime = lifetime + time.Duration(random.Int63n(10*60)-5*60)*time.Second
+		Lifetime = time.After(lifetime)
+	}
+
+	Meta["lifetime"] = lifetime.String()
 
 	// _Config.SetDefault("hello.world", 42)
 

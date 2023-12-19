@@ -19,7 +19,8 @@ const (
 	HTTP_IdleTimeout        = 60
 	HTTP_MaxMultipartMemory = 8 << 20 // 8M
 
-	SHUTDOWN = "shutdown"
+	MSG_Shutdown  = "shutdown"
+	MSG_EndOfLife = "end_of_life"
 )
 
 var (

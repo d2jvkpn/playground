@@ -110,10 +110,18 @@ func main() {
 		}
 
 		logger.Error("... received from error channel", "error", err)
+	case <-settings.Lifetime:
+		errch <- fmt.Errorf(internal.MSG_EndOfLife)
+
+		for i := 0; i < cap(errch); i++ {
+			err = errors.Join(err, <-errch)
+		}
+
+		logger.Info("... end of life", "error", err)
 	case sig := <-quit:
 		// if sig == syscall.SIGUSR2 {...}
 		// fmt.Fprintf(os.Stderr, "... received signal: %s\n", sig)
-		errch <- fmt.Errorf(internal.SHUTDOWN)
+		errch <- fmt.Errorf(internal.MSG_Shutdown)
 
 		for i := 0; i < cap(errch); i++ {
 			err = errors.Join(err, <-errch)

@@ -36,10 +36,7 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 
 	_InternalLogger.Info("service_start", zap.Any("meta", settings.Meta))
 
-	shutdown := func() {
-		_Once.Do(_Shutdown)
-	}
-
+	shutdown := func() { _Once.Do(_Shutdown) }
 	errch = make(chan error, 2) // number of services
 
 	go func() {
@@ -57,7 +54,9 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 	}()
 
 	go func() {
-		if err := <-errch; err.Error() == SHUTDOWN {
+		msg := (<-errch).Error()
+
+		if msg == MSG_Shutdown || msg == MSG_EndOfLife {
 			shutdown()
 		} else {
 			errch <- err // !!! send back

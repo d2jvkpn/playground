@@ -1,3 +1,5 @@
+lifetime: 24h
+
 hello:
   world: 42
 

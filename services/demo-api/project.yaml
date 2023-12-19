@@ -5,6 +5,8 @@ image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api
 
 # configs/{{.APP_ENV}}.yaml
 config: |
+  liftime: 24h # liftime <=0 || liftime>=15m
+
   hello:
     world: 42
 
