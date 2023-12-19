@@ -7,7 +7,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 cd $(dirname ${_path})
 
-branch=master; tag=dev
+branch=master; tag=dev; hours=24
 image=$(yq .image project.yaml):$tag
 
 git checkout $branch
@@ -27,7 +27,7 @@ fi
 
 created_ts=$(date -d "$created_at" +%s)
 
-if [ $(($commit_ts - $created_ts)) -lt $((24*60*60)) ]; then
+if [ $(($commit_ts - $created_ts)) -lt $(($hours * 60 * 60)) ]; then
     >&2 echo "==> abort: git-commit-at=$commit_at, image-created-at=$created_at"
     exit 0
 fi
