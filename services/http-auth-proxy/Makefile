@@ -16,23 +16,25 @@ git_branch = $(shell git rev-parse --abbrev-ref HEAD)
 # -- [[ ! -z "$uncommitted$unpushed" ]] && git_tree_state="dirty"
 
 
-build:
+build-bin:
 	echo ">>> git branch: $(git_branch)"
 	mkdir -p target
 	go build -o target/main -ldflags="-X main.build_time=$(build_time) \
-	  -X main.git_branch=$(git_branch) -X main.git_commit_id=unknown" main.go
+	  -X main.git_branch=$(git_branch) -X main.git_commit_id=unknown" bin/main.go
 
-docker-build:
-	bash deployments/build.sh dev
+build-image:
+	# bash deployments/build.sh dev
+	DOCKER_Tag=dev bash deployments/docker_build.sh master
 
-docker-build-local:
-	BuildLocal=true bash deployments/build.sh dev
+build-local:
+	# BUILD_Region=cn bash deployments/build.sh dev
+	BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master
 
 run:
-	go run main.go serve --config=configs/sidecar-proxy.yaml --addr=:9000
+	go run bin/main.go serve --config=configs/local.yaml --addr=:9000
 
 create-user_md5:
-	go run main.go create-user --method=md5
+	go run bin/main.go create-user --method=md5
 
 create-user_bcrypt:
-	go run main.go create-user --method=bcrypt
+	go run bin/main.go create-user --method=bcrypt

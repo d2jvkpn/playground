@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  http-auth-proxy:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy:${TAG}
+    container_name: http-auth-proxy
+    user: 1000:1000
+    restart: always
+    # depends_on: ["app"]
+    networks: ["net"]
+    # network_mode: host
+    ports: ["${PORT}:${PORT}"]
+    user: 1000:1000
+    environment: ["TZ=Asia/Shanghai"]
+    volumes:
+    - ./configs/:/app/configs/
+    - ./logs/:/app/logs/
+    command: ["./target/main", "serve", "--config=configs/prod.yaml", "--addr=:${PORT}"]
+
+networks:
+  net:
+    name: http-auth-proxy
+    driver: bridge
+    external: false

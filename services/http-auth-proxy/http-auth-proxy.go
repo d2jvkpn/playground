@@ -17,7 +17,7 @@ import (
 	"go.uber.org/zap"
 )
 
-type SidecarProxyConfig struct {
+type Config struct {
 	Service        string   `mapstructure:"service"`
 	Cors           string   `mapstructure:"cors"`
 	PassWithPrefix []string `mapstructure:"pass_with_prefix"`
@@ -37,18 +37,18 @@ type SidecarProxyConfig struct {
 	BasicAuth gotk.BasicAuths `mapstructure:"basic_auth"`
 }
 
-type SidecarProxyServer struct {
-	config SidecarProxyConfig
+type ProxyServer struct {
+	config Config
 	svcUrl *url.URL
 	proxy  *httputil.ReverseProxy
 	server *http.Server
 	logger *zap.Logger
 }
 
-func NewSidecarProxyServer(vp *viper.Viper, logger *zap.Logger, opts ...func(*http.Server)) (
-	sps *SidecarProxyServer, err error) {
+func NewProxyServer(vp *viper.Viper, logger *zap.Logger, opts ...func(*http.Server)) (
+	sps *ProxyServer, err error) {
 	var (
-		config SidecarProxyConfig
+		config Config
 		cert   tls.Certificate
 	)
 
@@ -73,7 +73,7 @@ func NewSidecarProxyServer(vp *viper.Viper, logger *zap.Logger, opts ...func(*ht
 	}
 	// fmt.Printf("~~~ %#v\n", config.BasicAuth)
 
-	sps = &SidecarProxyServer{
+	sps = &ProxyServer{
 		config: config,
 		server: new(http.Server),
 		logger: logger,
@@ -101,7 +101,7 @@ func NewSidecarProxyServer(vp *viper.Viper, logger *zap.Logger, opts ...func(*ht
 	return sps, nil
 }
 
-func (sps *SidecarProxyServer) Handle(w http.ResponseWriter, r *http.Request) {
+func (sps *ProxyServer) Handle(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "OPTIONS" {
 		header := w.Header()
 		header.Set("Access-Control-Allow-Origin", sps.config.Cors)
@@ -174,7 +174,7 @@ func (sps *SidecarProxyServer) Handle(w http.ResponseWriter, r *http.Request) {
 	sps.logger.Info(msg, fields...)
 }
 
-func (sps *SidecarProxyServer) checkIp(ip string) bool {
+func (sps *ProxyServer) checkIp(ip string) bool {
 	if len(sps.config.LimitIps) == 0 {
 		return true
 	}
@@ -188,7 +188,7 @@ func (sps *SidecarProxyServer) checkIp(ip string) bool {
 	return false
 }
 
-func (sps *SidecarProxyServer) shouldPass(msg string) bool {
+func (sps *ProxyServer) shouldPass(msg string) bool {
 	for i := range sps.config.PassWithPrefix {
 		// fmt.Println("~~~", msg, sps.config.PassWithPrefix[i])
 		if strings.HasPrefix(msg, sps.config.PassWithPrefix[i]) {
@@ -199,7 +199,7 @@ func (sps *SidecarProxyServer) shouldPass(msg string) bool {
 	return false
 }
 
-func (sps *SidecarProxyServer) handle(w http.ResponseWriter, r *http.Request) {
+func (sps *ProxyServer) handle(w http.ResponseWriter, r *http.Request) {
 	r.Host = sps.svcUrl.Host
 
 	r.Header.Del("Authorization")
@@ -212,7 +212,7 @@ func (sps *SidecarProxyServer) handle(w http.ResponseWriter, r *http.Request) {
 	sps.proxy.ServeHTTP(w, r)
 }
 
-func (sps *SidecarProxyServer) Serve(addr string) (shutdown func() error, err error) {
+func (sps *ProxyServer) Serve(addr string) (shutdown func() error, err error) {
 	var (
 		listener net.Listener
 		mux      *http.ServeMux

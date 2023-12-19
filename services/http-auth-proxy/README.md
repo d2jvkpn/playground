@@ -1,18 +1,18 @@
-# sidecar-proxy
-A simple HTTP sidecar-proxy implementing basic authentication.
+# http-auth-proxy
+A simple HTTP authorization proxy implementing basic authentication.
 
 *privides a basic auth access for services like stable-diffusion-webui and jaeger, supports tls,*
 *password hashing(md5 and bcrypt).*
 
 
 #### 1. docker images
-- registry.cn-shanghai.aliyuncs.com/d2jvkpn/sidecar-proxy:dev
+- registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy:dev
 
 
 #### 2. serve
-- configuration(configs/sidecar_proxy.yaml):
+- configuration(configs/local.yaml):
 ```yaml
-sidecar_proxy:
+http_auth_proxy:
   service: http://127.0.0.1:8000
   cors: "*"
   # pass_with_prefix: ["GET@/assets/"]
@@ -35,7 +35,7 @@ sidecar_proxy:
 
 - commandline:
 ```bash
-go run main.go serve --config=configs/sidecar-proxy.yaml --addr=:9000
+go run main.go serve --config=configs/local.yaml --addr=:9000
 ```
 *implements a basic auth througth 127.0.0.0:9000 for the local service 127.0.0.1:8000*
 

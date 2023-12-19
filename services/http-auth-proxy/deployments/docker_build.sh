@@ -7,10 +7,11 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 [ $# -eq 0 ] && { >&2 echo "Argument {branch} is required!"; exit 1; }
 git_branch=$1
 
-image="registry.cn-shanghai.aliyuncs.com/d2jvkpn/sidecar-proxy"
-tag=$git_branch
-name=sidecar-proxy
-BuildLocal=$(printenv BuildLocal || true)
+image="registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy"
+tag=${git_branch}-$(yq .version bin/project.yaml)
+tag=${DOCKER_Tag:-$tag}
+name=http-auth-proxy
+BUILD_Region=cn=${BUILD_Region:-""}
 
 function onExit {
     git checkout dev # --force
@@ -18,7 +19,7 @@ function onExit {
 trap onExit EXIT
 
 git checkout $git_branch
-[[ "$BuildLocal" != "true" ]] && git pull --no-edit
+# [[ "$BuildLocal" != "true" ]] && git pull --no-edit
 
 build_time=$(date +'%FT%T%:z')
 git_branch="$(git rev-parse --abbrev-ref HEAD)" # current branch
@@ -31,7 +32,6 @@ unpushed=$(git diff origin/$git_branch..HEAD --name-status)
 [[ ! -z "$uncommitted$unpushed" ]] && git_tree_state="dirty"
 
 ####
-[[ "$BuildLocal" != "true" ]] && \
 for base in $(awk '/^FROM/{print $2}' ${_path}/Dockerfile); do
     echo ">>> pull $base"
     docker pull $base
@@ -49,7 +49,7 @@ GO_ldflags="-X main.build_time=$build_time -X main.git_branch=$git_branch \
 df=${_path}/Dockerfile
 
 docker build --no-cache --file $df \
-  --build-arg=BuildLocal="$BuildLocal" \
+  --build-arg=BUILD_Region="$BUILD_Region" \
   --build-arg=GO_ldflags="$GO_ldflags" \
   --tag $image:$tag ./
 

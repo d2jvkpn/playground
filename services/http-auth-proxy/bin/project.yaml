@@ -1,9 +1,9 @@
-project: sidecar-proxy
-repository: https://github.com/d2jvkpn/sidecar-proxy
-version: 0.1.0
+project: http-auth-proxy
+repository: https://github.com/d2jvkpn/playground/tree/master/services/http-auth-proxy
+version: 0.2.0
 
 config: |
-  sidecar_proxy:
+  http_auth_proxy:
     service: http://localhost:8000
     cors: "*"
     # pass_with_prefix: ["GET@/assets/"]

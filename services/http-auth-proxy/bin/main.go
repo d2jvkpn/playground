@@ -12,7 +12,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/d2jvkpn/sidecar-proxy/pkg"
+	"github.com/d2jvkpn/playground/services/http-auth-proxy"
 
 	"github.com/d2jvkpn/gotk"
 	"github.com/d2jvkpn/gotk/cloud-logging"
@@ -64,7 +64,7 @@ func serve(fSet *flag.FlagSet, args []string) (err error) {
 		vp       *viper.Viper
 		project  *viper.Viper
 		logger   *logging.Logger
-		sps      *pkg.SidecarProxyServer
+		sps      *pkg.ProxyServer
 		shutdown func() error
 	)
 
@@ -94,13 +94,13 @@ func serve(fSet *flag.FlagSet, args []string) (err error) {
 		return
 	}
 
-	logger, err = logging.NewLogger("logs/sidecar-proxy.log", zapcore.InfoLevel, 256)
+	logger, err = logging.NewLogger("logs/http-auth-proxy.log", zapcore.InfoLevel, 256)
 	defer func() {
 		_ = logger.Down()
 	}()
 
-	vp = vp.Sub("sidecar_proxy")
-	if sps, err = pkg.NewSidecarProxyServer(vp, logger.Named("proxy")); err != nil {
+	vp = vp.Sub("http_auth_proxy")
+	if sps, err = pkg.NewProxyServer(vp, logger.Named("proxy")); err != nil {
 		return
 	}
 
