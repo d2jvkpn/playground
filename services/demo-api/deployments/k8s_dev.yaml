@@ -117,6 +117,7 @@ spec:
           requests: { cpu: "200m", memory: "128Mi", ephemeral-storage: "2Gi" }
           limits: { cpu: "1000m", memory: "512Mi", ephemeral-storage: "4Gi" }
         livenessProbe:
+          grpc: { port: 5042 }
           initialDelaySeconds: 5
           timeoutSeconds: 1
           periodSeconds: 10
@@ -127,7 +128,6 @@ spec:
           #   port: 5032
           #   httpHeaders:
           #   - { name: Custom-Header, value: Awesome }
-          grpc: { port: 5042 }
         env:
         # https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/
         - name: K8S_Namespace
