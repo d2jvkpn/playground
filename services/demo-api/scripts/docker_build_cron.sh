@@ -9,7 +9,7 @@ cd $(dirname ${_path})
 
 branch=${branch:-master}
 tag=${tag:-dev}
-minutes=${minutes:-60}
+minutes=${minutes:-180}
 image=$(yq .image project.yaml):$tag
 
 git checkout $branch
