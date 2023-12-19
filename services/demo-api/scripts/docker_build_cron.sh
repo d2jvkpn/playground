@@ -9,7 +9,7 @@ cd $(dirname ${_path})
 
 branch=${branch:-master}
 tag=${tag:-dev}
-hours=${hours:-24}
+minutes=${minutes:-60}
 image=$(yq .image project.yaml):$tag
 
 git checkout $branch
@@ -17,8 +17,7 @@ git pull
 
 commit_ts=$(git log -1 --format="%at")
 commit_at=$(date -d @$commit_ts +%FT%T%:z)
-# created_at=$(docker images --format json $image | jq .CreatedAt)
-created_at=$(docker inspect -f '{{ .Created }}' $image || true)
+created_at=$(docker inspect -f '{{ .Created }}' $image || true) # docker images --format json $image 
 
 if [ -z "$created_at" ]; then
     >&2 echo "==> docker build..."
@@ -27,8 +26,15 @@ if [ -z "$created_at" ]; then
 fi
 created_ts=$(date -d "$created_at" +%s)
 
-if [ $(($commit_ts - $created_ts)) -lt $(($hours * 60 * 60)) ]; then
-    >&2 echo "==> abort: git-commit-at=$commit_at, image-created-at=$created_at"
+if [ $created_ts -ge $commit_ts ]; then
+    >&2 echo "==> abort: git-commit=$commit_at, image-created=$created_at"
+    exit 0
+fi
+
+now_at=$(date +%FT%T%:z)
+now_ts=$(date -d $now_at +%s)
+if [ $(($commit_ts - $now_ts)) -ge $(($minutes * 60)) ]; then
+    >&2 echo "==> abort: git-commit=$commit_at, now=$now_at"
     exit 0
 fi
 
