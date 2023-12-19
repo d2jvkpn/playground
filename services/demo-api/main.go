@@ -2,6 +2,7 @@ package main
 
 import (
 	_ "embed"
+	"errors"
 	"flag"
 	"fmt"
 	"log/slog"
@@ -102,17 +103,22 @@ func main() {
 	)
 
 	quit = make(chan os.Signal, 1)
-	// signal.Notify(quit, os.Interrupt, syscall.SIGTERM, syscall.SIGUSR2)
-	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
+	signal.Notify(quit, os.Interrupt, syscall.SIGTERM) // syscall.SIGUSR2
 
 	select {
 	case err = <-errch:
-		logger.Error("... received from errch", "error", err)
+		for i := 0; i < cap(errch)-1; i++ {
+			err = errors.Join(err, <-errch)
+		}
+		logger.Error("... received from error chan", "error", err)
 	case sig := <-quit:
 		// if sig == syscall.SIGUSR2 {...}
 		// fmt.Fprintf(os.Stderr, "... received signal: %s\n", sig)
 		errch <- fmt.Errorf(internal.SHUTDOWN)
-		<-errch
-		logger.Info("... received signal", "signal", sig.String())
+		for i := 0; i < cap(errch); i++ {
+			err = errors.Join(err, <-errch)
+		}
+
+		logger.Info("... received signal", "signal", sig.String(), "error", err)
 	}
 }

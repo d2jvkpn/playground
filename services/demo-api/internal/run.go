@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"net"
 	"net/http"
-	"sync"
 	"time"
 
 	"demo-api/internal/settings"
@@ -19,7 +18,6 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 	var (
 		httpListener net.Listener
 		rpcListener  net.Listener
-		once         *sync.Once
 	)
 
 	if httpListener, err = net.Listen("tcp", httpAddr); err != nil {
@@ -36,58 +34,54 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 
 	_RuntimeInfo.Start()
 
+	_InternalLogger.Info("service_start", zap.Any("meta", settings.Meta))
+
 	shutdown := func() {
-		if _Server != nil {
-			ctx, cancel := context.WithTimeout(context.TODO(), 5*time.Second)
-			if err := _Server.Shutdown(ctx); err != nil {
-				_InternalLogger.Error(fmt.Sprintf("server shutdown: %v", err))
-			}
-			cancel()
-		}
-
-		_RPC.Shutdown()
-
-		once.Do(func() {
-			err := onExit()
-			if err == nil {
-				_InternalLogger.Warn("on_exit")
-			} else {
-				_InternalLogger.Error("on_exit", zap.Any("error", err))
-			}
-		})
-		return
+		_Once.Do(_Shutdown)
 	}
 
-	errch = make(chan error, 2)
-	once = new(sync.Once)
-
-	_InternalLogger.Info("service_start", zap.Any("meta", settings.Meta))
+	errch = make(chan error, 2) // number of services
 
 	go func() {
 		if err := _RPC.Serve(rpcListener); err != nil {
 			shutdown()
-			errch <- err
 		}
+		errch <- fmt.Errorf("rpc_Service_exit")
 	}()
 
 	go func() {
 		if err := _Server.Serve(httpListener); err != http.ErrServerClosed {
 			shutdown()
-			errch <- err
 		}
+		errch <- fmt.Errorf("http_server_exit")
 	}()
 
 	go func() {
 		if err := <-errch; err.Error() == SHUTDOWN {
 			shutdown()
+		} else {
+			errch <- err
 		}
-		errch <- nil
 	}()
 
 	return errch, nil
 }
 
-func onExit() (err error) {
+func _Shutdown() {
+	var err error
+
+	if _Server != nil {
+		ctx, cancel := context.WithTimeout(context.TODO(), 5*time.Second)
+		if err := _Server.Shutdown(ctx); err != nil {
+			_InternalLogger.Error(fmt.Sprintf("server shutdown: %v", err))
+		}
+		cancel()
+	}
+
+	if _RPC != nil {
+		_RPC.Shutdown()
+	}
+
 	_InternalLogger.Info("service_shutdown")
 
 	if _RuntimeInfo != nil {
@@ -98,5 +92,11 @@ func onExit() (err error) {
 		err = errors.Join(err, settings.Logger.Down())
 	}
 
-	return err
+	if err == nil {
+		_InternalLogger.Warn("on_exit")
+	} else {
+		_InternalLogger.Error("on_exit", zap.Any("error", err))
+	}
+
+	return
 }

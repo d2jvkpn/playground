@@ -4,6 +4,7 @@ import (
 	// "fmt"
 	"embed"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/d2jvkpn/gotk"
@@ -18,7 +19,7 @@ const (
 	HTTP_IdleTimeout        = 60
 	HTTP_MaxMultipartMemory = 8 << 20 // 8M
 
-	SHUTDOWN = "SHUTDOWN"
+	SHUTDOWN = "shutdown"
 )
 
 var (
@@ -32,4 +33,5 @@ var (
 	_Server         *http.Server
 	_RPC            *RPCServer
 	_RuntimeInfo    *gotk.RuntimeInfo
+	_Once           = new(sync.Once)
 )
