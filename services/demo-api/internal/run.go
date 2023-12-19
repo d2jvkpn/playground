@@ -45,14 +45,14 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 		if err := _RPC.Serve(rpcListener); err != nil {
 			shutdown()
 		}
-		errch <- fmt.Errorf("rpc_service_exit")
+		errch <- fmt.Errorf("rpc_service_down")
 	}()
 
 	go func() {
 		if err := _Server.Serve(httpListener); err != http.ErrServerClosed {
 			shutdown()
 		}
-		errch <- fmt.Errorf("http_server_exit")
+		errch <- fmt.Errorf("http_server_down")
 	}()
 
 	go func() {
