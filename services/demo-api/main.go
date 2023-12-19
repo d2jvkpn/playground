@@ -59,20 +59,18 @@ func main() {
 		output := flag.CommandLine.Output()
 
 		fmt.Fprintf(output, "# %s\n\n", settings.ProjectString("app"))
-
 		fmt.Fprintf(output, "#### usage\n```text\n")
+
 		flag.PrintDefaults()
 		fmt.Fprintf(output, "```\n")
 
 		fmt.Fprintf(
-			output, "\n#### configuration\n```yaml\n%s```\n",
+			output,
+			"\n#### configuration\n```yaml\n%s```\n",
 			settings.ProjectString("config"),
 		)
-		fmt.Fprintf(
-			output,
-			"\n#### build\n```text\n%s\n```\n",
-			gotk.BuildInfoText(settings.Meta),
-		)
+
+		fmt.Fprintf(output, "\n#### build\n```text\n%s\n```\n", gotk.BuildInfoText(settings.Meta))
 	}
 
 	flag.Parse()
@@ -110,11 +108,13 @@ func main() {
 		for i := 0; i < cap(errch)-1; i++ {
 			err = errors.Join(err, <-errch)
 		}
+
 		logger.Error("... received from error channel", "error", err)
 	case sig := <-quit:
 		// if sig == syscall.SIGUSR2 {...}
 		// fmt.Fprintf(os.Stderr, "... received signal: %s\n", sig)
 		errch <- fmt.Errorf(internal.SHUTDOWN)
+
 		for i := 0; i < cap(errch); i++ {
 			err = errors.Join(err, <-errch)
 		}
