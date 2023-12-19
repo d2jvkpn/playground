@@ -7,7 +7,9 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 cd $(dirname ${_path})
 
-branch=master; tag=dev; hours=24
+branch=master
+tag=dev
+hours=24
 image=$(yq .image project.yaml):$tag
 
 git checkout $branch
@@ -15,7 +17,6 @@ git pull
 
 commit_ts=$(git log -1 --format="%at")
 commit_at=$(date -d @$commit_ts +%FT%T%:z)
-
 # created_at=$(docker images --format json $image | jq .CreatedAt)
 created_at=$(docker inspect -f '{{ .Created }}' $image || true)
 
@@ -24,7 +25,6 @@ if [ -z "$created_at" ]; then
     DOCKER_Tag=$tag bash deployments/docker_build.sh $branch
     exit 0
 fi
-
 created_ts=$(date -d "$created_at" +%s)
 
 if [ $(($commit_ts - $created_ts)) -lt $(($hours * 60 * 60)) ]; then
