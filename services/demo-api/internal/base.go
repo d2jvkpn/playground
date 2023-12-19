@@ -4,7 +4,6 @@ import (
 	// "fmt"
 	"embed"
 	"net/http"
-	"sync"
 	"time"
 
 	"github.com/d2jvkpn/gotk"
@@ -34,5 +33,4 @@ var (
 	_Server         *http.Server
 	_RPC            *RPCServer
 	_RuntimeInfo    *gotk.RuntimeInfo
-	_Once           = new(sync.Once)
 )
