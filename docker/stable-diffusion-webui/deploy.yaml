@@ -5,6 +5,7 @@ services:
     image: sd-webui:${TAG}
     container_name: sd-webui_${APP_ENV}
     restart: always
+    user: ${UserID}
     networks: ["net"]
     # ports: ["127.0.0.1:7860:7860"]
     ports: ["7860:7860"]

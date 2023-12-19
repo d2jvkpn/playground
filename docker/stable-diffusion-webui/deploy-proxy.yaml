@@ -5,6 +5,7 @@ services:
     image: sd-webui:${TAG}
     container_name: sd-webui_${APP_ENV}
     restart: always
+    user: ${UserID}
     networks: ["net"]
     # ports: ["127.0.0.1:7860:7860"]
     environment: ["TZ=Asia/Shanghai"]
@@ -35,9 +36,9 @@ services:
     - --port=7860
     # - --ckpt=models/Stable-diffusion/realisticVisionV13_v13.safetensors
 
-  proxy:
-    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/sidecar-proxy:dev
-    container_name: sd-proxy_dev
+  sd-auth:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy:dev
+    container_name: sd-auth_dev
     user: 1000:1000
     restart: always
     depends_on: ["sd-webui"]
@@ -45,9 +46,9 @@ services:
     ports: ["9000:9000"]
     environment: ["TZ=Asia/Shanghai"]
     volumes:
-    - ./configs/:/home/hello/sidecar-proxy/configs/
-    - ./logs/:/home/hello/sidecar-proxy/logs/
-    command: ["./main", "serve", "--config=configs/sidecar-proxy.yaml", "--addr=:9000"]
+    - ./configs/:/app/configs/
+    - ./logs/:/app/logs/
+    command: ["./target/main", "serve", "--config=configs/http-auth-proxy.yaml", "--addr=:9000"]
 
 networks:
   net:

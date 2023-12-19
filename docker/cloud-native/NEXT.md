@@ -2,7 +2,7 @@
 ---
 
 #### 2023-05-25
-- sidecar-proxy for jaeger service
+- ~~jaeger htt auth proxy~~
 
 #### 2023-05-26
-- jaeger, oopentelemtery-collector, grafana
+- ~~opentelemtery-collector, grafana~~

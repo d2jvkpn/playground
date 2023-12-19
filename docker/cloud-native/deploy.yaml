@@ -47,18 +47,19 @@ services:
     # - "16686:16686" # web
     # - "14250"       # expose to otel-collector
 
-  sidecar-proxy:
-    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/sidecar-proxy:dev
+  jaeger-auth:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy:dev
     restart: always
-    container_name: otel-sidecar-proxy
+    user: 1000:1000
+    container_name: otel-jaeger-auth
     depends_on: ["jaeger"]
     user: 1000:1000
     networks: ["net"]
     ports: ["8052:8052"]
     volumes:
-    - ./configs/:/home/hello/sidecar-proxy/configs/
-    - ./logs/:/home/hello/sidecar-proxy/logs/
-    command: ["./main", "--config=configs/sidecar-proxy.yaml", "--addr=:8052"]
+    - ./configs/:/app/configs/
+    - ./logs/:/app/logs/
+    command: ["./target/main", "--config=configs/http-auth-proxy.yaml", "--addr=:8052"]
 
   opentelemetry-collector:
     image: otel/opentelemetry-collector:latest
