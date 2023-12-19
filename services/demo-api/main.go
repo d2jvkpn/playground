@@ -104,29 +104,27 @@ func main() {
 	quit = make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM) // syscall.SIGUSR2
 
-	select {
-	case err = <-errch:
-		for i := 0; i < cap(errch)-1; i++ {
+	syncErrors := func(num int) {
+		for i := 0; i < num; i++ {
 			err = errors.Join(err, <-errch)
 		}
+	}
+
+	select {
+	case err = <-errch:
+		syncErrors(cap(errch) - 1)
 
 		logger.Error("... received from error channel", "error", err)
 	case <-settings.Lifetime:
 		errch <- fmt.Errorf(internal.MSG_EndOfLife)
-
-		for i := 0; i < cap(errch); i++ {
-			err = errors.Join(err, <-errch)
-		}
+		syncErrors(cap(errch))
 
 		logger.Info("... end of life", "error", err)
 	case sig := <-quit:
 		// if sig == syscall.SIGUSR2 {...}
 		// fmt.Fprintf(os.Stderr, "... received signal: %s\n", sig)
 		errch <- fmt.Errorf(internal.MSG_Shutdown)
-
-		for i := 0; i < cap(errch); i++ {
-			err = errors.Join(err, <-errch)
-		}
+		syncErrors(cap(errch))
 
 		logger.Info("... quit", "signal", sig.String(), "error", err)
 	}
