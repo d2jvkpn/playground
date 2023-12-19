@@ -60,7 +60,7 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 		if err := <-errch; err.Error() == SHUTDOWN {
 			shutdown()
 		} else {
-			errch <- err
+			errch <- err // send back
 		}
 	}()
 
