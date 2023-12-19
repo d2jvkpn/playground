@@ -19,8 +19,14 @@ git_branch = $(shell git rev-parse --abbrev-ref HEAD)
 build-bin:
 	echo ">>> git branch: $(git_branch)"
 	mkdir -p target
-	go build -o target/main -ldflags="-X main.build_time=$(build_time) \
-	  -X main.git_branch=$(git_branch) -X main.git_commit_id=unknown" main.go
+
+	GOOS=linux GOARCH=amd64 go build -o target/main \
+	  -ldflags="-X main.build_time=$(build_time) -X main.git_branch=$(git_branch) \
+	  -X main.git_commit_id=unknown" main.go
+
+	GOOS=windows GOARCH=amd64 go build -o target/main.exe \
+	  -ldflags="-X main.build_time=$(build_time) -X main.git_branch=$(git_branch) \
+	  -X main.git_commit_id=unknown" main.go
 
 build-local:
 	# bash deployments/build.sh dev

@@ -84,8 +84,8 @@ func serve(fSet *flag.FlagSet, args []string) (err error) {
 
 		fmt.Fprintf(output, "Usage:\n")
 		flag.PrintDefaults()
-		fmt.Fprintf(output, "\nConfiguration:\n```yaml\n%s```\n", project.GetString("config"))
-		fmt.Fprintf(output, "\nBuild:\n```text\n%s\n```\n", gotk.BuildInfoText(meta))
+		fmt.Fprintf(output, "\n==> configuration:\n```yaml\n%s```\n", project.GetString("config"))
+		fmt.Fprintf(output, "\n==> build:\n```text\n%s\n```\n", gotk.BuildInfoText(meta))
 	}
 
 	fSet.Parse(args)
@@ -115,7 +115,7 @@ func serve(fSet *flag.FlagSet, args []string) (err error) {
 	logger.Info(msg)
 
 	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt, syscall.SIGTERM, syscall.SIGUSR2)
+	signal.Notify(quit, os.Interrupt, syscall.SIGTERM) // syscall.SIGUSR2
 
 	select {
 	case sig := <-quit: // sig := <-quit:
