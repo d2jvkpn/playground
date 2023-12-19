@@ -20,22 +20,22 @@ site:
 	mkdir -p site
 	echo "Hello, world!" > site/a.txt
 
-protoc_run:
+protoc-run:
 	protoc --go-grpc_out=./ --go_out=./ --proto_path=./proto proto/*.proto
 	sed -i '/^\tmustEmbedUnimplemented/s#\t#\t// #' proto/*_grpc.pb.go
 
-build_bin:
+build-bin:
 	bash scripts/go_build.sh
 
-build_offline:
+build-offline:
 	GIT_Pull=false BUILD_Region=cn DOCKER_Pull=false DOCKER_Tag=dev \
 	bash scripts/docker_build.sh master
 
-build_local:
+build-local:
 	# BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master
 	DOCKER_Tag=dev bash deployments/docker_build.sh master
 
-build_remote:
+build-remote:
 	ssh -F configs/ssh.conf build_host "cd docker_build/playground/demo-api && \
 	  git pull && DOCKER_Tag=dev bash deployments/docker_build.sh master"
 

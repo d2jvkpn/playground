@@ -6,7 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 name=http-auth-proxy
 mkdir -p configs logs
 
-export TAG=$1 APP_ENV=$2 PORT=$3
+export TAG=$1 APP_ENV=$2 PORT=$3 UserId=$(id -u)
 envsubst < ${_path}/docker_deploy.yaml > docker-compose.yaml
 
 # docker-compose pull

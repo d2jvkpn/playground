@@ -22,11 +22,11 @@ build-bin:
 	go build -o target/main -ldflags="-X main.build_time=$(build_time) \
 	  -X main.git_branch=$(git_branch) -X main.git_commit_id=unknown" bin/main.go
 
-build-image:
+build-local:
 	# bash deployments/build.sh dev
 	DOCKER_Tag=dev bash deployments/docker_build.sh master
 
-build-local:
+build-cn:
 	# BUILD_Region=cn bash deployments/build.sh dev
 	BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master
 
