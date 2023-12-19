@@ -7,10 +7,77 @@ metadata:
 spec:
   type: ClusterIP
   # clusterIP: 10.107.98.176
-  selector: { app: demo-api }
+  selector: { app: "demo-api" }
   ports:
   - { name: http, protocol: TCP, port: 5032, targetPort: 5032 }
   - { name: rpc, protocol: TCP, port: 5042, targetPort: 5042 }
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: dev
+  name: demo-api
+spec:
+  type: NodePort
+  selector: { app: demo-api }
+  ports:
+  ## nodePort port range: 30000-32767
+  ## port: communcation between nodes, targetPort: pod port, nodePort: service node port
+  - { name: http, protocol: TCP, port: 5032, targetPort: 5032, nodePort: 30032 }
+  - { name: grpc, protocol: TCP, port: 5042, targetPort: 5042, nodePort: 30042 }
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: dev
+  name: demo-api
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/limit-connections: "1024"
+    nginx.ingress.kubernetes.io/limit-rps: "256"
+    nginx.ingress.kubernetes.io/backend-protocol: HTTP
+    nginx.ingress.kubernetes.io/proxy-body-size: 8m
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: demo-api.dev.k8s.local
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service: { name: demo-api, port: { number: 5032 } }
+
+---
+## Horizontal Pod Autoscaler, https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/
+# kubectl autoscale deployment php-apache --cpu-percent=50 --min=2 --max=10
+# kubectl get hpa
+# kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
+# kubectl get hpa php-apache --watch
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  namespace: dev
+  name: demo-api
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: demo-api
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 80
+
 ---
 apiVersion: apps/v1
 kind: Deployment
