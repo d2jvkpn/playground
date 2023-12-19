@@ -12,7 +12,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/d2jvkpn/playground/services/http-auth-proxy"
+	"http-auth-proxy/pkg"
 
 	"github.com/d2jvkpn/gotk"
 	"github.com/d2jvkpn/gotk/cloud-logging"

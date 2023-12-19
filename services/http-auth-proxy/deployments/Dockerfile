@@ -16,12 +16,12 @@ RUN { apk --no-cache update && apk --no-cache upgrade; } &> /dev/null
 
 WORKDIR /app
 
-ADD ./go.mod ./go.sum  ./
-COPY ./bin ./bin
+ADD ./go.mod ./go.sum ./main.go ./project.yaml  ./
+COPY ./pkg /pkg
 
 # in alpine, date doesn't parse %:z
 RUN mkdir -p target && \
-  go build -o target/main -ldflags="-w -s ${GO_ldflags}" bin/main.go
+  go build -o target/main -ldflags="-w -s ${GO_ldflags}" main.go
 
 ####
 FROM alpine

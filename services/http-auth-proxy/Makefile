@@ -20,7 +20,7 @@ build-bin:
 	echo ">>> git branch: $(git_branch)"
 	mkdir -p target
 	go build -o target/main -ldflags="-X main.build_time=$(build_time) \
-	  -X main.git_branch=$(git_branch) -X main.git_commit_id=unknown" bin/main.go
+	  -X main.git_branch=$(git_branch) -X main.git_commit_id=unknown" main.go
 
 build-local:
 	# bash deployments/build.sh dev
@@ -31,10 +31,10 @@ build-cn:
 	BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master
 
 run:
-	go run bin/main.go serve --config=configs/local.yaml --addr=:9000
+	go run main.go serve --config=configs/local.yaml --addr=:9000
 
 create-user_md5:
-	go run bin/main.go create-user --method=md5
+	go run main.go create-user --method=md5
 
 create-user_bcrypt:
-	go run bin/main.go create-user --method=bcrypt
+	go run main.go create-user --method=bcrypt
