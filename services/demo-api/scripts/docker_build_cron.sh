@@ -7,9 +7,9 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 cd $(dirname ${_path})
 
-branch=master
-tag=dev
-hours=24
+branch=${branch:-master}
+tag=${tag:-dev}
+hours=${hours:-24}
 image=$(yq .image project.yaml):$tag
 
 git checkout $branch
