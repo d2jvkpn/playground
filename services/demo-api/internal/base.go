@@ -20,7 +20,7 @@ const (
 	HTTP_MaxMultipartMemory = 8 << 20 // 8M
 
 	MSG_Shutdown  = "shutdown"
-	MSG_EndOfLife = "end_of_life"
+	MSG_EndOfLife = "end-of-life"
 )
 
 var (
