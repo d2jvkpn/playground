@@ -45,10 +45,9 @@ RUN if [ "$BUILD_Region" = "cn" ]; then \
 
 RUN apk --no-cache update && \
   apk --no-cache upgrade && \
-  apk --no-cache add tzdata curl
+  apk --no-cache add tzdata
+  # curl
 
-# RUN adduser -D -u 1000 d2jvkpn
-# USER d2jvkpn
 RUN mkdir -p /app/target
 WORKDIR /app
 
