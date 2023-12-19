@@ -1,43 +1,15 @@
 FROM ubuntu:22.04
 
 ARG TZ=${TZ:-Asia/Shanghai}
-ARG REGION=${REGION}
+ARG BUILD_Region=${BUILD_Region}
 ENV TZ=${TZ}
 
 COPY bin /app/bin
 RUN chmod a+x /app/bin/*.sh
 
-RUN if [ "$BUILD_Region" = "cn" ]; then \
-    echo "==> BUILD_Region: $BUILD_Region"; \
-    bash /app/bin/${REGION}.debian.sh; \
-  fi
-
-ENV DEBIAN_FRONTEND=noninteractive
-
-RUN apt update && \
-  apt -y upgrade && \
-  apt install -y --no-install-recommends \
-    sudo tzdata pkg-config git wget vim netcat curl python3 python3-pip python3-venv && \
-  apt -y remove && \
-  apt -y autoremove && \
-  apt -y clean && \
-  apt -y autoclean && \
-  dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {} && \
-  rm -rf /var/lib/apt/lists/*
-
-ENV DEBIAN_FRONTEND=dialog
-
-RUN if [ "$BUILD_Region" = "cn" ]; then \
-    echo "==> BUILD_Region: $BUILD_Region"; \
-    bash /app/bin/${REGION}.pip.sh; \
-  fi
-
 WORKDIR /app
 
-RUN mkdir -p venv && \
-  python3 -m venv venv/ && \
-  pip3 install --upgrade -r /app/bin/pip.txt && \
-  rm -rf ~/.cache/pip
+RUN BUILD_Region=$BUILD_Region bash /app/bin/install.sh
 
 # EXPOSE 8080
 # CMD ["/app/bin/entrypoint.sh"]

@@ -6,7 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
 image_tag=${1:-dev}
-REGION=${REGION:-}
+BUILD_Region=${BUILD_Region:-}
 
 image_name=registry.cn-shanghai.aliyuncs.com/d2jvkpn/ipython
 image=${image_name}:${image_tag}
@@ -14,7 +14,7 @@ image=${image_name}:${image_tag}
 docker pull ubuntu:22.04
 
 docker build --no-cache -f ${_path}/Dockerfile \
-  --build-arg=REGION="$REGION" \
+  --build-arg=BUILD_Region="$BUILD_Region" \
   --tag $image ./
 
 docker push $image

@@ -6,7 +6,7 @@ build_local:
 	bash docker_build.sh
 
 build_cn:
-	REGION=cn bash docker_build.sh
+	BUILD_Region=cn bash docker_build.sh
 
 build_remote:
 	ssh -F configs/ssh.conf build_host \
