@@ -110,7 +110,7 @@ func main() {
 		for i := 0; i < cap(errch)-1; i++ {
 			err = errors.Join(err, <-errch)
 		}
-		logger.Error("... received from error chan", "error", err)
+		logger.Error("... received from error channel", "error", err)
 	case sig := <-quit:
 		// if sig == syscall.SIGUSR2 {...}
 		// fmt.Fprintf(os.Stderr, "... received signal: %s\n", sig)
@@ -119,6 +119,6 @@ func main() {
 			err = errors.Join(err, <-errch)
 		}
 
-		logger.Info("... received signal", "signal", sig.String(), "error", err)
+		logger.Info("... quit", "signal", sig.String(), "error", err)
 	}
 }
