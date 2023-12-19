@@ -1,4 +1,4 @@
-lifetime: 24h
+lifetime: 24h # liftime <=0 || liftime>=15m (range from lifetime-300s to lifetime+300s)
 
 hello:
   world: 42
