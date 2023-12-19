@@ -25,9 +25,9 @@ sudo apt install nvidia-container-toolkit nvidia-container-runtime
 systemctl restart docker
 
 #### docker compose
-export UE_App=MyProject WS_Url=ws://192.168.0.1:3032/ws/streamer?project=MyProject
+export UE_App=MyProject WS_Url=ws://192.168.1.1:3032/ws/streamer?project=MyProject UserId=$(id -u)
 
-envsubst > docker-compose.yaml < deploy.yaml
+envsubst > docker-compose.yaml < docker_deploy.yaml
 docker-compose up -d
 
 docker stats
@@ -36,15 +36,11 @@ docker run --rm --gpus=all nvidia/cuda:11.8.0-base-ubuntu22.04 nvidia-smi
 
 #### quick run
 docker run --rm --network=host --gpus all \
-  -v /path/to/peoject:/opt/unreal_engine \
+  -v $PWD/MyProject:/app/UnrealEngine \
+  -v $PWD/logs:/app/UnrealEngine/MyProject/Saved \
+  -w /app \
   adamrehn/ue4-runtime:latest \
-  /opt/unreal_engine/UE/Binaries/Linux/UE \
+  ./UnrealEngine/UE/Binaries/Linux/MyProject \
   -AudioMixer -RenderOffScreen \
-  -PixelStreamingIP=192.168.0.1 -PixelStreamingPort=3032
-
-docker run --rm --network=host --gpus all \
-  -v /path/to/peoject:/opt/unreal_engine \
-  adamrehn/ue4-runtime:latest \
-  /opt/unreal_engine/UE/Binaries/Linux/UE \
-  -AudioMixer -RenderOffScreen \
-  -PixelStreamingURL=ws://192.168.0.1:3032/ws/streamer?project=ue
+  -PixelStreamingURL=ws://192.168.1.1:3032/ws/streamer?project=ue
+# -PixelStreamingIP=192.168.1.1 -PixelStreamingPort=3032

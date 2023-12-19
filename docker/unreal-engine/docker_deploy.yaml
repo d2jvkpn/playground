@@ -1,8 +1,9 @@
 services:
   ue:
     image: adamrehn/ue4-runtime:latest
-    container_name: ue_${UE_App}
+    container_name: ue-${UE_App}
     restart: always
+    user: ${UserId}
     network_mode: host
     user: 1000:1000
     deploy:
@@ -17,11 +18,11 @@ services:
             count: 1
             capabilities: [gpu]
     volumes:
-    - /home/ubuntu/Unreal_Engine/${UE_App}:/opt/unreal_engine
-    - ./logs:/opt/unreal_engine/${UE_App}/Saved
-    working_dir: /opt/unreal_engine
+    - ./${UE_App}:/app/UnrealEngine
+    - ./logs:/app/UnrealEngine/${UE_App}/Saved
+    working_dir: /app
     command:
-    - ./${UE_App}/Binaries/Linux/${UE_App}
+    - ./UnrealEngine/${UE_App}/Binaries/Linux/${UE_App}
     - -AudioMixer
     - -RenderOffScreen
     - -PixelStreamingURL=${WS_Url}
