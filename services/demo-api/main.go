@@ -98,6 +98,7 @@ func main() {
 		"rpc_address", rpcAddr,
 		"config", config,
 		"release", release,
+		"lifetime", settings.Meta["lifetime"],
 	)
 
 	quit = make(chan os.Signal, 1)
