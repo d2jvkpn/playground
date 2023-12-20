@@ -3,7 +3,7 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-SD_Version=${1:-1.6.0}
+SD_Version=${1:-1.7.0}
 
 #### 1. image tag p1-${SD_Version}
 # convert 00000-170371915.png -resize 128x128 01.png
