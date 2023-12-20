@@ -71,6 +71,7 @@ func SetConfig(config string) (err error) {
 
 	_Config.SetDefault("lifetime", "0m")
 	lifetime := _Config.GetDuration("lifetime")
+	Meta["lifetime-v0"] = lifetime.String()
 
 	if lifetime > 0 {
 		if lifetime < 15*time.Minute {
@@ -81,8 +82,7 @@ func SetConfig(config string) (err error) {
 		lifetime = lifetime + time.Duration(random.Int63n(10*60)-5*60)*time.Second
 		Lifetime = time.After(lifetime)
 	}
-
-	Meta["lifetime"] = lifetime.String()
+	Meta["lifetime-v1"] = lifetime.String()
 
 	// _Config.SetDefault("hello.world", 42)
 
