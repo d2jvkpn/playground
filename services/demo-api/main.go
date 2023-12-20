@@ -84,7 +84,7 @@ func main() {
 	settings.Meta["http_address"] = httpAddr
 	settings.Meta["rpc_address"] = rpcAddr
 	settings.Meta["release"] = release
-	settings.Meta["startup_time"] = time.Now().Format(time.RFC3339)
+	settings.Meta["startup_time"] = time.Now().Format(time.RFC3339Nano)
 
 	// logger.Info("Hello", "world", 42, "key", "value")
 	if errch, err = internal.Run(httpAddr, rpcAddr); err != nil {
