@@ -1,7 +1,7 @@
 ### External Nginx
 ---
 
-#### 1 install nginx on k8s-cp02
+#### 1 install nginx on k8s-node01
 ```bash
 sudo apt -y install nginx
 systemctl status nginx

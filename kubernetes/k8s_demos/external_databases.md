@@ -1,7 +1,7 @@
 ### External Database
 ---
 
-#### 1. postgres up on k8s-cp02
+#### 1. Postgres up on k8s-node01
 ```bash
 mkdir -p docker_dev/postgres_dev
 
@@ -45,12 +45,56 @@ EOF
 docker-compose up -d
 ```
 
-#### 2. External Database
+#### 2. Create pod/postgres
 ```bash
-kubectl apply -f k8s_demos/external_databases.yaml
+kubectl apply -f k8s_demos/pod_postgres.yaml
+kubectl -n dev get pod/postgres
+kubectl -n dev exec -it pod/postgres -- /bin/bash
+
+pod_ip=$(kubectl -n dev get service/postgres --output=yaml | yq eval .spec.clusterIP)
+
+psql --username postgres --host $pod_ip --port 5432
+# mysql -u root -h $pod_ip -P 3306 -p
+
+kubectl -n dev port-forward pod/postgres 2001:5432
+
+psql --username postgres --host 127.0.0.1 --port 2001
+# mysql -u root -h 127.0.0.1 -P 2001 -p
 ```
 
-#### 3. Test
+#### 3. External databases endpoint
+```bash
+cat > k8s_apps/data/external_databases.yaml  <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+   namespace: dev
+   name: k8s-node01-databases
+spec:
+   type: ClusterIP
+   ports:
+   - { protocol: TCP, name: postgres, port: 5432, targetPort: 5432 }
+   - { protocol: TCP, name: mysql, port: 3306, targetPort: 3306 }
+
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  namespace: dev
+  name: k8s-node01-databases
+subsets:
+  - addresses:
+    # localhost ip or the serivce ip
+    - ip: 192.168.122.136
+    ports:
+    - { name: postgres, port: 5432 }
+    - { name: mysql, port: 3306 }
+EOF
+
+kubectl apply -f k8s_apps/data/external_databases.yaml
+```
+
+#### 4. Test
 ```bah
 kubectl apply -f k8s_demos/pod_ubuntu.yaml
 # kubectl delete pod/ubuntu
@@ -58,6 +102,6 @@ kubectl apply -f k8s_demos/pod_ubuntu.yaml
 kubectl exec ubuntu -- bash -c 'apt update && apt install -y netcat postgresql-client curl'
 
 kubectl exec -it ubuntu -- bash
-# nc -zv k8s-cp02-databases 5432
-# psql --host=k8s-cp02-databases --port=5432 --username=postgres
+# nc -zv k8s-node01-databases 5432
+# psql --host=k8s-node01-databases --port=5432 --username=postgres
 ```

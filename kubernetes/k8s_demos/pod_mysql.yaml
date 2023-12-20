@@ -33,7 +33,7 @@ metadata:
   name: mysql
   labels: { app: mysql }
 spec:
-  nodeName: k8s-cp02
+  nodeName: k8s-node01
   volumes:
   # - { name: data, persistentVolumeClaim: { claimName: k8s-cp01 } }
   - { name: data, hostPath: { path: "/data/local/mysql", type: "DirectoryOrCreate" } }
