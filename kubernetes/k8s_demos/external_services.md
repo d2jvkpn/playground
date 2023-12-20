@@ -1,4 +1,4 @@
-### External Database
+### External Services
 ---
 
 #### 1. Postgres up on k8s-node01
@@ -104,4 +104,22 @@ kubectl exec ubuntu -- bash -c 'apt update && apt install -y netcat postgresql-c
 kubectl exec -it ubuntu -- bash
 # nc -zv k8s-node01-databases 5432
 # psql --host=k8s-node01-databases --port=5432 --username=postgres
+```
+
+#### 5. External nginx on k8s-node01
+```bash
+sudo apt -y install nginx
+systemctl status nginx
+
+ls /etc/nginx/nginx.conf /etc/nginx/conf.d /etc/nginx/sites-enabled
+
+sudo sed 's/listen 80 default_server/listen 1024 default_server/; \
+  s/listen [::]:80 default_server/listen [::]:1024 default_server/' \
+  /etc/nginx/sites-enabled/default
+
+sudo nginx -t && sudo nginx -s reload
+
+kubectl apply -f k8s_demos/endpoint_nginx.yaml
+
+curl -H 'Host: app.nginx.k8s.local' k8s.local
 ```
