@@ -1,7 +1,11 @@
 pip
 ipython
+
 pyyaml
+pytz
 requests
+httpx
+
 numpy
 scipy
 pandas
