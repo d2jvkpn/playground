@@ -16,13 +16,19 @@ BUILD_Region=${BUILD_Region:-""}
 apt update && \
   apt -y upgrade && \
   apt install -y --no-install-recommends \
-    sudo tzdata pkg-config git wget vim netcat curl python3 python3-pip python3-venv && \
+    sudo software-properties-common apt-transport-https ca-certificates tzdata pkg-config \
+    lsb-release gnupg net-tools netcat net-tools wget curl \
+    python3 python3-pip python3-venv \
+    git vim jq file tree zip duf && \
   apt -y remove && \
   apt -y autoremove && \
   apt -y clean && \
   apt -y autoclean && \
   dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {} && \
   rm -rf /var/lib/apt/lists/*
+
+wget -O /usr/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+chmod a+x /usr/bin/yq
 
 [ -f ${_path}/${BUILD_Region}.pip.sh ] && bash ${_path}/${BUILD_Region}.pip.sh
 
