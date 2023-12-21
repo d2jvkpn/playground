@@ -6,7 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
 GroupID=${GroupID:-""}
-[ ! -z "$GroupID" ] && groupadd -g $GroupID guest
+[ ! -z "$GroupID" ] && groupadd -g $GroupID guest || true
 
 source /app/venv/bin/activate
 
