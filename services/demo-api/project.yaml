@@ -1,6 +1,6 @@
 app: demo-api
 version: 0.1.2
-repository: https://github.com/d2jvkpn/playground
+repository: git@github.com:d2jvkpn/playground services/demo-api
 image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api
 
 # configs/{{.APP_ENV}}.yaml
