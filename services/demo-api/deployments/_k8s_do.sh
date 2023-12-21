@@ -63,6 +63,10 @@ kubectl set image deploy/demo-api \
 kubectl patch deploy/demo-api -p \
   '{"spec":{"template":{"spec":{"terminationGracePeriodSeconds":30}}}}'
 
+date +"==> %FT%T%:z" && \
+  kubectl get pods -o wide && \
+  curl -H 'Host: demo-api.dev.k8s.local' k8s.local/meta | jq
+
 exit
 
 #### ingress tls(https)
