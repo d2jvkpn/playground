@@ -7,6 +7,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 export DEBIAN_FRONTEND=noninteractive
 # export DEBIAN_FRONTEND=dialog
+
 BUILD_Region=${BUILD_Region:-""}
 
 [ -z $BUILD_Region ] || >&2 echo "==> BUILD_Region: $BUILD_Region"
@@ -34,5 +35,6 @@ chmod a+x /usr/bin/yq
 
 mkdir -p venv && \
   python3 -m venv venv/ && \
+  source /app/venv/bin/activate && \
   pip3 install --upgrade -r /app/bin/pip.txt && \
   rm -rf ~/.cache/pip
