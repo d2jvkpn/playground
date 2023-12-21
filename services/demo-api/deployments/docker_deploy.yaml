@@ -6,7 +6,8 @@ services:
     container_name: ${APP_Name}_${APP_Tag}
     restart: always
     # depends_on: ["mongo"]
-    user: ${UserID}:${GroupID}
+    # user: "${UserID}:${GroupID}"
+    user: "${UserID}"
     networks: ["net"]
     # network_mode: bridge
     # network_mode: host
