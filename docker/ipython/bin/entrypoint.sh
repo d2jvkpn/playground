@@ -5,6 +5,9 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
+GroupID=${GroupID:-""}
+[ ! -z "$GroupID" ] && groupadd -g $GroupID guest
+
 source /app/venv/bin/activate
 
 exec "$@"

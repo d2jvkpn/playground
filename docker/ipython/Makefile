@@ -1,6 +1,7 @@
 wd = $(shell pwd)
 # user = $(shell id -u):$(shell id -g)
-user = $(shell id -u)
+UserID = $(shell id -u)
+GroupID = $(shell id -g)
 container_name = ipython_$(shell tr -dc '0-9a-zA-Z' < /dev/urandom | fold -w 8 | head -n1)
 
 build-local:
@@ -16,11 +17,12 @@ build-remote:
 ipython-container:
 	mkdir -p data
 
-	docker run -d -v $(wd)/data:/app/data --user $(user) --name ipython \
+	docker run -d --name ipython -v $(wd)/data:/app/data --user $(UserID) -v GroupID=$(GroupID) \
 	  registry.cn-shanghai.aliyuncs.com/d2jvkpn/ipython:dev sleep infinity
 
 ipython-cli:
 	mkdir -p data
 
-	docker run --rm -it -v $(wd)/data:/app/data --user $(user) --name $(container_name) \
+	docker run --rm -it --name $(container_name) -v $(wd)/data:/app/data \
+	  --user $(UserID) -v GroupID=$(GroupID) \
 	  registry.cn-shanghai.aliyuncs.com/d2jvkpn/ipython:dev ipython
