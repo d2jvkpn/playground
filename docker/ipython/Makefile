@@ -17,12 +17,13 @@ build-remote:
 ipython-container:
 	mkdir -p data
 
-	docker run -d --name ipython -v $(wd)/data:/app/data --user $(UserID) -v GroupID=$(GroupID) \
+	docker run -d --name ipython -v $(wd)/data:/app/data \
+	  --user $(UserID):$(GroupID) -v GroupID=$(GroupID) \
 	  registry.cn-shanghai.aliyuncs.com/d2jvkpn/ipython:dev sleep infinity
 
 ipython-cli:
 	mkdir -p data
 
 	docker run --rm -it --name $(container_name) -v $(wd)/data:/app/data \
-	  --user $(UserID) -v GroupID=$(GroupID) \
+	  --user $(UserID):$(GroupID) -v GroupID=$(GroupID) \
 	  registry.cn-shanghai.aliyuncs.com/d2jvkpn/ipython:dev ipython
