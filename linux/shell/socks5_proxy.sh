@@ -3,7 +3,7 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-# @reboot ~/.local/apps/crons/socks5_proxy.sh start
+# @reboot ~/.local/crons/socks5_proxy.sh start
 
 function start {
     host=$1; port=$2

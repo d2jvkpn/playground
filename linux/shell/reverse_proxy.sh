@@ -3,7 +3,7 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-# @reboot bash ~/.local/apps/crons/reverse_proxy.sh local_ssh
+# @reboot bash ~/.local/crons/reverse_proxy.sh local_ssh
 
 name=$1
 config=${2:-${_path}/configs/reverse_proxy.yaml}
