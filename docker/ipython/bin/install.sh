@@ -17,10 +17,10 @@ BUILD_Region=${BUILD_Region:-""}
 apt update && \
   apt -y upgrade && \
   apt install -y --no-install-recommends \
-    sudo software-properties-common apt-transport-https ca-certificates tzdata pkg-config \
-    lsb-release gnupg net-tools netcat net-tools wget curl \
+    sudo software-properties-common apt-transport-https ca-certificates tzdata locales \
+    pkg-config lsb-release gnupg net-tools netcat net-tools \
+    git vim jq file tree zip duf wget curl && \
     python3 python3-pip python3-venv \
-    git vim jq file tree zip duf && \
   apt -y remove && \
   apt -y autoremove && \
   apt -y clean && \
