@@ -20,7 +20,7 @@ services:
     container_name: postgres_${APP_Tag}
     restart: always
     healthcheck:
-      test: pg_isready --username postgres -d postgres
+      test: pg_isready --username postgres --database postgres
       start_period: 10s
       interval: 30s
       timeout: 3s
@@ -57,7 +57,8 @@ if [ ! -s "$secret_file" ]; then
     tr -dc 'a-zA-Z0-9' < /dev/urandom |
       fold -w 32 |
       head -n1 > "$secret_file" || true
-      echo "==> create secret $secret_file"
+
+    echo "==> create secret $secret_file"
 else
     echo "==> using existing secret $secret_file"
 fi
@@ -92,10 +93,9 @@ printf "$password\r\n$password\r\n" |
 echo "==> restart container $container"
 
 docker exec -u postgres -w /var/lib/postgresql/data/ $container bash -c \
-  "cp pg_hba.conf pg_hba.conf.bk && sed -i 's/trust$/scram-sha-256/' pg_hba.conf"
-
-docker exec -u postgres -w /var/lib/postgresql/data/ $container bash -c \
-  "cp postgresql.conf postgresql.conf.bk && \
+  "cp pg_hba.conf pg_hba.conf.bk && \
+  sed -i 's/trust$/scram-sha-256/' pg_hba.conf && \
+  cp postgresql.conf postgresql.conf.bk && \
   echo -e '\nlog_destination = jsonlog\nlogging_collector = on' >> postgresql.conf"
 
 docker-compose down
@@ -118,7 +118,7 @@ psql --host 127.0.0.1 --port 5432 --username postgres --password postgres
 alter user postgres with password 'XXXXXXXX';
 
 create user hello with password 'world';
-create database db01 with owner = hello;
+create database hello with owner = hello;
 ```
 
 #### config
@@ -142,7 +142,7 @@ docker exec $container ls /var/lib/postgresql/data/log/
 #### add user hello
 exit
 docker exec -it postgres_dev createuser --username=postgres hello --createdb --login
-docker exec -it postgres_dev psql --username=postgres -c 'create database hello owner=hello'
+docker exec -it postgres_dev psql --username=postgres -c 'create database hello with owner=hello'
 # docker exec -it postgres_dev psql --username=postgres -c 'grant all privileges on database hello to hello'
 # docker exec -it postgres_dev psql --username=postgres -c "ALTER ROLE hello PASSWORD 'world'"
 docker exec -it postgres_dev psql --username=postgres -c "\password hello"
