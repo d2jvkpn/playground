@@ -138,3 +138,8 @@ docker-compose down
 docker-compose up
 
 docker exec $container ls /var/lib/postgresql/data/log/
+
+#### add user hello
+exit
+docker exec -it postgres_dev createuser --username=postgres hello --createdb --login
+docker exec -it postgres_dev psql --username=postgres -c "ALTER ROLE hello PASSWORD 'world'"
