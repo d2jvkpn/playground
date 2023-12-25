@@ -142,4 +142,9 @@ docker exec $container ls /var/lib/postgresql/data/log/
 #### add user hello
 exit
 docker exec -it postgres_dev createuser --username=postgres hello --createdb --login
-docker exec -it postgres_dev psql --username=postgres -c "ALTER ROLE hello PASSWORD 'world'"
+docker exec -it postgres_dev psql --username=postgres -c 'create database hello owner=hello'
+# docker exec -it postgres_dev psql --username=postgres -c 'grant all privileges on database hello to hello'
+# docker exec -it postgres_dev psql --username=postgres -c "ALTER ROLE hello PASSWORD 'world'"
+docker exec -it postgres_dev psql --username=postgres -c "\password hello"
+
+docker exec -it postgres_dev psql --username=hello
