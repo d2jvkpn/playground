@@ -8,7 +8,7 @@ action=$1
 case "$action" in
 up)
     echo "==> docker-compose up"
-    cp deploy.yaml docker-compose.yaml
+    cp docker_deploy.yaml docker-compose.yaml
     docker-compose up -d
     docker-compose logs
     ;;

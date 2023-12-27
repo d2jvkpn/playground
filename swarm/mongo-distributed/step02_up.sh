@@ -3,7 +3,7 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
-cp deploy.yaml docker-compose.yaml
+cp docker_deploy.yaml docker-compose.yaml
 # [ -z "$(docker network ls | grep -w mongo-cluster)" ] && docker network create mongo-cluster
 
 echo "==> docker-compose up"

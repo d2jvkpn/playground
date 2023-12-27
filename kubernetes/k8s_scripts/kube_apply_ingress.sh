@@ -16,14 +16,22 @@ node_ip=$(kubectl get node/$node_name -o wide | awk 'NR==2{print $6}')
 mkdir -p k8s_apps/data
 # https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
-# kubectl label nodes $node_name --overwrite node-role=ingress
-# kubectl label nodes $node_name node-role-
 kubectl label node $node_name --overwrite node-role.kubernetes.io/ingress=
+# kubectl label node $node_name node-role.kubernetes.io/ingress-
 
-# kubectl taint nodes $node_name --overwrite node-role=ingress:NoSchedule
-# kubectl taint nodes $node_name node-role=ingress:NoSchedule-
 kubectl taint nodes $node_name --overwrite node-role.kubernetes.io/ingress=:NoSchedule
+# kubectl taint nodes $node_name node-role.kubernetes.io/ingress=:NoSchedule-
 
+sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
+  yq '(select(.kind == "Deployment").spec.template.spec.nodeName = "'$node_name'")' |
+  yq 'select(.kind == "Deployment").spec.template.spec.tolerations = [{"key": "node-role.kubernetes.io/ingress", "operator": "Exists", "effect": "NoSchedule"}]' |
+  yq 'select(.kind == "Service" and .metadata.name == "ingress-nginx-controller").spec.externalIPs = ["'$node_ip'"]' \
+  > k8s_apps/data/ingress-nginx.yaml
+
+kubectl apply -f k8s_apps/data/ingress-nginx.yaml
+# kubectl delete -f k8s_apps/data/ingress-nginx.yaml
+
+exit
 sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
   awk -v node_name="$node_name" -v  node_ip=$node_ip \
     'BEGIN{RS=ORS="---"; h="\n      "; } \
@@ -35,10 +43,7 @@ sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
     {print}' |
   yq --prettyPrint > k8s_apps/data/ingress-nginx.yaml
 
-kubectl apply -f k8s_apps/data/ingress-nginx.yaml
-# kubectl delete -f k8s_apps/data/ingress-nginx.yaml
 
-exit
 # kubectl get nodes/$node_name -o yaml
 sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx_cloud.yaml |
   awk -v node_name="$node_name" -v  node_ip=$node_ip \

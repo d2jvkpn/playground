@@ -68,6 +68,8 @@ fi
 #   yq eval '.data += {"'$port'":"'$namespace/$srv:$port'"}'
 #   kubectl apply -f -
 
+exit
+
 ####
 {
     kubectl -n ingress-nginx get deploy/ingress-nginx-controller -o yaml | yq 'del .status'
@@ -78,8 +80,6 @@ fi
 
     kubectl -n ingress-nginx get cm/tcp-services -o yaml
 } > k8s_apps/data/ingress-nginx.patch.yaml
-
-exit
 
 postgres_port=$(
   kubectl -n ingress-nginx get services/ingress-nginx-controller -o yaml |
