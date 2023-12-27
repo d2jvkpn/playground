@@ -81,11 +81,9 @@ func main() {
 
 	flag.Parse()
 
-	if config == "" {
+	if configPath = config; config == "" {
 		config = settings.ProjectString("config")
 		configPath = "project.yaml::config"
-	} else {
-		configPath = config
 	}
 
 	if err = internal.Load(config, release); err != nil {
