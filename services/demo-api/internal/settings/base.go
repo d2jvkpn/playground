@@ -5,6 +5,7 @@ import (
 	// "fmt"
 	"math/rand"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/d2jvkpn/gotk"
@@ -54,11 +55,16 @@ func ProjectField(key string) *viper.Viper {
 
 // #### config
 func SetConfig(config string) (err error) {
-	_Config = viper.New()
-	_Config.SetConfigType("yaml")
-	_Config.SetConfigFile(config)
+	if strings.Contains(config, "\n") {
+		_Config, err = gotk.LoadYamlBytes([]byte(config))
+	} else {
+		_Config = viper.New()
+		_Config.SetConfigType("yaml")
+		_Config.SetConfigFile(config)
+		err = _Config.ReadInConfig()
+	}
 
-	if err = _Config.ReadInConfig(); err != nil {
+	if err != nil {
 		return err
 	}
 

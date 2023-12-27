@@ -10,7 +10,8 @@ git_branch = $(shell git rev-parse --abbrev-ref HEAD)
 
 #### run and build
 run:
-	go run main.go -config=configs/local.yaml -http_addr=0.0.0.0:5031 -rpc_addr=0.0.0.0:5041
+	# -config=configs/local.yaml
+	go run main.go -http_addr=0.0.0.0:5031 -rpc_addr=0.0.0.0:5041
 
 check:
 	go fmt ./...

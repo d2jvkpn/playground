@@ -26,14 +26,15 @@ var (
 
 func main() {
 	var (
-		release  bool
-		httpAddr string
-		rpcAddr  string
-		config   string
-		err      error
-		logger   *slog.Logger
-		errch    chan error
-		quit     chan os.Signal
+		release    bool
+		httpAddr   string
+		rpcAddr    string
+		config     string
+		configPath string
+		err        error
+		logger     *slog.Logger
+		errch      chan error
+		quit       chan os.Signal
 	)
 
 	// logger = slog.New(slog.NewTextHandler(os.Stderr, nil))
@@ -51,7 +52,12 @@ func main() {
 	}
 
 	flag.BoolVar(&release, "release", false, "run in release mode")
-	flag.StringVar(&config, "config", "configs/local.yaml", "configuration file(yaml) path")
+
+	flag.StringVar(
+		&config, "config", "",
+		"configuration file(yaml) path, default: load from project.yaml::config",
+	) // configs/local.yaml
+
 	flag.StringVar(&httpAddr, "http_addr", "0.0.0.0:5031", "http listening address")
 	flag.StringVar(&rpcAddr, "rpc_addr", "0.0.0.0:5041", "rpc listening address")
 
@@ -75,12 +81,19 @@ func main() {
 
 	flag.Parse()
 
+	if config == "" {
+		config = settings.ProjectString("config")
+		configPath = "project.yaml::config"
+	} else {
+		configPath = config
+	}
+
 	if err = internal.Load(config, release); err != nil {
 		logger.Error("load", "error", err)
 		return
 	}
 
-	settings.Meta["config"] = config
+	settings.Meta["config"] = configPath
 	settings.Meta["http_address"] = httpAddr
 	settings.Meta["rpc_address"] = rpcAddr
 	settings.Meta["release"] = release
@@ -94,9 +107,9 @@ func main() {
 
 	logger.Info(
 		"sevice is up",
+		"config", configPath,
 		"http_adderss", httpAddr,
 		"rpc_address", rpcAddr,
-		"config", config,
 		"release", release,
 		"lifetime", settings.Meta["lifetime"],
 	)

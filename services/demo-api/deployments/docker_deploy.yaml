@@ -15,10 +15,11 @@ services:
     ports: ["${HTTP_Port}:${HTTP_Port}", "${RPC_Port}:${RPC_Port}"]
     environment: ["TZ=Asia/Shanghai"]
     volumes:
-    - ./configs/:/app/configs:ro
-    - ./logs/:/app/logs/
-    # - ./data/:/app/data/
-    command: ["./target/main", "-config=configs/prod.yaml", "-http_addr=:${HTTP_Port}", "-rpc_addr=:${RPC_Port}"]
+    # - ./configs/:/app/configs:ro
+    # - ./data/:/app/data:rw
+    - ./logs/:/app/logs:rw
+    # command: ["./target/main", "-config=configs/prod.yaml", "-http_addr=:${HTTP_Port}", "-rpc_addr=:${RPC_Port}"]
+    command: ["./target/main", "-http_addr=:${HTTP_Port}", "-rpc_addr=:${RPC_Port}"]
 
 networks:
   net:
