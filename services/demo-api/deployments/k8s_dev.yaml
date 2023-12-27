@@ -90,7 +90,7 @@ spec:
   selector:
     matchLabels: { app: "demo-api" }
   revisionHistoryLimit: 5
-  progressDeadlineSeconds: 120
+  progressDeadlineSeconds: 60
   minReadySeconds: 10
   strategy:
     type: RollingUpdate
