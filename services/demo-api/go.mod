@@ -1,6 +1,8 @@
 module demo-api
 
-go 1.21.3
+go 1.21.2
+
+toolchain go1.21.5
 
 require (
 	github.com/d2jvkpn/gotk v0.0.0-20231213055044-17ccac9dd260

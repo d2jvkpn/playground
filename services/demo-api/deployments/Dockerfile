@@ -54,4 +54,4 @@ COPY --from=builder /app/target/main /app/target/main
 COPY ./migrations ./migrations
 
 EXPOSE 5030 5040
-CMD ["./target/main", "-config=configs/prod.yaml", "-release", "-http_addr=:5030", "-rpc_addr=:5040"]
+CMD ["./target/main", "-release", "-config=configs/prod.yaml", "-http_addr=:5030", "-rpc_addr=:5040"]
