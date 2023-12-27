@@ -45,10 +45,10 @@ k8s_images=$(kubeadm config images list)
 
 #### 2. ingress-nginx and flannel
 link=https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
-wget -O k8s_apps/ingress-nginx_cloud.yaml $link
-sed -i "1i # link: $link\n" k8s_apps/ingress-nginx_cloud.yaml
+wget -O k8s_apps/ingress-nginx.yaml $link
+sed -i "1i # link: $link\n" k8s_apps/ingress-nginx.yaml
 
-ingress_images=$(awk '$1=="image:"{print $2}' k8s_apps/ingress-nginx_cloud.yaml | sort -u)
+ingress_images=$(awk '$1=="image:"{print $2}' k8s_apps/ingress-nginx.yaml | sort -u)
 
 # https://raw.githubusercontent.com/flannel-io/flannel/v${flannel_version}/Documentation/kube-flannel.yml
 link=https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
