@@ -56,7 +56,7 @@ Host $target
 	IdentityFile  ~/.ssh/kvm/kvm.pem
 EOF
 
-echo "Created ~/.ssh/kvm/$taregt.conf, please set User and Port fields. Bye!"
+echo "Created ~/.ssh/kvm/$target.conf, please set fields .User and .Port. Bye!"
 
 ####
 # virsh net-dumpxml $KVM_Network
