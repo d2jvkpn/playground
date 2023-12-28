@@ -23,6 +23,7 @@
 - https://civitai.com/models/8453/liuyifei
 - https://civitai.com/models/6424/chilloutmix
 - https://civitai.com/models/3666/protogen-x34-photorealism-official-release
+- ControlNet models: https://huggingface.co/lllyasviel/ControlNet/, https://huggingface.co/lllyasviel/Annotators
 
 
 #### Gradio frpx proxy
