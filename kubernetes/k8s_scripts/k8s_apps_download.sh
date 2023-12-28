@@ -52,10 +52,10 @@ ingress_images=$(awk '$1=="image:"{print $2}' k8s_apps/ingress-nginx.yaml | sort
 
 # https://raw.githubusercontent.com/flannel-io/flannel/v${flannel_version}/Documentation/kube-flannel.yml
 link=https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
-wget -O k8s_apps/kube-flannel.yaml $link
-sed -i "1i # link: $link\n" k8s_apps/kube-flannel.yaml
+wget -O k8s_apps/flannel.yaml $link
+sed -i "1i # link: $link\n" k8s_apps/flannel.yaml
 
-flannel_images=$(awk '$1=="image:"{print $2}' k8s_apps/kube-flannel.yaml | sort -u)
+flannel_images=$(awk '$1=="image:"{print $2}' k8s_apps/flannel.yaml | sort -u)
 
 #### 3. calico
 link=https://docs.projectcalico.org/manifests/calico.yaml

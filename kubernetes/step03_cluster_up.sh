@@ -43,17 +43,16 @@ ansible $cp_node -m shell --become -a "bash k8s_scripts/k8s_node_cp.sh k8s-contr
 ansible $cp_node --one-line -m fetch \
   -a "flat=true src=k8s_apps/data/kubeadm-init.yaml dest=k8s_apps/data/"
 
-# kubectl join
+# kubectl join, don't use --become instead sudo
 ansible k8s_workers -m shell -a "sudo $(bash k8s_scripts/k8s_command_join.sh worker)"
+
 ansible k8s_cps[1:] -m shell -a "sudo $(bash k8s_scripts/k8s_command_join.sh control-plane)"
 
 #### 3. post
-ansible k8s_cps --become -a 'bash k8s_scripts/kube_copy_config.sh root $USER'
-
+ansible k8s_cps -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
 # kubectl label node/$ingress_node --overwrite node-role.kubernetes.io/ingress=
 # kubectl label node/$ingress_node --overwrite node-role.kubernetes.io/ingress-
 
-# kubectl label
 # echo "$hosts_yaml" | yq 'keys() | join(" ")'
 for node in $(ansible k8s_workers --list-hosts | sed '1d'); do
     [ "$node" == "$ingress_node" ] && continue

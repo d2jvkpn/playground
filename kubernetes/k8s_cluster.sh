@@ -36,8 +36,8 @@ case $action in
     { command -v yq; command -v ansible; command -v virsh; command -v rsync; } > /dev/null
 
     ####
-    ls k8s_apps/{k8s.yaml,kube-flannel.yaml} \
-      k8s_apps/{ingress-nginx_cloud.yaml,metrics-server_components.yaml} > /dev/null
+    ls k8s_apps/{k8s.yaml,flannel.yaml} \
+      k8s_apps/{ingress-nginx.yaml,metrics-server_components.yaml} > /dev/null
 
     ls ../kvm/{virsh_wait_until.sh,virsh_clone.sh,virsh_delete.sh} > /dev/null
 
