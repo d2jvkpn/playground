@@ -75,12 +75,15 @@ metrics_images=$(awk '$1=="image:"{print $2}' k8s_apps/metrics-server_components
 # https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64.tar.gz
 # https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64
 wget -O k8s_apps/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+chmod a+x k8s_apps/yq
+yq_version=$(./k8s_apps/yq --version | awk '{print $NF}')
 
 #### 5. yaml info
-cat > k8s_apps/k8s.yaml << EOF
-version: $version
-images:
-$(echo "$k8s_images" | sed 's/^/- image: /')
+cat > k8s_apps/k8s_apps_download.yaml << EOF
+k8s:
+  version: $version
+  images:
+$(echo "$k8s_images" | sed 's/^/  - image: /')
 
 ingress:
   images:
@@ -93,6 +96,9 @@ $(echo "$flannel_images" | sed 's/^/  - image: /')
 metrics-server:
   images:
 $(echo "$metrics_images" | sed 's/^/  - image: /')
+
+yq:
+  version: $yq_version
 EOF
 
-download_images k8s_apps/k8s.yaml k8s_apps/images
+download_images k8s_apps/k8s_apps_download.yaml k8s_apps/images

@@ -7,7 +7,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 export DEBIAN_FRONTEND=noninteractive
 
-# version=$(yq .version k8s_apps/k8s.yaml)
+# version=$(yq .k8s.version k8s_apps/k8s_apps_download.yaml)
 version=$1 # 1.28.4
 
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/

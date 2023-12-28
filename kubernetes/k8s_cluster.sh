@@ -36,7 +36,7 @@ case $action in
     { command -v yq; command -v ansible; command -v virsh; command -v rsync; } > /dev/null
 
     ####
-    ls k8s_apps/{k8s.yaml,flannel.yaml} \
+    ls k8s_apps/{k8s_apps_download.yaml,flannel.yaml} \
       k8s_apps/{ingress-nginx.yaml,metrics-server_components.yaml} > /dev/null
 
     ls ../kvm/{virsh_wait_until.sh,virsh_clone.sh,virsh_delete.sh} > /dev/null
@@ -44,7 +44,7 @@ case $action in
     awk '/image: /{
       sub("@sha256.*", "", $NF); sub(":", "_", $NF); sub(".*/", "", $NF);
       print "k8s_apps/images/"$NF".tar.gz";
-    }' k8s_apps/k8s.yaml | xargs -i ls {} > /dev/null
+    }' k8s_apps/k8s_apps_download.yaml | xargs -i ls {} > /dev/null
 
     ####
     # echo "Include ~/.ssh/kvm/*.conf" >> ~/.ssh/config
