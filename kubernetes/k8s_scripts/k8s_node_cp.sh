@@ -33,6 +33,8 @@ EOF
 sudo kubeadm init --config=k8s_apps/data/kubeadm-config.yaml \
   --upload-certs -v 5 &> k8s_apps/data/kubeadm-init.out
 
+# kubeadm config print init-defaults
+
 ####
 token=$(grep -o "\-\-token [^ ]*" k8s_apps/data/kubeadm-init.out | awk '{print $2; exit}')
 
