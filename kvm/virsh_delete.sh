@@ -14,8 +14,13 @@ else
     exit 0
 fi
 
+[ "$EUID" -ne 0 ] && { >&2 echo "Please run as root"; exit 1; }
+
 KVM_Network=${KVM_Network:-default}
-KVM_SSH_Dir=${KVM_SSH_Dir:-$HOME/.ssh/kvm}
+
+# user=$1
+# home_dir=$(eval echo ~$user)
+# KVM_SSH_Dir=${KVM_SSH_Dir:-$home_dir/.ssh/kvm}
 
 # virsh dumpxml $target
 # virsh dumpxml --domain $target
@@ -34,7 +39,7 @@ virsh shutdown $target 2>/dev/null || true
 
 bash ${_path}/virsh_wait_until.sh $target "shut off" 180
 
-sudo rm -f $source_file
+rm -f $source_file
 
 ##### virsh destroy $target
 virsh undefine $target 2>/dev/null || true
@@ -45,4 +50,4 @@ virsh net-destroy $KVM_Network
 virsh net-start $KVM_Network
 
 rm $KVM_Network.xml
-[ -f $KVM_SSH_Dir/$target.conf ] && rm -f $KVM_SSH_Dir/$target.conf
+# [ -f $KVM_SSH_Dir/$target.conf ] && rm -f $KVM_SSH_Dir/$target.conf
