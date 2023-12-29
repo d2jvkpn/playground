@@ -7,9 +7,11 @@ smb_addr=//192.168.1.42/shareFile
 mount_point=/mnt/smba/bob
 
 echo "==> samba address: smb:$smb_addr"
-mkdir -p $mount_point ~/.samba
+mkdir -p $mount_point ~/.config/samba
 
-cat > ~/.samba/bob.credential << EOF
+cred_file=~/.config/samba/bob.credential
+
+cat > $cred_file << EOF
 username=bob
 password=123456
 EOF
@@ -17,5 +19,5 @@ EOF
 mount -t cifs \
   -o ro,file_mode=0777,dir_mode=0777 \
   -o iocharset=utf8,vers=3.0 \
-  -o credentials=~/.samba/bob.credential \
+  -o credentials=$cred_file \
   $smb_addr $mount_point
