@@ -67,11 +67,8 @@ case $action in
     ;;
 
 "create")
-    mode=$2
-    if [[ "$mode" != "mini" && "$mode" != "full" ]]; then
-        >&2 echo "unknown mode: $mode, expected: mini, full"
-        exit 1
-    fi
+    shift
+    nodes=$*
 
     # bash $0 check
 
@@ -90,11 +87,7 @@ case $action in
     echo "==> $(date +%FT%T%:z) step02_clone_nodes.sh $mode" >> $creation_log
     t0=$(date +%s)
 
-    if [[ "$mode" = "mini" ]]; then
-        bash step02_clone_nodes.sh k8s-cp01 k8s-node{01..02}
-    else # [[ "$mode" = "full" ]]
-        bash step02_clone_nodes.sh k8s-cp01 k8s-cp{02,03} k8s-node{01..04}
-    fi
+    bash step02_clone_nodes.sh $nodes
     echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
 
     ####
