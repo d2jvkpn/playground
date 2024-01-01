@@ -17,11 +17,15 @@ func handle(conn net.Conn) {
 	defer conn.Close()
 
 	var (
+		addr   net.Addr
 		data   string
 		token  string
 		err    error
 		reader *bufio.Reader
 	)
+
+	addr = conn.RemoteAddr()
+	log.Printf("==> client connected: %s\n", addr)
 
 	reader = bufio.NewReader(conn)
 
@@ -39,6 +43,8 @@ func handle(conn net.Conn) {
 	}
 
 	conn.Write([]byte("Authorized successfully!\n"))
+	conn.Close()
+	log.Printf("<== close connection: %s\n", addr)
 }
 
 func main() {

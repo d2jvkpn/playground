@@ -43,4 +43,10 @@ func main() {
 	}
 
 	log.Printf("==> Message from server: %s\n", message)
+
+	if err = conn.Close(); err != nil {
+		log.Printf("<== close connection error: %v\n", err)
+	} else {
+		log.Printf("<== connection closed\n")
+	}
 }
