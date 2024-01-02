@@ -6,7 +6,7 @@ check:
 	bash k8s_cluster.sh check
 
 create-mini:
-	bash k8s_cluster.sh create k8s-cp01 k8s-node01
+	bash k8s_cluster.sh create k8s-cp01 k8s-node01 k8s-node02
 
 create-full:
 	bash k8s_cluster.sh create k8s-cp01 k8s-cp{02,03} k8s-node{01..04}
