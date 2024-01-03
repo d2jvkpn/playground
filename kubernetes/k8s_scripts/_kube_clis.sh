@@ -5,9 +5,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 ####
 kubectl get pod -A
-
 kubectl get all -A
-
 kubectl explain pods --recursive
 
 ####
@@ -70,3 +68,21 @@ kubectl get pods -A -o wide --no-headers
 
 kubectl get pods -A  -o wide \
   -o custom-columns=POD-NAME:.metadata.name,NAMESPACE:.metadata.namespace,NODE:.spec.nodeName
+
+#### secrets
+domain=dev.local
+prefix=~/.acme.sh/$domain/$domain
+
+kubectl -n prod create secret tls/$domain --key $prefix.key --cert $prefix.cer
+kubectl -n prod get secret/$domain
+
+## update tls
+kubectl -n prod create secret tls/$domain --dry-run=client \
+  --key $prefix.key --cert $prefix.cer -o yaml > k8s_apps/data/$domain.secret.yaml
+
+kubectl apply -f k8s_apps/data/$domain.secret.yaml
+
+#### setup docker registry
+kubectl create secret docker-registry/"my-registry" \
+  --docker-server="REGISTRY.SITE.COM" --docker-email="EMAIL" \
+  --docker-username="USERNAME" --docker-password="PASSWORD"

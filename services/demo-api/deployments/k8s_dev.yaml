@@ -103,6 +103,7 @@ spec:
       # affinity: ...
       # nodeSelector:
       #   node-role: worker
+      terminationGracePeriodSeconds: 5
       volumes:
       - name: config
         configMap: { name: demo-api }
