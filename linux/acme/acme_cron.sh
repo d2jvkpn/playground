@@ -10,14 +10,14 @@ domain=$1
 
 acme_home=$HOME/.acme.sh # directory
 save_dir=$acme_home/$domain
-cert_dir=$HOME/nginx/cert
+cert_dir=$HOME/nginx/certs
 
 {
     date +">>> %FT%T%:z run acme.sh"
     s1=$(md5sum $save_dir/$domain.cer | awk '{print $1}')
 
     ${acme_home}/acme.sh --cron --home $acme_home --server letsencrypt
-    s2=$(md5sum $save_dir/$domain.cer | awk '{print $1}')
+    s2=$(md5sum $cert_dir/$domain.cer | awk '{print $1}')
 
     if [[ "$s1" != "$s2" ]]; then
         date +"    %FT%T%:z renew ssl and reload nginx"
@@ -25,4 +25,4 @@ cert_dir=$HOME/nginx/cert
         sudo nginx -t reload
         sudo nginx -s reload
     fi
-} >> ${_path}/acme.$(date +"%Y").log 2>&1
+} >> ${_path}/acme.$(date +"%Y-%m").log 2>&1

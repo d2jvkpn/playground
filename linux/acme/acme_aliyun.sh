@@ -7,8 +7,8 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 curl https://get.acme.sh | sh
 
 access_key_file=ALIYUN_access_key.json
-email=YOUR_Email@domain.xyz
-domain=YOUR_Domain.xyz
+email=jane@doe.local
+domain=doe.local
 
 #### get or generate Ali_Key and Ali_Secret from https://ram.console.aliyun.com/manage/ak
 export Ali_Key="$(jq -r '.AccessKeyId' $access_key_file)"
