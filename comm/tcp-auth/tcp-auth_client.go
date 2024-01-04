@@ -28,6 +28,7 @@ func main() {
 	}
 
 	reader = bufio.NewReader(os.Stdin)
+
 	fmt.Print("==> Enter token: ")
 	if token, err = reader.ReadString('\n'); err != nil {
 		log.Fatalln(err)
