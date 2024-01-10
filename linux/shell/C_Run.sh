@@ -10,7 +10,12 @@ bin=$(basename $C_FILE | sed 's/\.c$//')
 
 shift
 gcc ${C_FILE} -std=c17 -o target/$bin $*
-./target/$bin
+
+if [ "${compile:=''}"  == "true" ]; then
+    ./target/$bin
+else
+    echo "./target/$bin"
+fi
 
 ####
 exit
