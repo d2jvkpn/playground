@@ -113,22 +113,9 @@ function post(url, data) {
 
   req.onload = (event) => {
     if (req.status != 200) {
-       console.log(`!!! status: ${req.status}`);
-    }
-    return;
-
-    let res = null;
-    try {
-      res = JSON.parse(req.responseText);
-    } catch (e) {
-      console.log(`!!! failed to send request:: ${e}`)
-      return
-    }
-
-    if (res.code > 0) {
-      console.log(`!!! response: code=${res.code}, msg=${res.msg}`);
-      alert(`code=${res.code}, ${res.msg}`);
-      return
+      alert(`!!! Response status: ${req.status}`);
+    } esle {
+       alert`==> Archived data by request`);
     }
   }
 
