@@ -1,0 +1,4 @@
+variable	mean	min	median	max	nmissing	eltype
+x1	1.5	1	1.5	2	0	Int64
+x2	3.5	3	3.5	4	0	Int64
+y	5.5	5	5.5	6	0	Int64

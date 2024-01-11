@@ -1,0 +1,24 @@
+app: exercises
+version: 0.1.0
+repository: https://github.com/d2jvkpn/exercises
+image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/golang
+
+# file: configs/{{.APP_ENV}}.yaml
+config: |
+  http:
+    tls:
+      enable: false
+      cert: configs/server.crt
+      key: configs/server.key
+  #
+  database:
+    dsn: postgresql://hello:world@localhost:5432/simple_bank?sslmode=disable
+  #
+  redis:
+    addr: localhost:6379
+    password: world
+    db: 0
+
+# file: .env
+.env:
+  export DATABASE_URL=postgresql://hello:world@localhost:5432/simple_bank?sslmode=disable
