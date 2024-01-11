@@ -186,5 +186,5 @@ function autoScrap(pageMax=5, secs=1, archive=download) {
   }, secs*1000);
 }
 
-autoScrap(5, 1, download);
+// autoScrap(5, 1, download);
 // autoScrap(5, 1, (data) => post("http://127.0.0.1:8000", data));
