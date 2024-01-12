@@ -70,6 +70,7 @@ function pageInfo() {
     datetime: now.rfc3339ms,
     download: download,
     title: document.querySelector("div.title-text").innerText,
+    price: document.querySelector("div.price-column").innerText.replace(/\n/g, ''),
     url: url.origin + url.pathname,
     images: Array.from(images).map(e => e.src),
     shop: shop_elem.querySelector("span").innerText,
@@ -107,6 +108,9 @@ function download(data) {
 }
 
 function post(url, data) {
+  url += `?name=${data.download}`;
+  delete data.download;
+
   let req = new XMLHttpRequest();
   // let url = new URL(window.location.href);
   // url = `${url.protocol}//${url.host}`;
@@ -114,8 +118,8 @@ function post(url, data) {
   req.onload = (event) => {
     if (req.status != 200) {
       alert(`!!! Response status: ${req.status}`);
-    } esle {
-       alert`==> Archived data by request`);
+    } else {
+       alert(`==> Archived data by request`);
     }
   }
 
@@ -174,4 +178,4 @@ function autoScrap(pageMax=5, secs=1, archive=download) {
 }
 
 // autoScrap(5, 1, download);
-// autoScrap(5, 1, (data) => post("http://127.0.0.1:8000", data));
+// autoScrap(5, 1, (data) => post(`http://127.0.0.1:3000/`, data));
