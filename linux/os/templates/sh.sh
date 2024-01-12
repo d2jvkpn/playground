@@ -5,4 +5,4 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
-echo "Hello, world!"
+# echo "Hello, world!"
