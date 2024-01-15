@@ -130,33 +130,33 @@ func archive(w http.ResponseWriter, r *http.Request) {
 	// io.WriteString(w, "This is my website!\n")
 
 	if name = r.URL.Query().Get("name"); !_AchiveRegexp.MatchString(name) {
-		code, msg = -10, "invalid_name"
+		code, msg = -100, "invalid_name"
 		response(http.StatusBadRequest)
 		return
 	}
 
 	if len(r.Header["Content-Length"]) == 0 {
-		code, msg = -11, "empty_content"
+		code, msg = -101, "empty_content"
 		response(http.StatusBadRequest)
 		return
 	}
 
 	date = time.Now().Format(time.DateOnly)
 	if err = os.MkdirAll(filepath.Join("data", date), 0755); err != nil {
-		code, msg = 11, "service_error"
+		code, msg = 100, "service_error"
 		response(http.StatusInternalServerError)
 		return
 	}
 
 	if file, err = os.Create(filepath.Join("data", date, name)); err != nil {
-		code, msg = 12, "service_error"
+		code, msg = 101, "service_error"
 		response(http.StatusInternalServerError)
 		return
 	}
 	defer file.Close()
 
 	if _, err = io.Copy(file, r.Body); err != nil {
-		code, msg = 13, "service_error"
+		code, msg = 102, "service_error"
 		response(http.StatusInternalServerError)
 	} else {
 		code, msg = 0, "ok"
