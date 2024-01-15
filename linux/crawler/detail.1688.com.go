@@ -14,7 +14,6 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"strings"
 	"time"
 )
 
@@ -172,12 +171,10 @@ func archive(w http.ResponseWriter, r *http.Request) {
 	)
 
 	response := func(status int, code string, msgs ...string) {
-		var msg string
+		var msg string = ""
 
 		if len(msgs) > 0 {
 			msg = msgs[0]
-		} else {
-			msg = strings.ReplaceAll(code, "_", " ")
 		}
 
 		w.Header().Set("Content-Type", "application/json")
@@ -188,7 +185,7 @@ func archive(w http.ResponseWriter, r *http.Request) {
 		if err == nil {
 			setData(r, map[string]any{"status": status, "code": code, "msg": msg})
 		} else {
-			setData(r, map[string]any{"status": status, "error": err, "code": code, "msg": msg})
+			setData(r, map[string]any{"status": status, "code": code, "msg": msg, "error": err})
 		}
 
 		w.Write(bts)
