@@ -164,10 +164,10 @@ func getData(r *http.Request) map[string]any {
 func archive(w http.ResponseWriter, r *http.Request) {
 	var (
 		name string
+		date string
+		fp   string
 		err  error
 		file *os.File
-
-		date string
 	)
 
 	response := func(status int, code string, msgs ...string) {
@@ -209,13 +209,16 @@ func archive(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if file, err = os.Create(filepath.Join("data", date, name)); err != nil {
+	fp = filepath.Join("data", date, name)
+	if file, err = os.Create(fp); err != nil {
 		response(http.StatusInternalServerError, "service_error")
 		return
 	}
-	defer file.Close()
+	_, err = io.Copy(file, r.Body)
+	_ = file.Close()
 
-	if _, err = io.Copy(file, r.Body); err != nil {
+	if err != nil {
+		_ = os.Remove(fp)
 		response(http.StatusInternalServerError, "service_error")
 	} else {
 		response(http.StatusOK, "ok")
