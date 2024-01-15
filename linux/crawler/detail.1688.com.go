@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -10,13 +11,15 @@ import (
 	"net"
 	"net/http"
 	"os"
-	"path"
+	"path/filepath"
 	"regexp"
+	"time"
 )
 
 var (
-	_AchiveRegexp = regexp.MustCompile(`[A-Za-z0-9_\.-]+`)
-	_Logger       = slog.New(slog.NewTextHandler(os.Stderr, nil))
+	_AchiveRegexp = regexp.MustCompile(`^[A-Za-z0-9_\.-]{6,32}$`)
+	// _Logger       = slog.New(slog.NewTextHandler(os.Stderr, nil))
+	_Logger = slog.New(slog.NewJSONHandler(os.Stderr, nil))
 )
 
 func middlewareHandler(next http.Handler) http.Handler {
@@ -29,7 +32,7 @@ func middlewareHandler(next http.Handler) http.Handler {
 			"Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type, Content-Length",
 		)
 		w.Header().Set("Access-Control-Allow-Credentials", "true")
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS, HEAD")
 
 		if r.Method == "OPTIONS" {
 			w.WriteHeader(http.StatusOK)
@@ -40,7 +43,7 @@ func middlewareHandler(next http.Handler) http.Handler {
 	})
 }
 
-func middlewareFunc(fn http.HandlerFunc) http.HandlerFunc {
+func middlewareFunc(method string, fn http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
@@ -57,7 +60,47 @@ func middlewareFunc(fn http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
+		if r.Method != method {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Header().Set("Content-Type", "application/json")
+			w.Write([]byte(`{"code":-1,"msg":"not_found"}`))
+			return
+		}
+
+		now := time.Now()
 		fn(w, r)
+
+		data := getData(r)
+		if err, ok := data["error"].(error); ok && err == nil {
+			_Logger.Info(
+				fmt.Sprintf("%s@%s", r.Method, r.URL.Path),
+				"query", r.URL.RawQuery,
+				"ip", r.RemoteAddr,
+				"elapsed", time.Since(now).String(),
+				"data", data,
+			)
+		} else {
+			_Logger.Info(
+				fmt.Sprintf("%s@%s", r.Method, r.URL.Path),
+				"query", r.URL.RawQuery,
+				"ip", r.RemoteAddr,
+				"elapsed", time.Since(now).String(),
+				"data", data,
+			)
+		}
+	}
+}
+
+func setData(r *http.Request, data map[string]any) {
+	ctx := context.WithValue(r.Context(), "_data", data)
+	*r = *(r.WithContext(ctx))
+}
+
+func getData(r *http.Request) map[string]any {
+	if data, ok := r.Context().Value("_data").(map[string]any); ok {
+		return data
+	} else {
+		return make(map[string]any)
 	}
 }
 
@@ -69,6 +112,7 @@ func archive(w http.ResponseWriter, r *http.Request) {
 
 		code int
 		msg  string
+		date string
 	)
 
 	response := func(status int) {
@@ -76,48 +120,43 @@ func archive(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(status)
 		// json.NewEncoder(w)
 		bts, _ := json.Marshal(map[string]any{"code": code, "msg": msg})
-
-		r.Context()
-
-		if err == nil {
-			_Logger.Info(
-				fmt.Sprintf("%s@%s", r.Method, r.URL.Path),
-				"query", r.URL.RawQuery,
-				"ip", r.RemoteAddr,
-				"code", code,
-				"msg", msg,
-			)
-		} else {
-			_Logger.Info(
-				fmt.Sprintf("%s@%s", r.Method, r.URL.Path),
-				"query", r.URL.RawQuery,
-				"ip", r.RemoteAddr,
-				"code", code,
-				"msg", msg,
-				"error", err,
-			)
-		}
-
+		setData(r, map[string]any{
+			"status": status, "error": err,
+			"code": code, "msg": msg,
+		})
 		w.Write(bts)
 	}
 
 	// io.WriteString(w, "This is my website!\n")
 
 	if name = r.URL.Query().Get("name"); !_AchiveRegexp.MatchString(name) {
-		code, msg = -1, "invalid name"
+		code, msg = -10, "invalid_name"
 		response(http.StatusBadRequest)
 		return
 	}
 
-	if file, err = os.Create(path.Join("data", name)); err != nil {
-		code, msg = 1, "service error"
+	if len(r.Header["Content-Length"]) == 0 {
+		code, msg = -11, "empty_content"
+		response(http.StatusBadRequest)
+		return
+	}
+
+	date = time.Now().Format(time.DateOnly)
+	if err = os.MkdirAll(filepath.Join("data", date), 0755); err != nil {
+		code, msg = 11, "service_error"
+		response(http.StatusInternalServerError)
+		return
+	}
+
+	if file, err = os.Create(filepath.Join("data", date, name)); err != nil {
+		code, msg = 12, "service_error"
 		response(http.StatusInternalServerError)
 		return
 	}
 	defer file.Close()
 
 	if _, err = io.Copy(file, r.Body); err != nil {
-		code, msg = 2, "service error"
+		code, msg = 13, "service_error"
 		response(http.StatusInternalServerError)
 	} else {
 		code, msg = 0, "ok"
@@ -137,10 +176,6 @@ func main() {
 	flag.StringVar(&addr, "addr", ":3000", "http service address")
 	flag.Parse()
 
-	if err = os.MkdirAll("data", 0755); err != nil {
-		log.Fatalln(err)
-	}
-
 	/*
 		http.HandleFunc("/", archive)
 
@@ -158,7 +193,7 @@ func main() {
 	server.Handler = mux
 	// TODO: configure server, e.g. BaseContext
 	// mux.Handle("/", middlewareHandler(http.HandlerFunc(archive)))
-	mux.HandleFunc("/", middlewareFunc(archive))
+	mux.HandleFunc("/", middlewareFunc("PUT", archive))
 
 	log.Printf("==> Http service is listening on %q\n", addr)
 	if err = server.Serve(listener); err != nil {

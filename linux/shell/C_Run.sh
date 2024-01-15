@@ -3,18 +3,16 @@ set -eu -o pipefail
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 
+c_file=$1
+out=./target/$(basename $c_file | sed 's/\.c$//')
+
+gcc -std=c17 -o $out $@
+
 mkdir -p target
-
-C_FILE=$1
-bin=$(basename $C_FILE | sed 's/\.c$//')
-
-shift
-gcc ${C_FILE} -std=c17 -o target/$bin $*
-
 if [ "${compile:=''}"  == "true" ]; then
-    ./target/$bin
+    echo "$out"
 else
-    echo "./target/$bin"
+    "$out"
 fi
 
 ####
