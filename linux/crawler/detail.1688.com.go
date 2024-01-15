@@ -41,7 +41,7 @@ func main() {
 	flag.StringVar(&addr, "addr", ":3000", "http service address")
 	flag.StringVar(&certFile, "cert", "", "tls cert file")
 	flag.StringVar(&keyFile, "key", "", "tls key file")
-	flag.StringVar(&origin, "origin", "*", "cros allow origin")
+	flag.StringVar(&origin, "origin", "*", "cors allow origin")
 	flag.Parse()
 
 	/*
