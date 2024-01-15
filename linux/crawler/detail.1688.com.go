@@ -14,11 +14,12 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
 	"time"
 )
 
 var (
-	_AchiveRegexp = regexp.MustCompile(`^[A-Za-z0-9_\.-]{6,32}$`)
+	_AchiveRE = regexp.MustCompile(`^[A-Za-z0-9_\.-]{6,32}$`)
 	// _Logger       = slog.New(slog.NewTextHandler(os.Stderr, nil))
 	_Logger = slog.New(slog.NewJSONHandler(os.Stderr, nil))
 )
@@ -125,7 +126,7 @@ func middlewareFunc(method, origin string, fn http.HandlerFunc) http.HandlerFunc
 		if r.Method != method {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Header().Set("Content-Type", "application/json")
-			w.Write([]byte(`{"code":-1,"msg":"not_found"}`))
+			w.Write([]byte(`{"code":"not_found","msg":"not found"}`))
 			return
 		}
 
@@ -167,12 +168,18 @@ func archive(w http.ResponseWriter, r *http.Request) {
 		err  error
 		file *os.File
 
-		code int
-		msg  string
 		date string
 	)
 
-	response := func(status int) {
+	response := func(status int, code string, msgs ...string) {
+		var msg string
+
+		if len(msgs) > 0 {
+			msg = msgs[0]
+		} else {
+			msg = strings.ReplaceAll(code, "_", " ")
+		}
+
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(status)
 		// json.NewEncoder(w)
@@ -189,37 +196,31 @@ func archive(w http.ResponseWriter, r *http.Request) {
 
 	// io.WriteString(w, "This is my website!\n")
 
-	if name = r.URL.Query().Get("name"); !_AchiveRegexp.MatchString(name) {
-		code, msg = -100, "invalid_name"
-		response(http.StatusBadRequest)
+	if name = r.URL.Query().Get("name"); !_AchiveRE.MatchString(name) {
+		response(http.StatusBadRequest, "invalid_name")
 		return
 	}
 
 	if len(r.Header["Content-Length"]) == 0 {
-		code, msg = -101, "empty_content"
-		response(http.StatusBadRequest)
+		response(http.StatusBadRequest, "empty_content")
 		return
 	}
 
 	date = time.Now().Format(time.DateOnly)
 	if err = os.MkdirAll(filepath.Join("data", date), 0755); err != nil {
-		code, msg = 100, "service_error"
-		response(http.StatusInternalServerError)
+		response(http.StatusInternalServerError, "service_error")
 		return
 	}
 
 	if file, err = os.Create(filepath.Join("data", date, name)); err != nil {
-		code, msg = 101, "service_error"
-		response(http.StatusInternalServerError)
+		response(http.StatusInternalServerError, "service_error")
 		return
 	}
 	defer file.Close()
 
 	if _, err = io.Copy(file, r.Body); err != nil {
-		code, msg = 102, "service_error"
-		response(http.StatusInternalServerError)
+		response(http.StatusInternalServerError, "service_error")
 	} else {
-		code, msg = 0, "ok"
-		response(http.StatusOK)
+		response(http.StatusOK, "ok")
 	}
 }
