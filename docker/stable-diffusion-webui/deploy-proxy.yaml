@@ -34,6 +34,8 @@ services:
     - --api
     - --port=7860
     # - --ckpt=models/Stable-diffusion/realisticVisionV13_v13.safetensors
+    # --no-half
+    # --disable-nan-check
 
   sd-auth:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy:dev

@@ -25,7 +25,6 @@ services:
     - ./data/outputs:/app/sd-webui/outputs
     - ./data/models:/app/sd-webui/models
     - ./data/extensions/sd-webui-controlnet:/app/sd-webui/extensions/sd-webui-controlnet/annotator/downloads
-    ## hed, lineart_anime, mlsd, pidinet
     # - ./data/cache:/root/.cache
     # - ./data/interrogate:/app/sd-webui/interrogate
     command:
@@ -35,6 +34,8 @@ services:
     - --api
     - --port=7860
     # - --ckpt=models/Stable-diffusion/realisticVisionV13_v13.safetensors
+    # --no-half
+    # --disable-nan-check
 
 networks:
   net:
