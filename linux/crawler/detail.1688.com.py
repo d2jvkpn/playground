@@ -1,8 +1,8 @@
 #! /bin/env python3
 
-import sys, json
-
 import pandas as pd
+
+import sys, json
 
 for fp in sys.argv[1:]:
   print(f"==> load {fp}")

@@ -116,10 +116,10 @@ function pageInfo() {
   return data;
 }
 
-function download(data) {
+function downloadAnchor(data) {
   var link = document.createElement("a");
-  link.download = data.download;
-  delete data.download;
+  link.download = data.filename;
+  delete data.filename;
   // data:text/plain;charset=utf8
   link.href = `data:text/json;charset=utf-8,${JSON.stringify(data)}\n`;
 
@@ -127,9 +127,9 @@ function download(data) {
   alert(`==> Download ${data.count} items: ${link.download}`);
 }
 
-function post(url, data) {
-  url += `?name=${data.download}`;
-  delete data.download;
+function postArchive(url, data) {
+  url += `?filename=${data.filename}`;
+  delete data.filename;
 
   let req = new XMLHttpRequest();
   // let url = new URL(window.location.href);
@@ -175,5 +175,5 @@ function autoScrap(pageMax=5, secs=1, archive=download) {
   }, secs*1000);
 }
 
-// autoScrap(10, 1, download);
-// autoScrap(5, 1, (data) => post(`http://127.0.0.1:3000/`, data));
+// autoScrap(10, 1, downloadAnchor);
+// autoScrap(5, 1, (data) => postArchive(`http://127.0.0.1:3000/`, data));

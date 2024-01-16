@@ -53,7 +53,7 @@ function pageInfo() {
   // _btn_next = document.querySelector("button.next-next");
   // var _btn_confirm = document.querySelector("next-btn-helper");
   // _btn_next.addEventListener('click', () => getComments().forEach(e => comments.push(e)));
-  // _btn_confirm.addEventListener('click', () => download(comments));
+  // _btn_confirm.addEventListener('click', () => downloadAnchor(comments));
 
   var shop_elem = document.querySelector("#hd").children[0].children[0].children[0];
   var sale_elems = document.querySelector("div.title-sale-column").children;
@@ -62,13 +62,13 @@ function pageInfo() {
   var now = datetime();
   // now.toISOString().replace(/:/g, "-").replace(".", "-")
 
-  var download = url.host + "-" + 
+  var filename = url.host + "-" +
     url.pathname.split('/').slice(-1)[0].replace(".html", '') + "_" +
     now.date + ".json";
 
   var data = {
     datetime: now.rfc3339ms,
-    download: download,
+    filename: filename,
     title: document.querySelector("div.title-text").innerText,
     price: document.querySelector("div.price-column").innerText.replace(/\n/g, ''),
     url: url.origin + url.pathname,
@@ -96,10 +96,10 @@ function getPageMax() {
   return num;
 }
 
-function download(data) {
+function downloadAnchor(data) {
   var link = document.createElement("a");
-  link.download = data.download;
-  delete data.download;
+  link.download = data.filename;
+  delete data.filename;
   // data:text/plain;charset=utf8
   link.href = `data:text/json;charset=utf-8,${JSON.stringify(data)}\n`;
 
@@ -107,9 +107,9 @@ function download(data) {
   alert(`==> Download ${data.count} items: ${link.download}`);
 }
 
-function post(url, data) {
-  url += `?name=${data.download}`;
-  delete data.download;
+function postArchive(url, data) {
+  url += `?filename=${data.filename}`;
+  delete data.filename;
 
   let req = new XMLHttpRequest();
   // let url = new URL(window.location.href);
@@ -129,7 +129,7 @@ function post(url, data) {
   req.send();
 }
 
-function autoScrap(pageMax=5, secs=1, archive=download) {    
+function autoScrap(pageMax=5, secs=1, archive=downloadAnchor) {
   function getComments() {
     var evaluates = document.getElementsByClassName("evaluate-item");
     var items = Array.from(evaluates).map(e => parseComment(e));
@@ -177,5 +177,5 @@ function autoScrap(pageMax=5, secs=1, archive=download) {
   }, secs*1000);
 }
 
-// autoScrap(5, 1, download);
-// autoScrap(5, 1, (data) => post(`http://127.0.0.1:3000/`, data));
+// autoScrap(5, 1, downloadAnchor);
+// autoScrap(5, 1, (data) => postArchive(`http://127.0.0.1:3000/`, data));

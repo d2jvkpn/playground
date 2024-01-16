@@ -142,7 +142,7 @@ func middlewareFunc(method, origin string, fn http.HandlerFunc) http.HandlerFunc
 			fmt.Sprintf("%s@%s", r.Method, r.URL.Path),
 			"query", r.URL.RawQuery,
 			"ip", r.RemoteAddr,
-			"elapsed", time.Since(now).String(),
+			"latency", time.Since(now).String(),
 			"data", data,
 		)
 	}
@@ -163,11 +163,11 @@ func getData(r *http.Request) map[string]any {
 
 func archive(w http.ResponseWriter, r *http.Request) {
 	var (
-		name string
-		date string
-		fp   string
-		err  error
-		file *os.File
+		filename string
+		date     string
+		fp       string
+		err      error
+		file     *os.File
 	)
 
 	response := func(status int, code string, msgs ...string) {
@@ -193,8 +193,8 @@ func archive(w http.ResponseWriter, r *http.Request) {
 
 	// io.WriteString(w, "This is my website!\n")
 
-	if name = r.URL.Query().Get("name"); !_AchiveRE.MatchString(name) {
-		response(http.StatusBadRequest, "invalid_name")
+	if filename = r.URL.Query().Get("filename"); !_AchiveRE.MatchString(filename) {
+		response(http.StatusBadRequest, "invalid_filename")
 		return
 	}
 
@@ -209,7 +209,7 @@ func archive(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fp = filepath.Join("data", date, name)
+	fp = filepath.Join("data", date, filename)
 	if file, err = os.Create(fp); err != nil {
 		response(http.StatusInternalServerError, "service_error")
 		return
