@@ -23,7 +23,7 @@ services:
     volumes:
     - ./data/outputs:/app/sd-webui/outputs
     - ./data/models:/app/sd-webui/models
-    - ./data/extentions/sd-webui-controlnet:/app/sd-webui/extensions/sd-webui-controlnet/annotator/downloads
+    - ./data/extensions/sd-webui-controlnet:/app/sd-webui/extensions/sd-webui-controlnet/annotator/downloads
     ## hed, lineart_anime, mlsd, pidinet
     # - ./data/cache:/root/.cache
     # - ./data/interrogate:/app/sd-webui/interrogate

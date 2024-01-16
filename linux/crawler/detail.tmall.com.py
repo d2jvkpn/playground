@@ -15,6 +15,7 @@ for fp in sys.argv[1:]:
     continue
 
   comments.columns = data["comments"][0].keys()
+
   output = fp.replace(".json", ".comments.tsv")
   comments.to_csv(output, sep="\t", index=False)
-  print(f"<== saved {out}")
+  print(f"<== saved {output}")
