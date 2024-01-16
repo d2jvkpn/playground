@@ -45,6 +45,7 @@
 
 - ControlNet
   - url: https://huggingface.co/lllyasviel/ControlNet/tree/main/models
+  - url: https://huggingface.co/webui/ControlNet-modules-safetensors/tree/main
   - location: models/ControlNet
   - items: control_sd15_canny.pth, control_sd15_depth.pth, control_sd15_mlsd.pth
 
