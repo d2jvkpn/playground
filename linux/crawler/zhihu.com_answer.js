@@ -14,3 +14,4 @@ link.href = `data:text/plain;charset=utf8,${data.replace(/\n/g, "%0D%0A")}\n`;
 
 link.download = `zhihu.com_${document.title}.md`;
 link.click();
+alter(`==> Saved ${link.download}`);
