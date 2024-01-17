@@ -30,7 +30,7 @@ function apt_install() {
     apt-get -y upgrade || return 1
 
     apt-get -y install apt-transport-https ca-certificates lsb-release gnupg pigz curl jq \
-      socat conntrack nfs-kernel-server nfs-common nftables \
+      socat conntrack dnsutils nfs-kernel-server nfs-common nftables \
       etcd-client containerd runc || return 1
 
     # apt-mark unhold kubelet kubeadm kubectl
