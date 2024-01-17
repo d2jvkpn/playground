@@ -62,7 +62,7 @@ function pageInfo() {
   var now = datetime();
   // now.toISOString().replace(/:/g, "-").replace(".", "-")
 
-  var filename = url.host + "-" +
+  var filename = url.host + "_" +
     url.pathname.split('/').slice(-1)[0].replace(".html", '') + "_" +
     now.date + ".json";
 

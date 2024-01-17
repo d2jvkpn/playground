@@ -14,11 +14,12 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"time"
 )
 
 var (
-	_AchiveRE = regexp.MustCompile(`^[A-Za-z0-9_\.-]{6,32}$`)
+	_AchiveRE = regexp.MustCompile(`^[A-Za-z0-9_\.-]{8,64}$`)
 	// _Logger       = slog.New(slog.NewTextHandler(os.Stderr, nil))
 	_Logger = slog.New(slog.NewJSONHandler(os.Stderr, nil))
 )
@@ -200,6 +201,12 @@ func archive(w http.ResponseWriter, r *http.Request) {
 
 	if len(r.Header["Content-Length"]) == 0 {
 		response(http.StatusBadRequest, "empty_content")
+		return
+	}
+
+	// check if size > 10MB
+	if size, _ := strconv.ParseUint(r.Header["Content-Length"][0], 10, 64); size > 1024*1024*10 {
+		response(http.StatusBadRequest, "too_large")
 		return
 	}
 

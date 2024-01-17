@@ -95,14 +95,14 @@ function pageInfo() {
   var url = new URL(document.URL);
   var now = datetime();
 
-  var download = url.host + "-" +
-    url.pathname.split('/').slice(-1)[0].replace(".html", '') + "-" +
+  var filename = url.host + "-" +
+    url.pathname.split('/').slice(-1)[0].replace(".html", '') + "_" +
     url.searchParams.get("id") +
     "_" + now.date + ".json";
 
   var data = {
     datetime: now.rfc3339ms,
-    download: download,
+    filename: filename,
     title: findWithClassPrefix(document, "h1", "ItemHeader--mainTitle--").innerText,
     price: findWithClassPrefix(document, "span", "Price--priceText--").innerText,
     url: url.origin + url.pathname + `?id=${url.searchParams.get("id")}`,
