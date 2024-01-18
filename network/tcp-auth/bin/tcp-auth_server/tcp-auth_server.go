@@ -14,6 +14,36 @@ var (
 	_CorrectToken = "hello"
 )
 
+func main() {
+	var (
+		addr     string
+		err      error
+		listener net.Listener
+	)
+
+	flag.StringVar(&addr, "addr", ":8000", "listening address")
+	flag.Parse()
+
+	if listener, err = net.Listen("tcp", addr); err != nil {
+		log.Fatalln(err)
+	}
+	log.Printf("==> tcp server: %q\n", addr)
+
+	for {
+		var (
+			err  error
+			conn net.Conn
+		)
+
+		if conn, err = listener.Accept(); err != nil {
+			log.Printf("!!! Accept: %v\n", err)
+			continue
+		}
+
+		go handle(conn)
+	}
+}
+
 func handle(conn net.Conn) {
 	defer conn.Close()
 
@@ -65,30 +95,4 @@ func handle(conn net.Conn) {
 	_, _ = conn.Write([]byte(msg))
 	_ = conn.Close()
 	log.Printf("<== close connection: %s\n", addr)
-}
-
-func main() {
-	var (
-		addr     string
-		err      error
-		listener net.Listener
-	)
-
-	flag.StringVar(&addr, "addr", ":8000", "listening address")
-	flag.Parse()
-
-	if listener, err = net.Listen("tcp", addr); err != nil {
-		log.Fatalln(err)
-	}
-	log.Printf("==> tcp server: %q\n", addr)
-
-	for {
-		conn, err := listener.Accept()
-		if err != nil {
-			log.Println(err)
-			continue
-		}
-
-		go handle(conn)
-	}
 }
