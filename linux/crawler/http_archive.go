@@ -133,7 +133,7 @@ func middlewareFunc(method, origin string, fn http.HandlerFunc) http.HandlerFunc
 		now := time.Now()
 		fn(w, r)
 
-		data := getData(r)
+		data := httpContextGet(r)
 		logger := _Logger.Info
 		if err, ok := data["error"].(error); ok && err != nil {
 			logger = _Logger.Error
@@ -149,12 +149,12 @@ func middlewareFunc(method, origin string, fn http.HandlerFunc) http.HandlerFunc
 	}
 }
 
-func setData(r *http.Request, data map[string]any) {
+func httpContextSet(r *http.Request, data map[string]any) {
 	ctx := context.WithValue(r.Context(), "_data", data)
 	*r = *(r.WithContext(ctx))
 }
 
-func getData(r *http.Request) map[string]any {
+func httpContextGet(r *http.Request) map[string]any {
 	if data, ok := r.Context().Value("_data").(map[string]any); ok {
 		return data
 	} else {
@@ -184,9 +184,11 @@ func archive(w http.ResponseWriter, r *http.Request) {
 		bts, _ := json.Marshal(map[string]any{"code": code, "msg": msg})
 
 		if err == nil {
-			setData(r, map[string]any{"status": status, "code": code, "msg": msg})
+			httpContextSet(r, map[string]any{"status": status, "code": code, "msg": msg})
 		} else {
-			setData(r, map[string]any{"status": status, "code": code, "msg": msg, "error": err})
+			httpContextSet(r, map[string]any{
+				"status": status, "code": code, "msg": msg, "error": err,
+			})
 		}
 
 		w.Write(bts)
