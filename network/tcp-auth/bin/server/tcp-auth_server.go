@@ -59,7 +59,6 @@ func handle(conn net.Conn) {
 
 	/*
 		reader = bufio.NewReader(conn)
-
 		if token, err = reader.ReadString('\n'); err != nil {
 			log.Println(err)
 			return
@@ -72,7 +71,7 @@ func handle(conn net.Conn) {
 	token, temp = make([]byte, 0, 32), make([]byte, 1)
 	for i := 0; i < 33; i++ {
 		if _, err = conn.Read(temp); err != nil {
-			log.Println(err)
+			log.Printf("!!!! Read: %v\n", err)
 			return
 		}
 
@@ -87,12 +86,13 @@ func handle(conn net.Conn) {
 		conn.Write([]byte("no\n"))
 		return
 	}
-
 	conn.Write([]byte("ok\n"))
 
 	fmt.Printf("==> Send Welcome\n")
-	msg := fmt.Sprintf("Welcome, %s\n", time.Now().Format(time.RFC3339))
+	msg := fmt.Sprintf("Welcome, %s!\n", time.Now().Format(time.RFC3339))
 	_, _ = conn.Write([]byte(msg))
+	_, _ = conn.Write([]byte("bye\n"))
+
 	_ = conn.Close()
 	log.Printf("<== close connection: %s\n", addr)
 }
