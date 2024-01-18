@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"net"
 	"os"
@@ -70,11 +71,10 @@ func (self *Error) Kind() string {
 
 func connectToServer(addr string) *Error {
 	var (
-		token   string
-		message string
-		err     error
-		reader  *bufio.Reader
-		conn    net.Conn
+		token, msg string
+		err        error
+		reader     *bufio.Reader
+		conn       net.Conn
 	)
 
 	if conn, err = net.Dial("tcp", addr); err != nil {
@@ -82,30 +82,49 @@ func connectToServer(addr string) *Error {
 	}
 	log.Println("==> connected to", addr)
 
-	reader = bufio.NewReader(os.Stdin)
-
 	fmt.Print("==> Enter token: ")
+	reader = bufio.NewReader(os.Stdin)
 	if token, err = reader.ReadString('\n'); err != nil {
 		return NewError(err, "tcp_read")
 	}
 	token = strings.TrimSpace(token)
+	if len(token) > 32 {
+		return NewError(err, "token_is_too_long")
+	}
 
 	fmt.Fprintf(conn, token+"\n")
 
-	if message, err = bufio.NewReader(conn).ReadString('\n'); err != nil {
+	if msg, err = bufio.NewReader(conn).ReadString('\n'); err != nil {
 		log.Printf("read error: %s\n", err)
 		conn.Close()
 		return NewError(err, "bufio_read")
 	}
 
-	log.Printf("==> Message from server: %s\n", message)
-
-	if err = conn.Close(); err != nil {
-		log.Printf("<== Close connection error: %v\n", err)
-		return NewError(err, "close_error")
+	if msg = strings.TrimSpace(msg); msg != "ok" {
+		log.Printf("==> Authorized failed: %q\n", strings.TrimSpace(msg))
+		conn.Close()
+		return NewError(err, "auth_failed")
 	} else {
-		log.Printf("<== Connection closed\n")
+		log.Println("==> Authorized")
 	}
+
+	for {
+		msg, err = bufio.NewReader(conn).ReadString('\n')
+		if err != nil && err != io.EOF {
+			log.Printf("read error: %s\n", err)
+			conn.Close()
+			return NewError(err, "bufio_read")
+		}
+
+		if err == io.EOF {
+			break
+		}
+
+		log.Printf("==> Message from server: %q\n", strings.TrimSpace(msg))
+	}
+
+	_ = conn.Close()
+	log.Printf("<== Connection closed\n")
 
 	return nil
 }

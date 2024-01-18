@@ -1,12 +1,13 @@
 package main
 
 import (
-	"bufio"
-	// "fmt"
+	// "bufio"
 	"flag"
+	"fmt"
 	"log"
 	"net"
-	"strings"
+	"time"
+	// "strings"
 )
 
 var (
@@ -17,33 +18,52 @@ func handle(conn net.Conn) {
 	defer conn.Close()
 
 	var (
-		addr   net.Addr
-		data   string
-		token  string
-		err    error
-		reader *bufio.Reader
+		addr        net.Addr
+		token, temp []byte
+		err         error
+		// reader *bufio.Reader
 	)
 
 	addr = conn.RemoteAddr()
 	log.Printf("==> client connected: %s\n", addr)
 
-	reader = bufio.NewReader(conn)
+	/*
+		reader = bufio.NewReader(conn)
 
-	if data, err = reader.ReadString('\n'); err != nil {
-		log.Println(err)
+		if token, err = reader.ReadString('\n'); err != nil {
+			log.Println(err)
+			return
+		}
+
+		token = strings.TrimSpace(token)
+		log.Printf("~~~ Got token: %s\n", token)
+	*/
+
+	token, temp = make([]byte, 0, 32), make([]byte, 1)
+	for i := 0; i < 33; i++ {
+		if _, err = conn.Read(temp); err != nil {
+			log.Println(err)
+			return
+		}
+
+		if temp[0] == '\n' {
+			break
+		}
+		token = append(token, temp[0])
+	}
+
+	log.Printf("~~~ Got token: %s\n", string(token))
+	if string(token) != _CorrectToken {
+		conn.Write([]byte("no\n"))
 		return
 	}
 
-	token = strings.TrimSpace(data)
-	log.Printf("~~~ Got token: %s\n", token)
+	conn.Write([]byte("ok\n"))
 
-	if token != _CorrectToken {
-		conn.Write([]byte("Authorization failed!\n"))
-		return
-	}
-
-	conn.Write([]byte("Authorized successfully!\n"))
-	conn.Close()
+	fmt.Printf("==> Send Welcome\n")
+	msg := fmt.Sprintf("Welcome, %s\n", time.Now().Format(time.RFC3339))
+	_, _ = conn.Write([]byte(msg))
+	_ = conn.Close()
 	log.Printf("<== close connection: %s\n", addr)
 }
 
