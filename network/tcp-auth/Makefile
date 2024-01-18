@@ -1,14 +1,12 @@
 compile:
 	mkdir -p target
 
-	go fmt tcp-auth_client.go tcp-auth_server.go
-	go build -o target/tcp-auth_client tcp-auth_client.go
-	go build -o target/tcp-auth_server tcp-auth_server.go
+	go fmt bin/tcp-auth_client/tcp-auth_client.go bin/tcp-auth_server/tcp-auth_server.go
+	go build -o target/tcp-auth_client bin/tcp-auth_client/tcp-auth_client.go
+	go build -o target/tcp-auth_server bin/tcp-auth_server/tcp-auth_server.go
 
-run-client:
-	go fmt tcp-auth_client.go
-	go run tcp-auth_client.go
+client:
+	go run bin/tcp-auth_client/tcp-auth_client.go
 
-run-server:
-	go fmt tcp-auth_server.go
-	go run tcp-auth_server.go
+server:
+	go run bin/tcp-auth_server/tcp-auth_server.go
