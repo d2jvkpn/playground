@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	_CorrectToken = "hello:world"
+	_CorrectToken = "hello"
 )
 
 func handle(conn net.Conn) {
