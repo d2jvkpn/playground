@@ -17,6 +17,9 @@ import (
 	"github.com/d2jvkpn/gotk"
 )
 
+//go:generate go fmt ./...
+//go:generate go vet ./...
+//go:generate echo -e >>> both "go fmt" and "go vet" are ok
 //go:generate bash ./scripts/go_build.sh
 
 var (

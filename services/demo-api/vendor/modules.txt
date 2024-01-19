@@ -107,6 +107,9 @@ github.com/golang/protobuf/ptypes/timestamp
 # github.com/google/uuid v1.5.0
 ## explicit
 github.com/google/uuid
+# github.com/gorilla/websocket v1.5.1
+## explicit; go 1.20
+github.com/gorilla/websocket
 # github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 ## explicit; go 1.14
 github.com/grpc-ecosystem/go-grpc-middleware
@@ -304,7 +307,9 @@ golang.org/x/net/http2
 golang.org/x/net/http2/h2c
 golang.org/x/net/http2/hpack
 golang.org/x/net/idna
+golang.org/x/net/internal/socks
 golang.org/x/net/internal/timeseries
+golang.org/x/net/proxy
 golang.org/x/net/trace
 # golang.org/x/sys v0.16.0
 ## explicit; go 1.18

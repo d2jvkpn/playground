@@ -89,5 +89,8 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 		prom,
 	)
 
+	// #### websocket handlers
+	api.Load_Websocket(router)
+
 	return engine, nil
 }

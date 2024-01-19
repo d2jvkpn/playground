@@ -2,16 +2,20 @@ package api
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"runtime"
 
 	"demo-api/internal/biz"
 	"demo-api/internal/settings"
+	"demo-api/internal/ws"
 
 	"github.com/d2jvkpn/gotk"
 	"github.com/d2jvkpn/gotk/ginx"
 	"github.com/d2jvkpn/gotk/impls"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/gorilla/websocket"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
@@ -77,4 +81,36 @@ func Load_Biz(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 			"request_id": requestId, "code": 0, "msg": "ok", "data": gin.H{"ans": biz.DivPanic()},
 		})
 	})
+}
+
+func Load_Websocket(rg *gin.RouterGroup, handlers ...gin.HandlerFunc) {
+	ws := rg.Group("/ws/open", handlers...)
+	ws.GET("/talk", talk)
+}
+
+func talk(ctx *gin.Context) {
+	var (
+		token  string
+		err    error
+		conn   *websocket.Conn
+		client *ws.Client
+	)
+
+	if conn, err = ws.Upgrader.Upgrade(ctx.Writer, ctx.Request, nil); err != nil {
+		log.Printf("!!! %s talk upgrade error: %v\n", ctx.ClientIP(), err)
+		return
+	}
+	// defer conn.Close() // Close in method of client
+
+	client = ws.NewClient(ctx.ClientIP(), conn)
+	token = ctx.DefaultQuery("token", "")
+
+	// to avoid dead lock when for loop blocked by HandleMessage, don't use an unbuffered channel
+	log.Printf(
+		"==> %s connected: addr=%q, token=%q, Num Goroutine: %d\n",
+		client.Id, client.Address, token, runtime.NumGoroutine(),
+	)
+	client.Handle()
+
+	log.Printf("Num Goroutine: %d\n", runtime.NumGoroutine())
 }

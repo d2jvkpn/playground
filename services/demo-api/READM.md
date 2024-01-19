@@ -3,6 +3,7 @@
 
 #### chapter 1 Specs
 - web: gin
+- websocket: (gorilla/websocket)
 - logging: zap
 - language: golang
 - configuraion: viper
@@ -19,4 +20,3 @@
 - database: postgres, mongodb
 
 #### chatper 3 TODO
-- websocket: (gorilla/websocket)
