@@ -4,16 +4,16 @@
 #### chapter 1 Specs
 - web: gin
 - websocket: (gorilla/websocket)
-- logging: zap
 - language: golang
 - configuraion: viper
 - rpc: grpc
-- deployments: docker, kubernetes
+- logging: zap
+- monitoring: prometheus
+- tracing: opentelemetry
+- deployments: docker/docker-compose, kubernetes
 - tools: make, git
 
 #### chapter 2 Alternatives
-- monitoring: prometheus
-- tracing and observability: opentelemetry
 - message queue: kafka(kraft)
 - service discovering: consul
 - cache: redis
