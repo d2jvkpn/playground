@@ -16,6 +16,7 @@ import (
 )
 
 func Load_Public(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
+	//
 	router.GET("/nts", gin.WrapF(impls.NTSFunc(3)))
 	router.GET("/healthz", ginx.Healthz)
 	router.GET("/prometheus", gin.WrapH(promhttp.Handler()))
@@ -24,8 +25,8 @@ func Load_Public(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 		ctx.JSON(http.StatusOK, gin.H{"meta": settings.Meta})
 	})
 
+	//
 	debug := router.Group("/debug", handlers...)
-
 	kfs := gotk.PprofHandlerFuncs()
 
 	for _, k := range gotk.PprofFuncKeys() {
@@ -34,11 +35,12 @@ func Load_Public(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 }
 
 func Load_OpenV1(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
-	open := router.Group("/api/v1/open", handlers...)
+	group := router.Group("/api/v1/open", handlers...)
 
 	//
 	value := settings.ConfigField("hello").GetInt64("world")
-	open.GET("/hello", func(ctx *gin.Context) {
+
+	group.GET("/hello", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{
 			"code": 0, "msg": "ok", "data": gin.H{
 				"key": "world", "value": value, "ip": ctx.ClientIP()},
@@ -47,9 +49,9 @@ func Load_OpenV1(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 }
 
 func Load_Biz(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
-	bizRouter := router.Group("/api/v1/biz", handlers...)
+	group := router.Group("/api/v1/biz", handlers...)
 
-	bizRouter.GET("/error", func(ctx *gin.Context) {
+	group.GET("/error", func(ctx *gin.Context) {
 		requestId := uuid.NewString()
 		err := biz.BizError()
 
@@ -64,7 +66,7 @@ func Load_Biz(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 		})
 	})
 
-	bizRouter.GET("/div_panic", func(ctx *gin.Context) {
+	group.GET("/div_panic", func(ctx *gin.Context) {
 		requestId := uuid.NewString()
 
 		ginx.SetRequestId(ctx, requestId)
