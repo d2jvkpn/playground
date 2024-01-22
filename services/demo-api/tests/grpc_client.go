@@ -1,4 +1,4 @@
-package main
+package tests
 
 import (
 	"context"
@@ -24,21 +24,29 @@ func NewGrpcClient(conn *grpc.ClientConn) *GrpcClient {
 	}
 }
 
-func main() {
+func grpcClient(args []string) {
 	var (
-		addr   string
-		tls    bool
-		err    error
-		ctx    context.Context
-		conn   *grpc.ClientConn
-		client *GrpcClient
-		in     *proto.LogData
-		res    *proto.LogId
+		addr    string
+		tls     bool
+		err     error
+		flagSet *flag.FlagSet
+		ctx     context.Context
+		conn    *grpc.ClientConn
+		client  *GrpcClient
+		in      *proto.LogData
+		res     *proto.LogId
 	)
 
-	flag.StringVar(&addr, "addr", "localhost:5041", "grpc address")
-	flag.BoolVar(&tls, "tls", false, "enable tls")
-	flag.Parse()
+	/*
+		flag.StringVar(&addr, "addr", "localhost:5041", "grpc address")
+		flag.BoolVar(&tls, "tls", false, "enable tls")
+		flag.Parse()
+	*/
+
+	flagSet = flag.NewFlagSet("grpc_client", flag.ContinueOnError)
+	flagSet.StringVar(&addr, "addr", "localhost:5041", "grpc address")
+	flagSet.BoolVar(&tls, "tls", false, "enable tls")
+	flagSet.Parse(args)
 
 	defer func() {
 		if conn != nil {

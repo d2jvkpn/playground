@@ -5,7 +5,8 @@ image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api
 
 # configs/{{.APP_ENV}}.yaml
 config: |
-  liftime: 24h # liftime <=0 || liftime>=15m (range from lifetime-300s to lifetime+300s)
+  # liftime <=0 || liftime>=15m (range from lifetime-300s to lifetime+300s)
+  liftime: 24h
 
   hello:
     world: 42
@@ -22,3 +23,5 @@ config: |
     key: configs/server.key
 
   consul: TODO
+  prometheus: TODO
+  opentelemetry: TODO
