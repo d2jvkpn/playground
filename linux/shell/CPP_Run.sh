@@ -7,10 +7,10 @@ cpp_file=$1
 out=./target/$(basename ${cpp_file%.cpp})
 
 # -std=gnu++20, -std=c++20
-set -x
+# set -x
+mkdir -p target
 g++ -g -fmodules-ts -std=gnu++20 -o "$out" $@
 
-mkdir -p target
 if [ "${compile:=''}"  == "true" ]; then
     echo "$out"
 else

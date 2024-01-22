@@ -6,9 +6,9 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 c_file=$1
 out=./target/$(basename $c_file | sed 's/\.c$//')
 
+mkdir -p target
 gcc -std=c17 -o $out $@
 
-mkdir -p target
 if [ "${compile:=''}"  == "true" ]; then
     echo "$out"
 else
