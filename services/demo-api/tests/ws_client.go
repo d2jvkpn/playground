@@ -35,7 +35,7 @@ func wsClient(args []string) {
 	}
 
 	client.SetPing(5 * time.Second)
-	if err = client.ReadMsgFromPipeFile("data/msg_input.fifo"); err != nil {
+	if err = client.ReadMsgFromPipeFile("data/ws_client.fifo"); err != nil {
 		client.Close()
 		log.Fatal(err)
 	}
@@ -110,7 +110,6 @@ func (self *WsClient) SetPing(dur time.Duration) {
 		for {
 			select {
 			case <-self.done:
-				println("~~~ SetPing exit")
 				break loop
 			case _ = <-ticker.C:
 				pingId += 1
