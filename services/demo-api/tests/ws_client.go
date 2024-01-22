@@ -4,12 +4,15 @@ import (
 	"bufio"
 	"bytes"
 	"flag"
-	"fmt"
+	// "fmt"
+	"io"
 	"log"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"sync"
+	"syscall"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -31,7 +34,14 @@ func wsClient(args []string) {
 		log.Fatal(err)
 	}
 
+	client.SetPing(5 * time.Second)
+	if err = client.ReadMsgFromPipeFile("data/msg_input.fifo"); err != nil {
+		client.Close()
+		log.Fatal(err)
+	}
+
 	client.HandleMessage()
+	client.Close()
 }
 
 type WsClient struct {
@@ -60,12 +70,14 @@ func NewWsClient(addr string) (client *WsClient, err error) {
 	}
 
 	// overwrite default handler(when receive a ping)
-	conn.SetPingHandler(func(_data string) (err error) {
-		client.mutex.Lock()
-		defer client.mutex.Unlock()
+	conn.SetPingHandler(func(data string) (err error) {
+		log.Printf("<~~ Recv ping: %q\n", data)
 
-		log.Printf("<~~ Recv ping\n")
-		if err = conn.WriteMessage(websocket.PongMessage, nil); err != nil {
+		client.mutex.Lock()
+		err = conn.WriteMessage(websocket.PongMessage, nil)
+		client.mutex.Unlock()
+
+		if err != nil {
 			log.Printf("!!! WriteMessage Pong: %v\n", err)
 		}
 
@@ -89,7 +101,7 @@ func (self *WsClient) Close() {
 }
 
 func (self *WsClient) SetPing(dur time.Duration) {
-	ticker := time.NewTicker(5 * time.Second)
+	ticker := time.NewTicker(dur)
 
 	go func() {
 		var pingId uint64
@@ -98,57 +110,96 @@ func (self *WsClient) SetPing(dur time.Duration) {
 		for {
 			select {
 			case <-self.done:
+				println("~~~ SetPing exit")
 				break loop
 			case _ = <-ticker.C:
 				pingId += 1
 				data := []byte(strconv.FormatUint(pingId, 10))
 				self.mutex.Lock()
-				defer self.mutex.Unlock()
 
 				log.Printf("~~> send ping: %q\n", data)
 				err := self.conn.WriteMessage(websocket.PingMessage, []byte(data))
 				if err != nil {
 					log.Printf("!!! WriteMessage ping: %v\n", err)
 				}
+				self.mutex.Unlock()
 			}
 		}
 	}()
 }
 
-func (self *WsClient) SendMsgFromConsole() {
-	for {
+func (self *WsClient) ReadMsgFromPipeFile(fp string) (err error) {
+	var (
+		file   *os.File
+		reader *bufio.Reader
+	)
+
+	_ = os.Remove(fp)
+	if err = os.MkdirAll(filepath.Dir(fp), 0755); err != nil {
+		return err
+	}
+	if err = syscall.Mkfifo(fp, 0640); err != nil {
+		return err
+	}
+
+	if file, err = os.OpenFile(fp, os.O_CREATE, os.ModeNamedPipe); err != nil {
+		return err
+	}
+
+	reader = bufio.NewReader(file)
+
+	go func() {
 		var (
-			bts    []byte
-			msg    string
-			err    error
-			reader *bufio.Reader
+			bts []byte
+			msg string
 		)
 
-		fmt.Printf("==> Enter message: ")
-		reader = bufio.NewReader(os.Stdin)
-		if msg, err = reader.ReadString('\n'); err != nil {
-			log.Printf("!!! ReadString: %v\n", err)
-			continue
+		log.Println("~~~ Read from pipefile:", fp)
+
+		for {
+			select {
+			case <-self.done:
+				return
+			default:
+				// pass
+			}
+
+			if msg, err = reader.ReadString('\n'); err != nil {
+				if err == io.EOF {
+					continue
+				}
+
+				log.Printf("!!! ReadString: %v\n", err)
+				break
+			}
+
+			msg = strings.TrimSpace(msg)
+
+			if msg == "\\q" {
+				log.Println("!!! exit client")
+				self.Close()
+				break
+			}
+
+			if bts = []byte(msg); len(bts) == 0 {
+				continue
+			}
+
+			self.mutex.Lock()
+			err = self.conn.WriteMessage(websocket.TextMessage, bts)
+			self.mutex.Unlock()
+
+			if err != nil {
+				log.Printf("!!! WriteMessage text: %v\n", err)
+				break
+			}
 		}
 
-		msg = strings.TrimSpace(msg)
+		_ = file.Close()
+		_ = os.Remove(fp)
+	}()
 
-		if msg == "\\q" {
-			log.Println("!!! exit client")
-			self.Close()
-			break
-		}
-		if bts = []byte(msg); len(bts) == 0 {
-			continue
-		}
-
-		self.mutex.Lock()
-		defer self.mutex.Unlock()
-
-		if err = self.conn.WriteMessage(websocket.TextMessage, bts); err != nil {
-			log.Printf("!!! WriteMessage text: %v\n", err)
-		}
-	}
+	return nil
 }
 
 func (self *WsClient) HandleMessage() {

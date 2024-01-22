@@ -63,10 +63,10 @@ func NewClient(address string, conn *websocket.Conn) *Client {
 
 	_ClientsMap[client.Id] = client
 
-	conn.SetPingHandler(func(appData string) (err error) {
-		log.Printf("~~~ %s ping\n", client.Id)
+	conn.SetPingHandler(func(data string) (err error) {
+		log.Printf("~~~ %s ping: %q\n", client.Id, data)
 		client.LastPing = time.Now()
-		conn.WriteMessage(websocket.PongMessage, nil)
+		conn.WriteMessage(websocket.PongMessage, []byte(data))
 		return nil
 	})
 
