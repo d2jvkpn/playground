@@ -109,7 +109,7 @@ func main() {
 	logger.Info(
 		"sevice is up",
 		"config", configPath,
-		"http_adderss", httpAddr,
+		"http_address", httpAddr,
 		"rpc_address", rpcAddr,
 		"release", release,
 		"lifetime", settings.Meta["lifetime"],

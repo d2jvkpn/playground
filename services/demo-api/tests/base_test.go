@@ -12,7 +12,8 @@ var (
 	_CommandArgs []string
 )
 
-// go test -- --config=xxxx mycommand arg1 arg2
+// go test -- --config=../configs/local.yaml grpc arg1 arg2
+// go test -- --config=../configs/local.yaml ws
 func TestMain(m *testing.M) {
 	var (
 		config string

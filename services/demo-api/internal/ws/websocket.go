@@ -36,8 +36,8 @@ type Client struct {
 	once *sync.Once
 }
 
-func (client Client) String() string {
-	bts, _ := json.Marshal(client)
+func (self Client) String() string {
+	bts, _ := json.Marshal(self)
 	return string(bts)
 }
 
@@ -81,19 +81,20 @@ func NewClient(address string, conn *websocket.Conn) *Client {
 	return client
 }
 
-func (client *Client) Handle() {
+func (self *Client) Handle() {
 	var err error
+
+	_ = self.conn.WriteMessage(websocket.TextMessage, []byte(`{"kind":"hello"}`))
 
 loop:
 	for {
-		// println("~~~ loop")
 		select {
-		case <-client.quit:
+		case <-self.quit:
 			break loop
 		default:
 			// this can block the loop
-			if err = client.HandleMessage(); err != nil {
-				log.Printf("!!! %s HandleMessage error: %v\n", client.Id, err)
+			if err = self.HandleMessage(); err != nil {
+				log.Printf("!!! %s HandleMessage error: %v\n", self.Id, err)
 				switch err.(type) {
 				// close 1006 (abnormal closure): unexpected EOF
 				case *websocket.CloseError:
@@ -103,24 +104,24 @@ loop:
 		}
 	}
 
-	client.Close()
+	self.Close()
 }
 
-func (client *Client) Close() {
-	client.once.Do(func() {
-		client.Online, client.ClosedAt = false, time.Now()
-		client.conn.Close()
+func (self *Client) Close() {
+	self.once.Do(func() {
+		self.Online, self.ClosedAt = false, time.Now()
+		self.conn.Close()
 
 		go func() {
 			<-time.After(3 * time.Second)
-			log.Printf("delete client: %s\n", client)
+			log.Printf("delete client: %s\n", self)
 
-			delete(_ClientsMap, client.Id)
+			delete(_ClientsMap, self.Id)
 		}()
 	})
 }
 
-func (client *Client) HandleMessage() (err error) {
+func (self *Client) HandleMessage() (err error) {
 	var (
 		ok        bool
 		mt        int
@@ -130,13 +131,13 @@ func (client *Client) HandleMessage() (err error) {
 	)
 
 	// var addr: net.Addr = conn.RemoteAddr()
-	if mt, bts, err = client.conn.ReadMessage(); err != nil {
+	if mt, bts, err = self.conn.ReadMessage(); err != nil {
 		return
 	}
 
 	defer func() {
 		bts, _ = json.Marshal(res)
-		err = client.conn.WriteMessage(mt, bts)
+		err = self.conn.WriteMessage(mt, bts)
 	}()
 
 	data = make(map[string]any)
@@ -144,7 +145,7 @@ func (client *Client) HandleMessage() (err error) {
 		res = map[string]any{"kind": "error", "message": "unmarshal message error"}
 		return
 	}
-	log.Printf("<== %s recv: %s\n", client.Id, bytes.TrimSpace(bts))
+	log.Printf("<== %s recv: %s\n", self.Id, bytes.TrimSpace(bts))
 
 	if kind, ok = data["kind"].(string); !ok {
 		res = map[string]any{"kind": "error", "message": "invalid field kind"}
@@ -155,7 +156,7 @@ func (client *Client) HandleMessage() (err error) {
 		name, _ := data["name"].(string)
 
 		res = map[string]any{
-			"kind": "hello", "id": client.Id, "message": fmt.Sprintf("Welcome %s!", name),
+			"kind": "hello", "id": self.Id, "message": fmt.Sprintf("Welcome %s!", name),
 		}
 		return
 	}
