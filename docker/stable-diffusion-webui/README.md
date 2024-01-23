@@ -46,8 +46,10 @@
 - ControlNet
   - url: https://huggingface.co/lllyasviel/ControlNet/tree/main/models
   - url: https://huggingface.co/webui/ControlNet-modules-safetensors/tree/main
+  - url: https://huggingface.co/lllyasviel/ControlNet-v1-1/tree/main
   - location: models/ControlNet
-  - items: control_sd15_canny.pth, control_sd15_depth.pth, control_sd15_mlsd.pth
+  - items: control_sd15_canny.pth, control_sd15_depth.pth, control_sd15_mlsd.pth,
+  control_sd15_seg.pth, control_sd15_lineart.pth
 
 - model_base_caption_capfilt_large.pth
   - url: https://huggingface.co/sunnyweir/model_base_caption_capfilt_large.pth/tree/main
@@ -66,3 +68,12 @@
   - location: models/mlsd/mlsd_large_512_fp32.pth
   - url: https://huggingface.co/lllyasviel/Annotators/resolve/main/netG.pth
   - location: extensions/sd-webui-controlnet/annotator/downloads/lineart_anime/netG.pth
+
+- DreamShaper_8
+  - url: https://civitai.com/models/4384/dreamshaper
+  - huggingface: https://huggingface.co/digiplay/DreamShaper_8/tree/main
+  - youtube: Controlnet for Architecture Visualization : AI Architecture Design,
+  https://www.youtube.com/watch?v=hr2ri5SBPfU
+  - ControlNet: https://huggingface.co/lllyasviel/ControlNet-v1-1/tree/main,
+  control_v11p_sd15_lineart.pth, control_v11p_sd15_mlsd.pth, control_v11p_sd15_seg.pth,
+  control_v11p_sd15_canny.pth, control_v11f1p_sd15_depth.pth

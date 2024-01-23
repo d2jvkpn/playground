@@ -14,7 +14,8 @@
 #### 4. Concepts
 - database, table, index
 - join tables
+- principles
 
 #### 5. High Available
-1. 
-2. 
+1. Replication Cluster
+2. Distributed Cluster
