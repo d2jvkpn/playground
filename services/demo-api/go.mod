@@ -1,15 +1,13 @@
 module demo-api
 
-go 1.21.2
-
-toolchain go1.21.5
+go 1.21.6
 
 require (
-	github.com/d2jvkpn/gotk v0.0.0-20240117070320-368a3ac49938
-	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20240117070320-368a3ac49938
-	github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20240117070320-368a3ac49938
-	github.com/d2jvkpn/gotk/ginx v0.0.0-20240117070320-368a3ac49938
-	github.com/d2jvkpn/gotk/impls v0.0.0-20240117070320-368a3ac49938
+	github.com/d2jvkpn/gotk v0.0.0-20240123035849-e807384cc679
+	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20240123035849-e807384cc679
+	github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20240123035849-e807384cc679
+	github.com/d2jvkpn/gotk/ginx v0.0.0-20240123035849-e807384cc679
+	github.com/d2jvkpn/gotk/impls v0.0.0-20240123035849-e807384cc679
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.5.0
 	github.com/gorilla/websocket v1.5.1
@@ -73,7 +71,7 @@ require (
 	golang.org/x/net v0.20.0 // indirect
 	golang.org/x/sys v0.16.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240116215550-a9fa1716bcac // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240123012728-ef4313101c80 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
