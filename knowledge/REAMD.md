@@ -40,4 +40,12 @@
 - API-Service
 - Web
 
-#### 2. Life
+#### 2. Programing Languages
+- Shell, bash/awk/sed/grep
+- R, Python, Julia
+- Javascript, TypeScript, HTML, CSS
+- Golang
+- CPP
+- C
+
+#### 3. Life
