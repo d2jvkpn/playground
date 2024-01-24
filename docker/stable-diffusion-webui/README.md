@@ -72,8 +72,18 @@
 - DreamShaper_8
   - url: https://civitai.com/models/4384/dreamshaper
   - huggingface: https://huggingface.co/digiplay/DreamShaper_8/tree/main
-  - youtube: Controlnet for Architecture Visualization : AI Architecture Design,
-  https://www.youtube.com/watch?v=hr2ri5SBPfU
   - ControlNet: https://huggingface.co/lllyasviel/ControlNet-v1-1/tree/main,
   control_v11p_sd15_lineart.pth, control_v11p_sd15_mlsd.pth, control_v11p_sd15_seg.pth,
   control_v11p_sd15_canny.pth, control_v11f1p_sd15_depth.pth
+
+##### Links
+###### 2024-01-24
+- Controlnet for Architecture Visualization : AI Architecture Design
+  https://www.youtube.com/watch?v=hr2ri5SBPfU
+- https://www.youtube.com/watch?v=4Na4JOgX7Yc
+- https://www.youtube.com/watch?v=GBYD-CyTt7w
+- https://civitai.com/models/85691/interiordesignsupermix
+- https://civitai.com/user/commerceLaoChen/models
+- https://civitai.com/models/128780/architectureinteriorsdlifechiasedammev90
+- https://civitai.com/models/112902/dreamshaper-xl
+- https://civitai.com/models/203025/ue5-interior-design
