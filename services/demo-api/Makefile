@@ -30,7 +30,7 @@ build-bin:
 
 build-offline:
 	GIT_Pull=false BUILD_Region=cn DOCKER_Pull=false DOCKER_Tag=dev \
-	bash scripts/docker_build.sh master
+	bash deployments/docker_build.sh master
 
 build-local:
 	# BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master
@@ -44,5 +44,7 @@ build-remote:
 create-db:
 	echo "TODO: ..."
 
+docker-dev:
+	bash scripts/docker_dev.sh
 connect-db:
 	echo "TODO: ..."
