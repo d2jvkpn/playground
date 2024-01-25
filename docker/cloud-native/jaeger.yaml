@@ -1,5 +1,5 @@
 # http_auth_proxy: username=jaeger-hello, password=world
-jaeger:
+jaeger_auth:
   service: http://otel-jaeger:16686
   cors: "*"
   # tls: true

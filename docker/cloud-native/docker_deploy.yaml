@@ -63,7 +63,7 @@ services:
     command:
     - ./target/main
     - serve
-    - --app=jaeger
+    - --app=jaeger-auth
     - --config=/app/configs/jaeger.yaml
     - --addr=:8052
 
