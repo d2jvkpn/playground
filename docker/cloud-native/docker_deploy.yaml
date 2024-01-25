@@ -52,8 +52,8 @@ services:
   jaeger-auth:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy:dev
     restart: always
-    user: 1000:1000
     container_name: otel-jaeger-auth
+    user: 1000:1000
     depends_on: ["jaeger"]
     networks: ["net"]
     ports: ["8052:8052"]
@@ -87,15 +87,15 @@ services:
     networks: ["net"]
     ports: ["8053:3000"]
     volumes:
-    - ./data/grafana:/var/lib/grafana
     - ./configs:/app/configs
+    - ./data/grafana:/var/lib/grafana
     # environment:
     # - GF_SERVER_PROTOCOL=https
     # - GF_SERVER_CERT_FILE=/app/configs/server.pem
     # - GF_SERVER_CERT_KEY=/app/configs/server.key
     # - GF_SERVER_CERT_FILE=/var/lib/grafana/ssl/grafana.crt
     # - GF_SERVER_CERT_KEY=/var/lib/grafana/ssl/grafana.key
-    # default username: admin, password=admin
+    # default: username=admin, password=admin
 
 networks:
   net: { name: otel, driver: bridge, external: false }
