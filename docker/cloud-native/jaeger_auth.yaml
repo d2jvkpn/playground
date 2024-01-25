@@ -1,10 +1,10 @@
-# username: jaeger-pFNmoz89, password: world
+# username: jaeger-hello, password: world
 http_auth_proxy:
   service: http://otel-jaeger:16686
   cors: "*"
-  tls: true
-  cert: "configs/app-api.local.pem"
-  key: "configs/app-api.local.key"
+  # tls: true
+  # cert: "configs/site.pem"
+  # key: "configs/site.key"
   # pass_with_prefix: ["GET@/assets/"]
   # real_ip_header: "X-Real-IP"
   # limit_ips: []
@@ -14,7 +14,7 @@ http_auth_proxy:
   basic_auth:
     method: md5
     users:
-    - { username: jaeger-pFNmoz89, password: 7d793037a0760186574b0282f2f435e7 }
+    - { username: jaeger-hello, password: 7d793037a0760186574b0282f2f435e7 }
     # method: bcrypt
     # users:
     # - { username: 'jaeger-pFNmoz89', password: '$2b$12$TtsVshAES0nGnE3lO4Naf.cUCY/yN4eGr.JkHSgNWUth/yoyss/72' }
