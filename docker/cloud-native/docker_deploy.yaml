@@ -32,7 +32,7 @@ services:
     - ./data/prometheus:/app/data
     command:
     # - '--config.file=/etc/prometheus/prometheus.yaml'
-    - '--config.file=/app/configs/prometheus_config.yaml'
+    - '--config.file=/app/configs/prometheus.yaml'
     - '--web.config.file=/app/configs/prometheus_web.yaml'
     - '--storage.tsdb.path=/app/data'
     - '--web.console.libraries=/usr/share/prometheus/console_libraries'
@@ -60,7 +60,12 @@ services:
     volumes:
     - ./configs/:/app/configs/
     - ./logs/:/app/logs/
-    command: ["./target/main", "serve", "--config=/app/configs/jaeger_auth.yaml", "--addr=:8052"]
+    command:
+    - ./target/main
+    - serve
+    - --app=jaeger
+    - --config=/app/configs/jaeger.yaml
+    - --addr=:8052
 
   opentelemetry-collector:
     image: otel/opentelemetry-collector:latest
