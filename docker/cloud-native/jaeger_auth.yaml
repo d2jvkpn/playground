@@ -1,0 +1,11 @@
+# username: jaeger-pFNmoz89, password: world
+sidecar_proxy:
+  service: http://otel-jaeger:16686
+  cors: "*"
+  tls: true
+  cert: "configs/app-api.local.pem"
+  key: "configs/app-api.local.key"
+  basic_auth:
+    method: md5
+    users:
+    - { username: jaeger-pFNmoz89, password: 7d793037a0760186574b0282f2f435e7 }

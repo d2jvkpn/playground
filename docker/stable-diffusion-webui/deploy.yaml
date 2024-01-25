@@ -36,6 +36,7 @@ services:
     # - --ckpt=models/Stable-diffusion/realisticVisionV13_v13.safetensors
     # - --no-half
     # - --disable-nan-check
+    # - --medvram-sdxl/--lowvram
 
 networks:
   net:

@@ -31,8 +31,8 @@ services:
     # - prometheus_data:/prometheus/data
     command:
     # - '--config.file=/etc/prometheus/prometheus.yaml'
-    - '--config.file=/prometheus/configs/prometheus.yaml'
-    - '--web.config.file=/prometheus/configs/prometheus-web.yaml'
+    - '--config.file=/prometheus/configs/prometheus_config.yaml'
+    - '--web.config.file=/prometheus/configs/prometheus_web.yaml'
     - '--web.console.libraries=/usr/share/prometheus/console_libraries'
     - '--web.console.templates=/usr/share/prometheus/consoles'
     - '--storage.tsdb.path=/prometheus/data'
@@ -59,7 +59,7 @@ services:
     volumes:
     - ./configs/:/app/configs/
     - ./logs/:/app/logs/
-    command: ["./target/main", "--config=configs/http-auth-proxy.yaml", "--addr=:8052"]
+    command: ["./target/main", "serve", "--config=/app/configs/jaeger_auth.yaml", "--addr=:8052"]
 
   opentelemetry-collector:
     image: otel/opentelemetry-collector:latest
@@ -67,15 +67,16 @@ services:
     container_name: otel-collector
     # depends_on: [database]
     volumes:
-    - ./configs:/otel-collector/configs
+    # - ./configs:/otel-collector/configs
+    - ./configs:/app/configs
     networks: ["net"]
     ports:
     - "4317:4317"   # OTLP gRPC receiver
+    # - "13133:13133" # health_check extension
     # - "1888:1888"   # pprof extension
     # - "8888:8888"   # Prometheus metrics exposed by the collector
     # - "8889:8889"   # Prometheus exporter metrics
-    # - "13133:13133" # health_check extension
-    command: ["--config=/otel-collector/configs/otel-collector.yaml"]
+    command: ["--config=/app/configs/otel-collector.yaml"]
 
 networks:
   net:
@@ -86,7 +87,7 @@ networks:
     name: grafana
     driver: bridge
     external: true
-  app_dev:
-    name: app_dev
+  app-api_dev:
+    name: app-api_dev
     driver: bridge
     external: true
