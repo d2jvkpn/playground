@@ -4,7 +4,7 @@ services:
   grafana:
     image: grafana/grafana:main
     restart: always
-    container_name: otel-grafana
+    container_name: grafana
     user: 1000:1000
     networks: ["net"]
     ports: ["8061:3000"]
@@ -19,7 +19,4 @@ services:
     # - GF_SERVER_CERT_KEY=/var/lib/grafana/ssl/grafana.key
 
 networks:
-  net:
-    name: grafana
-    driver: bridge
-    external: false
+  net: { name: grafana, driver: bridge, external: false }

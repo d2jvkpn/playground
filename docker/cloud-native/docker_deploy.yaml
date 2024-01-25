@@ -65,7 +65,6 @@ services:
     image: otel/opentelemetry-collector:latest
     restart: always
     container_name: otel-collector
-    # depends_on: [database]
     volumes:
     # - ./configs:/otel-collector/configs
     - ./configs:/app/configs
@@ -79,15 +78,6 @@ services:
     command: ["--config=/app/configs/otel-collector.yaml"]
 
 networks:
-  net:
-    name: otel
-    driver: bridge
-    external: false
-  grafana:
-    name: grafana
-    driver: bridge
-    external: true
-  app-api_dev:
-    name: app-api_dev
-    driver: bridge
-    external: true
+  net: { name: otel, driver: bridge, external: false }
+  grafana: { name: grafana, driver: bridge, external: true }
+  app-api_dev: { name: app-api_dev, driver: bridge, external: true }
