@@ -12,3 +12,10 @@ rpc:
   tls: false
   cert: configs/server.pem
   key: configs/server.key
+
+opentel:
+  enable: false
+  tls: false
+  address: 127.0.0.1:4317
+
+consul: TODO

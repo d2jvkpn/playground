@@ -28,5 +28,3 @@ config: |
     address: 127.0.0.1:4317
 
   consul: TODO
-  prometheus: TODO
-
