@@ -10,7 +10,7 @@ git_branch=$1
 image="registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy"
 tag=${git_branch}-$(yq .version project.yaml)
 tag=${DOCKER_Tag:-$tag}
-name=http-auth-proxy
+app_name=http-auth-proxy
 BUILD_Region=cn=${BUILD_Region:-""}
 
 function onExit {
@@ -53,7 +53,7 @@ docker build --no-cache --file $df \
   --build-arg=GO_ldflags="$GO_ldflags" \
   --tag $image:$tag ./
 
-docker image prune --force --filter label=stage=${name}_builder &> /dev/null
+docker image prune --force --filter label=stage=${app_name}_builder &> /dev/null
 
 #### push image
 echo ">>> push image: $image:$tag..."

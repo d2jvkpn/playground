@@ -10,8 +10,11 @@ exporters:
 
   logging:
 
-  jaeger:
-    endpoint: otel-jaeger:14250
+#  jaeger:
+#    endpoint: otel-jaeger:14250
+#    tls: { insecure: true }
+  otlp:
+    endpoint: otel-jaeger:4317
     tls: { insecure: true }
 
 processors:
@@ -22,7 +25,7 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging, jaeger]
+      exporters: [logging, otlp]
     metrics:
       receivers: [otlp]
       processors: [batch]

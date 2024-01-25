@@ -47,6 +47,7 @@ services:
     # ports:
     # - "16686:16686" # web
     # - "14250"       # expose to otel-collector
+    # - "4317"        # accept OpenTelemetry Protocol (OTLP) over gRPC
 
   jaeger-auth:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy:dev
@@ -84,7 +85,7 @@ services:
     container_name: grafana
     user: 1000:1000
     networks: ["net"]
-    ports: ["8061:3000"]
+    ports: ["8053:3000"]
     volumes:
     - ./data/grafana:/var/lib/grafana
     - ./configs:/app/configs
