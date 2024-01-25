@@ -9,7 +9,7 @@
 - rpc: grpc
 - logging: zap
 - monitoring: prometheus
-- tracing: opentelemetry
+- tracing: opentelemetry, jaeger
 - deployments: docker/docker-compose, kubernetes
 - tools: make, git
 
@@ -20,3 +20,4 @@
 - database: postgres, mongodb
 
 #### chatper 3 TODO
+- tracing: opentelemetry, jaeger

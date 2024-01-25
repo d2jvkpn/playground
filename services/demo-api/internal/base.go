@@ -33,4 +33,6 @@ var (
 	_Server         *http.Server
 	_RPC            *RPCServer
 	_RuntimeInfo    *gotk.RuntimeInfo
+
+	_CloseOtel func() error
 )

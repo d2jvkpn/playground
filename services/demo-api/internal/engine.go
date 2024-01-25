@@ -13,6 +13,7 @@ import (
 	"github.com/d2jvkpn/gotk/cloud-metrics"
 	"github.com/d2jvkpn/gotk/ginx"
 	"github.com/gin-gonic/gin"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 	"go.uber.org/zap"
 )
 
@@ -42,8 +43,13 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 		return nil, err
 	}
 	engine.SetHTMLTemplate(tmpl)
+
 	cors := settings.ConfigField("http").GetString("cors")
 	engine.Use(ginx.Cors(cors))
+
+	if settings.ConfigField("opentel").GetBool("enable") {
+		engine.Use(otelgin.Middleware(settings.ProjectString("app")))
+	}
 
 	// #### handlers
 	lg := settings.Logger.Named("no_router")

@@ -12,6 +12,7 @@ import (
 	"demo-api/internal/settings"
 
 	"github.com/d2jvkpn/gotk"
+	"github.com/d2jvkpn/gotk/cloud-tracing"
 	"go.uber.org/zap"
 )
 
@@ -20,6 +21,19 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 		httpListener net.Listener
 		rpcListener  net.Listener
 	)
+
+	opentel := settings.ConfigField("opentel")
+	if opentel.GetBool("enable") {
+		_CloseOtel, err = tracing.LoadOtelGrpc(
+			opentel.GetString("address"),
+			settings.ProjectString("app"),
+			opentel.GetBool("tls"),
+		)
+
+		if err != nil {
+			return nil, fmt.Errorf("LoadTracer: %s, %w", opentel.GetString("address"), err)
+		}
+	}
 
 	if httpListener, err = net.Listen("tcp", httpAddr); err != nil {
 		return nil, fmt.Errorf("net.Listen: %w", err)
@@ -88,6 +102,10 @@ func _Shutdown() {
 
 	if _RuntimeInfo != nil {
 		_RuntimeInfo.End()
+	}
+
+	if _CloseOtel != nil {
+		_ = _CloseOtel()
 	}
 
 	if settings.Logger != nil {
