@@ -5,7 +5,7 @@ import bcrypt
 username = input("username: ")
 username = username.strip()
 
-password = getpass.getpass("password: ")
+password = getpass.getpass("password: ").strip()
 # print("password: ", password)
 
 hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())

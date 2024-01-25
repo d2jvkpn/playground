@@ -6,7 +6,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 mkdir -p configs data/prometheus data/grafana
 
-cp jaeger.yaml otel-collector.yaml prometheus.yaml prometheus_web.yaml configs/
+cp examples/{jaeger.yaml,otel-collector.yaml,prometheus.yaml,prometheus_web.yaml} configs/
 cp docker_deploy.yaml docker-compose.yaml
 
 mkdir -p logs
