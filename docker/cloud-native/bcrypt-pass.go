@@ -17,10 +17,10 @@ func main() {
 		err  error
 	)
 
-	generateCmd := flag.NewFlagSet("generate", flag.ExitOnError)
-	verifyCmd := flag.NewFlagSet("verify", flag.ExitOnError)
+	generate := flag.NewFlagSet("generate", flag.ExitOnError)
+	verify := flag.NewFlagSet("verify", flag.ExitOnError)
 
-	generateCmd.IntVar(&cost, "cost", 10, "bcrypt hash cost")
+	generate.IntVar(&cost, "cost", 10, "bcrypt hash cost")
 
 	if len(os.Args) < 2 {
 		fmt.Println("generate or verify subcommand is required")
@@ -29,10 +29,10 @@ func main() {
 
 	switch os.Args[1] {
 	case "generate":
-		generateCmd.Parse(os.Args[2:])
+		generate.Parse(os.Args[2:])
 		err = generatePass(cost)
 	case "verify":
-		verifyCmd.Parse(os.Args[2:])
+		verify.Parse(os.Args[2:])
 		err = verifyPass()
 	default:
 		flag.PrintDefaults()
@@ -53,13 +53,13 @@ func generatePass(cost int) (err error) {
 	)
 
 	reader = bufio.NewReader(os.Stdin)
-	fmt.Print(">>> User: ")
+	fmt.Print("==> User: ")
 	if user, err = reader.ReadBytes('\n'); err != nil {
 		return err
 	}
 	user = bytes.TrimSpace(user)
 
-	fmt.Print(">>> Password: ")
+	fmt.Print("==> Password: ")
 	if password, err = reader.ReadBytes('\n'); err != nil {
 		return err
 	}
@@ -69,7 +69,7 @@ func generatePass(cost int) (err error) {
 		return err
 	}
 
-	fmt.Printf("user: %s\npassword: %s\n", user, bts)
+	fmt.Printf("~~~ user: %s\npassword: %s\n", user, bts)
 	return nil
 }
 
@@ -81,13 +81,13 @@ func verifyPass() (err error) {
 	)
 
 	reader = bufio.NewReader(os.Stdin)
-	fmt.Print(">>> Bcrypt adaptive hashing: ")
+	fmt.Print("==> Bcrypt adaptive hashing: ")
 	if bha, err = reader.ReadBytes('\n'); err != nil {
 		return err
 	}
 	bha = bytes.TrimSpace(bha)
 
-	fmt.Print(">>> Password: ")
+	fmt.Print("==> Password: ")
 	if password, err = reader.ReadBytes('\n'); err != nil {
 		return err
 	}
@@ -98,6 +98,6 @@ func verifyPass() (err error) {
 		return nil
 	}
 
-	fmt.Println("password verified")
+	fmt.Println("~~~ password verified")
 	return nil
 }
