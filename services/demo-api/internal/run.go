@@ -88,9 +88,7 @@ func _Shutdown() {
 
 	if _Server != nil {
 		ctx, cancel := context.WithTimeout(context.TODO(), 5*time.Second)
-		if err := _Server.Shutdown(ctx); err != nil {
-			_InternalLogger.Error(fmt.Sprintf("server shutdown: %v", err))
-		}
+		err = _Server.Shutdown(ctx)
 		cancel()
 	}
 
@@ -105,17 +103,17 @@ func _Shutdown() {
 	}
 
 	if _CloseOtel != nil {
-		_ = _CloseOtel()
-	}
-
-	if settings.Logger != nil {
-		err = errors.Join(err, settings.Logger.Down())
+		err = errors.Join(err, _CloseOtel())
 	}
 
 	if err == nil {
-		_InternalLogger.Warn("on_exit")
+		_InternalLogger.Warn("shutdown")
 	} else {
-		_InternalLogger.Error("on_exit", zap.Any("error", err))
+		_InternalLogger.Error("shutdown", zap.Any("error", err))
+	}
+
+	if settings.Logger != nil {
+		_ = settings.Logger.Down()
 	}
 
 	return
