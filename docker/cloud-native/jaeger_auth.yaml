@@ -14,7 +14,7 @@ http_auth_proxy:
   basic_auth:
     method: md5
     users:
-    - { username: jaeger-hello, password: 7d793037a0760186574b0282f2f435e7 }
+    - { username: jaeger-hello, password: 28cbd794b762c892abfdca99c7b49351 }
     # method: bcrypt
     # users:
     # - { username: 'jaeger-pFNmoz89', password: '$2b$12$TtsVshAES0nGnE3lO4Naf.cUCY/yN4eGr.JkHSgNWUth/yoyss/72' }

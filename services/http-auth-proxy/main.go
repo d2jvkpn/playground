@@ -10,6 +10,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	"http-auth-proxy/pkg"
@@ -60,6 +61,7 @@ func serve(fSet *flag.FlagSet, args []string) (err error) {
 	var (
 		config   string
 		addr     string
+		app      string
 		meta     map[string]any
 		vp       *viper.Viper
 		project  *viper.Viper
@@ -78,6 +80,7 @@ func serve(fSet *flag.FlagSet, args []string) (err error) {
 
 	fSet.StringVar(&config, "config", "configs/local.yaml", "configuration yaml file")
 	fSet.StringVar(&addr, "addr", ":9000", "http server address")
+	fSet.StringVar(&app, "app", "http-auth-proxy", "app name")
 
 	fSet.Usage = func() {
 		output := flag.CommandLine.Output()
@@ -94,12 +97,16 @@ func serve(fSet *flag.FlagSet, args []string) (err error) {
 		return
 	}
 
-	logger, err = logging.NewLogger("logs/http-auth-proxy.log", zapcore.InfoLevel, 256)
+	logger, err = logging.NewLogger(fmt.Sprintf("logs/%s.log", app), zapcore.InfoLevel, 256)
 	defer func() {
 		_ = logger.Down()
 	}()
 
-	vp = vp.Sub("http_auth_proxy")
+	field := strings.ReplaceAll(app, "-", "_")
+	if vp = vp.Sub(field); vp == nil {
+		err = fmt.Errorf("can't find %s in config", field)
+		return
+	}
 	if sps, err = pkg.NewProxyServer(vp, logger.Named("proxy")); err != nil {
 		return
 	}

@@ -111,7 +111,7 @@ func (sps *ProxyServer) Handle(w http.ResponseWriter, r *http.Request) {
 			"Access-Control-Allow-Headers, Content-Type, Content-Length")
 
 		header.Set("Access-Control-Allow-Credentials", "true")
-		header.Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD")
+		header.Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
 		return
 	}
 

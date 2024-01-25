@@ -3,20 +3,20 @@ module demo-api
 go 1.21.6
 
 require (
-	github.com/d2jvkpn/gotk v0.0.0-20240123035849-e807384cc679
-	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20240123035849-e807384cc679
-	github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20240123035849-e807384cc679
-	github.com/d2jvkpn/gotk/ginx v0.0.0-20240123035849-e807384cc679
-	github.com/d2jvkpn/gotk/impls v0.0.0-20240123035849-e807384cc679
+	github.com/d2jvkpn/gotk v0.0.0-20240123084733-94c5966e30c2
+	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20240123084733-94c5966e30c2
+	github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20240123084733-94c5966e30c2
+	github.com/d2jvkpn/gotk/ginx v0.0.0-20240123084733-94c5966e30c2
+	github.com/d2jvkpn/gotk/impls v0.0.0-20240123084733-94c5966e30c2
 	github.com/gin-gonic/gin v1.9.1
-	github.com/google/uuid v1.5.0
+	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.1
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/prometheus/client_golang v1.18.0
 	github.com/spf13/viper v1.18.2
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.47.0
 	go.uber.org/zap v1.26.0
-	google.golang.org/grpc v1.60.1
+	google.golang.org/grpc v1.61.0
 	google.golang.org/protobuf v1.32.0
 )
 
