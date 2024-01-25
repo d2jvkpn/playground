@@ -17,7 +17,7 @@ RUN { apk --no-cache update && apk --no-cache upgrade; } &> /dev/null
 WORKDIR /app
 
 ADD ./go.mod ./go.sum ./main.go ./project.yaml  ./
-COPY ./pkg ./pkg
+COPY ./internal ./internal
 
 # in alpine, date doesn't parse %:z
 RUN mkdir -p target && \

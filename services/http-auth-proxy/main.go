@@ -13,7 +13,7 @@ import (
 	"strings"
 	"syscall"
 
-	"http-auth-proxy/pkg"
+	"http-auth-proxy/internal"
 
 	"github.com/d2jvkpn/gotk"
 	"github.com/d2jvkpn/gotk/cloud-logging"
@@ -66,7 +66,7 @@ func serve(fSet *flag.FlagSet, args []string) (err error) {
 		vp       *viper.Viper
 		project  *viper.Viper
 		logger   *logging.Logger
-		sps      *pkg.ProxyServer
+		sps      *internal.ProxyServer
 		shutdown func() error
 	)
 
@@ -107,7 +107,7 @@ func serve(fSet *flag.FlagSet, args []string) (err error) {
 		err = fmt.Errorf("can't find %s in config", field)
 		return
 	}
-	if sps, err = pkg.NewProxyServer(vp, logger.Named("proxy")); err != nil {
+	if sps, err = internal.NewProxyServer(vp, logger.Named("proxy")); err != nil {
 		return
 	}
 
