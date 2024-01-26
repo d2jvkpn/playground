@@ -6,20 +6,22 @@ config: |
   http_auth_proxy:
     service: http://localhost:8000
     cors: "*"
-    # pass_with_prefix: ["GET@/assets/"]
-    pass_with_prefix: []
     tls: false
-    cert: "configs/server.cert"
-    key: "configs/server.key"
-    real_ip_header: "X-Real-IP"
-    limit_ips: []
-    insert_headers:
-    - { key: "x-1", value: "y-1" }
-    - { key: "x-2", value: "y-2" }
+    # cert: "configs/server.cert"
+    # key: "configs/server.key"
+    # pass_with_prefix: ["GET@/assets/"]
+    # real_ip_header: "X-Real-IP"
+    # limit_ips: []
+    # insert_headers:
+    # - { key: "x-1", value: "y-1" }
+    # - { key: "x-2", value: "y-2" }
     basic_auth:
       method: md5
       users:
-      - { username: 'hello', password: '6de41d334b7ce946682da48776a10bb9' }
+      - { username: 'app-hello', password: '9401eeac9b2881353836d7cf96f0282e' }
       # method: bcrypt
       # users:
-      # - { username: 'hello', password: '$2a$10$scqefoWP3SwzgB.bLkbQ0e0Cre45AA16ibI3lxichOp3FohzQm9BK' }
+      # - { username: 'app-hello', password: '$2a$10$scqefoWP3SwzgB.bLkbQ0e0Cre45AA16ibI3lxichOp3FohzQm9BK' }
+
+create_user:
+  echo -n app-hello | md5sum | awk '{print $1}'
