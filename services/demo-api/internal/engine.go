@@ -7,7 +7,7 @@ import (
 	"net/http"
 	// "time"
 
-	"demo-api/internal/services/api"
+	"demo-api/internal/route"
 	"demo-api/internal/settings"
 
 	"github.com/d2jvkpn/gotk/cloud-metrics"
@@ -80,23 +80,25 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 	static.StaticFS("/", http.FS(fsys))
 	ginx.ServeStaticDir("/site", "./site", false)(router)
 
+	// route.LoadSite(router)
+
 	// #### debug
-	api.Load_Public(router)
+	route.Load_Public(router)
 
 	// #### biz handlers
-	api.Load_OpenV1(router, ginx.APILog(settings.Logger.Logger, "api_open", 5))
+	route.Load_OpenV1(router, ginx.APILog(settings.Logger.Logger, "api_open", 5))
 
 	if prom, err = metrics.PromMetrics("http", "api"); err != nil {
 		return nil, err
 	}
-	api.Load_Biz(
+	route.Load_Biz(
 		router,
 		ginx.APILog(settings.Logger.Logger, "api_biz", 5),
 		prom,
 	)
 
 	// #### websocket handlers
-	api.Load_Websocket(router)
+	route.Load_Websocket(router)
 
 	return engine, nil
 }

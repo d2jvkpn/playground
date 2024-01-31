@@ -1,22 +1,23 @@
-package api
+package route
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
-	"runtime"
+	"time"
 
 	"demo-api/internal/biz"
 	"demo-api/internal/settings"
-	"demo-api/internal/ws"
 
 	"github.com/d2jvkpn/gotk"
 	"github.com/d2jvkpn/gotk/ginx"
 	"github.com/d2jvkpn/gotk/impls"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/gorilla/websocket"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 )
 
 func Load_Public(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
@@ -41,19 +42,17 @@ func Load_Public(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 func Load_OpenV1(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 	group := router.Group("/api/v1/open", handlers...)
 
-	//
-	value := settings.ConfigField("hello").GetInt64("world")
-
-	group.GET("/hello", func(ctx *gin.Context) {
+	group.GET("/ip", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{
-			"code": 0, "msg": "ok", "data": gin.H{
-				"key": "world", "value": value, "ip": ctx.ClientIP()},
+			"code": 0, "msg": "ok", "data": gin.H{"ip": ctx.ClientIP()},
 		})
 	})
 }
 
 func Load_Biz(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 	group := router.Group("/api/v1/biz", handlers...)
+
+	group.GET("/hello", Hello)
 
 	group.GET("/error", func(ctx *gin.Context) {
 		requestId := uuid.NewString()
@@ -83,34 +82,38 @@ func Load_Biz(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 	})
 }
 
-func Load_Websocket(rg *gin.RouterGroup, handlers ...gin.HandlerFunc) {
-	ws := rg.Group("/ws/open", handlers...)
-	ws.GET("/talk", talk)
-}
-
-func talk(ctx *gin.Context) {
+func Hello(ctx *gin.Context) {
 	var (
-		token  string
-		err    error
-		conn   *websocket.Conn
-		client *ws.Client
+		name   string
+		value  int64
+		reqCtx context.Context
 	)
 
-	if conn, err = ws.Upgrader.Upgrade(ctx.Writer, ctx.Request, nil); err != nil {
-		log.Printf("!!! %s talk upgrade error: %v\n", ctx.ClientIP(), err)
-		return
+	reqCtx = ctx.Request.Context()
+	value = settings.ConfigField("hello").GetInt64("world")
+	time.Sleep(27 * time.Millisecond)
+
+	name = biz.Hello(reqCtx)
+
+	commonLabels := []attribute.KeyValue{
+		attribute.String("route.Hello", name),
 	}
-	// defer conn.Close() // Close in method of client
 
-	client = ws.NewClient(ctx.ClientIP(), conn)
-	token = ctx.DefaultQuery("token", "")
+	span := trace.SpanFromContext(reqCtx)
+	span.SetAttributes(commonLabels...)
 
-	// to avoid dead lock when for loop blocked by HandleMessage, don't use an unbuffered channel
 	log.Printf(
-		"==> %s connected: addr=%q, token=%q, Num Goroutine: %d\n",
-		client.Id, client.Address, token, runtime.NumGoroutine(),
+		"==> route.Hello: trace_id=%s, span_id=%s\n",
+		span.SpanContext().TraceID().String(), span.SpanContext().SpanID().String(),
 	)
-	client.Handle()
 
-	log.Printf("Num Goroutine: %d\n", runtime.NumGoroutine())
+	time.Sleep(27 * time.Millisecond)
+
+	// ctx.Header("StatusCode", strconv.Itoa(httpCode))
+	// ctx.Header("Status", http.StatusText(http.StatusOK))
+	// ctx.Header("Content-Type", "application/json; charset=utf-8")
+	// ctx.Writer.Write(bts)
+
+	ctx.JSON(http.StatusOK, gin.H{"value": value, "name": name})
+	// span.End() // don't do this as it will be called by the middleware
 }
