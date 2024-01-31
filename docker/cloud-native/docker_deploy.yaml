@@ -28,7 +28,7 @@ services:
     volumes:
     # - ./configs:/prometheus/configs
     # - prometheus_data:/prometheus/data
-    - ./configs:/app/configs
+    - ./configs:/app/configs:ro
     - ./data/prometheus:/app/data
     command:
     # - '--config.file=/etc/prometheus/prometheus.yaml'
@@ -58,7 +58,7 @@ services:
     networks: ["net"]
     ports: ["8052:8052"]
     volumes:
-    - ./configs/:/app/configs/
+    - ./configs/:/app/configs/:ro
     - ./logs/:/app/logs/
     command:
     - ./target/main
