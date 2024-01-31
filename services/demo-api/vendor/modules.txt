@@ -37,22 +37,22 @@ github.com/chenzhuoyu/base64x
 ## explicit; go 1.16
 github.com/chenzhuoyu/iasm/expr
 github.com/chenzhuoyu/iasm/x86_64
-# github.com/d2jvkpn/gotk v0.0.0-20240125062320-516350ae0b93
+# github.com/d2jvkpn/gotk v0.0.0-20240125073445-8379c2478145
 ## explicit; go 1.21
 github.com/d2jvkpn/gotk
-# github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20240125062320-516350ae0b93
+# github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20240125073445-8379c2478145
 ## explicit; go 1.21
 github.com/d2jvkpn/gotk/cloud-logging
-# github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20240125062320-516350ae0b93
+# github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20240125073445-8379c2478145
 ## explicit; go 1.21
 github.com/d2jvkpn/gotk/cloud-metrics
-# github.com/d2jvkpn/gotk/cloud-tracing v0.0.0-20240125062320-516350ae0b93
+# github.com/d2jvkpn/gotk/cloud-tracing v0.0.0-20240125073445-8379c2478145
 ## explicit; go 1.21
 github.com/d2jvkpn/gotk/cloud-tracing
-# github.com/d2jvkpn/gotk/ginx v0.0.0-20240125062320-516350ae0b93
+# github.com/d2jvkpn/gotk/ginx v0.0.0-20240125073445-8379c2478145
 ## explicit; go 1.21
 github.com/d2jvkpn/gotk/ginx
-# github.com/d2jvkpn/gotk/impls v0.0.0-20240125062320-516350ae0b93
+# github.com/d2jvkpn/gotk/impls v0.0.0-20240125073445-8379c2478145
 ## explicit; go 1.21.2
 github.com/d2jvkpn/gotk/impls
 # github.com/fsnotify/fsnotify v1.7.0
@@ -119,7 +119,7 @@ github.com/gorilla/websocket
 # github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 ## explicit; go 1.14
 github.com/grpc-ecosystem/go-grpc-middleware
-# github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.0
+# github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.1
 ## explicit; go 1.19
 github.com/grpc-ecosystem/grpc-gateway/v2/internal/httprule
 github.com/grpc-ecosystem/grpc-gateway/v2/runtime
@@ -142,9 +142,10 @@ github.com/json-iterator/go
 # github.com/klauspost/cpuid/v2 v2.2.6
 ## explicit; go 1.15
 github.com/klauspost/cpuid/v2
-# github.com/leodido/go-urn v1.2.4
-## explicit; go 1.16
+# github.com/leodido/go-urn v1.3.0
+## explicit; go 1.18
 github.com/leodido/go-urn
+github.com/leodido/go-urn/scim/schema
 # github.com/magiconair/properties v1.8.7
 ## explicit; go 1.19
 github.com/magiconair/properties
@@ -380,10 +381,10 @@ golang.org/x/text/secure/bidirule
 golang.org/x/text/transform
 golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
-# google.golang.org/genproto/googleapis/api v0.0.0-20240123012728-ef4313101c80
+# google.golang.org/genproto/googleapis/api v0.0.0-20240125205218-1f4bbc51befe
 ## explicit; go 1.19
 google.golang.org/genproto/googleapis/api/httpbody
-# google.golang.org/genproto/googleapis/rpc v0.0.0-20240123012728-ef4313101c80
+# google.golang.org/genproto/googleapis/rpc v0.0.0-20240125205218-1f4bbc51befe
 ## explicit; go 1.19
 google.golang.org/genproto/googleapis/rpc/errdetails
 google.golang.org/genproto/googleapis/rpc/status
