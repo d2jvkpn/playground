@@ -1,4 +1,5 @@
 #! /usr/bin/env bash
+# set -x
 set -eu -o pipefail
 
 # Count Lines of Code

@@ -1,13 +1,15 @@
 #! /usr/bin/env bash
 set -eu -o pipefail
-
+# set -x
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
-# set -x
+
 
 templ=$1
 [[ "$templ" = *"."* ]] || templ=${templ}.${templ}
+
 out=${2:-${templ}}
+[[ "$out" = *"."* ]] || out=$out.${templ##*.}
 
 [ -f "$out" ] && { >&2 echo '!!!'" file exists: $out"; exit 1; }
 
