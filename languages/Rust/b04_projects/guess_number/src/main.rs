@@ -1,33 +1,60 @@
 use rand::Rng;
-use std::cmp::Ordering;
-use std::io;
+
+use std::{
+    cmp::Ordering,
+    io::{self, Write},
+};
 
 fn main() {
-    println!("Guess the number!");
+    let (mut low, mut high) = (1, 100);
+    let target = rand::thread_rng().gen_range(low..=high);
+    let mut input = String::new();
+    let mut hunch: u32;
 
-    let secret_number = rand::thread_rng().gen_range(1..=100);
+    println!("-------- Guess the number: {} --------", target);
 
     loop {
-        println!("Please input your guess.");
+        eprint!("==> Please enter your hunch ({}..={}): ", low, high);
 
-        let mut guess = String::new();
+        io::stdout().flush().unwrap();
 
-        io::stdin()
-            .read_line(&mut guess)
-            .expect("Failed to read line");
+        input.clear();
+        io::stdin().read_line(&mut input).ok().expect("failed to read line!");
 
-        let guess: u32 = match guess.trim().parse() {
-            Ok(num) => num,
-            Err(_) => continue,
+        // let hunch: u32 = hunch.trim().parse().ok().expect("invalid number!");
+        match input.trim().parse() {
+            Ok(v) => hunch = v,
+            Err(e) => {
+                eprintln!("!!! {e}: {input:?}");
+                continue;
+            }
         };
 
-        println!("You guessed: {}", guess);
+        /*
+        if hunch < 1 || hunch > 100 {
+            println!("...!");
+            continue;
+        }
+        */
+        match hunch {
+            1..=100 => (),
+            _ => {
+                eprintln!("!!! the secret number will be between {} and {}!", low, high);
+                continue;
+            }
+        }
 
-        match guess.cmp(&secret_number) {
-            Ordering::Less => println!("Too small!"),
-            Ordering::Greater => println!("Too big!"),
+        match hunch.cmp(&target) {
+            Ordering::Less => {
+                eprintln!("~~~ very small!");
+                low = hunch;
+            }
+            Ordering::Greater => {
+                eprintln!("~~~ very big!");
+                high = hunch;
+            }
             Ordering::Equal => {
-                println!("You win!");
+                eprintln!("<== You win, bye!");
                 break;
             }
         }
