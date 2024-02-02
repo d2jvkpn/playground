@@ -1,31 +1,9 @@
 use chrono::{Local, SecondsFormat};
 use once_cell::sync::OnceCell;
+
 use std::thread;
 
-#[derive(Debug)]
-pub struct Config {
-    pub key: String,
-}
 static CONFIG_INSTANCE: OnceCell<Config> = OnceCell::new();
-
-impl Config {
-    pub fn set(key: String) -> Result<(), Config> {
-        CONFIG_INSTANCE.set(Self { key })
-    }
-
-    fn global() -> Option<&'static Config> {
-        CONFIG_INSTANCE.get()
-    }
-
-    pub fn global_key() -> Option<&'static str> {
-        let config = CONFIG_INSTANCE.get()?;
-        Some(&config.key)
-    }
-}
-
-fn now() -> String {
-    Local::now().to_rfc3339_opts(SecondsFormat::Millis, true)
-}
 
 fn main() {
     let result = Config::set("THE_KEY_01".to_string());
@@ -55,4 +33,28 @@ fn main() {
     // !! not working as expected: types differ in mutability
     // let config: &mut Config = Config::global();
     // config.key = "THE_KEY_03".to_string();
+}
+
+#[derive(Debug)]
+pub struct Config {
+    pub key: String,
+}
+
+impl Config {
+    pub fn set(key: String) -> Result<(), Config> {
+        CONFIG_INSTANCE.set(Self { key })
+    }
+
+    fn global() -> Option<&'static Config> {
+        CONFIG_INSTANCE.get()
+    }
+
+    pub fn global_key() -> Option<&'static str> {
+        let config = CONFIG_INSTANCE.get()?;
+        Some(&config.key)
+    }
+}
+
+fn now() -> String {
+    Local::now().to_rfc3339_opts(SecondsFormat::Millis, true)
 }
