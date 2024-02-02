@@ -1,11 +1,10 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
 #![allow(unused_imports)]
-mod methods;
 
 fn main() {
     // function_status();
-    // methods::methods_states();
+    // methods_states();
     // closures_states();
     hof();
 }
@@ -14,10 +13,10 @@ fn main() {
 fn hof() {
     let limit = 500;
     let mut sum = 0;
-    let is_even = |x: i32| x%2 == 0;
+    let is_even = |x: i32| x % 2 == 0;
 
     for i in 0.. {
-        let isq = i*i;
+        let isq = i * i;
         if isq > limit {
             break;
         } else if is_even(isq) {
@@ -28,11 +27,11 @@ fn hof() {
 
     println!("loop sum = {}", sum);
 
-    let sum2 = (0..).
-        map(|x| x*x).
-        take_while(|&x| x <= limit).
-        filter(|x| is_even(*x)).
-        fold(0, |sum, x| sum+x);
+    let sum2 = (0..)
+        .map(|x| x * x)
+        .take_while(|&x| x <= limit)
+        .filter(|x| is_even(*x))
+        .fold(0, |sum, x| sum + x);
 
     println!("high order sum2 = {}", sum2);
 }
@@ -46,7 +45,7 @@ fn closures_states() {
     let func = say_hello;
     func();
 
-    let plus_one = |x: i32| -> i32 { x+1 };
+    let plus_one = |x: i32| -> i32 { x + 1 };
     println!("{} + 1 = {}", 3, plus_one(3));
 
     let plus_two = |x| {
@@ -76,12 +75,12 @@ fn increase(x: &mut i32) {
 }
 
 fn product(x: i32, y: i32) -> i32 {
-    x*y
+    x * y
 }
 
 fn function_status() {
     print_value(33);
-    
+
     let mut z = 1;
     increase(&mut z);
     println!("z = {}", z);
@@ -89,4 +88,30 @@ fn function_status() {
     let a = 3;
     let b = 4;
     println!("{} * {} = {}", a, b, product(a, b));
+}
+
+struct Point {
+    x: f64,
+    y: f64,
+}
+
+struct Line {
+    start: Point,
+    end: Point,
+}
+
+impl Line {
+    fn len(&self) -> f64 {
+        let dx = self.start.x - self.end.x;
+        let dy = self.start.y - self.end.y;
+        (dx * dx + dy * dy).sqrt()
+    }
+}
+
+pub fn methods_states() {
+    let a: Point = Point { x: 0.0, y: 4f64 };
+    let b: Point = Point { x: 1.2, y: 3.4 };
+
+    let line = Line { start: a, end: b };
+    println!("line length = {}", line.len());
 }

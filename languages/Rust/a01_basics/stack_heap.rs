@@ -2,16 +2,14 @@
 #![allow(unused_variables)]
 #![allow(unused_imports)]
 use std::mem;
-mod sh;
 
 const MEANING_OF_LIFE: u8 = 42;
 
 static mut Z: i32 = 123;
 
-fn main () {
-	sh::stack_and_heap();
+fn main() {
+    stack_and_heap();
 }
-
 
 fn _03_scope() {
     let a = 100;
@@ -22,9 +20,9 @@ fn _03_scope() {
     }
 
     println!("a = {}", a);
-    
+
     println!("meaning of life if {}", MEANING_OF_LIFE);
-    
+
     unsafe {
         Z = 456;
         println!("Z = {}", Z)
@@ -92,4 +90,38 @@ fn _01_data_types() {
 
     let g = false;
     println!("g = {}, size = {} bytes", g, mem::size_of_val(&g)); // 1 bytes
+}
+
+struct Point {
+    x: f64,
+    y: f64,
+    z: i8,
+}
+
+fn origin() -> Point {
+    Point {
+        x: 0.0,
+        y: 0.0,
+        z: 0,
+    }
+}
+
+pub fn stack_and_heap() {
+    /*
+    // stack, access fast, but limited size
+    let x = 5;
+    let y = 6;
+    println!("x = {}, y = {}, x is {} bytes", x, y, mem::size_of_val(&x));
+
+    // heap, reference or pointer
+    let x2 = Box::new(5); // an address point to a variable which contains 5
+    let y2 = Box::new(6); //
+    println!("x2 = {}, y2 = {}, x2 is {} bytes", x2, y2, mem::size_of_val(&x2));
+    */
+
+    let p1 = origin(); // stack
+    let p2 = Box::new(origin()); // heap
+                                 // let p3 = *p2;
+    println!("p1 takes up {} bytes", mem::size_of_val(&p1));
+    println!("p2 takes up {} bytes", mem::size_of_val(&p2));
 }

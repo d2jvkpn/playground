@@ -1,10 +1,10 @@
 // use std::iter;
 
 // use rand::Rng;
-use rand::distributions::Alphanumeric;
-use rand::prelude::*;
+use rand::{distributions::Alphanumeric, prelude::*};
 
-fn main() {
+#[test]
+fn t_rand() {
     // let mut rng = rand::thread_rng();
     let mut rng = thread_rng();
     let a: i32 = rng.gen();
@@ -23,11 +23,7 @@ fn main() {
         .collect();
     */
 
-    let chars: String = rng
-        .sample_iter(&Alphanumeric)
-        .map(char::from)
-        .take(32)
-        .collect();
+    let chars: String = rng.sample_iter(&Alphanumeric).map(char::from).take(32).collect();
 
     println!("chars = {}", chars);
 }
