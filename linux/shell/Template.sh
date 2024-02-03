@@ -10,6 +10,7 @@ templ=$1
 
 out=${2:-${templ}}
 [[ "$out" = *"."* ]] || out=$out.${templ##*.}
+mkdir -p "$(dirname "$out")"
 
 [ -f "$out" ] && { >&2 echo '!!!'" file exists: $out"; exit 1; }
 
