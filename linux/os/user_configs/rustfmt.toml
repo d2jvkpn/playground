@@ -1,4 +1,4 @@
-# path: ./rustfmt.toml
+# path: ./rustfmt.toml or ~/.config/rustfmt/rustfmt.toml
 
 # Basic
 hard_tabs = true

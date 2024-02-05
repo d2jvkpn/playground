@@ -40,6 +40,10 @@ mkdir -p ~/.config/mpv
 cp user_configs/mpv.conf ~/.config/mpv/
 
 ####
+mkdir -p ~/.config/rustfmt
+cp user_configs/rustfmt.toml ~/.config/rustfmt/
+
+####
 cp templates/* ~/Templates/
 
 ####
