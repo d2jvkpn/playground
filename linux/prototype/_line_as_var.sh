@@ -7,7 +7,7 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 exit
 
 while IFS= read -r line || [ -n "$line" ]; do
-    "$line"
+    echo "$line"
 done < 'input.txt'
 
 # || [ -n "$line" ] make sure include the last line which may not end with a newline
