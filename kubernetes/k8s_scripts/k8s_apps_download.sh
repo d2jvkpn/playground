@@ -9,7 +9,8 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 # flannel_version=${flannel_version:-0.23.0}
 
 # 1.29.0
-version=$1
+v0=$(kubeadm version --output json | jq -r .clientVersion.gitVersion | sed 's/^v//')
+version=${1:-$v0}
 
 function download_images() {
     yf=$1; save_dir=$2
