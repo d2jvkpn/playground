@@ -1,0 +1,7 @@
+{
+  "_path": "~/.config/VSCodium/User/settings.json",
+  "git.openRepositoryInParentFolders": "never",
+  "window.menuBarVisibility": "compact",
+  "editor.minimap.enabled": false,
+  "workbench.panel.defaultLocation": "right"
+}

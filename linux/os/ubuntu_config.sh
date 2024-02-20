@@ -40,8 +40,11 @@ mkdir -p ~/.config/mpv
 cp user_configs/mpv.conf ~/.config/mpv/
 
 ####
-mkdir -p ~/.config/rustfmt
-cp user_configs/rustfmt.toml ~/.config/rustfmt/
+# mkdir -p ~/.config/rustfmt
+# cp user_configs/rustfmt.toml ~/.config/rustfmt/
+
+####
+cp user_configs/VSCodium.json ~/.config/VSCodium/User/settings.json
 
 ####
 cp templates/* ~/Templates/
