@@ -1,21 +1,18 @@
 #! /usr/bin/env bash
 set -eu -o pipefail
-
+# set -x
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
-# set -x
 
 export DEBIAN_FRONTEND=noninteractive
 
+#### 1. set k8s repository
+# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+# version=1.28.4
+# key_url=https://pkgs.k8s.io/core:/stable:/v1.28/deb
 # version=$(yq .k8s.version k8s_apps/k8s_apps_download.yaml)
 version=$1 # 1.28.4
-
-# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
-
-#### 1. set k8s repository
-# key_url=https://pkgs.k8s.io/core:/stable:/v1.28/deb
-ver=v${version%.*} # 1.28
-
+ver=v${version%.*} # v1.28
 key_url=https://pkgs.k8s.io/core:/stable:/$ver/deb
 key_file=/etc/apt/keyrings/kubernetes.$ver.gpg
 

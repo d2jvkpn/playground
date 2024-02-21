@@ -1,9 +1,8 @@
 #! /usr/bin/env bash
 set -eu -o pipefail
-
+# set -x
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
-# set -x
 
 node_kind=$1
 yaml_file=${yaml_file:-k8s_apps/data/kubeadm-init.yaml}

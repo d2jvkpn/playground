@@ -1,9 +1,9 @@
 #! /usr/bin/env bash
 set -eu -o pipefail
-
+# set -x
 _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
-# set -x
+
 # *https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/*
 
 mkdir -p k8s_apps/data
