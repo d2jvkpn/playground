@@ -21,7 +21,7 @@ cp user_configs/pip.conf ~/.config/pip/pip.conf
 
 ####
 mkdir -p ~/.cargo
-cp user_configs/cargo.conf ~/.cargo/config
+cp user_configs/cargo.toml ~/.cargo/config.toml
 
 ####
 mkdir -p ~/.ansible
