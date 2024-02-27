@@ -14,12 +14,12 @@ export DEBIAN_FRONTEND=noninteractive
 version=$1 # 1.28.4
 ver=v${version%.*} # v1.28
 key_url=https://pkgs.k8s.io/core:/stable:/$ver/deb
-key_file=/etc/apt/keyrings/kubernetes.$ver.gpg
+key_file=/etc/apt/keyrings/k8s.$ver.gpg
 
-[ ! -s $key_file ] && curl -fsSL $key_url/Release.key | sudo gpg --dearmor -o $key_file
+[ ! -s $key_file ] && { curl -fsSL $key_url/Release.key | sudo gpg --dearmor -o $key_file; }
 
 echo "deb [signed-by=$key_file] $key_url /" |
-  sudo tee /etc/apt/sources.list.d/kubernetes.$ver.list > /dev/null
+  sudo tee /etc/apt/sources.list.d/k8s.$ver.list > /dev/null
 
 #### 2. apt install
 function apt_install() {
@@ -39,11 +39,11 @@ function apt_install() {
 
 n=1
 while ! apt_install; do
-    >&2 echo "...try again: apt_install"
+    >&2 echo "... try_again: apt install"
     sleep 1.42
 
     n=$((n+1))
-    [ $n -gt 5 ] && { >&2 echo "apt_install failed"; exit 1; }
+    [ $n -gt 5 ] && { >&2 echo '!!!' "operation_failed: apt install"; exit 1; }
 done
 
 # systemctl disable kubelet
