@@ -12,6 +12,10 @@ if [ -s $exp ]; then
     exit 0
 fi
 
+exists="false"
+[ -f $exp ] && { exists="true"; $exp; }
+if [ "$exists" == "true"]; then exit 0; fi
+
 container=$(yq .services.mysql.container_name docker-compose.yaml)
 
 if [ "$(docker container inspect -f '{{.State.Running}}' $container)" != "true" ]; then
