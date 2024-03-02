@@ -7,23 +7,35 @@
 
 #### Setup
 ``` bash
-mkdir -p configs data
+mkdir -p configs data/redis
+
+# touch data/redis/redis.log
 
 cat > configs/redis.conf <<EOF
-dbfilename redis-dump.rdb
+requirepass world
+
+dir /data
+logfile redis.log
+dbfilename dump.rdb
 aof-use-rdb-preamble yes
 proto-max-bulk-len 32mb
 io-threads 4
 io-threads-do-reads yes
-dir /data
 EOF
 
-docker-compose -f deployment.yaml up -d
-docker-compose -f deployment.yaml down
+cp docker_deploy.yaml docker-compose.yaml
+docker-compose -f docker-compose.yaml up -d
+
+# docker-compose -f deployment.yaml down
 ```
 
 #### Redis Commands
 ```redis
+help getex
+command
+acl list
+acl whoami
+
 config get dir
 config get *
 

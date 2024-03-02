@@ -16,6 +16,14 @@
 - join tables
 - principles
 
-#### 5. High Available
+#### 5. Features
+- enforced data schema
+- triggers
+- foreign key constraits
+- uniqueness of arbitrary properties
+- SQL support
+- transaction rollback
+
+#### 6. High Available
 1. Replication Cluster
 2. Distributed Cluster

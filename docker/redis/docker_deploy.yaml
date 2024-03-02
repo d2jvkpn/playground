@@ -4,7 +4,7 @@ services:
   redis:
     image: redis:7-alpine
     restart: always
-    container_name: redis_db
+    container_name: redis
     ports:
     - '127.0.0.1:6379:6379'
     environment:
@@ -15,7 +15,7 @@ services:
     volumes:
     # - redis_storage:/data
     - ./data/redis:/data
-    - ./data/redis.conf:/etc/redis.conf
+    - ./configs/redis.conf:/etc/redis.conf
     # command: redis-server /etc/redis.conf --save 30 10 --loglevel warning --requirepass d2jvkpn
     command: redis-server /etc/redis.conf --save 30 10 --loglevel warning
 
