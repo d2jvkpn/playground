@@ -16,6 +16,7 @@ position args:
 EOF
 }
 
+# $# -gt 1
 if [[ $# -ge 1 && ("$1" == "--help" ||  "$1" == "-h") ]]; then
     display_usage
     exit 1
