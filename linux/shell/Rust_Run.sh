@@ -13,6 +13,7 @@ args=$*
 mkdir -p target
 rustfmt $script
 rustc -o $out $script
+# build release with option -C opt-level=3
 
 $out $args
 
