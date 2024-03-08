@@ -33,7 +33,7 @@ cat $config_template | sed \
 exit
 
 cat /app/kafka/kafka.yaml <<EOF
-version: 3.6.1
+version: 3.7.0
 cluster_id: kFTN1eu1TaSvi4aY5pLVGg
 data_dir: /app/kafka/data
 num_partitions: 3

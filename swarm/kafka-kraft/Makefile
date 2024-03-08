@@ -1,4 +1,4 @@
-TAG = 3.6.1
+TAG = 3.7.0
 UserID = $(shell id -u)
 GroupID = $(shell id -g)
 
