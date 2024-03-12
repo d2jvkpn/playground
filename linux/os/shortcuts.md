@@ -1,8 +1,9 @@
-### Ubuntu Shortcuts
+### Shortcuts
 ---
 
 #### 1. Ubuntu
 - screen recorder: Shift + Ctrl + Alt + R
+- TODO:
 
 #### 2. MPV
 - s: save screenshorts
@@ -17,4 +18,5 @@
 - shift + j: switch to the first subtitle
 - v: show/hide subtutile
 
-#### 3. 
+#### 3. VIM
+- TODO: 

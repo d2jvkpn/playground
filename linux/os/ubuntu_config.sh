@@ -12,50 +12,50 @@ _path=$(dirname $0 | xargs -i readlink -f {})
 
 ####
 mkdir -p ~/Apps/bin ~/.local/bin
-cp user_configs/bash_aliases.sh ~/.bash_aliases
+cp configurations/bash_aliases.sh ~/.bash_aliases
 
 ####
 mkdir -p ~/.config/pip
-cp user_configs/pip.conf ~/.config/pip/pip.conf
+cp configurations/pip.conf ~/.config/pip/pip.conf
 # python3 -m site
 
 ####
 mkdir -p ~/.cargo
-cp user_configs/cargo.toml ~/.cargo/config.toml
+cp configurations/cargo.toml ~/.cargo/config.toml
 
 ####
 mkdir -p ~/.ansible
-cp user_configs/ansible_home.cfg ~/.ansible.cfg
+cp configurations/ansible_home.cfg ~/.ansible.cfg
 
 ####
 mkdir -p ~/.julia/config
-cp user_configs/julia.jl ~/.julia/config/startup.jl
+cp configurations/julia.jl ~/.julia/config/startup.jl
 
 ####
 mkdir -p ~/.go ~/.config/go
-envsubst > ~/.config/go/env < user_configs/go.env
+envsubst > ~/.config/go/env < configurations/go.env
 
 ####
 mkdir -p ~/.config/mpv
-cp user_configs/mpv.conf ~/.config/mpv/
+cp configurations/mpv.conf ~/.config/mpv/
 
 ####
 # mkdir -p ~/.config/rustfmt
-# cp user_configs/rustfmt.toml ~/.config/rustfmt/
+# cp configurations/rustfmt.toml ~/.config/rustfmt/
 
 ####
-cp user_configs/VSCodium.json ~/.config/VSCodium/User/settings.json
+cp configurations/VSCodium.json ~/.config/VSCodium/User/settings.json
 
 ####
 cp templates/* ~/Templates/
 
 ####
 mkdir -p ~/Apps/npm
-cp user_configs/npm.conf ~/.npmrc
+cp configurations/npm.conf ~/.npmrc
 
 ####
 mkdir -p ~/.vim
-cp user_configs/vimrc.conf ~/.vimrc
+cp configurations/vimrc.conf ~/.vimrc
 
 ####
 cat >> ~/.profile <<'EOF'
