@@ -29,7 +29,9 @@ node_version=$(node --version | sed 's/^v//') # 20.11.0
 nvm alias default $node_version
 # nvm unalias default
 
-npm config set registry https://registry.npm.taobao.org
+# npm config set registry https://registry.npm.taobao.org
+npm config set registry https://registry.npmmirror.com
+
 # npm config set registry https://registry.npmjs.org/
 npm config get registry
 
