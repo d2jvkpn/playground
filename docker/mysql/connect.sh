@@ -4,6 +4,7 @@ _wd=$(pwd)
 _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
+cd ${_path}
 exp=${exp:-./configs/mysql.exp}
 
 if [ -s $exp ]; then
