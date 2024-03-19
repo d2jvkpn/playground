@@ -53,7 +53,9 @@ function printData(data) {
 
 function downloadAnchor(data) {
   let link = document.createElement("a");
-  link.href = `data:text/plain;charset=utf8,${data.replace(/\n/g, "%0D%0A").replace(/#/g, "%23")}\n`;
+
+  link.href = `data:text/plain;charset=utf8,` +
+    `${data.replace(/\n/g, "%0D%0A").replace(/#/g, "%23")}\n`;
 
   link.download = `${document.title.split(" - ")[0]}` +
     `__${document.URL.split("//").pop().replace(/\//g, "-")}.md`;
@@ -77,7 +79,7 @@ function postArchive(url, data) {
     if (req.status != 200) {
       alert(`!!! Response status: ${req.status}`);
     } else {
-       alert(`==> Http archived`);
+      alert(`==> Http archived`);
     }
   }
 
