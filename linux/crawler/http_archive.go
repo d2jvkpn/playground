@@ -19,9 +19,11 @@ import (
 )
 
 var (
-	_AchiveRE = regexp.MustCompile(`^[A-Za-z0-9_\.-]{8,64}$`)
+	// _AchiveRE = regexp.MustCompile(`^[A-Za-z0-9_\.-{Han}]{8,64}$`)
 	// _Logger       = slog.New(slog.NewTextHandler(os.Stderr, nil))
-	_Logger = slog.New(slog.NewJSONHandler(os.Stderr, nil))
+
+	_AchiveRE = regexp.MustCompile(`^[^^/\\]{8,64}$`)
+	_Logger   = slog.New(slog.NewJSONHandler(os.Stderr, nil))
 )
 
 func main() {
@@ -125,7 +127,7 @@ func middlewareFunc(method, origin string, fn http.HandlerFunc) http.HandlerFunc
 
 		if r.Method != method {
 			w.WriteHeader(http.StatusBadRequest)
-			w.Header().Set("Content-Type", "application/json")
+			// w.Header().Set("Content-Type", "application/json")
 			w.Write([]byte(`{"code":"not_found","msg":"not found"}`))
 			return
 		}
@@ -178,7 +180,7 @@ func archive(w http.ResponseWriter, r *http.Request) {
 			msg = msgs[0]
 		}
 
-		w.Header().Set("Content-Type", "application/json")
+		// w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(status)
 		// json.NewEncoder(w)
 		bts, _ := json.Marshal(map[string]any{"code": code, "msg": msg})
@@ -195,7 +197,6 @@ func archive(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// io.WriteString(w, "This is my website!\n")
-
 	if filename = r.URL.Query().Get("filename"); !_AchiveRE.MatchString(filename) {
 		response(http.StatusBadRequest, "invalid_filename")
 		return
@@ -203,12 +204,14 @@ func archive(w http.ResponseWriter, r *http.Request) {
 
 	if len(r.Header["Content-Length"]) == 0 {
 		response(http.StatusBadRequest, "empty_content")
+		log.Println("!!! empty_content")
 		return
 	}
 
 	// check if size > 10MB
 	if size, _ := strconv.ParseUint(r.Header["Content-Length"][0], 10, 64); size > 1024*1024*10 {
 		response(http.StatusBadRequest, "too_large")
+		log.Println("!!! too_large")
 		return
 	}
 
