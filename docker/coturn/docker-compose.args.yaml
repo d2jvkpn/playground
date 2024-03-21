@@ -11,13 +11,13 @@ services:
     network_mode: host
 
     environment:
-    - REALM=aaaa
-    - USER=bbbb
-    - PASSWORD=cccccccc
+    - REALM=Name
+    - USER=John
+    - PASSWORD=Doe
     - PORT=3478
     - IP=192.168.1.2
-    - MIN_Port=30000
-    - MAX_Port=31000
+    - MIN_Port=49152
+    - MAX_Port=65535
 
     volumes:
     - /etc/localtime:/etc/localtime:ro

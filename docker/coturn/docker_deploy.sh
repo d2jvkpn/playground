@@ -1,14 +1,12 @@
 #! /usr/bin/env bash
-set -eu -o pipefail
+set -eu -o pipefail # -x
+_wd=$(pwd)/; _path=$(dirname $0)/
 
-_wd=$(pwd)/
-_path=$(dirname $0)/
-
-
-docker-compose pull
 
 mkdir -p logs
+ls turnserver.conf
 
+docker-compose pull
 docker-compose up -d
 
 exit
