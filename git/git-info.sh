@@ -4,8 +4,8 @@
 # _path=$(dirname $0 | xargs -i readlink -f {})
 
 if [ $# -eq 0 ]; then
-  >&2 echo "Argument {format}(json or yaml) is required!"
-  exit 1
+    >&2 echo "Argument {format}(json or yaml) is required!"
+    exit 1
 fi
 
 format=$1
