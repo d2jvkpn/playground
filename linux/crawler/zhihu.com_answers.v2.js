@@ -8,6 +8,13 @@ function getTarget() {
   return target;
 }
 
+function downloadFilename() {
+  return `zhihu.com_${document.title.split(" - ")[0].replace(/ /g, "_")}_` +
+     new URL(document.URL).pathname.slice(1).replace(/\//g, "-") +
+     ".md";
+  // ${document.URL.split("//").pop().replace(/\//g, "-")}
+}
+
 function datetime(at=null) {
   if (!at) {
     at = new Date();
@@ -39,8 +46,7 @@ function datetime(at=null) {
 }
 
 function getText(target, archive) {
-  let filename = `${document.title.split(" - ")[0]}` + 
-    `__${document.URL.split("//").pop().replace(/\//g, "-")}.md`;
+  let filename = downloadFilename();
 
   /*
   let data = `# ${document.title.split(" - ")[0]}\n\n` +
@@ -51,8 +57,8 @@ function getText(target, archive) {
 
   let text = `# ${document.title.split(" - ")[0]}\n\n` +
     `**link**: *${document.URL}*\n` +
-    `**filename**: *${filename}*\n` +
-    `**datetime**: *${datetime().rfc3339}*\n\n` +
+    `**datetime**: *${datetime().rfc3339}*\n` +
+    `**filename**: *${filename}*\n\n` +
     target.querySelector(".RichContent-inner").innerText + "\n\n" +
     target.querySelector(".ContentItem-time").innerText + "\n\n" +
     target.querySelector(".ContentItem-actions").children[0].innerText + "\n";
@@ -88,17 +94,14 @@ function downloadAnchor(data) {
   link.href = `data:text/plain;charset=utf8,` +
     `${data.replace(/\n/g, "%0D%0A").replace(/#/g, "%23")}\n`;
 
-  link.download = `${document.title.split(" - ")[0]}` +
-    `__${document.URL.split("//").pop().replace(/\//g, "-")}.md`;
-
+  link.download = downloadFilename();
   link.click();
 
   alert(`==> saved ${link.download}`);
 }
 
 function postArchive(url, data) {
-  let filename = `${document.title.split(" - ")[0]}` +
-    `__${document.URL.split("//").pop().replace(/\//g, "-")}.md`;
+  let filename = downloadFilename();
 
   url += `?filename=${filename}`;
 
