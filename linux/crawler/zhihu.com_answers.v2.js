@@ -9,10 +9,13 @@ function getTarget() {
 }
 
 function downloadFilename() {
-  return `zhihu.com_${document.title.split(" - ")[0].replace(/ /g, "_")}_` +
-     new URL(document.URL).pathname.slice(1).replace(/\//g, "-") +
-     ".md";
+  let path = new URL(document.URL).pathname.slice(1).replace(/\//g, "-");
+
+  let title = document.title.split(" - ")[0].replace(/ /g, "_");
+  if (title.length > 32) { title = title.slice(0, 29) + "..." };
+
   // ${document.URL.split("//").pop().replace(/\//g, "-")}
+  return `zhihu.com__${title}__${path}.md`;
 }
 
 function datetime(at=null) {
