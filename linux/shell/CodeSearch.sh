@@ -1,6 +1,5 @@
-#! /usr/bin/env bash
-set -eu -o pipefail
-# set -x
+#!/usr/bin/env bash
+set -eu -o pipefail # -x
 
 test $# -eq 0 && { echo "Please provide a key word for searching!"; exit 1; }
 

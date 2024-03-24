@@ -61,7 +61,14 @@ function getText(target, archive) {
   let text = `# ${document.title.split(" - ")[0]}\n\n` +
     `**link**: *${document.URL}*\n` +
     `**datetime**: *${datetime().rfc3339}*\n` +
-    `**filename**: *${filename}*\n\n` +
+    `**filename**: *${filename}*\n`;
+  
+  let author = target.querySelector(".AuthorInfo-content");
+  
+  author = author.innerText.replace(/\n/g, " ") + " " + author.querySelector("a.UserLink-link");
+  text += `**author**: ${author}\n\n`;
+
+  text += 
     target.querySelector(".RichContent-inner").innerText + "\n\n" +
     target.querySelector(".ContentItem-time").innerText + "\n\n" +
     target.querySelector(".ContentItem-actions").children[0].innerText + "\n";

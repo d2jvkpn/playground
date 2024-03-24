@@ -1,3 +1,3 @@
-#! /bin/env julia
+#!/bin/env julia
 
 println("Hello, world!")
