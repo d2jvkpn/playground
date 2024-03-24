@@ -58,17 +58,19 @@ function getText(target, archive) {
     target.innerText.replace(/\n+/g, "\n");
   */
 
-  let text = `# ${document.title.split(" - ")[0]}\n\n` +
-    `**link**: *${document.URL}*\n` +
-    `**datetime**: *${datetime().rfc3339}*\n` +
-    `**filename**: *${filename}*\n`;
-  
   let author = target.querySelector(".AuthorInfo-content");
-  
   author = author.innerText.replace(/\n/g, " ") + " " + author.querySelector("a.UserLink-link");
-  text += `**author**: ${author}\n\n`;
 
-  text += 
+  let text = `# ${document.title.split(" - ")[0]}\n\n` +
+    `#### Meta\n` +
+    "```yaml\n" +
+    `link: ${document.URL}\n` +
+    `datetime: ${datetime().rfc3339}\n` +
+    `filename: ${filename}\n` +
+    `author: ${author}\n` +
+    "```\n\n";
+
+  text += `#### Content\n` +
     target.querySelector(".RichContent-inner").innerText + "\n\n" +
     target.querySelector(".ContentItem-time").innerText + "\n\n" +
     target.querySelector(".ContentItem-actions").children[0].innerText + "\n";
@@ -76,10 +78,11 @@ function getText(target, archive) {
   let comments = document.querySelector(".Comments-container") ||
     document.querySelector(".Modal-content");
 
+  text += "\n#### Comments\n"
   if (comments) {
     let items = Array.from(comments.querySelectorAll("div")).filter(e => e.hasAttribute("data-id"));
     items.forEach(e => {
-      text += "\n\n#### " + e.innerText;
+      text += "\n##### " + e.innerText;
     });
   }
 
