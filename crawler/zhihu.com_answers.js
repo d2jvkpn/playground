@@ -1,30 +1,4 @@
 // util functions
-function getAnsPath() {
-  // let path = new URL(document.URL).pathname.slice(1).replace(/\//g, "-");
-  let path = new URL(document.URL).pathname;
-
-  if (!path.includes("/answer/")) {
-    let list = document.querySelector("div.List-item");
-    path += "/answer/" + list.querySelector("div.AnswerItem").getAttribute("name");
-  }
-
-  return path;
-}
-
-function getAnsURL() {
-  return new URL(document.URL).origin + getAnsPath();
-}
-
-function downloadFilename() {
-  let path = getAnsPath().slice(1).replace(/\//g, "-");
-
-  let title = document.title.split(" - ")[0].replace(/ /g, "_");
-  if (title.length > 32) { title = title.slice(0, 29) + "..." };
-
-  // ${document.URL.split("//").pop().replace(/\//g, "-")}
-  return `zhihu.com__${title}__${path}.md`;
-}
-
 function datetime(at=null) {
   if (!at) {
     at = new Date();
@@ -53,6 +27,33 @@ function datetime(at=null) {
 
   return at;
   // ts = new Date(at.rfc3339).getTime()
+}
+
+function getAnsPath() {
+  // let path = new URL(document.URL).pathname.slice(1).replace(/\//g, "-");
+  let path = new URL(document.URL).pathname;
+
+  if (!path.includes("/answer/")) {
+    let list = document.querySelector("div.List-item");
+    path += "/answer/" + list.querySelector("div.AnswerItem").getAttribute("name");
+  }
+
+  return path;
+}
+
+function getAnsURL() {
+  return new URL(document.URL).origin + getAnsPath();
+}
+
+function downloadFilename() {
+  let path = getAnsPath().slice(1).replace(/\//g, "-");
+  let now = datetime();
+
+  let title = document.title.split(" - ")[0].replace(/ /g, "_");
+  if (title.length > 32) { title = title.slice(0, 29) + "..." };
+
+  // ${document.URL.split("//").pop().replace(/\//g, "-")}
+  return `zhihu.com__${title}__${now.date}__${path}.md`;
 }
 
 // biz functions
@@ -171,16 +172,23 @@ function postArchive(url, data) {
 }
 
 //
-var target = getTarget();
-var btn = Array.from(target.querySelectorAll("button")).find(e => e.innerText.includes("条评论"));
+function run(target, handle) {
+  var btn = Array.from(target.querySelectorAll("button")).find(e => e.innerText.includes("条评论"));
 
-if (btn) {
-  btn.click();
-  setTimeout(() => getText(target, downloadAnchor), 1000);
-  // setTimeout(() => getText(target, printData), 1000);
-  // setTimeout(() => getText(target, data => postArchive(`http://127.0.0.1:3000/`, data)), 1000);
+  if (btn) {
+    btn.click();
+    setTimeout(() => getText(target, handle), 1000);
+  } else {
+    getText(target, handle);
+  };
+}
+
+var target = getTarget();
+
+if (target) {
+  // handle: printData
+  // handle: data => postArchive(`http://127.0.0.1:3000/`, data)
+  run(target, downloadAnchor);
 } else {
-  getText(target, downloadAnchor);
-  // getText(target, printData);
-  // getText(target, getText(target, data => postArchive(`http://127.0.0.1:3000/`, data)));
-};
+  alert("No Target Found!");
+}
