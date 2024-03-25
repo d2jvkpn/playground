@@ -1,15 +1,22 @@
-function getTarget() {
-  let target = document.querySelector(".AnswerCard");
+// util functions
+function getAnsPath() {
+  // let path = new URL(document.URL).pathname.slice(1).replace(/\//g, "-");
+  let path = new URL(document.URL).pathname;
 
-  if (!target) {
-    target = document.querySelector(".RichContent");
+  if (!path.includes("/answer/")) {
+    let list = document.querySelector("div.List-item");
+    path += "/answer/" + list.querySelector("div.AnswerItem").getAttribute("name");
   }
 
-  return target;
+  return path;
+}
+
+function getAnsURL() {
+  return new URL(document.URL).origin + getAnsPath();
 }
 
 function downloadFilename() {
-  let path = new URL(document.URL).pathname.slice(1).replace(/\//g, "-");
+  let path = getAnsPath().slice(1).replace(/\//g, "-");
 
   let title = document.title.split(" - ")[0].replace(/ /g, "_");
   if (title.length > 32) { title = title.slice(0, 29) + "..." };
@@ -48,6 +55,38 @@ function datetime(at=null) {
   // ts = new Date(at.rfc3339).getTime()
 }
 
+// biz functions
+function getTarget() {
+  let target = document.querySelector(".AnswerCard");
+
+  if (!target) {
+    // target = document.querySelector(".RichContent");
+    target = document.querySelector(".AnswersNavWrapper");
+  }
+
+  return target;
+}
+
+function getMoreAnswers() {
+  let moreAns = document.querySelector(".MoreAnswers");
+  let ansURL = getAnsURL();
+
+  if (moreAns) {
+    return Array.from(moreAns.querySelectorAll(".AnswerItem"))
+      .map(e => ansURL.replace(/\d+$/, e.getAttribute("name")));
+  }
+
+  let taregt = document.querySelector(".AnswersNavWrapper");
+  if (!target) { return [] };
+
+  target = taregt.querySelector("div.List-item");
+  if (!target) { return [] };
+
+  return Array.from(taregt.querySelectorAll("div.AnswerItem")).slice(1).map(e => {
+    return ansURL.replace(/\d+$/, e.getAttribute("name"));
+  });
+}
+
 function getText(target, archive) {
   let filename = downloadFilename();
 
@@ -64,7 +103,7 @@ function getText(target, archive) {
   let text = `# ${document.title.split(" - ")[0]}\n\n` +
     `#### Meta\n` +
     "```yaml\n" +
-    `link: ${document.URL}\n` +
+    `link: ${getAnsURL()}\n` +
     `datetime: ${datetime().rfc3339}\n` +
     `filename: ${filename}\n` +
     `author: ${author}\n` +
@@ -86,13 +125,8 @@ function getText(target, archive) {
     });
   }
 
-  let moreAns = document.querySelector(".MoreAnswers");
-  if (moreAns) {
-    let links = Array.from(moreAns.querySelectorAll(".AnswerItem"))
-      .map(e => document.URL.replace(/\d+$/, e.getAttribute("name")));
-
-    text += `\n\n#### More Answers:\n- ${links.join("\n- ")}\n`;
-  }
+  let links = getMoreAnswers();
+  text += `\n\n#### More Answers:\n- ${links.join("\n- ")}\n`;
 
   archive(text);
 }
