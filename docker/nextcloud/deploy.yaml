@@ -6,13 +6,13 @@ version: '3'
 
 services:
   db:
-    image: mariadb:10
+    image: mariadb:11
     container_name: nextcloud_db
     restart: always
 
     # network_mode: bridge
     networks: ["nextcloud"]
-    volumes: ["./db:/var/lib/mysql"]
+    volumes: ["./data/mariadb:/var/lib/mysql"]
 
     environment:
     - TZ=Asia/Shanghai
@@ -30,7 +30,7 @@ services:
     - "--skip-character-set-client-handshake"
 
   app:
-    image: nextcloud:23-apache
+    image: nextcloud:28-apache
     container_name: nextcloud_app
     restart: always
     depends_on: ["db"]
@@ -40,7 +40,7 @@ services:
     networks: ["nextcloud"]
     ports: ["127.0.0.1:${PORT}:80"]
 
-    volumes: ["./data:/var/www/html"]
+    volumes: ["./data/nextcloud:/var/www/html"]
 
     environment:
     - MYSQL_HOST=db
