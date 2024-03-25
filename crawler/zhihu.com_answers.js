@@ -121,7 +121,7 @@ function getText(target, archive) {
   if (comments) {
     let items = Array.from(comments.querySelectorAll("div")).filter(e => e.hasAttribute("data-id"));
     items.forEach(e => {
-      text += "\n##### " + e.innerText;
+      text += "\n\n##### " + e.innerText;
     });
   }
 
