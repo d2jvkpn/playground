@@ -36,4 +36,6 @@ alias top_mem='ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -n 20'
 
 # go path
 [ -d ~/.go/bin ] && export PATH=~/.go/bin:$PATH
+
 alias quick_nmap='nmap -vv --max-retries=5 -sV -T4 -p-'
+alias quick_rsync='rsync -arvP'
