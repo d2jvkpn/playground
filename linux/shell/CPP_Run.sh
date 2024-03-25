@@ -8,7 +8,7 @@ out=./target/$(basename ${cpp_file%.cpp})
 # -std=gnu++20, -std=c++20
 # set -x
 mkdir -p target
-g++ -g -fmodules-ts -std=gnu++20 -o "$out" $@
+g++ -g -fmodules-ts -std=gnu++20 -O2 -pipe -o "$out" $@
 
 if [ "${compile:=''}"  == "true" ]; then
     echo "$out"

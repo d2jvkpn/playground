@@ -6,7 +6,7 @@ export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
 export PROMPT_DIRTRIM=2
 # export PATH=~/.local/bin:$PATH
 
-for d in $(ls -d ~/Apps/*/ /opt/*/ 2>/dev/null); do
+for d in $(ls -d ~/Apps/*/ /opt/*/ 2> /dev/null); do
     d=${d%/}
     b=$(basename $d)
     [ "${b:0:1}" == "_" ] && continue
@@ -15,19 +15,17 @@ for d in $(ls -d ~/Apps/*/ /opt/*/ 2>/dev/null); do
 done
 
 ####
-alias tree1='tree -L 1'
-alias tree2='tree -L 2'
-alias tree3='tree -L 3'
-alias tree4='tree -L 4'
-alias tree5='tree -L 5'
+alias tree1='tree -L 1'; alias tree2='tree -L 2'; alias tree3='tree -L 3'
+alias tree4='tree -L 4'; alias tree5='tree -L 5'; alias tree6='tree -L 6'
+alias .='cd ../'; alias ..='cd ../../'; alias ...='cd ../../../'
 
 # sudo apt -y install xclip
 alias setclip='xclip -selection c'
 alias clearclip='echo "" | xclip -selection c'
 alias getclip='xclip -selection c -o'
 
-alias TopCpu='ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head -n 20'
-alias TopMem='ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -n 20'
+alias top_cpu='ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head -n 20'
+alias top_mem='ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -n 20'
 
 # export HISTSIZE=2000
 # export PYSPARK_PYTHON=$(which ipython3)
@@ -38,3 +36,4 @@ alias TopMem='ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -n 20'
 
 # go path
 [ -d ~/.go/bin ] && export PATH=~/.go/bin:$PATH
+alias quick_nmap='nmap -vv --max-retries=5 -sV -T4 -p-'
