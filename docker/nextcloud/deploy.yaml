@@ -1,9 +1,5 @@
 version: '3'
 
-# volumes:
-#  nextcloud:
-#  db:
-
 services:
   db:
     image: mariadb:11
@@ -47,6 +43,11 @@ services:
     - MYSQL_USER=nextcloud
     - MYSQL_DATABASE=nextcloud
     - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+
+
+# volumes:
+#  nextcloud_app:
+#  nextcloud_db:
 
 networks:
   nextcloud: {name: "nextcloud", driver: "bridge"}
