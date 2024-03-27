@@ -26,6 +26,7 @@ alias getclip='xclip -selection c -o'
 
 alias top_cpu='ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head -n 20'
 alias top_mem='ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -n 20'
+alias pid_info='ps -eo ppid,cmd,vsz,rss,%mem,%cpu -p'
 
 # export HISTSIZE=2000
 # export PYSPARK_PYTHON=$(which ipython3)
