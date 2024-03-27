@@ -87,7 +87,7 @@ services:
   grafana:
     image: grafana/grafana:main
     restart: always
-    container_name: grafana
+    container_name: otel-grafana
     user: 1000:1000
     networks: ["net"]
     ports: ["8053:3000"]
