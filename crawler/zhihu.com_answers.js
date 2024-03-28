@@ -65,6 +65,14 @@ function getTarget() {
     target = document.querySelector(".AnswersNavWrapper");
   }
 
+  if (!target) {
+    target = document.querySelector(".Post-content");
+  }
+
+  if (!target) {
+    target = document.querySelector(".Post-main");
+  }
+
   return target;
 }
 
