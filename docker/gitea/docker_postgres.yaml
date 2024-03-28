@@ -8,7 +8,7 @@ services:
     image: gitea/gitea:1
     restart: always
     networks: [gitea]
-    depends_on: [db]
+    depends_on: [database]
     container_name: gitea_app
     ports: ["3001:3000", "3002:22"]
     environment:
@@ -26,7 +26,7 @@ services:
     - /etc/localtime:/etc/localtime:ro
     - ./data/gitea:/data
 
-  db:
+  database:
     image: postgres:16-alpine
     restart: always
     networks: [gitea]
