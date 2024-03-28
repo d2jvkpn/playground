@@ -20,7 +20,7 @@ services:
     - GITEA__database__USER=gitea
     - DISABLE_REGISTRATION=true
     # - GITEA__database__PASSWD=gitea
-    env_file: [./configs/local.env]
+    env_file: [./configs/gitea.env]
     volumes:
     - /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro
@@ -32,9 +32,11 @@ services:
     networks: [gitea]
     container_name: gitea_psql
     environment:
+    - TZ=Asia/Shanghai
+    - PGTZ=Asia/Shanghai
     - POSTGRES_USER=gitea
     - POSTGRES_DB=gitea
     # - POSTGRES_PASSWORD=gitea
-    env_file: [./configs/local.env]
+    env_file: [./configs/gitea.env]
     volumes:
     - ./data/postgres:/var/lib/postgresql/data
