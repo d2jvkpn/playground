@@ -14,5 +14,5 @@ EOF
 cp docker_postgres.yaml docker-compose.yaml
 
 docker-compose up -d
-sleep 3
+sleep 5
 docker-compose logs
