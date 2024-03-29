@@ -24,6 +24,8 @@ docker-compose up -d
 
 
 exit
+default username: admin
+default password: admin
 
 cat >> .filebrowser.json <<EOF
 {
