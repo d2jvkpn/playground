@@ -15,6 +15,7 @@ services:
     - ./configs/:/app/configs:ro
     - ./logs/:/app/logs/
     - ./data/:/app/data/
+    - ./data/filebrowser:/app/data/filebrowser
     command:
     - --config=/app/configs/filebrowser.json
 

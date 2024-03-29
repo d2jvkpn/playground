@@ -2,7 +2,7 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-mkdir -p configs logs data
+mkdir -p configs logs data/filebrowser
 export Port=3020 UserId=$(id -u) GroupId=$(id -g)
 
 [ -s configs/filebrowser.json ] || \
@@ -13,7 +13,7 @@ cat > configs/filebrowser.json <<EOF
   "address": "",
   "log": "/app/logs/filebrowser.log",
   "database": "/app/data/filebrowser.db",
-  "root": "/srv"
+  "root": "/app/data/filebrowser"
 }
 EOF
 
