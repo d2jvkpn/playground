@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  filebrowser:
+    image: filebrowser/filebrowser:v2
+    restart: always
+    container_name: filebrowser
+    user: "${UserId}:${GroupId}"
+    networks: ["net"]
+    ports: ["${Port}:${Port}"]
+    environment: [TZ=Asia/Shanghai]
+    volumes:
+    - /etc/timezone:/etc/timezone:ro
+    - /etc/localtime:/etc/localtime:ro
+    - ./configs/:/app/configs:ro
+    - ./logs/:/app/logs/
+    - ./data/:/app/data/
+    command:
+    - --config=/app/configs/filebrowser.json
+
+# docker network create local
+networks:
+  net: { name: local, driver: bridge, external: true }
