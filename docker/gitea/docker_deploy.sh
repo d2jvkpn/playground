@@ -2,9 +2,12 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-HTTP_Port=${1:-3011}
-SSH_Port=${1:-3012}
-Network=${Network:-local}
+HTTP_Port=${1:-3011}; SSH_Port=${2:-3012}
+
+if [[ "$(id -u)" -eq 0 ]]; then
+    >&2 echo "Gitea is not supposed to be run as root."
+    exit 1
+fi
 
 mkdir -p data/gitea data/postgres configs
 password=$(tr -dc "0-9a-zA-Z" < /dev/urandom | fold -w 32 | head -n 1 || true)
@@ -15,7 +18,7 @@ GITEA__database__PASSWD=$password
 POSTGRES_PASSWORD=$password
 EOF
 
-export Network=${Network} HTTP_Port=$HTTP_Port SSH_Port=$SSH_Port
+export HTTP_Port=$HTTP_Port SSH_Port=$SSH_Port
 export USER_UID=$(id -u) USER_GID=$(id -g)
 
 envsubst < docker_postgres.yaml > docker-compose.yaml

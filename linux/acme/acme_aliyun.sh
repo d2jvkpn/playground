@@ -1,7 +1,6 @@
-#! /usr/bin/env bash
-set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail # -x
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 #### install, https://github.com/acmesh-official/acme.sh
 curl https://get.acme.sh | sh
@@ -15,14 +14,13 @@ export Ali_Key="$(jq -r '.AccessKeyId' $access_key_file)"
 export Ali_Secret="$(jq -r '.AccessKeySecret' $access_key_file)"
 
 #### register account
-export PATH=$HOME/.acme.sh/$PATH
+mkdir -p ~/crons
+cp acme_cron.sh ~/crons
 
-acme.sh --register-account -m $email
-acme.sh --issue --dns dns_ali --server letsencrypt -d $domain -d *.$domain
+~/crons/.acme.sh/acme.sh --register-account -m $email
+~/crons/.acme.sh/acme.sh --issue --dns dns_ali --server letsencrypt -d $domain -d *.$domain
 
 #### edit cron jobs
-mkdir -p ~/cron && cp acme_cron.sh ~/cron
-
 # $ crontabl -e
 # remove default and add following line
-# 0 0 * * * /path-to-your-home/cron/acme_cron.sh
+# 0 0 * * * /path-to-your-home/crons/acme_cron.sh

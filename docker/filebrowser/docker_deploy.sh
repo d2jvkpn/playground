@@ -3,9 +3,8 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 HTTP_Port=${1:-3020}
-Network=${Network:-local}
 
-export HTTP_Port=$HTTP_Port Network=$Network
+export HTTP_Port=$HTTP_Port
 export USER_UID=$(id -u) USER_GID=$(id -g)
 
 mkdir -p configs logs data/filebrowser

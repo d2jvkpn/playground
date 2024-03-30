@@ -1,12 +1,13 @@
 version: "3"
 
 networks:
-  net: { name: "${Network}", driver: bridge, external: true }
+  net: { name: "filebrowser", driver: bridge, external: true }
 
 services:
   filebrowser:
     image: filebrowser/filebrowser:v2
-    networks: ["net"]
+    # networks: ["net"]
+    network_mode: bridge
     restart: always
     container_name: filebrowser
     user: "${USER_UID}:${USER_GID}"

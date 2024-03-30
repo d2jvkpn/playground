@@ -1,13 +1,14 @@
 version: "3"
 
-networks:
-  net: { name: "${Network}", driver: bridge, external: true }
+# networks:
+#  net: { name: "gitea", driver: bridge, external: true }
 
 services:
   gitea:
     image: gitea/gitea:1
     restart: always
-    networks: [net]
+    # networks: [net]
+    network_mode: bridge
     depends_on: [database]
     container_name: gitea_app
     ports: ["${HTTP_Port}:3000", "${SSH_Port}:22"]
@@ -15,7 +16,7 @@ services:
     - USER_UID=${USER_UID}
     - USER_GID=${USER_GID}
     - GITEA__database__DB_TYPE=postgres
-    - GITEA__database__HOST=db:5432
+    - GITEA__database__HOST=database:5432
     - GITEA__database__NAME=gitea
     - GITEA__database__USER=gitea
     - DISABLE_REGISTRATION=true
@@ -29,7 +30,8 @@ services:
   database:
     image: postgres:16-alpine
     restart: always
-    networks: [net]
+    # networks: [net]
+    network_mode: bridge
     container_name: gitea_postgres
     environment:
     - TZ=Asia/Shanghai
