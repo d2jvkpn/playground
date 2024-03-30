@@ -3,7 +3,7 @@ services:
     image: adamrehn/ue4-runtime:latest
     container_name: ue-${UE_App}
     restart: always
-    user: "${UserID}"
+    user: "${USER_UID}"
     network_mode: host
     deploy:
       resources:

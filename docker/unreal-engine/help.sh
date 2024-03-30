@@ -1,7 +1,6 @@
-#! /usr/bin/env bash
+#!/bin/bash
 set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 #### host driver
 sudo ubuntu-drivers devices
@@ -25,7 +24,7 @@ sudo apt install nvidia-container-toolkit nvidia-container-runtime
 systemctl restart docker
 
 #### docker compose
-export UE_App=MyProject WS_Url=ws://192.168.1.1:3032/ws/streamer?project=MyProject UserId=$(id -u)
+export UE_App=MyProject WS_Url=ws://192.168.1.1:3032/ws/streamer?project=MyProject USER_UID=$(id -u)
 
 envsubst > docker-compose.yaml < docker_deploy.yaml
 docker-compose up -d
