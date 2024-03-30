@@ -1,7 +1,6 @@
-#! /usr/bin/env bash
-set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail # -x
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 #### prune images and containers
 docker ps -f status=exited -q | xargs -i docker rm {}

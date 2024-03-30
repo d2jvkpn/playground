@@ -1,8 +1,6 @@
-#! /usr/bin/env bash
+#!/bin/bash
 set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
-
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 docker save sd-webui:$SD_Version -o sd-webui_$SD_Version.tar
 pigz sd-webui_$SD_Version.tar

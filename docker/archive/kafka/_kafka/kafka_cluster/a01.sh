@@ -1,7 +1,6 @@
-#! /usr/bin/env bash
+#!/bin/bash
 set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 #### 1. start zookeeper
 cat config/zookeeper.properties

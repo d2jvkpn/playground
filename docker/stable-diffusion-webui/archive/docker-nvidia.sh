@@ -1,7 +1,6 @@
-#! /usr/bin/env bash
+#!/bin/bash
 set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/nvidia-docker.html
 

@@ -1,7 +1,6 @@
-#! /usr/bin/env bash
+#!/bin/bash
 set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # https://docs.gitlab.com/omnibus/settings/memory_constrained_envs.html
 # https://forum.gitlab.com/t/gitlab-commit-500-error/53139/5

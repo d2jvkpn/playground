@@ -1,7 +1,6 @@
-#! /usr/bin/env bash
+#!/bin/bash
 set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 #### load
 [ $# -eq 0 ] && { >&2 echo "Argument {branch} is required!"; exit 1; }

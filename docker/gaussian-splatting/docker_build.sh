@@ -1,7 +1,6 @@
-#! /usr/bin/env bash
-set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail # -x
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 container=3dgs_$(tr -dc '0-9a-z' < /dev/urandom | fold -w 8 | head -n 1 || true)
 

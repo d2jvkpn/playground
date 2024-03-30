@@ -1,9 +1,6 @@
-#! /usr/bin/env bash
+#!/bin/bash
 set -eu -o pipefail
-
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
-# set -x
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 export DEBIAN_FRONTEND=noninteractive
 # export DEBIAN_FRONTEND=dialog

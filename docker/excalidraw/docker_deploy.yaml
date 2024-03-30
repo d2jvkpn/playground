@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  excalidraw:
+    image: excalidraw/excalidraw:latest
+    container_name: excalidraw
+    restart: always
+    network_mode: bridge
+    # networks: ["ent"]
+    ports: ["127.0.0.1:${HTTP_Port}:80"]
+
+# networks:
+#   net: { name: "excalidraw", driver: "bridge", external: false }

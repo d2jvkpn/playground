@@ -1,8 +1,6 @@
-#! /usr/bin/env bash
+#!//bin/bash
 set -eu -o pipefail
-
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 export APP_Tag=${1:-dev} PORT=${2:-5432}
 
@@ -48,7 +46,7 @@ services:
 networks:
   net: { name: "postgres_${APP_Tag}", driver: "bridge", external: false }'''
 
-# envsubst < ${_path}/deploy.yaml > docker-compose.yaml
+# envsubst < ${_path}/docker_deploy.yaml > docker-compose.yaml
 echo "$template" | envsubst > docker-compose.yaml
 mkdir -p configs data/postgres
 

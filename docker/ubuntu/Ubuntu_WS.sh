@@ -1,8 +1,6 @@
-#! /usr/bin/env bash
+#!/bin/bash
 set -eu -o pipefail
-
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 # set -x
 
 container_name=ubuntu-ws_$(tr -dc 'a-z0-9' < /dev/random | fold -w 16 | head -n1 || true)

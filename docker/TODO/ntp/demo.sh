@@ -1,7 +1,6 @@
-#! /usr/bin/env bash
-set -eu -o pipefail
-
-wd=$(pwd)
+#!/bin/bash
+set -eu -o pipefail # -x
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 ## 1
 go run main.go server --port 8080

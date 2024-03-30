@@ -1,11 +1,10 @@
-#! /usr/bin/env bash
+#!/bin/bash
 set -eu -o pipefail
-
-wd=$(pwd)
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 ####
-HTTP_Port=$1
-MONGO_Port=$2
+HTTP_Port=$1; MONGO_Port=$2
+
 docker pull registry.cn-hangzhou.aliyuncs.com/anoy/yapi
 docker pull mongo:4
 

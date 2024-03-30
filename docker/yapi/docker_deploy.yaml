@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  database:
+    image: mongo:6
+    container_name: yapi_mongo
+    restart: always
+    networks: ["net"]
+    volumes: ["./data/mongo:/data/db"]
+
+  yapi:
+    image: registry.cn-hangzhou.aliyuncs.com/anoy/yapi:latest
+    container_name: yapi_app
+    restart: always
+    depends_on: ["database"]
+    working_dir: /api/vendors
+    networks: ["net"]
+    ports: ["127.0.0.1:${PORT}:3000"]
+    command: ["server/app.js"]
+
+networks:
+  net: {name: "yapi", driver: "bridge", external: true}
+
+# docker exec yapi_web npm run install-server
+# default account: admin@admin.com
+# default password: ymfe.org
