@@ -1,14 +1,14 @@
 version: "3"
 
 networks:
-  gitea: { external: false }
+  net: { name: gitea, driver: bridge, external: false }
 
 services:
   gitea:
     image: gitea/gitea:1
-    container_name: gitea
+    container_name: gitea_sqlite
     restart: always
-    networks: [gitea]
+    networks: [net]
     ports: ["3011:3000", "3012:22"]
     environment: [USER_UID=1000, USER_GID=1000 ]
     volumes:
