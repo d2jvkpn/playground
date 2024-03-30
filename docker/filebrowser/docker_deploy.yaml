@@ -1,7 +1,7 @@
 version: "3"
 
-networks:
-  net: { name: "filebrowser", driver: bridge, external: true }
+# networks:
+#   net: { name: "filebrowser", driver: bridge, external: false }
 
 services:
   filebrowser:
