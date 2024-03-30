@@ -1,13 +1,12 @@
-#! /usr/bin/env bash
-set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail # -x
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 #### step1: prepare data dirctories, configuration files and scripts
 bash 00.sh
 
 #### step2: up cluster containers
-docker-compose -f deploy.yaml up -d
+docker-compose -f docker_deploy.yaml up -d
 
 #### step 3: config configsvr nodes
 docker exec mongo-configsvr-1 mongosh mongodb://127.0.0.1:27017 /data/scripts/configsvr.js

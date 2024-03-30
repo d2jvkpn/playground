@@ -1,9 +1,6 @@
-#! /usr/bin/env bash
-set -eu -o pipefail
-
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
-# set -x
+#!/bin/bash
+set -eu -o pipefail # -x
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # node_name=k8s-node01
 node_name=$1

@@ -1,8 +1,6 @@
-#! /usr/bin/env bash
-set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
-# set -x
+#!/bin/bash
+set -eu -o pipefail # -x
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 mkdir -p data/{node01,node02,node03}
 sudo chown 70:70 data/{node01,node02,node03}
@@ -23,7 +21,7 @@ if [ ! -s configs/secret_replicator.txt ]; then
       head -n 1 > configs/secret_replicator.txt || true
 fi
 
-cp deploy.yaml docker-compose.yaml
+cp docker_deploy.yaml docker-compose.yaml
 docker-compose up -d
 docker-compose logs
 

@@ -1,7 +1,6 @@
-#! /usr/bin/env bash
-set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail # -x
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # https://tecadmin.net/how-to-install-mongodb-on-ubuntu-22-04/
 sudo apt update and sudo apt upgrade

@@ -1,8 +1,6 @@
-#! /usr/bin/env bash
-set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
-# set -x
+#!/bin/bash
+set -eu -o pipefail # -x
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 nodes=(postgres-node{01..04})
 subnet=$(yq .networks.net.ipam.config[0].subnet docker-compose.yaml)

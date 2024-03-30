@@ -1,8 +1,6 @@
-#! /usr/bin/env bash
-set -eu -o pipefail
-# set -x
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail # -x
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # sudo apt update && apt -y upgrade && apt install -y nfs-kernel-server nfs-common
 

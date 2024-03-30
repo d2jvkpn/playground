@@ -1,10 +1,6 @@
-#! /usr/bin/env bash
-set -eu -o pipefail
-# author: ChatGPT
-
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
-# set -x
+#!/bin/bash
+set -eu -o pipefail # -x
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 min_range=1; max_range=100
 target=$((RANDOM % ($max_range - $min_range + 1) + $min_range))

@@ -1,7 +1,6 @@
-#! /usr/bin/env bash
-set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail # -x
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 cp docker_deploy.yaml docker-compose.yaml
 # [ -z "$(docker network ls | grep -w mongo-cluster)" ] && docker network create mongo-cluster

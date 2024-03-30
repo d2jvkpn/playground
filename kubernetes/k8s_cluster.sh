@@ -1,9 +1,6 @@
-#! /usr/bin/env bash
-set -eu -o pipefail
-
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
-# set -x
+#!/bin/bash
+set -eu -o pipefail # -x
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 action=$1
 base_vm=${base_vm:-ubuntu}

@@ -1,7 +1,6 @@
-#! /usr/bin/env bash
-set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail # -x
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 export APP_Name=$(yq .app project.yaml)
 export IMAGE_Tag=$1 APP_Tag=$2 HTTP_Port=$3 RPC_Port=$4 UserID=$(id -u) GroupID=$(id -g)
