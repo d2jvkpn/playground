@@ -1,19 +1,19 @@
 version: "3"
 
 networks:
-  gitea: { external: false }
+  net: { name: "${Network}", driver: bridge, external: true }
 
 services:
   gitea:
     image: gitea/gitea:1
     restart: always
-    networks: [gitea]
+    networks: [net]
     depends_on: [database]
     container_name: gitea_app
-    ports: ["3011:3000", "3012:22"]
+    ports: ["${HTTP_Port}:3000", "${SSH_Port}:22"]
     environment:
-    - USER_UID=1000
-    - USER_GID=1000
+    - USER_UID=${USER_UID}
+    - USER_GID=${USER_GID}
     - GITEA__database__DB_TYPE=postgres
     - GITEA__database__HOST=db:5432
     - GITEA__database__NAME=gitea
@@ -29,8 +29,8 @@ services:
   database:
     image: postgres:16-alpine
     restart: always
-    networks: [gitea]
-    container_name: gitea_psql
+    networks: [net]
+    container_name: gitea_postgres
     environment:
     - TZ=Asia/Shanghai
     - PGTZ=Asia/Shanghai

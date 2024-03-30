@@ -1,5 +1,9 @@
-docker_up:
+up:
 	bash docker_deploy.sh
+
+update:
+	docker-compose pull
+	docker-compose up -d
 
 remove_password:
 	docker-compose down
