@@ -123,12 +123,12 @@ function getText(target, archive) {
     target.querySelector(".ContentItem-time").innerText + "\n\n" +
     target.querySelector(".ContentItem-actions").children[0].innerText + "\n";
 
-  let comments = document.querySelector(".Comments-container") ||
+  let comment = document.querySelector(".Comments-container") ||
     document.querySelector(".Modal-content");
 
   text += "\n#### Comments\n"
-  if (comments) {
-    let items = Array.from(comments.querySelectorAll("div")).filter(e => e.hasAttribute("data-id"));
+  if (comment) {
+    let items = Array.from(comment.querySelectorAll("div")).filter(e => e.hasAttribute("data-id"));
     items.forEach(e => {
       text += "\n\n##### " + e.innerText;
     });
