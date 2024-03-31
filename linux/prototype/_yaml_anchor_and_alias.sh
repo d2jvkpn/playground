@@ -1,9 +1,7 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 set -eu -o pipefail
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
-# set -x
 
 cat | yq 'explode(.) | del .bill-to' << 'EOF'
 bill-to: &id001

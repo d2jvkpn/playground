@@ -1,9 +1,7 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 set -eu -o pipefail
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
-# set -x
 
 # https://linuxize.com/post/how-to-configure-static-ip-address-on-ubuntu-20-04/
 

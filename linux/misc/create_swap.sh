@@ -1,7 +1,6 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 set -eu -o pipefail
-_wd=$(pwd)/
-_path=$(dirname $0 | xargs -i readlink -f {})/
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 swap_gb=$(awk '$1=="MemTotal:"{print $2/2/1024/1024; exit}' /proc/meminfo)
 swap_gb=${1:-$swap_gb}
