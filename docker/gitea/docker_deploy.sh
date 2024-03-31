@@ -27,8 +27,6 @@ docker-compose up -d
 sleep 5
 docker-compose logs
 
-exit
-
 sed -i \
   -e '/REQUIRE_SIGNIN_VIEW/s/false/true/' \
   -e '/ENABLE_OPENID_SIGNIN/s/true/false/' \
