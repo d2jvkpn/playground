@@ -35,7 +35,7 @@ function downloadFilename() {
 
   let now = datetime();
 
-  let title = document.title.split(" - ")[0].replace(/ /g, "_");
+  let title = document.title.replace(/^\(.*\) /, "").split(" - ")[0].replace(/ /g, "_");
   if (title.length > 32) { title = title.slice(0, 29) + "..." };
 
   // ${document.URL.split("//").pop().replace(/\//g, "-")}
