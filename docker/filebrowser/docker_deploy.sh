@@ -4,9 +4,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 HTTP_Port=${1:-3020}
 
-export HTTP_Port=$HTTP_Port
-export USER_UID=$(id -u) USER_GID=$(id -g)
-
+#### 1.
 mkdir -p configs logs data/filebrowser
 
 [ -s configs/filebrowser.json ] || \
@@ -21,15 +19,22 @@ cat > configs/filebrowser.json <<EOF
 }
 EOF
 
+#### 2.
+export HTTP_Port=$HTTP_Port USER_UID=$(id -u) USER_GID=$(id -g)
+
 envsubst < docker_deploy.yaml > docker-compose.yaml
 
+#### 3.
 docker-compose pull
 docker-compose up -d
 
-
 exit
-default username: admin
-default password: admin
+
+cat <<EOF
+# default account
+username: admin
+password: admin
+EOF
 
 cat >> .filebrowser.json <<EOF
 {
@@ -46,8 +51,8 @@ docker run --rm -it --entrypoint=sh filebrowser/filebrowser:v2
 
 docker run \
     -v /path/to/root:/srv \
-    -v /path/filebrowser.db:/database.db \
-    -v /path/.filebrowser.json:/.filebrowser.json \
+    -v /path/to/filebrowser.db:/database.db \
+    -v /path/to/.filebrowser.json:/.filebrowser.json \
     -u $(id -u):$(id -g) \
     -p 8080:80 \
     filebrowser/filebrowser:v2
