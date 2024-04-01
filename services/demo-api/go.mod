@@ -3,12 +3,12 @@ module demo-api
 go 1.22
 
 require (
-	github.com/d2jvkpn/gotk v0.0.0-20240322032450-c902483de654
-	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20240322032450-c902483de654
-	github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20240322032450-c902483de654
-	github.com/d2jvkpn/gotk/cloud-tracing v0.0.0-20240322032450-c902483de654
-	github.com/d2jvkpn/gotk/ginx v0.0.0-20240322032450-c902483de654
-	github.com/d2jvkpn/gotk/impls v0.0.0-20240322032450-c902483de654
+	github.com/d2jvkpn/gotk v0.0.0-20240328070703-22a2d343c41a
+	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20240328070703-22a2d343c41a
+	github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20240328070703-22a2d343c41a
+	github.com/d2jvkpn/gotk/cloud-tracing v0.0.0-20240328070703-22a2d343c41a
+	github.com/d2jvkpn/gotk/ginx v0.0.0-20240328070703-22a2d343c41a
+	github.com/d2jvkpn/gotk/impls v0.0.0-20240328070703-22a2d343c41a
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.1
