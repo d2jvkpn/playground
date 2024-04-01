@@ -86,9 +86,8 @@ function archiveText() {
   alert(`==> saved ${link.download}`);
 }
 
-archiveText();
-if (target) {
-  
+if (document.URL.startsWith("https://www.zhihu.com/p/")) {
+  archiveText();
 } else {
-  
+  alter("No an article!");
 }
