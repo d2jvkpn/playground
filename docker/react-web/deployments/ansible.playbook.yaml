@@ -1,0 +1,40 @@
+- hosts: localhost
+  vars_files: ["ansible.configs.yaml"]
+  vars:
+    _wd: "{{lookup('env', 'PWD')}}"
+    _hd: "{{lookup('env', 'HOME')}}"
+    config: "{{configs[app_env]}}"
+
+  tasks:
+  - name: build image
+    args: {chdir: "{{_wd}}"}
+    shell:
+      cmd: |
+        bash deployments/build.sh {{app_env}}
+
+- hosts: "{{config.host}}"
+  vars_files: ["ansible.configs.yaml"]
+  vars:
+    _wd: "{{lookup('env', 'PWD')}}"
+    _hd: "{{lookup('env', 'HOME')}}"
+    config: "{{configs[app_env]}}"
+
+  tasks:
+  - name: create work dir
+    file: {path: "{{config.workpath}}/deployments", state: "directory"}
+
+  - name: sync-deployment
+    # synchronize: src={{_wd}}/deployments dest={{config.workpath}}/
+    synchronize: src={{_wd}}/deployments/{{item}} dest={{config.workpath}}/deployments/{{item}}
+    with_items:
+    - deploy.sh
+    - deploy.yaml
+
+  - name: run container
+    args: {chdir: "{{config.workpath}}"}
+    shell:
+      cmd: |
+        export TAG="{{app_env}}" APP_ENV="{{app_env}}" PORT="{{config.port}}"
+        envsubst < deployments/deploy.yaml > docker-compose.yaml
+        docker-compose pull
+        docker-compose up -d

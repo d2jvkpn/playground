@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: react-web-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /react-web/dev/
+        pathType: Prefix
+        backend:
+          service: { name: "react-web-dev-clusterip", port: { number: 3102 } }
+
+      - path: /react-web/test/
+        pathType: Prefix
+        backend:
+          service: { name: "react-web-test-clusterip", port: { number: 3103 } }

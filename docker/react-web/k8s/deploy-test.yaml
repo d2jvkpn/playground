@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-web-test-deploy
+  namespace: default
+  labels: { app: "react-web", env: "test" }
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels: { app: "react-web", env: "test" }
+
+  template:
+    metadata:
+      labels: { app: "react-web", env: "test" }
+
+    spec:
+      containers:
+      - name: react-web-test
+        image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/react-web:test
+        # IfNotPresent, Always, Never
+        imagePullPolicy: "Always"
+
+        resources:
+          # 500MHz, 128Mi(power-of-two)
+          requests: { cpu: "200m", memory: "128Mi" }
+          limits: { cpu: "500m", memory: "256Mi" }
+
+        ports:
+        - { name: "http", containerPort: 80, protocol: "TCP" }

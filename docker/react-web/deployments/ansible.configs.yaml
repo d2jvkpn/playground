@@ -1,0 +1,24 @@
+registry: https://github.com/d2jvkpn/react-web
+image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/react-web
+
+configs:
+  dev:
+    host: dev_host
+    # branch: dev
+    env_file: ./configs/dev.env
+    port: 3002
+    workpath: /root/docker_dev/react-web_dev
+
+  test:
+    host: test_host
+    # branch: test
+    env_file: ./configs/test.env
+    port: 3003
+    workpath: /root/docker_test/react-web_test
+
+  prod:
+    host: prod_host
+    # branch: main
+    env_file: ./configs/prod.env
+    port: 3000
+    workpath: /root/docker_prod/react-web_prod
