@@ -1,0 +1,39 @@
+version: '3'
+
+# volumes:
+#  nextcloud_app:
+#  nextcloud_db:
+
+networks:
+  net: {name: "nextcloud", driver: "bridge", external: false}
+
+services:
+  nextcloud:
+    image: nextcloud:28-apache
+    container_name: nextcloud_app
+    restart: always
+    depends_on: ["database"]
+    networks: ["net"]
+    ports: ["127.0.0.1:${HTTP_Port}:80"]
+    volumes: ["./data/nextcloud:/var/www/html"]
+    environment:
+    - POSTGRES_HOST=database
+    - POSTGRES_USER=nextcloud
+    - POSTGRES_DB=nextcloud
+    # - POSTGRES_PASSWORD=${POSTGRES_Password}
+    env_file: [./configs/nextcloud.env]
+
+  database:
+    image: postgres:16-alpine
+    restart: always
+    networks: [net]
+    container_name: gitea_postgres
+    environment:
+    - TZ=Asia/Shanghai
+    - PGTZ=Asia/Shanghai
+    - POSTGRES_USER=nextcloud
+    - POSTGRES_DB=nextcloud
+    # - POSTGRES_PASSWORD=${POSTGRES_Password}
+    env_file: [./configs/gitea.env]
+    volumes:
+    - ./data/postgres:/var/lib/postgresql/data

@@ -1,0 +1,45 @@
+version: '3'
+
+# volumes:
+#   nextcloud_app:
+#   nextcloud_db:
+
+networks:
+  net: {name: "nextcloud", driver: "bridge", external: false}
+
+services:
+  nextcloud:
+    image: nextcloud:28-apache
+    container_name: nextcloud_app
+    restart: always
+    depends_on: ["database"]
+    networks: ["net"]
+    ports: ["127.0.0.1:${HTTP_Port}:80"]
+    volumes: ["./data/nextcloud:/var/www/html"]
+    environment:
+    - MYSQL_HOST=database
+    - MYSQL_USER=nextcloud
+    - MYSQL_DATABASE=nextcloud
+    # - MYSQL_PASSWORD=${MYSQL_Password}
+    env_file: [./configs/nextcloud.env]
+
+  database:
+    image: mariadb:11
+    container_name: nextcloud_mariadb
+    restart: always
+    networks: ["net"]
+    volumes: ["./data/mariadb:/var/lib/mysql"]
+    environment:
+    - TZ=Asia/Shanghai
+    - LANG=C.UTF-8
+    - MYSQL_USER=nextcloud
+    - MYSQL_DATABASE=nextcloud
+    # - MYSQL_ROOT_PASSWORD=${MYSQL_RootPassword}
+    # - MYSQL_PASSWORD=${MYSQL_Password}
+    env_file: [./configs/nextcloud.env]
+    command:
+    - "--transaction-isolation=READ-COMMITTED"
+    - "--binlog-format=ROW"
+    - "--character-set-server=utf8mb4"
+    - "--collation-server=utf8mb4_general_ci"
+    - "--skip-character-set-client-handshake"

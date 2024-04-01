@@ -21,7 +21,7 @@ EOF
 export HTTP_Port=$HTTP_Port SSH_Port=$SSH_Port
 export USER_UID=$(id -u) USER_GID=$(id -g)
 
-envsubst < docker_postgres.yaml > docker-compose.yaml
+envsubst < docker_deploy.postgres.yaml > docker-compose.yaml
 
 docker-compose up -d
 sleep 5
