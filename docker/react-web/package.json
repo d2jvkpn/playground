@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "local": "env-cmd -f configs/local.env react-scripts start",
-    "dev": "env-cmd -f configs/dev.env   react-scripts start",
+    "dev": "env-cmd -f configs/dev.env react-scripts start",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
