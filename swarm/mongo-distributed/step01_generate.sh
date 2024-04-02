@@ -11,7 +11,7 @@ mkdir -p data/shard-{1..3}{a..c}/{db,logs}
 
 if [ ! -s configs/mongo.key ]; then
     openssl rand -base64 756 > configs/mongo.key
-    chmod 400 configs/mongo.key
+    chmod 600 configs/mongo.key
 fi
 
 if [ ! -s configs/mongo.secret ]; then

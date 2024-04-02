@@ -2,7 +2,7 @@ version: "3"
 
 services:
   configsvr-1a:
-    image: mongo:6
+    image: mongo:7
     restart: always
     container_name: mongo-configsvr-1a
     user: 1000:1000
@@ -16,7 +16,7 @@ services:
     command: [--config, /app/configs/configsvr-1.conf]
 
   configsvr-1b:
-    image: mongo:6
+    image: mongo:7
     restart: always
     container_name: mongo-configsvr-1b
     user: 1000:1000
@@ -30,7 +30,7 @@ services:
     command: [--config, /app/configs/configsvr-1.conf]
 
   configsvr-1c:
-    image: mongo:6
+    image: mongo:7
     restart: always
     container_name: mongo-configsvr-1c
     user: 1000:1000
@@ -44,7 +44,7 @@ services:
     command: [--config, /app/configs/configsvr-1.conf]
 
   shard-1a:
-    image: mongo:6
+    image: mongo:7
     restart: always
     container_name: mongo-shard-1a
     user: 1000:1000
@@ -58,7 +58,7 @@ services:
     command: [--config, /app/configs/shard-1.conf]
 
   shard-1b:
-    image: mongo:6
+    image: mongo:7
     restart: always
     container_name: mongo-shard-1b
     user: 1000:1000
@@ -72,7 +72,7 @@ services:
     command: [--config, /app/configs/shard-1.conf]
 
   shard-1c:
-    image: mongo:6
+    image: mongo:7
     restart: always
     container_name: mongo-shard-1c
     user: 1000:1000
@@ -86,7 +86,7 @@ services:
     command: [--config, /app/configs/shard-1.conf]
 
   shard-2a:
-    image: mongo:6
+    image: mongo:7
     restart: always
     container_name: mongo-shard-2a
     user: 1000:1000
@@ -100,7 +100,7 @@ services:
     command: [--config, /app/configs/shard-2.conf]
 
   shard-2b:
-    image: mongo:6
+    image: mongo:7
     restart: always
     container_name: mongo-shard-2b
     user: 1000:1000
@@ -114,7 +114,7 @@ services:
     command: [--config, /app/configs/shard-2.conf]
 
   shard-2c:
-    image: mongo:6
+    image: mongo:7
     restart: always
     container_name: mongo-shard-2c
     user: 1000:1000
@@ -128,7 +128,7 @@ services:
     command: [--config, /app/configs/shard-2.conf]
 
   shard-3a:
-    image: mongo:6
+    image: mongo:7
     restart: always
     container_name: mongo-shard-3a
     user: 1000:1000
@@ -142,7 +142,7 @@ services:
     command: [--config, /app/configs/shard-3.conf]
 
   shard-3b:
-    image: mongo:6
+    image: mongo:7
     restart: always
     container_name: mongo-shard-3b
     user: 1000:1000
@@ -156,7 +156,7 @@ services:
     command: [--config, /app/configs/shard-3.conf]
 
   shard-3c:
-    image: mongo:6
+    image: mongo:7
     restart: always
     container_name: mongo-shard-3c
     user: 1000:1000
@@ -170,7 +170,7 @@ services:
     command: [--config, /app/configs/shard-3.conf]
 
   mongos-1:
-    image: mongo:6
+    image: mongo:7
     restart: always
     depends_on: ["configsvr-1a", "configsvr-1b", "configsvr-1c"]
     container_name: mongo-mongos-1
@@ -188,7 +188,7 @@ services:
     # --bind_ip_all
 
   mongos-2:
-    image: mongo:6
+    image: mongo:7
     restart: always
     depends_on: ["configsvr-1a", "configsvr-1b", "configsvr-1c"]
     container_name: mongo-mongos-2
@@ -205,7 +205,7 @@ services:
     command: [--config, /app/configs/mongos-2.conf]
 
   mongos-3:
-    image: mongo:6
+    image: mongo:7
     restart: always
     depends_on: ["configsvr-1a", "configsvr-1b", "configsvr-1c"]
     container_name: mongo-mongos-3
