@@ -2,8 +2,8 @@ version: '3'
 
 services:
   mongo:
-    image: mongo:6
-    container_name: mongodb_dev
+    image: mongo:7
+    container_name: mongo
     restart: always
     networks: ["net"]
     ports: ["127.0.0.1:27017:27017"]
