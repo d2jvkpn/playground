@@ -5,13 +5,15 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 # [ -z "$(docker network ls | grep -w mongo-distributed)" ] && \
 #   docker network create mongo-distributed
 
-cp docker_deploy.yaml docker-compose.yaml
+export USER_UID=$(id -u) USER_GID=$(id -g)
+envsubst < docker_deploy.yaml > docker-compose.yaml
 
 echo "==> docker-compose up"
-docker-compose up -d configsvr-1{a..c} shard-{1..3}{a..c}
 # docker-compose up -d
 
 # if you start services mongos in docker-compose.yaml, you can't connect to mongos through ports mapping
+sed -i -e '/mongos-1:\|mongos-2:\|mongos-3:/,+15d' docker-compose.yaml
+docker-compose up -d configsvr-1{a..c} shard-{1..3}{a..c}
 
 echo "==> create mongo-mongos-{1..3}"
 
@@ -22,12 +24,11 @@ for idx in {1..3}; do
     docker run --name mongo-$node -d \
       -p 127.0.0.1:$port:27017 \
       --net=mongo-distributed \
-      --user=$(id -u):$(id -g) \
       -e TZ=Asia/Shanghai \
-      -v $PWD/configs:/app/configs \
       -v $PWD/bin:/app/bin \
-      -v $PWD/data/$node/db:/app/db \
-      -v $PWD/data/$node/logs:/app/logs \
+      -v $PWD/configs:/app/configs \
+      -v $PWD/data/$node/db:/data/db \
+      -v $PWD/data/$node/logs:/var/log/mongodb \
       --entrypoint=mongos \
       mongo:6 --config /app/configs/$node.conf
 done

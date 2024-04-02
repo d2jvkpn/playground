@@ -1,14 +1,12 @@
 #!/bin/bash
-set -eu -o pipefail # -x
+set -eu -o pipefail -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
-
-set -x
 
 docker stop mongo-mongos-{1..3} && docker rm mongo-mongos-{1..3}
 
 docker-compose down
 
-echo '!!! Remove files in data?(yes/no)'
+echo '!!! Remove all files in data?(yes/no)'
 read -t 5 ans || true
 [ "$ans" != "yes" ] && exit 0
 

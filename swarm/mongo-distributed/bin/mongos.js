@@ -1,4 +1,4 @@
-const fs = require('fs');
+// const fs = require('fs');
 const password = fs.readFileSync("/app/configs/mongo.secret", 'utf8').split(/\s+/g)[0].trim();
 
 const db = connect("admin");

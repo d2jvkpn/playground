@@ -6,8 +6,8 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 mkdir -p configs
 
 mkdir -p data/configsvr-1{a..c}/{db,logs}
-mkdir -p data/mongos-{1..3}/{db,logs}
 mkdir -p data/shard-{1..3}{a..c}/{db,logs}
+mkdir -p data/mongos-{1..3}/{db,logs}
 
 if [ ! -s configs/mongo.key ]; then
     openssl rand -base64 756 > configs/mongo.key

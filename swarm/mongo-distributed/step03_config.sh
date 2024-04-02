@@ -35,7 +35,7 @@ for node in mongo-shard-{1..3}a; do
     $cmd /app/bin/create-root.js
 done
 
-#### mongos
+#### mongos for mongo:6
 # echo root | docker exec -i mongo-mongos-1 mongosh \
 #   mongodb://root@localhost:27017/admin --quiet /app/bin/mongos.js
 
