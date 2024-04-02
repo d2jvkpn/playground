@@ -7,13 +7,12 @@ services:
     container_name: mongo-configsvr-1a
     user: 1000:1000
     networks: ["net"]
-    environment:
-    - TZ=Asia/Shanghai
+    environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/app/configs:ro
     - ./bin:/app/bin:ro
-    - ./data/configsvr-1a/db:/app/db
-    - ./data/configsvr-1a/logs:/app/logs
+    - ./configs:/app/configs:ro
+    - ./data/configsvr-1a/db:/data/db
+    - ./data/configsvr-1a/logs:/var/log/mongodb
     command: [--config, /app/configs/configsvr-1.conf]
 
   configsvr-1b:
@@ -22,13 +21,12 @@ services:
     container_name: mongo-configsvr-1b
     user: 1000:1000
     networks: ["net"]
-    environment:
-    - TZ=Asia/Shanghai
+    environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/app/configs:ro
     - ./bin:/app/bin:ro
-    - ./data/configsvr-1b/db:/app/db
-    - ./data/configsvr-1b/logs:/app/logs
+    - ./configs:/app/configs:ro
+    - ./data/configsvr-1b/db:/data/db
+    - ./data/configsvr-1b/logs:/var/log/mongodb
     command: [--config, /app/configs/configsvr-1.conf]
 
   configsvr-1c:
@@ -37,13 +35,12 @@ services:
     container_name: mongo-configsvr-1c
     user: 1000:1000
     networks: ["net"]
-    environment:
-    - TZ=Asia/Shanghai
+    environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/app/configs:ro
     - ./bin:/app/bin:ro
-    - ./data/configsvr-1c/db:/app/db
-    - ./data/configsvr-1c/logs:/app/logs
+    - ./configs:/app/configs:ro
+    - ./data/configsvr-1c/db:/data/db
+    - ./data/configsvr-1c/logs:/var/log/mongodb
     command: [--config, /app/configs/configsvr-1.conf]
 
   shard-1a:
@@ -52,13 +49,12 @@ services:
     container_name: mongo-shard-1a
     user: 1000:1000
     networks: ["net"]
-    environment:
-    - TZ=Asia/Shanghai
+    environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/app/configs:ro
     - ./bin:/app/bin:ro
-    - ./data/shard-1a/db:/app/db
-    - ./data/shard-1a/logs:/app/logs
+    - ./configs:/app/configs:ro
+    - ./data/shard-1a/db:/data/db
+    - ./data/shard-1a/logs:/var/log/mongodb
     command: [--config, /app/configs/shard-1.conf]
 
   shard-1b:
@@ -67,13 +63,12 @@ services:
     container_name: mongo-shard-1b
     user: 1000:1000
     networks: ["net"]
-    environment:
-    - TZ=Asia/Shanghai
+    environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/app/configs:ro
     - ./bin:/app/bin:ro
-    - ./data/shard-1b/db:/app/db
-    - ./data/shard-1b/logs:/app/logs
+    - ./configs:/app/configs:ro
+    - ./data/shard-1b/db:/data/db
+    - ./data/shard-1b/logs:/var/log/mongodb
     command: [--config, /app/configs/shard-1.conf]
 
   shard-1c:
@@ -82,13 +77,12 @@ services:
     container_name: mongo-shard-1c
     user: 1000:1000
     networks: ["net"]
-    environment:
-    - TZ=Asia/Shanghai
+    environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/app/configs:ro
     - ./bin:/app/bin:ro
-    - ./data/shard-1c/db:/app/db
-    - ./data/shard-1c/logs:/app/logs
+    - ./configs:/app/configs:ro
+    - ./data/shard-1c/db:/data/db
+    - ./data/shard-1c/logs:/var/log/mongodb
     command: [--config, /app/configs/shard-1.conf]
 
   shard-2a:
@@ -97,13 +91,12 @@ services:
     container_name: mongo-shard-2a
     user: 1000:1000
     networks: ["net"]
-    environment:
-    - TZ=Asia/Shanghai
+    environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/app/configs:ro
     - ./bin:/app/bin:ro
-    - ./data/shard-2a/db:/app/db
-    - ./data/shard-2a/logs:/app/logs
+    - ./configs:/app/configs:ro
+    - ./data/shard-2a/db:/data/db
+    - ./data/shard-2a/logs:/var/log/mongodb
     command: [--config, /app/configs/shard-2.conf]
 
   shard-2b:
@@ -112,13 +105,12 @@ services:
     container_name: mongo-shard-2b
     user: 1000:1000
     networks: ["net"]
-    environment:
-    - TZ=Asia/Shanghai
+    environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/app/configs:ro
     - ./bin:/app/bin:ro
-    - ./data/shard-2b/db:/app/db
-    - ./data/shard-2b/logs:/app/logs
+    - ./configs:/app/configs:ro
+    - ./data/shard-2b/db:/data/db
+    - ./data/shard-2b/logs:/var/log/mongodb
     command: [--config, /app/configs/shard-2.conf]
 
   shard-2c:
@@ -127,13 +119,12 @@ services:
     container_name: mongo-shard-2c
     user: 1000:1000
     networks: ["net"]
-    environment:
-    - TZ=Asia/Shanghai
+    environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/app/configs:ro
     - ./bin:/app/bin:ro
-    - ./data/shard-2c/db:/app/db
-    - ./data/shard-2c/logs:/app/logs
+    - ./configs:/app/configs:ro
+    - ./data/shard-2c/db:/data/db
+    - ./data/shard-2c/logs:/var/log/mongodb
     command: [--config, /app/configs/shard-2.conf]
 
   shard-3a:
@@ -142,13 +133,12 @@ services:
     container_name: mongo-shard-3a
     user: 1000:1000
     networks: ["net"]
-    environment:
-    - TZ=Asia/Shanghai
+    environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/app/configs:ro
     - ./bin:/app/bin:ro
-    - ./data/shard-3a/db:/app/db
-    - ./data/shard-3a/logs:/app/logs
+    - ./configs:/app/configs:ro
+    - ./data/shard-3a/db:/data/db
+    - ./data/shard-3a/logs:/var/log/mongodb
     command: [--config, /app/configs/shard-3.conf]
 
   shard-3b:
@@ -157,13 +147,12 @@ services:
     container_name: mongo-shard-3b
     user: 1000:1000
     networks: ["net"]
-    environment:
-    - TZ=Asia/Shanghai
+    environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/app/configs:ro
     - ./bin:/app/bin:ro
-    - ./data/shard-3b/db:/app/db
-    - ./data/shard-3b/logs:/app/logs
+    - ./configs:/app/configs:ro
+    - ./data/shard-3b/db:/data/db
+    - ./data/shard-3b/logs:/var/log/mongodb
     command: [--config, /app/configs/shard-3.conf]
 
   shard-3c:
@@ -172,13 +161,12 @@ services:
     container_name: mongo-shard-3c
     user: 1000:1000
     networks: ["net"]
-    environment:
-    - TZ=Asia/Shanghai
+    environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/app/configs:ro
     - ./bin:/app/bin:ro
-    - ./data/shard-3c/db:/app/db
-    - ./data/shard-3c/logs:/app/logs
+    - ./configs:/app/configs:ro
+    - ./data/shard-3c/db:/data/db
+    - ./data/shard-3c/logs:/var/log/mongodb
     command: [--config, /app/configs/shard-3.conf]
 
   mongos-1:
@@ -191,10 +179,10 @@ services:
     ports: [127.0.0.1:27021:2017]
     environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/app/configs:ro
     - ./bin:/app/bin:ro
-    - ./data/mongos-1/db:/app/db
-    - ./data/mongos-1/logs:/app/logs
+    - ./configs:/app/configs:ro
+    - ./data/mongos-1/db:/data/db
+    - ./data/mongos-1/logs:/var/log/mongodb
     entrypoint: [mongos]
     command: [--config, /app/configs/mongos-1.conf]
     # --bind_ip_all
@@ -209,10 +197,10 @@ services:
     ports: [127.0.0.1:27022:2017]
     environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/app/configs:ro
     - ./bin:/app/bin:ro
-    - ./data/mongos-2/db:/app/db
-    - ./data/mongos-2/logs:/app/logs
+    - ./configs:/app/configs:ro
+    - ./data/mongos-2/db:/data/db
+    - ./data/mongos-2/logs:/var/log/mongodb
     entrypoint: [mongos]
     command: [--config, /app/configs/mongos-2.conf]
 
@@ -226,15 +214,12 @@ services:
     ports: [127.0.0.1:27023:2017]
     environment: [TZ=Asia/Shanghai]
     volumes:
-    - ./configs:/app/configs:ro
     - ./bin:/app/bin:ro
-    - ./data/mongos-3/db:/app/db
-    - ./data/mongos-3/logs:/app/logs
+    - ./configs:/app/configs:ro
+    - ./data/mongos-3/db:/data/db
+    - ./data/mongos-3/logs:/var/log/mongodb
     entrypoint: [mongos]
     command: [--config, /app/configs/mongos-3.conf]
 
 networks:
-  net:
-    name: mongo-distributed
-    driver: bridge
-    external: false
+  net: { name: mongo-distributed, driver: bridge, external: false }

@@ -1,5 +1,6 @@
-### Migrated from https://github.com/d2jvkpn/deploy.git
+### Build and Deploy Services with Docker
 ---
 
-#### chapter 1
-Hello, world!
+*Migrated from https://github.com/d2jvkpn/deploy.git*
+
+#### 1.
