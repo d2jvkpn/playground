@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: react-web-dev-deploy
+  name: react-web
   namespace: default
   labels: { app: "react-web", env: "dev" }
 
@@ -20,11 +20,20 @@ spec:
         image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/react-web:dev
         # IfNotPresent, Always, Never
         imagePullPolicy: "IfNotPresent"
-
         resources:
           # 500MHz, 128Mi(power-of-two)
           requests: { cpu: "200m", memory: "128Mi" }
           limits: { cpu: "500m", memory: "256Mi" }
-
         ports:
         - { name: "http", containerPort: 80, protocol: "TCP" }
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: react-web
+spec:
+  type: ClusterIP
+  selector: { app: "react-web", env: "dev" }
+  ports:
+  - { name: "dev", protocol: "TCP", port: 3102, targetPort: 80 }

@@ -28,3 +28,14 @@ spec:
 
         ports:
         - { name: "http", containerPort: 80, protocol: "TCP" }
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: react-web
+spec:
+  type: ClusterIP
+  selector: { app: "react-web", env: "test"}
+  ports:
+  - { name: "test", protocol: "TCP", port: 3103, targetPort: 80 }

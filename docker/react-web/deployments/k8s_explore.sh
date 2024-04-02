@@ -1,8 +1,6 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 set -eu -o pipefail
-
-_wd=$(pwd)/
-_path=$(dirname $0)/
+_wd=$(pwd)/; _path=$(dirname $0)/
 
 ####
 kubectl get pods --show-labels

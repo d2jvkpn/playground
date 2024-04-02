@@ -12,7 +12,7 @@ ENV TZ=Asia/Shanghai
 # RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 # RUN { apk --no-cache update && apk --no-cache upgrade && apk --no-cache add tzdata; } &> /dev/null
 
-WORKDIR /opt/react-web
+WORKDIR /app/react-web
 ADD *.json  react_build.sh yarn.lock ./
 COPY  configs/  ./configs
 COPY  public/   ./public
@@ -25,15 +25,16 @@ RUN sh react_build.sh $ENV_File # bash isn't installed in apline in default
 #### stage 2
 FROM nginx:stable-alpine
 
-WORKDIR /opt/nginx-web
-# COPY /opt/react-web/build  /usr/share/nginx/html
-COPY --from=builder /opt/react-web/build ./
+WORKDIR /app/react-web
+# COPY /app/react-web/build  /usr/share/nginx/html
+COPY --from=builder /app/react-web/build ./
 
 # events {
 # 	worker_connections  1024;
 # }
+
 RUN sed -i '/worker_processes/s#auto#4#' /etc/nginx/nginx.conf
 RUN mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bk
-COPY deployments/nginx-web.conf /etc/nginx/conf.d/nginx-web.conf
+COPY deployments/react-web.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80

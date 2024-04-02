@@ -1,7 +1,6 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # BRANCH="$1"
 # ENV_File="$2"
@@ -39,8 +38,7 @@ for base in $(awk '/^FROM/{print $2}' $df); do
     bn=$(echo $base | awk -F ":" '{print $1}')
     if [[ -z "$bn" ]]; then continue; fi
 
-    docker images --filter "dangling=true" --quiet "$bn" |
-      xargs -i docker rmi {}
+    docker images --filter "dangling=true" --quiet "$bn" | xargs -i docker rmi {}
 done &> /dev/null
 
 docker build --no-cache -f $df -t $image  \
@@ -51,9 +49,7 @@ docker build --no-cache -f $df -t $image  \
 
 docker image prune --force --filter label=stage=react-web_builder &> /dev/null
 
-for img in $(docker images --filter=dangling=true $name --quiet); do
-    docker rmi $img &> /dev/null
-done
+docker images --filter=dangling=true $name --quiet) | xargs -i docker rmi {} &> /dev/null
 
 #### push to registry
 [[ "$build_vendor" != "true" ]] && {
