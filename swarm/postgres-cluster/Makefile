@@ -6,7 +6,7 @@
 current = $(shell pwd)
 
 up:
-	bash step01_up.sh
+	./step01_config.sh && ./step02_run.sh up
 
 tests:
 	bash step02_tests.sh
@@ -24,4 +24,4 @@ connect-local:
 	expect connect.expect
 
 down:
-	echo no | bash step03_down.sh
+	docker-compose down

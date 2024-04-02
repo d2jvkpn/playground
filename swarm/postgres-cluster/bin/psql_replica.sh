@@ -3,7 +3,7 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 ####
-config=/app/configs/psql.yaml
+config=${1:-/app/configs/psql.yaml}
 
 data_dir=$(awk -v k="data_dir" '$0 ~ "^"k": " {print $2; exit}' $config)
 subnet=$(awk -v k="subnet" '$0 ~ "^"k": " {print $2; exit}' $config)
@@ -39,8 +39,10 @@ echo $replicator_password |
 
 cp $data_dir/postgresql.conf $data_dir/postgresql.conf.primary
 
+conn="host=$primary_host port=$primary_port user=$replicator_user password=$replicator_password"
+
 cat > $data_dir/postgresql.conf <<EOF
-primary_conninfo = 'host=$primary_host port=$primary_port user=$replicator_user password=$replicator_password'
+primary_conninfo = '$conn'
 # synchronous_standby_names = 'standby_server_1, standby_server_2'
 synchronous_commit = on
 EOF

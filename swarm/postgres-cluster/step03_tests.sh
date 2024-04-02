@@ -1,8 +1,6 @@
 #!/bin/bash
-set -eu -o pipefail # -x
+set -eu -o pipefail -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
-
-set -x
 
 docker exec -u postgres postgres-node01 psql -x -c "select * from pg_stat_replication;"
 

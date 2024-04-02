@@ -17,7 +17,7 @@ sudo chown 70:70 data/$primary
 password=$(tr -dc '0-9a-zA-Z._\-' < /dev/urandom | fold -w 32 | head -n 1 || true)
 
 # data_dir: /var/lib/postgresql/data/pgdata
-cat > configs/$primary.yaml << EOF
+cat > configs/$primary.yaml <<EOF
 data_dir: /app/data
 subnet: $subnet
 role: primary
@@ -25,13 +25,7 @@ replicator_user: $replicator_user
 replicator_password: $password
 EOF
 
-#### replica ${nodes[@]:1:3}
-for node in ${nodes[@]:1}; do
-    mkdir -p data/$node
-    sudo chown 70:70 data/$node
-    sudo chmod 0750 data/$node
-
-cat > configs/$node.yaml << EOF
+cat > configs/replica.yaml <<EOF
 data_dir: /app/data
 subnet: $subnet
 role: replica
@@ -42,4 +36,12 @@ primary_host: $primary
 primary_port: 5432
 delay_secs: 5
 EOF
+
+#### replica ${nodes[@]:1:3}
+for node in ${nodes[@]:1}; do
+    mkdir -p data/$node
+    sudo chown 70:70 data/$node
+    sudo chmod 0750 data/$node
+
+    cp configs/replica.yaml configs/$node.yaml
 done

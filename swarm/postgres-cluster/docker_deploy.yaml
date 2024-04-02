@@ -22,9 +22,9 @@ services:
     # - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
     - ./bin:/app/bin:ro
-    - ./configs/postgres-node01.yaml:/app/configs/psql.yaml:ro
+    - ./configs:/app/configs:ro
     - ./data/postgres-node01:/app/data
-    command: [bash, /app/bin/psql_primary.sh]
+    command: [/app/bin/psql_primary.sh, /app/configs/postgres-node01.yaml]
 
   postgres-node02:
     image: postgres:16-alpine
@@ -43,9 +43,9 @@ services:
     environment: [TZ=Asia/Shanghai, PGTZ=Asia/Shanghai]
     volumes:
     - ./bin:/app/bin:ro
-    - ./configs/postgres-node02.yaml:/app/configs/psql.yaml:ro
+    - ./configs:/app/configs:ro
     - ./data/postgres-node02:/app/data
-    command: [bash, /app/bin/psql_replica.sh]
+    command: [/app/bin/psql_replica.sh, /app/configs/postgres-node02.yaml]
 
   postgres-node03:
     image: postgres:16-alpine
@@ -64,9 +64,9 @@ services:
     environment: [TZ=Asia/Shanghai, PGTZ=Asia/Shanghai]
     volumes:
     - ./bin:/app/bin:ro
-    - ./configs/postgres-node03.yaml:/app/configs/psql.yaml:ro
+    - ./configs:/app/configs:ro
     - ./data/postgres-node03:/app/data
-    command: [bash, /app/bin/psql_replica.sh]
+    command: [/app/bin/psql_replica.sh, /app/configs/postgres-node03.yaml]
 
   postgres-node04:
     image: postgres:16-alpine
@@ -85,13 +85,13 @@ services:
     environment: [TZ=Asia/Shanghai, PGTZ=Asia/Shanghai]
     volumes:
     - ./bin:/app/bin:ro
-    - ./configs/postgres-node04.yaml:/app/configs/psql.yaml:ro
+    - ./configs:/app/configs:ro
     - ./data/postgres-node04:/app/data
-    command: [bash, /app/bin/psql_replica.sh]
+    command: [/app/bin/psql_replica.sh, /app/configs/postgres-node04.yaml]
 
 networks:
   net:
-    name: postgres_ha
+    name: postgres-cluster
     driver: bridge
     external: false
     ipam:
