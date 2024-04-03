@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-ARG SD_Version=${SD_Version:-1.7.0}
+ARG SD_Version=${SD_Version:-1.8.0}
 ENV SD_Version=$SD_Version
 
 RUN mkdir -p /app/bin
