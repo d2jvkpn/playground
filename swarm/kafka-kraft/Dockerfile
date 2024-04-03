@@ -8,7 +8,7 @@ ENV KAFKA_Version=${KAFKA_Version}
 ENV SCALA_Version=${SCALA_Version}
 
 COPY bin /app/bin
-RUN chmod a+x /app/bin/*.sh
+# RUN chmod a+x /app/bin/*.sh
 
 RUN if [ "$BUILD_Region" = "cn" ]; then \
     echo "==> BUILD_Region: $BUILD_Region"; \
@@ -27,8 +27,7 @@ RUN tag=${SCALA_Version}-${KAFKA_Version}; \
   apk del wget
 # mkdir -p /opt/kafka && tar -xf kafka_${tag}.tgz --strip-components=1 -C /opt/kafka
 
-RUN mkdir -p /app/kafka/data /app/kafka/logs && \
-  ln -s /app/kafka/logs /opt/kafka/logs
+RUN mkdir -p /app/kafka/data /app/kafka/logs && ln -s /app/kafka/logs /opt/kafka/logs
 
 ENV PATH=/opt/kafka/bin:$PATH
 WORKDIR /app

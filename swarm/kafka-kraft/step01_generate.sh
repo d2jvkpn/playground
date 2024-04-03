@@ -64,7 +64,7 @@ EOF
 done
 
 #### 2. generate docker-compose.yaml
-export TAG=$kafka_version UserID=$UID GroupID=$(id -g)
+export TAG=$kafka_version USER_UID=$UID USER_GID=$(id -g)
 envsubst > docker-compose.yaml < docker_deploy.yaml
 
 echo "==> docker-compose.yaml created"
