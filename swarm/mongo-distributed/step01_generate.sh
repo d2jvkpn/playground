@@ -41,3 +41,30 @@ for idx in {1..3}; do
     config_db=$config_db bind_ip=mongo-$node \
       envsubst < docs/mongos.conf | sed '/^#/d' > configs/$node.conf
 done
+
+cat > configs/mongo.config.json <<EOF
+{
+  "configsvr": {
+    "id": "configsvr-1",
+    "members": [
+      {"_id": 1, "host": "mongo-configsvr-1a:27017"},
+      {"_id": 2, "host": "mongo-configsvr-1b:27017"},
+      {"_id": 3, "host": "mongo-configsvr-1c:27017"}
+    ]
+  },
+  "shards": [
+    {
+      "name": "shard-1",
+      "hosts": ["mongo-shard-1a:27017", "mongo-shard-1b:27017", "mongo-shard-1c:27017"]
+    },
+    {
+      "name": "shard-2",
+      "hosts": ["mongo-shard-2a:27017", "mongo-shard-2b:27017", "mongo-shard-2c:27017"]
+    },
+    {
+      "name": "shard-3",
+      "hosts": ["mongo-shard-3a:27017", "mongo-shard-3b:27017", "mongo-shard-3c:27017"]
+    }
+  ]
+}
+EOF

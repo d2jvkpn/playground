@@ -9,8 +9,9 @@ export USER_UID=$(id -u) USER_GID=$(id -g)
 envsubst < docker_deploy.yaml > docker-compose.yaml
 
 echo "==> docker-compose up"
-# docker-compose up -d
+docker-compose up -d
 
+exit
 # if you start services mongos in docker-compose.yaml, you can't connect to mongos through ports mapping
 sed -i -e '/mongos-1:\|mongos-2:\|mongos-3:/,+15d' docker-compose.yaml
 docker-compose up -d configsvr-1{a..c} shard-{1..3}{a..c}
