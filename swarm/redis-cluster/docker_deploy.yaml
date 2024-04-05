@@ -1,0 +1,98 @@
+version: '3'
+
+services:
+  redis-node01:
+    image: redis:7-alpine
+    restart: unless-stopped
+    user: "${USER_UID}:${USER_GID}"
+    networks: [net]
+    container_name: redis-node01
+    environment:
+    - TZ=Asia/Shanghai
+    - ALLOW_EMPTY_PASSWORD=yes
+    - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    volumes:
+    - ./configs/:/app/configs/:ro
+    - ./data/redis-node01:/data
+    command: redis-server /app/configs/redis.conf --enable-debug-command local
+
+  redis-node02:
+    image: redis:7-alpine
+    restart: unless-stopped
+    user: "${USER_UID}:${USER_GID}"
+    networks: [net]
+    container_name: redis-node02
+    environment:
+    - TZ=Asia/Shanghai
+    - ALLOW_EMPTY_PASSWORD=yes
+    - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    volumes:
+    - ./configs/:/app/configs/:ro
+    - ./data/redis-node02:/data
+    command: redis-server /app/configs/redis.conf --enable-debug-command local
+
+  redis-node03:
+    image: redis:7-alpine
+    restart: unless-stopped
+    user: "${USER_UID}:${USER_GID}"
+    networks: [net]
+    container_name: redis-node03
+    environment:
+    - TZ=Asia/Shanghai
+    - ALLOW_EMPTY_PASSWORD=yes
+    - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    volumes:
+    - ./configs/:/app/configs/
+    - ./data/redis-node03:/data
+    command: redis-server /app/configs/redis.conf --enable-debug-command local
+
+  redis-node04:
+    image: redis:7-alpine
+    restart: unless-stopped
+    user: "${USER_UID}:${USER_GID}"
+    networks: [net]
+    container_name: redis-node04
+    environment:
+    - TZ=Asia/Shanghai
+    - ALLOW_EMPTY_PASSWORD=yes
+    - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    volumes:
+    - ./configs/:/app/configs/
+    - ./data/redis-node04:/data
+    command: redis-server /app/configs/redis.conf --enable-debug-command local
+
+  redis-node05:
+    image: redis:7-alpine
+    restart: unless-stopped
+    user: "${USER_UID}:${USER_GID}"
+    networks: [net]
+    container_name: redis-node05
+    environment:
+    - TZ=Asia/Shanghai
+    - ALLOW_EMPTY_PASSWORD=yes
+    - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    volumes:
+    - ./configs/:/app/configs/
+    - ./data/redis-node05:/data
+    command: redis-server /app/configs/redis.conf --enable-debug-command local
+
+  redis-node06:
+    image: redis:7-alpine
+    restart: unless-stopped
+    user: "${USER_UID}:${USER_GID}"
+    networks: [net]
+    container_name: redis-node06
+    environment:
+    - TZ=Asia/Shanghai
+    - ALLOW_EMPTY_PASSWORD=yes
+    - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    volumes:
+    - ./configs/:/app/configs/
+    - ./data/redis-node06:/data
+    command: redis-server /app/configs/redis.conf --enable-debug-command local
+
+networks:
+  net: {name: redis-cluster, driver: bridge, external: false}
+
+# volumes:
+#   redis: {name: redis, driver: local}
