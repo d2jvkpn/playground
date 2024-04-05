@@ -2,8 +2,7 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-# [ -z "$(docker network ls | grep -w mongo-distributed)" ] && \
-#   docker network create mongo-distributed
+# [ -z "$(docker network ls | grep -w mongo-cluster)" ] && docker network create mongo-cluster
 
 export USER_UID=$(id -u) USER_GID=$(id -g)
 envsubst < docker_deploy.yaml > docker-compose.yaml
@@ -24,7 +23,7 @@ for idx in {1..3}; do
 
     docker run --name mongo-$node -d \
       -p 127.0.0.1:$port:27017 \
-      --net=mongo-distributed \
+      --net=mongo-cluster \
       -e TZ=Asia/Shanghai \
       -v $PWD/bin:/app/bin \
       -v $PWD/configs:/app/configs \

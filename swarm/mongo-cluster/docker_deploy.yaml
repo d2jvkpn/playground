@@ -221,4 +221,4 @@ services:
     command: [--bind_ip_all, --config, /app/configs/mongos-3.conf]
 
 networks:
-  net: { name: mongo-distributed, driver: bridge, external: false }
+  net: { name: mongo-cluster, driver: bridge, external: false }
