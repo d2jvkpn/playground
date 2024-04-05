@@ -2,8 +2,11 @@
 set -eu -o pipefail
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-mkdir -p logs
-ls turnserver.conf
+mkdir -p logs configs
+[ -s config/turnserver.conf ] && cp turnserver.conf configs/
+
+export USER_UID=$(id -u) USER_GID=$(id -g)
+envsubst < docker_deploy.yaml > docker-compose.yaml
 
 docker-compose pull
 docker-compose up -d

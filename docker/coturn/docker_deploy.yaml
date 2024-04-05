@@ -4,16 +4,13 @@ services:
   coturn:
     image: coturn/coturn:4-alpine
     restart: always
-    container_name: coturn
+    user: "${USER_UID}:${USER_GID}"
+    container_name: turnserver
     working_dir: /app
-    user: root
     network_mode: host
-
     volumes:
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
     - ./logs:/app/logs/
-    - ./turnserver.conf:/etc/turnserver.conf:ro
-
-    # $ mkdir -p logs
-    command: ["turnserver"]
+    - ./configs:/app/configs:ro
+    command: ["turnserver", "-c", "/app/turnserver.conf"]
