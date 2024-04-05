@@ -12,6 +12,8 @@ envsubst < docker_deploy.yaml > docker-compose.yaml
 
 docker-compose up -d
 
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' redis-node{01..06}
+
 redis_node01='docker exec redis-node01 redis-cli -h 127.0.0.1 -p 6380'
 
 $redis_node01 \
