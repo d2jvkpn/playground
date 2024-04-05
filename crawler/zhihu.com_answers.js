@@ -1,15 +1,11 @@
 // util functions
 function datetime(at=null) {
-  if (!at) {
-    at = new Date();
-  }
+  if (!at) { at = new Date(); }
 
   function padH0 (value, len=2) { return value.toString().padStart(len, '0')}
 
   function timezoneOffset(offset) {
-    if (offset === 0) {
-      return "Z";
-    }
+    if (offset === 0) { return "Z"; }
 
     let hour = padH0(Math.floor(Math.abs(offset) / 60));
     let minute = padH0(Math.abs(offset) % 60);
@@ -60,18 +56,10 @@ function downloadFilename() {
 function getTarget() {
   let target = document.querySelector(".AnswerCard");
 
-  if (!target) {
-    // target = document.querySelector(".RichContent");
-    target = document.querySelector(".AnswersNavWrapper");
-  }
-
-  if (!target) {
-    target = document.querySelector(".Post-content");
-  }
-
-  if (!target) {
-    target = document.querySelector(".Post-main");
-  }
+  // target = document.querySelector(".RichContent");
+  if (!target) { target = document.querySelector(".AnswersNavWrapper"); }
+  if (!target) { target = document.querySelector(".Post-content"); }
+  if (!target) { target = document.querySelector(".Post-main"); }
 
   return target;
 }
@@ -129,9 +117,8 @@ function getText(target, archive) {
   text += "\n#### Comments\n"
   if (comment) {
     let items = Array.from(comment.querySelectorAll("div")).filter(e => e.hasAttribute("data-id"));
-    items.forEach(e => {
-      text += "\n\n##### " + e.innerText;
-    });
+
+    items.forEach(e => { text += "\n\n##### " + e.innerText; });
   }
 
   let links = getMoreAnswers();
@@ -147,7 +134,7 @@ function printData(data) {
 function downloadAnchor(data) {
   let link = document.createElement("a");
 
-  link.href = `data:text/plain;charset=utf8,` +
+  link.href = `data:text/plain;charset=utf8,` + 
     `${data.replace(/\n/g, "%0D%0A").replace(/#/g, "%23")}\n`;
 
   link.download = downloadFilename();
@@ -194,8 +181,7 @@ function run(target, handle) {
 var target = getTarget();
 
 if (target) {
-  // handle: printData
-  // handle: data => postArchive(`http://127.0.0.1:3000/`, data)
+  // handles: printData, data => postArchive(`http://127.0.0.1:3000/`, data)
   run(target, downloadAnchor);
 } else {
   alert("No Target Found!");

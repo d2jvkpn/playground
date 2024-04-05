@@ -1,15 +1,10 @@
-// util functions
 function datetime(at=null) {
-  if (!at) {
-    at = new Date();
-  }
+  if (!at) { at = new Date(); }
 
   function padH0 (value, len=2) { return value.toString().padStart(len, '0')}
 
   function timezoneOffset(offset) {
-    if (offset === 0) {
-      return "Z";
-    }
+    if (offset === 0) { return "Z"; }
 
     let hour = padH0(Math.floor(Math.abs(offset) / 60));
     let minute = padH0(Math.abs(offset) % 60);
@@ -47,7 +42,7 @@ function archiveText() {
 
   if (!article) {
     alert("No Target Found!");
-    returnl
+    return;
   }
 
   let filename = downloadFilename();
@@ -70,9 +65,7 @@ function archiveText() {
       return e.hasAttribute("data-id") && !e.parentElement.hasAttribute("data-id");
     });
 
-    items.forEach(e => {
-      text += "\n\n##### " + e.innerText;
-    });
+    items.forEach(e => { text += "\n\n##### " + e.innerText; });
   }
 
   let link = document.createElement("a");

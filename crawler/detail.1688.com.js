@@ -21,16 +21,12 @@ function parseComment(item) {
 }
 
 function datetime(at=null) {
-  if (!at) {
-    at = new Date();
-  }
+  if (!at) { at = new Date(); }
 
   function padH0 (value, len=2) { return value.toString().padStart(len, '0')}
 
   function timezoneOffset(offset) {
-    if (offset === 0) {
-      return "Z";
-    }
+    if (offset === 0) { return "Z"; }
 
     let hour = padH0(Math.floor(Math.abs(offset) / 60));
     let minute = padH0(Math.abs(offset) % 60);

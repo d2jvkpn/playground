@@ -38,9 +38,8 @@ function downloadFiles(tag, prefix) {
   let n = 0;
 
   links.forEach(link => {
-    if (!link) {
-      return
-    }
+    if (!link) { return; }
+
     n += 1;
     let target = link.replace(/\/+$/, "").split("/").pop().split("?")[0];
     target = target ? target : "unknown.data";
