@@ -41,7 +41,7 @@ function archiveText() {
   let article = document.querySelector("article.Post-Main, Post-NormalMain");
 
   if (!article) {
-    alert("No Target Found!");
+    alert("No an article!");
     return;
   }
 
@@ -79,8 +79,4 @@ function archiveText() {
   alert(`==> saved ${link.download}`);
 }
 
-if (document.URL.startsWith("https://www.zhihu.com/p/")) {
-  archiveText();
-} else {
-  alter("No an article!");
-}
+archiveText();

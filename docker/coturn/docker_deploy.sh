@@ -6,7 +6,7 @@ mkdir -p logs configs
 [ -s config/turnserver.conf ] && cp turnserver.conf configs/
 
 export USER_UID=$(id -u) USER_GID=$(id -g)
-envsubst < docker_deploy.yaml > docker-compose.yaml
+envsubst < docker_deploy.no-tls.yaml > docker-compose.yaml
 
 docker-compose pull
 docker-compose up -d
