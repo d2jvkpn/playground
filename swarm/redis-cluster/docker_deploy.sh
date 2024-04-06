@@ -4,9 +4,11 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # https://redis.io/docs/management/scaling/#create-a-redis-cluster
 
-mkidr -p configs data/redis-node{01..06}
 # sudo rm -rf data/redis-node0*/*
-[ -s configs/redis.conf ] && cp configs/redis.conf configs/
+mkidr -p configs data/redis-node{01..06}
+[ -s configs/redis.conf ] && cp configs/redis.cluster.conf configs/
+
+
 export USER_UID=$(id -u) USER_GID=$(id -g)
 envsubst < docker_deploy.yaml > docker-compose.yaml
 
