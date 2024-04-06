@@ -13,11 +13,11 @@ docker-compose up -d
 
 exit
 
-nohup turnserver --lt-cred-mech --fingerprint --verbose --mobility \
-  --no-tls --no-dtls --new-log-timestamp --log-file=turnserver \
+nohup turnserver \
+--lt-cred-mech --fingerprint --verbose --mobility \
+  --no-tls --no-dtls \
+  --new-log-timestamp --log-file=logs/turnserver \
   --realm=aaaa --user=John:Doe \
-  --external-ip=192.168.1.2  \
-  --listening-port 3478 \
-  --min-port=30000 \
-  --max-port=31000 \
+  --external-ip=192.168.1.2  --listening-port 3478 \
+  --min-port=30000 --max-port=31000 \
   --pidfile turnserver.pid
