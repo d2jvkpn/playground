@@ -3,7 +3,7 @@ set -eu -o pipefail
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 mkdir -p logs configs
-[ -s config/turnserver.conf ] && cp turnserver.conf configs/
+[ -s config/turnserver.no-tls.conf ] || cp turnserver.no-tls.conf configs/
 
 export USER_UID=$(id -u) USER_GID=$(id -g)
 envsubst < docker_deploy.no-tls.yaml > docker-compose.yaml

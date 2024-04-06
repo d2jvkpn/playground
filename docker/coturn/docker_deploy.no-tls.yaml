@@ -15,6 +15,6 @@ services:
     - ./configs:/app/configs:ro
     command:
     - turnserver
-    - -c=/app/turnserver.conf
+    - -c=/app/turnserver.no-tls.conf
     - --external-ip=192.168.1.1
     - --listening-port=3478
