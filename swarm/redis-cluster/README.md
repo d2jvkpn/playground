@@ -5,6 +5,7 @@
 - https://redis.io/docs/management/scaling/#create-a-redis-cluster
 
 #### 2. Topics
-1. Creation, Configuration
-2. Optimizing
-3. Troubleshooting, Debugging, Failover and Failback
+1. Configuration & Creation
+2. Maintaince and Optimizing
+3. Reshard, Rebalance
+4. Troubleshooting, Debugging, Failover and Failback
