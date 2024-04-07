@@ -1,10 +1,10 @@
 services:
   ue:
     image: adamrehn/ue4-runtime:latest
-    container_name: ue-${UE_App}
+    container_name: ue_${UE_App}
     restart: always
-    user: "${USER_UID}"
     network_mode: host
+    user: "${USER_UID}:${USER_GID}"
     deploy:
       resources:
         reservations:
@@ -17,13 +17,14 @@ services:
             count: 1
             capabilities: [gpu]
     volumes:
-    - ./${UE_App}:/app/UnrealEngine
-    - ./logs:/app/UnrealEngine/${UE_App}/Saved
+    - ./${UE_App}:/app
+    - ./logs:/app/${UE_App}/Saved
     working_dir: /app
     command:
-    - ./UnrealEngine/${UE_App}/Binaries/Linux/${UE_App}
+    - ./${UE_App}/Binaries/Linux/${UE_App}
     - -AudioMixer
     - -RenderOffScreen
     - -PixelStreamingURL=${WS_Url}
-    # -PixelStreamingIP=192.168.1.1
-    # -PixelStreamingPort=3031
+    # - -PixelStreamingURL=ws://192.168.1.1:3032/ws/streamer?project=MyProject
+    # - -PixelStreamingIP=192.168.1.1
+    # - -PixelStreamingPort=3031

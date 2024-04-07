@@ -31,7 +31,9 @@ docker-compose up -d
 
 docker stats
 
-docker run --rm --gpus=all nvidia/cuda:11.8.0-base-ubuntu22.04 nvidia-smi
+# docker run --rm --gpus=all nvidia/cuda:11.8.0-base-ubuntu22.04 nvidia-smi
+docker run --rm --gpus=all nvidia/cuda:12.2.2-base-ubuntu22.04 nvidia-smi
+
 
 #### quick run
 docker run --rm --network=host --gpus all \
