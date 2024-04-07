@@ -6,7 +6,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # sudo rm -rf data/redis-node0*/*
 mkidr -p configs data/redis-node{01..06}
-[ -s configs/redis.conf ] && cp configs/redis.cluster.conf configs/
+[ -s configs/redis.conf ] && cp configs/redis.conf configs/
 
 
 export USER_UID=$(id -u) USER_GID=$(id -g)
