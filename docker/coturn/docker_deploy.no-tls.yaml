@@ -5,13 +5,13 @@ services:
     image: coturn/coturn:4-alpine
     restart: always
     user: "${USER_UID}:${USER_GID}"
+    network_mode: host
     container_name: turnserver
     working_dir: /app
-    network_mode: host
     volumes:
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
-    - ./logs:/app/logs/
+    - ./logs:/app/logs
     - ./configs:/app/configs:ro
     command:
     - turnserver
