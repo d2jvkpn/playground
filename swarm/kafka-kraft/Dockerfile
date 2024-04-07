@@ -17,7 +17,7 @@ RUN if [ "$BUILD_Region" = "cn" ]; then \
 
 RUN apk --no-cache update && \
   apk --no-cache upgrade && \
-  apk --no-cache add tzdata bash openjdk21 wget
+  apk --no-cache add tzdata bash wget openjdk21
 
 RUN tag=${SCALA_Version}-${KAFKA_Version}; \
   wget https://downloads.apache.org/kafka/${KAFKA_Version}/kafka_${tag}.tgz && \
@@ -27,7 +27,7 @@ RUN tag=${SCALA_Version}-${KAFKA_Version}; \
   apk del wget
 # mkdir -p /opt/kafka && tar -xf kafka_${tag}.tgz --strip-components=1 -C /opt/kafka
 
-RUN mkdir -p /app/kafka/data /app/kafka/logs && ln -s /app/kafka/logs /opt/kafka/logs
+RUN mkdir -p /app/kafka/data /app/kafka/logs && ln -s /app/kafka/logs /opt/logs
 
 ENV PATH=/opt/kafka/bin:$PATH
 WORKDIR /app

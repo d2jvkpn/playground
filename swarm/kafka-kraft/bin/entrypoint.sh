@@ -15,5 +15,5 @@ mkdir -p kafka/{data,logs}
 
 kafka-storage.sh format --ignore-formatted -t $cluster_id -c $config # --add-scram
 
+# -daemon
 kafka-server-start.sh $config "$@"
-# kafka-server-start.sh -daemon $config
