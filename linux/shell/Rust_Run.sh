@@ -2,26 +2,27 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-script=$1
-# out=/tmp/$(basename $script | sed 's/.rs$//')
-out=target/$(basename $script | sed 's/.rs$//')
-shift
-args=$*
+script=$1; shift; args=$*
+out=target/$(basename $script | sed 's/.rs$//') # out=/tmp/$(basename $script | sed 's/.rs$//')
 
 mkdir -p target
 rustfmt $script
-rustc -o $out $script
-# build release with option -C opt-level=3
 
-$out $args
+if [ "${release:-false}" == "true" ]; then
+    rustc -C opt-level=3 -o "$out" "$script"
+else
+    rustc -o "$out" "$script"
+fi
+
+"$out" $args
 
 exit
 
 function cleanup {
-    # echo "Removing $out"
-    rm -f $out
+    echo "==> removing $out"
+    rm -f "$out"
 }
 
 trap cleanup EXIT
 
-$out $args
+"$out" $args
