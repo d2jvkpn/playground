@@ -11,6 +11,6 @@ df.columns = [c.replace(".1", "") for c in df.columns]
 filename = os.path.join("data", "TIOBE_Index_"+df.columns[0].replace(" ", "-"))+".tsv"
 
 os.makedirs("data", exist_ok=True)
-df.to_csv(filename, sep="\t")
+df.to_csv(filename, sep="\t", index=False)
 
 print(f"==> saved to {filename}")
