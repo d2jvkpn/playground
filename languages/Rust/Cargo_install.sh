@@ -13,3 +13,9 @@ cargo build --target=x86_64-pc-windows-msvc
 
 cargo install cargo-watch cargo-watch bench \
   cargo-generate cargo-udeps flamegraph cargo-profiler
+
+cargo +stable test
+cargo +nightly test
+
+rustup toolchain install nightly
+rustup override set nightly
