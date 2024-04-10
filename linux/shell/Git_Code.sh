@@ -23,7 +23,7 @@ if [[ "$output" =~ "Already up-to-date." ]]; then
     exit 0
 fi
 
-cd ${_path}
+cd "${_path}"
 
 echo "==> Replacing code.zip"
 [ -f code.zip ] && rm code.zip
