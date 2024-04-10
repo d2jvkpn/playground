@@ -1,6 +1,6 @@
 #!/bin/bash
-set -eu -o pipefail -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail
+_wd=$(pwd); _path=$(dirname "$0" | xargs -i readlink -f {})
 
 if [ $# -gt 0 ]; then
     git clone $1 code
@@ -9,22 +9,23 @@ if [ $# -gt 0 ]; then
 fi
 
 if [[ ! -d code && ! -s code.zip ]]; then
-    >&2 echo "==> Not code(.zip) found!"
+    >&2 echo "==> not code(.zip) found!"
     exit 1
 elif [[ ! -d code && -s code.zip ]]; then
     unzip -q code.zip
 fi
 
 cd code
+echo "==> git pull"
 output=$(git pull --no-edit)
 
 if [[ "$output" =~ "Already up-to-date." ]]; then
-    echo "==> Code is already up-to-date"
+    echo "==> code is already up-to-date"
     exit 0
 fi
 
 cd "${_path}"
 
-echo "==> Replacing code.zip"
+echo "==> replacing code.zip"
 [ -f code.zip ] && rm code.zip
-zip -qr code.zip code
+zip -qr code.zip . -i code
