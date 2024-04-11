@@ -121,6 +121,8 @@ if (!url.host.includes("zhihu.com")) {
   listSearch();
 } else if (url.pathname.startsWith("/p/")) {
   archiveArticle();
-} else if (url.pathame.startsWith("/question/")) {
+} else if (/\/p\/[0-9]+\/answer\/[0-9]+/.test(url.pathame)) {
   alert("!!! TODO");
+} else {
+  alert(`!!! unknown url path: ${url.pathame}`)
 }
