@@ -6,7 +6,7 @@ services:
     container_name: shiori_app
     restart: always
     networks: ["shiori"]
-    ports: ["127.0.0.1:${PORT}:${PORT}"]
+    ports: ["127.0.0.1:${HTTP_Port}:${HTTP_Port}"]
     volumes:
     - ./data:/srv/shiori/
     environment: ["TZ=Asia/Shanghai"]
