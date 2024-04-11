@@ -14,7 +14,7 @@ set -eu -o pipefail
 
 
 {
-    date +">>> %FT%T%:z"
+    date +"==> %FT%T%:z"
 
     yesterday=$(date -d 'yesterday' '+%Y-%m-%d')
     pid=$(cat /var/run/nginx.pid)
@@ -22,7 +22,7 @@ set -eu -o pipefail
     for f in $(ls ${HOME}/nginx/logs/*.log); do
         [ -s $f ] || continue
         out=${f%\.log}.${yesterday}.log
-        echo "    saving $out"
+        echo "--> saving $out"
         mv $f $out
         pigz $out &
     done
