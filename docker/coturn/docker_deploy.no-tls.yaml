@@ -11,10 +11,10 @@ services:
     volumes:
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
-    - ./logs:/app/logs
     - ./configs:/app/configs:ro
+    - ./logs:/app/logs
     command:
     - turnserver
-    - -c=/app/turnserver.no-tls.conf
+    - -c=/app/configs/turnserver.no-tls.conf
     - --external-ip=192.168.1.1
     - --listening-port=3478

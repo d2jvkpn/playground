@@ -19,4 +19,6 @@ EOF
 export HTTP_Port=$HTTP_Port USER_UID=$(id -u) USER_GID=$(id -g)
 envsubst < docker_deploy.yaml > docker-compose.yaml
 
+docker-compose pull
+
 docker-compose up -d
