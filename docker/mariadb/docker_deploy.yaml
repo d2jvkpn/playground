@@ -3,20 +3,22 @@ version: '3'
 services:
   mariadb:
     image: mariadb:11
-    container_name: mariadb
     restart: always
     networks: ["net"]
     # network_mode: bridge
-    ports: ["127.0.0.1:${Port}:3306"]
+    ports: ["127.0.0.1:${DB_Port}:3306"]
+    container_name: mariadb
+    environment:
+    # - TZ=Asia/Shanghai
+    # - MARIADB_ROOT_PASSWORD=ChangeThisPassword
+    # - MARIADB_USER=hello
+    # - MARIADB_PASSWORD=world
+    # - MARIADB_DATABASE=app
     volumes:
+    - /etc/timezone:/etc/timezone:ro
+    - /etc/localtime:/etc/localtime:ro
     - ./data/mariadb:/var/lib/mysql/
     # - ./data/mysql.cnf:/etc/mysql/my.cnf
-    environment:
-    - TZ=Asia/Shanghai
-    - MYSQL_ROOT_PASSWORD=ChangeThisPassword
-    # - MYSQL_USER=hello
-    # - MYSQL_PASSWORD=world
-    # - MYSQL_DATABASE=db01
 
 networks:
   net: {name: "mariadb", driver: "bridge", external: false}
