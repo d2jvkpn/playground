@@ -46,4 +46,4 @@ services:
     volumes: [./data/zentao:/data]
 
 networks:
-  net: { name: "zentao-net", driver: bridge, external: false }
+  net: { name: "zentao", driver: bridge, external: false }
