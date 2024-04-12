@@ -108,21 +108,123 @@ function archiveArticle() {
   link.href = `data:text/plain;charset=utf8,` +
     `${text.replace(/\n/g, "%0D%0A").replace(/#/g, "%23")}\n`;
 
-  link.download = downloadFilename();
+  link.download = filename;
   link.click();
 
   alert(`==> saved ${link.download}`);
 }
 
+// answers
+function parseAnsText(target, archive) {
+  function getMoreAnswers(ansUrl) {
+    let moreAns = document.querySelector(".MoreAnswers");
+
+    if (moreAns) {
+      return Array.from(moreAns.querySelectorAll(".AnswerItem"))
+        .map(e => ansUrl.replace(/\d+$/, e.getAttribute("name")));
+    }
+
+    let taregt = document.querySelector(".AnswersNavWrapper");
+    if (!target) { return [] };
+
+    target = taregt.querySelector("div.List-item");
+    if (!target) { return [] };
+
+    return Array.from(taregt.querySelectorAll("div.AnswerItem")).slice(1).map(e => {
+      return ansUrl.replace(/\d+$/, e.getAttribute("name"));
+    });
+  }
+
+  let ansUrl = new URL(document.URL).origin + new URL(document.URL).pathname;;
+  let filename = newFilename();
+  let title = document.title.replace(/^\(.*\) /, "").split(" - ")[0].replace(/ +/g, "_");
+
+  /*
+  let data = `# ${document.title.split(" - ")[0]}\n\n` +
+    `**link**: *${document.URL}*\n` +
+    `**filename**: *${filename}*\n` +
+    target.innerText.replace(/\n+/g, "\n");
+  */
+
+  let author = target.querySelector(".AuthorInfo-content");
+  author = author.innerText.replace(/\n/g, " ") + " " + author.querySelector("a.UserLink-link");
+
+  let text = `# ${title}\n\n` +
+    `#### Meta\n` +
+    "```yaml\n" +
+    `link: ${ansUrl}\n` +
+    `datetime: ${datetime().rfc3339}\n` +
+    `filename: ${filename}\n` +
+    `author: ${author}\n` +
+    "```\n\n";
+
+  text += `#### Content\n` +
+    target.querySelector(".RichContent-inner").innerText + "\n\n" +
+    target.querySelector(".ContentItem-time").innerText + "\n\n" +
+    target.querySelector(".ContentItem-actions").children[0].innerText + "\n";
+
+  let comment = document.querySelector(".Comments-container") ||
+    document.querySelector(".Modal-content");
+
+  text += "\n#### Comments\n"
+  if (comment) {
+    let items = Array.from(comment.querySelectorAll("div")).filter(e => e.hasAttribute("data-id"));
+
+    items.forEach(e => { text += "\n\n##### " + e.innerText; });
+  }
+
+  let links = getMoreAnswers(ansUrl);
+  text += `\n\n#### More Answers:\n- ${links.join("\n- ")}\n`;
+
+  archive(text);
+}
+
+function downloadAnchor(data) {
+  let link = document.createElement("a");
+
+  link.href = `data:text/plain;charset=utf8,` +
+    `${data.replace(/\n/g, "%0D%0A").replace(/#/g, "%23")}\n`;
+
+  link.download = newFilename();
+  link.click();
+
+  alert(`==> saved ${link.download}`);
+}
+
+//
+function getAnswer() {
+  let target = document.querySelector(".AnswerCard");
+
+  // target = document.querySelector(".RichContent");
+  if (!target) { target = document.querySelector(".AnswersNavWrapper"); }
+  if (!target) { target = document.querySelector(".Post-content"); }
+  if (!target) { target = document.querySelector(".Post-main"); }
+
+  if (!target) {
+    alert("No Target Found!");
+  }
+
+  var btn = Array.from(target.querySelectorAll("button")).find(e => e.innerText.includes("条评论"));
+
+  if (btn) {
+    btn.click();
+    setTimeout(() => parseAnsText(target, downloadAnchor), 1000);
+  } else {
+    parseAnsText(target, downloadAnchor);
+  };
+}
+
+// biz
 var url = new URL(document.URL);
+
 if (!url.host.includes("zhihu.com")) {
   alert("!!! not zhihu.com");
 } else if (url.pathname.startsWith("/search")) {
   listSearch();
 } else if (url.pathname.startsWith("/p/")) {
   archiveArticle();
-} else if (/\/p\/[0-9]+\/answer\/[0-9]+/.test(url.pathame)) {
-  alert("!!! TODO");
+} else if (/\/question\/[0-9]+\/answer\/[0-9]+/.test(url.pathname)) {
+  getAnswer();
 } else {
-  alert(`!!! unknown url path: ${url.pathame}`)
+  alert(`!!! unknown url path: ${url.pathname}`);
 }
