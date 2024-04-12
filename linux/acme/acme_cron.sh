@@ -13,7 +13,7 @@ target_dir=~/nginx/certs
     date +"==> %FT%T%:z run acme_cron.sh"
     s1=$(md5sum $certs_dir/$domain.cer | awk '{print $1}')
 
-    ${acme}/acme.sh --cron --home $acme --server letsencrypt
+    ${acme}/acme.sh --cron --server letsencrypt --home $acme
 
     s2=""
     [ -f $target_dir/$domain.cer ] && s2=$(md5sum $target_dir/$domain.cer | awk '{print $1}')
