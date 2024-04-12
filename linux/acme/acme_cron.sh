@@ -26,8 +26,7 @@ changed="false";
         rsync ${certs_dir}/$domain.{key,cer} $target_dir/
     done
 
-    # sudo nginx -t
-    [[ "$changed" == "true" ]] && sudo nginx -s reload
+    [[ "$changed" == "true" ]] && { sudo nginx -t; sudo nginx -s reload; }
 } >> ${_path}/acme_cron.$(date +"%Y-%m").log 2>&1
 
 exit
