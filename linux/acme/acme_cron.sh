@@ -33,25 +33,34 @@ target_dir=$HOME/nginx/certs
 exit
 
 #### 1. installation
-git clone https://github.com/acmesh-official/acme.sh
+git clone https://github.com/acmesh-official/acme.sh .acme.sh
+
+# mkdir -p ~/Apps
+# git clone https://github.com/acmesh-official/acme.sh ~/Apps/acme
+
 # curl https://get.acme.sh | sh
 
 mkdir -p ~/crons
 cp acme_cron.sh ~/crons
 
-~/crons/.acme.sh/acme.sh --register-account -m $email
+~/.acme.sh/acme.sh --register-account -m $email
 
 #### 2. setup account
 
 ##### 2.1 dns aliyun
-access_key_file=ALIYUN_access_key.json
-email=jane@doe.local
+# aliyun_account01_permissions=["AliyunDNSFullAccess"]
+access_key_file=aliyun_account01.json
+email=john@doe.local
 domain=doe.local
 
 # get access key https://ram.console.aliyun.com/manage/ak
 export Ali_Key="$(jq -r '.AccessKeyId' $access_key_file)"
 export Ali_Secret="$(jq -r '.AccessKeySecret' $access_key_file)"
-~/crons/.acme.sh/acme.sh --issue --dns dns_ali --server letsencrypt -d $domain -d *.$domain
+~/.acme.sh/acme.sh --issue --dns dns_ali --server letsencrypt -d $domain -d *.$domain
+
+cat ~/.acme.sh/account.conf
+# SAVED_Ali_Key='xxxx'
+# SAVED_Ali_Secret='xxxx'
 
 #### 3. setup cron
 # crontab -e # comment out default and add following line
