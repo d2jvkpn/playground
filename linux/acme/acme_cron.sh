@@ -7,9 +7,9 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {} )
 
 acme=~/Apps/acme # directory
 target_dir=${target_dir:-~/nginx/certs}
-changed="false";
 
 {
+    changed="false";
     date +"==> %FT%T%:z run acme_cron.sh"
     $acme/acme.sh --cron --server letsencrypt --home $acme
 
@@ -19,6 +19,7 @@ changed="false";
         s1=$(md5sum $certs_dir/$domain.cer | awk '{print $1}')
         s2=""
         [ -f $target_dir/$domain.cer ] && s2=$(md5sum $target_dir/$domain.cer | awk '{print $1}')
+
         [[ "$s1" == "$s2" ]] && continue
 
         changed="true"
@@ -26,7 +27,12 @@ changed="false";
         rsync ${certs_dir}/$domain.{key,cer} $target_dir/
     done
 
-    [[ "$changed" == "true" ]] && { sudo nginx -t; sudo nginx -s reload; }
+    if [[ "$changed" == "true" ]]; then
+        sudo nginx -t
+        sudo nginx -s reload
+    else
+        echo "--> no need to reload nginx"
+    fi
 } >> ${_path}/acme_cron.$(date +"%Y-%m").log 2>&1
 
 exit
