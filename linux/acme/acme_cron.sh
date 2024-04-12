@@ -7,9 +7,9 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {} )
 
 acme=~/Apps/acme # directory
 target_dir=${target_dir:-~/nginx/certs}
+changed="false";
 
 {
-    changed="false";
     date +"==> %FT%T%:z run acme_cron.sh"
     $acme/acme.sh --cron --server letsencrypt --home $acme
 
@@ -19,7 +19,6 @@ target_dir=${target_dir:-~/nginx/certs}
         s1=$(md5sum $certs_dir/$domain.cer | awk '{print $1}')
         s2=""
         [ -f $target_dir/$domain.cer ] && s2=$(md5sum $target_dir/$domain.cer | awk '{print $1}')
-
         [[ "$s1" == "$s2" ]] && continue
 
         changed="true"
@@ -28,6 +27,7 @@ target_dir=${target_dir:-~/nginx/certs}
     done
 
     if [[ "$changed" == "true" ]]; then
+        echo "--> reload nginx"
         sudo nginx -t
         sudo nginx -s reload
     else
