@@ -49,7 +49,7 @@ function postArchive(url, data) {
 
 function newFilename() {
   let url = new URL(document.URL);
-  let path = url.pathname.replace(/\//g, '-');
+  let path = url.pathname.slice(1).replace(/\//g, '-');
 
   let now = datetime();
 
