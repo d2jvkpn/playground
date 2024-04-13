@@ -2,6 +2,8 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
+# sudo apt-get install build-essential gdb
+
 cpp_file=$1
 out=./target/$(basename ${cpp_file%.cpp})
 
