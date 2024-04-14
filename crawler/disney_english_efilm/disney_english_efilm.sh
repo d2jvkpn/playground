@@ -4,7 +4,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 function download() {
     sid=$1
-    sdir=$(printf "data/efilm_%02d" $sid)
+    sdir=$(printf "data/efilm-%02d" $sid)
     prefix=http://www.childrenfun.com.cn/download/disney/english/efilm/src/$sid
     
     mkdir -p $sdir
