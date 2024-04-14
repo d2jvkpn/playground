@@ -3,7 +3,7 @@ version: '3'
 services:
   sd-webui:
     image: sd-webui:${TAG}
-    container_name: sd-webui_${APP_ENV}
+    container_name: sd-webui
     restart: always
     networks: ["net"]
     # ports: ["127.0.0.1:7860:7860"]
@@ -52,7 +52,4 @@ services:
     command: ["./target/main", "serve", "--config=configs/http-auth-proxy.yaml", "--addr=:9000"]
 
 networks:
-  net:
-    name: sd-webui_dev
-    driver: bridge
-    external: false
+  net: { name: sd-webui, driver: bridge, external: false }

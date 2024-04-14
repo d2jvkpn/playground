@@ -10,6 +10,6 @@ docker run --rm -it --name=vocechat_tmp privoce/vocechat-server:latest sh
 docker cp vocechat_tmp:/home/vocechat-server/config ./
 
 #### docker-compose
-export PORT=2000
+export HTTP_Port=2000
 envsubst < docker_deploy.yaml > docker-compose.yaml
 docker-compose up -d

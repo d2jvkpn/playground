@@ -4,7 +4,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 # nvm install --lts
-# npm config set registry https://registry.npm.taobao.org
+# npm config set registry https://registry.npmmirror.com
 # npm set --location=global prefix ~/Apps
 # npm config get registry
 

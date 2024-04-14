@@ -4,8 +4,8 @@ services:
   mariadb:
     image: mariadb:11
     restart: always
-    networks: ["net"]
-    # network_mode: bridge
+    # networks: ["net"]
+    network_mode: bridge
     ports: ["127.0.0.1:${DB_Port}:3306"]
     container_name: mariadb
     environment:
@@ -20,5 +20,5 @@ services:
     - ./data/mariadb:/var/lib/mysql/
     # - ./data/mysql.cnf:/etc/mysql/my.cnf
 
-networks:
-  net: {name: "mariadb", driver: "bridge", external: false}
+# networks:
+#   net: {name: "mariadb", driver: "bridge", external: false}

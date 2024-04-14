@@ -1,31 +1,24 @@
 version: '3'
 
-# volumes:
-#   nextcloud_app:
-#   nextcloud_postgres:
-
-networks:
-  net: {name: "nextcloud", driver: "bridge", external: false}
-
 services:
-  nextcloud:
+  nextcloud-app:
     image: nextcloud:28-apache
-    container_name: nextcloud_app
+    container_name: nextcloud-app
     restart: always
-    depends_on: ["database"]
+    depends_on: ["nextcloud-database"]
     networks: ["net"]
     ports: ["127.0.0.1:${HTTP_Port}:80"]
     volumes: ["./data/nextcloud:/var/www/html"]
     environment:
-    - MYSQL_HOST=database
+    - MYSQL_HOST=nextcloud-mariadb
     - MYSQL_USER=nextcloud
     - MYSQL_DATABASE=nextcloud
     # - MYSQL_PASSWORD=${MYSQL_Password}
     env_file: [./configs/nextcloud.env]
 
-  database:
+  nextcloud-database:
     image: mariadb:11
-    container_name: nextcloud_mariadb
+    container_name: nextcloud-mariadb
     restart: always
     networks: ["net"]
     volumes: ["./data/mariadb:/var/lib/mysql"]
@@ -43,3 +36,10 @@ services:
     - "--character-set-server=utf8mb4"
     - "--collation-server=utf8mb4_general_ci"
     - "--skip-character-set-client-handshake"
+
+# volumes:
+#   nextcloud-app:
+#   nextcloud-postgres:
+
+networks:
+  net: { name: "nextcloud", driver: "bridge", external: false }

@@ -2,9 +2,9 @@
 set -eu -o pipefail
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-port=$1
+http_port=$1
 
-export PORT=$port
+export HTTP_Port=$http_port
 
 envsubst < ${_path}/docker_deploy.yaml > docker-compose.yaml
 

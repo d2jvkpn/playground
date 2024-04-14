@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  mongo:
+  collector-mongo:
     image: mongo:6
     container_name: collector-mongo_${APP_ENV}
     restart: always
@@ -13,11 +13,11 @@ services:
     volumes:
     - ./data/mongo:/data/db
 
-  collector:
+  collector-app:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/collector:${TAG}
     container_name: collector-app_${APP_ENV}
     restart: always
-    depends_on: ["mongo"]
+    depends_on: ["collector-mongo"]
     networks: ["net", "kafka", "otel"]
     # network_mode: bridge
     # network_mode: host
@@ -30,15 +30,6 @@ services:
     command: ["./main", "--config=configs/prod.yaml", "--addr=:${PORT}"]
 
 networks:
-  net:
-    name: collector_${APP_ENV}
-    driver: bridge
-    external: false
-  kafka:
-    name: kafka
-    driver: bridge
-    external: true
-  otel:
-    name: otel
-    driver: bridge
-    external: true
+  net: { name: "collector_${APP_ENV}", driver: "bridge", external: false }
+  kafka: { name: kafka, driver: bridge, external: true }
+  otel: { name: otel, driver: bridge, external: true }

@@ -3,11 +3,11 @@ version: '3'
 services:
   sd-webui:
     image: sd-webui:${TAG}
-    container_name: sd-webui_${APP_ENV}
+    container_name: sd-webui
     restart: always
-    networks: ["net"]
-    # ports: ["127.0.0.1:7860:7860"]
-    ports: ["7860:7860"]
+    network_mode: bridge
+    # networks: ["net"]
+    ports: ["127.0.0.1:7860:7860"]
     environment: ["TZ=Asia/Shanghai"]
     deploy:
       resources:
@@ -38,8 +38,5 @@ services:
     # - --disable-nan-check
     # - --medvram-sdxl/--lowvram
 
-networks:
-  net:
-    name: sd-webui_${APP_ENV}
-    driver: bridge
-    external: false
+# networks:
+#   net: { name: sd-webui_${APP_ENV}, driver: bridge, external: false }

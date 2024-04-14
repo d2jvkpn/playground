@@ -9,8 +9,8 @@ services:
     # networks: ["net"]
     network_mode: bridge
     restart: always
-    container_name: filebrowser
     user: "${USER_UID}:${USER_GID}"
+    container_name: filebrowser
     ports: ["${HTTP_Port}:${HTTP_Port}"]
     environment: [TZ=Asia/Shanghai]
     volumes:
@@ -22,3 +22,6 @@ services:
     - ./data/filebrowser:/app/data/filebrowser
     command:
     - --config=/app/configs/filebrowser.json
+
+# networks:
+#   net: { name: "filebrowser", driver: "bridge", external: false }

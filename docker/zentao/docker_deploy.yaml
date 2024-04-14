@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  database:
+  zentao-mariadb:
     image: mariadb:11
     networks: ["net"]
     # ports: ['127.0.0.1:3306:3306']
@@ -16,9 +16,9 @@ services:
     env_file: ["./configs/zentao.env"]
     volumes: [./data/mariadb:/var/lib/mysql]
 
-  zentao:
+  zentao-app:
     image: hub.zentao.net/app/zentao
-    depends_on: ["database"]
+    depends_on: ["zentao-mariadb"]
     restart: always
     networks: ["net"]
     ports: ["${HTTP_Port}:80"]

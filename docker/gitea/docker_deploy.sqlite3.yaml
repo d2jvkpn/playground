@@ -1,12 +1,9 @@
 version: "3"
 
-# networks:
-#   net: { name: gitea, driver: bridge, external: false }
-
 services:
-  gitea:
+  gitea-sqlite:
     image: gitea/gitea:1
-    container_name: gitea_with_sqlite
+    container_name: gitea-sqlite
     restart: always
     # networks: [net]
     network_mode: bridge
@@ -16,3 +13,6 @@ services:
     - /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro
     - ./data/gitea:/data
+
+# networks:
+#   net: { name: gitea, driver: bridge, external: false }

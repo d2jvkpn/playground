@@ -3,7 +3,7 @@ version: '3'
 services:
   yapi:
     image: registry.cn-hangzhou.aliyuncs.com/anoy/yapi:latest
-    container_name: yapi_web
+    container_name: yapi-web
     restart: always
     depends_on: ["mongo"]
     working_dir: /api/vendors
@@ -13,13 +13,13 @@ services:
 
   mongo:
     image: mongo:4
-    container_name: yapi_mongo
+    container_name: yapi-mongo
     restart: always
     networks: ["net"]
     volumes: ["./data/mongo:/data/db"]
 
 networks:
-  net: {name: "yapi", driver: "bridge", external: false}
+  net: { name: "yapi", driver: "bridge", external: false }
 
 # docker exec yapi_web npm run install-server
 # default account: admin@admin.com

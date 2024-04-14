@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  nginx-app:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/nginx-app:latest
+    container_name: nginx-app
+    restart: always
+    network_mode: bridge
+    # networks: ["net"]
+    ports: ["${HTTP_Port}:80"]
+    volumes:
+    - ./static/:/opt/nginx-app/static
+    # - ./htpasswd:/opt/nginx/htpasswd
+    environment: ["PORT=80"]
+
+# networks:
+#   net: { name: nginx-app, driver: bridge, external: false }

@@ -6,7 +6,7 @@ services:
     container_name: excalidraw
     restart: always
     network_mode: bridge
-    # networks: ["ent"]
+    # networks: ["net"]
     ports: ["127.0.0.1:${HTTP_Port}:80"]
 
 # networks:

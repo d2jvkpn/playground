@@ -11,14 +11,14 @@ ADD  *.js *.json .env.*  ./
 COPY public/  ./public
 COPY src/     ./src
 
-RUN npm install --registry=https://registry.npm.taobao.org &> /dev/null
+RUN npm install --registry=https://registry.npmmirror.com &> /dev/null
 RUN node_modules/.bin/vue-cli-service build --mode ${mode}.x
 
 ####
 FROM nginx:stable-alpine
 
-WORKDIR /opt/nginx-web
-COPY --from=builder /opt/vue-web/dist ./
+WORKDIR /app/
+COPY --from=builder /opt/vue-web/dist ./static
 
 RUN mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bk
 COPY deployments/nginx-web.conf /etc/nginx/conf.d/
