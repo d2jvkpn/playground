@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: always
+    healthcheck:
+      test: pg_isready --username postgres --database postgres
+      start_period: 10s
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    network_mode: bridge
+    # networks: ["net"]
+    ports: ["127.0.0.1:${DB_Port}:5432"]
+    container_name: postgres
+    environment:
+    - TZ=Asia/Shanghai
+    - PGTZ=Asia/Shanghai
+    - POSTGRES_USER=postgres
+    - POSTGRES_DB=postgres
+    - POSTGRES_PASSWORD=postgres
+    # - POSTGRES_PASSWORD_FILE=/run/secrets/postgres-passwd
+    - PGDATA=/var/lib/postgresql/data
+    volumes:
+    # - data:/var/lib/postgresql/data
+    # - ./configs/postgresql.conf:/var/lib/postgresql/data/pgdata/postgresql.conf
+    # - ./configs/pg_hba.conf:/var/lib/postgresql/data/pgdata/pg_hba.conf
+    # - ./configs/postgres.password:/run/secrets/postgres-passwd:ro
+    - ./data/postgres:/var/lib/postgresql/data
+
+# volums:
+#   data: { name: postgres_storage, driver: local }
+
+# networks:
+#   net: { name: "postgres", driver: "bridge", external: false }

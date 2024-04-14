@@ -30,7 +30,7 @@ set timeout 60
 # set username [lindex \$argv 0];
 # set password [lindex \$argv 1];
 
-set fh [open "./configs/postgres.secret" r]
+set fh [open "./configs/postgres.password" r]
 set password [read -nonewline \$fh]
 close \$fh
 
