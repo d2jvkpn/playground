@@ -26,8 +26,7 @@ for i in {1..24}; do
 done
 
 exit
-
-####
+#### html
 http://www.childrenfun.com.cn/download/disney/english/efilm/?lid=6
 
 <img id="album-icon" class="album-icon" src="src/6/images/banner.jpg">
@@ -45,8 +44,7 @@ http://www.childrenfun.com.cn/download/disney/english/efilm/?lid=6
 
 <audio id="audio_player" type="audio/mpeg" src="http://cdndigital.childrenfun.com.cn/download/disney/english/efilm/src/6/mp3/wordslow.mp3"></audio>
 
-####
+#### can't get title
 wget --quiet -O - "http://www.childrenfun.com.cn/download/disney/english/efilm/?lid=6" \
-  | paste -s -d " "  \
-  | sed -e 's!.*<head>\(.*\)</head>.*!\1!' \
-  | sed -e 's!.*<title>\(.*\)</title>.*!\1!'
+  | paste -s -d " " \
+  | sed -e 's!.*<head>\(.*\)</head>.*!\1!' -e 's!.*<title>\(.*\)</title>.*!\1!'
