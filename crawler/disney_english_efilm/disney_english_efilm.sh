@@ -2,7 +2,7 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-function download() {
+function download_efilm() {
     sid=$1
     sdir=$(printf "data/efilm-%02d" $sid)
     prefix=http://www.childrenfun.com.cn/download/disney/english/efilm/src/$sid
@@ -22,7 +22,7 @@ function download() {
 }
 
 for i in {1..24}; do
-    download $i
+    download_efilm $i
 done
 
 exit
