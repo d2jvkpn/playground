@@ -9,17 +9,15 @@ services:
     # networks: ["net"]
     ports: ["127.0.0.1:${HTTP_Port}:5000"]
     environment:
-    - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/mnt/data
+    - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/var/lib/registry
     - REGISTRY_AUTH=htpasswd
     - REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm
-    - REGISTRY_AUTH_HTPASSWD_PATH=/mnt/auth/htpasswd
-    - REGISTRY_HTTP_TLS_CERTIFICATE=/mnt/certs/${DOMAIN}.cer
-    - REGISTRY_HTTP_TLS_KEY=/mnt/cert/${DOMAIN}.key
+    - REGISTRY_AUTH_HTPASSWD_PATH=/app/configs/htpasswd
+    - REGISTRY_HTTP_TLS_CERTIFICATE=/app/configs/${DOMAIN}.cer
+    - REGISTRY_HTTP_TLS_KEY=/app/configs/${DOMAIN}.key
     volumes:
-    - ./data:/mnt/data
-    - ./auth:/mnt/auth
-    - ~/nginx/certs/${DOMAIN}.cer:/mnt/certs/${DOMAIN}.cer:ro
-    - ~/nginx/certs/${DOMAIN}.key:/mnt/certs/${DOMAIN}.key:ro
+    - ./data/registry:/var/lib/registry
+    - ./configs/${DOMAIN}.cer:/app/configs:ro
 
 # networks:
 #   net: { name: "registry", driver: "bridge", external: false }

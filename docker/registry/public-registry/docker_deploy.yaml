@@ -9,9 +9,9 @@ services:
     # networks: ["net"]
     ports: ["127.0.0.1:${HTTP_Port}:5000"]
     environment:
-    - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/mnt/data
+    - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/var/lib/registry
     volumes:
-    - ./data:/mnt/data
+    - ./data/registry:/var/lib/registry
 
 # networks:
 #   net: { name: "registry", driver: "bridge", external: false }
