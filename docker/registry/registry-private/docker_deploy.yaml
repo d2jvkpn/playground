@@ -17,7 +17,7 @@ services:
     - REGISTRY_HTTP_TLS_KEY=/app/configs/${DOMAIN}.key
     volumes:
     - ./data/registry:/var/lib/registry
-    - ./configs/${DOMAIN}.cer:/app/configs:ro
+    - ./configs:/app/configs:ro
 
 # networks:
 #   net: { name: "registry", driver: "bridge", external: false }
