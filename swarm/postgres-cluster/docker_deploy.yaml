@@ -6,7 +6,7 @@ services:
     container_name: postgres-node01
     restart: always
     healthcheck:
-      test: pg_isready --username postgres -d postgres
+      test: pg_isready --username postgres --dbname postgres
       start_period: 10s
       interval: 30s
       timeout: 3s
@@ -31,7 +31,7 @@ services:
     container_name: postgres-node02
     restart: always
     healthcheck:
-      test: pg_isready --username postgres -d postgres
+      test: pg_isready --username postgres --dbname postgres
       start_period: 10s
       interval: 30s
       timeout: 3s
@@ -52,7 +52,7 @@ services:
     container_name: postgres-node03
     restart: always
     healthcheck:
-      test: pg_isready --username postgres -d postgres
+      test: pg_isready --username postgres --dbname postgres
       start_period: 10s
       interval: 30s
       timeout: 3s
@@ -73,7 +73,7 @@ services:
     container_name: postgres-node04
     restart: always
     healthcheck:
-      test: pg_isready --username postgres -d postgres
+      test: pg_isready --username postgres --dbname postgres
       start_period: 10s
       interval: 30s
       timeout: 3s
