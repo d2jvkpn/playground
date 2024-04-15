@@ -4,29 +4,25 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 export DB_Port=${1:-3306}
 
-container=mysql
-found=$(docker ps -a | awk -v c=$container 'NR>1 && $NF==c{print 1; exit}')
-[ ! -z $found ] && { >&2 echo '!!! '"container $container exists" ; exit 1; }
-
 mkdir -p configs data/mysql
+
+[ -s configs/mysql_root.password ] || \
+  tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 32 | head -n1 > configs/mysql_root.password || true
+
+password=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 32 | head -n1 > configs/mysql_root.password || true)
+
+cat > configs/mysql.env <<EOF
+MYSQL_USER=d2jvkpn
+MYSQL_DATABASE=d2jvkpn
+MYSQL_PASSWORD=$password
+EOF
 
 envsubst < ${_path}/docker_deploy.yaml > docker-compose.yaml
 
-if [ ! -s configs/mysql.secret ]; then
-    echo "==> creating secret configs/mysql.secret"
-
-    tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 32 | head -n1 > configs/mysql.secret || true
-else
-    echo "==> using then existing secret configs/mysql.secret"
-fi
-password=$(cat configs/mysql.secret)
-
-cat > configs/mysql.env <<EOF
-export MYSQL_ROOT_PASSWORD=$password
-EOF
-
 docker-compose pull
 docker-compose up -d
+
+exit
 
 ####
 n=0; abort=""

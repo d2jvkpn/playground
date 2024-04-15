@@ -13,7 +13,7 @@ fi
 
 exists="false"
 [ -f $exp ] && { exists="true"; $exp; }
-if [ "$exists" == "true"]; then exit 0; fi
+[[ "$exists" == "true" ]] && exit 0
 
 container=$(yq .services.mysql.container_name docker-compose.yaml)
 
@@ -34,7 +34,7 @@ set timeout 60
 # set username [lindex \$argv 0];
 # set password [lindex \$argv 1];
 
-set fh [open "./configs/mysql.secret" r]
+set fh [open "./configs/mysql_root.password" r]
 set password [read -nonewline \$fh]
 close \$fh
 
