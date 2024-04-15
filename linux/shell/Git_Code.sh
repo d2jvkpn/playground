@@ -16,11 +16,12 @@ elif [[ ! -d code && -s code.zip ]]; then
 fi
 
 cd code
-echo "==> git pull"
+echo "==> git pull $(git remote get-url origin)"
 output=$(git pull --no-edit)
+echo "$output"
 
-if [[ "$output" =~ "Already up-to-date." ]]; then
-    echo "==> code is already up-to-date"
+if [[ "$output" =~ "Already up to date." ]]; then
+    echo "==> code is already up to date"
     exit 0
 fi
 
