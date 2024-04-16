@@ -3,8 +3,8 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 cd "${_path}"
-exp=${exp:-./configs/mysql.exp}
 
+exp=${1:-./configs/mysql.exp}
 if [ -s $exp ]; then
     echo "==> execute existing $exp"
     $exp

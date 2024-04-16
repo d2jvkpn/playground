@@ -4,8 +4,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 cd "${_path}"
 
-exp=${exp:-./configs/postgres.exp}
-
+exp=${1:-./configs/postgres.exp}
 if [ -s $exp ]; then
     echo "==> execute existing $exp"
     $exp
