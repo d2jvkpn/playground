@@ -7,12 +7,19 @@ action=$1
 container=$(yq .services.mysql.container_name docker-compose.yaml)
 password=$(cat configs/mysql_root.password)
 
+mkdir -p configs
+[ -s configs/mysql_root.env ] || echo "MYSQL_PWD=$password" > configs/mysql_root.env
+
 case "$action" in
 "backup")
     database=$2
     output=$database.v$(date +%Y%m%d).sql
 
-    docker exec -it $container mysqldump -u root -p$password --databases $database > $output
+    # to avoid message in ouyput "mysqldump: [Warning] Using a password on the command line..."
+    # don't use -p$password
+    docker exec --env-file=configs/mysql_root.env -it $container \
+      mysqldump -u root --databases $database > $output
+
     pigz $output
 
     echo "==> saved ${output}.gz"
@@ -21,11 +28,13 @@ case "$action" in
     gz_file=$2
 
     mkdir -p data
-    pigz -dc $gz_file data/temp.sql
+    pigz -dc $gz_file > data/temp.sql
     docker cp data/temp.sql $container:/
     rm data/temp.sql
 
-    docker exec $container mysql -u root -p$password -e 'source /temp.sql'
+    docker exec --env-file=configs/mysql_root.env $container \
+      mysql -u root -p$password -e 'source /temp.sql'
+
     docker exec $container rm /temp.sql
     ;;
 *)
