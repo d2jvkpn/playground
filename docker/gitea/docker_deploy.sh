@@ -33,3 +33,15 @@ sed -i \
   -e '/REQUIRE_SIGNIN_VIEW/s/false/true/' \
   -e '/ENABLE_OPENID_SIGNIN/s/true/false/' \
   data/gitea/gitea/conf/app.ini
+
+#### settings
+1. Initalize
+- Disable Self-Registration
+- Require Sign-In to View Pages
+- Allow Creation of Organizations by Default
+- Enable Time Tacking by Default
+
+2. User Settings / Profile / Privacy
+- User visibility: Private
+- Hide Email Address: yes
+- Hide Activity from profile page
