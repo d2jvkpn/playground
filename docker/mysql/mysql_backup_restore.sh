@@ -7,7 +7,7 @@ action=$1
 container=$(yq .services.mysql.container_name docker-compose.yaml)
 password=$(cat configs/mysql_root.password)
 
-case $action in
+case "$action" in
 "backup")
     database=$2
     output=$database.v$(date +%Y%m%d).sql
