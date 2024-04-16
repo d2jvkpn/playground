@@ -11,9 +11,10 @@ case "$action" in
 "backup")
     database=$2
     output=$database.v$(date +%Y%m%d).sql
-    docker exec -it $container mysqldump -u root -p$password --databases $database > $output
 
+    docker exec -it $container mysqldump -u root -p$password --databases $database > $output
     pigz $output
+
     echo "==> saved ${output}.gz"
     ;;
 "restore")
