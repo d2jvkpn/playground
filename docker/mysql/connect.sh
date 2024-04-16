@@ -4,7 +4,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 cd "${_path}"
 
-exp=${1:-./configs/mysql.exp}
+exp=${1:-./configs/mysql_root.exp}
 if [ -s $exp ]; then
     echo "==> execute existing $exp"
     $exp
