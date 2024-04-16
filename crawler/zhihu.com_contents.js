@@ -81,8 +81,49 @@ function archiveArticle() {
   if (!article) { alert("No an article!"); return; }
 
   let filename = newFilename();
+  let title = document.title.replace(/^\(.*\) /, "").split(" - ")[0];
 
-  let text = `# ${document.title.split(" - ")[0]}\n\n` +
+  let text = `# ${title}\n\n` +
+    `#### Meta\n` +
+    "```yaml\n" +
+    `link: ${document.URL}\n` +
+    `datetime: ${datetime().rfc3339}\n` +
+    `filename: ${filename}\n` +
+    "```\n\n";
+
+  text += `#### Content\n` + article.innerText + "\n\n";
+
+  let comment = document.querySelector("div.Comments-container");
+
+  text += "\n#### Comments\n"
+  if (comment) {
+    let items = Array.from(comment.querySelectorAll("div")).filter(e => {
+      return e.hasAttribute("data-id") && !e.parentElement.hasAttribute("data-id");
+    });
+
+    items.forEach(e => { text += "\n\n##### " + e.innerText; });
+  }
+
+  let link = document.createElement("a");
+
+  link.href = `data:text/plain;charset=utf8,` +
+    `${text.replace(/\n/g, "%0D%0A").replace(/#/g, "%23")}\n`;
+
+  link.download = filename;
+  link.click();
+
+  alert(`==> saved ${link.download}`);
+}
+
+function archivePin() {
+  let article = document.querySelector("div.ContentItem");
+
+  if (!article) { alert("No a pin!"); return; }
+
+  let filename = newFilename();
+  let title = document.title.replace(/^\(.*\) /, "").split(" - ")[0].split(" | ")[0];
+
+  let text = `# ${title}\n\n` +
     `#### Meta\n` +
     "```yaml\n" +
     `link: ${document.URL}\n` +
@@ -223,6 +264,8 @@ if (!url.host.includes("zhihu.com")) {
   listSearch();
 } else if (url.pathname.startsWith("/p/")) {
   archiveArticle();
+} else if (url.pathname.startsWith("/pin/")) {
+  archivePin();
 } else if (/\/question\/[0-9]+\/answer\/[0-9]+/.test(url.pathname)) {
   getAnswer();
 } else {

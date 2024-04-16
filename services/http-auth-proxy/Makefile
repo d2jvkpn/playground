@@ -1,4 +1,4 @@
-# make
+#/bin/make
 
 # include envfile
 # export $(shell sed 's/=.*//' envfile)

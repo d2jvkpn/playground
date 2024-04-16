@@ -3,23 +3,27 @@ set -eu -o pipefail #  -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 export DB_Port=${1:-3306}
+user=${2:-d2jvkpn}
 
 mkdir -p configs data/mysql
 
 [ -s configs/mysql_root.password ] || \
   tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 32 | head -n1 > configs/mysql_root.password || true
 
-password=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 32 | head -n1 > configs/mysql_root.password || true)
+db_root_password=$(cat configs/mysql_root.password)
+db_user_password=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 32 | head -n1 || true)
 
+[ -s configs/mysql.env ] || \
 cat > configs/mysql.env <<EOF
-MYSQL_USER=d2jvkpn
-MYSQL_DATABASE=d2jvkpn
-MYSQL_PASSWORD=$password
+MYSQL_PWD=$db_root_password
+MYSQL_USER=$user
+MYSQL_DATABASE=$user
+MYSQL_PASSWORD=$db_user_password
 EOF
 
 envsubst < ${_path}/docker_deploy.yaml > docker-compose.yaml
 
-docker-compose pull
+# docker-compose pull
 docker-compose up -d
 
 exit
