@@ -7,6 +7,7 @@ database=$1
 container=$(yq .services.mysql.container_name docker-compose.yaml)
 password=$(cat configs/mysql_root.password)
 
-docker exec -it $container mysqldump -u root -p$password --databases $database > $database.sql
+output=$database.v$(date +%Y%m%d).sql
+docker exec -it $container mysqldump -u root -p$password --databases $database > $output
 
-pigz $database.sql
+pigz $output
