@@ -3,8 +3,10 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 action=$1
-
 container=$(yq .services.mysql.container_name docker-compose.yaml)
+
+[ -s configs/mysql_root.env ] || \
+  echo "MYSQL_PWD=$(cat configs/mysql_root.password)" > configs/mysql_root.env
 
 case "$action" in
 "backup")
@@ -12,8 +14,7 @@ case "$action" in
     output=$database.v$(date +%Y%m%d).sql
 
     # don't use -p$password in order to avoid message in ouyput "mysqldump: [Warning] Using a password on the command line..."
-    # --env-file=configs/mysql_root.env
-    docker exec --env-file=configs/mysql.env -it $container \
+    docker exec --env-file=configs/mysql_root.env -it $container \
       mysqldump -u root --databases $database > $output
 
     pigz $output
@@ -27,7 +28,9 @@ case "$action" in
     docker cp data/temp.sql $container:/
     rm data/temp.sql
 
-    docker exec --env-file=configs/mysql.env -it mysql bash -c 'mysql -u root -p$MYSQL_PWD'
+    docker exec --env-file=configs/mysql_root.env $container \
+      bash -c "mysql -u root -p\$MYSQL_PWD -e 'source /temp.sql'"
+
     docker exec $container rm /temp.sql
     ;;
 *)

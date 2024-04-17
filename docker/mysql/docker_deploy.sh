@@ -13,9 +13,9 @@ mkdir -p configs data/mysql
 db_root_password=$(cat configs/mysql_root.password)
 db_user_password=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 32 | head -n1 || true)
 
+#### WHY: set MYSQL_PWD in mysql.env will make can't login as root
 [ -s configs/mysql.env ] || \
 cat > configs/mysql.env <<EOF
-MYSQL_PWD=$db_root_password
 MYSQL_USER=$user
 MYSQL_DATABASE=$user
 MYSQL_PASSWORD=$db_user_password
