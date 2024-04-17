@@ -17,11 +17,11 @@ services:
     environment:
     - TZ=Asia/Shanghai
     - PGTZ=Asia/Shanghai
+    - PGDATA=/var/lib/postgresql/data
     # - POSTGRES_USER=postgres
     # - POSTGRES_DB=postgres
     # - POSTGRES_PASSWORD=postgres
     - POSTGRES_PASSWORD_FILE=/app/configs/postgres.password
-    - PGDATA=/var/lib/postgresql/data
     volumes:
     # - ./configs/postgresql.conf:/var/lib/postgresql/data/pgdata/postgresql.conf
     # - ./configs/pg_hba.conf:/var/lib/postgresql/data/pgdata/pg_hba.conf
