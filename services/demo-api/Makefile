@@ -8,6 +8,12 @@ git_branch = $(shell git rev-parse --abbrev-ref HEAD)
 # git_commit_id = $(shell git rev-parse --verify HEAD)
 # git_commit_time = $(shell git log -1 --format="%at" | xargs -I{} date -d @{} +%FT%T%:z)
 
+go:
+	go fmt ./...
+	[ -d vendor ] && go mod vendor
+	go vet ./...
+	go mod tidy
+
 #### run and build
 run:
 	# -config=configs/local.yaml

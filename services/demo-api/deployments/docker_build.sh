@@ -9,7 +9,7 @@ git_branch=$1
 
 app_name=$(yq .app project.yaml)
 app_version=$(yq .version project.yaml)
-image_name=$(yq .image project.yaml)
+image_name=$(yq .image_name project.yaml)
 
 tag=${git_branch}-$(yq .version project.yaml)
 tag=${DOCKER_Tag:-$tag}
