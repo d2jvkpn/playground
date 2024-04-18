@@ -10,8 +10,8 @@ git_branch = $(shell git rev-parse --abbrev-ref HEAD)
 
 go:
 	go fmt ./...
-	[ -d vendor ] && go mod vendor
 	go vet ./...
+	if [ -d vendor ]; then go mod vendor; fi
 	go mod tidy
 
 #### run and build

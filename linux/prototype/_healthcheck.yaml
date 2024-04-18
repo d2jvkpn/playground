@@ -1,0 +1,20 @@
+# docker healthcheck
+healthcheck:
+   test: pg_isready --username postgres --database postgres
+   start_period: 10s
+   interval: 30s
+   timeout: 3s
+   retries: 3
+
+# k8s liveness probe
+livenessProbe:
+  initialDelaySeconds: 5
+  timeoutSeconds: 1
+  periodSeconds: 10
+  failureThreshold: 3
+  # grpc: { port: 5042 }
+  httpGet:
+    path: "/healthz"
+    port: 5032
+    httpHeaders:
+    - { name: Custom-Header, value: Awesome }
