@@ -16,6 +16,8 @@ elif [[ ! -d code && -s code.zip ]]; then
 fi
 
 cd code
+[ -d ".git" ] && { >&2 echo "not a git repository"; exit 1; }
+
 echo "==> git pull $(git remote get-url origin)"
 output=$(git pull --no-edit)
 echo "$output"
