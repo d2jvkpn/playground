@@ -13,7 +13,7 @@ services:
     network_mode: bridge
     # networks: ["net"]
     ports: ["127.0.0.1:${DB_Port}:5432"]
-    container_name: postgres
+    container_name: ${CONTAINER_Name}
     environment:
     - TZ=Asia/Shanghai
     - PGTZ=Asia/Shanghai

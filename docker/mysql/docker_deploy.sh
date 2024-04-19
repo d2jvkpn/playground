@@ -2,8 +2,8 @@
 set -eu -o pipefail #  -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-export DB_Port=${1:-3306}
-user=${2:-d2jvkpn}
+export DB_Port=${1:-3306} CONTAINER_Name=${2:-mysql}
+user=${user:-d2jvkpn}
 
 mkdir -p configs data/mysql
 
