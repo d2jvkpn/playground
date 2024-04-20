@@ -15,8 +15,12 @@ go:
 	go fmt ./...
 	go vet ./...
 
-swag:
-	bash swagger/swag.sh
+swagger-go:
+	@if [ ! -d "swagger-go" ]; then \
+	    git clone git@github.com:d2jvkpn/swagger-go.git; \
+	    rm -rf swagger-go/.gitignore swagger-go/.git; \
+	fi
+	bash swagger-go/swag.sh
 
 #### run and build
 run:

@@ -88,7 +88,7 @@ func Load_Biz(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 //	@Description	get string by ID
 //	@Tags			accounts
 //	@Accept			json
-//	@Produce		json"
+//	@Produce		json
 //	@Param	id		path	int			true	"Account ID"
 //	@Param	name	query	string		flase	"Account Name"
 //	@Param	login	body	LoginUser	true	"user password"
@@ -134,9 +134,9 @@ func Hello(ctx *gin.Context) {
 }
 
 type LoginUser struct {
-	UserId string   `json:"userId"`
+	UserId   string `json:"userId"`
 	Password string `json:"password"`
-	Region  string `json:"region,omitempty"`
+	Region   string `json:"region,omitempty"`
 }
 
 type Response struct {
