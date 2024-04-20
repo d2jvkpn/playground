@@ -33,9 +33,10 @@ set fh [open "./configs/postgres.password" r]
 set password [read -nonewline \$fh]
 close \$fh
 
-spawn docker exec -it $container psql postgres://postgres@localhost:5432/postgres
+spawn docker exec -it $container psql postgres://postgres@localhost:5432/postgres --password
 
-expect "Password for user postgres:"
+# expect "Password for user postgres:"
+expect "Password:"
 
 send "\$password\r"
 interact

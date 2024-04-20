@@ -5,7 +5,7 @@ services:
     image: postgres:16-alpine
     restart: always
     healthcheck:
-      test: pg_isready --username postgres --database postgres
+      test: pg_isready --username postgres --dbname postgres
       start_period: 10s
       interval: 30s
       timeout: 3s

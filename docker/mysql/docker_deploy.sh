@@ -77,4 +77,7 @@ GRANT ALL PRIVILEGES ON db01.* TO 'hello'@'%';
 FLUSH PRIVILEGES;
 
 USE db01;
+
+--
+select Host, User, password_last_changed from mysql.user;
 ```
