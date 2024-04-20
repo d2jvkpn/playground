@@ -34,10 +34,11 @@ func main() {
 		rpc_addr    string
 		config      string
 		config_path string
-		err         error
-		logger      *slog.Logger
-		errch       chan error
-		quit        chan os.Signal
+
+		err    error
+		errch  chan error
+		quit   chan os.Signal
+		logger *slog.Logger
 	)
 
 	// logger = slog.New(slog.NewTextHandler(os.Stderr, nil))
