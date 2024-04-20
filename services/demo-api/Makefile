@@ -14,7 +14,6 @@ go:
 	if [ -d vendor ]; then go mod vendor; fi
 	go fmt ./...
 	go vet ./...
-	bash scripts/swagger.sh
 
 #### run and build
 run:
@@ -33,7 +32,7 @@ protoc-run:
 	protoc --go-grpc_out=./ --go_out=./ --proto_path=./proto proto/*.proto
 	sed -i '/^\tmustEmbedUnimplemented/s#\t#\t// #' proto/*_grpc.pb.go
 
-build-bin:
+build:
 	bash scripts/go_build.sh
 
 build-offline:
@@ -54,5 +53,6 @@ create-db:
 
 docker-dev:
 	bash scripts/docker_dev.sh
+
 connect-db:
 	echo "TODO: ..."

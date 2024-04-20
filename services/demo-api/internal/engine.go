@@ -85,8 +85,6 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 
 	// route.LoadSite(router)
 
-	LoadSwagger(router)
-
 	// #### debug
 	route.Load_Public(router)
 
