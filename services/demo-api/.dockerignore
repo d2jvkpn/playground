@@ -6,4 +6,4 @@ target/
 
 .git/
 wk*/
-swagger/
+swagger-go/

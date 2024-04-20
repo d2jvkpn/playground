@@ -20,7 +20,7 @@ import (
 //go:generate go fmt ./...
 //go:generate go vet ./...
 //go:generate echo -e >>> both "go fmt" and "go vet" are ok
-//go:generate bash ./scripts/go_build.sh
+//go:generate bash ./deployment/go_build.sh
 
 var (
 	//go:embed project.yaml

@@ -6,6 +6,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 app=main
 
 build_time=$(date +'%FT%T.%N%:z')
+git_repository="$(git config --get remote.origin.url)"
 git_branch="$(git rev-parse --abbrev-ref HEAD)" # current branch
 git_commit_id=$(git rev-parse --verify HEAD) # git log --pretty=format:'%h' -n 1
 git_commit_time=$(git log -1 --format="%at" | xargs -I{} date -d @{} +%FT%T%:z)
@@ -18,6 +19,7 @@ unpushed=$(git diff origin/$git_branch..HEAD --name-status)
 [[ ! -z "$uncommitted" ]] && git_tree_state="uncommitted"
 
 GO_ldflags="-X main.build_time=$build_time \
+  -X main.git_repository=$git_repository \
   -X main.git_branch=$git_branch \
   -X main.git_commit_id=$git_commit_id \
   -X main.git_commit_time=$git_commit_time \

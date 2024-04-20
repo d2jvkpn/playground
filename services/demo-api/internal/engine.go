@@ -50,7 +50,7 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 	cors := settings.ConfigField("http").GetString("cors")
 	engine.Use(ginx.Cors(cors))
 
-	if settings.ConfigField("opentel").GetBool("enable") {
+	if settings.ConfigField("opentel").GetBool("enabled") {
 		engine.Use(otelgin.Middleware(settings.ProjectString("app")))
 	}
 

@@ -39,6 +39,7 @@ git checkout $git_branch
 
 [[ "$GIT_Pull" != "false" ]] && git pull --no-edit
 
+git_repository="$(git config --get remote.origin.url)"
 git_branch="$(git rev-parse --abbrev-ref HEAD)" # current branch
 git_commit_id=$(git rev-parse --verify HEAD) # git log --pretty=format:'%h' -n 1
 git_commit_time=$(git log -1 --format="%at" | xargs -I{} date -d @{} +%FT%T%:z)

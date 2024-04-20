@@ -37,7 +37,7 @@ protoc-run:
 	sed -i '/^\tmustEmbedUnimplemented/s#\t#\t// #' proto/*_grpc.pb.go
 
 build:
-	bash scripts/go_build.sh
+	bash deployments/go_build.sh
 
 build-offline:
 	GIT_Pull=false BUILD_Region=cn DOCKER_Pull=false DOCKER_Tag=dev \
