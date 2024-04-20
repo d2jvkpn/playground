@@ -82,6 +82,19 @@ func Load_Biz(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 	})
 }
 
+// Hello godoc
+//
+//	@Summary		Show an account
+//	@Description	get string by ID
+//	@Tags			accounts
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"Account ID"
+//	@Success		200	{object}	int
+//	@Failure		400	{object}	error
+//	@Failure		404	{object}	error
+//	@Failure		500	{object}	error
+//	@Router			/accounts/{id} [get]
 func Hello(ctx *gin.Context) {
 	var (
 		name   string
