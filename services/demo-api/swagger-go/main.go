@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/http"
 
 	"swagger-go/docs"
 
@@ -14,6 +15,7 @@ import (
 
 var (
 	BUILD_Time     string
+	GIT_Repository string
 	GIT_Branch     string
 	GIT_CommitId   string
 	GIT_CommitTime string
@@ -23,7 +25,7 @@ func main() {
 	var (
 		release           bool
 		addr              string
-		base_path         string
+		http_path         string
 		swagger_title     string
 		swagger_host      string
 		swagger_base_path string
@@ -34,7 +36,7 @@ func main() {
 
 	flag.BoolVar(&release, "release", false, "run in release mode")
 	flag.StringVar(&addr, "addr", ":3056", "http listening address")
-	flag.StringVar(&base_path, "base_path", "", "http base path")
+	flag.StringVar(&http_path, "http.path", "", "http base path")
 
 	flag.StringVar(&swagger_title, "swagger.title", "Swagger Example API", "swagger title")
 	flag.StringVar(&swagger_host, "swagger.host", "petstore.swagger.io", "swagger host")
@@ -48,8 +50,10 @@ func main() {
 		flag.PrintDefaults()
 		fmt.Fprintf(output, "```\n")
 
-		fmt.Fprintf(output, "\n#### build_infomation\n```yaml\n")
-		fmt.Fprintf(output, "build_branch: %s\n", GIT_Branch)
+		fmt.Fprintf(output, "\n#### Build\n```yaml\n")
+		fmt.Fprintf(output, "build_time: %s\n", BUILD_Time)
+		fmt.Fprintf(output, "git_repository: %s\n", GIT_Repository)
+		fmt.Fprintf(output, "git_branch: %s\n", GIT_Branch)
 		fmt.Fprintf(output, "git_commit_id: %s\n", GIT_CommitId)
 		fmt.Fprintf(output, "git_commit_time: %s\n", GIT_CommitTime)
 		fmt.Fprintf(output, "```\n")
@@ -66,8 +70,8 @@ func main() {
 	engine.RedirectTrailingSlash = false
 	router = &engine.RouterGroup
 
-	if base_path != "" {
-		*router = *(router.Group(base_path))
+	if http_path != "" {
+		*router = *(router.Group(http_path))
 	}
 
 	LoadSwagger(router, func(spec *swag.Spec) {
@@ -92,13 +96,11 @@ func LoadSwagger(router *gin.RouterGroup, alert ...func(*swag.Spec)) {
 		alert[0](docs.SwaggerInfo)
 	}
 
-	/*
-		router.GET("/swagger", func(ctx *gin.Context) {
-			ctx.Redirect(http.StatusTemporaryRedirect, ctx.FullPath()+"/index.html")
-		})
+	// "/swagger"
+	router.GET("/", func(ctx *gin.Context) {
+		ctx.Redirect(http.StatusTemporaryRedirect, ctx.FullPath()+"/index.html")
+	})
 
-		router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	*/
-
+	// "/swagger/*any"
 	router.GET("/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }
