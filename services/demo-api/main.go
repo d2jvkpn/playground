@@ -29,15 +29,15 @@ var (
 
 func main() {
 	var (
-		release    bool
-		httpAddr   string
-		rpcAddr    string
-		config     string
-		configPath string
-		err        error
-		logger     *slog.Logger
-		errch      chan error
-		quit       chan os.Signal
+		release     bool
+		http_addr   string
+		rpc_addr    string
+		config      string
+		config_path string
+		err         error
+		logger      *slog.Logger
+		errch       chan error
+		quit        chan os.Signal
 	)
 
 	// logger = slog.New(slog.NewTextHandler(os.Stderr, nil))
@@ -61,15 +61,16 @@ func main() {
 		"configuration file(yaml) path, default: load from project.yaml::config",
 	) // configs/local.yaml
 
-	flag.StringVar(&httpAddr, "http_addr", "0.0.0.0:5031", "http listening address")
-	flag.StringVar(&rpcAddr, "rpc_addr", "0.0.0.0:5041", "rpc listening address")
+	flag.StringVar(&http_addr, "http.addr", "0.0.0.0:5031", "http listening address")
+	flag.StringVar(&settings.HTTP_Path, "http.path", "", "http prefix path")
+	flag.StringVar(&rpc_addr, "rpc.addr", "0.0.0.0:5041", "rpc listening address")
 
 	flag.Usage = func() {
 		output := flag.CommandLine.Output()
 
 		fmt.Fprintf(output, "# %s\n\n", settings.ProjectString("app"))
-		fmt.Fprintf(output, "#### usage\n```text\n")
 
+		fmt.Fprintf(output, "#### usage\n```text\n")
 		flag.PrintDefaults()
 		fmt.Fprintf(output, "```\n")
 
@@ -84,9 +85,9 @@ func main() {
 
 	flag.Parse()
 
-	if configPath = config; config == "" {
+	if config_path = config; config == "" {
 		config = settings.ProjectString("config")
-		configPath = "project.yaml::config"
+		config_path = "project.yaml::config"
 	}
 
 	if err = internal.Load(config, release); err != nil {
@@ -94,23 +95,24 @@ func main() {
 		return
 	}
 
-	settings.Meta["config"] = configPath
-	settings.Meta["http_address"] = httpAddr
-	settings.Meta["rpc_address"] = rpcAddr
+	settings.Meta["config"] = config_path
+	settings.Meta["http_address"] = http_addr
+	settings.Meta["http_path"] = settings.HTTP_Path
+	settings.Meta["rpc_address"] = rpc_addr
 	settings.Meta["release"] = release
 	settings.Meta["startup_time"] = time.Now().Format(time.RFC3339Nano)
 
 	// logger.Info("Hello", "world", 42, "key", "value")
-	if errch, err = internal.Run(httpAddr, rpcAddr); err != nil {
+	if errch, err = internal.Run(http_addr, rpc_addr); err != nil {
 		logger.Error("run", "error", err)
 		return
 	}
 
 	logger.Info(
 		"sevice is up",
-		"config", configPath,
-		"http_address", httpAddr,
-		"rpc_address", rpcAddr,
+		"config", config_path,
+		"http_address", http_addr,
+		"rpc_address", rpc_addr,
 		"release", release,
 		"lifetime", settings.Meta["lifetime"],
 		"version", settings.Meta["version"],

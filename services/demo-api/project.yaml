@@ -12,7 +12,6 @@ config: |
     world: 42
 
   http:
-    path: "/"
     cors: "*"
     tls: false
     cert: configs/server.pem

@@ -4,7 +4,6 @@ hello:
   world: 42
 
 http:
-  path: "/"
   tls: false
   cert: configs/server.pem
   key: configs/server.key

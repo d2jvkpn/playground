@@ -16,9 +16,11 @@ import (
 var (
 	_Project *viper.Viper
 	_Config  *viper.Viper
-	Lifetime <-chan time.Time
-	Meta     map[string]any
-	Logger   *logging.Logger
+
+	HTTP_Path string
+	Lifetime  <-chan time.Time
+	Meta      map[string]any
+	Logger    *logging.Logger
 )
 
 // #### project

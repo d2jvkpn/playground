@@ -26,7 +26,7 @@ swag:
 #### run and build
 run:
 	# -config=configs/local.yaml
-	go run main.go -http_addr=0.0.0.0:5031 -rpc_addr=0.0.0.0:5041
+	go run main.go -http.addr=0.0.0.0:5031 -rpc.addr=0.0.0.0:5041
 
 site:
 	mkdir -p site

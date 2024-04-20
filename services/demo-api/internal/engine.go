@@ -36,8 +36,9 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 	engine.MaxMultipartMemory = HTTP_MaxMultipartMemory
 
 	router = &engine.RouterGroup
-	p := settings.ConfigField("http").GetString("path")
-	*router = *(router.Group(p))
+	if settings.HTTP_Path != "" {
+		*router = *(router.Group(settings.HTTP_Path))
+	}
 
 	// ### templates
 	// engine.LoadHTMLGlob("templates/*.tmpl")
