@@ -1,5 +1,9 @@
 configs/
-.git/
-site.
+data/
 logs/
+site/
 target/
+
+.git/
+wk*/
+swagger/

@@ -88,13 +88,15 @@ func Load_Biz(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 //	@Description	get string by ID
 //	@Tags			accounts
 //	@Accept			json
-//	@Produce		json
-//	@Param			id	path		int	true	"Account ID"
-//	@Success		200	{object}	int
+//	@Produce		json"
+//	@Param	id		path	int			true	"Account ID"
+//	@Param	name	query	string		flase	"Account Name"
+//	@Param	login	body	LoginUser	true	"user password"
+//	@Success		200	{object}	Response
 //	@Failure		400	{object}	error
 //	@Failure		404	{object}	error
 //	@Failure		500	{object}	error
-//	@Router			/accounts/{id} [get]
+//	@Router			/accounts/{id}	[get]
 func Hello(ctx *gin.Context) {
 	var (
 		name   string
@@ -129,4 +131,16 @@ func Hello(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{"value": value, "name": name})
 	// span.End() // don't do this as it will be called by the middleware
+}
+
+type LoginUser struct {
+	UserId string   `json:"userId"`
+	Password string `json:"password"`
+	Region  string `json:"region,omitempty"`
+}
+
+type Response struct {
+	Code int32          `json:"code"`
+	Msg  string         `json:"msg"`
+	Data map[string]any `json:"data"`
 }

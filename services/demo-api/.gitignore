@@ -25,10 +25,10 @@ go.work
 docker-compose.yaml
 docker-compose.yml
 
-target/
-data/
 configs/
+data/
 logs/
 site/
+target/
 
 wk*/

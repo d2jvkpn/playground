@@ -15,14 +15,13 @@ go:
 	go fmt ./...
 	go vet ./...
 
+swag:
+	bash swagger/swag.sh
+
 #### run and build
 run:
 	# -config=configs/local.yaml
 	go run main.go -http_addr=0.0.0.0:5031 -rpc_addr=0.0.0.0:5041
-
-check:
-	go fmt ./...
-	go vet ./...
 
 site:
 	mkdir -p site

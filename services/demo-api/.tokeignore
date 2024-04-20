@@ -1,3 +1,4 @@
-vendor/
 *.pb.go
-swagger/docs/
+
+vendor/
+swagger/

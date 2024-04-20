@@ -30,18 +30,40 @@ const docTemplate = `{
                 "summary": "Show an account",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "application/json",
+                        "name": "Content-Type",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "type": "integer",
                         "description": "Account ID",
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Account Name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "description": "user password",
+                        "name": "login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/route.LoginUser"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/route.Response"
                         }
                     },
                     "400": {
@@ -56,6 +78,37 @@ const docTemplate = `{
                         "description": "Internal Server Error",
                         "schema": {}
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "route.LoginUser": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "region": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "route.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "object",
+                    "additionalProperties": {}
+                },
+                "msg": {
+                    "type": "string"
                 }
             }
         }

@@ -5,8 +5,11 @@ go:
 	go vet ./...
 
 build:
+	bash swag.sh
 	mkdir -p target
-	go build -o target/demo-api_swagger main.go
+	go build -o target/swagger main.go
+	ls -a target/
 
 run:
+	bash swag.sh
 	go run main.go
