@@ -1,4 +1,4 @@
 *.pb.go
 
 vendor/
-swagger/
+swagger-go/
