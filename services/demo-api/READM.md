@@ -1,7 +1,7 @@
-### Demo Web
+### Demo API
 ---
 
-#### chapter 1 Specs
+#### P01 Specs
 - web: gin
 - websocket: (gorilla/websocket)
 - language: golang
@@ -13,11 +13,12 @@
 - deployments: docker/docker-compose, kubernetes
 - tools: make, git
 
-#### chapter 2 Alternatives
+#### P02 Alternatives
 - message queue: kafka(kraft)
 - service discovering: consul
 - cache: redis
 - database: postgres, mongodb
 
-#### chatper 3 TODO
+#### P03 TODO
 - tracing: opentelemetry, jaeger
+- seperate swagger from main.go
