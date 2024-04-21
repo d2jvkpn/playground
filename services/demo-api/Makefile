@@ -2,7 +2,7 @@
 # include envfile
 # export $(shell sed 's/=.*//' envfile)
 
-current = $(shell pwd)
+work_dir = $(shell pwd)
 
 build_time = $(shell date +'%FT%T.%N%:z')
 git_repository = $(shell git config --get remote.origin.url)
@@ -22,16 +22,16 @@ swag:
 	    rsync -arvP --exclude .git /tmp/swagger-go ./; \
 	    rm -rf /tmp/swagger-go; \
 	fi
-	bash swagger-go/swag.sh $(shell pwd)
+	bash swagger-go/swag.sh $(work_dir)
 
 #### run and build
 run:
 	# -config=configs/local.yaml
 	go run main.go -http.addr=0.0.0.0:5031 -rpc.addr=0.0.0.0:5041
 
-site:
+site-text:
 	mkdir -p site
-	echo "Hello, world!" > site/a.txt
+	date  +"Hello, world, %FT%T%:z!" > site/a01.txt
 
 protoc-run:
 	protoc --go-grpc_out=./ --go_out=./ --proto_path=./proto proto/*.proto
