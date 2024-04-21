@@ -28,9 +28,9 @@ func Load(config string, release bool) (err error) {
 	// _ = os.Setenv("APP_DebugMode", "false")
 	log_file := filepath.Join("logs", settings.ProjectString("app")+".log")
 	if release {
-		settings.Logger, err = logging.NewLogger(log_file, zap.InfoLevel, 512)
+		settings.Logger, err = logging.NewLogger(log_file, zap.InfoLevel, 1024)
 	} else {
-		settings.Logger, err = logging.NewLogger(log_file, zap.DebugLevel, 512)
+		settings.Logger, err = logging.NewLogger(log_file, zap.DebugLevel, 1024)
 	}
 	// settings.Logger.Logger = settings.Logger.Logger.With(
 	// 	zap.String("version", settings.ProjectString("version")),
