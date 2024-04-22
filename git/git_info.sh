@@ -18,11 +18,11 @@ git_repository=$(shell git config --get remote.origin.url)
 git_branch=$(git rev-parse --abbrev-ref HEAD)
 git_commit_id=$(git rev-parse --verify HEAD) # git log --pretty=format:'%h' -n 1
 git_commit_time=$(git log -1 --format="%at" | xargs -I{} date -d @{} +%FT%T%:z)
-git_tree_state="clean"
 
+git_tree_state="clean"
 uncommitted=$(git status --short)
 unpushed=$(git diff origin $GIT_Branch..HEAD --name-status)
-[ ! -z "$uncommitted$unpushed" ] && git_tree_state="dirty"
+# [ ! -z "$uncommitted$unpushed" ] && git_tree_state="dirty"
 
 if [[ "$format" == "json" ]]; then
     jq -n \
