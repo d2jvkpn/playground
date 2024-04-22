@@ -97,13 +97,17 @@ func main() {
 		if err != nil {
 			logger.Error("exit", "error", err)
 			os.Exit(1)
+		} else {
+			logger.Info("exit")
 		}
 	}()
 
+	// 1.
 	if err = server.Setup(); err != nil {
 		return
 	}
 
+	// 2.1
 	swagger_path := "/swagger"
 	if server.Path != "" {
 		swagger_path = "/" + server.Path + "/swagger"
@@ -111,6 +115,31 @@ func main() {
 	server.Engine.NoRoute(func(ctx *gin.Context) {
 		ctx.Redirect(http.StatusTemporaryRedirect, ctx.FullPath()+swagger_path+"/index.html")
 	})
+
+	// 2.2
+	startup_time := time.Now().Format(time.RFC3339)
+	go_version := runtime.Version()
+	meta := map[string]*string{
+		"build_time":      &build_time,
+		"go_version":      &go_version,
+		"git_repository":  &git_repository,
+		"git_branch":      &git_branch,
+		"git_commit_id":   &git_commit_id,
+		"git_commit_time": &git_commit_time,
+		"git_tree_state":  &git_tree_state,
+
+		"startup_time": &startup_time,
+	}
+
+	meta_bts, _ := json.Marshal(meta)
+	server.Engine.RouterGroup.GET("/meta", func(ctx *gin.Context) {
+		// ctx.JSON(http.StatusOK, meta)
+
+		ctx.Header("Content-Type", "application/json")
+		ctx.Writer.Write(meta_bts)
+	})
+
+	// 2.3
 	LoadSwagger(&server.Engine.RouterGroup)
 
 	// engine.Run(http_addr)
@@ -119,17 +148,23 @@ func main() {
 		var e error
 
 		e = server.Serve()
-		// errors.Is(e, http.ErrServerClosed)
 		// e != http.ErrServerClosed
-		errch <- fmt.Errorf("server_closed")
+		if e != nil && !errors.Is(e, http.ErrServerClosed) {
+			errch <- e
+		} else {
+			errch <- nil
+		}
 
 		logger.Error("service has been shut down", "error", e)
 	}()
 
+	// 3.
 	errch = make(chan error, 1) // the cap of the channel should be equal to number of services
 	quit = make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM) // syscall.SIGUSR2
 
+	//	link: https://dev.to/antonkuklin/golang-graceful-shutdown-3n6d
+	//
 	//	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	//	defer stop()
 	//	go func() {
@@ -141,37 +176,35 @@ func main() {
 	//	<-ctx.Done()
 
 	syncErrors := func(count int) {
+		logger.Warn("sync errors", "count", count)
 		for i := 0; i < count; i++ {
 			err = errors.Join(err, <-errch)
 		}
 	}
 
-	count := cap(errch)
 	select {
 	case err = <-errch:
-		logger.Error("... received from channel", "error", err)
+		logger.Error("... received error", "error", err)
 		// shutdown other services
 
-		count -= 1
+		syncErrors(cap(errch) - 1)
 	case sig := <-quit:
-		// if sig == syscall.SIGUSR2 {...}
-		// fmt.Fprintf(os.Stderr, "... received signal: %s\n", sig)
+		logger.Warn("... received signal", "signal", sig.String())
+		// if sig == syscall.SIGUSR2 {...} // works on linux only
 
-		logger.Warn("... quit", "signal", sig.String())
-
+		// 1. shutdow http server
 		ctx, cancel := context.WithTimeout(context.TODO(), 5*time.Second)
 		e := server.Shutdown(ctx)
 		cancel()
 		if e != nil {
 			logger.Error("shutdown the server", "error", e)
 		}
-		// shutdown other services
+
+		// 2. shutdown other services
 
 		// errch <- fmt.Errorf("signal: %s", sig.String())
+		syncErrors(cap(errch))
 	}
-
-	logger.Warn("sync errors", "count", count)
-	syncErrors(count)
 }
 
 func (self *Server) Setup() (err error) {
@@ -191,34 +224,12 @@ func (self *Server) Setup() (err error) {
 		self.Engine = gin.Default()
 	}
 	self.Engine.RedirectTrailingSlash = false
-	router = &self.Engine.RouterGroup
 
+	router = &self.Engine.RouterGroup
 	self.Path = strings.Trim(self.Path, "/")
 	if self.Path != "" {
 		*router = *(router.Group(self.Path))
 	}
-
-	startup_time := time.Now().Format(time.RFC3339)
-	go_version := runtime.Version()
-	meta := map[string]*string{
-		"build_time":      &build_time,
-		"go_version":      &go_version,
-		"git_repository":  &git_repository,
-		"git_branch":      &git_branch,
-		"git_commit_id":   &git_commit_id,
-		"git_commit_time": &git_commit_time,
-		"git_tree_state":  &git_tree_state,
-
-		"startup_time": &startup_time,
-	}
-
-	meta_bts, _ := json.Marshal(meta)
-	router.GET("/meta", func(ctx *gin.Context) {
-		// ctx.JSON(http.StatusOK, meta)
-
-		ctx.Header("Content-Type", "application/json")
-		ctx.Writer.Write(meta_bts)
-	})
 
 	self.Server = new(http.Server)
 	self.Server.Handler = self.Engine
@@ -271,7 +282,7 @@ func LoadSwagger(router *gin.RouterGroup, updates ...func(*swag.Spec)) {
 
 /*
 
-//	example_01: Hello godoc
+//	e01: Hello godoc
 //
 //	@Summary		Show an account
 //	@Description	get string by ID
