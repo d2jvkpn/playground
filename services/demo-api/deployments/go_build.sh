@@ -5,7 +5,8 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 # app=$(yq .app project.yaml)
 app=main
 
-build_time=$(date +'%FT%T.%N%:z')
+# build_time=$(date +'%FT%T.%N%:z')
+build_time=$(date +'%FT%T%:z')
 git_repository="$(git config --get remote.origin.url)"
 git_branch="$(git rev-parse --abbrev-ref HEAD)" # current branch
 git_commit_id=$(git rev-parse --verify HEAD) # git log --pretty=format:'%h' -n 1

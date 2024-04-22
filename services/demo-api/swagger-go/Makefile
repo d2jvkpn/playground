@@ -18,19 +18,9 @@ go:
 
 build:
 	bash swag.sh
-	mkdir -p target
-
-	@go build -ldflags="-w -s \
-	  -X main.build_time=$(build_time) \
-	  -X main.git_repository=$(git_repository) \
-	  -X main.git_branch=$(git_branch) \
-	  -X main.git_commit_id=$(git_commit_id) \
-	  -X main.git_commit_time=$(git_commit_time)" \
-	  -o target/swagger-go main.go
-
-	ls -alh target/
 
 run:
+	bash swag.sh
 	./target/swagger-go
 
 #swag:
@@ -39,4 +29,4 @@ run:
 #	    rsync -arvP --exclude .git /tmp/swagger-go ./; \
 #	    rm -rf /tmp/swagger-go; \
 #	fi
-#	bash swagger-go/swag.sh $(shell pwd)
+#	bash swagger-go/swag.sh
