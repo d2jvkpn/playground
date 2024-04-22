@@ -22,6 +22,10 @@ config: |
     cert: configs/server.pem
     key: configs/server.key
 
+  promethues:
+    enabled: false
+    path: /metrics
+
   opentel:
     enabled: false
     tls: false

@@ -13,6 +13,10 @@ rpc:
   cert: configs/server.pem
   key: configs/server.key
 
+promethues:
+  enabled: true
+  path: /metrics
+
 opentel:
   enabled: false
   tls: false

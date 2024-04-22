@@ -24,7 +24,11 @@ func Load_Public(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 	//
 	router.GET("/nts", gin.WrapF(impls.NTSFunc(3)))
 	router.GET("/healthz", ginx.Healthz)
-	router.GET("/metrics", gin.WrapH(promhttp.Handler()))
+
+	if p := settings.ConfigField("promethues"); p.GetBool("enabled") {
+		p.SetDefault("path", "/metrics")
+		router.GET(p.GetString("path"), gin.WrapH(promhttp.Handler()))
+	}
 
 	router.GET("/meta", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{"meta": settings.Meta})
