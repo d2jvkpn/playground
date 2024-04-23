@@ -36,9 +36,12 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 	engine.MaxMultipartMemory = HTTP_MaxMultipartMemory
 
 	router = &engine.RouterGroup
-	if settings.HTTP_Path != "" {
-		*router = *(router.Group(settings.HTTP_Path))
+	if p := settings.ConfigField("http").GetString("path"); p != "" {
+		*router = *(router.Group(p))
 	}
+
+	cors := settings.ConfigField("http").GetString("cors")
+	engine.Use(ginx.Cors(cors))
 
 	// ### templates
 	// engine.LoadHTMLGlob("templates/*.tmpl")
@@ -47,9 +50,6 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 		return nil, err
 	}
 	engine.SetHTMLTemplate(tmpl)
-
-	cors := settings.ConfigField("http").GetString("cors")
-	engine.Use(ginx.Cors(cors))
 
 	if settings.ConfigField("opentel").GetBool("enabled") {
 		engine.Use(otelgin.Middleware(settings.ProjectString("app")))
@@ -67,9 +67,8 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 	engine.NoRoute(notRouterLogger, func(ctx *gin.Context) {
 		// ctx.AbortWithStatus(http.StatusNotFound)
 		// time.Sleep(time.Second)
-		ctx.JSON(http.StatusNotFound, gin.H{
-			"code": -1, "msg": "router not found", "data": gin.H{},
-		})
+
+		ctx.JSON(http.StatusNotFound, gin.H{"code": -1, "msg": "route not found"})
 	})
 
 	// //go:embed static/assets/favicon.ico

@@ -4,6 +4,8 @@ hello:
   world: 42
 
 http:
+  cors: "*"
+  path: ""
   tls: false
   cert: configs/server.pem
   key: configs/server.key

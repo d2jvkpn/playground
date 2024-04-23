@@ -17,7 +17,7 @@ sqlx database create
 # psql --host 127.0.0.1 --username hello --port 5432 --password --dbname users -c 'SELECT current_database()'
 
 sqlx migrate add create_users_table
-sql_file=$(ls migrations/*_create_users_table.sql | tail -n 1)
+sql_file=$(ls -1tr migrations/*_create_users_table.sql | head -n 1)
 
 cat > $sql_file <<'EOF'
 --- Add migration script here

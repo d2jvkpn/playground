@@ -63,7 +63,6 @@ func main() {
 	) // configs/local.yaml
 
 	flag.StringVar(&http_addr, "http.addr", "0.0.0.0:5031", "http listening address")
-	flag.StringVar(&settings.HTTP_Path, "http.path", "", "http prefix path")
 	flag.StringVar(&rpc_addr, "rpc.addr", "0.0.0.0:5041", "rpc listening address")
 
 	flag.Usage = func() {
