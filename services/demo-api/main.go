@@ -68,7 +68,7 @@ func main() {
 	flag.Usage = func() {
 		output := flag.CommandLine.Output()
 
-		fmt.Fprintf(output, "# %s\n\n", settings.ProjectString("app"))
+		fmt.Fprintf(output, "# %s\n\n", settings.ProjectString("app_name"))
 
 		fmt.Fprintf(output, "#### usage\n```text\n")
 		flag.PrintDefaults()

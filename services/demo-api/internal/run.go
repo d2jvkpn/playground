@@ -26,7 +26,7 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 	if opentel.GetBool("enabled") {
 		_CloseOtel, err = tracing.LoadOtelGrpc(
 			opentel.GetString("address"),
-			settings.ProjectString("app"),
+			settings.ProjectString("app_name"),
 			opentel.GetBool("tls"),
 		)
 

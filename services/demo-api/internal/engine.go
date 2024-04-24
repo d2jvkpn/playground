@@ -52,7 +52,7 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 	engine.SetHTMLTemplate(tmpl)
 
 	if settings.ConfigField("opentel").GetBool("enabled") {
-		engine.Use(otelgin.Middleware(settings.ProjectString("app")))
+		engine.Use(otelgin.Middleware(settings.ProjectString("app_name")))
 	}
 
 	// #### handlers

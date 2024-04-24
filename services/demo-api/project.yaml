@@ -1,4 +1,4 @@
-app: demo-api
+app_name: demo-api
 version: 0.1.2
 repository: git@github.com:d2jvkpn/playground.git services/demo-api
 image_name: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api

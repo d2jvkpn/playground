@@ -2,7 +2,7 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-# app=$(yq .app project.yaml)
+# app=$(yq .app_name project.yaml)
 app=main
 
 # build_time=$(date +'%FT%T.%N%:z')
