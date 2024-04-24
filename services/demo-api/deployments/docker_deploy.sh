@@ -16,7 +16,7 @@ envsubst < ${_path}/docker_deploy.yaml > docker-compose.yaml
   docker rm -f $container
 # 'docker-compose down' removes running containers only, not stopped containers
 
-UID=$UID GID=$(id -g) docker-compose up -d
+USER_ID=$USER_ID USER_GID=$USER_GID docker-compose up -d
 
 exit 0
 docker stop $container && docker stop $container

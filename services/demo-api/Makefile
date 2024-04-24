@@ -40,7 +40,7 @@ protoc-run:
 	protoc --go-grpc_out=./ --go_out=./ --proto_path=./proto proto/*.proto
 	sed -i '/^\tmustEmbedUnimplemented/s#\t#\t// #' proto/*_grpc.pb.go
 
-build-01:
+build-bin:
 	mkdir -p target
 
 	@go build -ldflags="-w -s \
@@ -53,18 +53,16 @@ build-01:
 
 	ls -alh target/
 
-build:
+build-image:
+	# BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master
+	# DOCKER_Tag=dev bash deployments/docker_build.sh master
 	bash deployments/go_build.sh
 
-build-offline:
+build-image_offline:
 	GIT_Pull=false BUILD_Region=cn DOCKER_Pull=false DOCKER_Tag=dev \
 	bash deployments/docker_build.sh master
 
-build-local:
-	# BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master
-	DOCKER_Tag=dev bash deployments/docker_build.sh master
-
-build-remote:
+build-image_remote:
 	ssh -F configs/ssh.conf build_host "cd docker_build/playground/demo-api && \
 	  git pull && DOCKER_Tag=dev bash deployments/docker_build.sh master"
 

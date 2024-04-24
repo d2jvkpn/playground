@@ -30,7 +30,7 @@ RUN mkdir -p target && \
   go build -o target/main -ldflags="-w -s ${GO_ldflags}" main.go
 
 ####
-FROM alpine
+FROM alpine:3
 
 ENV TZ=${TZ:-Asia/Shanghai}
 ARG APP_Name=${APP_Name}

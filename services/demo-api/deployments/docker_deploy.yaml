@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  demo-api:
+  ${APP_Name}:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/${APP_Name}:${IMAGE_Tag}
     restart: always
     container_name: ${APP_Name}_${APP_Tag}
@@ -18,7 +18,7 @@ services:
     # - ./data/:/app/data:rw
     - ./logs/:/app/logs:rw
     # command: ["./target/main", "-config=configs/dev.yaml", "-http_addr=:${HTTP_Port}", "-rpc_addr=:${RPC_Port}"]
-    command: ["./target/main", "-http.addr=:${HTTP_Port}", "-rpc.addr=:${RPC_Port}"]
+    command: ["./target/main", "-release", "-http.addr=:${HTTP_Port}", "-rpc.addr=:${RPC_Port}"]
 
 networks:
   net: { name: "${APP_Name}_${APP_Tag}", driver: bridge, external: false }
