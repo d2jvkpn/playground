@@ -68,7 +68,7 @@ func main() {
 	flag.Usage = func() {
 		output := flag.CommandLine.Output()
 
-		fmt.Fprintf(output, "# %s\n\n", settings.ProjectString("app_name"))
+		fmt.Fprintf(output, "# %s\n\n", settings.Project.GetString("app_name"))
 
 		fmt.Fprintf(output, "#### usage\n```text\n")
 		flag.PrintDefaults()
@@ -77,7 +77,7 @@ func main() {
 		fmt.Fprintf(
 			output,
 			"\n#### configuration\n```yaml\n%s```\n",
-			settings.ProjectString("config"),
+			settings.Project.GetString("config"),
 		)
 
 		fmt.Fprintf(output, "\n#### build\n```text\n%s\n```\n", gotk.BuildInfoText(settings.Meta))
@@ -86,7 +86,7 @@ func main() {
 	flag.Parse()
 
 	if config_path = config; config == "" {
-		config = settings.ProjectString("config")
+		config = settings.Project.GetString("config")
 		config_path = "project.yaml::config"
 	}
 

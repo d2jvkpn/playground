@@ -2,7 +2,7 @@ package route
 
 import (
 	"context"
-	"fmt"
+	// "fmt"
 	"log"
 	"net/http"
 	"time"
@@ -10,38 +10,12 @@ import (
 	"demo-api/internal/biz"
 	"demo-api/internal/settings"
 
-	"github.com/d2jvkpn/gotk"
 	"github.com/d2jvkpn/gotk/ginx"
-	"github.com/d2jvkpn/gotk/impls"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 )
-
-func Load_Public(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
-	//
-	router.GET("/nts", gin.WrapF(impls.NTSFunc(3)))
-	router.GET("/healthz", ginx.Healthz)
-
-	if p := settings.ConfigField("promethues"); p.GetBool("enabled") {
-		p.SetDefault("path", "/metrics")
-		router.GET(p.GetString("path"), gin.WrapH(promhttp.Handler()))
-	}
-
-	router.GET("/meta", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{"meta": settings.Meta})
-	})
-
-	//
-	debug := router.Group("/debug", handlers...)
-	kfs := gotk.PprofHandlerFuncs()
-
-	for _, k := range gotk.PprofFuncKeys() {
-		debug.GET(fmt.Sprintf("/pprof/%s", k), gin.WrapF(kfs[k]))
-	}
-}
 
 func Load_OpenV1(router *gin.RouterGroup, handlers ...gin.HandlerFunc) {
 	group := router.Group("/api/v1/open", handlers...)
@@ -109,7 +83,7 @@ func Hello(ctx *gin.Context) {
 	)
 
 	reqCtx = ctx.Request.Context()
-	value = settings.ConfigField("hello").GetInt64("world")
+	value = settings.Config.Sub("hello").GetInt64("world")
 	time.Sleep(27 * time.Millisecond)
 
 	name = biz.Hello(reqCtx)

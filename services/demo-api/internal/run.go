@@ -22,11 +22,11 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 		rpcListener  net.Listener
 	)
 
-	opentel := settings.ConfigField("opentel")
+	opentel := settings.Config.Sub("opentel")
 	if opentel.GetBool("enabled") {
 		_CloseOtel, err = tracing.LoadOtelGrpc(
 			opentel.GetString("address"),
-			settings.ProjectString("app_name"),
+			settings.Project.GetString("app_name"),
 			opentel.GetBool("tls"),
 		)
 
@@ -49,7 +49,7 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 
 	_RuntimeInfo.Start()
 
-	_InternalLogger.Info("service_start", zap.Any("meta", settings.Meta))
+	_InternalLogger.Info("services are up", zap.Any("meta", settings.Meta))
 
 	once := new(sync.Once)
 	shutdown := func() { once.Do(_Shutdown) }
@@ -88,7 +88,7 @@ func _Shutdown() {
 
 	if _Server != nil {
 		ctx, cancel := context.WithTimeout(context.TODO(), 5*time.Second)
-		err = _Server.Shutdown(ctx)
+		err = errors.Join(err, _Server.Shutdown(ctx))
 		cancel()
 	}
 

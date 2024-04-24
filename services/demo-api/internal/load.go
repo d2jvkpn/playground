@@ -26,14 +26,14 @@ func Load(config string, release bool) (err error) {
 
 	// #### logging
 	// _ = os.Setenv("APP_DebugMode", "false")
-	log_file := filepath.Join("logs", settings.ProjectString("app_name")+".log")
+	log_file := filepath.Join("logs", settings.Project.GetString("app_name")+".log")
 	if release {
 		settings.Logger, err = logging.NewLogger(log_file, zap.InfoLevel, 1024)
 	} else {
 		settings.Logger, err = logging.NewLogger(log_file, zap.DebugLevel, 1024)
 	}
 	// settings.Logger.Logger = settings.Logger.Logger.With(
-	// 	zap.String("version", settings.ProjectString("version")),
+	// 	zap.String("version", settings.Project.GetString("version")),
 	// )
 
 	if err != nil {
@@ -57,7 +57,7 @@ func Load(config string, release bool) (err error) {
 		Handler: engine,
 	}
 
-	httpConfig := settings.ConfigField("http")
+	httpConfig := settings.Config.Sub("http")
 	if httpConfig == nil {
 		return fmt.Errorf("config.http is unset")
 	}
@@ -73,7 +73,7 @@ func Load(config string, release bool) (err error) {
 	}
 
 	//
-	rpcConfig := settings.ConfigField("rpc")
+	rpcConfig := settings.Config.Sub("rpc")
 	if rpcConfig == nil {
 		return fmt.Errorf("config.rpc is unset")
 	}

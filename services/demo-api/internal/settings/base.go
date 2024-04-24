@@ -14,8 +14,8 @@ import (
 )
 
 var (
-	_Project *viper.Viper
-	_Config  *viper.Viper
+	Project *viper.Viper
+	Config  *viper.Viper
 
 	HTTP_Path string
 	Lifetime  <-chan time.Time
@@ -25,17 +25,17 @@ var (
 
 // #### project
 func SetProject(bts []byte) (err error) {
-	_Project = viper.New()
-	_Project.SetConfigType("yaml")
+	Project = viper.New()
+	Project.SetConfigType("yaml")
 
 	// _Project.ReadConfig(strings.NewReader(str))
-	if err = _Project.ReadConfig(bytes.NewReader(bts)); err != nil {
+	if err = Project.ReadConfig(bytes.NewReader(bts)); err != nil {
 		return err
 	}
 
 	Meta = gotk.BuildInfo()
-	Meta["app"] = _Project.GetString("app")
-	Meta["version"] = _Project.GetString("version")
+	Meta["app_name"] = Project.GetString("app_name")
+	Meta["version"] = Project.GetString("version")
 
 	Meta["k8s"] = map[string]string{
 		"namespace": os.Getenv("K8S_Namespace"),
@@ -47,38 +47,23 @@ func SetProject(bts []byte) (err error) {
 	return nil
 }
 
-func ProjectString(key string) string {
-	return _Project.GetString(key)
-}
-
-func ProjectField(key string) *viper.Viper {
-	return _Project.Sub(key)
-}
-
 // #### config
 func SetConfig(config string) (err error) {
 	if strings.Contains(config, "\n") {
-		_Config, err = gotk.LoadYamlBytes([]byte(config))
+		Config, err = gotk.LoadYamlBytes([]byte(config))
 	} else {
-		_Config = viper.New()
-		_Config.SetConfigType("yaml")
-		_Config.SetConfigFile(config)
-		err = _Config.ReadInConfig()
+		Config = viper.New()
+		Config.SetConfigType("yaml")
+		Config.SetConfigFile(config)
+		err = Config.ReadInConfig()
 	}
 
 	if err != nil {
 		return err
 	}
 
-	//
-	/*
-		if !_Config.IsSet("lifetime") {
-			return fmt.Errorf("lifetime is unset")
-		}
-	*/
-
-	_Config.SetDefault("lifetime", "0m")
-	lifetime := _Config.GetDuration("lifetime")
+	Config.SetDefault("lifetime", "0m")
+	lifetime := Config.GetDuration("lifetime")
 	Meta["lifetime-v0"] = lifetime.String()
 
 	if lifetime > 0 {
@@ -92,15 +77,7 @@ func SetConfig(config string) (err error) {
 	}
 	Meta["lifetime-v1"] = lifetime.String()
 
-	// _Config.SetDefault("hello.world", 42)
+	// Config.SetDefault("hello.world", 42)
 
 	return nil
-}
-
-func ConfigString(key string) string {
-	return _Config.GetString(key)
-}
-
-func ConfigField(key string) *viper.Viper {
-	return _Config.Sub(key)
 }

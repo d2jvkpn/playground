@@ -10,9 +10,12 @@ import (
 	"demo-api/internal/route"
 	"demo-api/internal/settings"
 
+	"github.com/d2jvkpn/gotk"
 	"github.com/d2jvkpn/gotk/cloud-metrics"
 	"github.com/d2jvkpn/gotk/ginx"
+	"github.com/d2jvkpn/gotk/impls"
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 	"go.uber.org/zap"
 )
@@ -36,11 +39,11 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 	engine.MaxMultipartMemory = HTTP_MaxMultipartMemory
 
 	router = &engine.RouterGroup
-	if p := settings.ConfigField("http").GetString("path"); p != "" {
+	if p := settings.Config.Sub("http").GetString("path"); p != "" {
 		*router = *(router.Group(p))
 	}
 
-	cors := settings.ConfigField("http").GetString("cors")
+	cors := settings.Config.Sub("http").GetString("cors")
 	engine.Use(ginx.Cors(cors))
 
 	// ### templates
@@ -51,8 +54,8 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 	}
 	engine.SetHTMLTemplate(tmpl)
 
-	if settings.ConfigField("opentel").GetBool("enabled") {
-		engine.Use(otelgin.Middleware(settings.ProjectString("app_name")))
+	if settings.Config.Sub("opentel").GetBool("enabled") {
+		engine.Use(otelgin.Middleware(settings.Project.GetString("app_name")))
 	}
 
 	// #### handlers
@@ -84,9 +87,27 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 	ginx.ServeStaticDir("/site", "./site", false)(router)
 
 	// route.LoadSite(router)
+	debug := router.Group("/debug")
+	kfs := gotk.PprofHandlerFuncs()
 
-	// #### debug
-	route.Load_Public(router)
+	for _, k := range gotk.PprofFuncKeys() {
+		debug.GET(fmt.Sprintf("/pprof/%s", k), gin.WrapF(kfs[k]))
+	}
+
+	// #### public
+	router.GET("/nts", gin.WrapF(impls.NTSFunc(3)))
+	router.GET("/healthz", ginx.Healthz)
+
+	if p := settings.Config.Sub("promethues"); p.GetBool("enabled") {
+		p.SetDefault("path", "/metrics")
+		router.GET(p.GetString("path"), gin.WrapH(promhttp.Handler()))
+	}
+
+	if !release {
+		router.GET("/meta", func(ctx *gin.Context) {
+			ctx.JSON(http.StatusOK, gin.H{"meta": settings.Meta})
+		})
+	}
 
 	// #### biz handlers
 	route.Load_OpenV1(router, ginx.APILog(settings.Logger.Logger, "api_open", 5))
