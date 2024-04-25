@@ -32,6 +32,6 @@ set -x
 
 # go build -ldflags="-w -s $GO_ldflags" -o target/$app main.go
 go build -ldflags="$GO_ldflags" -o target/$app main.go
-GOOS=windows GOARCH=amd64 go build -ldflags="$GO_ldflags" -o target/$app.exe main.go
+# GOOS=windows GOARCH=amd64 go build -ldflags="$GO_ldflags" -o target/$app.exe main.go
 
 ls -l ./target/

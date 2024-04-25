@@ -40,7 +40,7 @@ func Load(config string, release bool) (err error) {
 		return err
 	}
 
-	_InternalLogger = settings.Logger.Named("internal")
+	_Logger = settings.Logger.Named("internal")
 
 	// #### server
 	if engine, err = newEngine(release); err != nil {

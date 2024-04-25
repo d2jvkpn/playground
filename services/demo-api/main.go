@@ -46,7 +46,10 @@ func main() {
 
 	defer func() {
 		if err != nil {
+			logger.Error("exit", "error", err)
 			os.Exit(1)
+		} else {
+			logger.Info("exit")
 		}
 	}()
 
@@ -70,17 +73,17 @@ func main() {
 
 		fmt.Fprintf(output, "# %s\n\n", settings.Project.GetString("app_name"))
 
-		fmt.Fprintf(output, "#### usage\n```text\n")
+		fmt.Fprintf(output, "#### Usage\n```text\n")
 		flag.PrintDefaults()
 		fmt.Fprintf(output, "```\n")
 
 		fmt.Fprintf(
 			output,
-			"\n#### configuration\n```yaml\n%s```\n",
+			"\n#### Configuration\n```yaml\n%s```\n",
 			settings.Project.GetString("config"),
 		)
 
-		fmt.Fprintf(output, "\n#### build\n```text\n%s\n```\n", gotk.BuildInfoText(settings.Meta))
+		fmt.Fprintf(output, "\n#### Build\n```text\n%s\n```\n", gotk.BuildInfoText(settings.Meta))
 	}
 
 	flag.Parse()
@@ -109,7 +112,7 @@ func main() {
 	}
 
 	logger.Info(
-		"sevice is up",
+		"the sevices are up",
 		"config", config_path,
 		"http_address", http_addr,
 		"rpc_address", rpc_addr,
@@ -127,22 +130,24 @@ func main() {
 		}
 	}
 
+	fromErrch := false
 	select {
 	case err = <-errch:
-		syncErrors(cap(errch) - 1)
-
-		logger.Error("... received from error channel", "error", err)
+		logger.Error("... received from channel error", "error", err)
+		fromErrch = true
 	case <-settings.Lifetime:
-		errch <- fmt.Errorf(internal.MSG_EndOfLife)
-		syncErrors(cap(errch))
-
 		logger.Info("... end of life", "error", err)
 	case sig := <-quit:
+		logger.Info("... received from channel quit", "signal", sig.String(), "error", err)
 		// if sig == syscall.SIGUSR2 {...}
 		// fmt.Fprintf(os.Stderr, "... received signal: %s\n", sig)
-		errch <- fmt.Errorf(internal.MSG_Shutdown)
-		syncErrors(cap(errch))
+	}
 
-		logger.Info("... quit", "signal", sig.String(), "error", err)
+	err = errors.Join(err, internal.Shutdown())
+
+	if fromErrch {
+		syncErrors(cap(errch) - 1)
+	} else {
+		syncErrors(cap(errch))
 	}
 }

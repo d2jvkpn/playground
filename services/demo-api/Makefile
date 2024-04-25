@@ -41,17 +41,16 @@ protoc-run:
 	sed -i '/^\tmustEmbedUnimplemented/s#\t#\t// #' proto/*_grpc.pb.go
 
 build-bin:
-	mkdir -p target
+#	mkdir -p target
 
-	@go build -ldflags="-w -s \
-	  -X main.build_time=$(build_time) \
-	  -X main.git_repository=$(git_repository) \
-	  -X main.git_branch=$(git_branch) \
-	  -X main.git_commit_id=$(git_commit_id) \
-	  -X main.git_commit_time=$(git_commit_time)" \
-	  -o target/swagger-go main.go
-
-	ls -alh target/
+#	@go build -ldflags="-w -s \
+#	  -X main.build_time=$(build_time) \
+#	  -X main.git_repository=$(git_repository) \
+#	  -X main.git_branch=$(git_branch) \
+#	  -X main.git_commit_id=$(git_commit_id) \
+#	  -X main.git_commit_time=$(git_commit_time)" \
+#	  -o target/swagger-go main.go
+	bash deployments/go_build.sh
 
 build-image_cn:
 	BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master

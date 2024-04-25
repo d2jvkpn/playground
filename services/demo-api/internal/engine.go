@@ -6,6 +6,7 @@ import (
 	"io/fs"
 	"net/http"
 	// "time"
+	"encoding/json"
 
 	"demo-api/internal/route"
 	"demo-api/internal/settings"
@@ -59,19 +60,20 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 	}
 
 	// #### handlers
-	lg := settings.Logger.Named("no_router")
-	notRouterLogger := func(ctx *gin.Context) {
-		lg.Warn(fmt.Sprintf("%s@%s", ctx.Request.Method, ctx.Request.URL.Path),
+	notRouterLogger := settings.Logger.Named("no_router")
+	notRouterBts, _ := json.Marshal(gin.H{"code": -1, "msg": "route not found"})
+
+	engine.NoRoute(func(ctx *gin.Context) {
+		notRouterLogger.Warn(fmt.Sprintf("%s@%s", ctx.Request.Method, ctx.Request.URL.Path),
 			zap.String("ip", ctx.ClientIP()),
 			zap.String("query", ctx.Request.URL.RawQuery),
 		)
-	}
 
-	engine.NoRoute(notRouterLogger, func(ctx *gin.Context) {
 		// ctx.AbortWithStatus(http.StatusNotFound)
 		// time.Sleep(time.Second)
-
-		ctx.JSON(http.StatusNotFound, gin.H{"code": -1, "msg": "route not found"})
+		// ctx.JSON(http.StatusNotFound, gin.H{"code": -1, "msg": "route not found"})
+		ctx.Header("Content-Type", "application/json")
+		ctx.Writer.Write(notRouterBts)
 	})
 
 	// //go:embed static/assets/favicon.ico
@@ -103,9 +105,12 @@ func newEngine(release bool) (engine *gin.Engine, err error) {
 		router.GET(p.GetString("path"), gin.WrapH(promhttp.Handler()))
 	}
 
+	metaBts, _ := json.Marshal(settings.Meta)
 	if !release {
 		router.GET("/meta", func(ctx *gin.Context) {
-			ctx.JSON(http.StatusOK, gin.H{"meta": settings.Meta})
+			// ctx.JSON(http.StatusOK, gin.H{"meta": settings.Meta})
+			ctx.Header("Content-Type", "application/json")
+			ctx.Writer.Write(metaBts)
 		})
 	}
 

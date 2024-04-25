@@ -28,11 +28,11 @@ var (
 	//go:embed templates
 	_Templates embed.FS
 
-	_Relase         bool
-	_InternalLogger *zap.Logger
-	_Server         *http.Server
-	_RPC            *RPCServer
-	_RuntimeInfo    *gotk.RuntimeInfo
+	_Relase      bool
+	_Logger      *zap.Logger
+	_Server      *http.Server
+	_RPC         *RPCServer
+	_RuntimeInfo *gotk.RuntimeInfo
 
 	_CloseOtel func() error
 )
