@@ -47,7 +47,7 @@ func SetProject(bts []byte) (err error) {
 }
 
 // #### config
-func SetConfig(config string, release bool) (err error) {
+func SetConfig(config string, release bool, kvs ...string) (err error) {
 	Config = viper.New()
 	Config.SetConfigType("yaml")
 
@@ -83,6 +83,12 @@ func SetConfig(config string, release bool) (err error) {
 	Meta["lifetime-v1"] = lifetime.String()
 
 	// Config.SetDefault("hello.world", 42)
+
+	for i := 0; i < len(kvs)/2; i++ {
+		k, v := kvs[2*i], kvs[2*i+1]
+		Config.Set(k, v)
+		Meta[k] = v
+	}
 
 	return nil
 }

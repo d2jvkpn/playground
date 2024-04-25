@@ -88,7 +88,8 @@ func main() {
 
 	flag.Parse()
 
-	if err = settings.SetConfig(config, release); err != nil {
+	err = settings.SetConfig(config, release, "http_address", http_addr, "rpc_address", rpc_addr)
+	if err != nil {
 		err = fmt.Errorf("SetConfig: %w", err)
 	}
 
@@ -96,9 +97,6 @@ func main() {
 		err = fmt.Errorf("Load: %w", err)
 		return
 	}
-
-	settings.Meta["http_address"] = http_addr
-	settings.Meta["rpc_address"] = rpc_addr
 
 	// logger.Info("Hello", "world", 42, "key", "value")
 	if errch, err = internal.Run(http_addr, rpc_addr); err != nil {
