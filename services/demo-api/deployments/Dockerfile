@@ -3,6 +3,7 @@ FROM golang:1-alpine AS builder
 ENV TZ=${TZ:-Asia/Shanghai}
 ARG APP_Name=${APP_Name}
 ARG APP_Version=${APP_Version}
+ARG BUILD_Hostname=${BUILD_Hostname}
 ARG BUILD_Region=${BUILD_Region}
 ARG GO_ldflags=${GO_ldflags}
 
@@ -35,6 +36,7 @@ FROM alpine:3
 ENV TZ=${TZ:-Asia/Shanghai}
 ARG APP_Name=${APP_Name}
 ARG APP_Version=${APP_Version}
+ARG BUILD_Hostname=${BUILD_Hostname}
 ARG BUILD_Region=${BUILD_Region}
 
 RUN if [ "$BUILD_Region" = "cn" ]; then \

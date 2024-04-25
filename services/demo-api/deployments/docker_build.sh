@@ -22,10 +22,7 @@ DOCKER_Pull=${DOCKER_Pull:-"true"}
 DOCKER_Push=${DOCKER_Push:-"true"}
 BUILD_Region=${BUILD_Region:-""}
 
-[ -f .env ] && {
-  2>&1 echo "==> load .env"
-  . .env
-}
+[ -s .env ] && { 2>&1 echo "==> load .env"; . .env; }
 
 #### git
 function on_exit() {
@@ -73,6 +70,7 @@ GO_ldflags="-X main.build_time=$build_time \
   -X main.image=$image"
 
 docker build --no-cache --file ${_path}/Dockerfile \
+  --build-arg=BUILD_Hostname="$BUILD_Hostname" \
   --build-arg=BUILD_Region="$BUILD_Region" \
   --build-arg=APP_Name="$app_name" \
   --build-arg=APP_Version="$app_version" \
