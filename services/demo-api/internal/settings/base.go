@@ -5,7 +5,6 @@ import (
 	// "fmt"
 	"math/rand"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/d2jvkpn/gotk"
@@ -48,12 +47,13 @@ func SetProject(bts []byte) (err error) {
 }
 
 // #### config
-func SetConfig(config string) (err error) {
-	if strings.Contains(config, "\n") {
-		Config, err = gotk.LoadYamlBytes([]byte(config))
+func SetConfig(config string, release bool) (err error) {
+	Config = viper.New()
+	Config.SetConfigType("yaml")
+
+	if config == "project.yaml::config" {
+		err = Config.ReadConfig(bytes.NewReader([]byte(Project.GetString("config"))))
 	} else {
-		Config = viper.New()
-		Config.SetConfigType("yaml")
 		Config.SetConfigFile(config)
 		err = Config.ReadInConfig()
 	}
@@ -61,6 +61,11 @@ func SetConfig(config string) (err error) {
 	if err != nil {
 		return err
 	}
+
+	Config.Set("config", config)
+	Config.Set("release", release)
+	Meta["config"] = config
+	Meta["release"] = release
 
 	Config.SetDefault("lifetime", "0m")
 	lifetime := Config.GetDuration("lifetime")

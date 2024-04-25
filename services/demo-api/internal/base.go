@@ -17,9 +17,6 @@ const (
 	HTTP_WriteTimeout       = 10 * time.Second
 	HTTP_IdleTimeout        = 60
 	HTTP_MaxMultipartMemory = 8 << 20 // 8M
-
-	MSG_Shutdown  = "shutdown"
-	MSG_EndOfLife = "end-of-life"
 )
 
 var (
@@ -28,7 +25,6 @@ var (
 	//go:embed templates
 	_Templates embed.FS
 
-	_Relase      bool
 	_Logger      *zap.Logger
 	_Server      *http.Server
 	_RPC         *RPCServer

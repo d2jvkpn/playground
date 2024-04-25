@@ -19,11 +19,6 @@ func Load(config string, release bool) (err error) {
 		cert   tls.Certificate
 	)
 
-	if err = settings.SetConfig(config); err != nil {
-		return err
-	}
-	_Relase = release
-
 	// #### logging
 	// _ = os.Setenv("APP_DebugMode", "false")
 	log_file := filepath.Join("logs", settings.Project.GetString("app_name")+".log")
