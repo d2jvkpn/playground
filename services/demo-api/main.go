@@ -62,7 +62,7 @@ func main() {
 
 	flag.StringVar(
 		&config, "config", "project.yaml::config",
-		"configuration file(yaml) path or read from project.yaml::config",
+		"config file(yaml) path or read from project.yaml::config",
 	) // configs/local.yaml
 
 	flag.StringVar(&http_addr, "http.addr", "0.0.0.0:5031", "http listening address")
