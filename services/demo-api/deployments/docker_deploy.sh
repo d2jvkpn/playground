@@ -2,14 +2,19 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-export IMAGE_Tag=$1 APP_Tag=$2 HTTP_Port=$3 RPC_Port=$4
+export IMAGE_Tag=$1 HTTP_Port=$2 RPC_Port=3
+
 export APP_Name=$(yq .app_name project.yaml)
-export USER_ID=$(id -u) USER_GID=$(id -g)
+export IMAGE_Name=$(yq .image_name project.yaml)
+export USER_UID=$(id -u) USER_GID=$(id -g)
 
 container=${APP_Name}_${APP_Tag}
+dry_run=${dry_run:-false}
 
 mkdir -p configs logs data
 envsubst < ${_path}/docker_deploy.yaml > docker-compose.yaml
+
+[[ "$dry_run" == "true" ]] && { >&2 echo "exit"; exit; }
 
 # docker-compose pull
 [ ! -z "$(docker ps --all --quiet --filter name=$container)" ] && docker rm -f $container

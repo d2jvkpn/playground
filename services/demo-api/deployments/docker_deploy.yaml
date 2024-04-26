@@ -4,8 +4,8 @@ services:
   ${APP_Name}:
     image: ${IMAGE_Name}:${IMAGE_Tag}
     restart: always
-    container_name: ${APP_Name}_${APP_Tag}
-    # depends_on: ["mongo"]
+    container_name: ${APP_Name}
+    # depends_on: ["database"]
     user: "${USER_UID}:${USER_GID}"
     networks: ["net"]
     # network_mode: bridge
@@ -17,8 +17,8 @@ services:
     # - ./configs/:/app/configs:ro
     # - ./data/:/app/data:rw
     - ./logs/:/app/logs:rw
-    # command: ["./target/main", "-config=configs/dev.yaml", "-http_addr=:${HTTP_Port}", "-rpc_addr=:${RPC_Port}"]
-    command: ["./target/main", "-release", "-http.addr=:${HTTP_Port}", "-rpc.addr=:${RPC_Port}"]
+    # command: ["./target/main", "-release" "-config=configs/dev.yaml", "-http_addr=:${HTTP_Port}", "-rpc_addr=:${RPC_Port}"]
+    command: ["./target/main", "-release", "-http_addr=:${HTTP_Port}", "-rpc_addr=:${RPC_Port}"]
 
 networks:
   net: { name: "${APP_Name}_${APP_Tag}", driver: bridge, external: false }
