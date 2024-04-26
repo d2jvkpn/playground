@@ -12,11 +12,10 @@ mkdir -p configs logs data
 envsubst < ${_path}/docker_deploy.yaml > docker-compose.yaml
 
 # docker-compose pull
-[ ! -z "$(docker ps --all --quiet --filter name=$container)" ] &&
-  docker rm -f $container
+[ ! -z "$(docker ps --all --quiet --filter name=$container)" ] && docker rm -f $container
 # 'docker-compose down' removes running containers only, not stopped containers
 
-USER_ID=$USER_ID USER_GID=$USER_GID docker-compose up -d
+docker-compose up -d
 
 exit 0
 docker stop $container && docker stop $container

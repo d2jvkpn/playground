@@ -7,6 +7,7 @@ app=main
 
 # build_time=$(date +'%FT%T.%N%:z')
 build_time=$(date +'%FT%T%:z')
+build_hostname=$(hostname)
 git_repository="$(git config --get remote.origin.url)"
 git_branch="$(git rev-parse --abbrev-ref HEAD)" # current branch
 git_commit_id=$(git rev-parse --verify HEAD) # git log --pretty=format:'%h' -n 1
@@ -20,6 +21,7 @@ unpushed=$(git diff origin/$git_branch..HEAD --name-status)
 [[ ! -z "$uncommitted" ]] && git_tree_state="uncommitted"
 
 GO_ldflags="-X main.build_time=$build_time \
+  -X main.build_hostname=$build_hostname \
   -X main.git_repository=$git_repository \
   -X main.git_branch=$git_branch \
   -X main.git_commit_id=$git_commit_id \

@@ -15,12 +15,14 @@ tag=${git_branch}-$(yq .version project.yaml)
 tag=${DOCKER_Tag:-$tag}
 image=$image_name:$tag
 build_time=$(date +'%FT%T.%N%:z')
+build_hostname=$(hostname)
 
 # env variables
 GIT_Pull=$(printenv GIT_Pull || true)
 DOCKER_Pull=${DOCKER_Pull:-"true"}
 DOCKER_Push=${DOCKER_Push:-"true"}
 BUILD_Region=${BUILD_Region:-""}
+
 
 [ -s .env ] && { 2>&1 echo "==> load .env"; . .env; }
 
@@ -63,6 +65,7 @@ done
 echo ">>> build image: $image..."
 
 GO_ldflags="-X main.build_time=$build_time \
+  -X main.build_hostname=$build_hostname \
   -X main.git_branch=$git_branch \
   -X main.git_commit_id=$git_commit_id \
   -X main.git_commit_time=$git_commit_time \
@@ -70,7 +73,6 @@ GO_ldflags="-X main.build_time=$build_time \
   -X main.image=$image"
 
 docker build --no-cache --file ${_path}/Dockerfile \
-  --build-arg=BUILD_Hostname="$BUILD_Hostname" \
   --build-arg=BUILD_Region="$BUILD_Region" \
   --build-arg=APP_Name="$app_name" \
   --build-arg=APP_Version="$app_version" \
