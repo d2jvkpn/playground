@@ -2,7 +2,7 @@ version: '3'
 
 services:
   ${APP_Name}:
-    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/${APP_Name}:${IMAGE_Tag}
+    image: ${IMAGE_Name}:${IMAGE_Tag}
     restart: always
     container_name: ${APP_Name}_${APP_Tag}
     # depends_on: ["mongo"]
