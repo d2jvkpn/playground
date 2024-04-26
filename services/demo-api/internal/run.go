@@ -2,7 +2,6 @@ package internal
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net"
 	"net/http"
@@ -84,10 +83,15 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 	return errch, nil
 }
 
-func Shutdown() (err error) {
+func Shutdown() {
+	var err error
+
 	if _Server != nil {
 		ctx, cancel := context.WithTimeout(context.TODO(), 5*time.Second)
-		err = errors.Join(err, _Server.Shutdown(ctx))
+
+		if err = _Server.Shutdown(ctx); err != nil {
+			_Logger.Error("http server shutdown", zap.Any("error", err))
+		}
 		cancel()
 	}
 
@@ -100,12 +104,14 @@ func Shutdown() (err error) {
 	}
 
 	if _CloseOtel != nil {
-		err = errors.Join(err, _CloseOtel())
+		if err = _CloseOtel(); err != nil {
+			_Logger.Error("close otel", zap.Any("error", err))
+		}
 	}
 
 	if settings.Logger != nil {
-		err = errors.Join(err, settings.Logger.Down())
+		_ = settings.Logger.Down()
 	}
 
-	return err
+	return
 }
