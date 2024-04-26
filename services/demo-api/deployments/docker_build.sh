@@ -14,7 +14,8 @@ image_name=$(yq .image_name project.yaml)
 tag=${git_branch}-$(yq .version project.yaml)
 tag=${DOCKER_Tag:-$tag}
 image=$image_name:$tag
-build_time=$(date +'%FT%T.%N%:z')
+# build_time=$(date +'%FT%T.%N%:z')
+build_time=$(date +'%FT%T%:z')
 build_hostname=$(hostname)
 
 # env variables
