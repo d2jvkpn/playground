@@ -2,7 +2,7 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-export IMAGE_Tag=$1 HTTP_Port=$2 RPC_Port=3
+export IMAGE_Tag=${1:-dev} HTTP_Port=${2:-5030} RPC_Port={3:-5040}
 
 export APP_Name=$(yq .app_name project.yaml)
 export IMAGE_Name=$(yq .image_name project.yaml)
@@ -23,5 +23,6 @@ envsubst < ${_path}/docker_deploy.yaml > docker-compose.yaml
 docker-compose up -d
 
 exit 0
+
 docker stop $container && docker stop $container
 docker rm -f $container

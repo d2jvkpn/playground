@@ -3,6 +3,7 @@
 # export $(shell sed 's/=.*//' envfile)
 
 work_dir = $(shell pwd)
+build_hostname = $(shell hostname)
 
 build_time = $(shell date +'%FT%T.%N%:z')
 git_repository = $(shell git config --get remote.origin.url)
@@ -41,16 +42,17 @@ protoc-run:
 	sed -i '/^\tmustEmbedUnimplemented/s#\t#\t// #' proto/*_grpc.pb.go
 
 build-bin:
+	bash deployments/go_build.sh
 #	mkdir -p target
 
 #	@go build -ldflags="-w -s \
+#	  -X main.build_hostname=$(build_hostname) \
 #	  -X main.build_time=$(build_time) \
 #	  -X main.git_repository=$(git_repository) \
 #	  -X main.git_branch=$(git_branch) \
 #	  -X main.git_commit_id=$(git_commit_id) \
 #	  -X main.git_commit_time=$(git_commit_time)" \
 #	  -o target/swagger-go main.go
-	bash deployments/go_build.sh
 
 build-image_cn:
 	BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master
@@ -68,12 +70,12 @@ build-image_remote:
 	ssh -F configs/ssh.conf build_host "cd docker_build/playground/demo-api && \
 	  git pull && DOCKER_Tag=dev bash deployments/docker_build.sh master"
 
+deploy_dev:
+	dryp_run=true bash deployments/docker_deploy.sh dev 5032 5042
+
 #### database
 create-db:
 	echo "TODO: ..."
-
-docker-dev:
-	bash scripts/docker_dev.sh
 
 connect-db:
 	echo "TODO: ..."
