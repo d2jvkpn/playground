@@ -7,7 +7,7 @@ cp_endpoint=$1
 cp_ip=$(hostname -I | awk '{print $1}')
 pod_subnet=${pod_subnet:-10.244.0.0/16}
 
-# version=1.28.2
+# version=1.30.0
 version=$(kubeadm version --output=json 2> /dev/null | jq -r .clientVersion.gitVersion)
 version=${version#v}
 

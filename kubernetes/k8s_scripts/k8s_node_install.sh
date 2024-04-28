@@ -6,11 +6,12 @@ export DEBIAN_FRONTEND=noninteractive
 
 #### 1. set k8s repository
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
-# version=1.28.4
-# key_url=https://pkgs.k8s.io/core:/stable:/v1.28/deb
+# version=1.30.0
+# key_url=https://pkgs.k8s.io/core:/stable:/v1.30/deb
 # version=$(yq .k8s.version k8s_apps/k8s_apps_download.yaml)
-version=$1 # 1.28.4
-ver=v${version%.*} # v1.28
+
+version=$1 # 1.30.0
+ver=v${version%.*} # v1.30
 key_url=https://pkgs.k8s.io/core:/stable:/$ver/deb
 key_file=/etc/apt/keyrings/k8s.$ver.gpg
 

@@ -5,9 +5,9 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 # yq_version=${yq_version:-4.35.2}
 # flannel_version=${flannel_version:-0.23.0}
 
-# 1.29.0
-v0=$(kubeadm version --output json | jq -r .clientVersion.gitVersion | sed 's/^v//')
-version=${1:-$v0}
+# 1.30.0
+version=$(kubeadm version --output json | jq -r .clientVersion.gitVersion | sed 's/^v//')
+version=${1:-$version}
 
 function download_images() {
     yf=$1; save_dir=$2
