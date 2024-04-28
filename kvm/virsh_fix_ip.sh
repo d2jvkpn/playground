@@ -4,14 +4,25 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # pip3 install xq
 target=$1
-KVM_Network=${KVM_Network:-default}
+kvm_network=${kvm_network:-default}
 
-####
-# virsh list --all
+ls configs/$target.password > /dev/null
+command -v sshpass || { echo "no sshpass installed"; exit 1; }
+
+record=$(virsh net-dumpxml $kvm_network | grep "name='"$target"'" || true)
+[ -z "$record" ] || { >&2 echo "address of $target has been set"; exit 1; }
+
+#### 1. start vm
+echo "==> 1.1 starting $target"
+
 virsh start $target || true
+# virsh list --all
+# virsh net-list
+# virsh net-dhcp-leases default
+# rm /var/lib/libvirt/dnsmasq/virbr0.*
 
-####
-echo "==> Allocating ip address for $target"
+#### 2. getting ip address
+echo "==> 2.1 allocating ip address for $target"
 addr=""; n=0
 while [[ -z "$addr" ]]; do
     # output of 'virsh domifaddr' may contains multilines 
@@ -26,41 +37,16 @@ while [[ -z "$addr" ]]; do
     [ $n -gt 180 ] && { >&2 echo "failed to get ip of $target"; exit 1; }
 done
 echo ""
-echo "==> Got ip address: $addr"
+echo "==> 2.2 got ip address: $addr"
 
+#### 3. fix ip through net-update
 # mac=$(virsh dumpxml $target | xq -r '.domain.devices.interface.mac."@address"')
 mac=$(virsh domiflist $target | awk 'NR==3{print $NF}')
-[[ -z "$mac" ]] && { echo "failed to extract mac address" >&2; exit 1; }
+[[ -z "$mac" ]] && { echo "3.1 failed to extract mac address" >&2; exit 1; }
 
-####
 record=$(printf "<host mac='%s' name='%s' ip='%s'/>" $mac $target $addr)
-echo "==> Virsh net-update: $record"
-virsh net-update $KVM_Network add ip-dhcp-host "$record" --live --config
+echo "==> 3.2 virsh net-update add record: $record"
+virsh net-update $kvm_network add ip-dhcp-host "$record" --live --config
 
-# virsh net-dumpxml $KVM_Network | xq .network.ip.dhcp.host
-virsh net-dumpxml $KVM_Network | grep $target
-
-[ -f ~/.ssh/kvm/kvm.pem ] || exit 0
-
-mkdir -p ~/.ssh/kvm
-
-cat > ~/.ssh/kvm/$target.conf <<EOF
-Host $target
-	HostName      $addr
-	# User          ubuntu
-	# Port          22
-	LogLevel      INFO
-	Compression   yes
-	IdentityFile  ~/.ssh/kvm/kvm.pem
-EOF
-
-echo "==> Created ~/.ssh/kvm/$target.conf, please set fields .User and .Port. Bye!"
-
-####
-# virsh net-dumpxml $KVM_Network
-# virsh net-edit $KVM_Network
-# virsh net-destroy $KVM_Network
-# virsh net-start $KVM_Network
-
-# virsh net-dhcp-leases $KVM_Network
-# virsh net-dumpxml $KVM_Network
+# virsh net-dumpxml $kvm_network | xq .kvm_network.ip.dhcp.host
+virsh net-dumpxml $kvm_network | grep name="'"$target"'"

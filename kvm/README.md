@@ -49,8 +49,7 @@ ssh -o "StrictHostKeyChecking no" ubuntu@$addr
 target=ubuntu; username=ubuntu
 
 KVM_SSH_Dir=${KVM_SSH_Dir:-$HOME/.ssh/kvm}
-base=$(basename $KVM_SSH_Dir)
-ssh_key="$KVM_SSH_Dir/$base.pem"
+ssh_key="$KVM_SSH_Dir/kvm.pem"
 
 mkdir -p $KVM_SSH_Dir
 chmod 700 $KVM_SSH_Dir

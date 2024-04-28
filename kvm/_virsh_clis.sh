@@ -23,7 +23,14 @@ fdisk -l | grep -- "--lv"
 lvextend -L +14G /dev/mapper/ubuntu--vg-ubuntu--lv
 resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
 
-#### 2. more vrish commands
+#### 2. network
+virsh net-dumpxml $kvm_network
+virsh net-edit $kvm_network
+virsh net-destroy $kvm_network && virsh net-start $kvm_network
+virsh net-dhcp-leases $kvm_network
+virsh net-dumpxml $kvm_network
+
+#### 3. more vrish commands
 virsh edit $VHOST
 
 virsh setvcpus $target 2 --config

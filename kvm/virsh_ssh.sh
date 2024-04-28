@@ -1,0 +1,62 @@
+#!/bin/bash
+set -eu -o pipefail # -x
+_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+
+target=$1; username=$2
+
+kvm_ssh_dir=${kvm_ssh_dir:-$HOME/.ssh/kvm}
+kvm_ssh_key="$kvm_ssh_dir/kvm.pem"
+
+ls configs/$target.password > /dev/null
+command -v sshpass || { >&2 echo "no sshpass installed"; exit 1; }
+
+#### 1. setup ssh key for kvm
+[ -d "$kvm_ssh_dir" ] || { mkdir -p $kvm_ssh_dir; chmod 700 $kvm_ssh_dir; }
+
+if [ ! -s $kvm_ssh_key ]; then
+    echo "==> 1.1 generating kvm ssh key: $kvm_ssh_key"
+    ssh-keygen -t rsa -m PEM -b 2048 -P "" -f $kvm_ssh_key -C "key for kvm"
+    ssh-keygen -y -f $kvm_ssh_key > $kvm_ssh_key.pub
+    chmod 0400 $kvm_ssh_key
+fi
+
+record="Include ${kvm_ssh_dir}/*.conf"
+[ -z "$(grep -c "$record" ~/.ssh/config)" ] && sed -i "1i $record" ~/.ssh/config
+
+echo "==> 1.2 creating ssh config: $kvm_ssh_dir/$target.conf"
+
+addr=$(
+  virsh domifaddr $target |
+  awk 'NR>2 && $1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}'
+)
+
+cat > $kvm_ssh_dir/$target.conf <<EOF
+Host $target
+    HostName      $addr
+    User          $username
+    Port          22
+    LogLevel      INFO
+    Compression   yes
+    IdentityFile  $kvm_ssh_key
+EOF
+
+ssh-keygen -f ~/.ssh/known_hosts -R "$addr"
+ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
+
+# ssh -o "StrictHostKeyChecking no" $username@$addr
+# must todo
+# ssh-copy-id -o "StrictHostKeyChecking no" -i $kvm_ssh_key $target
+# ssh $target
+
+sshpass -f configs/$target.password ssh-copy-id -i $kvm_ssh_key $target
+
+exit 0
+
+#### 3. config target vm
+echo "==> 5.1 run ubuntu_config.sh on $target"
+scp ubuntu_config.sh $target:
+
+ssh -t $target sudo bash ./ubuntu_config.sh $username
+
+echo "==> 5.2 shutdown $target"
+virsh shutdown $target
