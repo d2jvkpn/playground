@@ -21,7 +21,7 @@ if [ ! -s $kvm_ssh_key ]; then
 fi
 
 record="Include ${kvm_ssh_dir}/*.conf"
-[ -z "$(grep -c "$record" ~/.ssh/config)" ] && sed -i "1i $record" ~/.ssh/config
+grep  "$record" ~/.ssh/config || sed -i "1i $record" ~/.ssh/config
 
 #### 2. generate ssh config
 echo "==> 2.1 creating ssh config: $kvm_ssh_dir/$target.conf"
