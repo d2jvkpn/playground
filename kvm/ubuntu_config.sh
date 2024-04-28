@@ -21,7 +21,7 @@ cat > /home/$username/.bash_aliases <<'EOF'
 export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
 # %Y-%m-%dT%H:%M:%S%:z doesn't work
 export PROMPT_DIRTRIM=2
-# export PATH=~/.local/bin:$PATH
+export PATH=~/.local/bin:$PATH
 
 for d in $(ls -d ~/Apps/*/ /opt/*/ 2>/dev/null); do
     d=${d%/}
@@ -40,16 +40,21 @@ timedatectl set-timezone Asia/Shanghai
 systemctl disable ubuntu-advantage
 pro config set apt_news=false
 
-cp /usr/lib/update-notifier/apt_check.py /usr/lib/update-notifier/apt_check.py.bk
+fp=/usr/lib/update-notifier/apt_check.py
 
-sed -Ezi.orig \
-  -e 's/(def _output_esm_service_status.outstream, have_esm_service, service_type.:\n)/\1    return\n/' \
-  -e 's/(def _output_esm_package_alert.*?\n.*?\n.:\n)/\1    return\n/' \
-  /usr/lib/update-notifier/apt_check.py
+if [ -s $fp ]; then
+    cp $fp $fp.bk
+
+    sed -Ezi.orig \
+      -e 's/(def _output_esm_service_status.outstream, have_esm_service, service_type.:\n)/\1    return\n/' \
+      -e 's/(def _output_esm_package_alert.*?\n.*?\n.:\n)/\1    return\n/' \
+      $fp
+fi
 
 /usr/lib/update-notifier/update-motd-updates-available --force
 
-sed -i '/^deb/s/^/#-- /' /var/lib/ubuntu-advantage/apt-esm/etc/apt/sources.list.d/ubuntu-esm-apps.list
+fp=/var/lib/ubuntu-advantage/apt-esm/etc/apt/sources.list.d/ubuntu-esm-apps.list
+[ -s $fp ] && sed -i '/^deb/s/^/#-- /' $fp
 
 sed -i '/ENABLED/s/1/0/' /etc/default/motd-news
 #- sudo sed -i '/=motd.dynamic/s/^/#-- /' /etc/pam.d/sshd

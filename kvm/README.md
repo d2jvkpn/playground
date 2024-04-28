@@ -20,7 +20,7 @@ target=ubuntu
 virt-install --name=$target \
   --os-variant=generic --vcpus=2 --memory=2048 \
   --disk path=/var/lib/libvirt/images/$target.qcow2,size=30 \
-  --cdrom=~/kvm/ubuntu-22.04.3-live-server-amd64.iso
+  --cdrom=~/kvm/ubuntu-24.04-live-server-amd64.iso
 ```
 
 #### 3. Ubuntu Installation UI
@@ -30,7 +30,7 @@ virt-install --name=$target \
 
 #### 4. Config Virtual Machine
 ```bash
-# username: ubuntu
+# username=ubuntu; target=ubuntu
 
 virsh start $target
 virsh net-list
@@ -38,9 +38,10 @@ virsh net-dhcp-leases default
 # rm /var/lib/libvirt/dnsmasq/virbr0.*
 
 addr=$(virsh domifaddr $target | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
-ssh ubuntu@$addr
+ssh-keygen -f ~/.ssh/known_hosts -R "$addr"
+ssh -o "StrictHostKeyChecking no" ubuntu@$addr
 
-bash src/ubuntu_config.sh
+# bash ubuntu_config.sh $target
 ```
 
 #### 6. Config SSH Access from Host
@@ -55,19 +56,19 @@ mkdir -p $KVM_SSH_Dir
 chmod 700 $KVM_SSH_Dir
 
 if [ ! -f $ssh_key ]; then
-    ssh-keygen -t rsa -m PEM -b 2048 -P "" -f $ssh_key -C $HOMENAME
+    ssh-keygen -t rsa -m PEM -b 2048 -P "" -f $ssh_key -C "key for kvm"
     ssh-keygen -y -f $ssh_key > $ssh_key.pub
     chmod 0400 $ssh_key
 fi
 
 addr=$(virsh domifaddr $target | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
 
-bash src/virsh_fix_ip.sh $target
+bash virsh_fix_ip.sh $target
 
 ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 
 record="Include ${HOME}/.ssh/kvm/*.conf"
-[ -z "$(grep -c "$record" ~/.ssh/config)"] && sed -i "1i $record" ~/.ssh/config
+[ -z "$(grep -c "$record" ~/.ssh/config)" ] && sed -i "1i $record" ~/.ssh/config
 
 cat > $KVM_SSH_Dir/$target.conf << EOF
 Host $target
@@ -79,15 +80,17 @@ Host $target
     IdentityFile  $ssh_key
 EOF
 
-
-
 # must todo
 ssh-copy-id -i $ssh_key $target
 # ssh $target
+
+scp ubuntu_config.sh $target:
+ssh -t $target sudo ./ubuntu_config.sh ubuntu
+
 virsh shutdown $target
 ```
 
 #### 7. Clone VM
 ```bash
-bash src/virsh_clone.sh ubuntu node01 node02 node03
+bash virsh_clone.sh ubuntu node01 node02 node03
 ```
