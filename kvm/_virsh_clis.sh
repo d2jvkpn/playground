@@ -3,19 +3,19 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 #### 1. extend disk size
-vm=vm1
+target=ubuntu
 
-# virsh domblklist $vm
-# qemu-img info /var/lib/libvirt/images/$vm.qcow2
-# qemu-img resize /var/lib/libvirt/images/$vm.qcow2 +10G
-# qemu-img info /var/lib/libvirt/images/$vm.qcow2
+# virsh domblklist $target
+# qemu-img info /var/lib/libvirt/images/$target.qcow2
+# qemu-img resize /var/lib/libvirt/images/$target.qcow2 +10G
+# qemu-img info /var/lib/libvirt/images/$target.qcow2
 
 # Please note that qemu-img can’t resize an image which has snapshots. You will need to first remove
 # all VM snapshots. See this example:
-# virsh snapshot-list $vm
-# virsh snapshot-delete --domain $vm --snapshotname $??
+# virsh snapshot-list $target
+# virsh snapshot-delete --domain $target --snapshotname $??
 
-ssh root@$vm
+ssh root@$target
 lsblk
 pvs
 vgdisplay
@@ -26,7 +26,7 @@ resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
 #### 2. more vrish commands
 virsh edit $VHOST
 
-virsh setvcpus vm1 2 --config
+virsh setvcpus $target 2 --config
 
 virsh net-list --all
 virsh net-info default
@@ -52,4 +52,3 @@ virsh net-dumpxml default |
   sed 's/ip="//; s/"//'
 
 virsh list --all
-
