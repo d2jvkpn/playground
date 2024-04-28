@@ -13,15 +13,15 @@ fi
 
 [ "$EUID" -ne 0 ] && { >&2 echo "Please run as root"; exit 1; }
 
-KVM_Network=${KVM_Network:-default}
+kvm_network=${kvm_network:-default}
 
-# user=$1
-# home_dir=$(eval echo ~$user)
-# KVM_SSH_Dir=${KVM_SSH_Dir:-$home_dir/.ssh/kvm}
+# username=$1
+# home_dir=$(eval echo ~$username)
+# kvmssh_dir=${kvmssh_dir:-$home_dir/.ssh/kvm}
 
 # virsh dumpxml $target
 # virsh dumpxml --domain $target
-# virsh net-dumpxml $KVM_Network
+# virsh net-dumpxml $kvm_network
 
 ####
 source_file=$(virsh dumpxml --domain $target | grep -o "/.*.qcow2")
@@ -40,11 +40,11 @@ rm -f $source_file
 
 ##### virsh destroy $target
 virsh undefine $target 2>/dev/null || true
-virsh net-dumpxml $KVM_Network | grep -v "name='$target'" > $KVM_Network.xml
+virsh net-dumpxml $kvm_network | grep -v "name='$target'" > $kvm_network.xml
 
-virsh net-define $KVM_Network.xml
-virsh net-destroy $KVM_Network
-virsh net-start $KVM_Network
+virsh net-define $kvm_network.xml
+virsh net-destroy $kvm_network
+virsh net-start $kvm_network
 
-rm $KVM_Network.xml
-# [ -f $KVM_SSH_Dir/$target.conf ] && rm -f $KVM_SSH_Dir/$target.conf
+rm $kvm_network.xml
+# [ -f $kvmssh_dir/$target.conf ] && rm -f $kvmssh_dir/$target.conf

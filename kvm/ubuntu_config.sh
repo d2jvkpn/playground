@@ -78,12 +78,3 @@ dpkg -l | awk '/^rc/{print $2}' | xargs -i sudo dpkg -P {}
 systemctl enable serial-getty@ttyS0.service
 systemctl start serial-getty@ttyS0.service
 # allow longin "virsh console target" from host machine
-
-#### reset machine-id and ssh
-# rm /etc/machine-id
-# dbus-uuidgen --ensure=/etc/machine-id
-
-# rm -v /etc/ssh/ssh_host_*
-# dpkg-reconfigure openssh-server --default-priority
-
-# systemctl restart sshd

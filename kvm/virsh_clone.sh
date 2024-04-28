@@ -9,7 +9,7 @@ if [ $# -gt 2 ]; then
     # recursion
     shift
     for target in $*; do
-        bash $0 $vm_src $target
+        bash "$0" $vm_src $target
     done
     exit 0
 else
@@ -17,12 +17,11 @@ else
 fi
 
 ####
-KVM_User="${KVM_User:-ubuntu}"
-KVM_SSH_Dir=${KVM_SSH_Dir:-$HOME/.ssh/kvm}
-base=$(basename $KVM_SSH_Dir)
-ssh_key="$KVM_SSH_Dir/$base.pem"
+username="${username:-ubuntu}"
+kvm_ssh_dir=${kvm_ssh_dir:-$HOME/.ssh/kvm}
+kvm_ssh_key="$kvm_ssh_dir/kvm.pem"
 
-echo "==> Cloning $vm_src into $target, KVM_User: $KVM_User, ssh_key: $ssh_key"
+echo "==> Cloning $vm_src into $target, username: $username, kvm_ssh_key: $kvm_ssh_key"
 
 ####
 echo "==> Shutting down $vm_src"
@@ -42,16 +41,16 @@ addr=$(
 
 echo "==> Got vm addrss: $addr"
 
-mkdir -p $KVM_SSH_Dir
+mkdir -p $kvm_ssh_dir
 
-cat > $KVM_SSH_Dir/$target.conf << EOF
+cat > $kvm_ssh_dir/$target.conf << EOF
 Host $target
     HostName      $addr
-    User          $KVM_User
+    User          $username
     Port          22
     LogLevel      INFO
     Compression   yes
-    IdentityFile  $ssh_key
+    IdentityFile  $kvm_ssh_key
 EOF
 
 # wait_for_tcp_port.sh $addr 22
@@ -68,7 +67,7 @@ done
 ssh-keygen -f ~/.ssh/known_hosts -R $addr
 ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 # ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
-ssh-copy-id -i $ssh_key $target
+ssh-copy-id -i $kvm_ssh_key $target
 
 ssh -t $target "sudo hostnamectl set-hostname $target"
 ssh -t $target 'sudo sed -i "2s/^127.0.1.1 .*$/127.0.1.1 '$target'/" /etc/hosts'
@@ -78,3 +77,12 @@ if [[ "$shutdown_vm" != "false" ]]; then
     virsh shutdown $target
     ${_path}/virsh_wait_until.sh $target "shut off" 30
 fi
+
+#### reset machine-id and ssh
+# rm /etc/machine-id
+# dbus-uuidgen --ensure=/etc/machine-id
+
+# rm -v /etc/ssh/ssh_host_*
+# dpkg-reconfigure openssh-server --default-priority
+
+# systemctl restart sshd
