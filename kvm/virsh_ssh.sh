@@ -23,7 +23,8 @@ fi
 record="Include ${kvm_ssh_dir}/*.conf"
 [ -z "$(grep -c "$record" ~/.ssh/config)" ] && sed -i "1i $record" ~/.ssh/config
 
-echo "==> 1.2 creating ssh config: $kvm_ssh_dir/$target.conf"
+#### 2. generate ssh config
+echo "==> 2.1 creating ssh config: $kvm_ssh_dir/$target.conf"
 
 addr=$(
   virsh domifaddr $target |
@@ -53,10 +54,10 @@ sshpass -f configs/$target.password ssh-copy-id -i $kvm_ssh_key $target
 exit 0
 
 #### 3. config target vm
-echo "==> 5.1 run ubuntu_config.sh on $target"
+echo "==> 3.1 run ubuntu_config.sh on $target"
 scp ubuntu_config.sh $target:
 
 ssh -t $target sudo bash ./ubuntu_config.sh $username
 
-echo "==> 5.2 shutdown $target"
+echo "==> 3.2 shutdown $target"
 virsh shutdown $target
