@@ -9,8 +9,8 @@ if [ $# -eq 0 ]; then
 elif [ $# -eq 1 ]; then
     arg=$1
 else
-    for arg in $*; do
-        bash $0 $arg
+    for arg in $@; do
+        bash "$0" "$arg"
     done
     exit 0
 fi

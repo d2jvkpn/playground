@@ -5,8 +5,8 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 if [ $# -eq 1 ]; then
     target=$1
 else
-    for target in $*; do
-        bash $0 $target
+    for target in $@; do
+        bash $0 "$target"
     done
     exit 0
 fi
