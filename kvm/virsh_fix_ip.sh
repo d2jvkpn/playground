@@ -34,6 +34,7 @@ mac=$(virsh domiflist $target | awk 'NR==3{print $NF}')
 
 ####
 record=$(printf "<host mac='%s' name='%s' ip='%s'/>" $mac $target $addr)
+echo "==> Virsh net-update: $record"
 virsh net-update $KVM_Network add ip-dhcp-host "$record" --live --config
 
 # virsh net-dumpxml $KVM_Network | xq .network.ip.dhcp.host
@@ -53,7 +54,7 @@ Host $target
 	IdentityFile  ~/.ssh/kvm/kvm.pem
 EOF
 
-echo "Created ~/.ssh/kvm/$target.conf, please set fields .User and .Port. Bye!"
+echo "==> Created ~/.ssh/kvm/$target.conf, please set fields .User and .Port. Bye!"
 
 ####
 # virsh net-dumpxml $KVM_Network
