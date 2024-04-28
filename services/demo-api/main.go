@@ -135,7 +135,7 @@ func main() {
 		// if sig == syscall.SIGUSR2 {...}
 	}
 
-	internal.Shutdown()
+	err = errors.Join(err, internal.Shutdown())
 
 	if fromErrch {
 		syncErrors(cap(errch) - 1)

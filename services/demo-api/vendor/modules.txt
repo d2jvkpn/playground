@@ -41,22 +41,22 @@ github.com/cloudwego/base64x
 ## explicit; go 1.16
 github.com/cloudwego/iasm/expr
 github.com/cloudwego/iasm/x86_64
-# github.com/d2jvkpn/gotk v0.0.0-20240425081334-eb7cf90e7905
+# github.com/d2jvkpn/gotk v0.0.0-20240427140957-65545f72f1b2
 ## explicit; go 1.22
 github.com/d2jvkpn/gotk
-# github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20240425081334-eb7cf90e7905
+# github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20240427140957-65545f72f1b2
 ## explicit; go 1.22
 github.com/d2jvkpn/gotk/cloud-logging
-# github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20240425081334-eb7cf90e7905
+# github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20240427140957-65545f72f1b2
 ## explicit; go 1.22
 github.com/d2jvkpn/gotk/cloud-metrics
-# github.com/d2jvkpn/gotk/cloud-tracing v0.0.0-20240425081334-eb7cf90e7905
+# github.com/d2jvkpn/gotk/cloud-tracing v0.0.0-20240427140957-65545f72f1b2
 ## explicit; go 1.22
 github.com/d2jvkpn/gotk/cloud-tracing
-# github.com/d2jvkpn/gotk/ginx v0.0.0-20240425081334-eb7cf90e7905
+# github.com/d2jvkpn/gotk/ginx v0.0.0-20240427140957-65545f72f1b2
 ## explicit; go 1.22
 github.com/d2jvkpn/gotk/ginx
-# github.com/d2jvkpn/gotk/impls v0.0.0-20240425081334-eb7cf90e7905
+# github.com/d2jvkpn/gotk/impls v0.0.0-20240427140957-65545f72f1b2
 ## explicit; go 1.22
 github.com/d2jvkpn/gotk/impls
 # github.com/fsnotify/fsnotify v1.7.0
