@@ -4,6 +4,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 action=$1
 base_vm=${base_vm:-ubuntu}
+kvm_dir=../kvm
 
 creation_msg="exit"
 creation_log=logs/k8s_cluster.log
@@ -36,7 +37,7 @@ case $action in
     ls k8s_apps/{k8s_apps_download.yaml,flannel.yaml} \
       k8s_apps/{ingress-nginx.yaml,metrics-server_components.yaml} > /dev/null
 
-    ls ../kvm/{virsh_wait_until.sh,virsh_clone.sh,virsh_delete.sh} > /dev/null
+    ls $kvm_dir/{virsh_wait_until.sh,virsh_clone.sh,virsh_delete.sh} > /dev/null
 
     awk '/image: /{
       sub("@sha256.*", "", $NF); sub(":", "_", $NF); sub(".*/", "", $NF);
@@ -48,7 +49,7 @@ case $action in
     ls ~/.ssh/kvm/$base_vm.conf > /dev/null
 
     virsh start $base_vm
-    bash ../kvm/virsh_wait_until.sh $base_vm "running" 60
+    bash $kvm_dir/virsh_wait_until.sh $base_vm "running" 60
 
     # authentication(public key) has already been set up ahead: ssh-copy-id -i ~/.ssh/kvm/kvm.pem $base_vm
     n=1
@@ -132,13 +133,13 @@ case $action in
     ansible k8s_all -m shell --become -a 'shutdown -h now' || true
 
     for node in $(awk '$2 !=""{print $2}' configs/k8s_hosts.txt); do
-        bash ../kvm/virsh_wait_until.sh $node "shut off" 180
+        bash $kvm_dir/virsh_wait_until.sh $node "shut off" 180
     done
     ;;
 
 "erase")
     for node in $(awk '{print $2}' configs/k8s_hosts.txt); do
-        bash ../kvm/virsh_delete.sh $node || true
+        bash $kvm_dir/virsh_delete.sh $node || true
     done
 
     rm configs/{k8s_hosts.ini,k8s_hosts.txt}
