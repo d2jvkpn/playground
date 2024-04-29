@@ -35,6 +35,20 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 		}
 	}
 
+	defer func() {
+		if err == nil {
+			return
+		}
+
+		if httpListener != nil {
+			err = errors.Join(err, httpListener.Close())
+		}
+
+		if rpcListener != nil {
+			err = errors.Join(err, rpcListener.Close())
+		}
+	}()
+
 	if httpListener, err = net.Listen("tcp", httpAddr); err != nil {
 		return nil, fmt.Errorf("net.Listen: %w", err)
 	}
@@ -48,7 +62,6 @@ func Run(httpAddr, rpcAddr string) (errch chan error, err error) {
 	}, 60)
 
 	_RuntimeInfo.Start()
-
 	_Logger.Info("services are up", zap.Any("meta", settings.Meta))
 
 	// once := new(sync.Once)
