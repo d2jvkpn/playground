@@ -3,12 +3,12 @@ module demo-api
 go 1.22
 
 require (
-	github.com/d2jvkpn/gotk v0.0.0-20240427140957-65545f72f1b2
-	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20240427140957-65545f72f1b2
-	github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20240427140957-65545f72f1b2
-	github.com/d2jvkpn/gotk/cloud-tracing v0.0.0-20240427140957-65545f72f1b2
-	github.com/d2jvkpn/gotk/ginx v0.0.0-20240427140957-65545f72f1b2
-	github.com/d2jvkpn/gotk/impls v0.0.0-20240427140957-65545f72f1b2
+	github.com/d2jvkpn/gotk v0.0.0-20240429065029-fce6733029fc
+	github.com/d2jvkpn/gotk/cloud-logging v0.0.0-20240429065029-fce6733029fc
+	github.com/d2jvkpn/gotk/cloud-metrics v0.0.0-20240429065029-fce6733029fc
+	github.com/d2jvkpn/gotk/cloud-tracing v0.0.0-20240429065029-fce6733029fc
+	github.com/d2jvkpn/gotk/ginx v0.0.0-20240429065029-fce6733029fc
+	github.com/d2jvkpn/gotk/impls v0.0.0-20240429065029-fce6733029fc
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.1
@@ -81,8 +81,8 @@ require (
 	golang.org/x/net v0.24.0 // indirect
 	golang.org/x/sys v0.19.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240415180920-8c6c420018be // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240415180920-8c6c420018be // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240429193739-8cf5692501f6 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240429193739-8cf5692501f6 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
