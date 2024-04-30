@@ -23,6 +23,7 @@ ADD ./main.go ./go.mod ./go.sum ./project.yaml  ./
 COPY ./internal ./internal
 COPY ./pkg ./pkg
 COPY ./proto ./proto
+COPY ./migrations ./migrations
 COPY ./vendor ./vendor
 
 # in alpine, date doesn't parse %:z
@@ -50,7 +51,6 @@ RUN mkdir -p /app/target
 WORKDIR /app
 
 COPY --from=builder /app/target/main /app/target/main
-# COPY ./migrations ./migrations
 
 EXPOSE 5030 5040
 CMD ["./target/main", "-release", "-config=configs/prod.yaml", "-http.addr=:5030", "-rpc.addr=:5040"]
