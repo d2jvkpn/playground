@@ -4,7 +4,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 function display_usage() {
 >&2 cat <<'EOF'
-Usage of docker_deploy.sh:
+Usage of bash_cli.sh:
 TODO:
 
 EOF
