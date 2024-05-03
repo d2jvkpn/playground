@@ -1,11 +1,13 @@
 package main
 
 import (
-	"errors"
+	// "errors"
 	"flag"
 	"fmt"
 	"net/url"
 	"os"
+	"strconv"
+	"strings"
 	"time"
 
 	"crypto/hmac"
@@ -26,36 +28,87 @@ func main() {
 		err     error
 	)
 
-	flag.StringVar(&content, "content", "", "content")
+	//
+	flag.StringVar(
+		&method, "method", "",
+		"unix, from_unix, unix-milli, unix-milli, rfc3339, rfc3339-milli, rfc1123;\n"+
+			"url-escape, url-unescape;\n"+
+			"md5, sha1, sha224, sha256, hmac-sha1, hmac-sha256;",
+	)
+
+	flag.StringVar(&encode, "encode", "", "code method for hash and signature: base64, hex")
 
 	flag.StringVar(&secret, "secret", "", "secret")
 
-	flag.StringVar(
-		&method, "method", "",
-		"unix, unix-milli, rfc3339, rfc3339-milli, http-date, url-escape, url-unescape, "+
-			"md5, sha1, sha224, sha256, hmac-sha1, hmac-sha256",
-	)
-
-	flag.StringVar(&encode, "encode", "", "base64, hex")
-
 	flag.Parse()
 
+	flag.Usage = func() {
+		fmt.Fprintf(
+			flag.CommandLine.Output(),
+			"Usage of API-Utils:\n  API-Utils"+
+				" -mehtod <Method> -encode [Encode] -secret [Secret] [...Content]\n",
+		)
+		flag.PrintDefaults()
+	}
+
+	//
 	defer func() {
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%s\n", err.Error())
+			os.Exit(1)
 		}
 	}()
 
+	content = strings.Join(flag.Args(), " ")
+
 	switch method {
 	case "unix":
-		fmt.Println(time.Now().Unix())
+		var t1 time.Time
+
+		if content != "" {
+			t1, err = time.Parse(time.RFC3339, content)
+			if err != nil {
+				return
+			}
+		} else {
+			t1 = time.Now()
+		}
+
+		fmt.Println(t1.Unix())
+	case "from_unix":
+		var ts int64
+
+		if ts, err = strconv.ParseInt(content, 10, 64); err != nil {
+			return
+		}
+
+		fmt.Println(time.Unix(ts, 0))
 	case "unix-milli":
-		fmt.Println(time.Now().UnixMilli())
+		var t1 time.Time
+
+		if content != "" {
+			t1, err = time.Parse("2006-01-02T15:04:05.000-07:00", content)
+			if err != nil {
+				return
+			}
+		} else {
+			t1 = time.Now()
+		}
+
+		fmt.Println(t1.UnixMilli())
+	case "from_unix-milli":
+		var mts int64
+
+		if mts, err = strconv.ParseInt(content, 10, 64); err != nil {
+			return
+		}
+
+		fmt.Println(time.UnixMilli(mts))
 	case "rfc3339":
 		fmt.Println(time.Now().Format(time.RFC3339))
 	case "rfc3339ms":
 		fmt.Println(time.Now().Format("2006-01-02T15:04:05.000-07:00"))
-	case "http-date":
+	case "rfc1123":
 		fmt.Println(time.Now().UTC().Format(time.RFC1123))
 	case "url-escape":
 		fmt.Println(url.QueryEscape(content))
@@ -64,6 +117,7 @@ func main() {
 			return
 		}
 		fmt.Println(encode)
+
 	case "md5":
 		bts := md5.Sum([]byte(content))
 		ans = bts[:]
@@ -77,13 +131,7 @@ func main() {
 		bts := sha256.Sum256([]byte(content))
 		ans = bts[:]
 	case "hmac-sha1":
-		/*
-			if secret == "" {
-				err = errors.New("secret is empty")
-				return
-			}
-		*/
-
+		// err = errors.New("secret is empty")
 		hash := hmac.New(sha1.New, []byte(secret))
 		hash.Write([]byte(content))
 		bts := hash.Sum(nil)
@@ -95,10 +143,8 @@ func main() {
 		bts := hash.Sum(nil)
 		ans = bts[:]
 	default:
-		if secret == "" {
-			err = errors.New("undefined method")
-			return
-		}
+		flag.Usage()
+		os.Exit(1)
 	}
 
 	if len(ans) == 0 {
