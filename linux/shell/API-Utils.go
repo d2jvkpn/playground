@@ -41,7 +41,7 @@ func main() {
 		"unix, from_unix, unix-milli, from_unix-milli;\n"+
 			"rfc3339, rfc3339-milli, rfc1123, rfc1123z;\n"+
 			"url-escape, url-unescape, random_string;\n"+
-			"file2string, string2bytes;\n"+
+			"file2string, string2bytes, echo, hex-decode, base32-decode, base64-decode;\n"+
 			"md5, sha1, sha224, sha256;\n"+
 			"hmac-sha1, hmac-sha256;",
 	)
@@ -54,7 +54,7 @@ func main() {
 		fmt.Fprintf(
 			flag.CommandLine.Output(),
 			"Usage of API-Utils:\n  API-Utils"+
-				" -mehtod <Method> -encode [Encode] -secret [Secret] [...Content]\n",
+				" <-mehtod Method> [-encode Encode] [-secret Secret] [...Content]\n",
 		)
 		flag.PrintDefaults()
 	}
@@ -169,6 +169,32 @@ func main() {
 		}
 		fmt.Println("\b")
 
+	case "hex-decode":
+		var bts []byte
+
+		if bts, err = hex.DecodeString(content); err != nil {
+			return
+		}
+
+		fmt.Println(string(bts))
+	case "base32-decode":
+		var bts []byte
+
+		if bts, err = base32.StdEncoding.DecodeString(content); err != nil {
+			return
+		}
+
+		fmt.Println(string(bts))
+	case "base64-decode":
+		var bts []byte
+
+		if bts, err = base64.StdEncoding.DecodeString(content); err != nil {
+			return
+		}
+
+		fmt.Println(string(bts))
+	case "echo":
+		ans = []byte(content)
 	// hasing
 	case "md5":
 		bts := md5.Sum([]byte(content))
@@ -204,8 +230,6 @@ func main() {
 	if len(ans) == 0 {
 		return
 	}
-
-	fmt.Println("~~~", encode)
 
 	switch encode {
 	case "base32":
