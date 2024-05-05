@@ -57,7 +57,7 @@ function newFilename() {
   if (title.length > 32) { title = title.slice(0, 29) + "..." };
 
   // ${document.URL.split("//").pop().replace(/\//g, "-")}
-  return `zhihu.com__${title}__${now.date}__${path}.md`;
+  return `${url.host}__${title}__${now.date}__${path}.md`;
 }
 
 function listSearch() {
