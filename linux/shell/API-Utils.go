@@ -18,6 +18,9 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 const (
@@ -27,7 +30,7 @@ const (
 func main() {
 	var (
 		content string
-		secret  string
+		key     string
 		method  string
 		encode  string
 		ans     []byte
@@ -40,21 +43,21 @@ func main() {
 		&method, "method", "",
 		"unix, from_unix, unix-milli, from_unix-milli;\n"+
 			"rfc3339, rfc3339-milli, rfc1123, rfc1123z;\n"+
-			"url-escape, url-unescape, random_string;\n"+
+			"url-escape, url-unescape, random_string, uuid, bcrypt-hash, bcrypt-verify;\n"+
 			"file2string, string2bytes, echo, hex-decode, base32-decode, base64-decode;\n"+
 			"md5, sha1, sha224, sha256;\n"+
 			"hmac-sha1, hmac-sha256;",
 	)
 
 	flag.StringVar(&encode, "encode", "", "code method for hash and signature: base32, base64, hex")
-	flag.StringVar(&secret, "secret", "", "secret")
+	flag.StringVar(&key, "key", "", "key")
 	flag.Parse()
 
 	flag.Usage = func() {
 		fmt.Fprintf(
 			flag.CommandLine.Output(),
 			"Usage of API-Utils:\n  API-Utils"+
-				" <-mehtod Method> [-encode Encode] [-secret Secret] [...Content]\n",
+				" <-mehtod Method> [-encode Encode] [-key key] [...Content]\n",
 		)
 		flag.PrintDefaults()
 	}
@@ -155,6 +158,33 @@ func main() {
 		}
 
 		fmt.Println(string(result))
+	case "uuid":
+		id := uuid.New()
+		fmt.Println(id.String())
+
+	case "bcrypt-hash":
+		var (
+			cost int = 10
+			bts  []byte
+		)
+
+		if key != "" {
+			if cost, err = strconv.Atoi(key); err != nil {
+				return
+			}
+		}
+
+		if bts, err = bcrypt.GenerateFromPassword([]byte(content), cost); err != nil {
+			return
+		}
+
+		fmt.Printf("%s\n", bts)
+
+	case "bcrypt-verify":
+		if err = bcrypt.CompareHashAndPassword([]byte(content), []byte(key)); err != nil {
+			return
+		}
+		fmt.Println("ok")
 
 	// convert
 	case "file2string":
@@ -210,13 +240,13 @@ func main() {
 		ans = bts[:]
 	// hmac
 	case "hmac-sha1":
-		// err = errors.New("secret is empty")
-		hash := hmac.New(sha1.New, []byte(secret))
+		// err = errors.New("key is empty")
+		hash := hmac.New(sha1.New, []byte(key))
 		hash.Write([]byte(content))
 		bts := hash.Sum(nil)
 		ans = bts[:]
 	case "hmac-sha256":
-		hash := hmac.New(sha256.New, []byte(secret))
+		hash := hmac.New(sha256.New, []byte(key))
 		hash.Write([]byte(content))
 
 		bts := hash.Sum(nil)
