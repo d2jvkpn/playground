@@ -50,7 +50,7 @@ func main() {
 	)
 
 	flag.StringVar(&encode, "encode", "", "code method for hash and signature: base32, base64, hex")
-	flag.StringVar(&key, "key", "", "key")
+	flag.StringVar(&key, "key", "", "key: secret, bcrypt hash cost, duration")
 	flag.Parse()
 
 	flag.Usage = func() {
