@@ -184,9 +184,10 @@ func main() {
 
 	case "bcrypt-verify":
 		if err = bcrypt.CompareHashAndPassword([]byte(content), []byte(key)); err != nil {
-			return
+			fmt.Printf("no: %v\n", err)
+		} else {
+			fmt.Println("yes")
 		}
-		fmt.Println("ok")
 
 	// convert
 	case "file2string":
