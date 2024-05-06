@@ -87,6 +87,8 @@ func main() {
 			t1 = time.Now()
 		}
 
+		// TODO: key as Duration, support 1d, 1m, 1y
+
 		fmt.Println(t1.Unix())
 	case "from_unix":
 		var ts int64
