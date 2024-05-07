@@ -56,11 +56,10 @@ build-bin:
 
 build-image_cn:
 	BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master
-	bash deployments/go_build.sh
 
 build-image:
 	# BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master
-	DOCKER_Tag=dev bash deployments/go_build.sh
+	DOCKER_Tag=dev bash deployments/docker_build.sh
 
 build-image_offline:
 	GIT_Pull=false BUILD_Region=cn DOCKER_Pull=false DOCKER_Tag=dev \
