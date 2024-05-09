@@ -3,7 +3,9 @@
 
 #### 1. Ubuntu
 - screen recorder: Shift + Ctrl + Alt + R
-- TODO:
+- gedit: Ctrl + Alt + G
+- Move window to workspace 1/2/3/4: Ctr+Alt+1/2/3/4
+- Switch to workspace 1/2/3/4: Alt+1/2/3/4
 
 #### 2. MPV
 - s: save screenshorts
