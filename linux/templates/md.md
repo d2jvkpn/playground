@@ -1,11 +1,11 @@
 # Document Title
 ---
 **version**: 0.1.2
-**author**: John Doe, d2jvkpn
+**author**: John Doe
 **date**: 2024-05-03
 
 
-#### C01. chapter2
+#### C01. chapter1
 1. hello
 - a.
 - b.
