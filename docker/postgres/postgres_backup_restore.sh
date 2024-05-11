@@ -55,7 +55,7 @@ pg_basebackup --host=localhost --username=postgres \
 # /var/lib/postgresql/data/pgdata/postgresql.conf
 # docker exec postgres bash -c "echo \"$conf\" >> pgdata/postgresql.conf"
 
-docker cp postgresql.conf postgres:/pgdata/postgresql2.conf
+docker cp postgresql.conf postgres:/pgdata/postgresql.custom.conf
 
 start_stats="SELECT pg_backup_start(label => 'label', fast => false)"
 stop_stats="SELECT * FROM pg_backup_stop(wait_for_archive => true)"
