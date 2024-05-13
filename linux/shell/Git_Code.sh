@@ -31,4 +31,4 @@ cd "${_path}"
 
 echo "==> replacing code.zip"
 [ -f code.zip ] && rm code.zip
-zip -qr code.zip . -i code
+zip -qr code.zip code
