@@ -13,11 +13,12 @@ services:
     # ALLOW_EMPTY_PASSWORD is recommended only for development.
     - ALLOW_EMPTY_PASSWORD=yes
     - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    working_dir: /app
     volumes:
-    - ./data/redis:/data
-    - ./configs/redis.conf:/etc/redis.conf
-    # command: redis-server /etc/redis.conf --save 30 10 --loglevel warning --requirepass d2jvkpn
-    command: redis-server /etc/redis.conf --save 30 10 --loglevel warning
+    - ./data/redis:/app/data
+    - ./configs/redis.conf:/app/configs/redis.conf
+    # command: redis-server /etc/redis.conf --loglevel warning --save 30 10 --requirepass d2jvkpn
+    command: redis-server /app/configs/redis.conf --loglevel warning --save 30 10
 
 # volumes:
 #  redis: { name: redis, driver: local }
