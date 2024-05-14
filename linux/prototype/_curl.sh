@@ -11,3 +11,8 @@ curl -fs -X Head $url || echo $url
 
 
 # -H "Date: $(date -u +"%a, %d %b %Y %H:%M:%S GMT")"
+
+
+curl --silent --output $OUTPUT_FILE --write-out "%{http_code}" "$@"
+
+curl --fail

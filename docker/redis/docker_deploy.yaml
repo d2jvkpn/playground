@@ -5,6 +5,7 @@ services:
     image: redis:7-alpine
     restart: always
     network_mode: bridge
+    # networks: ["net"]
     ports: ['127.0.0.1:6379:6379']
     container_name: redis
     environment:
@@ -20,3 +21,6 @@ services:
 
 # volumes:
 #  redis: { name: redis, driver: local }
+
+# networks:
+#   net: { name: "redis", driver: bridge, external: false }
