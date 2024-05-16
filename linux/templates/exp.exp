@@ -2,6 +2,10 @@
 set prompt "#"
 set timeout 60
 
+# read from stdin
+# expect_user -re "(.*)\n"
+# set input $expect_out(1,string)
+
 # set password "DontUseThisPassword"
 # set username [lindex $argv 0];
 # set password [lindex $argv 1];
