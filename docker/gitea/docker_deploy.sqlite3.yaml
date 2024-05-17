@@ -8,7 +8,9 @@ services:
     # networks: [net]
     network_mode: bridge
     ports: ["3011:3000", "3012:22"]
-    environment: [USER_UID=1000, USER_GID=1000 ]
+    environment:
+    - USER_UID=${USER_UID}
+    - USER_GID=${USER_GID}
     volumes:
     - /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro

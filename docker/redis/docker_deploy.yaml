@@ -8,6 +8,9 @@ services:
     # networks: ["net"]
     ports: ['127.0.0.1:6379:6379']
     container_name: redis
+    deploy:
+      resources:
+        limits: { memory: 2.0G } # memory: 512M
     environment:
     - TZ=Asia/Shanghai
     # ALLOW_EMPTY_PASSWORD is recommended only for development.

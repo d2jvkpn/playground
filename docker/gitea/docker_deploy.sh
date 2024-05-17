@@ -29,6 +29,17 @@ docker-compose logs
 
 exit
 
+docker exec gitea-app ls /data/gitea/conf/app.ini
+
+cat <<EOF
+[log]
+MODE = file,console
+ENABLE_ACCESS_LOG = true
+ENABLE_SSH_LOG = true
+LOG_ROTATE = true
+DAILY_ROTATE = true
+EOF
+
 sed -i \
   -e '/REQUIRE_SIGNIN_VIEW/s/false/true/' \
   -e '/ENABLE_OPENID_SIGNIN/s/true/false/' \
