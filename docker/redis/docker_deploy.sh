@@ -3,6 +3,7 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 
+REDIS_Port=${1:-6379}
 mkdir -p configs data/redis
 
 password=$(tr -dc 'A-Za-z0-9!@#$%^&*()' < /dev/urandom | head -c 24 || true)
@@ -23,6 +24,7 @@ io-threads 4
 io-threads-do-reads yes
 EOF
 
+export USER_UID=$(id -u) USER_GID=$(id -g) REDIS_Port=$REDIS_Port
 envsubst < docker_deploy.yaml > docker-compose.yaml
 
 docker-compose up -d

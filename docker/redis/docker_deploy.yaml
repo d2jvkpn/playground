@@ -6,7 +6,8 @@ services:
     restart: always
     network_mode: bridge
     # networks: ["net"]
-    ports: ['127.0.0.1:6379:6379']
+    user: ${USER_UID}:${USER_GID}
+    ports: ['127.0.0.1:${REDIS_Port}:6379']
     container_name: redis
     deploy:
       resources:
