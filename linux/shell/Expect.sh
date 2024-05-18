@@ -32,12 +32,11 @@ echo "==> config field: $yaml::${field#.}"
 
 ####
 command=$(yq "$field.command" $yaml)
-[[ "$command" == "null" ]] && { >&2 echo "command is unset"; exit 1; }
-
 password=$(yq "$field.password" $yaml)
-[[ "$password" == "null" ]] && { >&2 echo "password is unset"; exit 1; }
-
 prompt=$(yq "$field.prompt" $yaml)
+
+[[ "$command" == "null" ]] && { >&2 echo "command is unset"; exit 1; }
+[[ "$password" == "null" ]] && { >&2 echo "password is unset"; exit 1; }
 [[ "$prompt" == "null" ]] && { >&2 echo "prompt is unset"; exit 1; }
 
 mkdir -p configs/temp
@@ -48,7 +47,6 @@ echo "==> expect file: $script"
 function on_exit() {
     rm -f $script
 }
-
 trap on_exit EXIT
 
 ####
