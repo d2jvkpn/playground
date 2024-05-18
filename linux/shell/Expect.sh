@@ -10,23 +10,23 @@ help:
   ./Expect.sh [help | -h | --help]
 
 run:
-  ./Expect.sh <expect.yaml> [field]
+  ./Expect.sh <field> [configs/expect.yaml]
 
-yaml fields: command, password, prompt
+expect.yaml fields: command, password, prompt
 EOF
 }
 
-cmd=${1:-help}
-if [[ "$cmd" == "help" || "$cmd" == "-h" || "$cmd" == "--help" ]]; then
+if [[ $# -eq 0 || "$1" == "help" || "$1" == "-h" || "$1" == "--help" ]]; then
     display_usage
     exit 1
 fi
 
 ####
-yaml=$1
-
-field=${2:-"."}
+field=${1}
 [[ "$field" != "."* ]] && field=".$field"
+
+yaml=${2:-configs/expect.yaml}
+[ ! -s $yaml ] && { >&2 echo "file not exists: $yaml"; exit 1; }
 
 ####
 command=$(yq "$field.command" $yaml)
