@@ -38,5 +38,12 @@ alias pid_info='ps -eo ppid,cmd,vsz,rss,%mem,%cpu -p'
 # go path
 [ -d ~/.go/bin ] && export PATH=~/.go/bin:$PATH
 
+function go_lint() {
+    go mod tidy
+    if [ -d vendor ]; then go mod vendor; fi
+    go fmt ./...
+    go vet ./...
+}
+
 alias quick_nmap='nmap -vv --max-retries=5 -sV -T4 -p-'
 alias quick_rsync='rsync -arvP'
