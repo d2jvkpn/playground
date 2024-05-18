@@ -28,6 +28,8 @@ field=${1}
 yaml=${2:-configs/expect.yaml}
 [ ! -s $yaml ] && { >&2 echo "file not exists: $yaml"; exit 1; }
 
+echo "==> config field: $yaml::${field#.}"
+
 ####
 command=$(yq "$field.command" $yaml)
 [[ "$command" == "null" ]] && { >&2 echo "command is unset"; exit 1; }
@@ -54,7 +56,6 @@ cat > $script <<EOF
 #!/bin/expect
 set prompt "#"
 set timeout 15
-
 set password "$password"
 
 spawn ${command}
@@ -63,7 +64,6 @@ expect "${prompt}"
 send "\$password\r"
 
 interact
-
 # expect eof
 EOF
 
