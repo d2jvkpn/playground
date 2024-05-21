@@ -12,3 +12,11 @@ function docker_up() {
     cd "$target"
     docker-compose up -d
 }
+
+####
+function go_lint() {
+    go mod tidy
+    if [ -d vendor ]; then go mod vendor; fi
+    go fmt ./...
+    go vet ./...
+}

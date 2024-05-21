@@ -15,9 +15,14 @@ for d in $(ls -d ~/Apps/*/ /opt/*/ 2> /dev/null); do
 done
 
 ####
-alias tree1='tree -L 1'; alias tree2='tree -L 2'; alias tree3='tree -L 3'
-alias tree4='tree -L 4'; alias tree5='tree -L 5'; alias tree6='tree -L 6'
-alias ..='cd ../../'; alias ...='cd ../../../'
+alias tree1='tree -L 1'
+alias tree2='tree -L 2'
+alias tree3='tree -L 3'
+alias tree4='tree -L 4'
+alias tree5='tree -L 5'
+
+alias ..='cd ../../'
+alias ...='cd ../../../'
 
 # sudo apt -y install xclip
 alias setclip='xclip -selection c'
@@ -37,13 +42,6 @@ alias pid_info='ps -eo ppid,cmd,vsz,rss,%mem,%cpu -p'
 
 # go path
 [ -d ~/.go/bin ] && export PATH=~/.go/bin:$PATH
-
-function go_lint() {
-    go mod tidy
-    if [ -d vendor ]; then go mod vendor; fi
-    go fmt ./...
-    go vet ./...
-}
 
 alias quick_nmap='nmap -vv --max-retries=5 -sV -T4 -p-'
 alias quick_rsync='rsync -arvP'
