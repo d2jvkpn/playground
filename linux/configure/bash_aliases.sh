@@ -33,7 +33,7 @@ alias top_cpu='ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head -n 20'
 alias top_mem='ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -n 20'
 alias pid_info='ps -eo ppid,cmd,vsz,rss,%mem,%cpu -p'
 
-alias git-s='git grep -n'
+alias git_search='git grep -n'
 
 # export HISTSIZE=2000
 # export PYSPARK_PYTHON=$(which ipython3)

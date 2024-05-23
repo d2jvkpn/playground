@@ -20,3 +20,16 @@ function go_lint() {
     go fmt ./...
     go vet ./...
 }
+
+####
+function git_root() {
+    wd=""
+
+    while true; do
+        d=$(pwd)
+        # echo "==> $d, $wd"
+        [[ "$wd" == "$d" || -d "$d/.git" ]] && break
+        wd="$d"
+        cd ../
+    done
+}
