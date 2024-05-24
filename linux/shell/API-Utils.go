@@ -51,7 +51,6 @@ func main() {
 
 	flag.StringVar(&encode, "encode", "", "code method for hash and signature: base32, base64, hex")
 	flag.StringVar(&key, "key", "", "key: secret, bcrypt hash cost, duration")
-	flag.Parse()
 
 	flag.Usage = func() {
 		fmt.Fprintf(
@@ -61,6 +60,8 @@ func main() {
 		)
 		flag.PrintDefaults()
 	}
+
+	flag.Parse()
 
 	//
 	defer func() {
@@ -191,7 +192,7 @@ func main() {
 
 	// convert
 	case "file2string":
-		if ans, err = ioutil.ReadFile(os.Args[1]); err != nil {
+		if ans, err = ioutil.ReadFile(content); err != nil {
 			return
 		}
 	case "string2bytes":
