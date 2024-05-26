@@ -12,7 +12,7 @@ awk '/-- #### Table /{sub("--", ""); sub("^ +", "", $0); print "\n"$0}
     sub(" +", "\t", $0);
     sub(", +-- *", "\t", $0);
     sub("; *==", "\t", $0);
-    print $0
+    print $0;
   }' migrations/*.up.sql |
   awk 'BEGIN{FS=OFS="\t"; print "field", "type", "comment", "binding"}
     {if (NF> 0 && NF < 4) { $4=""}; print}' > configs/sql_schema.tsv
