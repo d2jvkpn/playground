@@ -32,16 +32,13 @@ echo "==> config field: $yaml::${field#.}"
 
 ####
 command=$(yq "$field.command" $yaml)
-# answer=$(yq "$field.answer" $yaml)
-# prompt=$(yq "$field.prompt" $yaml)
+answer=$(yq "$field.answer" $yaml)
+prompt=$(yq "$field.prompt" $yaml)
 
 [[ "$command" == "null" ]] && { >&2 echo "command is unset"; exit 1; }
 
-interactive=$(
-  yq -r "$field.interactive | @tsv" $yaml |
-  awk 'BEGIN{FS="\t"} NR>1{printf "expect %s\nsend %s\\r\n\n", $1, $2}' |
-  awk 'NF>0{$2="\""$2; $0=$0"\""}{print}'
-)
+[[ "$prompt" == "null" ]] && { >&2 echo "prompt is unset"; exit 1; }
+[[ "$answer" == "null" ]] && { >&2 echo "answer is unset"; exit 1; }
 
 mkdir -p configs/temp
 script=configs/temp/$(tr -dc 'a-zA-Z0-9' </dev/random | fold -w 32 | head -n1 || true).expect
@@ -51,8 +48,7 @@ echo "==> expect file: $script"
 function on_exit() {
     rm -f $script
 }
-
-# trap on_exit EXIT
+trap on_exit EXIT
 
 ####
 cat > $script <<EOF
@@ -62,9 +58,8 @@ set timeout 15
 
 spawn ${command}
 
-# expect "..."
-# send "...\r"
-$interactive
+expect "${prompt}"
+send "$answer\r"
 
 interact
 # expect eof

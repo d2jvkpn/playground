@@ -6,16 +6,21 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 inputs=$@
 
+mkdir -p temp
+output=temp/sql.v$(date +%F-%s).tsv
+
 awk '/-- #### Table /{sub("--", ""); sub("^ +", "", $0); print "\n"$0}
-  /, *--/{
+  /, *--/ && $1!="--"{
     sub("^ +", "", $0);
     sub(" +", "\t", $0);
     sub(", +-- *", "\t", $0);
-    sub("; *==", "\t", $0);
+    sub("; *", "\t", $0);
     print $0;
   }' migrations/*.up.sql |
   awk 'BEGIN{FS=OFS="\t"; print "field", "type", "comment", "binding"}
-    {if (NF> 0 && NF < 4) { $4=""}; print}' > configs/sql_schema.tsv
+    {if (NF> 0 && NF < 4) { $4=""}; print}' > $output
+
+echo "==> saved $output"
 
 exit
 
