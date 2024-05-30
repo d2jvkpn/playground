@@ -21,8 +21,9 @@ alias tree3='tree -L 3'
 alias tree4='tree -L 4'
 alias tree5='tree -L 5'
 
-alias ..='cd ../../'
-alias ...='cd ../../../'
+alias ..='cd ../'
+alias ...='cd ../../'
+alias ....='cd ../../../'
 
 # sudo apt -y install xclip
 alias setclip='xclip -selection c'

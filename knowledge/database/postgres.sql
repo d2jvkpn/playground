@@ -25,3 +25,41 @@ update temp_accounts x
 
 truncate table temp_accounts;
 drop table temp_accounts;
+
+
+--
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+SELECT uuid_generate_v1();
+SELECT uuid_generate_v4();
+
+
+--
+SELECT current_database();
+
+CREATE TYPE yes_no AS ENUM('yes', 'no');
+
+-- unlimited tokens
+CREATE UNLOGGED TABLE user_tokens_1 (
+  token_id    uuid NOT NULL,
+  created_at  timestamptz NOT NULL,
+  status      yes_no NOT NULL,
+
+  account_id  uuid NOT NULL,
+  expiration  timestamptz NOT NULL,
+
+  primary key(token_id)
+);
+
+-- one platform one token
+CREATE UNLOGGED TABLE user_tokens_2 (
+  account_id  uuid NOT NULL,
+  platform    varchar NOT NULL,
+  created_at  timestamptz NOT NULL,
+  status      yes_no NOT NULL,
+
+  token_id    uuid NOT NULL,
+  expiration  timestamptz NOT NULL,
+
+  primary key(account_id, platform)
+);
