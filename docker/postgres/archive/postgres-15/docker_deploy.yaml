@@ -21,7 +21,7 @@ services:
     - ./data/postgres:/var/lib/postgresql/data
     # - ./data/postgresql.conf:/var/lib/postgresql/data/pgdata/postgresql.conf
 
-#volums:
+#volumes:
 #   postgres:
 #     name: postgres_storage
 #     driver: local

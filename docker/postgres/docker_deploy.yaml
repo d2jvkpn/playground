@@ -29,7 +29,7 @@ services:
     - ./configs/postgres.password:/app/configs/postgres.password:ro
     - ./data/postgres:/var/lib/postgresql/data
 
-# volums:
+# volumes:
 #   data: { name: postgres, driver: local }
 
 # networks:
