@@ -19,6 +19,7 @@ services:
     - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
     working_dir: /app
     volumes:
+    # - ./data/redis:/data
     - ./data/redis:/app/data
     - ./configs/redis.conf:/app/configs/redis.conf
     # command: redis-server /etc/redis.conf --loglevel warning --save 30 10 --requirepass d2jvkpn
