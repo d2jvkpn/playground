@@ -12,7 +12,13 @@ help:
 run:
   ./Expect.sh <field> [configs/expect.yaml]
 
-expect.yaml fields: command, answer, prompt
+an example of configs/expect.yaml:
+```yaml
+postgres:
+  command: psql postgres://account@localhost:5432/db?sslmode=disable
+  interactive:
+  - { prompt: "Password for user account:", answer: "secret" }
+```
 EOF
 }
 

@@ -15,7 +15,12 @@ services:
     environment:
     - TZ=Asia/Shanghai
     - LANG=C.UTF-8
+    # - MYSQL_USER=$user
+    # - MYSQL_DATABASE=$user
+    # - MYSQL_PASSWORD=$db_user_password
+
     - MYSQL_ROOT_PASSWORD_FILE=/app/configs/mysql_root.password
+    # - MYSQL_ROOT_PASSWORD=xxxx
     env_file: [./configs/mysql.env]
     # -- SHOW VARIABLES LIKE 'character%';
     # make sure character_set_client, character_set_connection, character_set_results is utf8mb4 rather than latin1
