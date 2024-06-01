@@ -19,6 +19,8 @@ postgres:
   interactive:
   - { prompt: "Password for user account:", answer: "secret" }
 ```
+
+expect script location: ./configs/temp/xxxx.expect
 EOF
 }
 
@@ -28,22 +30,22 @@ if [[ $# -eq 0 || "$1" == "help" || "$1" == "-h" || "$1" == "--help" ]]; then
 fi
 
 ####
-field=${1#.}
+target=${1#.}
 
 yaml=${2:-configs/expect.yaml}
 [ ! -s $yaml ] && { >&2 echo "file not exists: $yaml"; exit 1; }
 
-echo "==> config field: $yaml::${field}"
+echo "==> config target: $yaml::${target}"
 
 ####
-command=$(yq ".$field.command" $yaml)
-# answer=$(yq "$field.answer" $yaml)
-# prompt=$(yq "$field.prompt" $yaml)
+command=$(yq ".$target.command" $yaml)
+# answer=$(yq "$target.answer" $yaml)
+# prompt=$(yq "$target.prompt" $yaml)
 
 [[ "$command" == "null" ]] && { >&2 echo "command is unset"; exit 1; }
 
 interactive=$(
-  yq -r ".$field.interactive | @tsv" $yaml |
+  yq -r ".$target.interactive | @tsv" $yaml |
   awk 'BEGIN{FS="\t"} NR>1{printf "expect %s\nsend %s\\r\n\n", $1, $2}' |
   awk 'NF>0{$2="\""$2; $0=$0"\""}{print}'
 )
