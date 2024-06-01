@@ -20,7 +20,7 @@ target=ubuntu
 virt-install --name=$target \
   --os-variant=generic --vcpus=2 --memory=2048 \
   --disk path=/var/lib/libvirt/images/$target.qcow2,size=30 \
-  --cdrom=~/kvm/ubuntu-24.04-live-server-amd64.iso
+  --cdrom=~/Work/kvm/ubuntu-24.04-live-server-amd64.iso
 ```
 
 #### 3. Ubuntu Installation UI
