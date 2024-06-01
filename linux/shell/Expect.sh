@@ -16,7 +16,7 @@ an example of configs/expect.yaml:
 ```yaml
 postgres:
   command: psql postgres://account@localhost:5432/db?sslmode=disable
-  interactive:
+  expects:
   - { prompt: "Password for user account:", answer: "secret" }
 ```
 
@@ -44,8 +44,8 @@ command=$(yq ".$target.command" $yaml)
 
 [[ "$command" == "null" ]] && { >&2 echo "command is unset"; exit 1; }
 
-interactive=$(
-  yq -r ".$target.interactive | @tsv" $yaml |
+expects=$(
+  yq -r ".$target.expects | @tsv" $yaml |
   awk 'BEGIN{FS="\t"} NR>1{printf "expect %s\nsend %s\\r\n\n", $1, $2}' |
   awk 'NF>0{$2="\""$2; $0=$0"\""}{print}'
 )
@@ -71,7 +71,7 @@ spawn ${command}
 
 # expect "..."
 # send "...\r"
-$interactive
+$expects
 
 interact
 # expect eof
