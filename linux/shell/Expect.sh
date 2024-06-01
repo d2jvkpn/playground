@@ -10,7 +10,7 @@ help:
   ./Expect.sh [help | -h | --help]
 
 run:
-  ./Expect.sh <field> [configs/expect.yaml]
+  ./Expect.sh <target> [configs/expect.yaml]
 
 an example of configs/expect.yaml:
 ```yaml
