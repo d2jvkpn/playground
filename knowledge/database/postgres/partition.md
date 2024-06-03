@@ -10,10 +10,10 @@
 --
 CREATE TABLE sales (
     sale_id    uuid DEFAULT gen_random_uuid(),
-    sale_date  DATE NOT NULL,
-    product_id INT,
-    quantity   INT,
-    amount     NUMERIC,
+    sale_date  date NOT NULL,
+    product_id int,
+    quantity   int,
+    amount     numeric,
 
     PRIMARY KEY (sale_id, sale_date)
 ) PARTITION BY RANGE(sale_date);
@@ -52,37 +52,40 @@ INSERT INTO sales (sale_date, product_id, quantity, amount) VALUES
 
 - 2.2
 ```sql
-CREATE TABLE sales2 (
+CREATE TABLE IF NOT EXISTS sales2 (
     sale_id    uuid DEFAULT gen_random_uuid(),
-    sale_date  date not null default now()::date,
-    sale_at    timestamptz default now(),
-    product_id INT,
-    quantity   INT,
-    amount     NUMERIC,
+    sale_date  date NOT NULL DEFAULT now()::date,
+    sale_at    timestamptz NOT NULL DEFAULT now(),
+    product_id int,
+    quantity   int,
+    amount     numeric,
 
     PRIMARY KEY (sale_id, sale_date)
 ) PARTITION BY RANGE(sale_date);
 
 
-CREATE TABLE sales2_202406 PARTITION OF sales2
+CREATE TABLE IF NOT EXISTS sales2_202406 PARTITION OF sales2
     FOR VALUES FROM ('2024-06-01') TO ('2024-07-01');
 
-insert into sales2 (product_id, quantity, amount) values
+ALTER TABLE sales2_202406 ADD CONSTRAINT sales2_202406_check
+    CHECK (sale_date >= '2024-06-01' AND sale_date < '2024-07-01');
+
+INSERT INTO sales2 (product_id, quantity, amount) VALUES
     (101, 5, 100.00),
     (102, 10, 200.00),
     (103, 8, 150.00);
 
-insert into sales2 (sale_date, sale_at, product_id, quantity, amount) values
+INSERT INTO sales2 (sale_date, sale_at, product_id, quantity, amount) VALUES
     ('2024-07-01', now(), 101, 5, 100.00);
 ```
 
 #### 3. List Partitioning
 ```
 CREATE TABLE products (
-    product_id SERIAL,
-    category TEXT,
-    product_name TEXT,
-    price NUMERIC,
+    product_id   serial,
+    category     text,
+    product_name text,
+    price        numeric,
 
     PRIMARY KEY(product_id, category)
 ) PARTITION BY LIST(category);
@@ -105,10 +108,10 @@ INSERT INTO products (category, product_name, price) VALUES
 #### 4. Hash Partitioning
 ```sql
 CREATE TABLE orders (
-    order_id SERIAL,
-    order_date DATE,
-    customer_id INT,
-    total_amount NUMERIC,
+    order_id     serial,
+    order_date   date,
+    customer_id  int,
+    total_amount numeric,
 
     PRIMARY KEY(order_id, customer_id)
 ) PARTITION BY HASH(customer_id);
