@@ -31,28 +31,28 @@ if [[ $# -eq 0 || "$1" == "help" || "$1" == "-h" || "$1" == "--help" ]]; then
 fi
 
 target=${1#.}
-
 yaml=${2:-configs/expect.yaml}
 [ ! -s $yaml ] && { >&2 echo "file not exists: $yaml"; exit 1; }
 
 #### 2. check expect script
 echo "==> read config: $yaml::${target}"
 
-command=$(yq ".$target.command" $yaml)
-[[ "$command" == "null" ]] && { >&2 echo "command is unset in $target"; exit 1; }
-
 script=configs/temp/$target.expect
 [ -s "$script" ] && { expect -f $script; exit 0; }
 
-#### 3. generate expect script
-mkdir -p configs/temp
-echo "==> creating expect script: $script"
+#### 3. read expects
+command=$(yq ".$target.command" $yaml)
+[[ "$command" == "null" ]] && { >&2 echo "command is unset in $target"; exit 1; }
 
 expects=$(
   yq -r ".$target.expects | @tsv" $yaml |
   awk 'BEGIN{FS="\t"} NR>1{printf "expect %s\nsend %s\\r\n\n", $1, $2}' |
   awk 'NF>0{$2="\""$2; $0=$0"\""}{print}'
 )
+
+#### 4. generate expect
+mkdir -p configs/temp
+echo "==> creating expect script: $script"
 
 cat > $script <<EOF
 #!/bin/expect
