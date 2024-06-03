@@ -5,6 +5,7 @@
 - https://rasiksuhail.medium.com/guide-to-postgresql-table-partitioning-c0814b0fbd9b
 
 #### 2. Range Partitioning
+- 2.1
 ```
 --
 CREATE TABLE sales (
@@ -13,7 +14,7 @@ CREATE TABLE sales (
     product_id INT,
     quantity   INT,
     amount     NUMERIC,
-    
+
     PRIMARY KEY (sale_id, sale_date)
 ) PARTITION BY RANGE(sale_date);
 
@@ -47,6 +48,32 @@ INSERT INTO sales (sale_date, product_id, quantity, amount) VALUES
     ('2023-12-15', 104, 5, 100.42);
 -- ERROR: no partition of relation "sales" found for row
 -- DETAIL:  Partition key of the failing row contains (sale_date) = (2023-12-15).
+```
+
+- 2.2
+```sql
+CREATE TABLE sales2 (
+    sale_id    uuid DEFAULT gen_random_uuid(),
+    sale_date  date not null default now()::date,
+    sale_at    timestamptz default now(),
+    product_id INT,
+    quantity   INT,
+    amount     NUMERIC,
+
+    PRIMARY KEY (sale_id, sale_date)
+) PARTITION BY RANGE(sale_date);
+
+
+CREATE TABLE sales2_202406 PARTITION OF sales2
+    FOR VALUES FROM ('2024-06-01') TO ('2024-07-01');
+
+insert into sales2 (product_id, quantity, amount) values
+    (101, 5, 100.00),
+    (102, 10, 200.00),
+    (103, 8, 150.00);
+
+insert into sales2 (sale_date, sale_at, product_id, quantity, amount) values
+    ('2024-07-01', now(), 101, 5, 100.00);
 ```
 
 #### 3. List Partitioning
