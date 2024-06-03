@@ -52,14 +52,22 @@ CREATE UNLOGGED TABLE user_tokens_1 (
 );
 
 -- one platform one token
-CREATE UNLOGGED TABLE user_tokens_2 (
-  account_id  uuid NOT NULL,
-  platform    varchar NOT NULL,
+create type yes_no as enum('yes', 'no');
+
+CREATE UNLOGGED TABLE user_tokens (
+  account_id  uuid,
+  platform    varchar,
   created_at  timestamptz NOT NULL,
   status      yes_no NOT NULL,
 
-  token_id    uuid NOT NULL,
+  token_id    uuid NOT NULL, -- UNIQUE,
   expiration  timestamptz NOT NULL,
+  note        varchar NOT NULL default '',
 
   primary key(account_id, platform)
 );
+
+-- create index user_tokens_token_id on user_tokens (token_id);
+
+update user_tokens where account_id = ? AND platform = ? AND token_id = ?
+  set status = 'no', note = 'logout';
