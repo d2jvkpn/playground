@@ -17,10 +17,10 @@ an example of configs/expect.yaml:
 postgres:
   command: psql postgres://account@localhost:5432/db?sslmode=disable
   expects:
-  - { prompt: "Password for useraccount:", answer: "secret" }
+  - { prompt: "Password for user account:", answer: "secret" }
 ```
 
-expect script: ./configs/temp/postgres.expect
+expect script: ./configs/temp/postgres.xx32.expect
 EOF
 }
 
@@ -35,18 +35,15 @@ target=${1#.}
 yaml=${2:-configs/expect.yaml}
 [ ! -s $yaml ] && { >&2 echo "file not exists: $yaml"; exit 1; }
 
-#### 2. check expect script
+
+#### 2. read config
 echo "==> read config: $yaml::${target}"
 
 command=$(yq ".$target.command" $yaml)
-[[ "$command" == "null" ]] && { >&2 echo "command is unset in $target"; exit 1; }
+# answer=$(yq "$target.answer" $yaml)
+# prompt=$(yq "$target.prompt" $yaml)
 
-script=configs/temp/$target.expect
-[ -s "$script" ] && { expect -f $script; exit 0; }
-
-#### 3. generate expect script
-mkdir -p configs/temp
-echo "==> creating expect script: $script"
+[[ "$command" == "null" ]] && { >&2 echo "command is unset"; exit 1; }
 
 expects=$(
   yq -r ".$target.expects | @tsv" $yaml |
@@ -54,6 +51,17 @@ expects=$(
   awk 'NF>0{$2="\""$2; $0=$0"\""}{print}'
 )
 
+mkdir -p configs/temp
+script=configs/temp/$target.$(tr -dc 'a-zA-Z0-9' </dev/random | fold -w 32 | head -n1 || true).expect
+
+echo "==> expect file: $script"
+
+function on_exit() {
+    rm -f $script
+}
+trap on_exit EXIT
+
+#### 3. generate expect script
 cat > $script <<EOF
 #!/bin/expect
 set prompt "#"
