@@ -10,12 +10,12 @@ password=$(tr -dc 'A-Za-z0-9!@#$%^&*()' < /dev/urandom | head -c 24 || true)
 
 [ -f configs/redis.password ] || echo "$password" > configs/redis.password
 
-[ -f data/redis/redis.conf ] || \
-cat > data/redis/redis.conf <<EOF
+[ -f configs/redis.conf ] || \
+cat > configs/redis.conf <<EOF
 requirepass "$password"
 
-logfile /data/redis-server.log
-dir /data
+logfile /app/data/redis-server.log
+dir /app/data
 dbfilename dump.rdb
 
 aof-use-rdb-preamble yes
