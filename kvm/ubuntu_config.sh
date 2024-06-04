@@ -82,5 +82,7 @@ systemctl start serial-getty@ttyS0.service
 exit 0
 snap list
 sudo snap remomve --purge core22
+sudo snap remove --purge snapd
+
 sudo apt remove --autoremove snapd
 sudo dpkg -P snapd
