@@ -78,3 +78,9 @@ dpkg -l | awk '/^rc/{print $2}' | xargs -i sudo dpkg -P {}
 systemctl enable serial-getty@ttyS0.service
 systemctl start serial-getty@ttyS0.service
 # allow longin "virsh console target" from host machine
+
+exit 0
+snap list
+sudo snap remomve --purge core22
+sudo apt remove --autoremove snapd
+sudo dpkg -P snapd
