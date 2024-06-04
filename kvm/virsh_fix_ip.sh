@@ -5,8 +5,8 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 target=$1
 kvm_network=${kvm_network:-default}
 
-ls configs/$target.password > /dev/null
-command -v sshpass || { echo "no sshpass installed"; exit 1; }
+# ls configs/$target.password > /dev/null
+# command -v sshpass || { echo "no sshpass installed"; exit 1; }
 
 record=$(virsh net-dumpxml $kvm_network | grep "name='"$target"'" || true)
 [ -z "$record" ] || { >&2 echo "address of $target has been set"; exit 1; }
