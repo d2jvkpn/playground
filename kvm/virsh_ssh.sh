@@ -44,20 +44,19 @@ EOF
 ssh-keygen -f ~/.ssh/known_hosts -R "$addr"
 ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 
-# ssh -o "StrictHostKeyChecking no" $username@$addr
+# ssh -o StrictHostKeyChecking=no $username@$addr
 # must todo
-# ssh-copy-id -o "StrictHostKeyChecking no" -i $kvm_ssh_key $target
+# ssh-copy-id -o StrictHostKeyChecking=no -i $kvm_ssh_key $target
 # ssh $target
 
 sshpass -f configs/$target.password ssh-copy-id -i $kvm_ssh_key $target
 
-exit 0
-
 #### 3. config target vm
 echo "==> 3.1 run ubuntu_config.sh on $target"
-scp ubuntu_config.sh $target:
+rsync ubuntu_config.sh $target:
 
-ssh -t $target sudo bash ./ubuntu_config.sh $username
+# ssh -t $target sudo bash ./ubuntu_config.sh $username
+cat configs/$target.password | ssh $target sudo -S bash ./ubuntu_config.sh $username
 
 echo "==> 3.2 shutdown $target"
 virsh shutdown $target
