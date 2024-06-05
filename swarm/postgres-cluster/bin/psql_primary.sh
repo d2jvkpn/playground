@@ -41,8 +41,8 @@ cat >> $data_dir/pg_hba.conf <<EOF
 # Add settings for extensions here
 # host    all            postgres      127.0.0.1/32    trust
 # host    all            postgres      ::1/128         trust
-host    replication    replicator    $subnet         scram-sha-256
-host    all            all           $subnet         scram-sha-256
+host    replication    replicator    $subnet    scram-sha-256
+host    all            all           $subnet    scram-sha-256
 EOF
 # host    replication    replicator    0.0.0.0/0    trust
 

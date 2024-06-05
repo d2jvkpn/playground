@@ -37,7 +37,7 @@ done
 
 echo "==> set postgres password"
 # docker exec -it -u postgres postgres-node01 psql -c '\password'
-password=$(awk '{print $1; exit}' configs/secret_postgres.txt)
+password=$(awk '{print $1; exit}' configs/postgres.password)
 
 docker exec -u postgres postgres-node01 psql \
   -c "alter user postgres with encrypted password '$password';"

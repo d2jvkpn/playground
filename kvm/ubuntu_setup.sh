@@ -7,7 +7,7 @@ username=$1
 export DEBIAN_FRONTEND=noninteractive
 [ $(id -u) -ne 0 ] && { >&2 echo "Please run as root"; exit 1; }
 
-#### 1. disable ads
+#### 1. disable ubuntu ads
 systemctl disable ubuntu-advantage
 pro config set apt_news=false
 
@@ -53,27 +53,8 @@ apt remove --autoremove snapd
 dpkg -P snapd
 # reboot now
 
-#### 4. config
 # hostnamectl hostname node
 # sed -i '/127.0.1.1/s/ .*/ node/' /etc/hosts
-mkdir -p /home/$username/Apps/bin /home/$username/.local/bin
-
-# path: ~/.bash_aliases
-cat >> /home/$username/.bash_aliases <<'EOF'
-
-export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
-# %Y-%m-%dT%H:%M:%S%:z doesn't work
-export PROMPT_DIRTRIM=2
-export PATH=~/.local/bin:$PATH
-
-for d in $(ls -d ~/Apps/*/ /opt/*/ 2>/dev/null); do
-    d=${d%/}
-    [ -d $d/bin ] && d=$d/bin
-    export PATH=$d:$PATH
-done
-EOF
-
-chown -R $username:$username /home/$username
 
 echo "$username ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/$username
 # echo -e "\n\n\nPermitRootLogin yes" >> /etc/ssh/sshd_config

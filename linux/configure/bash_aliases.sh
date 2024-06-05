@@ -4,7 +4,7 @@
 export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
 # %Y-%m-%dT%H:%M:%S%:z doesn't work as expected
 export PROMPT_DIRTRIM=2
-# export PATH=~/.local/bin:$PATH
+export PATH=~/.local/bin:$PATH
 
 for d in $(ls -d ~/Apps/*/ /opt/*/ 2> /dev/null); do
     d=${d%/}
