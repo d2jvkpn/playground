@@ -11,6 +11,9 @@ ls configs/$target.password > /dev/null
 command -v sshpass || { >&2 echo "no sshpass installed"; exit 1; }
 
 #### 1. setup ssh key for kvm
+record="Include ${kvm_ssh_dir}/*.conf"
+grep "$record" ~/.ssh/config || sed -i "1i $record" ~/.ssh/config
+
 [ -d "$kvm_ssh_dir" ] || { mkdir -p $kvm_ssh_dir; chmod 700 $kvm_ssh_dir; }
 
 if [ ! -s $kvm_ssh_key ]; then
@@ -19,9 +22,6 @@ if [ ! -s $kvm_ssh_key ]; then
     ssh-keygen -y -f $kvm_ssh_key > $kvm_ssh_key.pub
     chmod 0400 $kvm_ssh_key
 fi
-
-record="Include ${kvm_ssh_dir}/*.conf"
-grep  "$record" ~/.ssh/config || sed -i "1i $record" ~/.ssh/config
 
 #### 2. generate ssh config
 echo "==> 2.1 creating ssh config: $kvm_ssh_dir/$target.conf"
@@ -43,13 +43,11 @@ EOF
 
 ssh-keygen -f ~/.ssh/known_hosts -R "$addr"
 ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
+sshpass -f configs/$target.password ssh-copy-id -i $kvm_ssh_key $target
 
 # ssh -o StrictHostKeyChecking=no $username@$addr
-# must todo
 # ssh-copy-id -o StrictHostKeyChecking=no -i $kvm_ssh_key $target
 # ssh $target
-
-sshpass -f configs/$target.password ssh-copy-id -i $kvm_ssh_key $target
 
 #### 3. config target vm
 echo "==> 3.1 run ubuntu_config.sh on $target"
