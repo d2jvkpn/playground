@@ -8,8 +8,8 @@ mkdir -p data/mongo
 
 HTTP_Port=$HTTP_Port envsubst < docker_deploy.yaml > docker-compose.yaml
 
-docker-compose pull
+# docker-compose pull
 docker-compose up -d
 
 sleep 3
-docker exec yapi_web npm run install-server
+docker exec yapi-web npm run install-server

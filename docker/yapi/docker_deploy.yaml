@@ -16,7 +16,13 @@ services:
     container_name: yapi-mongo
     restart: always
     networks: ["net"]
-    volumes: ["./data/mongo:/data/db"]
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: admin
+    #   MONGO_INITDB_ROOT_PASSWORD: admin
+    #   MONGO_INITDB_DATABASE: yapi
+    volumes:
+    - ./data/mongo:/data/db
+    # - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
 
 networks:
   net: { name: "yapi", driver: "bridge", external: false }
