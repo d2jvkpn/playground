@@ -56,6 +56,7 @@ rsync bash_aliases.txt ubuntu_setup.sh $target:
 ssh $target 'mkdir -p Apps/bin .local/bin && cat bash_aliases.txt >> .bash_aliases'
 # ssh -t $target sudo bash ./ubuntu_config.sh $username
 cat configs/$target.password | ssh $target sudo -S bash ./ubuntu_setup.sh $username
+ssh $target rm bash_aliases.txt ubuntu_setup.sh
 
 echo "==> 3.2 shutdown $target"
 virsh shutdown $target
