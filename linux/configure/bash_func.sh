@@ -13,6 +13,15 @@ function docker_up() {
     docker-compose up -d
 }
 
+function docker_down() {
+    _wd=$(pwd)
+    target=~/Work/docker/$1
+    [ -d "$target" ] || { >&2 echo "directory not found: $target"; exit 1; }
+    cd "$target"
+    docker-compose down
+    cd ${_wd}
+}
+
 ####
 function go_lint() {
     go mod tidy
