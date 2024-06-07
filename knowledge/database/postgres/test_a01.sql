@@ -35,3 +35,26 @@ update test_a01 set note = 'x02' where name = 'a02' returning id;
 update test_a01 set note = 'x02' where name = 'a02' returning id;
 
 update test_a01 set note = 'x02' where name = 'not_exsits' returning id;
+-- (0 rows)
+
+update test_a01
+  set note = 'hello'
+  where name = 'a02'
+  returning id, name, note as new_note, (
+    select note from test_a01 where name = 'a02'
+  ) as old_note;
+
+UPDATE your_table
+SET column_name = CASE
+    WHEN condition_1 THEN value_1
+    WHEN condition_2 THEN value_2
+    ELSE default_value
+END
+WHERE your_condition;
+
+UPDATE employees
+SET salary = CASE
+    WHEN department = 'IT' THEN salary * 1.1
+    WHEN department = 'Sales' THEN salary * 1.05
+    ELSE salary
+END;

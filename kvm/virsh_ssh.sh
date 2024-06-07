@@ -51,12 +51,10 @@ sshpass -f configs/$target.password ssh-copy-id -i $kvm_ssh_key $target
 
 #### 3. ubuntu setup
 echo "==> 3.1 ubuntu setup on $target"
-rsync bash_aliases.txt ubuntu_setup.sh $target:
 
-ssh $target 'mkdir -p Apps/bin .local/bin && cat bash_aliases.txt >> .bash_aliases'
-# ssh -t $target sudo bash ./ubuntu_config.sh $username
+rsync ubuntu_setup.sh ubuntu_cleanup.sh $target:
+# ssh -t $target sudo bash ./ubuntu_setup.sh $username
 cat configs/$target.password | ssh $target sudo -S bash ./ubuntu_setup.sh $username
-ssh $target rm bash_aliases.txt ubuntu_setup.sh
 
 echo "==> 3.2 shutdown $target"
 virsh shutdown $target

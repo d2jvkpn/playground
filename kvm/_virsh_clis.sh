@@ -15,14 +15,6 @@ target=ubuntu
 # virsh snapshot-list $target
 # virsh snapshot-delete --domain $target --snapshotname $??
 
-ssh root@$target
-lsblk
-pvs
-vgdisplay
-fdisk -l | grep -- "--lv"
-lvextend -L +14G /dev/mapper/ubuntu--vg-ubuntu--lv
-resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
-
 #### 2. network
 virsh net-dumpxml $kvm_network
 virsh net-edit $kvm_network
