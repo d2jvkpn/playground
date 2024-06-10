@@ -28,7 +28,7 @@ drop table temp_accounts;
 
 
 --
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS 'uuid-ossp';
 
 SELECT uuid_generate_v1();
 SELECT uuid_generate_v4();

@@ -5,3 +5,5 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 # echo "Hello, world!"
 
 go install golang.org/x/tools/...@latest
+
+go clean -testcache -modcache
