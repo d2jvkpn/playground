@@ -32,25 +32,6 @@ function docker_down() {
     cd ${_wd}
 }
 
-function docker_pull() {
-    remote_host=$1
-    image=$2
-
-    base=$(basename $image | sed 's/:/_/g')
-    set -x
-
-    ssh $remote_host "docker pull $image; docker save $image -o $base.tar; pigz $base.tar"
-    rsync -arvP $remote_host:$base.tar.gz /tmp/
-
-    pigz -dc /tmp/$base.tar.gz | docker load
-
-    ssh $remote_host "rm $base.tar.gz; docker rmi $image || true"
-    rm /tmp/$base.tar.gz
-    docker images --quiet --filter "dangling=true" ${image%:*} | xargs -i docker rmi {} || true
-
-    set +x
-}
-
 ####
 function go_lint() {
     go mod tidy
