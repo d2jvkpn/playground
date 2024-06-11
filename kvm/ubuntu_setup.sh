@@ -69,8 +69,8 @@ apt install -y software-properties-common apt-transport-https ca-certificates \
   lsb-release gnupg net-tools vim tree file pigz curl jq zip duf
 # landscape-common
 
-wget -O Apps/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-chmod a+x Apps/bin/yq
+# wget -O Apps/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+# chmod a+x Apps/bin/yq
 
 apt remove -y --autoremove snapd
 dpkg -P snapd
