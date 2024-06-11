@@ -29,7 +29,12 @@ function download_images() {
     done
 }
 
-{ command -v kubeadm; command -v wget; command -v docker; command -v yq; } > /dev/null
+{
+    command -v kubeadm;
+    command -v wget;
+    command -v docker;
+    command -v yq;
+} > /dev/null
 
 current=$(kubeadm version -o yaml | yq .clientVersion.gitVersion | sed 's/^v//')
 # kube_version=$(kubeadm version -o json | jq -r .clientVersion.gitVersion | sed 's/^v//')

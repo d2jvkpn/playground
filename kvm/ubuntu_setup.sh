@@ -3,6 +3,7 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 username=$1
+time_zone=${time_zone:-Asia/Shanghai}
 
 export DEBIAN_FRONTEND=noninteractive
 [ $(id -u) -ne 0 ] && { >&2 echo "Please run as root"; exit 1; }
@@ -54,7 +55,7 @@ fp=/var/lib/ubuntu-advantage/apt-esm/etc/apt/sources.list.d/ubuntu-esm-apps.list
 #- sudo sed -i '/=motd.dynamic/s/^/#-- /' /etc/pam.d/sshd
 
 #### 3. setup
-timedatectl set-timezone Asia/Shanghai
+timedatectl set-timezone $time_zone
 systemctl enable serial-getty@ttyS0.service
 systemctl start serial-getty@ttyS0.service
 # allow longin "virsh console target" from host machine
@@ -67,6 +68,9 @@ apt -y upgrade
 apt install -y software-properties-common apt-transport-https ca-certificates \
   lsb-release gnupg net-tools vim tree file pigz curl jq zip duf
 # landscape-common
+
+wget -O Apps/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+chmod a+x Apps/bin/yq
 
 apt remove -y --autoremove snapd
 dpkg -P snapd
