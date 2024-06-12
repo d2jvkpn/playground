@@ -32,13 +32,15 @@ fi
 
 target=${1#.}
 yaml=${2:-configs/expect.yaml}
+force=${force:-false}
+
 [ ! -s $yaml ] && { >&2 echo "file not exists: $yaml"; exit 1; }
 
 #### 2. check expect script
 echo "==> read config: $yaml::${target}"
 
 script=configs/temp/$target.expect
-[ -s "$script" ] && { expect -f $script; exit 0; }
+[[ -s "$script" && "$force" == "false" ]] && { expect -f $script; exit 0; }
 
 #### 3. read expects
 command=$(yq ".$target.command" $yaml)
