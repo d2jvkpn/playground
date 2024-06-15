@@ -31,7 +31,9 @@ if [[ $# -eq 0 || "$1" == "help" || "$1" == "-h" || "$1" == "--help" ]]; then
 fi
 
 target=${1#.}
-yaml=${2:-configs/expect.yaml}
+# TODO: >pass args to command
+
+yaml=${yaml:-configs/expect.yaml}
 force=${force:-false}
 
 [ ! -s $yaml ] && { >&2 echo "file not exists: $yaml"; exit 1; }
