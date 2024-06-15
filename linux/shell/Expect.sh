@@ -31,7 +31,8 @@ if [[ $# -eq 0 || "$1" == "help" || "$1" == "-h" || "$1" == "--help" ]]; then
 fi
 
 target=${1#.}
-# TODO: >pass args to command
+shift
+args=$@
 
 yaml=${yaml:-configs/expect.yaml}
 force=${force:-false}
@@ -42,7 +43,7 @@ force=${force:-false}
 echo "==> read config: $yaml::${target}"
 
 script=configs/temp/$target.expect
-[[ -s "$script" && "$force" == "false" ]] && { expect -f $script; exit 0; }
+[[ -s "$script" && "$force" == "false" ]] && { expect -f $script $args; exit 0; }
 
 #### 3. read expects
 command=$(yq ".$target.command" $yaml)
@@ -63,7 +64,8 @@ cat > $script <<EOF
 set prompt "#"
 set timeout 15
 
-spawn ${command}
+set arg1 [lindex \$argv 0]
+spawn ${command} \${arg1}
 
 # expect "..."
 # send "...\r"
@@ -73,4 +75,4 @@ interact
 # expect eof
 EOF
 
-expect -f $script
+expect -f $script $args
