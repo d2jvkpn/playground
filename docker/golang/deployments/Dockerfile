@@ -1,53 +1,58 @@
 FROM golang:1-alpine AS builder
 
-ARG APP=${APP}
-ARG TZ=${TZ:-Asia/Shanghai}
-ARG REGION=${REGION}
+ENV TZ=${TZ:-Asia/Shanghai}
+ARG APP_Name=${APP_Name}
+ARG APP_Version=${APP_Version}
+ARG BUILD_Region=${BUILD_Region}
 ARG GO_ldflags=${GO_ldflags}
 
-LABEL stage=${APP}_builder
+LABEL stage=${APP_Name}_builder
 
-# sed -i 's/dl-cdn.alpinelinux.org/mirror.tuna.tsinghua.edu.cn/g' /etc/apk/repositories;
-RUN if [ "$REGION" = "cn" ]; then \
-    echo "==> REGION: $REGION"; \
+RUN if [ "$BUILD_Region" = "cn" ]; then \
+    echo "==> BUILD_Region: $BUILD_Region"; \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
     go env -w GOPROXY="https://goproxy.cn,direct"; \
   fi
 
-RUN { apk --no-cache update && apk --no-cache upgrade; } &> /dev/null
+RUN apk --no-cache update && \
+  apk --no-cache upgrade
 
-WORKDIR /opt/$APP
+WORKDIR /app
 
 ADD ./main.go ./go.mod ./go.sum ./project.yaml  ./
 COPY ./internal ./internal
-COPY ./pkg      ./pkg
-COPY ./proto    ./proto
-# COPY ./vendor     ./vendor
+COPY ./migrations ./migrations
+COPY ./pkg ./pkg
+# COPY ./proto ./proto
+# COPY ./vendor ./vendor
 
 # in alpine, date doesn't parse %:z
-RUN go build -o main -ldflags="-w -s ${GO_ldflags}" main.go
+RUN mkdir -p target && \
+  go build -o target/main -ldflags="-w -s ${GO_ldflags}" main.go
 
 ####
-FROM alpine
+FROM alpine:3
 
-ARG APP=${APP}
-ARG TZ=${TZ:-Asia/Shanghai}
-ARG REGION=${REGION}
+ENV TZ=${TZ:-Asia/Shanghai}
+ARG APP_Name=${APP_Name}
+ARG APP_Version=${APP_Version}
+ARG BUILD_Region=${BUILD_Region}
 
-RUN if [ "$REGION" = "cn" ]; then \
-    echo "==> REGION: $REGION"; \
+RUN if [ "$BUILD_Region" = "cn" ]; then \
+    echo "==> BUILD_Region: $BUILD_Region"; \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
   fi
 
-RUN { apk --no-cache update && apk --no-cache upgrade && apk --no-cache add tzdata; } &> /dev/null
+RUN apk --no-cache update && \
+  apk --no-cache upgrade && \
+  apk --no-cache add tzdata
+  # curl
 
-RUN adduser -D -u 1000 d2jvkpn
-USER d2jvkpn
-WORKDIR /home/d2jvkpn/$APP
+RUN mkdir -p /app/target
+WORKDIR /app
 
-COPY --from=builder /opt/$APP/main ./main
+COPY --from=builder /app/target/ /app/target/
 # COPY ./migrations ./migrations
-RUN chown -R d2jvkpn:d2jvkpn /home/d2jvkpn/$APP
 
 EXPOSE 5020
-CMD ["./main", "-config=configs/prod.yaml", "-release", "-addr=:5020"]
+CMD [./target/main, -release, -config=configs/prod.yaml, -http.addr=:5020]
