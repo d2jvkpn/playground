@@ -29,6 +29,7 @@ COPY ./pkg ./pkg
 # in alpine, date doesn't parse %:z
 RUN mkdir -p target && \
   go build -o target/main -ldflags="-w -s ${GO_ldflags}" main.go
+# go build -o target/${APP_Name} -ldflags="-w -s ${GO_ldflags}" main.go
 
 ####
 FROM alpine:3
@@ -56,3 +57,4 @@ COPY --from=builder /app/target/ /app/target/
 
 EXPOSE 3060
 CMD [./target/main, -release, -config=configs/prod.yaml, -http.addr=:3060]
+# CMD [./target/APP_Name, -release, -config=configs/prod.yaml, -http.addr=:3060]
