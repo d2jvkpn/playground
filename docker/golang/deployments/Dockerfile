@@ -54,5 +54,5 @@ WORKDIR /app
 COPY --from=builder /app/target/ /app/target/
 # COPY ./migrations ./migrations
 
-EXPOSE 5020
-CMD [./target/main, -release, -config=configs/prod.yaml, -http.addr=:5020]
+EXPOSE 3060
+CMD [./target/main, -release, -config=configs/prod.yaml, -http.addr=:3060]

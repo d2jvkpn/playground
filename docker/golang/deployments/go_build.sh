@@ -8,7 +8,7 @@ command -v yq
 
 target_dir=${_wd}/target
 goto_dir=${1:-""}
-[ ! -z "$goto_dir" ] && cd $goto_dir
+[ ! -z "$goto_dir" ] && cd "$goto_dir"
 
 app_name=$(yq .app_name project.yaml)
 app_version=$(yq .version project.yaml)
