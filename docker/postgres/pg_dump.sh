@@ -10,7 +10,7 @@ mkdir -p temp
 docker exec postgres \
   pg_dump --host=localhost --port=5432 --username=postgres \
   --verbose --format=plain --no-owner \
-  --inserts --rows-per-insert=100 \
+  --inserts --rows-per-insert=100 --on-conflict-do-nothing \
    $db > temp/$db.sql
 
 docker exec postgres \
@@ -23,5 +23,5 @@ docker exec postgres \
 docker exec postgres \
   pg_dump --host=localhost --port=5432 --username=postgres \
   --verbose --format=plain --no-owner \
-  --data-only --inserts --rows-per-insert=100 \
+  --data-only --inserts --rows-per-insert=100 --on-conflict-do-nothing \
   $db > temp/$db.data.sql
