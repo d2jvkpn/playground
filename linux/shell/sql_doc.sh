@@ -9,7 +9,7 @@ inputs=$@
 mkdir -p temp
 output=temp/sql.v$(date +%F-%s).tsv
 
-awk '/-- #### Table /{sub("--", ""); sub("^ +", "", $0); print "\n"$0}
+awk '/-- #### Table-/{sub("--", ""); sub("^ +", "", $0); print "\n"$0}
   /, *--/ && $1!="--"{
     sub("^ +", "", $0);
     sub(" +", "\t", $0);

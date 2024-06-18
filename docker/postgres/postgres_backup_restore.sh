@@ -38,8 +38,7 @@ exit
 tag=$(date +%Y%m%d%H%M%S%Z)
 
 #### 1. backup a database
-pg_dump --host=localhost --username=postgres --format=p \
-  --file=backups/$db.sql $db
+pg_dump --host=localhost --username=postgres --format=p --file=backups/$db.sql $db
 
 pg_restore --host=localhost --username=postgres --clean --verbose --version \
   --dbname=$db --file=backups/$db.sql
