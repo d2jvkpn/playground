@@ -64,8 +64,8 @@ cat > $script <<EOF
 set prompt "#"
 set timeout 15
 
-set arg1 [lindex \$argv 0]
-spawn ${command} \${arg1}
+# set arg1 [lindex \$argv 0]
+spawn ${command}
 
 # expect "..."
 # send "...\r"
