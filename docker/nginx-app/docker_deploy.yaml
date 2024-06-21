@@ -5,11 +5,13 @@ services:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/nginx-app:latest
     container_name: nginx-app
     restart: always
+    user: "${USER_UID}:${USER_GID}"
     network_mode: bridge
     # networks: ["net"]
     ports: ["${HTTP_Port}:80"]
+    working_dir: /app
     volumes:
-    - ./static/:/opt/nginx-app/static
+    - ./static/:/app/static
     # - ./htpasswd:/opt/nginx/htpasswd
     environment: ["PORT=80"]
 
