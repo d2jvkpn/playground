@@ -1,6 +1,7 @@
 # Dockerfile
 
-FROM nginx:stable-alpine
+# FROM nginx:stable-alpine
+FROM nginx:1-alpine
 
 RUN mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bk
 COPY nginx-app.conf /etc/nginx/conf.d/
