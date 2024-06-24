@@ -7,7 +7,7 @@ image=$2
 
 remove=${remove:-false}
 
-base=$(basename $image | sed 's/:/_/g')
+base=image_$(basename $image | sed 's/:/_/g')
 
 ssh $remote_host "set -e; docker pull $image; docker save $image -o $base.tar; pigz $base.tar"
 
