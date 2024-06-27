@@ -4,8 +4,7 @@
 **author**: John Doe
 **date**: 2024-05-03
 
-
-#### C01. chapter1
+#### C01. chapter01
 1. hello
 - a.
 - b.
@@ -13,6 +12,6 @@
 
 2. world
 
-#### C02. chapter2
+#### C02. chapter02
 
-#### C03. chapter3
+#### C03. chapter03
