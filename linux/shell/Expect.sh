@@ -10,9 +10,9 @@ help:
   ./Expect.sh [help | -h | --help]
 
 run:
-  yaml=configs/expect.yaml ./Expect.sh <target> arg1 agr2
+  ./Expect.sh <target> arg1 agr2
 
-an example of configs/expect.yaml:
+an example of configs/expect.yaml or ~/.config/expect/expect.yaml:
 ```yaml
 postgres:
   command: psql postgres://account@localhost:5432/db?sslmode=disable
@@ -34,24 +34,35 @@ target=${1#.}
 shift
 args=$@
 
-# env yaml, ./configs/expect.yaml, ~/.config/expect/expect.yaml
-yaml=${yaml:-""}
-[ -z "$yaml" ] && yaml=./configs/expect.yaml
-[ -s "$yaml" ] || yaml=~/.config/expect/expect.yaml
+# yaml=${yaml:-""}
+# [ -z "$yaml" ] && yaml=./configs/expect.yaml
+yaml=./configs/expect.yaml; temp_dir=./configs/temp
+
+[ -s "$yaml" ] || {
+    yaml=~/.config/expect/expect.yaml;
+    temp_dir=~/.config/expect/temp;
+}
 
 force=${force:-false}
 
-[ ! -s $yaml ] && { >&2 echo "file not exists: $yaml"; exit 1; }
+[ ! -s $yaml ] && {
+    >&2 echo '!!! '"files are not exists: ./configs/expect.yaml or ~/.config/expect/expect.yamk";
+    exit 1;
+}
 
 #### 2. check expect script
-echo "==> read config: $yaml::${target}"
+echo "==> Read config: $yaml::${target}"
 
-script=configs/temp/$target.expect
-[[ -s "$script" && "$force" == "false" ]] && { expect -f $script $args; exit 0; }
+script=$temp_dir/$target.expect
+[[ -s "$script" && "$force" == "false" ]] && {
+    echo "==> Executing $script";
+    expect -f $script $args;
+    exit 0;
+}
 
 #### 3. read expects
 command=$(yq ".$target.command" $yaml)
-[[ "$command" == "null" ]] && { >&2 echo "command is unset in $target"; exit 1; }
+[[ "$command" == "null" ]] && { >&2 echo '!!! '"Command is unset in $target"; exit 1; }
 
 expects=$(
   yq -r ".$target.expects | @tsv" $yaml |
@@ -60,8 +71,8 @@ expects=$(
 )
 
 #### 4. generate expect
-mkdir -p configs/temp
-echo "==> creating expect script: $script"
+mkdir -p $temp_dir
+echo "==> Creating expect: $script"
 
 cat > $script <<EOF
 #!/bin/expect
@@ -80,4 +91,6 @@ interact
 # expect eof
 EOF
 
+#### 5. executing
+echo "==> Executing $script";
 expect -f $script $@
