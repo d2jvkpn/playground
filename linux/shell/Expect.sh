@@ -37,7 +37,7 @@ args=$@
 # env yaml, ./configs/expect.yaml, ~/.config/expect/expect.yaml
 yaml=${yaml:-""}
 [ -z "$yaml" ] && yaml=./configs/expect.yaml
-[ -s "$yaml" ] && yaml=~/.config/expect/expect.yaml
+[ -s "$yaml" ] || yaml=~/.config/expect/expect.yaml
 
 force=${force:-false}
 
