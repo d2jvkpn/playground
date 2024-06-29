@@ -65,7 +65,8 @@ set prompt "#"
 set timeout 15
 
 # set arg1 [lindex \$argv 0]
-spawn ${command}
+set args [join \$argv " "]
+spawn ${command} \$args
 
 # expect "..."
 # send "...\r"
@@ -75,4 +76,4 @@ interact
 # expect eof
 EOF
 
-expect -f $script $args
+expect -f $script $@
