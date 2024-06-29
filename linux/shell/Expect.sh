@@ -10,14 +10,14 @@ help:
   ./Expect.sh [help | -h | --help]
 
 run:
-  ./Expect.sh <target> [configs/expect.yaml]
+  yaml=configs/expect.yaml ./Expect.sh <target> arg1 agr2
 
 an example of configs/expect.yaml:
 ```yaml
 postgres:
   command: psql postgres://account@localhost:5432/db?sslmode=disable
   expects:
-  - { prompt: "Password for useraccount:", answer: "secret" }
+  - { prompt: "Password for username:", answer: "password" }
 ```
 
 expect script: ./configs/temp/postgres.expect
