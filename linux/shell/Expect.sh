@@ -34,7 +34,11 @@ target=${1#.}
 shift
 args=$@
 
-yaml=${yaml:-configs/expect.yaml}
+# env yaml, ./configs/expect.yaml, ~/.config/expect/expect.yaml
+yaml=${yaml:-""}
+[ -z "$yaml" ] && yaml=./configs/expect.yaml
+[ -s "$yaml" ] && yaml=~/.config/expect/expect.yaml
+
 force=${force:-false}
 
 [ ! -s $yaml ] && { >&2 echo "file not exists: $yaml"; exit 1; }
