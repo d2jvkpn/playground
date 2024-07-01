@@ -55,7 +55,7 @@ FROM (
   FROM sf_stations s1
   LEFT JOIN sfpg_stations s2 ON s1.id = s2.station_id
   WHERE s2.date = '2024-05-29' AND s1.installed_capacity_kw > 0 AND s1.status
-  ORDER BY hours DESC, station_id LIMIT 5
+  ORDER BY hours DESC, station_id LIMIT 10
 ) t2
 WHERE t1.station_id = t2.station_id AND t1.date = t2.date
 RETURNING t1.station_id;
@@ -68,7 +68,19 @@ FROM (
   FROM sf_stations s1
   LEFT JOIN sfpg_stations s2 ON s1.id = s2.station_id
   WHERE s2.date = '2024-05-29' AND s1.installed_capacity_kw > 0 AND s1.status
-  ORDER BY hours ASC, station_id LIMIT 5
+  ORDER BY hours ASC, station_id LIMIT 10
 ) t2
 WHERE t1.station_id = t2.station_id AND t1.date = t2.date
 RETURNING t1.station_id;
+
+select station_id, (data->>'equivalentHours')::numeric equivalent_hours
+  from sfpg_stations where data->>'equivalentHours' is not null
+  order by equivalent_hours DESC;
+
+explain select station_id, (data->>'equivalentHours')::numeric equivalent_hours
+  from sfpg_stations where data->>'equivalentHours' is not null
+  order by equivalent_hours ASC;
+
+explain select station_id, (data->>'equivalentHours')::numeric equivalent_hours
+  from sfpg_stations where data->>'equivalentHours' is not null
+  order by equivalent_hours DESC;
