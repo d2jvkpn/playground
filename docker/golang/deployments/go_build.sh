@@ -2,9 +2,9 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-command -v git
-command -v go
-command -v yq
+command -v git > /dev/null
+command -v go > /dev/null
+command -v yq > /dev/null
 
 target_dir=${_wd}/target
 goto_dir=${1:-""}
@@ -44,6 +44,10 @@ mkdir -p $target_dir
 
 # go build -ldflags="-w -s $GO_ldflags" -o target/$app_name main.go
 go build -ldflags="$GO_ldflags" -o $target_dir/$app_name main.go
-# GOOS=windows GOARCH=amd64 go build -ldflags="$GO_ldflags" -o target/$app_name.exe main.go
+
+# go tool dist list
+# GOOS=windows GOARCH=amd64 go build -ldflags="$GO_ldflags" -o target/${app_name}.exe main.go
+# GOOS=darwin GOARCH=amd64 go build -ldflags="$GO_ldflags" -o target/${app_name}-amd64-darwin main.go
+# GOOS=linux GOARCH=arm go build -ldflags="$GO_ldflags" -o target/${app_name}-arm64-darwin main.go
 
 ls -l $target_dir
