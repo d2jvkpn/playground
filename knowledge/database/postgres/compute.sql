@@ -84,3 +84,20 @@ explain select station_id, (data->>'equivalentHours')::numeric equivalent_hours
 explain select station_id, (data->>'equivalentHours')::numeric equivalent_hours
   from sfpg_stations where data->>'equivalentHours' is not null
   order by equivalent_hours DESC;
+
+--
+SELECT station_id id, name,
+  ROUND(s2.x_value/s1.installed_capacity_kw, 6) hours,
+  s2.updated_at
+  FROM sf_stations s1
+  LEFT JOIN sfpg_stations s2 ON s1.id = s2.station_id
+  WHERE s2.date = '2024-05-29' AND s1.installed_capacity_kw > 0 AND s1.status
+  ORDER BY hours ASC, station_id, name LIMIT 10;
+
+SELECT station_id id, name,
+  ROUND(s2.x_value/s1.installed_capacity_kw, 6) hours,
+  s2.updated_at
+  FROM sf_stations s1
+  LEFT JOIN sfpg_stations s2 ON s1.id = s2.station_id
+  WHERE s2.date = '2024-05-29' AND s1.installed_capacity_kw > 0 AND s1.status
+  ORDER BY hours DESC, station_id, name LIMIT 10;
