@@ -11,7 +11,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 # bash scripts/go_test.sh -cover
 
 # echo "Hello, world!"
-yaml=configs/go_test.yaml
+yaml=configs/go.yaml
 
 dirs=$(yq '.modules | join " "' $yaml)
 
