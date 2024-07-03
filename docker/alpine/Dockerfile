@@ -1,6 +1,9 @@
 FROM alpine:3
 
+ARG BUILD_Time
+
 ENV TZ=${TZ:-Asia/Shanghai}
+ENV BUILD_Time=${BUILD_Time}
 
 RUN if [ "$BUILD_Region" = "cn" ]; then \
     echo "==> BUILD_Region: $BUILD_Region"; \
