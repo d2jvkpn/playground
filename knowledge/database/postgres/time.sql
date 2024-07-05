@@ -8,3 +8,8 @@ select date_trunc('hour', created_at) +
 from table_01
 where create_time >= '2024-07-02 00:00:00+08' AND create_time < '2024-07-03 00:00:00+08'
 group by period_start;
+
+-- month range
+select * from ghosts
+where date >= '2024-07' AND
+  date < to_char(to_date('2024-07's, 'yyyy-mm') + interval '1 month', 'yyyy-mm-dd');

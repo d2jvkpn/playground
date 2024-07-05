@@ -9,7 +9,7 @@ remove=${remove:-false}
 
 base=image_$(basename $image | sed 's/:/_/g')
 
-ssh $remote_host "set -e; docker pull $image; docker save $image -o $base.tar; pigz $base.tar"
+ssh $remote_host "set -e; docker pull $image; docker save $image -o $base.tar; pigz -f $base.tar"
 
 rsync -arvP $remote_host:$base.tar.gz /tmp/
 ssh $remote_host "rm $base.tar.gz"
