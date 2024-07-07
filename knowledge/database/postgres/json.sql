@@ -76,3 +76,10 @@ SELECT type, json_agg(number) AS status FROM
   from events group by type, status
 ) t1
 GROUP BY type;
+
+select '{"online" : 267}'::jsonb || '{"offline" : 10}'::jsonb || '{"offline": 42}';
+
+select '{"online" : 267}'::jsonb || '{"offline" : 10}'::jsonb || '{"offline": 42}';
+
+select json_build_object(running_status, count(1)) running_status
+from sf_devices group by running_status;
