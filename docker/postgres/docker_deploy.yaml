@@ -28,6 +28,7 @@ services:
     # - ./configs/pg_hba.conf:/var/lib/postgresql/data/pgdata/pg_hba.conf
     - ./configs/postgres.password:/app/configs/postgres.password:ro
     - ./data/postgres:/var/lib/postgresql/data
+     - ./data/temp:/app/temp
 
 # volumes:
 #   data: { name: postgres, driver: local }

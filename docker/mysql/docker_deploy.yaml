@@ -8,10 +8,6 @@ services:
     network_mode: bridge
     ports: ["127.0.0.1:${DB_Port}:3306"]
     container_name: ${CONTAINER_Name}
-    volumes:
-    # - ./configs/mysql.cnf:/etc/mysql/my.cnf
-    - ./configs/mysql_root.password:/app/configs/mysql_root.password
-    - ./data/mysql:/var/lib/mysql
     environment:
     - TZ=Asia/Shanghai
     - LANG=C.UTF-8
@@ -24,6 +20,11 @@ services:
     env_file: [./configs/mysql.env]
     # -- SHOW VARIABLES LIKE 'character%';
     # make sure character_set_client, character_set_connection, character_set_results is utf8mb4 rather than latin1
+    volumes:
+    # - ./configs/mysql.cnf:/etc/mysql/my.cnf
+    - ./configs/mysql_root.password:/app/configs/mysql_root.password
+    - ./data/mysql:/var/lib/mysql
+    - ./data/temp:/app/temp
     command:
     - "--character-set-server=utf8mb4"
     - "--collation-server=utf8mb4_general_ci"

@@ -5,7 +5,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 export DB_Port=${1:-3306} CONTAINER_Name=${2:-mysql}
 user=${user:-d2jvkpn}
 
-mkdir -p configs data/mysql
+mkdir -p configs data/mysql data/temp
 
 [ -s configs/mysql_root.password ] || \
   tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 32 | head -n1 > configs/mysql_root.password || true

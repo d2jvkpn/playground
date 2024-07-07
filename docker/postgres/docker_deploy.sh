@@ -32,7 +32,7 @@ export DB_Port=${2:-5432} CONTAINER_Name=${3:-postgres}
 ####
 [ -s docker-compose.yaml ] && { >&2 echo "file exists: docker-compose.yaml"; exit 1; }
 
-mkdir -p configs data/postgres/backups/wal_archive
+mkdir -p configs data/postgres/backups/wal_archive data/temp
 
 [ -s configs/postgres.password ] || \
   tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 32 | head -n1 > configs/postgres.password || true
