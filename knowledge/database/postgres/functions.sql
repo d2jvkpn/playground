@@ -23,3 +23,17 @@ BEGIN
     RETURN a + b;
   END IF;
 END $$;
+
+
+CREATE OR REPLACE FUNCTION jsonb_merge(jsonb1 JSONB, jsonb2 JSONB) RETURNS JSONB AS $$
+BEGIN
+    RETURN jsonb1 || jsonb2;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION add(a integer, b integer) RETURNS integer
+  LANGUAGE SQL
+  IMMUTABLE
+  RETURNS NULL ON NULL INPUT
+  RETURN a + b;
