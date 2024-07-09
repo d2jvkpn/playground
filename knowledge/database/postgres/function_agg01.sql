@@ -48,3 +48,5 @@ from
   from sf_devices group by type, running_status
 ) t1
 group by type;
+
+select json_build_object(running_status, count(1)) from sf_devices group by running_status;

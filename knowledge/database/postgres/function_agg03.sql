@@ -59,9 +59,3 @@ select custom_jsonb_agg(data) from my_table;
 /*
 {"name": "Charlie", "transactions": [{"amount": 300}, {"amount": 400}]}
 */
-
-select custom_jsonb_agg(rs) running_status from
-(
-  select jsonb_build_object(running_status, count(1)) rs
-  from sf_devices group by running_status
-) t1;
