@@ -82,4 +82,13 @@ SET running_status = 'standby'
 WHERE id IN (SELECT id FROM cte);
 
 
-select type, running_status, my_transition_devices_rs(type, running_status) from sf_devices;
+select type, running_status, my_transform_devices_rs(type, running_status) from sf_devices;
+
+select my_transform_devices_rs(type, running_status) rs, count(1)
+from sf_devices group by rs;
+
+select json_object_agg(rs, number) from
+(
+  select my_transform_devices_rs(type, running_status) rs, count(1) number
+  from sf_devices group by rs
+) t1;
