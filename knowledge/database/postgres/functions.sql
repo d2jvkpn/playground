@@ -37,3 +37,49 @@ CREATE OR REPLACE FUNCTION add(a integer, b integer) RETURNS integer
   IMMUTABLE
   RETURNS NULL ON NULL INPUT
   RETURN a + b;
+
+CREATE OR REPLACE FUNCTION my_transition_devices_rs(type TEXT, rs device_status)
+RETURNS TEXT AS $$
+BEGIN
+  IF type IS NULL OR rs IS NULL THEN
+    RETURN NULL;
+  END IF;
+
+  IF type = 'invertor' AND rs != 'online' AND rs != 'standby' THEN
+    RETURN 'malfunction';
+  ELSIF type = 'invertor' AND rs = 'standby' THEN
+    RETURN 'standby';
+  ELSE
+    RETURN rs;
+  END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+update sf_devices set status = 'offline'
+where type = 'invertor' and status = 'online'
+order by random() limit 5;
+
+WITH cte AS (
+  SELECT id
+  FROM sf_devices
+  WHERE type = 'invertor' and running_status = 'online'
+  ORDER BY random()
+  LIMIT 2
+)
+UPDATE sf_devices
+SET running_status = 'offline'
+WHERE id IN (SELECT id FROM cte);
+
+WITH cte AS (
+  SELECT id
+  FROM sf_devices
+  WHERE type = 'invertor' and running_status = 'online'
+  ORDER BY random()
+  LIMIT 2
+)
+UPDATE sf_devices
+SET running_status = 'standby'
+WHERE id IN (SELECT id FROM cte);
+
+
+select type, running_status, my_transition_devices_rs(type, running_status) from sf_devices;
