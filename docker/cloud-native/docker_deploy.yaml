@@ -3,9 +3,9 @@ version: "3"
 services:
   node-exporter:
     image: prom/node-exporter:latest
+    container_name: otel-node-exporter
     restart: always
     # restart: unless-stopped
-    container_name: otel-node-exporter
     networks: ["net"]
     expose: [9100]
     volumes:
@@ -20,11 +20,11 @@ services:
 
   prometheus:
     image: prom/prometheus:main
-    restart: always
     container_name: otel-prometheus
-    user: 1000:1000
+    restart: always
+    user: ${USER_UID}:${USER_GID}
     networks: ["net", "demo-api_dev"]
-    ports: [8051:9090]
+    ports: [127.0.0.1:8051:9090]
     volumes:
     # - ./configs:/prometheus/configs
     # - prometheus_data:/prometheus/data
@@ -41,8 +41,9 @@ services:
 
   jaeger:
     image: jaegertracing/all-in-one:latest
-    restart: always
     container_name: otel-jaeger
+    restart: always
+    user: ${USER_UID}:${USER_GID}
     networks: ["net"]
     # ports:
     # - "16686:16686" # web
@@ -51,12 +52,12 @@ services:
 
   jaeger-auth:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy:dev
-    restart: always
     container_name: otel-jaeger-auth
-    user: 1000:1000
+    restart: always
+    user: ${USER_UID}:${USER_GID}
     depends_on: ["jaeger"]
     networks: ["net"]
-    ports: ["8052:8052"]
+    ports: ["127.0.0.1:8052:8052"]
     volumes:
     - ./configs/:/app/configs/:ro
     - ./logs/:/app/logs/
@@ -69,14 +70,15 @@ services:
 
   opentelemetry-collector:
     image: otel/opentelemetry-collector:latest
-    restart: always
     container_name: otel-collector
+    restart: always
+    user: ${USER_UID}:${USER_GID}
     volumes:
     # - ./configs:/otel-collector/configs
     - ./configs:/app/configs
     networks: ["net"]
     ports:
-    - "4317:4317"   # OTLP gRPC receiver
+    - "127.0.0.1:4317:4317"   # OTLP gRPC receiver
     # - "13133:13133" # health_check extension
     # - "1888:1888"   # pprof extension
     # - "8888:8888"   # Prometheus metrics exposed by the collector
@@ -86,11 +88,11 @@ services:
   # Independently deploy this service in production
   grafana:
     image: grafana/grafana:main
-    restart: always
     container_name: otel-grafana
-    user: 1000:1000
+    restart: always
+    user: ${USER_UID}:${USER_GID}
     networks: ["net"]
-    ports: ["8053:3000"]
+    ports: ["127.0.0.1:8053:3000"]
     volumes:
     - ./configs:/app/configs
     - ./data/grafana:/var/lib/grafana
