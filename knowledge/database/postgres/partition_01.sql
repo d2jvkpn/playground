@@ -53,8 +53,7 @@ select * from sales where at = '0000';
 
 SELECT * FROM sales WHERE at BETWEEN '2027' AND '2030';
 
------ NOT WORKING-----
---------------------------------------------------------------------------------------------------------------------------------
+--------------------------------NOT WORKING---------------------------------------------------------
 
 -- to_char(NEW.sale_date, 'YYYY')
 CREATE OR REPLACE FUNCTION create_partition_of_sales()
@@ -109,7 +108,6 @@ CREATE TRIGGER insert_sales_trigger
    WHEN (pg_trigger_depth() < 1)
    EXECUTE FUNCTION create_partition_of_sales();
 -- drop trigger insert_sales_trigger on sales;
-
 
 INSERT INTO sales (at, amount) VALUES
   ('2025', 2001),
