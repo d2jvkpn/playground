@@ -27,6 +27,10 @@ CREATE TABLE sales_2023 PARTITION OF sales FOR VALUES FROM ('2023') TO ('2024');
 
 CREATE TABLE sales_2024 PARTITION OF sales FOR VALUES FROM ('2024') TO ('2025');
 
+-- ALTER TABLE sales ATTACH PARTITION sales_2023 FOR VALUES FROM ('2023') TO ('2024');
+-- ALTER TABLE sales DETACH PARTITION sales_2023;
+-- ALTER TABLE sales DETACH PARTITION sales_2023 CONCURRENTLY;
+
 
 -- 03
 INSERT INTO sales (at, amount) VALUES ('2023-05-15', 100.00);
@@ -46,6 +50,8 @@ SELECT * FROM sales WHERE at BETWEEN '2023' AND '2024-12-31';
 SELECT * FROM sales WHERE at BETWEEN '2023' AND '2026';
 
 select * from sales where at = '0000';
+
+SELECT * FROM sales WHERE at BETWEEN '2027' AND '2030';
 
 ----- NOT WORKING-----
 --------------------------------------------------------------------------------------------------------------------------------
