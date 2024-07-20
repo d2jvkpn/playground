@@ -54,18 +54,16 @@ build-bin:
 #	  -X main.git_commit_time=$(git_commit_time)" \
 #	  -o target/swagger-go main.go
 
-build-image_cn:
-	BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master
-
-build-image:
-	# BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master
-	DOCKER_Tag=dev bash deployments/docker_build.sh
-
-build-image_offline:
+image-local:
 	GIT_Pull=false BUILD_Region=cn DOCKER_Pull=false DOCKER_Tag=dev \
-	bash deployments/docker_build.sh master
+	  time bash deployments/docker_build.sh master
 
-build-image_remote:
+image-dev:
+	# BUILD_Region=cn DOCKER_Tag=dev bash deployments/docker_build.sh master
+	DOCKER_Tag=dev \
+	  time bash deployments/docker_build.sh master
+
+image-remote:
 	ssh -F configs/ssh.conf build_host "cd docker_build/playground/demo-api && \
 	  git pull && DOCKER_Tag=dev bash deployments/docker_build.sh master"
 
