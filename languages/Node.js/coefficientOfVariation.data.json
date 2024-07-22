@@ -1,0 +1,158 @@
+{
+  "list": [
+    {
+      "chinese": "设备名称",
+      "key": "name",
+      "order": 1,
+      "unit": "",
+      "value": "nb3"
+    },
+    {
+      "chinese": "交流实时功率",
+      "key": "out_pac",
+      "order": 2,
+      "unit": "kw",
+      "value": "40485.0"
+    },
+    {
+      "chinese": "数据最新时间",
+      "key": "creationDate",
+      "order": 3,
+      "unit": "",
+      "value": "2024-07-18 09:36:23"
+    },
+    {
+      "chinese": "日发电量",
+      "key": "eDay",
+      "order": 4,
+      "unit": "kWh",
+      "value": "82.2"
+    },
+    {
+      "chinese": "总发电量",
+      "key": "eTotal",
+      "order": 5,
+      "unit": "kWh",
+      "value": "8872.3"
+    },
+    {
+      "chinese": "组串1电压",
+      "key": "vpv1",
+      "order": 6,
+      "unit": "V",
+      "value": "753.8"
+    },
+    {
+      "chinese": "组串2电压",
+      "key": "vpv2",
+      "order": 7,
+      "unit": "V",
+      "value": "761.8"
+    },
+    {
+      "chinese": "组串3电压",
+      "key": "vpv3",
+      "order": 8,
+      "unit": "V",
+      "value": "796.6"
+    },
+    {
+      "chinese": "组串4电压",
+      "key": "vpv4",
+      "order": 9,
+      "unit": "V",
+      "value": "753.1"
+    },
+    {
+      "chinese": "组串5电压",
+      "key": "vpv5",
+      "order": 10,
+      "unit": "V",
+      "value": "0.0"
+    },
+    {
+      "chinese": "组串1电流",
+      "key": "ipv1",
+      "order": 11,
+      "unit": "A",
+      "value": "11.3"
+    },
+    {
+      "chinese": "组串2电流",
+      "key": "ipv2",
+      "order": 12,
+      "unit": "A",
+      "value": "10.6"
+    },
+    {
+      "chinese": "组串3电流",
+      "key": "ipv3",
+      "order": 13,
+      "unit": "A",
+      "value": "11.0"
+    },
+    {
+      "chinese": "组串4电流",
+      "key": "ipv4",
+      "order": 14,
+      "unit": "A",
+      "value": "21.9"
+    },
+    {
+      "chinese": "组串5电流",
+      "key": "ipv5",
+      "order": 15,
+      "unit": "A",
+      "value": "0.0"
+    },
+    {
+      "chinese": "A相电压",
+      "key": "vac1",
+      "order": 16,
+      "unit": "V",
+      "value": "232.7"
+    },
+    {
+      "chinese": "B相电压",
+      "key": "vac2",
+      "order": 17,
+      "unit": "V",
+      "value": "231.9"
+    },
+    {
+      "chinese": "C相电压",
+      "key": "vac3",
+      "order": 18,
+      "unit": "V",
+      "value": "233.4"
+    },
+    {
+      "chinese": "A相电流",
+      "key": "iac1",
+      "order": 19,
+      "unit": "A",
+      "value": "58.4"
+    },
+    {
+      "chinese": "B相电流",
+      "key": "iac2",
+      "order": 20,
+      "unit": "A",
+      "value": "58.2"
+    },
+    {
+      "chinese": "C相电流",
+      "key": "iac3",
+      "order": 21,
+      "unit": "A",
+      "value": "58.0"
+    },
+    {
+      "chinese": "机内温度",
+      "key": "tempperature",
+      "order": 22,
+      "unit": "℃",
+      "value": "52.8"
+    }
+  ]
+}
