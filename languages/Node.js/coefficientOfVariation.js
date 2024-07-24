@@ -2,12 +2,16 @@ const fs = require('node:fs');
 
 //
 const dataKeys = {
-  stringVoltage: {type: "re", key: /^vpv+\d$/, name: "组串电压"},
-  stringCurrent: {type: "re", key: /^ipv+\d$/, name: "组串电流"},
+  stringVoltage: {type: "re", key: /^vpv+\d$/i, name: "组串电压"},
+  stringCurrent: {type: "re", key: /^ipv+\d$/i, name: "组串电流"},
   // 交流电电流
-  acVoltage: {type: "list", key: ["iac1", "iac2", "iac3"], name: "A相电流, B相电流, C相电流"},
+  acVoltage: {
+    type: "list", key: [/^iac1$/i, /^iac2$/i, /^iac3$/i], name: "A相电流, B相电流, C相电流",
+  },
   // 交流电电压
-  acCurrent: {type: "list", key: ["vac1", "vac2", "vac3"], name: "A相电压, B相电压, C相电压"},
+  acCurrent: {
+    type: "list", key: [/^vac1$/i, /^vac2$/i, /^vac3$/i], name: "A相电压, B相电压, C相电压",
+  },
 };
 
 function coefficientOfVariation(data) {
