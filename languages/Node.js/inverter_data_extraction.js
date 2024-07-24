@@ -1,25 +1,33 @@
 const fs = require('node:fs');
 
-var bts = fs.readFileSync("inverter_data_extraction_a01.json", 'utf8');
-var data = JSON.parse(bts);
+let bts = fs.readFileSync("inverter_data_extraction_a01.json", 'utf8');
+let data = JSON.parse(bts);
 
-var currents = [], voltages = [];
+let currents = [], voltages = [];
 
 data["list"].forEach(e => {
-  if (/^ipv\d+/i.test(e.key)) {
-    currents.push(e.value);
-  } else if (/^vpv\d+/i.test(e.key)) {
-    voltages.push(e.value);
+  if (/^ipv\d+$/i.test(e.key)) {
+    e._order = Number(e.key.match(/\d+$/)[0]);
+    currents.push(e);
+  } else if (/^vpv\d+$/i.test(e.key)) {
+    e._order = Number(e.key.match(/\d+$/)[0]);
+    voltages.push(e);
   }
 });
+
+currents.sort((a, b) => (a._order > b._order) ? 1 : ((b._order > a._order) ? -1 : 0));
+voltages.sort((a, b) => (a._order > b._order) ? 1 : ((b._order > a._order) ? -1 : 0));
 
 let size = Math.min(currents.length, voltages.length);
 
 let result = Array.from({ length: size }, (_, i) => {
-  return {name: "组串" + (i+1), current: currents[i], voltage: voltages[i]}
+  return {name: "组串" + (i+1), current: currents[i].value, voltage: voltages[i].value};
 });
 
-/* ==> Output:
+console.log("==> Currents:", currents);
+console.log("==> Voltages:", voltages);
+console.log("==> Result:", result);
+/* ==> Result:
 [
   { name: '组串1', current: '11.3', voltage: '753.8' },
   { name: '组串2', current: '10.6', voltage: '761.8' },
