@@ -19,7 +19,7 @@ let result = Array.from({ length: size }, (_, i) => {
   return {name: "组串" + (i+1), current: currents[i], voltage: voltages[i]}
 });
 
-/* output:
+/* ==> Output:
 [
   { name: '组串1', current: '11.3', voltage: '753.8' },
   { name: '组串2', current: '10.6', voltage: '761.8' },
