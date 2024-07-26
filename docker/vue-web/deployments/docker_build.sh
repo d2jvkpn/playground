@@ -15,10 +15,11 @@ VITE_API_URL=$(yq .web.$tag.VITE_API_URL $yaml)
 
 app_name=$(yq -p json -o yaml package.json | yq .name)
 app_version=$(yq -p json -o yaml package.json | yq .version)
-
 # image_tag=${git_branch}-${app_version}
 image_tag=$tag
 image=$image_name:$image_tag
+
+build_time=$(date +'%FT%T%:z')
 
 #### 2.
 mkdir -p cache.local
@@ -31,6 +32,8 @@ cat > cache.local/env.yaml << EOF
 app_name: $app_name
 app_version: $app_version
 git_branch: $git_branch
+build_time: $build_time
+
 VITE_API_URL: $VITE_API_URL
 EOF
 
