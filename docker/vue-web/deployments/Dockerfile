@@ -32,7 +32,7 @@ ADD cache.local/build.yaml ./
 COPY --from=builder /app/dist ./dist
 
 RUN mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bk
-COPY deploy.local/app.nginx.conf /etc/nginx/conf.d/
+COPY deployments/app.nginx.conf /etc/nginx/conf.d/
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off"]
