@@ -27,7 +27,7 @@ RUN npm run build:prod
 FROM nginx:1-alpine
 
 WORKDIR /app
-ADD cache.local/env.yaml ./
+ADD cache.local/build.yaml ./
 
 COPY --from=builder /app/dist ./dist
 

@@ -28,7 +28,7 @@ cat > cache.local/.env.prod <<EOF
 VITE_API_URL = $VITE_API_URL
 EOF
 
-cat > cache.local/env.yaml << EOF
+cat > cache.local/build.yaml << EOF
 app_name: $app_name
 app_version: $app_version
 git_branch: $git_branch
