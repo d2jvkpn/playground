@@ -8,7 +8,8 @@ tag=$1
 DOCKER_Pull=${DOCKER_Pull:-false}
 DOCKER_Push=${DOCKER_Push:-false}
 
-yaml=${_path}/docker_build.yaml
+yaml=${yaml:-${_path}/docker_build.yaml}
+
 git_branch=$(yq .web.$tag.branch $yaml)
 image_name=$(yq .web.$tag.image_name $yaml)
 VITE_API_URL=$(yq .web.$tag.VITE_API_URL $yaml)
