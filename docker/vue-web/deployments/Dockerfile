@@ -1,26 +1,38 @@
 # Dockerfile
-FROM node:lts-alpine AS builder
+FROM node:20-alpine AS builder
 LABEL stage=vue-web_builder
 
-ARG mode=${mode}
-ARG VUE_APP_BuildTime=${VUE_APP_BuildTime}
+WORKDIR /app
 
-WORKDIR /opt/vue-web
+# *.env.*
+ADD  index.html *.js *.json  ./
+COPY public/ ./public
+COPY src/ ./src
+# COPY node_modules/ ./node_modules
 
-ADD  *.js *.json .env.*  ./
-COPY public/  ./public
-COPY src/     ./src
+COPY cache.local ./cache.local
+RUN cp cache.local/.env.prod ./
 
+RUN if [ -d ./cache.local/node_modules ]; then \
+    echo "==> Found ./cache.local/node_modules"; \
+    mv ./cache.local/node_modules ./; \
+  fi
+
+# npm config set registry https://registry.npmmirror.com
 RUN npm install --registry=https://registry.npmmirror.com &> /dev/null
-RUN node_modules/.bin/vue-cli-service build --mode ${mode}.x
+# RUN node_modules/.bin/vue-cli-service build --mode ${mode}-x
+RUN npm run build:prod
 
 ####
-FROM nginx:stable-alpine
+FROM nginx:1-alpine
 
-WORKDIR /app/
-COPY --from=builder /opt/vue-web/dist ./static
+WORKDIR /app
+ADD cache.local/env.yaml ./
+
+COPY --from=builder /app/dist ./dist
 
 RUN mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bk
-COPY deployments/nginx-web.conf /etc/nginx/conf.d/
+COPY deploy.local/app.nginx.conf /etc/nginx/conf.d/
 
 EXPOSE 80
+CMD ["nginx", "-g", "daemon off"]

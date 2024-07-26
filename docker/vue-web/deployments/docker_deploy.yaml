@@ -2,9 +2,9 @@ version: "3"
 
 services:
   vue-web:
-    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-web:${TAG}
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-web:${IMAGE_Tag}
+    container_name: vue-web
     restart: always
     network_mode: bridge
-    ports: ["${HTTP_Port}:80"]
-    container_name: vue-web_${APP_ENV}
-    environment: ["PORT=80"]
+    ports: ["${PORT}:80"]
+    environment: ["TZ=Asia/Shanghai", "PORT=80"]

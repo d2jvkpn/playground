@@ -1,62 +1,66 @@
-#!/bin/bash
+#! /usr/bin/env bash
 set -eu -o pipefail
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+_wd=$(pwd)
+_path=$(dirname $0 | xargs -i readlink -f {})
 
-# branch="$1" # git branch
-mode="$1"   # load .env.${mode}
-tag=$mode   # image tag
+#### 1.
+tag=$1
+DOCKER_Pull=${DOCKER_Pull:-false}
+DOCKER_Push=${DOCKER_Push:-false}
 
-awk '!/^#/{sub(" += +", "=", $0); print "export "$0}' .env.${mode} > ./config.env
-. ./config.env
+yaml=${_path}/docker_build.yaml
+git_branch=$(yq .web.$tag.branch $yaml)
+image_name=$(yq .web.$tag.image_name $yaml)
+VITE_API_URL=$(yq .web.$tag.VITE_API_URL $yaml)
 
-branch=$(printenv BRANCH)
-build_vendor=$(printenv BUILD_Vendor || true)
+app_name=$(yq -p json -o yaml package.json | yq .name)
+app_version=$(yq -p json -o yaml package.json | yq .version)
 
-echo "Mode: $mode, BRANCH: $branch"
+# image_tag=${git_branch}-${app_version}
+image_tag=$tag
+image=$image_name:$image_tag
 
-#
-name="registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-web"
-image="$name:$tag"
-echo ">>> building image: $image..."
+#### 2.
+mkdir -p cache.local
 
+cat > cache.local/.env.prod <<EOF
+VITE_API_URL = $VITE_API_URL
+EOF
+
+cat > cache.local/env.yaml << EOF
+app_name: $app_name
+app_version: $app_version
+git_branch: $git_branch
+VITE_API_URL: $VITE_API_URL
+EOF
+
+#### 3. pull image
+echo "==> Pull image(s) $image"
+
+[[ "$DOCKER_Pull" != "false" ]] && \
+for base in $(awk '/^FROM/{print $2}' ${_path}/Dockerfile); do
+    echo ">>> pull $base"
+    docker pull $base
+
+    bn=$(echo $base | awk -F ":" '{print $1}')
+    if [[ -z "$bn" ]]; then continue; fi
+    docker images --filter "dangling=true" --quiet "$bn" | xargs -i docker rmi {}
+done
+
+#### 4.
 function onExit {
     git checkout dev
 }
 trap onExit EXIT
 
+git checkout $git_branch
 
-git checkout $branch
+echo ">>> Building image: $image..."
 
-[[ "$build_vendor" != "true" ]] && {
-    echo ">>> git pull..."
-    git pull --no-edit
-}
+# --build-arg=mode=$mode
+docker build --no-cache --file ${_path}/Dockerfile --tag $image ./
+docker image prune --force --filter label=stage=${app_name}_builder &> /dev/null
 
-#
-df=${_path}/Dockerfile
-[[ "$build_vendor" == "true" ]] && df=${_path}/Dockerfile.vendor
+[ "$DOCKER_Push" != "false" ] && docker push $image
 
-if [[ "$build_vendor" != "true" ]]; then
-    echo ">>> Pull base images..."
-    for base in $(awk '/^FROM/{print $2}' $df); do
-        docker pull --quiet $base
-        bn=$(echo $base | awk -F ":" '{print $1}')
-        if [[ -z "$bn" ]]; then continue; fi
-        docker images --filter "dangling=true" --quiet "$bn" | xargs -i docker rmi {}
-    done &> /dev/null
-fi
-
-docker build --no-cache -f $df \
-  --build-arg=mode=$mode       \
-  --build-arg=VUE_APP_BuildTime=$(date +'%FT%T%:z') \
-  -t $image .
-
-docker image prune --force --filter label=stage=vue-web_builder &> /dev/null
-for img in $(docker images --filter=dangling=true $name --quiet); do
-    docker rmi $img &> /dev/null
-done
-
-[[ "$build_vendor" != "true" ]] && {
-    echo ">>> pushing image: $image"
-    docker push $image
-}
+docker images --filter "dangling=true" --quiet $image | xargs -i docker rmi {}

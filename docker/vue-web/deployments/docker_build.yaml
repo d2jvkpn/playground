@@ -1,0 +1,6 @@
+web:
+  dev:
+    VITE_API_URL: http://127.0.0.1:3062
+    branch: dev
+    image_name: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-web
+    image_tag: dev
