@@ -39,7 +39,7 @@ services:
     - '--web.console.templates=/usr/share/prometheus/consoles'
     - '--storage.tsdb.retention.time=15d'
 
-  jaeger:
+  jaeger-app:
     image: jaegertracing/all-in-one:latest
     container_name: otel-jaeger
     restart: always
@@ -68,7 +68,7 @@ services:
     - --config=/app/configs/jaeger.yaml
     - --addr=:8052
 
-  opentelemetry-collector:
+  otel-collector:
     image: otel/opentelemetry-collector:latest
     container_name: otel-collector
     restart: always
