@@ -10,15 +10,16 @@ DOCKER_Push=${DOCKER_Push:-false}
 
 yaml=${yaml:-${_path}/docker_build.yaml}
 
+image_name=$(yq .image_name $yaml)
 git_branch=$(yq .$tag.branch $yaml)
-image_name=$(yq .$tag.image_name $yaml)
+# image_tag=${git_branch}-${app_version}
+image_tag=$(yq .$tag.image_tag $yaml)
+image=$image_name:$image_tag
+
 VITE_API_URL=$(yq .$tag.VITE_API_URL $yaml)
 
 app_name=$(yq -p json -o yaml package.json | yq .name)
 app_version=$(yq -p json -o yaml package.json | yq .version)
-# image_tag=${git_branch}-${app_version}
-image_tag=$tag
-image=$image_name:$image_tag
 
 build_time=$(date +'%FT%T%:z')
 
