@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  vue-web:
+  web:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-web:${IMAGE_Tag}
     container_name: vue-web
     restart: always
