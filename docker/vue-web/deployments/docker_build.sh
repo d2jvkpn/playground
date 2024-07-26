@@ -10,9 +10,9 @@ DOCKER_Push=${DOCKER_Push:-false}
 
 yaml=${yaml:-${_path}/docker_build.yaml}
 
-git_branch=$(yq .web.$tag.branch $yaml)
-image_name=$(yq .web.$tag.image_name $yaml)
-VITE_API_URL=$(yq .web.$tag.VITE_API_URL $yaml)
+git_branch=$(yq .$tag.branch $yaml)
+image_name=$(yq .$tag.image_name $yaml)
+VITE_API_URL=$(yq .$tag.VITE_API_URL $yaml)
 
 app_name=$(yq -p json -o yaml package.json | yq .name)
 app_version=$(yq -p json -o yaml package.json | yq .version)
