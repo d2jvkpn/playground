@@ -47,8 +47,7 @@ WHERE data IN (SELECT data FROM t1);
 
 begin;
 -- SELECT target_id, status FROM test_o2m WHERE target_id = 'A' and status is not null FOR UPDATE;
-update test_o2m set status = null WHERE  target_id = 'A' AND status = 'ok';
-insert into test_o2m (target_id, status) values ('A', 'ok');
+update test_o2m set status = null WHERE  target_id = 'A' AND status = 'ok' returning id old_id;
+insert into test_o2m (target_id, status) values ('A', 'ok') returning id new_id;
 commit;
 -- rollback;
-
