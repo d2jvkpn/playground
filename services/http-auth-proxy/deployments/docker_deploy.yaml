@@ -4,7 +4,7 @@ services:
   http-auth-proxy:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy:${TAG}
     container_name: http-auth-proxy
-    user: ${UserId:-1000}
+    user: "${USER_UID}:${USER_GID}"
     restart: always
     # depends_on: ["app"]
     networks: ["net"]
