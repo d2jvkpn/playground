@@ -23,7 +23,7 @@ services:
     container_name: otel-prometheus
     restart: always
     user: ${USER_UID}:${USER_GID}
-    networks: ["net", "demo-api_dev"]
+    networks: ["net"]
     ports: [127.0.0.1:8051:9090]
     volumes:
     # - ./configs:/prometheus/configs
@@ -39,7 +39,15 @@ services:
     - '--web.console.templates=/usr/share/prometheus/consoles'
     - '--storage.tsdb.retention.time=15d'
 
-  jaeger-app:
+  prom_pushgateway:
+    image: prom-pushgateway
+    container_name: otel-prom-pushgateway
+    restart: always
+    user: ${USER_UID}:${USER_GID}
+    networks: ["net"]
+    ports: [127.0.0.1:8052:9091]
+
+  jaeger:
     image: jaegertracing/all-in-one:latest
     container_name: otel-jaeger
     restart: always
@@ -50,23 +58,23 @@ services:
     # - "14250"       # expose to otel-collector
     # - "4317"        # accept OpenTelemetry Protocol (OTLP) over gRPC
 
-  jaeger-auth:
-    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy:dev
-    container_name: otel-jaeger-auth
-    restart: always
-    user: ${USER_UID}:${USER_GID}
-    depends_on: ["jaeger"]
-    networks: ["net"]
-    ports: ["127.0.0.1:8052:8052"]
-    volumes:
-    - ./configs/:/app/configs/:ro
-    - ./logs/:/app/logs/
-    command:
-    - ./target/main
-    - serve
-    - --app=jaeger-auth
-    - --config=/app/configs/jaeger.yaml
-    - --addr=:8052
+#  jaeger-auth:
+#    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy:dev
+#    container_name: otel-jaeger-auth
+#    restart: always
+#    user: ${USER_UID}:${USER_GID}
+#    depends_on: ["jaeger"]
+#    networks: ["net"]
+#    ports: ["127.0.0.1:8052:8052"]
+#    volumes:
+#    - ./configs/:/app/configs/:ro
+#    - ./logs/:/app/logs/
+#    command:
+#    - ./target/main
+#    - serve
+#    - --app=jaeger-auth
+#    - --config=/app/configs/jaeger.yaml
+#    - --addr=:8052
 
   otel-collector:
     image: otel/opentelemetry-collector:latest
@@ -107,4 +115,4 @@ services:
 networks:
   net: { name: otel, driver: bridge, external: false }
   # grafana: { name: grafana, driver: bridge, external: true }
-  demo-api_dev: { name: demo-api_dev, driver: bridge, external: true }
+  # demo-api_dev: { name: demo-api_dev, driver: bridge, external: true }
