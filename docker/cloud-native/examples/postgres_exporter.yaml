@@ -3,6 +3,8 @@ version: "3"
 services:
   postgres-exporter:
     image: quay.io/prometheuscommunity/postgres-exporter
+    restart: always
+    container_name: postgres-exporter
     networks: [net]
     ports: ["9187:9187"]
     env_file: [./configs/postgres-exporter.env]

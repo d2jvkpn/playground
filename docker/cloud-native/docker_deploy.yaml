@@ -32,8 +32,8 @@ services:
     - ./data/prometheus:/app/data
     command:
     # - '--config.file=/etc/prometheus/prometheus.yaml'
+    # - '--web.config.file=/app/configs/prometheus_web.yaml'
     - '--config.file=/app/configs/prometheus.yaml'
-    - '--web.config.file=/app/configs/prometheus_web.yaml'
     - '--storage.tsdb.path=/app/data'
     - '--web.console.libraries=/usr/share/prometheus/console_libraries'
     - '--web.console.templates=/usr/share/prometheus/consoles'
