@@ -40,7 +40,7 @@ services:
     - '--storage.tsdb.retention.time=15d'
 
   prom_pushgateway:
-    image: prom-pushgateway
+    image: prom-pushgateway:latest
     container_name: otel-prom-pushgateway
     restart: always
     user: ${USER_UID}:${USER_GID}
