@@ -6,5 +6,10 @@ services:
     container_name: vue-web
     restart: always
     network_mode: bridge
-    ports: ["${PORT}:80"]
+    ports: ["${HTTP_Port}:80"]
+    deploy:
+      resources:
+        limits: { cpus: "2", memory: 100M }
+        reservations: { cpus: "0.05", memory: 10M }
+
     environment: ["TZ=Asia/Shanghai", "PORT=80"]
