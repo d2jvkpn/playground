@@ -1,0 +1,43 @@
+create table test_trigger_a01 (
+  id uuid default gen_random_uuid(),
+  created_at timestamptz default now(),
+
+  status text not null default 'ok',
+
+  primary key(id)
+);
+
+
+CREATE OR REPLACE FUNCTION test_trigger_a01_update_status()
+RETURNS TRIGGER AS $$
+BEGIN
+  RAISE NOTICE 'test_triggre_a01.status has changed from % to %', OLD.status, NEW.status;
+  IF OLD.status IS DISTINCT FROM NEW.status THEN
+     RAISE NOTICE '==>';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER update_status
+  AFTER INSERT OR DELETE OR UPDATE OF status ON test_trigger_a01
+  FOR EACH ROW
+  EXECUTE FUNCTION test_trigger_a01_update_status();
+
+-- drop trigger update_status on test_trigger_a01;
+
+insert into test_trigger_a01 (status) values
+  ('ok'), ('no'), ('yes');
+/*
+NOTICE:  test_triggre_a01.status has changed from <NULL> to ok
+NOTICE:  ==>
+NOTICE:  test_triggre_a01.status has changed from <NULL> to no
+NOTICE:  ==>
+NOTICE:  test_triggre_a01.status has changed from <NULL> to yes
+NOTICE:  ==>
+*/
+
+update test_trigger_a01 set status = 'ok' where status = 'no';
+
+delete from test_trigger_a01 where status = 'yes';
