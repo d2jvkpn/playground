@@ -12,3 +12,5 @@ create index test_json_a02_raw on test_json_a02 (raw);
 -- ERROR:  data type json has no default operator class for access method "btree"
 
 create index test_json_a02_raw_x on test_json_a02 ((raw->>'x')) where raw->>'x' is not null;
+
+alter table test_json_a02 alter column raw type jsonb;

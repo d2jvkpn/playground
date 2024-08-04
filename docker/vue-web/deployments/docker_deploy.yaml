@@ -9,7 +9,7 @@ services:
     ports: ["${HTTP_Port}:80"]
     deploy:
       resources:
-        limits: { cpus: "2", memory: 100M }
-        reservations: { cpus: "0.05", memory: 10M }
+        limits: { cpus: "4", memory: 512M }
+        reservations: { cpus: "0.05", memory: 16M }
 
     environment: ["TZ=Asia/Shanghai", "PORT=80"]
