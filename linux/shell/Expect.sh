@@ -15,9 +15,9 @@ run:
 an example of configs/expect.yaml or ~/.config/expect/expect.yaml:
 ```yaml
 postgres:
-  command: psql postgres://account@localhost:5432/db?sslmode=disable
+  commandline: psql postgres://account@localhost:5432/db?sslmode=disable
   expects:
-  - { prompt: "Password for username:", answer: "password" }
+  - { prompt: "Password for username:", answer: "password", extra_args: "false" }
 ```
 
 expect script: ./configs/temp/postgres.expect
@@ -61,8 +61,11 @@ script=$temp_dir/$target.expect
 }
 
 #### 3. read expects
-command=$(yq ".$target.command" $yaml)
-[[ "$command" == "null" ]] && { >&2 echo '!!! '"Command is unset in $target"; exit 1; }
+commandline=$(yq ".$target.commandline" $yaml)
+[[ "$commandline" == "null" ]] && { >&2 echo '!!! '"Commandline is unset in $target"; exit 1; }
+
+extra_args=$(yq ".$target.extra_args" $yaml)
+[[ "$extra_args" == "true" ]] && commandline="$commandline \$args"
 
 expects=$(
   yq -r ".$target.expects | @tsv" $yaml |
@@ -82,7 +85,7 @@ set timeout 15
 # set arg1 [lindex \$argv 0]
 set args [join \$argv " "]
 # !!! remove \$args if extra args cause an error
-spawn ${command} \$args
+spawn ${commandline}
 
 # expect "..."
 # send "...\r"
