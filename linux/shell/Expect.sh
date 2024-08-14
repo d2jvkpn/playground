@@ -81,6 +81,7 @@ set timeout 15
 
 # set arg1 [lindex \$argv 0]
 set args [join \$argv " "]
+# !!! remove \$args if extra args cause an error
 spawn ${command} \$args
 
 # expect "..."
