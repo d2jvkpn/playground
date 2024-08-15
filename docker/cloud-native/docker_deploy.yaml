@@ -40,12 +40,29 @@ services:
     - '--storage.tsdb.retention.time=15d'
 
   prom_pushgateway:
-    image: prom-pushgateway:latest
+    image: prom/pushgateway:latest
     container_name: prom-pushgateway
     restart: always
     user: ${USER_UID}:${USER_GID}
     networks: ["net"]
     ports: [127.0.0.1:8052:9091]
+
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    container_name: otel-collector
+    restart: always
+    user: ${USER_UID}:${USER_GID}
+    volumes:
+    # - ./configs:/otel-collector/configs
+    - ./configs:/app/configs
+    networks: ["net"]
+    ports:
+    - "127.0.0.1:4317:4317"   # OTLP gRPC receiver
+    # - "13133:13133" # health_check extension
+    # - "1888:1888"   # pprof extension
+    # - "8888:8888"   # Prometheus metrics exposed by the collector
+    # - "8889:8889"   # Prometheus exporter metrics
+    command: ["--config=/app/configs/otel-collector.yaml"]
 
   jaeger:
     image: jaegertracing/all-in-one:latest
@@ -53,8 +70,8 @@ services:
     restart: always
     user: ${USER_UID}:${USER_GID}
     networks: ["net"]
-    # ports:
-    # - "16686:16686" # web
+    ports:
+    - "16686:16686" # web
     # - "14250"       # expose to otel-collector
     # - "4317"        # accept OpenTelemetry Protocol (OTLP) over gRPC
 
@@ -73,25 +90,8 @@ services:
 #    - ./target/main
 #    - serve
 #    - --app=jaeger-auth
-#    - --config=/app/configs/jaeger.yaml
+#    - --config=/app/configs/jaeger-auth.yaml
 #    - --addr=:8052
-
-  otel-collector:
-    image: otel/opentelemetry-collector:latest
-    container_name: otel-collector
-    restart: always
-    user: ${USER_UID}:${USER_GID}
-    volumes:
-    # - ./configs:/otel-collector/configs
-    - ./configs:/app/configs
-    networks: ["net"]
-    ports:
-    - "127.0.0.1:4317:4317"   # OTLP gRPC receiver
-    # - "13133:13133" # health_check extension
-    # - "1888:1888"   # pprof extension
-    # - "8888:8888"   # Prometheus metrics exposed by the collector
-    # - "8889:8889"   # Prometheus exporter metrics
-    command: ["--config=/app/configs/otel-collector.yaml"]
 
   # Independently deploy this service in production
   grafana:
