@@ -41,7 +41,7 @@ services:
 
   prom_pushgateway:
     image: prom-pushgateway:latest
-    container_name: otel-prom-pushgateway
+    container_name: prom-pushgateway
     restart: always
     user: ${USER_UID}:${USER_GID}
     networks: ["net"]
