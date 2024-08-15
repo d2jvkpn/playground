@@ -6,7 +6,7 @@ receivers:
 exporters:
   prometheus:
     endpoint: "0.0.0.0:8889"
-    # const_labels: { label1: value1 }
+    # const_labels: { k1: v1 }
 
   #jaeger:
   #  endpoint: otel-jaeger:14250
@@ -18,8 +18,26 @@ exporters:
   #logging:
 
 #processors:
-#  batch:
+#  batch: {timeout: 5s, send_batch_size: 1024}
 #  attributes:
+#    actions:
+#    - { key: "http.url", action: "delete" }
+#  memory_limiter:
+#    check_interval: 1s
+#    limit_mib: 512
+#    spike_limit_mib: 128
+#  resource:
+#    attributes:
+#    - { key: "environment", value: "production", action: "insert" }
+#  filter:
+#    metrics:
+#      include:
+#        match_type: "strict"
+#        metric_names: { "http_requests_total" }
+#  span:
+#    name:
+#      from_attributes: ["http.method", "http.route"]
+#      separator: " "
 
 service:
   pipelines:
