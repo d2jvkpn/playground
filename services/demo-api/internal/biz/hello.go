@@ -16,14 +16,14 @@ func Hello(ctx context.Context) (name string) {
 
 	World(ctx, 42)
 
-	commonLabels := []attribute.KeyValue{
+	labels := []attribute.KeyValue{
 		attribute.Int64("biz.Hello:", value),
 	}
 
 	time.Sleep(time.Duration(1000/value) * time.Millisecond)
 
 	span := trace.SpanFromContext(ctx)
-	span.SetAttributes(commonLabels...)
+	span.SetAttributes(labels...)
 
 	//.. zap.String("traceId", span.SpanContext().TraceID().String())
 	log.Printf(

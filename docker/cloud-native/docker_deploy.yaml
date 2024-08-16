@@ -74,6 +74,13 @@ services:
     - "16686:16686" # web
     # - "14250"       # expose to otel-collector
     # - "4317"        # accept OpenTelemetry Protocol (OTLP) over gRPC
+    environment:
+    - SPAN_STORAGE_TYPE=badger
+    - BADGER_EPHEMERAL=false
+    - BADGER_DIRECTORY_VALUE=/app/badger/data
+    - BADGER_DIRECTORY_KEY=/app/badger/key
+    volumes:
+    - ./data/jaeger/badger:/app/badger
 
 #  jaeger-auth:
 #    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy:dev

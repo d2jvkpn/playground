@@ -4,9 +4,9 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 export USER_UID=$(id -u) USER_GID=$(id -g)
 
-mkdir -p configs logs data/prometheus data/grafana
+mkdir -p configs logs data/prometheus data/grafana data/jaeger/badger
 
-cp examples/{jaeger.yaml,otel-collector.yaml,prometheus.yaml,prometheus_web.yaml} configs/
+cp examples/{otel-collector.yaml,prometheus.yaml} configs/
 
 envsubst > docker-compose.yaml < docker_deploy.yaml
 
