@@ -121,5 +121,3 @@ services:
 
 networks:
   net: { name: otel, driver: bridge, external: false }
-  # grafana: { name: grafana, driver: bridge, external: true }
-  # demo-api_dev: { name: demo-api_dev, driver: bridge, external: true }
