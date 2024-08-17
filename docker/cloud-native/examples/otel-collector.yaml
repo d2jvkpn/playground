@@ -1,11 +1,20 @@
 receivers:
   otlp:
     protocols:
-      grpc:
+      grpc: { endpoint: "0.0.0.0:4317" }
+      http: { endpoint: "0.0.0.0:4318" }
+
+processors:
+  batch:
+  #  timeout: 5s
+  #  send_batch_size: 8192
+  #  send_batch_max_size: 10000
 
 exporters:
   prometheus:
     endpoint: "0.0.0.0:8889"
+    metric_expiration: 60m
+    # namespace: "my_service"
     # const_labels: { k1: v1 }
 
   #jaeger:
@@ -43,9 +52,9 @@ service:
   pipelines:
     traces:
       receivers: [ otlp ]
-      # processors: [ batch, attributes ]
+      processors: [ batch ]
       exporters: [ otlp ]
     metrics:
       receivers: [ otlp ]
-      # processors: [ batch, attributes ]
+      processors: [ batch ]
       exporters: [ prometheus ]
