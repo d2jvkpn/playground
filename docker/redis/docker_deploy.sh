@@ -5,6 +5,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 REDIS_Port=${1:-6379}
 mkdir -p configs data/redis
+touch data/redis/aclfile.acl
 
 password=$(tr -dc 'A-Za-z0-9!@#$%^&*()' < /dev/urandom | head -c 24 || true)
 

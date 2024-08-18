@@ -5,7 +5,7 @@
 - https://geshan.com.np/blog/2022/01/redis-docker/
 - https://redis.io/docs/management/config-file/
 
-#### Setup
+#### C01. Setup
 ``` bash
 mkdir -p configs data/redis
 
@@ -29,7 +29,7 @@ docker-compose -f docker-compose.yaml up -d
 # docker-compose -f deployment.yaml down
 ```
 
-#### Redis Commands
+#### C02. Redis Commands
 ```redis
 help getex
 command
@@ -52,4 +52,25 @@ auth d2jvkpn
 acl setuser hello -keys -flushall -flushdb -config on >world
 acl list
 auth hello world
+```
+
+#### C03. ACL
+```
+# set password for default account
+ACL SETUSER default on >mystrongpassword
+
+# create account with password
+ACL SETUSER myuser on >mypassword
+
+# allow account to access all databases
+ACL SETUSER myuser ~* +@all
+
+# allow account to access database 1
+ACL SETUSER myuser >mypassword resetchannels +@all resetkeys ~db1:* on
+
+# verify
+AUTH myuser mypassword
+SELECT 1
+
+ACL SAVE
 ```
