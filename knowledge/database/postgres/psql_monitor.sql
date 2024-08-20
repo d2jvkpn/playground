@@ -10,7 +10,7 @@ group by usename, application_name, client_addr;
 CREATE EXTENSION pg_stat_statements;
 
 SELECT userid, dbid, queryid, substring(query, 1, 32) || '...',
-  total_exec_time::decimal(9, 3), mean_exec_time::decimal(9, 3), calls, rows
+  total_exec_time::decimal(18, 3), mean_exec_time::decimal(9, 3), calls, rows
 FROM pg_stat_statements
 ORDER BY mean_exec_time DESC;
 
