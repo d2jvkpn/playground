@@ -1,11 +1,3 @@
-  prom_pushgateway:
-    image: prom/pushgateway:latest
-    container_name: prom-pushgateway
-    restart: always
-    user: ${USER_UID}:${USER_GID}
-    networks: ["net"]
-    ports: [127.0.0.1:8052:9091]
-
   jaeger-auth:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy:dev
     container_name: otel-jaeger-auth
