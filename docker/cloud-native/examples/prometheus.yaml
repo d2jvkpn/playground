@@ -27,6 +27,8 @@ scrape_configs:
   - targets: ['otel-collector:8889']
 
 - job_name: otel-prom-pushgateway
+  metrics_path: /metrics
+  scrape_interval: 15s
   static_configs:
   - targets: [otel-prom-pushgateway:9091]
 

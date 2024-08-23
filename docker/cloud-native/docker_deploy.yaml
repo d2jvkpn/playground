@@ -24,7 +24,7 @@ services:
     restart: always
     user: ${USER_UID}:${USER_GID}
     networks: ["net"]
-    ports: [8051:9090]
+    ports: [127.0.0.1:8051:9090]
     volumes:
     # - ./configs:/prometheus/configs
     # - prometheus_data:/prometheus/data
@@ -64,7 +64,7 @@ services:
     user: ${USER_UID}:${USER_GID}
     networks: ["net"]
     ports:
-    - "8052:16686" # web
+    - "127.0.0.1:8052:16686" # web
     # - "14250"       # expose to otel-collector
     # - "4317"        # accept OpenTelemetry Protocol (OTLP) over gRPC
     environment:
