@@ -8,13 +8,13 @@ scrape_configs:
   scrape_interval: 15s
   static_configs:
   - targets: [localhost:9090]
-  # - targets: [prometheus:9090]
+  # - targets: [otel-prometheus:9090]
 
-- job_name: otel-node-exporter
+- job_name: otel-node-metrics
   static_configs:
-  - targets: [node-exporter:9100]
+  - targets: [otel-node-metrics:9100]
 
-- job_name: 'otel-collector'
+- job_name: 'otel-collector-metrics'
   metrics_path: /metrics
   scrape_interval: 15s
   static_configs:
@@ -31,6 +31,12 @@ scrape_configs:
   scrape_interval: 15s
   static_configs:
   - targets: [otel-prom-pushgateway:9091]
+
+- job_name: otel-node-cadvisor
+  metrics_path: /metrics
+  scrape_interval: 5s
+  static_configs:
+  - targets: [otel-node-cadvisor:8080]
 
 #- job_name: 'postgres-exporter'
 #  static_configs:

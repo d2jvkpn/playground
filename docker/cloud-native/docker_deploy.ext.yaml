@@ -1,3 +1,4 @@
+services:
   jaeger-auth:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy:dev
     container_name: otel-jaeger-auth

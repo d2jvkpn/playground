@@ -1,9 +1,9 @@
 version: "3"
 
 services:
-  node-exporter:
+  otel-node-metrics:
     image: prom/node-exporter:latest
-    container_name: otel-node-exporter
+    container_name: otel-node-metrics
     restart: always
     # restart: unless-stopped
     networks: ["net"]
@@ -18,7 +18,7 @@ services:
     - '--path.sysfs=/host/sys'
     - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
 
-  prometheus:
+  otel-prometheus:
     image: prom/prometheus:main
     container_name: otel-prometheus
     restart: always
@@ -57,7 +57,7 @@ services:
     - "127.0.0.1:8889:8889"   # Prometheus exporter metrics
     command: ["--config=/app/configs/otel-collector.yaml"]
 
-  jaeger:
+  otel-jaeger:
     image: jaegertracing/all-in-one:latest
     container_name: otel-jaeger
     restart: always
@@ -75,7 +75,7 @@ services:
     volumes:
     - ./data/jaeger/badger:/app/badger
 
-  prom_pushgateway:
+  otel-prom-pushgateway:
     image: prom/pushgateway:latest
     container_name: otel-prom-pushgateway
     restart: always
@@ -83,8 +83,35 @@ services:
     networks: ["net"]
     ports: [127.0.0.1:8053:9091]
 
+  otel-node-cadvisor:
+    container_name: otel-node-cadvisor
+    image: gcr.io/cadvisor/cadvisor:latest
+    # network_mode: "host"
+    networks: ["net"]
+    ports:
+    - "127.0.0.1:8054:8080"
+    volumes:
+    - "/:/rootfs"
+    - "/var/run:/var/run"
+    - "/sys:/sys"
+    - "/var/lib/docker/:/var/lib/docker"
+    - "/dev/disk/:/dev/disk"
+    privileged: true
+    devices:
+    - "/dev/kmsg"
+    # command: ["--port=8080", "--enable_metrics=app,cpu,diskIO,memory,network"]
+    # --http_auth_file=test.htpasswd --http_auth_realm=localhost
+    deploy:
+      resources:
+        limits: { cpus: "0.5", memory: "256M" }
+    command:
+    - "--port=8080"
+    - "--enable_metrics=cpu,memory,network"
+    - "--store_container_labels=false"
+    - "--docker_only=true"
+
   # Independently deploy this service in production
-  grafana:
+  otel-grafana:
     image: grafana/grafana:main
     container_name: otel-grafana
     restart: always
