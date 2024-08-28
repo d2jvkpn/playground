@@ -76,12 +76,11 @@ trap onExit EXIT
 
 git checkout $git_branch
 
-echo ">>> Building image: $image..."
+echo "==> Building image: $image..."
 
 # --build-arg=mode=$mode
 docker build --no-cache --file ${_path}/Dockerfile --tag $image ./
 docker image prune --force --filter label=stage=${app_name}_builder &> /dev/null
 
 [ "$DOCKER_Push" != "false" ] && docker push $image
-
 docker images --filter "dangling=true" --quiet $image | xargs -i docker rmi {}

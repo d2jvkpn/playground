@@ -8,6 +8,7 @@ services:
     # restart: unless-stopped
     networks: ["net"]
     expose: [9100]
+    ports: [127.0.0.1:9100:9100]
     volumes:
     - /proc:/host/proc:ro
     - /sys:/host/sys:ro
@@ -84,8 +85,8 @@ services:
     ports: [127.0.0.1:8053:9091]
 
   otel-node-cadvisor:
-    container_name: otel-node-cadvisor
     image: gcr.io/cadvisor/cadvisor:latest
+    container_name: otel-node-cadvisor
     # network_mode: "host"
     networks: ["net"]
     ports:
@@ -97,8 +98,7 @@ services:
     - "/var/lib/docker/:/var/lib/docker"
     - "/dev/disk/:/dev/disk"
     privileged: true
-    devices:
-    - "/dev/kmsg"
+    devices: ["/dev/kmsg"]
     # command: ["--port=8080", "--enable_metrics=app,cpu,diskIO,memory,network"]
     # --http_auth_file=test.htpasswd --http_auth_realm=localhost
     deploy:

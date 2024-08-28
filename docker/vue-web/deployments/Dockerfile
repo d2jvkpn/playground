@@ -9,7 +9,6 @@ WORKDIR /app
 ADD  index.html *.js *.json  ./
 COPY public/ ./public
 COPY src/ ./src
-# COPY node_modules/ ./node_modules
 
 COPY cache.local ./cache.local
 RUN cp cache.local/.env.prod ./

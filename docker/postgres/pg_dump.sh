@@ -11,8 +11,8 @@ mkdir -p temp
 docker exec postgres \
   pg_dump --host=localhost --port=5432 --username=postgres \
   --verbose --format=plain --no-owner \
-  --inserts --rows-per-insert=100 \
-  $db | sed 's/\t/  /g' > temp/$db.$tag.sql
+  --inserts --rows-per-insert=1000 --column-inserts \
+  $db > temp/$db.$tag.sql
 
 exit
 docker exec postgres \
