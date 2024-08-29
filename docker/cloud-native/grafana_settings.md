@@ -2,16 +2,16 @@
 ---
 
 #### C01. Containers
-1. container's cpu(ms)
+1. container's cpu(ms/min)
 - sum by(name) (rate(container_cpu_system_seconds_total{job="otel-node-cadvisor", name=~"joyn-.*"}[1m]))*1000
 
 2. container's memory(mb)
 - sum by(name) (container_memory_usage_bytes{job="otel-node-cadvisor", name=~"joyn-.*"})
 
-3. container's network transmit(kb)
+3. container's network transmit(kb/min)
 - sum by(name) (rate(container_network_transmit_bytes_total{job="otel-node-cadvisor", name=~"joyn-.*"}[1m])) / 1024
 
-4. container's network receive(kb)
+4. container's network receive(kb/min)
 - sum by(name) (rate(container_network_receive_bytes_total{job="otel-node-cadvisor", name=~"joyn-.*"}[1m])) / 1024
 
 #### C02. Jaeger
@@ -20,12 +20,12 @@
 - Operation Name: All
 
 #### C03. aliyun-a01
-1. CPU(ms)
+1. CPU(ms/min)
 sum by (cpu) (rate(node_cpu_seconds_total{job="otel-node-metrics", mode="system"}[1m]))*1000
 
-2. Disk I/O(seconds)
-- sum by (__name__, device) (node_disk_read_time_seconds_total{job="otel-node-metrics", device="vda"})
-- sum by (__name__, device) (node_disk_write_time_seconds_total{job="otel-node-metrics", device="vda"})
+2. Disk I/O(kb/min)
+- sum by (__name__) (rate (node_disk_read_bytes_total{job="otel-node-metrics", device="vda"}[1m])/1024)
+- sum by (__name__) (rate (node_disk_written_bytes_total{job="otel-node-metrics", device="vda"}[1m])/1024)
 
 3. Memory(mb)
 - (node_memory_MemTotal_bytes{job="otel-node-metrics"} / 1024 / 1024) - (node_memory_MemAvailable_bytes{job="otel-node-metrics"} / 1024 / 1024)
