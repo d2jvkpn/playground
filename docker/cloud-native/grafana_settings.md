@@ -6,7 +6,7 @@
 - sum by(name) (rate(container_cpu_system_seconds_total{job="otel-node-cadvisor", name=~"joyn-.*"}[1m]))*1000
 
 2. container's memory(mb)
-- sum by(name) (container_memory_usage_bytes{job="otel-node-cadvisor", name=~"joyn-.*"})
+- sum by(name) (container_memory_usage_bytes-container_memory_cache{job="otel-node-cadvisor", name=~"joyn-.*"})/1024/1024
 
 3. container's network transmit(kb/min)
 - sum by(name) (rate(container_network_transmit_bytes_total{job="otel-node-cadvisor", name=~"joyn-.*"}[1m])) /1024
