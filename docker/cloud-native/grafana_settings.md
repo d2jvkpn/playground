@@ -23,9 +23,9 @@
 1. CPU(ms/min)
 sum by (cpu) (rate(node_cpu_seconds_total{job="otel-node-metrics", mode="system"}[1m]))*1000
 
-2. Disk I/O(kb/min)
-- sum by (__name__) (rate (node_disk_read_bytes_total{job="otel-node-metrics", device="vda"}[1m])/1024)
-- sum by (__name__) (rate (node_disk_written_bytes_total{job="otel-node-metrics", device="vda"}[1m])/1024)
+2. Disk I/O(mb/min)
+- sum by (__name__) (rate (node_disk_read_bytes_total{job="otel-node-metrics", device="vda"}[1m])/1024/1024)
+- sum by (__name__) (rate (node_disk_written_bytes_total{job="otel-node-metrics", device="vda"}[1m])/1024/1024)
 
 3. Memory(mb)
 - (node_memory_MemTotal_bytes{job="otel-node-metrics"} / 1024 / 1024) - (node_memory_MemAvailable_bytes{job="otel-node-metrics"} / 1024 / 1024)
