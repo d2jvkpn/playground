@@ -41,6 +41,7 @@ var (
 	_DefaultValidator = validator.New()
 )
 
+// secondary func
 func BindQuery[T any](ctx *gin.Context, query *T) bool {
 	var (
 		err   error
@@ -76,6 +77,7 @@ func BindQuery[T any](ctx *gin.Context, query *T) bool {
 	return true
 }
 
+// endpoint func
 func get(ctx *gin.Context) {
 	var query Query
 
@@ -86,6 +88,9 @@ func get(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"code": "ok", "kind": "", "data": gin.H{}})
 }
 
+// other layers: biz layer, middleware layer
+
+// data layer: validation, manipulation, conversion
 type Query struct {
 	Status string `json:"status" form:"status" validate:"oneof='' yes no"`
 }
