@@ -47,8 +47,8 @@ sum by (cpu) (rate(node_cpu_seconds_total{job="otel-node-metrics", mode="system"
 4. http_latency(ms)
 - sum by (api) (rate(http_latency_sum{exported_job="app-name"}[5m]) / rate(http_latency_count[5m]))
 
-5. http_latency p99.9
-- histogram_quantile(0.999, sum by(le) (rate(http_latency_bucket{exported_job="app-name"}[5m])))
+5. http_latency p99
+- histogram_quantile(0.99, sum by(le) (rate(http_latency_bucket{exported_job="app-name"}[5m])))
 
 6. database_connections
 - sum by (type) (db_conns{exported_job="app-name"})
