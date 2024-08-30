@@ -5,6 +5,7 @@ services:
     image: postgres:16-alpine
     restart: always
     container_name: ${CONTAINER_Name}
+    shm_size: 512m # df -h | grep shm
     # network_mode: bridge
     networks: ["net"]
     ports: ["127.0.0.1:${DB_Port}:5432"]
