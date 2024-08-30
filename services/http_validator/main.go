@@ -77,6 +77,42 @@ func BindQuery[T any](ctx *gin.Context, query *T) bool {
 	return true
 }
 
+// secondary func
+func BindJSON[T any](ctx *gin.Context, query *T) bool {
+	var (
+		err   error
+		runes []rune
+	)
+
+	if err = ctx.BindJSON(query); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": "bad_request",
+			"kind": "InvalidParameter",
+			"msg":  err.Error(),
+		})
+		return false
+	}
+
+	if err = _DefaultValidator.Struct(query); err != nil {
+		errs := err.(validator.ValidationErrors)
+		field := errs[0].Field()
+		// fmt.Printf("==> error: %+v, filed: %q\n", err, field)
+
+		runes = []rune(field)
+		runes[0] = unicode.ToLower(runes[0])
+		field = string(runes)
+
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": "bad_request",
+			"kind": "InvalidParameter",
+			"msg":  field,
+		})
+		return false
+	}
+
+	return true
+}
+
 // endpoint func
 func get(ctx *gin.Context) {
 	var query Query
