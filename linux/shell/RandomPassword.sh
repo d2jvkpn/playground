@@ -26,7 +26,8 @@ passwords=$(
       sed 's/\(.\)\1\+/\1/g' |
       tr -d '\n' |
       fold -w "$length" |
-      head -n 8 || true
+      awk '{n++; if(n>8) { exit }; print "  "n, $1}' || true
+      # head -n 8 || true
 )
 
 if [ "$clipboard" == "true" ]; then
