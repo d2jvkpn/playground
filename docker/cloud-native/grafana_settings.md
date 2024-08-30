@@ -41,22 +41,25 @@ sum by (cpu) (rate(node_cpu_seconds_total{job="otel-node-metrics", mode="system"
 2. rps_errors(1m)
 - sum by(code, kind) (rate(http_code_total{code!="OK", exported_job="app-name"}[1m]))
 
-3. http_latency(ms)
+3. rps_api(1m)
+- sum by(api) (rate(http_code_total{exported_job="app-name"}[1m]))
+
+4. http_latency(ms)
 - sum by (api) (rate(http_latency_sum{exported_job="app-name"}[5m]) / rate(http_latency_count[5m]))
 
-4. http_latency p99.9
+5. http_latency p99.9
 - histogram_quantile(0.999, sum by(le) (rate(http_latency_bucket{exported_job="app-name"}[5m])))
 
-5. database_connections
+6. database_connections
 - sum by (type) (db_conns{exported_job="app-name"})
 
-6. go_gc_duration(ms)
+7. go_gc_duration(ms)
 - go_gc_duration_seconds{job="app-name"}*1000
 
-7. go_memstats(mb): alloc vs sys
+8. go_memstats(mb): alloc vs sys
 - sum by (__name__) (go_memstats_alloc_bytes{job="app-name"}/1024/1024)
 - sum by (__name__) (go_memstats_sys_bytes{job="app-name"}/1024/1024)
 
-8. goruntines vs go-threads
+9. goruntines vs go-threads
 - sum by (__name__) (go_goroutines{job="app-name"})
 - sum by (__name__) (go_threads{job="app-name"})
