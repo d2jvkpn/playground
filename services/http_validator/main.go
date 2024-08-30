@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"fmt"
+	// "fmt"
 	"net/http"
 	"unicode"
 
@@ -24,6 +24,8 @@ func main() {
 	// gin.SetMode(gin.ReleaseMode)
 	// router = gin.New()
 	engine = gin.Default()
+	engine.ForwardedByClientIP = true
+	engine.SetTrustedProxies([]string{"127.0.0.1", "192.168.1.2", "10.0.0.0/8"})
 
 	engine.GET("/hello", hello)
 	engine.GET("/get", get)
@@ -40,7 +42,10 @@ var (
 )
 
 func BindQuery[T any](ctx *gin.Context, query *T) bool {
-	var err error
+	var (
+		err   error
+		runes []rune
+	)
 
 	if err = ctx.BindQuery(query); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
@@ -54,13 +59,11 @@ func BindQuery[T any](ctx *gin.Context, query *T) bool {
 	if err = _DefaultValidator.Struct(query); err != nil {
 		errs := err.(validator.ValidationErrors)
 		field := errs[0].Field()
-		fmt.Printf("==> error: %+v, filed: %q\n", err, field)
+		// fmt.Printf("==> error: %+v, filed: %q\n", err, field)
 
-		if len(field) > 0 {
-			r := []rune(field)
-			r[0] = unicode.ToLower(r[0])
-			field = string(r)
-		}
+		runes = []rune(field)
+		runes[0] = unicode.ToLower(runes[0])
+		field = string(runes)
 
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"code": "bad_request",
