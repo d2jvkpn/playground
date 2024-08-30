@@ -42,7 +42,7 @@ var (
 )
 
 // secondary func
-func BindQuery[T any](ctx *gin.Context, query *T) bool {
+func BindQuery[T any](ctx *gin.Context, query *T, validate bool) bool {
 	var (
 		err   error
 		runes []rune
@@ -55,6 +55,10 @@ func BindQuery[T any](ctx *gin.Context, query *T) bool {
 			"msg":  err.Error(),
 		})
 		return false
+	}
+
+	if !validate {
+		return true
 	}
 
 	if err = _DefaultValidator.Struct(query); err != nil {
@@ -78,7 +82,7 @@ func BindQuery[T any](ctx *gin.Context, query *T) bool {
 }
 
 // secondary func
-func BindJSON[T any](ctx *gin.Context, query *T) bool {
+func BindJSON[T any](ctx *gin.Context, query *T, validate bool) bool {
 	var (
 		err   error
 		runes []rune
@@ -91,6 +95,10 @@ func BindJSON[T any](ctx *gin.Context, query *T) bool {
 			"msg":  err.Error(),
 		})
 		return false
+	}
+
+	if !validate {
+		return true
 	}
 
 	if err = _DefaultValidator.Struct(query); err != nil {
@@ -117,7 +125,7 @@ func BindJSON[T any](ctx *gin.Context, query *T) bool {
 func get(ctx *gin.Context) {
 	var query Query
 
-	if !BindQuery(ctx, &query) {
+	if !BindQuery(ctx, &query, true) {
 		return
 	}
 
