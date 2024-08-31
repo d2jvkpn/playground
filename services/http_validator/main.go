@@ -119,6 +119,7 @@ func get(ctx *gin.Context) {
 // data layer: validation, manipulation, conversion
 type Query struct {
 	// default: empty for all kinds of status
+	// Status    string `json:"status" form:"status" validate:"oneof='' yes no" enum:",yes,no" extensions:"x-order=01"`
 	Status    string `json:"status" form:"status" validate:"oneof=yes no" enum:"yes,no" extensions:"x-order=01"`
 	PageSize  int64  `json:"pageSize" form:"pageSize" validate:"gte=10,lte=100" minimum:"10" maximum:"100" extensions:"x-order=02"`
 	PageIndex int64  `json:"pageIndex" form:"pageIndex" validate:"gte=1" minimum:"1" extensions:"x-order=03"`
