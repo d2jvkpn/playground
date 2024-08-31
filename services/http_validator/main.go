@@ -3,12 +3,47 @@ package main
 import (
 	"flag"
 	// "fmt"
+	"errors"
 	"net/http"
+	"strings"
 	"unicode"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
+
+var (
+	_DefaultValidate = validator.New()
+)
+
+func Validate[T any](item *T) (err error) {
+	var (
+		errs   validator.ValidationErrors
+		fields []string
+	)
+
+	toLower := func(field string) string {
+		var runes []rune
+
+		runes = []rune(field)
+		runes[0] = unicode.ToLower(runes[0])
+		return string(runes)
+	}
+
+	if err = _DefaultValidate.Struct(item); err != nil {
+		errs = err.(validator.ValidationErrors)
+		fields = make([]string, len(errs))
+		// fmt.Printf("==> error: %+v, filed: %q\n", err, field)
+
+		for i := range errs {
+			fields[i] = toLower(errs[i].Field())
+		}
+
+		return errors.New(strings.Join(fields, ","))
+	}
+
+	return nil
+}
 
 func main() {
 	var (
@@ -37,16 +72,9 @@ func hello(ctx *gin.Context) {
 	return
 }
 
-var (
-	_DefaultValidator = validator.New()
-)
-
 // secondary func
-func BindQuery[T any](ctx *gin.Context, query *T, validate bool) bool {
-	var (
-		err   error
-		runes []rune
-	)
+func BindQuery[T any](ctx *gin.Context, query *T) bool {
+	var err error
 
 	if err = ctx.BindQuery(query); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
@@ -57,75 +85,27 @@ func BindQuery[T any](ctx *gin.Context, query *T, validate bool) bool {
 		return false
 	}
 
-	if !validate {
-		return true
-	}
-
-	if err = _DefaultValidator.Struct(query); err != nil {
-		errs := err.(validator.ValidationErrors)
-		field := errs[0].Field()
-		// fmt.Printf("==> error: %+v, filed: %q\n", err, field)
-
-		runes = []rune(field)
-		runes[0] = unicode.ToLower(runes[0])
-		field = string(runes)
-
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"code": "bad_request",
-			"kind": "InvalidParameter",
-			"msg":  field,
-		})
-		return false
-	}
-
-	return true
-}
-
-// secondary func
-func BindJSON[T any](ctx *gin.Context, query *T, validate bool) bool {
-	var (
-		err   error
-		runes []rune
-	)
-
-	if err = ctx.BindJSON(query); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"code": "bad_request",
-			"kind": "InvalidParameter",
-			"msg":  err.Error(),
-		})
-		return false
-	}
-
-	if !validate {
-		return true
-	}
-
-	if err = _DefaultValidator.Struct(query); err != nil {
-		errs := err.(validator.ValidationErrors)
-		field := errs[0].Field()
-		// fmt.Printf("==> error: %+v, filed: %q\n", err, field)
-
-		runes = []rune(field)
-		runes[0] = unicode.ToLower(runes[0])
-		field = string(runes)
-
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"code": "bad_request",
-			"kind": "InvalidParameter",
-			"msg":  field,
-		})
-		return false
-	}
-
 	return true
 }
 
 // endpoint func
 func get(ctx *gin.Context) {
-	var query Query
+	var (
+		err   error
+		query Query
+	)
 
-	if !BindQuery(ctx, &query, true) {
+	query = NewQuery()
+	if !BindQuery(ctx, &query) {
+		return
+	}
+
+	if err = query.Validate(); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"code": "bad_request",
+			"kind": "InvalidParameter",
+			"msg":  err.Error(),
+		})
 		return
 	}
 
@@ -136,5 +116,33 @@ func get(ctx *gin.Context) {
 
 // data layer: validation, manipulation, conversion
 type Query struct {
-	Status string `json:"status" form:"status" validate:"oneof='' yes no"`
+	Status    string `json:"status" form:"status" validate:"oneof=yes no"`
+	PageSize  int64  `json:"pageSize" form:"pageSize" validate:"gte=10,lte=100"`
+	PageIndex int64  `json:"pageIndex" form:"pageIndex" validate:"gte=1,lte=100"`
+
+	ok bool
+}
+
+func NewQuery() Query {
+	return Query{
+		Status:    "yes",
+		PageSize:  1,
+		PageIndex: 10,
+	}
+}
+
+func (self *Query) Validate() (err error) {
+	if self.ok {
+		return nil
+	}
+	// if self.PageSize == 0 { self.PageSize = 1 }
+	// if self.PageIndex == 0 { self.PageIndex = 10 }
+
+	if err = Validate(self); err != nil {
+		return err
+	}
+
+	self.ok = true
+
+	return nil
 }
