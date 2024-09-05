@@ -1,4 +1,4 @@
-module a01
+module validate_parameters
 
 go 1.23.0
 
