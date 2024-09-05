@@ -26,6 +26,7 @@ func AuthRoles(fn gin.HandlerFunc, roles ...string) gin.HandlerFunc {
 
 		if len(roles) == 0 {
 			fn(ctx)
+			ctx.Next()
 			return
 		}
 
@@ -39,6 +40,7 @@ func AuthRoles(fn gin.HandlerFunc, roles ...string) gin.HandlerFunc {
 		}
 
 		fn(ctx)
+		ctx.Next()
 		return
 	}
 }
