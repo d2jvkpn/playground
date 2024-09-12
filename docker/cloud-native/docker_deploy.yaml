@@ -29,7 +29,7 @@ services:
     volumes:
     # - ./configs:/prometheus/configs
     # - prometheus_data:/prometheus/data
-    - ./configs:/app/configs:ro
+    - ./configs/prometheus.yaml:/app/configs/prometheus.yaml:ro
     - ./data/prometheus:/app/data
     command:
     # - '--config.file=/etc/prometheus/prometheus.yaml'
@@ -47,7 +47,7 @@ services:
     user: ${USER_UID}:${USER_GID}
     volumes:
     # - ./configs:/otel-collector/configs
-    - ./configs:/app/configs
+    - ./configs/otel-collector.yaml:/app/configs/otel-collector.yaml:ro
     networks: ["net"]
     ports:
     - "127.0.0.1:4317:4317"   # OTLP gRPC receiver
@@ -72,18 +72,10 @@ services:
     - SPAN_STORAGE_TYPE=badger
     - BADGER_EPHEMERAL=false
     - BADGER_SPAN_STORE_TTL=168h
-    - BADGER_DIRECTORY_VALUE=/app/data/jaeger/badger/data
-    - BADGER_DIRECTORY_KEY=/app/data/jaeger/badger/key
+    - BADGER_DIRECTORY_VALUE=/app/data/badger/data
+    - BADGER_DIRECTORY_KEY=/app/data/badger/key
     volumes:
-    - ./data/jaeger/badger:/app/data/jaeger/badger
-
-  otel-prom-pushgateway:
-    image: prom/pushgateway:latest
-    container_name: otel-prom-pushgateway
-    restart: always
-    user: ${USER_UID}:${USER_GID}
-    networks: ["net"]
-    ports: [127.0.0.1:8053:9091]
+    - ./data/badger:/app/data/badger
 
   otel-node-cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
@@ -120,12 +112,10 @@ services:
     networks: ["net"]
     ports: ["8059:3000"]
     volumes:
-    - ./configs:/app/configs
+    # - ./configs:/app/configs
     - ./data/grafana:/var/lib/grafana
     # environment:
     # - GF_SERVER_PROTOCOL=https
-    # - GF_SERVER_CERT_FILE=/app/configs/server.pem
-    # - GF_SERVER_CERT_KEY=/app/configs/server.key
     # - GF_SERVER_CERT_FILE=/var/lib/grafana/ssl/grafana.crt
     # - GF_SERVER_CERT_KEY=/var/lib/grafana/ssl/grafana.key
     # default: username=admin, password=admin

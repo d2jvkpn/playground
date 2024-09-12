@@ -4,7 +4,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 export USER_UID=$(id -u) USER_GID=$(id -g)
 
-mkdir -p configs logs data/prometheus data/grafana data/jaeger/badger
+mkdir -p configs logs data/prometheus data/grafana data/badger
 
 cp examples/{otel-collector.yaml,prometheus.yaml} configs/
 

@@ -16,3 +16,11 @@ services:
     - --app=jaeger-auth
     - --config=/app/configs/jaeger-auth.yaml
     - --addr=:8052
+
+  otel-prom-pushgateway:
+    image: prom/pushgateway:latest
+    container_name: otel-prom-pushgateway
+    restart: always
+    user: ${USER_UID}:${USER_GID}
+    networks: ["net"]
+    ports: [127.0.0.1:8053:9091]
