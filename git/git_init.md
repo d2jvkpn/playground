@@ -1,7 +1,6 @@
 # git init
 ---
 
-
 #### C01. Creating a new repository on the command line
 ```
 touch README.md
