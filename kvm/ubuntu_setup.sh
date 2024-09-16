@@ -2,7 +2,7 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-username=$1
+username=${1:-ubuntu}
 time_zone=${time_zone:-Asia/Shanghai}
 
 export DEBIAN_FRONTEND=noninteractive

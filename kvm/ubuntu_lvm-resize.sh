@@ -14,6 +14,6 @@ lv_size=$(lsblk | awk '/ubuntu--vg-ubuntu--lv/{sub("G$", "", $4); print $4}')
     size=$((total_size - lv_size))G
     echo "==> lvextend: $size"
 
-    sudo lvextend -L +$size /dev/mapper/ubuntu--vg-ubuntu--lv;
-    resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv;
+    sudo lvextend -L +$size /dev/mapper/ubuntu--vg-ubuntu--lv
+    sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
 }
