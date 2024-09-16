@@ -47,3 +47,6 @@ scrape_configs:
 #  basic_auth:
 #    username: '<Your Grafana Username>'
 #    password: '<Your Grafana API key>'
+
+####
+# curl -X POST localhost:8051/api/v1/admin/tsdb/snapshot
