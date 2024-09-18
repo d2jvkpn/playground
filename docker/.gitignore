@@ -19,3 +19,4 @@ configs/
 data/
 tmp/
 vendor/
+*.git/
