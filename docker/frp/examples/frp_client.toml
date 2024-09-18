@@ -12,7 +12,7 @@ transport.tls.trustedCaFile = "configs/frp_ca.crt"
 # transport.tls.serverName = "example.com"
 
 # webServer.addr = "127.0.0.1"
-# webServer.port = 7400
+# webServer.port = 3051
 # webServer.user = "admin"
 # webServer.password = "admin"
 
