@@ -14,7 +14,7 @@ transport.tls.certFile = "configs/frp_server.crt"
 transport.tls.keyFile = "configs/frp_server.key"
 transport.tls.trustedCaFile = "configs/frp_ca.crt"
 
-webServer.addr = "127.0.0.1"
-webServer.port = 7500
-webServer.user = "admin"
-webServer.password = "admin"
+# webServer.addr = "127.0.0.1"
+# webServer.port = 3051
+# webServer.user = "admin"
+# webServer.password = "admin"
