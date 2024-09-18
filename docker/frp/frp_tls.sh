@@ -3,6 +3,7 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 mkdir -p configs
+server_ip=${server_ip:-127.0.0.1}
 
 cat > configs/frp_openssl.cnf << EOF
 [ ca ]
@@ -41,12 +42,12 @@ openssl genrsa -out configs/frp_server.key 2048
 
 openssl req -new -sha256 -reqexts SAN \
   -subj "/C=XX/ST=DEFAULT/L=DEFAULT/O=DEFAULT/CN=server.com" \
-  -config <(cat configs/frp_openssl.cnf <(printf "\n[SAN]\nsubjectAltName=DNS:localhost,IP:127.0.0.1,DNS:example.server.com")) \
+  -config <(cat configs/frp_openssl.cnf <(printf "\n[SAN]\nsubjectAltName=DNS:localhost,IP:${server_ip},DNS:example.server.com")) \
   -key configs/frp_server.key \
   -out configs/frp_server.csr
 
 openssl x509 -req -days 365 -sha256 -CAcreateserial \
-  -extfile <(printf "subjectAltName=DNS:localhost,IP:127.0.0.1,DNS:example.server.com") \
+  -extfile <(printf "subjectAltName=DNS:localhost,IP:${server_ip},DNS:example.server.com") \
   -CA configs/frp_ca.crt -CAkey configs/frp_ca.key \
   -in configs/frp_server.csr -out configs/frp_server.crt
 

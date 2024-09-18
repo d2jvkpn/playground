@@ -57,7 +57,7 @@ WORKDIR /app
 COPY --from=builder /app/target/ /app/target/
 COPY --from=builder /app/cache.local/build.yaml /app/
 
-# EXPOSE 3050 3051
+EXPOSE 3050 3051
 
 # CMD [./target/frpc, --config=configs/frp_client.toml]
 # CMD [./target/frps, --config=configs/frp_server.toml]

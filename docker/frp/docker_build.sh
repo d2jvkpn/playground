@@ -55,3 +55,6 @@ docker build --no-cache --file Dockerfile \
   --build-arg=APP_Name="$app_name" \
   --build-arg=BUILD_Region="$BUILD_Region" \
   --tag $image ./
+
+docker save $image -o cache.local/${image_name}_${image_tag}.tar
+pigz cache.local/${image_name}_${image_tag}.tar
