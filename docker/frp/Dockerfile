@@ -59,5 +59,5 @@ COPY --from=builder /app/cache.local/build.yaml /app/
 
 # EXPOSE 3050 3051
 
-# CMD [./target/frpc, --config=configs/frp_client.ini]
-# CMD [./target/frps, --config=configs/frp_server.ini]
+# CMD [./target/frpc, --config=configs/frp_client.toml]
+# CMD [./target/frps, --config=configs/frp_server.toml]

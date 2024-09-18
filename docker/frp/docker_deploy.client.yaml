@@ -12,7 +12,4 @@ services:
     volumes:
     - ./configs/:/app/configs:ro
     - ./logs/:/app/logs
-    command:
-    - ./target/frpc
-    - --config
-    - configs/frp_client.ini
+    command: [./target/frpc, --config, configs/frp_client.toml]

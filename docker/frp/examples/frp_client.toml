@@ -1,0 +1,24 @@
+serverAddr = "127.0.0.1"
+serverPort = 3050
+auth.method = "token"
+auth.token = "connection_token"
+
+log.to = "configs/client.log"
+
+transport.tls.enable = true
+transport.tls.certFile = "configs/frp_client.crt"
+transport.tls.keyFile = "configs/frp_client.key"
+transport.tls.trustedCaFile = "configs/frp_ca.crt"
+# transport.tls.serverName = "example.com"
+
+# webServer.addr = "127.0.0.1"
+# webServer.port = 7400
+# webServer.user = "admin"
+# webServer.password = "admin"
+
+[[proxies]]
+name = "ssh"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 22
+remotePort = 10001

@@ -20,7 +20,7 @@ case "$cmd" in
 esac
 
 mkdir -p configs logs
-ls configs/frp_${cmd}.ini
+ls configs/frp_${cmd}.toml
 
 envsubst < ${_path}/docker_deploy.$cmd.yaml > docker-compose.yaml
 
