@@ -2,8 +2,9 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-mkdir -p configs
 server_ip=${server_ip:-127.0.0.1}
+
+mkdir -p configs
 
 cat > configs/frp_openssl.cnf << EOF
 [ ca ]
@@ -42,7 +43,6 @@ openssl req -x509 -new -nodes -subj "/CN=ca.frp.localhost" -days 5000 \
 # L (Locality)
 # O (Organization)
 # CN (Common Name)
-
 #### build frps certificates
 openssl genrsa -out configs/frp_server.key 2048
 
