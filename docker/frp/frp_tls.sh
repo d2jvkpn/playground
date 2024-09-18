@@ -43,8 +43,7 @@ openssl genrsa -out configs/frp_server.key 2048
 openssl req -new -sha256 -reqexts SAN \
   -subj "/C=XX/ST=DEFAULT/L=DEFAULT/O=DEFAULT/CN=server.com" \
   -config <(cat configs/frp_openssl.cnf <(printf "\n[SAN]\nsubjectAltName=DNS:localhost,IP:${server_ip},DNS:example.server.com")) \
-  -key configs/frp_server.key \
-  -out configs/frp_server.csr
+  -key configs/frp_server.key -out configs/frp_server.csr
 
 openssl x509 -req -days 365 -sha256 -CAcreateserial \
   -extfile <(printf "subjectAltName=DNS:localhost,IP:${server_ip},DNS:example.server.com") \
@@ -57,7 +56,7 @@ openssl genrsa -out configs/frp_client.key 2048
 openssl req -new -sha256 -reqexts SAN \
   -config <(cat configs/frp_openssl.cnf <(printf "\n[SAN]\nsubjectAltName=DNS:client.com,DNS:example.client.com")) \
   -subj "/C=XX/ST=DEFAULT/L=DEFAULT/O=DEFAULT/CN=client.com" \
-  -key configs/frp_client.key  -out configs/frp_client.csr
+  -key configs/frp_client.key -out configs/frp_client.csr
 
 openssl x509 -req -days 365 -sha256 -CAcreateserial \
   -extfile <(printf "subjectAltName=DNS:client.com,DNS:example.client.com") \
