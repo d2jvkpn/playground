@@ -15,6 +15,3 @@ jaeger_auth:
     method: md5
     users:
     - { username: metube-hello, password: 32f0ef5b494f4e77192a7e6b9bcc1099 }
-    # method: bcrypt
-    # users:
-    # - { username: 'jaeger-pFNmoz89', password: '$2b$12$TtsVshAES0nGnE3lO4Naf.cUCY/yN4eGr.JkHSgNWUth/yoyss/72' }
