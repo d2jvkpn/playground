@@ -13,14 +13,12 @@ import (
 	"time"
 
 	"github.com/d2jvkpn/gotk"
-	"github.com/rs/cors"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
 
 type Config struct {
 	Service        string   `mapstructure:"service"`
-	AllowOrigins   []string `mapstructure:"allow_origins"`
 	PassWithPrefix []string `mapstructure:"pass_with_prefix"`
 
 	Tls  bool   `mapstructure:"tls"`
@@ -53,7 +51,6 @@ func NewProxyServer(vp *viper.Viper, logger *zap.Logger, opts ...func(*http.Serv
 		cert   tls.Certificate
 	)
 
-	vp.SetDefault("cors", []string{"*"})
 	vp.SetDefault("real_ip_header", "X-Real-IP")
 	vp.Set("basic_auth.enable", "true")
 
@@ -202,9 +199,8 @@ func (sps *ProxyServer) handle(w http.ResponseWriter, r *http.Request) {
 
 func (sps *ProxyServer) Serve(addr string) (shutdown func() error, err error) {
 	var (
-		listener   net.Listener
-		handleCors *cors.Cors
-		mux        *http.ServeMux
+		listener net.Listener
+		mux      *http.ServeMux
 	)
 
 	if listener, err = net.Listen("tcp", addr); err != nil {
@@ -215,13 +211,7 @@ func (sps *ProxyServer) Serve(addr string) (shutdown func() error, err error) {
 	// mux.Handle("/", handler)
 	mux.HandleFunc("/", sps.Handle)
 
-	handleCors = cors.New(cors.Options{
-		AllowedOrigins:   sps.config.AllowOrigins,
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"},
-		AllowCredentials: true,
-	})
-
-	sps.server.Handler = handleCors.Handler(mux)
+	sps.server.Handler = mux
 
 	shutdown = func() error {
 		var err error
