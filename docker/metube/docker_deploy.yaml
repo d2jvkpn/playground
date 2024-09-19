@@ -1,10 +1,34 @@
 version: "3"
+
 services:
   metube:
-    image: ghcr.io/alexta69/metube
+    image: ghcr.io/alexta69/metube:latest
     container_name: metube
-    restart: unless-stopped
-    ports:
-    - "8081:8081"
+    # restart: unless-stopped
+    restart: always
+    user: ${USER_UID}:${USER_GID}
+    networks: ["net"]
+    # ports: ["8081:8081"]
     volumes:
     - ./data/metube:/downloads
+
+  metube-auth:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy:dev
+    container_name: metube-auth
+    restart: always
+    user: ${USER_UID}:${USER_GID}
+    depends_on: ["metube"]
+    networks: ["net"]
+    ports: ["127.0.0.1:4042:4042"]
+    volumes:
+    - ./configs/:/app/configs/:ro
+    - ./logs/:/app/logs/
+    command:
+    - ./target/main
+    - serve
+    - --app=metube_auth
+    - --config=configs/metube-auth.yaml
+    - --addr=:4042
+
+networks:
+  net: { name: metube, driver: bridge, external: false }

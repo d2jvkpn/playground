@@ -2,9 +2,9 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-min_range=1; max_range=100
+min_range=1
+max_range=100
 max_times=${1:-7}
-
 echo "==> 欢迎参加数字猜谜游戏(max_times=${max_times})！"
 
 target=$((RANDOM % ($max_range - $min_range + 1) + $min_range))

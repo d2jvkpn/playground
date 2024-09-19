@@ -1,0 +1,20 @@
+# http_auth_proxy: username=jaeger-hello, password=world
+jaeger_auth:
+  service: http://metube:8081
+  cors: "*"
+  # tls: true
+  # cert: "configs/site.pem"
+  # key: "configs/site.key"
+  # pass_with_prefix: ["GET@/assets/"]
+  # real_ip_header: "X-Real-IP"
+  # limit_ips: []
+  # insert_headers:
+  # - { key: "x-1", value: "y-1" }
+  # - { key: "x-2", value: "y-2" }
+  basic_auth:
+    method: md5
+    users:
+    - { username: metube-hello, password: 32f0ef5b494f4e77192a7e6b9bcc1099 }
+    # method: bcrypt
+    # users:
+    # - { username: 'jaeger-pFNmoz89', password: '$2b$12$TtsVshAES0nGnE3lO4Naf.cUCY/yN4eGr.JkHSgNWUth/yoyss/72' }
