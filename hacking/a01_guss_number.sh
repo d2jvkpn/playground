@@ -5,9 +5,9 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 min_range=1; max_range=100
 max_times=${1:-7}
 
-target=$((RANDOM % ($max_range - $min_range + 1) + $min_range))
 echo "==> 欢迎参加数字猜谜游戏(max_times=${max_times})！"
 
+target=$((RANDOM % ($max_range - $min_range + 1) + $min_range))
 n=1
 while (($n <= $max_times)); do
     n=$((n+1))
@@ -37,6 +37,6 @@ while (($n <= $max_times)); do
 done
 
 [ $n -gt $max_times ] && {
-  >&2 echo '!!! '"你已经猜了 $max_times 次，游戏结束！"
-  exit 1
+    >&2 echo '!!! '"你已经猜了 $max_times 次，游戏结束！"
+    exit 1
 }
