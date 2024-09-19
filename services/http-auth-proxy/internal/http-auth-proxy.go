@@ -13,13 +13,14 @@ import (
 	"time"
 
 	"github.com/d2jvkpn/gotk"
+	"github.com/rs/cors"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
 
 type Config struct {
 	Service        string   `mapstructure:"service"`
-	Cors           string   `mapstructure:"cors"`
+	AllowOrigins   []string `mapstructure:"allow_origins"`
 	PassWithPrefix []string `mapstructure:"pass_with_prefix"`
 
 	Tls  bool   `mapstructure:"tls"`
@@ -52,7 +53,7 @@ func NewProxyServer(vp *viper.Viper, logger *zap.Logger, opts ...func(*http.Serv
 		cert   tls.Certificate
 	)
 
-	vp.SetDefault("cors", "*")
+	vp.SetDefault("cors", []string{"*"})
 	vp.SetDefault("real_ip_header", "X-Real-IP")
 	vp.Set("basic_auth.enable", "true")
 
@@ -102,19 +103,6 @@ func NewProxyServer(vp *viper.Viper, logger *zap.Logger, opts ...func(*http.Serv
 }
 
 func (sps *ProxyServer) Handle(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "OPTIONS" {
-		header := w.Header()
-		header.Set("Access-Control-Allow-Origin", sps.config.Cors)
-		header.Set("Access-Control-Expose-Headers", "Content-Type, Authorization")
-
-		header.Set("Access-Control-Expose-Headers", "Access-Control-Allow-Origin, "+
-			"Access-Control-Allow-Headers, Content-Type, Content-Length")
-
-		header.Set("Access-Control-Allow-Credentials", "true")
-		header.Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-		return
-	}
-
 	var (
 		msg        string
 		remoteAddr string
@@ -214,8 +202,9 @@ func (sps *ProxyServer) handle(w http.ResponseWriter, r *http.Request) {
 
 func (sps *ProxyServer) Serve(addr string) (shutdown func() error, err error) {
 	var (
-		listener net.Listener
-		mux      *http.ServeMux
+		listener   net.Listener
+		handleCors *cors.Cors
+		mux        *http.ServeMux
 	)
 
 	if listener, err = net.Listen("tcp", addr); err != nil {
@@ -225,7 +214,14 @@ func (sps *ProxyServer) Serve(addr string) (shutdown func() error, err error) {
 	mux = http.NewServeMux()
 	// mux.Handle("/", handler)
 	mux.HandleFunc("/", sps.Handle)
-	sps.server.Handler = mux
+
+	handleCors = cors.New(cors.Options{
+		AllowedOrigins:   sps.config.AllowOrigins,
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"},
+		AllowCredentials: true,
+	})
+
+	sps.server.Handler = handleCors.Handler(mux)
 
 	shutdown = func() error {
 		var err error

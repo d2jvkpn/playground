@@ -5,7 +5,7 @@ version: 0.2.0
 config: |
   http_auth_proxy:
     service: http://localhost:8000
-    cors: "*"
+    allow_origins: ["*"]
     tls: false
     # cert: "configs/server.cert"
     # key: "configs/server.key"

@@ -14,7 +14,7 @@ A simple HTTP authorization proxy implementing basic authentication.
 ```yaml
 http_auth_proxy:
   service: http://127.0.0.1:8000
-  cors: "*"
+  allow_origins: ["*"]
   # pass_with_prefix: ["GET@/assets/"]
   pass_with_prefix: []
   tls: false
