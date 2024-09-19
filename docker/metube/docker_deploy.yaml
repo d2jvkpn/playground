@@ -19,7 +19,7 @@ services:
     user: ${USER_UID}:${USER_GID}
     depends_on: ["metube"]
     networks: ["net"]
-    ports: ["127.0.0.1:4042:4042"]
+    ports: ["4042:4042"]
     volumes:
     - ./configs/:/app/configs/:ro
     - ./logs/:/app/logs/
