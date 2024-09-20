@@ -6,6 +6,6 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 export USER_UID=$(id -u) USER_GID=$(id -g)
 
-mkdir -p logs configs data/metube data/caddy/data data/caddy/config
+mkdir -p logs data/metube configs
 
 envsubst < docker_deploy.yaml > docker-compose.yaml

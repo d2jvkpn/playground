@@ -1,9 +1,9 @@
 version: "3"
 
 services:
-  metube-app:
+  metube:
     image: ghcr.io/alexta69/metube:latest
-    container_name: metube-app
+    container_name: metube
     # restart: unless-stopped
     restart: always
     user: ${USER_UID}:${USER_GID}
@@ -12,21 +12,23 @@ services:
     volumes:
     - ./data/metube:/downloads
 
-  metube-caddy:
-    image: caddy:2-alpine
-    container_name: metube-caddy
+  metube-auth:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy:dev
+    container_name: metube-auth
     restart: always
     user: ${USER_UID}:${USER_GID}
-    depends_on: ["metube-app"]
+    depends_on: ["metube"]
     networks: ["net"]
     ports: ["4042:4042"]
     volumes:
-    - ./configs:/app/configs
-    - ./logs:/app/logs
-    - ./data/caddy/data:/data
-    - ./data/caddy/config:/config
-    # /etc/caddy/Caddyfile
-    command: ["caddy", "run", "--config=/app/configs/caddy.conf", "--adapter=caddyfile"]
+    - ./configs/:/app/configs/:ro
+    - ./logs/:/app/logs/
+    command:
+    - ./target/main
+    - serve
+    - --app=metube_auth
+    - --config=configs/metube-auth.yaml
+    - --addr=:4042
 
 networks:
   net: { name: metube, driver: bridge, external: false }
