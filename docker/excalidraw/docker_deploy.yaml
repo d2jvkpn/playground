@@ -1,13 +1,29 @@
 version: '3'
 
 services:
-  excalidraw:
+  excalidraw-app:
     image: excalidraw/excalidraw:latest
-    container_name: excalidraw
+    container_name: excalidraw-app
     restart: always
-    network_mode: bridge
-    # networks: ["net"]
-    ports: ["127.0.0.1:${HTTP_Port}:80"]
+    # network_mode: bridge
+    networks: ["net"]
+    # ports: ["127.0.0.1:${HTTP_Port}:80"]
 
-# networks:
-#   net: { name: "excalidraw", driver: "bridge", external: false }
+  excalidraw-caddy:
+    image: caddy:2-alpine
+    container_name: excalidraw-caddy
+    restart: always
+    user: ${USER_UID}:${USER_GID}
+    depends_on: ["excalidraw-app"]
+    networks: ["net"]
+    ports: ["${HTTP_Port}:${HTTP_Port}"]
+    volumes:
+    - ./configs:/app/configs
+    - ./logs:/app/logs
+    - ./data/caddy/data:/data
+    - ./data/caddy/config:/config
+    # /etc/caddy/Caddyfile
+    command: ["caddy", "run", "--config=/app/configs/caddy.conf", "--adapter=caddyfile"]
+
+networks:
+  net: { name: excalidraw, driver: bridge, external: false }
