@@ -10,7 +10,7 @@ command -v yq > /dev/null ||  { echo "can't find yq"; exit 1; }
 message="$*"
 
 #### 2.
-yaml=${yaml:-configs/vocechat.yaml}
+yaml=${yaml:-configs/local.yaml}
 server=$(yq .server $yaml)
 api_key=$(yq .bot.api_key $yaml)
 send_to_user=$(yq .bot.send_to_user $yaml)
