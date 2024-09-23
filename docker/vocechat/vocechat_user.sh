@@ -12,9 +12,9 @@ message="$*"
 #### 2.
 yaml=${yaml:-configs/vocechat.yaml}
 server=$(yq .server $yaml)
-email=$(yq .account.email $yaml)
-password=$(yq .account.password $yaml)
-send_to_user=$(yq .account.send_to_user $yaml)
+email=$(yq .user.email $yaml)
+password=$(yq .user.password $yaml)
+send_to_user=$(yq .user.send_to_user $yaml)
 
 ua="Mozilla/5.0 Gecko/20100101 Firefox/130.0"
 
