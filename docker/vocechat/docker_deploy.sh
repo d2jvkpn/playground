@@ -2,14 +2,13 @@
 set -eu -o pipefail
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-#### docker run
-docker run -d --restart=always -p 3000:3000 --name vocechat_app privoce/vocechat-server:latest
+export HTTP_Port=$1
 
-#### copy default config from container
-docker run --rm -it --name=vocechat_tmp privoce/vocechat-server:latest sh
-docker cp vocechat_tmp:/home/vocechat-server/config ./
+mkdir -p data/vocechat/data
 
-#### docker-compose
-export HTTP_Port=2000
 envsubst < docker_deploy.yaml > docker-compose.yaml
+
+exit
 docker-compose up -d
+
+docker cp vocechat:/home/vocechat-server/config data/vocechat/

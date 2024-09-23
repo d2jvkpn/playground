@@ -8,5 +8,5 @@ services:
     ports: ["127.0.0.1:${HTTP_Port}:3000"]
     container_name: vocechat
     volumes:
-    - ./data/vocechat/data:/home/vocechat-server/data
-    # command: ["--network.frontend_url", "https://vocechat.yourdomain.com"]
+    - ./config:/home/vocechat-server/config
+    - ./data/vocechat:/home/vocechat-server/data
