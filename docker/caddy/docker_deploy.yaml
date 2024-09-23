@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy
+    restart: always
+    user: ${USER_UID}:${USER_GID}
+    networks: ["net"]
+    ports: ["${HTTP_Port}:${HTTP_Port}"]
+    volumes:
+    - ./configs:/app/configs
+    - ./logs:/app/logs
+    - ./data/caddy/data:/data
+    - ./data/caddy/config:/config
+    # /etc/caddy/Caddyfile
+    command: ["caddy", "run", "--config=/app/configs/caddy.conf", "--adapter=caddyfile"]
+
+networks:
+  net: { name: caddy, driver: bridge, external: false }
