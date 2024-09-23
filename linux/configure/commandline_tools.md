@@ -1,6 +1,6 @@
 # Commandlin Tools
 
-#### Rust
+#### 1. Rust
 1. exa
 ```bash
 cargo install exa
@@ -27,7 +27,14 @@ alias find='fd'
 
 5. dufs
 
-#### Golang
+#### 2. Golang
 1. yq
 2. plow
 3. duf
+
+
+#### 3.
+1. btop
+```bash
+sudo apt install btop
+```
