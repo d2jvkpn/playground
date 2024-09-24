@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  excalidraw-app:
+  excalidraw:
     image: excalidraw/excalidraw:latest
     container_name: excalidraw-app
     restart: always
@@ -9,12 +9,12 @@ services:
     networks: ["net"]
     # ports: ["127.0.0.1:${HTTP_Port}:80"]
 
-  excalidraw-caddy:
+  caddy:
     image: caddy:2-alpine
     container_name: excalidraw-caddy
     restart: always
     user: ${USER_UID}:${USER_GID}
-    depends_on: ["excalidraw-app"]
+    # depends_on: ["excalidraw"]
     networks: ["net"]
     ports: ["${HTTP_Port}:${HTTP_Port}"]
     volumes:

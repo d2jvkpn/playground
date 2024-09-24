@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  metube-app:
+  metube:
     image: ghcr.io/alexta69/metube:latest
     container_name: metube-app
     # restart: unless-stopped
@@ -12,12 +12,12 @@ services:
     volumes:
     - ./data/metube:/downloads
 
-  metube-caddy:
+  caddy:
     image: caddy:2-alpine
     container_name: metube-caddy
     restart: always
     user: ${USER_UID}:${USER_GID}
-    depends_on: ["metube-app"]
+    # depends_on: ["metube"]
     networks: ["net"]
     ports: ["4042:4042"]
     volumes:
