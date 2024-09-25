@@ -1,6 +1,24 @@
 version: "3"
 
 services:
+  excalidraw:
+    image: excalidraw/excalidraw:latest
+    container_name: excalidraw
+    restart: always
+    networks: ["net"]
+    # ports: ["127.0.0.1:${HTTP_Port}:80"]
+
+  metube:
+    image: ghcr.io/alexta69/metube:latest
+    container_name: metube
+    # restart: unless-stopped
+    restart: always
+    user: ${USER_UID}:${USER_GID}
+    networks: ["net"]
+    # ports: ["8081:8081"]
+    volumes:
+    - ./data/metube:/downloads
+
   caddy:
     image: caddy:2-alpine
     container_name: caddy
