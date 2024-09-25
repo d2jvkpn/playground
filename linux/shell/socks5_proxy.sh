@@ -2,9 +2,9 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-show_help() {
+function show_help() {
     >&2 echo "Usage: $(basename $0)"
-    >&2 echo "    address=127.0.0.1:1081 bash socks5_proxy.sh remote_host"
+    >&2 echo "    socks5_proxy.sh remote_host [127.0.0.1:1081]"
 }
 
 if [ $# -eq 0 ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
@@ -12,8 +12,8 @@ if [ $# -eq 0 ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
     exit 0
 fi
 
-remote_host=$1
-address=${2:-127.0.0.1:1081}
+remote_host="$1"
+address="${2:-127.0.0.1:1081}"
 
 [ ! -z "$(netstat -tulpn 2>/dev/null | grep -w "$address")" ] && {
     >&2 echo '!!!'" address is occupied: $address"
@@ -30,6 +30,7 @@ ssh -NC -D "$address" \
   "$remote_host"
 
 exit
-####
+
 chromium --disable-extensions --proxy-server="socks5://127.0.0.1:1081"
+
 firefox -p proxy
