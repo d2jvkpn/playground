@@ -2,6 +2,16 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
+show_help() {
+    >&2 echo "Usage: $(basename $0)"
+    >&2 echo "    address=127.0.0.1:1081 bash socks5_proxy.sh remote_host"
+}
+
+if [ $# -eq 0 ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+    show_help
+    exit 0
+fi
+
 remote_host=$1
 address=${2:-127.0.0.1:1081}
 
@@ -10,7 +20,7 @@ address=${2:-127.0.0.1:1081}
     exit 0
 }
 
->&2 echo "==> socks5 proxy: address=$address, remote_host=$remote_host"
+>&2 echo "==> socks5 proxy: remote_host=$remote_host, address=$address"
 
 # autossh -f
 ssh -NC -D "$address" \
