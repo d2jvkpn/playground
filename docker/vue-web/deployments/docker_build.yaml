@@ -1,6 +1,19 @@
+app_name: vue-web
+app_version: 1.0.0
+image_name: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-web
+
 web:
   dev:
-    VITE_API_URL: http://127.0.0.1:3062
     branch: dev
-    image_name: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-web
     image_tag: dev
+    VITE_API_URL: https://domain.local:9021
+
+  test:
+    branch: test
+    image_tag: test
+    VITE_API_URL: https://domain.local:9022
+
+  main:
+    branch: main
+    image_tag: main
+    VITE_API_URL: https://domain.local:9020
