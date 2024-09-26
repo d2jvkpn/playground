@@ -26,7 +26,8 @@ while (($n <= $max_times)); do
     ####
     if ((guess == target)); then
         echo "--> 恭喜你，猜对了！目标数字是 $target。"
-        break
+        # break
+        exit 0
     elif ((guess < target)); then
         echo '!!! 太小了，再试一次。'
         min_range=$guess

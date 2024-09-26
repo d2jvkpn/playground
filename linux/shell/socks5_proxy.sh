@@ -23,9 +23,7 @@ address="${2:-127.0.0.1:1081}"
 
 # autossh -f
 ssh -NC -D "$address" \
-  -o "ServerAliveInterval 5" \
-  -o "ServerAliveCountMax 3" \
-  -o "ExitOnForwardFailure yes" \
+  -o "ServerAliveInterval 5" -o "ServerAliveCountMax 3" -o "ExitOnForwardFailure yes" \
   "$remote_host"
 
 exit 0
