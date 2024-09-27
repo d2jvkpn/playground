@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  nextcloud-app:
+  nextcloud:
     image: nextcloud:28-apache
     container_name: nextcloud-app
     restart: always
@@ -16,7 +16,7 @@ services:
     # - MYSQL_PASSWORD=${MYSQL_Password}
     env_file: [./configs/nextcloud.env]
 
-  nextcloud-database:
+  mariadb:
     image: mariadb:11
     container_name: nextcloud-mariadb
     restart: always

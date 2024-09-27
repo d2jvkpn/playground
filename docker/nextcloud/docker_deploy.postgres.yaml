@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  nextcloud-app:
+  nextcloud:
     image: nextcloud:28-apache
     container_name: nextcloud-app
     restart: unless-stopped
@@ -11,13 +11,13 @@ services:
     ports: ["127.0.0.1:${HTTP_Port}:80"]
     volumes: ["./data/nextcloud:/var/www/html"]
     environment:
-    - POSTGRES_HOST=nextcloud-postgres
+    - POSTGRES_HOST=postgres
     - POSTGRES_USER=nextcloud
     - POSTGRES_DB=nextcloud
     # - POSTGRES_PASSWORD=${POSTGRES_Password}
     env_file: [./configs/nextcloud.env]
 
-  nextcloud-database:
+  postgres:
     image: postgres:16-alpine
     restart: unless-stopped
     networks: [net]
