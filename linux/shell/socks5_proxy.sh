@@ -28,6 +28,13 @@ ssh -NC -D "$address" \
 
 exit 0
 
+https_proxy=socks5://127.0.0.1:1081 git pull
+
+https_proxy=socks5://127.0.0.1:1081 curl -4 https://icanhazip.com
+
+https_proxy=socks5://username:password@127.0.0.1:1081 curl -4 https://icanhazip.com
+
+# neither firefox or chromium support socks5 with auth
 chromium --disable-extensions --incognito --proxy-server="socks5://127.0.0.1:1081"
 
 firefox -p proxy
