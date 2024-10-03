@@ -1,0 +1,11 @@
+# path: ~/.local/share/applications/app.desktop
+# convert app.png -resize 256x256 app.ico
+
+[Desktop Entry]
+Type=Application
+Name=app
+Exec=/path/to/app
+Icon=~/.local/share/applications/app.ico
+Comment=a custom app lanucher
+Terminal=false
+Categories=Utility;

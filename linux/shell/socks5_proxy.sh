@@ -22,8 +22,12 @@ address="${2:-127.0.0.1:1081}"
 >&2 echo "==> socks5 proxy: remote_host=$remote_host, address=$address"
 
 # autossh -f
+# -o "UserKnownHostsFile=~/.ssh/known_hosts"
+# -i ~/.ssh/id_rsa
 ssh -NC -D "$address" \
-  -o "ServerAliveInterval 5" -o "ServerAliveCountMax 3" -o "ExitOnForwardFailure yes" \
+  -o "ServerAliveInterval 5" \
+  -o "ServerAliveCountMax 3" \
+  -o "ExitOnForwardFailure yes" \
   "$remote_host"
 
 exit 0
