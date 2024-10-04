@@ -8,11 +8,19 @@ services:
     networks: ["net"]
     environment:
     - AUTOHEAL_CONTAINER_LABEL=all
+    - AUTOHEAL_INTERVAL=5
+    - AUTOHEAL_START_PERIOD=0
+    - AUTOHEAL_DEFAULT_STOP_TIMEOUT=10
+    - AUTOHEAL_ONLY_MONITOR_RUNNING=false
+    - CURL_TIMEOUT=30
+    - WEBHOOK_URL=""
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   net: { name: local, driver: bridge, external: true }
+
+# https://github.com/willfarrell/docker-autoheal
 
 # docker run -d --name autoheal --restart=always -e AUTOHEAL_CONTAINER_LABEL=all -v /var/run/docker.sock:/var/run/docker.sock willfarrell/autoheal
 
