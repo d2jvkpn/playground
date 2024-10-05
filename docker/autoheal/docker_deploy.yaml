@@ -5,7 +5,8 @@ services:
     restart: always
     image: willfarrell/autoheal
     container_name: autoheal
-    networks: ["net"]
+    network_mode: host
+    # networks: ["net"]
     environment:
     # - AUTOHEAL_CONTAINER_LABEL=all
     - AUTOHEAL_CONTAINER_LABEL=autoheal
@@ -18,8 +19,8 @@ services:
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
 
-networks:
-  net: { name: local, driver: bridge, external: true }
+#networks:
+#  net: { name: local, driver: bridge, external: true }
 
 # https://github.com/willfarrell/docker-autoheal
 
