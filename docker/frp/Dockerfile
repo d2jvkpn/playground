@@ -36,6 +36,8 @@ FROM alpine:3
 ARG APP_Name
 ARG BUILD_Region
 
+LABEL app=${APP_Name}
+
 ENV TZ=${TZ:-Asia/Shanghai}
 ENV APP_Name=${APP_Name}
 ENV BUILD_Region=${BUILD_Region}
