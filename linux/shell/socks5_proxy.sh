@@ -14,6 +14,9 @@ fi
 remote_host="$1"
 address="${2:-127.0.0.1:1081}"
 
+known_hosts=${known_hosts:-~/.ssh/known_hosts}
+identity_file=${identity_file:-~/.ssh/id_rsa}
+
 [ ! -z "$(netstat -tulpn 2>/dev/null | grep -w "$address")" ] && {
     >&2 echo '!!!'" address is occupied: $address"
     exit 0
@@ -21,9 +24,11 @@ address="${2:-127.0.0.1:1081}"
 
 >&2 echo "==> socks5 proxy: remote_host=$remote_host, address=$address"
 
+
 # autossh -f
-# -o "UserKnownHostsFile=~/.ssh/known_hosts"
+# -p 22
 # -i ~/.ssh/id_rsa
+# -o "UserKnownHostsFile ~/.ssh/known_hosts"
 ssh -NC -D "$address" \
   -o "ServerAliveInterval 5" \
   -o "ServerAliveCountMax 3" \
