@@ -2,7 +2,8 @@ version: "3"
 
 services:
   autoheal:
-    image: willfarrell/autoheal    restart: always
+    image: willfarrell/autoheal
+    restart: always
     network_mode: host
     # networks: ["net"]
     container_name: autoheal
