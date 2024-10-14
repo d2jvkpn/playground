@@ -6,18 +6,19 @@ services:
     container_name: nextcloud-app
     restart: unless-stopped
     user: "${USER_UID}:${USER_GID}"
-    depends_on: ["nextcloud-database"]
+    depends_on: ["database"]
     networks: ["net"]
     ports: ["127.0.0.1:${HTTP_Port}:80"]
     volumes: ["./data/nextcloud:/var/www/html"]
     environment:
+    - TZ=Asia/Shanghai
     - POSTGRES_HOST=postgres
     - POSTGRES_USER=nextcloud
     - POSTGRES_DB=nextcloud
     # - POSTGRES_PASSWORD=${POSTGRES_Password}
     env_file: [./configs/nextcloud.env]
 
-  postgres:
+  database:
     image: postgres:16-alpine
     restart: unless-stopped
     networks: [net]
