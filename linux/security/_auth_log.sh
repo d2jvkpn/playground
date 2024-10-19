@@ -38,3 +38,12 @@ journalctl -f
 # 8. 查看所有的认证日志
 journalctl _COMM=sshd
 # cat /var/log/secure
+
+ls \
+  /var/log/syslog \
+  /var/log/messages \
+  /var/log/auth.log \
+  /var/log/secure \
+  /var/log/journal/ \
+  /run/log/journal/ \
+  ~/.bash_history
