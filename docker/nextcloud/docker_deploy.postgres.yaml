@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nextcloud:
-    image: nextcloud:28-apache
+    image: nextcloud:30-apache
     container_name: nextcloud-app
     restart: unless-stopped
     user: "${USER_UID}:${USER_GID}"
@@ -19,7 +19,7 @@ services:
     env_file: [./configs/nextcloud.env]
 
   database:
-    image: postgres:16-alpine
+    image: postgres:17-alpine
     restart: unless-stopped
     networks: [net]
     container_name: nextcloud-postgres
