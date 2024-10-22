@@ -1,10 +1,11 @@
 # Document Title
 ---
-**version**: 0.1.2
-**author**: John Doe
-**date**: 2024-05-03
+**version**: 0.1.0
+**author**: {{author}}
+**date**: {{date}}
 
-#### C01. chapter01
+
+#### C01. chapter1
 1. hello
 - a.
 - b.
@@ -12,6 +13,6 @@
 
 2. world
 
-#### C02. chapter02
+#### C02. chapter2
 
-#### C03. chapter03
+#### C03. chapter3

@@ -1,8 +1,8 @@
 # Document Title
 ---
-**version**: 0.1.2
-**author**: John Doe
-**date**: 2024-05-03
+**version**: 0.1.0
+**author**: {{author}}
+**date**: {{date}}
 
 
 #### P01. Part01
@@ -18,6 +18,3 @@
 
 
 #### P02. Part02
-
-
-#### P03. Part03
