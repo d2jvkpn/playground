@@ -10,6 +10,8 @@ app_dir=~/.local/apps/chatgpt
 mkdir -p $app_dir/data
 # ChatGPT_Token=Your_OPENAI_API_Key
 [ -f $app_dir/env ] && source $app_dir/env
+https_proxy=${https_proxy:-""}
+proxy=""; [ -z "$https_proxy" ] || proxy="-x $https_proxy"
 
 [ $# -eq 0 ] && { >&2 echo "Pass your question as argument(s)!"; exit 1; }
 [ -z "${ChatGPT_Token}" ] && { >&2 echo "ChatGPT_Token is unset"; exit 1; }
@@ -37,7 +39,7 @@ jq -n \
     max_tokens: $max_tokens, temperature: $temperature}' > $ques_file
 
 # -x socks5h://127.0.0.1:1080 --silent
-curl https://api.openai.com/v1/chat/completions \
+curl https://api.openai.com/v1/chat/completions $proxy \
   -H 'Content-Type: application/json' -H "Authorization: Bearer $ChatGPT_Token" \
   -d @$ques_file > $ans_file || { rm $ans_file; exit 1; }
 
