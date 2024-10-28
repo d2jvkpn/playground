@@ -42,9 +42,11 @@ current=$(kubeadm version -o yaml | yq .clientVersion.gitVersion | sed 's/^v//')
 
 mkdir -p k8s_apps/images
 
+
 #### 1. k8s_images
 # kubeadm config images list | xargs -i docker pull {}
 k8s_images=$(kubeadm config images list)
+
 
 #### 2. ingress-nginx and flannel
 for k in baremetal cloud; do
@@ -55,7 +57,7 @@ done
 
 # sed -i "1i # link: $link\n" k8s_apps/ingress-nginx.yaml
 
-ingress_images=$(awk '$1=="image:"{print $2}' k8s_apps/ingress-nginx.yaml | sort -u)
+ingress_images=$(awk '$1=="image:"{print $2}' k8s_apps/ingress-nginx.*.yaml | sort -u)
 
 # https://raw.githubusercontent.com/flannel-io/flannel/v${flannel_version}/Documentation/kube-flannel.yml
 link=https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
@@ -64,12 +66,14 @@ sed -i "1i # link: $link\n" k8s_apps/flannel.yaml
 
 flannel_images=$(awk '$1=="image:"{print $2}' k8s_apps/flannel.yaml | sort -u)
 
+
 #### 3. calico
 link=https://docs.projectcalico.org/manifests/calico.yaml
 wget -O k8s_apps/calico.yaml $link
 sed -i "1i # link: $link\n" k8s_apps/calico.yaml
 
 calico_images=$(awk '$1=="image:"{print $2}' k8s_apps/calico.yaml | sort -u)
+
 
 #### 4. metrics-server
 link=https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
@@ -78,14 +82,22 @@ sed -i "1i # link: $link\n" k8s_apps/metrics-server_components.yaml
 
 metrics_images=$(awk '$1=="image:"{print $2}' k8s_apps/metrics-server_components.yaml | sort -u)
 
-#### 4. yq
+
+#### 5. metallb
+for k in native frr frr-k8s; do
+    wget -O k8s_apps/metallb-${k}.yaml https://raw.githubusercontent.com/metallb/metallb/refs/heads/main/config/manifests/metallb-${k}.yaml
+done
+
+metallb_images=$(awk '$1=="image:"{print $2}' k8s_apps/k8s_apps/metallb-*.yaml | sort -u)
+
+#### 6. yq
 # https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64.tar.gz
 # https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64
 wget -O k8s_apps/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
 chmod a+x k8s_apps/yq
 yq_version=$(./k8s_apps/yq --version | awk '{print $NF}')
 
-#### 5. yaml info
+#### 7. yaml info
 cat > k8s_apps/k8s_apps_download.yaml << EOF
 k8s:
   version: $version
@@ -103,6 +115,10 @@ $(echo "$flannel_images" | sed 's/^/  - image: /')
 metrics-server:
   images:
 $(echo "$metrics_images" | sed 's/^/  - image: /')
+
+metallb-server:
+  images:
+$(echo "$metallb_images" | sed 's/^/  - image: /')
 
 yq:
   version: $yq_version
