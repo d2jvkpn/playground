@@ -5,7 +5,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 export DEBIAN_FRONTEND=nointeractive
 
 # version=1.30.0; node=node01
-# version=$(yq .k8s.version k8s.local/k8s_/download.yaml)
+# version=$(yq .k8s.version k8s.local/k8s_download.yaml)
 version=$1; node=$2; action=$3
 
 case "$action" in

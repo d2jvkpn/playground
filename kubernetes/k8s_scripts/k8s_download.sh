@@ -98,7 +98,7 @@ chmod a+x k8s.local/yq
 yq_version=$(./k8s.local/yq --version | awk '{print $NF}')
 
 #### 7. yaml info
-cat > k8s.local/k8s_/download.yaml << EOF
+cat > k8s.local/k8s_download.yaml << EOF
 k8s:
   version: $version
   images:
@@ -124,4 +124,4 @@ yq:
   version: $yq_version
 EOF
 
-download_images k8s.local/k8s_/download.yaml k8s.local/images
+download_images k8s.local/k8s_download.yaml k8s.local/images
