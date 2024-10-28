@@ -19,13 +19,13 @@ kubectl label node $node_name --overwrite node-role.kubernetes.io/ingress=
 kubectl taint nodes $node_name --overwrite node-role.kubernetes.io/ingress=:NoSchedule
 # kubectl taint nodes $node_name node-role.kubernetes.io/ingress=:NoSchedule-
 
-sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx.yaml |
+sed '/image:/s/@sha256:.*//' k8s_apps/ingress-nginx.cloud.yaml |
   yq 'select(.kind == "Deployment").spec.template.spec.nodeName = "'$node_name'"' |
   yq 'select(.kind == "Deployment").spec.template.spec.tolerations = [{"key": "node-role.kubernetes.io/ingress", "operator": "Exists", "effect": "NoSchedule"}]' |
   yq 'select(.kind == "Service" and .metadata.name == "ingress-nginx-controller").spec.externalIPs = ["'$node_ip'"]' \
-  > k8s_apps/data/ingress-nginx.yaml
+  > k8s_apps/data/ingress-nginx.cloud.yaml
 
-kubectl apply -f k8s_apps/data/ingress-nginx.yaml
+kubectl apply -f k8s_apps/data/ingress-nginx.cloud.yaml
 # kubectl delete -f k8s_apps/data/ingress-nginx.yaml
 
 exit

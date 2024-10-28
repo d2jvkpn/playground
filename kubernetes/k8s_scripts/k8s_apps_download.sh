@@ -47,9 +47,13 @@ mkdir -p k8s_apps/images
 k8s_images=$(kubeadm config images list)
 
 #### 2. ingress-nginx and flannel
-link=https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
-wget -O k8s_apps/ingress-nginx.yaml $link
-sed -i "1i # link: $link\n" k8s_apps/ingress-nginx.yaml
+for k in baremetal cloud; do
+    link=https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/$k/deploy.yaml
+
+    wget -O k8s_apps/ingress-nginx.$k.yaml $link
+done
+
+# sed -i "1i # link: $link\n" k8s_apps/ingress-nginx.yaml
 
 ingress_images=$(awk '$1=="image:"{print $2}' k8s_apps/ingress-nginx.yaml | sort -u)
 
