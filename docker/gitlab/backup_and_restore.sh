@@ -10,6 +10,11 @@ ls data/backups
 grep backup_path config/gitlab.rb
 tar -czf $bk_dir/config.tgz config
 
+cp docker-compose.yaml $bk_dir
+image=$(yq .services.gitlab.image docker-compose.yaml)
+img_file=$bk_dir/$(echo $image | xargs -i basename {} | sed 's/:/_/g').tar
+docker save $image -o $img_file
+pigz -f $img_file
 
 #### 2. backup data
 # docker exec -it gitlab bash
