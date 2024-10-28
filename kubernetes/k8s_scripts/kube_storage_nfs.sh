@@ -11,7 +11,7 @@ name=$1; cap=$2
 node_ip=$(ip route show default | awk '/default/ {print $9}')
 namespace=${namespace:-dev}
 
-mkdir -p k8s_apps/data
+mkdir -p k8s.local/data
 
 #### 1. NFS
 nfs=/data/nfs/$name
@@ -36,7 +36,7 @@ kubectl create ns $namespace &> /dev/null || true
 #### 3. PersistentVolume
 echo "==> Creating PersistentVolume: $name"
 
-cat > k8s_apps/data/pv_$name.yaml << EOF
+cat > k8s.local/data/pv_$name.yaml << EOF
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -50,13 +50,13 @@ spec:
   nfs: { path: /data/nfs/$name, server: $node_ip, readOnly: false }
 EOF
 
-kubectl apply -f k8s_apps/data/pv_$name.yaml
+kubectl apply -f k8s.local/data/pv_$name.yaml
 # kubectl delete pv/$name
 
 #### 4. PersistentVolumeClaim
 echo "==> Creating PersistentVolumeClaim: $name"
 
-cat > k8s_apps/data/pvc_$name.$namespace.yaml << EOF
+cat > k8s.local/data/pvc_$name.$namespace.yaml << EOF
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -71,7 +71,7 @@ spec:
   volumeName: $name
 EOF
 
-kubectl apply -f k8s_apps/data/pvc_$name.$namespace.yaml
+kubectl apply -f k8s.local/data/pvc_$name.$namespace.yaml
 # kubectl -n $namespace delete pvc/$name
 
 # kubectl -n $namespace get pvc --show-labels

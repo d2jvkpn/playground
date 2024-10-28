@@ -6,7 +6,7 @@ export DEBIAN_FRONTEND=nointeractive
 
 #### control-plane
 # version=1.30.0
-# version=$(yq .k8s.version k8s_apps/k8s_apps_download.yaml)
+# version=$(yq .k8s.version k8s.local/k8s_/download.yaml)
 version=$1
 
 #### 

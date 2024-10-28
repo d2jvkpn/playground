@@ -76,7 +76,7 @@ exit
     echo "---"
 
     kubectl -n ingress-nginx get cm/tcp-services -o yaml
-} > k8s_apps/data/ingress-nginx.patch.yaml
+} > k8s.local/data/ingress-nginx.patch.yaml
 
 postgres_port=$(
   kubectl -n ingress-nginx get services/ingress-nginx-controller -o yaml |

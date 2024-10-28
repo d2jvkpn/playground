@@ -6,7 +6,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 # https://metallb.universe.tf/installation/
 
 
-mkdir -p k8s_apps/data
+mkdir -p k8s.local/data
 
 #### 1.
 kubectl create namespace metallb-system
@@ -14,10 +14,10 @@ kubectl create namespace metallb-system
 # https://raw.githubusercontent.com/metallb/metallb/refs/heads/main/config/manifests/metallb-native.yamlhttps://github.com/metallb/metallb/blob/main/config/manifests/metallb-native.yaml
 
 
-kubectl apply -f k8s_apps/data/metallb-native.yaml
+kubectl apply -f k8s.local/data/metallb-native.yaml
 
 #### 2. configmap
-cat > k8s_apps/data/metallb-configmap.yaml <<<EOF
+cat > k8s.local/data/metallb-configmap.yaml <<<EOF
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -32,10 +32,10 @@ data:
       - 192.168.1.240-192.168.1.250
 EOF
 
-kubectl apply -f k8s_apps/data/metallb-configmap.yaml
+kubectl apply -f k8s.local/data/metallb-configmap.yaml
 
 #### 3. load balancer
-cat > k8s_apps/data/metallb-service.yaml <<<EOF
+cat > k8s.local/data/metallb-service.yaml <<<EOF
 apiVersion: v1
 kind: Service
 metadata:
@@ -49,4 +49,4 @@ spec:
   - { protocol: TCP, port: 443, targetPort: 443 }
 EOF
 
-kubectl apply -f k8s_apps/data/metallb-service.yaml
+kubectl apply -f k8s.local/data/metallb-service.yaml

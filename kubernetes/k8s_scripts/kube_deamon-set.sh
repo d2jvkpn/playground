@@ -4,9 +4,9 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # *https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/*
 
-mkdir -p k8s_apps/data
+mkdir -p k8s.local/data
 
-cat > k8s_apps/data/tail-f-hosts.ds.yaml <<EOF
+cat > k8s.local/data/tail-f-hosts.ds.yaml <<EOF
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -39,6 +39,6 @@ spec:
         command: [tail, -f, /etc/hosts]
 EOF
 
-kubectl apply -f k8s_apps/data/tail-f-hosts.ds.yaml
+kubectl apply -f k8s.local/data/tail-f-hosts.ds.yaml
 
 kubectl -n kube-system get pods --selector=name=tail-f-hosts

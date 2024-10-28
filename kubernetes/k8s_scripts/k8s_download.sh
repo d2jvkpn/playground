@@ -40,7 +40,7 @@ current=$(kubeadm version -o yaml | yq .clientVersion.gitVersion | sed 's/^v//')
 # kube_version=$(kubeadm version -o json | jq -r .clientVersion.gitVersion | sed 's/^v//')
 [ "$version" != "$current" ] && { >&2 echo '!!! '"unexpected version: $current"; exit 1; }
 
-mkdir -p k8s_apps/images
+mkdir -p k8s.local/images
 
 
 #### 1. k8s_images
@@ -52,53 +52,53 @@ k8s_images=$(kubeadm config images list)
 for k in baremetal cloud; do
     link=https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/$k/deploy.yaml
 
-    wget -O k8s_apps/ingress-nginx.$k.yaml $link
+    wget -O k8s.local/ingress-nginx.$k.yaml $link
 done
 
-# sed -i "1i # link: $link\n" k8s_apps/ingress-nginx.yaml
+# sed -i "1i # link: $link\n" k8s.local/ingress-nginx.yaml
 
-ingress_images=$(awk '$1=="image:"{print $2}' k8s_apps/ingress-nginx.*.yaml | sort -u)
+ingress_images=$(awk '$1=="image:"{print $2}' k8s.local/ingress-nginx.*.yaml | sort -u)
 
 # https://raw.githubusercontent.com/flannel-io/flannel/v${flannel_version}/Documentation/kube-flannel.yml
 link=https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
-wget -O k8s_apps/flannel.yaml $link
-sed -i "1i # link: $link\n" k8s_apps/flannel.yaml
+wget -O k8s.local/flannel.yaml $link
+sed -i "1i # link: $link\n" k8s.local/flannel.yaml
 
-flannel_images=$(awk '$1=="image:"{print $2}' k8s_apps/flannel.yaml | sort -u)
+flannel_images=$(awk '$1=="image:"{print $2}' k8s.local/flannel.yaml | sort -u)
 
 
 #### 3. calico
 link=https://docs.projectcalico.org/manifests/calico.yaml
-wget -O k8s_apps/calico.yaml $link
-sed -i "1i # link: $link\n" k8s_apps/calico.yaml
+wget -O k8s.local/calico.yaml $link
+sed -i "1i # link: $link\n" k8s.local/calico.yaml
 
-calico_images=$(awk '$1=="image:"{print $2}' k8s_apps/calico.yaml | sort -u)
+calico_images=$(awk '$1=="image:"{print $2}' k8s.local/calico.yaml | sort -u)
 
 
 #### 4. metrics-server
 link=https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-wget -O k8s_apps/metrics-server_components.yaml $link
-sed -i "1i # link: $link\n" k8s_apps/metrics-server_components.yaml
+wget -O k8s.local/metrics-server_components.yaml $link
+sed -i "1i # link: $link\n" k8s.local/metrics-server_components.yaml
 
-metrics_images=$(awk '$1=="image:"{print $2}' k8s_apps/metrics-server_components.yaml | sort -u)
+metrics_images=$(awk '$1=="image:"{print $2}' k8s.local/metrics-server_components.yaml | sort -u)
 
 
 #### 5. metallb
 for k in native frr frr-k8s; do
-    wget -O k8s_apps/metallb-${k}.yaml https://raw.githubusercontent.com/metallb/metallb/refs/heads/main/config/manifests/metallb-${k}.yaml
+    wget -O k8s.local/metallb-${k}.yaml https://raw.githubusercontent.com/metallb/metallb/refs/heads/main/config/manifests/metallb-${k}.yaml
 done
 
-metallb_images=$(awk '$1=="image:"{print $2}' k8s_apps/metallb-*.yaml | sort -u)
+metallb_images=$(awk '$1=="image:"{print $2}' k8s.local/metallb-*.yaml | sort -u)
 
 #### 6. yq
 # https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64.tar.gz
 # https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64
-wget -O k8s_apps/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-chmod a+x k8s_apps/yq
-yq_version=$(./k8s_apps/yq --version | awk '{print $NF}')
+wget -O k8s.local/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+chmod a+x k8s.local/yq
+yq_version=$(./k8s.local/yq --version | awk '{print $NF}')
 
 #### 7. yaml info
-cat > k8s_apps/k8s_apps_download.yaml << EOF
+cat > k8s.local/k8s_/download.yaml << EOF
 k8s:
   version: $version
   images:
@@ -124,4 +124,4 @@ yq:
   version: $yq_version
 EOF
 
-download_images k8s_apps/k8s_apps_download.yaml k8s_apps/images
+download_images k8s.local/k8s_/download.yaml k8s.local/images

@@ -3,7 +3,7 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 #### control-plane
-# version=$(yq .version k8s_apps/k8s.yaml)
+# version=$(yq .version k8s.local/k8s.yaml)
 version=$1 # 1.28.3
 
 ver=v${version%.*} # 1.28

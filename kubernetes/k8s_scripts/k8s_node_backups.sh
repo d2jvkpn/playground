@@ -4,7 +4,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 endpoints=${1:-127.0.0.1:2379}
 
-out_dir=k8s_apps/data/backups_$(date +%FT%H-%M-%S)
+out_dir=k8s.local/data/backups_$(date +%FT%H-%M-%S)
 db=$out_dir/etcd_snapshot.db
 # sudo apt install etcd-client
 

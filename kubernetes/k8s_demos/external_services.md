@@ -64,7 +64,7 @@ psql --username postgres --host 127.0.0.1 --port 2001
 
 #### 3. External databases endpoint
 ```bash
-cat > k8s_apps/data/external_databases.yaml  <<EOF
+cat > k8s.localdata/external_databases.yaml  <<EOF
 apiVersion: v1
 kind: Service
 metadata:
@@ -91,7 +91,7 @@ subsets:
     - { name: mysql, port: 3306 }
 EOF
 
-kubectl apply -f k8s_apps/data/external_databases.yaml
+kubectl apply -f k8s.localdata/external_databases.yaml
 ```
 
 #### 4. Test

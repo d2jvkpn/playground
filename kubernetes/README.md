@@ -2,7 +2,7 @@
 
 #### P01. K8s Cluster
 ```bash
-# bash k8s_scripts/k8s_apps_downloads.sh 1.29.0
+# bash k8s_scripts/k8s_downloads.sh 1.29.0
 # ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {}
 
 bash step01_kvm_nodes.sh k8s-cp{01..03} k8s-node{01..04}

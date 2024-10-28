@@ -3,7 +3,7 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # https://docs.projectcalico.org/manifests/calico.yaml
-mkdir -p k8s_apps/data
+mkdir -p k8s.local/data
 
 # !! calico/node is not ready: BIRD is not ready: BGP not established
 # add to calico.yaml after section "- name: CLUSTER_TYPE..."
@@ -16,6 +16,6 @@ intf=$(ip -o -4 route show to default | awk '{print $5}')
 s10="$(printf ' %.0s' {1..10})"
 
 sed "/k8s,bgp/a\  ${s10}- name: IP_AUTODETECTION_METHOD\n    ${s10}value: \"interface=${intf}\"" \
-  k8s_apps/calico.yaml > k8s_apps/data/calico.yaml
+  k8s.local/calico.yaml > k8s.local/data/calico.yaml
 
-kubectl apply -f k8s_apps/data/calico.yaml
+kubectl apply -f k8s.local/data/calico.yaml

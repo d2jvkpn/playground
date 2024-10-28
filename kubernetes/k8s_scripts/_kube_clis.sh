@@ -77,9 +77,9 @@ kubectl -n prod get secret/$domain
 
 ## update tls
 kubectl -n prod create secret tls/$domain --dry-run=client \
-  --key $prefix.key --cert $prefix.cer -o yaml > k8s_apps/data/$domain.secret.yaml
+  --key $prefix.key --cert $prefix.cer -o yaml > k8s.local/data/$domain.secret.yaml
 
-kubectl apply -f k8s_apps/data/$domain.secret.yaml
+kubectl apply -f k8s.local/data/$domain.secret.yaml
 
 #### setup docker registry
 kubectl create secret docker-registry/"my-registry" \

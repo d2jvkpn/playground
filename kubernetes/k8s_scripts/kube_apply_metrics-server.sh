@@ -11,6 +11,6 @@ awk '
     print "        - --kubelet-insecure-tls";
   }
   {print}' \
-  k8s_apps/metrics-server_components.yaml > k8s_apps/data/metrics-server_components.yaml
+  k8s.local/metrics-server_components.yaml > k8s.local/data/metrics-server_components.yaml
 
-kubectl apply -f k8s_apps/data/metrics-server_components.yaml
+kubectl apply -f k8s.local/data/metrics-server_components.yaml

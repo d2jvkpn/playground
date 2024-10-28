@@ -25,8 +25,8 @@ function creation_on_exit() {
 case $action in
 "download")
     version=$2 # 1.29.0
-    bash k8s_scripts/k8s_apps_download.sh $version
-    ls -al k8s_apps
+    bash k8s_scripts/k8s_download.sh $version
+    ls -al k8s.local
     ;;
 
 "check")
@@ -34,15 +34,15 @@ case $action in
     { command -v yq; command -v ansible; command -v virsh; command -v rsync; } > /dev/null
 
     ####
-    ls k8s_apps/{k8s_apps_download.yaml,flannel.yaml} \
-      k8s_apps/{ingress-nginx.yaml,metrics-server_components.yaml} > /dev/null
+    ls k8s.local/{k8s_download.yaml,flannel.yaml} \
+      k8s.local/{ingress-nginx.yaml,metrics-server_components.yaml} > /dev/null
 
     ls $kvm_dir/{virsh_wait_until.sh,virsh_clone.sh,virsh_delete.sh} > /dev/null
 
     awk '/image: /{
       sub("@sha256.*", "", $NF); sub(":", "_", $NF); sub(".*/", "", $NF);
-      print "k8s_apps/images/"$NF".tar.gz";
-    }' k8s_apps/k8s_apps_download.yaml | xargs -i ls {} > /dev/null
+      print "k8s.local/images/"$NF".tar.gz";
+    }' k8s.local/k8s_download.yaml | xargs -i ls {} > /dev/null
 
     ####
     # echo "Include ~/.ssh/kvm/*.conf" >> ~/.ssh/config
