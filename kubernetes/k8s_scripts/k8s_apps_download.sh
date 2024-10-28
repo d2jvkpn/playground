@@ -88,7 +88,7 @@ for k in native frr frr-k8s; do
     wget -O k8s_apps/metallb-${k}.yaml https://raw.githubusercontent.com/metallb/metallb/refs/heads/main/config/manifests/metallb-${k}.yaml
 done
 
-metallb_images=$(awk '$1=="image:"{print $2}' k8s_apps/k8s_apps/metallb-*.yaml | sort -u)
+metallb_images=$(awk '$1=="image:"{print $2}' k8s_apps/metallb-*.yaml | sort -u)
 
 #### 6. yq
 # https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64.tar.gz
