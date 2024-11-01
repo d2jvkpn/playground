@@ -42,7 +42,6 @@ docker exec gitlab gitlab-ctl stop sidekiq
 docker exec gitlab gitlab-ctl status
 docker exec gitlab ls -lart /var/opt/gitlab/backups
 
-
 #### 4. restore from backup
 mv config/gitlab-secrets.json config/gitlab-secrets.bk.json
 cp gitlab-secrets.json config/
@@ -54,3 +53,12 @@ docker exec gitlab gitlab-ctl restart
 #or docker exec -it gitlab gitlab-rake gitlab:check SANITIZE=true
 
 docker ps gitlab
+
+####
+exit
+docker-compose down
+
+sudo tar -czaf gitlab.$(date +%F).tgz gitlab/
+# sudo tar -caf gitlab.$(date +%F).tgz -I pigz gitlab/
+
+sudo tar --same-owner -xvf gitlab.2024-10-31.tgz

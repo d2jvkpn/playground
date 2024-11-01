@@ -6,8 +6,10 @@ export HTTP_Port=$1 SSH_Port=$2 DOMAIN=$3 HOME=$HOME
 # gitlab work path: $HOME/docker_prod/gitlab
 # nginx work path: $HOME/nginx
 
+mkidr -p config log data
+
 ####
-envsub < nginx_gitlab.tmpl> $HOME/nginx/configs/nginx_gitlab.conf
+envsub < nginx_gitlab.tmpl > $HOME/nginx/configs/nginx_gitlab.conf
 nginx -t && nginx -s reload
 
 ####
