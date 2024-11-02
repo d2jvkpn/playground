@@ -3,10 +3,10 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {} )
 
 # minute hour day_of_month month day_of_week command
-# cron: 0 0 * * * bash ${HOME}/crons/acme_cron.sh
+# cron: 0 0 * * * bash ${HOME}/apps/crons/acme_cron.sh
 
-acme=~/Apps/acme # directory
-target_dir=${target_dir:-~/nginx/certs}
+acme=~/apps/acme # directory
+target_dir=${target_dir:-~/apps/nginx/certs}
 changed="false";
 
 {
