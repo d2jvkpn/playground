@@ -1,16 +1,18 @@
-# path: ~/.bash_aliases
+# path: ~/apps/bash_bash_aliases
+# $: ln -sr ~/apps/bash_bash_aliases ~/.bash_aliases
 
 ####
 export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
 # %Y-%m-%dT%H:%M:%S%:z doesn't work as expected
 export PROMPT_DIRTRIM=2
-export PATH=~/.local/bin:$PATH
 
-for d in $(ls -d ~/Apps/*/ /opt/*/ 2> /dev/null); do
+export PATH=~/.local/bin:$PATH
+for d in $(ls -d ~/apps/*/ /opt/*/ 2> /dev/null); do
     d=${d%/}
     b=$(basename $d)
     [ "${b:0:1}" == "_" ] && continue
     [ -d $d/bin ] && d=$d/bin
+    [ -r $d ] || continue
     export PATH=$d:$PATH
 done
 
