@@ -1,18 +1,22 @@
 version: "3"
 
+networks:
+  net: { name: "gitea", driver: bridge, external: false }
+
 services:
-  gitea-app:
+  gitea:
     image: gitea/gitea:1
     restart: always
+    user: ${USER_UID}:${USER_GID}
     networks: [net]
-    depends_on: ["gitea-postgres"]
-    container_name: gitea-app
+    depends_on: ["postgres"]
+    container_name: gitea
     ports: ["${HTTP_Port}:3000", "${SSH_Port}:22"]
     environment:
     - USER_UID=${USER_UID}
     - USER_GID=${USER_GID}
     - GITEA__database__DB_TYPE=postgres
-    - GITEA__database__HOST=gitea-postgres:5432
+    - GITEA__database__HOST=postgres:5432
     - GITEA__database__NAME=gitea
     - GITEA__database__USER=gitea
     - DISABLE_REGISTRATION=true
@@ -23,8 +27,8 @@ services:
     - /etc/localtime:/etc/localtime:ro
     - ./data/gitea:/data
 
-  gitea-postgres:
-    image: postgres:16-alpine
+  postgres:
+    image: postgres:17-alpine
     restart: always
     networks: ["net"]
     container_name: gitea-postgres
@@ -37,6 +41,3 @@ services:
     env_file: [./configs/gitea.env]
     volumes:
     - ./data/postgres:/var/lib/postgresql/data
-
-networks:
-  net: { name: "gitea", driver: bridge, external: false }

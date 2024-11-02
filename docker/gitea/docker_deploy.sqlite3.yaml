@@ -1,12 +1,16 @@
 version: "3"
 
+networks:
+  net: { name: gitea, driver: bridge, external: false }
+
 services:
-  gitea-sqlite:
+  gitea:
     image: gitea/gitea:1
-    container_name: gitea-sqlite
+    container_name: gitea
     restart: always
-    # networks: [net]
-    network_mode: bridge
+    user: ${USER_UID}:${USER_GID}
+    networks: [net]
+    # network_mode: bridge
     ports: ["3011:3000", "3012:22"]
     environment:
     - USER_UID=${USER_UID}
@@ -15,6 +19,3 @@ services:
     - /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro
     - ./data/gitea:/data
-
-# networks:
-#   net: { name: gitea, driver: bridge, external: false }

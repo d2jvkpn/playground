@@ -14,6 +14,7 @@ password=$(tr -dc "0-9a-zA-Z" < /dev/urandom | fold -w 32 | head -n 1 || true)
 
 [ -s configs/gitea.env ] || \
 cat > configs/gitea.env <<EOF
+GITEA__database__PASSWD=$password
 POSTGRES_PASSWORD=$password
 EOF
 
@@ -33,7 +34,6 @@ docker exec gitea-app ls /data/gitea/conf/app.ini
 cat <<EOF
 [log]
 MODE = file,console
-
 logger.access.MODE = true
 ENABLE_SSH_LOG = true
 LOG_ROTATE = true
