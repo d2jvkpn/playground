@@ -1,10 +1,14 @@
 version: '3'
 
+networks:
+  net: { name: "vocechat", driver: "bridge", external: false }
+
 services:
   vocechat:
     image: privoce/vocechat-server:latest
     restart: always
-    network_mode: bridge
+    # network_mode: bridge
+    networks: [net]
     ports: ["127.0.0.1:${HTTP_Port}:3000"]
     container_name: vocechat
     volumes:
