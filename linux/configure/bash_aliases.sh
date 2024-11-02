@@ -1,5 +1,5 @@
-# path: ~/apps/bash_bash_aliases
-# $: ln -sr ~/apps/bash_bash_aliases ~/.bash_aliases
+# path: ~/apps/bash_aliases
+# $: ln -sr ~/apps/bash_aliases ~/.bash_aliases
 
 ####
 export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
