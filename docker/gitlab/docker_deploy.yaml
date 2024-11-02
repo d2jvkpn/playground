@@ -1,5 +1,9 @@
 version: '3'
 
+## docker network create gitlab
+networks:
+  net: { name: "gitlab", driver: "bridge", external: false }
+
 services:
   gitlab:
     image: gitlab/gitlab-ce:latest
@@ -10,12 +14,10 @@ services:
     # network_mode: bridge
     networks: ["net"]
     ports: ["127.0.0.1:${HTTP_Port}:80", "${SSH_Port}:22"]
-
     volumes:
     - ./config:/etc/gitlab:Z
     - ./log:/var/log/gitlab:Z
     - ./data:/var/opt/gitlab:Z
-
     environment:
       # https://docs.gitlab.com/omnibus/settings/memory_constrained_envs.html
       GITLAB_OMNIBUS_CONFIG: |
@@ -29,7 +31,3 @@ services:
     # nginx['enable'] = true
     # nginx['listen_https'] = false
     # nginx['redirect_http_to_https'] = false
-
-## docker network create gitlab
-networks:
-  net: { name: "gitlab", driver: "bridge", external: false }
