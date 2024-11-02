@@ -3,7 +3,7 @@ version: '3'
 services:
   nextcloud:
     image: nextcloud:30-apache
-    container_name: nextcloud-app
+    container_name: nextcloud
     restart: unless-stopped
     user: "${USER_UID}:${USER_GID}"
     depends_on: ["database"]
@@ -16,7 +16,7 @@ services:
     image: postgres:17-alpine
     restart: unless-stopped
     networks: [net]
-    container_name: nextcloud-postgres
+    container_name: postgres
     environment:
     - TZ=Asia/Shanghai
     - PGTZ=Asia/Shanghai
