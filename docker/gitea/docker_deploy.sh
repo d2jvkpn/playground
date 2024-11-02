@@ -20,7 +20,7 @@ EOF
 export HTTP_Port=$HTTP_Port SSH_Port=$SSH_Port
 export USER_UID=$(id -u) USER_GID=$(id -g)
 
-envsubst < docker_deploy.postgres.yaml > docker-compose.yaml
+envsubst < docker_deploy.yaml > docker-compose.yaml
 
 docker-compose up -d
 sleep 5
@@ -28,7 +28,7 @@ docker-compose logs
 
 exit
 
-docker exec gitea-app ls /data/gitea/conf/app.ini
+docker exec gitea ls /data/gitea/conf/app.ini
 
 cat <<EOF
 [log]
