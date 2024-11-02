@@ -1,13 +1,14 @@
 # path: ~/apps/bash_aliases
 # $: ln -sr ~/apps/bash_aliases ~/.bash_aliases
 
-####
+#### 1.
 export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
 # %Y-%m-%dT%H:%M:%S%:z doesn't work as expected
 export PROMPT_DIRTRIM=2
 
-export PATH=~/.local/bin:$PATH
-for d in $(ls -d ~/apps/*/ /opt/*/ 2> /dev/null); do
+export PATH=~/apps/bin:~/.local/bin:$PATH
+
+for d in $(ls -d ~/apps/x/*/ /opt/*/ 2> /dev/null); do
     d=${d%/}
     b=$(basename $d)
     [ "${b:0:1}" == "_" ] && continue
@@ -16,17 +17,18 @@ for d in $(ls -d ~/apps/*/ /opt/*/ 2> /dev/null); do
     export PATH=$d:$PATH
 done
 
-####
-alias tree1='tree -L 1'
+#### 2.
 alias tree2='tree -L 2'
 alias tree3='tree -L 3'
-alias tree4='tree -L 4'
-alias tree5='tree -L 5'
 
 alias ..='cd ../'
 alias ...='cd ../../'
 alias ....='cd ../../../'
 
+alias quick_nmap='nmap -vv --max-retries=5 -sV -T4 -p-'
+alias quick_rsync='rsync -arvP'
+
+#### 3.
 # sudo apt -y install xclip
 alias setclip='xclip -selection c'
 alias clearclip='echo "" | xclip -selection c'
@@ -47,6 +49,3 @@ alias git_search='git grep -n'
 
 # go path
 [ -d ~/.go/bin ] && export PATH=~/.go/bin:$PATH
-
-alias quick_nmap='nmap -vv --max-retries=5 -sV -T4 -p-'
-alias quick_rsync='rsync -arvP'
