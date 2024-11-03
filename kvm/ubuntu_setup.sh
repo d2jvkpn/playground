@@ -4,6 +4,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 username=${1:-ubuntu}
 time_zone=${time_zone:-Asia/Shanghai}
+home_dir=/home/$username
 
 export DEBIAN_FRONTEND=noninteractive
 [ $(id -u) -ne 0 ] && { >&2 echo "Please run as root"; exit 1; }
@@ -12,22 +13,29 @@ export DEBIAN_FRONTEND=noninteractive
 # hostnamectl hostname node
 # sed -i '/127.0.1.1/s/ .*/ node/' /etc/hosts
 
-mkdir -p /home/$username/Apps/bin
+mkdir -p $home_dir/apps/x
 
-cat >> /home/$username/.bash_aliases <<'EOF'
+if [ ! -f $home_dir/.bash_aliases ]; then
+
+cat > $home_dir/apps/bash_aliases <<'EOF'
 export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
 # %Y-%m-%dT%H:%M:%S%:z doesn't work
 export PROMPT_DIRTRIM=2
-# export PATH=~/.local/bin:$PATH
+export PATH=~/.local/bin:$PATH
 
-for d in $(ls -d ~/Apps/*/ /opt/*/ 2>/dev/null); do
+for d in $(ls -d ~/apps/x/*/ /opt/*/ 2> /dev/null); do
     d=${d%/}
+    b=$(basename $d)
+    [ "${b:0:1}" == "_" ] && continue
     [ -d $d/bin ] && d=$d/bin
+    [ -r $d ] || continue
     export PATH=$d:$PATH
 done
 EOF
 
-chown -R $username:$username /home/$username/.bash_aliases /home/$username/Apps
+    ln -sr $home_dir/apps/bash_aliases $home_dir/.bash_aliases
+    chown -R $username:$username $home_dir/apps $home_dir/.bash_aliases
+fi
 
 echo "$username ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/$username
 # echo -e "\n\n\nPermitRootLogin yes" >> /etc/ssh/sshd_config
