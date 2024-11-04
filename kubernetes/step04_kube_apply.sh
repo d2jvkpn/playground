@@ -41,9 +41,11 @@ ansible $cp_node -a 'kubectl apply -f k8s.local/metallb-native.yaml'
 #   kubectl diff -f - -n kube-system
 
 # actually apply the changes, returns nonzero returncode on errors only
-kubectl get configmap kube-proxy -n kube-system -o yaml | \
-  sed -e "s/strictARP: false/strictARP: true/" | \
+kubectl get configmap kube-proxy -n kube-system -o yaml |
+  sed -e "s/strictARP: false/strictARP: true/" |
   kubectl apply -f - -n kube-system
+
+# https://metallb.universe.tf/configuration/_advanced_ipaddresspool_configuration/
 
 cat > k8s.local/data/metallb-config.yaml <<EOF
 apiVersion: metallb.io/v1beta1
@@ -52,8 +54,11 @@ metadata:
   namespace: metallb-system
   name: local-ip-pool
 spec:
+  # autoAssign: false
   addresses:
   - 192.168.122.240-192.168.122.250
+  # - 192.168.10.0/24
+  # - 192.168.1.15
 
 ---
 apiVersion: metallb.io/v1beta1
