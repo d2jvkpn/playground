@@ -62,3 +62,9 @@ ansible $cp_node -m synchronize -a "mode=pull src=.kube dest=~/"
 sed -i "s#//k8s-control-plane:#//$cp_ip:#" ~/.kube/config
 
 kubectl get ns
+
+kubectl create ns dev
+kubectl config set-context --current --namespace=dev
+
+# kubectl config view --minify -o jsonpath='{..namespace}'
+# kubectl config view | grep namespace
