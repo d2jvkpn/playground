@@ -33,12 +33,12 @@ done
 #### 2. copy assets
 # ansible $target --one-line -m copy -a "src=k8s_scripts dest=./"
 # ansible $target --one-line -m copy -a "src=k8s_demos dest=./"
-# ansible $target --one-line --forks 2 -m copy -a "src=k8s_local dest=./"
+# ansible $target --one-line --forks 2 -m copy -a "src=k8s.local dest=./"
 # rsync -arPv ./k8s.local $target:./
 
 ansible $target --one-line -m synchronize -a "mode=push src=k8s_scripts dest=./"
 ansible $target --one-line -m synchronize -a "mode=push src=k8s_demos dest=./"
-ansible $target --one-line -m synchronize -a "mode=push src=k8s_local dest=./"
+ansible $target --one-line -m synchronize -a "mode=push src=k8s.local dest=./"
 
 ansible $target -m shell --become \
   -a "swapoff --all && sed -i '/swap/d' /etc/fstab && rm -f /swap.img"
