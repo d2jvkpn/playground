@@ -71,7 +71,7 @@ echo "==> Generated configs/k8s_hosts.ini"
 
 exit
 
-cat < configs/k8s_hosts.ini << EOF
+cat < configs/k8s_hosts.ini <<EOF
 k8s-cp01 ansible_host=192.168.122.11 ansible_port=22 ansible_user=ubuntu
 k8s-cp02 ansible_host=192.168.122.12 ansible_port=22 ansible_user=ubuntu
 k8s-cp03 ansible_host=192.168.122.13 ansible_port=22 ansible_user=ubuntu

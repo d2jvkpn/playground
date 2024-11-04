@@ -15,7 +15,7 @@ cp_ip=$(echo "$hosts_yaml" | yq ".$cp_node.ansible_host")
 
 mkdir -p k8s.local/data
 
-cat > ./k8s.local/data/etc_hosts.txt << EOF
+cat > ./k8s.local/data/hosts.txt << EOF
 
 #### kubernetes
 $cp_ip k8s-control-plane
@@ -24,13 +24,11 @@ $(cat configs/k8s_hosts.txt)
 EOF
 
 ansible k8s_all -m file -a "path=./k8s.local/data state=directory"
-# ansible k8s_all -m copy --become -a "src=k8s.local/data/etc_hosts.txt dest=./k8s.local/data/"
+# ansible k8s_all -m copy -a "src=k8s.local/data/hosts.txt dest=./k8s.local/data/"
 
-ansible k8s_all -m synchronize --become \
-  -a "mode=push src=k8s.local/data/etc_hosts.txt dest=./k8s.local/data/"
+ansible k8s_all -m synchronize -a "mode=push src=k8s.local/data/ dest=./k8s.local/data/"
 
-ansible k8s_all -m shell --become -a \
-  'cat k8s.local/data/etc_hosts.txt >> /etc/hosts'
+ansible k8s_all -m shell --become -a 'cat k8s.local/data/hosts.txt >> /etc/hosts'
 
 #### 2. k8s init and join the cluster
 ansible $cp_node -m shell --become -a \
