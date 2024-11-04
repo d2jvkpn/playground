@@ -13,13 +13,11 @@ ansible $cp_node --become -a "bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi
 #### 2. expose k8s cluster port 5432
 ansible $cp_node -a "bash k8s_scripts/kube_tcp-services.sh postgres 5432"
 
-#### 3. sync data
-# rsync -arPv $cp_node:k8s.local/data/ k8s.local/data/
-ansible $cp_node -m synchronize -a "mode=pull src=k8s.local/data/ dest=./k8s.local/data"
+#### 3. deploy an app
+kubectl apply -f k8s_demos/app_nginx.yaml
 
-ansible $cp_node -m synchronize -a "mode=pull src=.kube dest=~/"
+ip_addr=$(kubectl get service/nginx -o yaml | yq .status.loadBalancer.ingress[0].ip)
 
-cp_ip=$(awk -v name=$cp_node '$2==name{print $1}' configs/k8s_hosts.txt)
-sed -i "s#//k8s-control-plane:#//$cp_ip:#" ~/.kube/config
+echo "==> get public ip: $ip_addr"
 
-kubectl get ns
+curl $ip_addr

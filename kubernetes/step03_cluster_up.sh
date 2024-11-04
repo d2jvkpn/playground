@@ -51,3 +51,14 @@ for node in $(ansible k8s_workers --list-hosts | sed '1d'); do
     ansible $cp_node --one-line \
       -a "kubectl label node/$node --overwrite node-role.kubernetes.io/worker="
 done
+
+#### 4. sync data and kube
+# rsync -arPv $cp_node:k8s.local/data/ k8s.local/data/
+ansible $cp_node -m synchronize -a "mode=pull src=k8s.local/data/ dest=./k8s.local/data"
+
+ansible $cp_node -m synchronize -a "mode=pull src=.kube dest=~/"
+
+# cp_ip=$(awk -v name=$cp_node '$2==name{print $1}' configs/k8s_hosts.txt)
+sed -i "s#//k8s-control-plane:#//$cp_ip:#" ~/.kube/config
+
+kubectl get ns
