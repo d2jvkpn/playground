@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx
-  labels: { app: nginx }
+  name: web01
+  labels: { app: web01 }
 spec:
   replicas: 3
   selector:
-    matchLabels: { app: nginx }
+    matchLabels: { app: web01 }
   template:
     metadata:
-      labels: { app: nginx }
+      labels: { app: web01 }
     spec:
       containers:
-      - name: nginx
+      - name: web01
         # image: nginx:1-alpine
         image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/nginx:1-alpine
         ports:
@@ -22,12 +22,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx
-  labels: { app: nginx }
+  name: web01
+  labels: { app: web01 }
 spec:
   # type: ClusterIP
   type: LoadBalancer
-  selector: { app: nginx }
+  selector: { app: web01 }
   ports:
   - protocol: TCP
     port: 80
@@ -37,7 +37,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: nginx
+  name: web01
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/use-regex: "true"
@@ -48,12 +48,12 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-  - host: nginx.example.com
+  - host: web01.k8s.local
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: nginx
+            name: web01
             port: { number: 80 }

@@ -14,9 +14,9 @@ ansible $cp_node --become -a "bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi
 ansible $cp_node -a "bash k8s_scripts/kube_tcp-services.sh postgres 5432"
 
 #### 3. deploy an app
-kubectl apply -f k8s_demos/app_nginx.yaml
+kubectl apply -f k8s_demos/web01.k8s.yaml
 
-ip_addr=$(kubectl get service/nginx -o yaml | yq .status.loadBalancer.ingress[0].ip)
+ip_addr=$(kubectl get service/web01 -o yaml | yq .status.loadBalancer.ingress[0].ip)
 
 echo "==> get public ip: $ip_addr"
 
