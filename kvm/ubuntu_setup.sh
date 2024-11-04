@@ -21,7 +21,7 @@ cat > $home_dir/apps/bash_aliases <<'EOF'
 export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
 # %Y-%m-%dT%H:%M:%S%:z doesn't work
 export PROMPT_DIRTRIM=2
-export PATH=~/.local/bin:$PATH
+# export PATH=~/.local/bin:$PATH
 
 for d in $(ls -d ~/apps/x/*/ /opt/*/ 2> /dev/null); do
     d=${d%/}
