@@ -68,10 +68,9 @@ systemctl enable serial-getty@ttyS0.service
 systemctl start serial-getty@ttyS0.service
 # allow longin "virsh console target" from host machine
 
-#### 4. apt update
+#### 4. apt install
 # update /etc/apt/sources.list
-apt update
-apt -y upgrade
+apt update && apt -y upgrade
 
 apt install -y software-properties-common apt-transport-https ca-certificates \
   lsb-release gnupg net-tools vim tree file pigz curl jq zip duf
@@ -80,5 +79,14 @@ apt install -y software-properties-common apt-transport-https ca-certificates \
 # wget -O Apps/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
 # chmod a+x Apps/bin/yq
 
+
+#### 5. apt remove
+apt clean && apt autoclean
+apt remove
+apt autoremove
+dpkg -l | awk '/^rc/{print $2}' | xargs -i sudo dpkg -P {}
+
 apt remove -y --autoremove snapd
 dpkg -P snapd
+# sudo snap remomve --purge core22
+# sudo snap remove --purge snapd
