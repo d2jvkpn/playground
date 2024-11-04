@@ -21,3 +21,8 @@ ip_addr=$(kubectl get service/web01 -o yaml | yq .status.loadBalancer.ingress[0]
 echo "==> get public ip: $ip_addr"
 
 curl $ip_addr
+
+#### 4. monitor
+kubectl top nodes
+
+kubectl top pods
