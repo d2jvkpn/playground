@@ -40,7 +40,7 @@ fi
 echo "$username ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/$username
 # echo -e "\n\n\nPermitRootLogin yes" >> /etc/ssh/sshd_config
 
-#### 2. disable ubuntu ads
+#### 2. disable ads
 systemctl disable ubuntu-advantage
 pro config set apt_news=false
 
@@ -73,7 +73,7 @@ systemctl start serial-getty@ttyS0.service
 apt update && apt -y upgrade
 
 apt install -y software-properties-common apt-transport-https ca-certificates \
-  lsb-release gnupg net-tools vim tree file pigz curl jq zip duf
+  lsb-release gnupg net-tools vim tree file pigz curl jq zip duf openvpn
 # landscape-common
 
 # wget -O Apps/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
