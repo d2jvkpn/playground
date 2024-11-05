@@ -1,4 +1,6 @@
 # ansible host01,host02,host3 -m reboot --become
+# --inventory=configs/k8s_hosts.ini
+# ansible-playbook reboot-required.yaml -v --extra-vars="host=k8s_all"
 
 - hosts: "{{host}}"
   gather_facts: false

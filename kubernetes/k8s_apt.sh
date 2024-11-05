@@ -17,6 +17,3 @@ ansible k8s_all -m apt --become -a 'clean=yes autoclean=yes autoremove=yes'
 ansible k8s_all -a 'uptime'
 
 ansible k8s_cps[0] -m shell -a "kubectl get pods -A -o wide | sort -k 8"
-
-# --inventory=configs/k8s_hosts.ini
-ansible-playbook reboot-required.ansible.yaml -v --extra-vars="host=k8s_all"
