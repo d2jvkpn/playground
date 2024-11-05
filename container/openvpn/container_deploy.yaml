@@ -1,0 +1,19 @@
+version: '3'
+
+networks:
+  net: { name: "openvpn", driver: bridge, external: false }
+
+services:
+  openvpn:
+    image: kylemanna/openvpn
+    networks: [net]
+    cap_add: [NET_ADMIN]
+    logging:
+      driver: "none"
+    ports: ["${UDP_Port}:1194/udp"]
+    restart: always
+    container_name: openvpn
+    environment:
+    - EASYRSA_KEY_SIZE=4096
+    volumes:
+    - ./data/openvpn/:/etc/openvpn
