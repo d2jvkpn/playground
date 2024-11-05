@@ -13,7 +13,8 @@ cidr=$(yq .networking.podSubnet k8s.local/data/kubeadm-config.yaml)
 
 # kubectl patch node k8s-cp01 -p '{"spec":{"podCIDR":"'"$cidr"'"}}'
 # or
-sed '/"Network"/s#:.*$#: "'"$cidr"'",#' k8s.local/flannel.yaml > k8s.local/data/flannel.yaml
+sed '/"Network"/s#:.*$#: "'"$cidr"'",#' k8s.local/flannel.yaml \
+  > k8s.local/data/flannel.yaml
 
 kubectl apply -f k8s.local/data/flannel.yaml
 
@@ -30,13 +31,14 @@ awk '
     sub("InternalIP,ExternalIP,Hostname", "InternalIP", $0);
     print "        - --kubelet-insecure-tls";
   }
-  {print}' \
-  k8s.local/metrics-server_components.yaml > k8s.local/data/metrics-server_components.yaml
+  {print}' k8s.local/metrics-server_components.yaml \
+  > k8s.local/data/metrics-server_components.yaml
 
 kubectl apply -f k8s.local/data/metrics-server_components.yaml
 
 #### 3. ingress
-sed '/image:/s/@sha256:.*//' k8s.local/ingress-nginx.baremetal.yaml > k8s.local/data/ingress-nginx.baremetal.yaml
+sed '/image:/s/@sha256:.*//' k8s.local/ingress-nginx.baremetal.yaml \
+  > k8s.local/data/ingress-nginx.baremetal.yaml
 
 kubectl apply -f k8s.local/data/ingress-nginx.baremetal.yaml
 # kubectl delete -f k8s.local/data/ingress-nginx.baremetal.yaml
@@ -53,7 +55,9 @@ kubectl -n ingress-nginx get pods -o wide
 
 # https://raw.githubusercontent.com/metallb/metallb/refs/heads/main/config/manifests/metallb-native.yamlhttps://github.com/metallb/metallb/blob/main/config/manifests/metallb-native.yaml
 
-kubectl apply -f k8s.local/metallb-native.yaml
+cp k8s.local/metallb-native.yaml k8s.local/data/
+
+kubectl apply -f k8s.local/data/metallb-native.yaml
 
 # https://metallb.universe.tf/installation/
 # kubectl get configmap kube-proxy -n kube-system -o yaml |
@@ -101,5 +105,4 @@ ansible $cp_node --become -a "bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi
 
 #### 6. monitor
 kubectl top nodes
-
 kubectl top pods
