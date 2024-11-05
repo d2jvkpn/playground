@@ -40,7 +40,7 @@ case $action in
     ls $kvm_dir/{virsh_wait_until.sh,virsh_clone.sh,virsh_delete.sh} > /dev/null
 
     awk '/image: /{
-      sub("@sha256.*", "", $NF); sub(":", "_", $NF); sub(".*/", "", $NF);
+      sub("@sha256.*", "", $NF); sub(":", "_", $NF);
       print "k8s.local/images/"$NF".tar.gz";
     }' k8s.local/k8s_download.yaml | xargs -i ls {} > /dev/null
 
@@ -92,21 +92,14 @@ case $action in
     echo "==> $(date +%FT%T%:z) step03_cluster_up.sh" >> $creation_log
     t0=$(date +%s)
 
-    bash step03_cluster_up.sh k8s-cp01 k8s-node01
+    bash step03_cluster_up.sh k8s-cp01
     echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
 
     ####
     echo "==> $(date +%FT%T%:z) step04_kube_apply.sh" >> $creation_log
     t0=$(date +%s)
 
-    bash step04_kube_apply.sh k8s-cp01 k8s-node01
-    echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
-
-    ####
-    echo "==> $(date +%FT%T%:z) step05_post.sh" >> $creation_log
-    t0=$(date +%s)
-
-    bash step05_post.sh k8s-cp01
+    bash step04_kube_apply.sh k8s-cp01
     echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
 
     creation_msg="done"

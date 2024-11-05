@@ -2,6 +2,7 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
+cp_node=$1
 mkdir -p k8s.local/data
 
 ##### 1. flannel
@@ -56,7 +57,7 @@ kubectl apply -f k8s.local/metallb-native.yaml
 
 # https://metallb.universe.tf/installation/
 # kubectl get configmap kube-proxy -n kube-system -o yaml |
-#   sed -e "s/strictARP: false/strictARP: true/" | \
+#   sed -e "s/strictARP: false/strictARP: true/" |
 #   kubectl diff -f - -n kube-system
 
 # actually apply the changes, returns nonzero returncode on errors only
@@ -91,3 +92,14 @@ spec:
 EOF
 
 kubectl apply -f k8s.local/data/metallb-config.yaml
+
+#### 5. storage
+ansible $cp_node --become -a "bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
+
+# node=k8s-cp02
+# ansible $node -m shell --become -a "namespace=prod bash k8s_scripts/kube_storage_nfs.sh $node 10Gi"
+
+#### 6. monitor
+kubectl top nodes
+
+kubectl top pods

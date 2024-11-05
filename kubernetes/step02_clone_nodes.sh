@@ -2,7 +2,7 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-KVM_Network=${KVM_Network:-default}
+network=${network:-default}
 
 # args: k8s-cp01 k8s-cp{02,03} k8s-node{01..04}
 [ $# -lt 2 ] && { >&2 echo "vm source and target(s) are not provided"; exit 1; }
@@ -42,7 +42,7 @@ log_path = ./logs/ansible.log
 # roles_path = /path/to/roles
 EOF
 
-virsh net-dumpxml $KVM_Network |
+virsh net-dumpxml $network |
   awk "/<host.*name='k8s-/{print}" |
   sed "s#^.*name='##; s#ip='##; s#/>##; s#'##g" |
   awk '{print $2, $1}' > configs/k8s_hosts.txt

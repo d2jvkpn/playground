@@ -2,7 +2,7 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-KVM_Network=${KVM_Network:-default}
+network=${network:-default}
 
 # args: ubuntu k8s-cp01
 vm_src=$1; target=$2
@@ -13,7 +13,7 @@ if [ -z "$(virsh list --all | awk -v vm=$target '$2==vm{print 1}')" ]; then
     shutdown_vm=false bash ../kvm/virsh_clone.sh $vm_src $target
 fi
 
-virsh net-dumpxml $KVM_Network |
+virsh net-dumpxml $network |
   awk "/<host.*name='k8s-/{print}" |
   sed "s#^.*name='##; s#ip='##; s#/>##; s#'##g" |
   awk '{print $2, $1}' > configs/k8s_hosts.txt
