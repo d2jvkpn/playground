@@ -13,8 +13,8 @@ ssh k8s-cp01
 # kubectl -n dev create configmap demo-api --from-file=demo-api/deployments/dev.yaml
 # kubectl create configmap demo-api --from-file=deployments/dev.yaml
 
-kubectl -n dev create configmap demo-api --from-file=demo-api/deployments/dev.yaml \
-  -o yaml --dry-run=client |
+kubectl -n dev create configmap demo-api \
+  --from-file=demo-api/deployments/dev.yaml -o yaml --dry-run=client |
   kubectl apply -f -
 
 kubectl get configmap demo-api -o yaml
@@ -31,7 +31,9 @@ kubectl get pods -l app=demo-api -o=custom-columns=NAME:.metadata.name |
   sed '1d' |
   xargs -i kubectl describe pod/{}
 
-kubectl get pods -l app=demo-api | awk 'NR>1{print $1}' | xargs -i kubectl logs pod/{}
+kubectl get pods -l app=demo-api |
+  awk 'NR>1{print $1}' |
+  xargs -i kubectl logs pod/{}
 
 kubectl scale --replicas=1 deploy/demo-api
 
@@ -85,7 +87,8 @@ kubectl create secret docker-registry k8s.local \
 kubectl apply -f demo-api/deployments/k8s_prod.yaml
 
 #### get image sha256 of containers
-kubectl get pods -l app=demo-api -o json | jq -r '.items[].status.containerStatuses[0].imageID'
+kubectl get pods -l app=demo-api -o json |
+  jq -r '.items[].status.containerStatuses[0].imageID'
 
 kubectl get pods -l app=demo-api -o json |
   jq -r '.items[].status | .hostIP + ", " + .containerStatuses[0].imageID + ", " + .phase'
