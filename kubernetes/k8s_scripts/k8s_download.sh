@@ -17,7 +17,7 @@ function download_images() {
     images=$(awk '/ image:/{sub("@.*", "", $NF); print $NF}' $yf | sort -u)
 
     for img in $images; do
-        base=$(echo $img | sed 's/:/_/')
+        base=$(echo $img | sed 's#/#_#g; s#:#_#g')
         [ -f $save_dir/$base.tar.gz ] && continue
 
         docker pull $img
