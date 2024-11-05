@@ -22,7 +22,7 @@ docker run --rm -it -v $PWD/data/openvpn:/etc/openvpn \
 # Enter pass phrase for /etc/openvpn/pki/private/ca.key: hello
 
 #### 2. deploy
-export UDP_Port=$UDP_Port
+export USER_UID=$(id -u) USER_GID=$(id -g) UDP_Port=$UDP_Port
 envsubst < container_deploy.yaml > docker-compose.yaml
 
 #### 3. run
