@@ -50,7 +50,8 @@ virsh net-dumpxml $network |
 [ -s configs/k8s_hosts.txt ] || { >&2 echo "k8s-xx not found!"; exit 1; }
 
 text=$(
-  awk '{print $2,"ansible_host="$1,"ansible_port=22 ansible_user=ubuntu"}' configs/k8s_hosts.txt
+  awk '{print $2,"ansible_host="$1,"ansible_port=22 ansible_user=ubuntu"}' \
+    configs/k8s_hosts.txt
 )
 
 

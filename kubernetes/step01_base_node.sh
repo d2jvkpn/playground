@@ -25,7 +25,6 @@ n=1
 # while ! ansible $target --one-line -m ping; do
 while ! ssh -o StrictHostKeyChecking=no $target exit; do
     sleep 1
-
     n=$((n+1))
     [ $n -gt 30 ] && { >&2 echo "can't access node $target"; exit 1; }
 done
@@ -50,7 +49,8 @@ version=$(yq .k8s.version k8s.local/k8s_download.yaml)
 
 ansible $target -m shell -a "sudo bash k8s_scripts/k8s_node_install.sh $version"
 
-ansible $target --forks 4 -m shell -a "sudo import_image=true bash k8s_scripts/k8s_apps_install.sh"
+ansible $target --forks 4 -m shell \
+  -a "sudo import_image=true bash k8s_scripts/k8s_apps_install.sh"
 
 ansible $target -m file -a "path=./k8s.local/images state=absent"
 

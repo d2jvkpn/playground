@@ -6,7 +6,11 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 cp_node=$1
 
 # cp_node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
-# cp_node=$(ansible-inventory --list --yaml | yq '.all.children.k8s_cps.hosts | keys | .[0]')
+
+# cp_node=$(
+#   ansible-inventory --list --yaml |
+#   yq '.all.children.k8s_cps.hosts | keys | .[0]'
+# )
 
 #### 1. set hosts
 hosts_yaml=$(ansible-inventory --list --yaml | yq .all.children.k8s_all.hosts)
@@ -35,9 +39,11 @@ ansible $cp_node --one-line -m fetch \
   -a "flat=true src=k8s.local/data/kubeadm-init.yaml dest=k8s.local/data/"
 
 # kubectl join, don't use --become instead sudo
-ansible k8s_workers -m shell -a "sudo $(bash k8s_scripts/k8s_command_join.sh worker)"
+ansible k8s_workers -m shell \
+  -a "sudo $(bash k8s_scripts/k8s_command_join.sh worker)"
 
-ansible k8s_cps[1:] -m shell -a "sudo $(bash k8s_scripts/k8s_command_join.sh control-plane)"
+ansible k8s_cps[1:] -m shell \
+  -a "sudo $(bash k8s_scripts/k8s_command_join.sh control-plane)"
 
 #### 3. post
 ansible k8s_cps -a 'sudo bash k8s_scripts/kube_copy_config.sh root $USER'
@@ -50,7 +56,8 @@ done
 
 #### 4. sync data and kube
 # rsync -arPv $cp_node:k8s.local/data/ k8s.local/data/
-ansible $cp_node -m synchronize -a "mode=pull src=k8s.local/data/ dest=./k8s.local/data"
+ansible $cp_node -m synchronize \
+  -a "mode=pull src=k8s.local/data/ dest=./k8s.local/data"
 
 ansible $cp_node -m synchronize -a "mode=pull src=.kube dest=~/"
 
