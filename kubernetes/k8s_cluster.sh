@@ -19,7 +19,8 @@ function elapsed() {
 }
 
 function creation_on_exit() {
-    date +"==> %FT%T%:z $creation_msg, elapsed $(elapsed $creation_ts)" >> $creation_log
+    date +"==> %FT%T%:z $creation_msg, elapsed $(elapsed $creation_ts)" \
+      >> $creation_log
 }
 
 case $action in
@@ -31,7 +32,12 @@ case $action in
 
 "check")
     ####
-    { command -v yq; command -v ansible; command -v virsh; command -v rsync; } > /dev/null
+    {
+      command -v yq;
+      command -v ansible;
+      command -v virsh;
+      command -v rsync;
+    } > /dev/null
 
     ####
     ls k8s.local/{k8s_download.yaml,flannel.yaml} \
@@ -71,7 +77,9 @@ case $action in
     # bash $0 check
 
     mkdir -p logs
-    echo "================================================================" >> $creation_log
+    echo "================================================================" \
+      >> $creation_log
+
     trap creation_on_exit EXIT
 
     ####

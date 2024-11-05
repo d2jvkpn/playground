@@ -8,7 +8,10 @@ cp_ip=$(hostname -I | awk '{print $1}')
 pod_subnet=${pod_subnet:-10.244.0.0/16}
 
 # version=1.30.0
-version=$(kubeadm version --output=json 2> /dev/null | jq -r .clientVersion.gitVersion)
+version=$(
+  kubeadm version --output=json 2> /dev/null |
+  jq -r .clientVersion.gitVersion
+)
 version=${version#v}
 
 mkdir -p k8s.local/data
@@ -33,7 +36,10 @@ sudo kubeadm init --config=k8s.local/data/kubeadm-config.yaml \
 # kubeadm config print init-defaults
 
 ####
-token=$(grep -o "\-\-token [^ ]*" k8s.local/data/kubeadm-init.out | awk '{print $2; exit}')
+token=$(
+  grep -o "\-\-token [^ ]*" k8s.local/data/kubeadm-init.out |
+  awk '{print $2; exit}'
+)
 
 cert_hash=$(
   grep -o "\-\-discovery-token-ca-cert-hash [^ ]*" k8s.local/data/kubeadm-init.out |

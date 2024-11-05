@@ -15,7 +15,9 @@ ver=v${version%.*} # v1.31
 key_url=https://pkgs.k8s.io/core:/stable:/$ver/deb
 key_file=/etc/apt/keyrings/k8s.$ver.gpg
 
-[ ! -s $key_file ] && { curl -fsSL $key_url/Release.key | sudo gpg --dearmor -o $key_file; }
+[ ! -s $key_file ] && {
+  curl -fsSL $key_url/Release.key | sudo gpg --dearmor -o $key_file;
+}
 
 echo "deb [signed-by=$key_file] $key_url /" |
   sudo tee /etc/apt/sources.list.d/k8s.$ver.list > /dev/null
@@ -25,7 +27,8 @@ function apt_install() {
     apt-get update || return 1
     apt-get -y upgrade || return 1
 
-    apt-get -y install apt-transport-https ca-certificates lsb-release gnupg pigz curl jq \
+    apt-get -y install apt-transport-https ca-certificates \
+      lsb-release gnupg pigz curl jq \
       socat conntrack dnsutils nfs-kernel-server nfs-common nftables \
       etcd-client containerd runc || return 1
 

@@ -6,7 +6,12 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 # flannel_version=${flannel_version:-0.23.0}
 
 # 1.30.0
-version=$(kubeadm version --output json | jq -r .clientVersion.gitVersion | sed 's/^v//')
+version=$(
+  kubeadm version --output json |
+  jq -r .clientVersion.gitVersion |
+  sed 's/^v//'
+)
+
 version=${1:-$version}
 
 function download_images() {
@@ -38,7 +43,10 @@ function download_images() {
 
 current=$(kubeadm version -o yaml | yq .clientVersion.gitVersion | sed 's/^v//')
 # kube_version=$(kubeadm version -o json | jq -r .clientVersion.gitVersion | sed 's/^v//')
-[ "$version" != "$current" ] && { >&2 echo '!!! '"unexpected version: $current"; exit 1; }
+[ "$version" != "$current" ] && {
+  >&2 echo '!!! '"unexpected version: $current";
+  exit 1;
+}
 
 mkdir -p k8s.local/images
 
@@ -57,7 +65,10 @@ done
 
 # sed -i "1i # link: $link\n" k8s.local/ingress-nginx.yaml
 
-ingress_images=$(awk '$1=="image:"{print $2}' k8s.local/ingress-nginx.*.yaml | sort -u)
+ingress_images=$(
+  awk '$1=="image:"{print $2}' k8s.local/ingress-nginx.*.yaml |
+  sort -u
+)
 
 # https://raw.githubusercontent.com/flannel-io/flannel/v${flannel_version}/Documentation/kube-flannel.yml
 link=https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
@@ -80,7 +91,10 @@ link=https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/
 wget -O k8s.local/metrics-server_components.yaml $link
 sed -i "1i # link: $link\n" k8s.local/metrics-server_components.yaml
 
-metrics_images=$(awk '$1=="image:"{print $2}' k8s.local/metrics-server_components.yaml | sort -u)
+metrics_images=$(
+  awk '$1=="image:"{print $2}' k8s.local/metrics-server_components.yaml |
+  sort -u
+)
 
 
 #### 5. metallb

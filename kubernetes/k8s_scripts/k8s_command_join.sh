@@ -10,7 +10,8 @@ token=$(yq .token $yaml_file)
 cert_hash=$(yq .cert_hash $yaml_file)
 cert_key=$(yq .cert_key $yaml_file)
 
-cmd="kubeadm join $cp_endpoint --token ${token} --discovery-token-ca-cert-hash ${cert_hash}"
+cmd="kubeadm join $cp_endpoint --token ${token} \
+  --discovery-token-ca-cert-hash ${cert_hash}"
 
 case "$node_kind" in
 "worker")
