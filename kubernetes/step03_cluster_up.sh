@@ -25,7 +25,7 @@ ansible k8s_all -m synchronize \
   -a "mode=push src=configs/k8s_hosts.txt dest=./k8s.local/data/"
 
 ansible k8s_all -m shell --become \
-  -a 'cat k8s.local/data/k8s_hosts.txt >> /etc/hosts'
+  -a 'sed "1i \\\n#### kuberbetes" k8s.local/data/k8s_hosts.txt >> /etc/hosts'
 
 #### 2. k8s init and join the cluster
 ansible $cp_node -m shell --become -a "bash k8s_scripts/k8s_node_cp.sh $cp_ip:6443"
