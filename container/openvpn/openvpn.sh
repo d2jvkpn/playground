@@ -29,7 +29,7 @@ envsubst < container_deploy.yaml > docker-compose.yaml
 exit
 docker-compose up -d
 
-#### 4. generate client
+#### 4. build client
 container=$(yq .services.openvpn.container_name docker-compose.yaml)
 account=d2jvkpn
 
@@ -41,12 +41,13 @@ docker run -v $PWD/data/openvpn:/etc/openvpn --rm \
 sudo openvpn --config data/$account.ovpn
 # ... Initialization Sequence Completed
 
+#### 5. revoke client
 docker exec -it $container easyrsa revoke $account
 # docker exec $container ls /etc/openvpn/pki/issued
 docker exec -it $container easyrsa gen-crl
 docker restart $container
 # sudo openvpn --config data/$account.ovpn
 
-#### 5. firewall and network
+#### 6. firewall and network
 sudo ufw allow 1194/udp
 sudo sysctl -w net.ipv4.ip_forward=1

@@ -13,8 +13,7 @@ cidr=$(yq .networking.podSubnet k8s.local/data/kubeadm-config.yaml)
 
 # kubectl patch node k8s-cp01 -p '{"spec":{"podCIDR":"'"$cidr"'"}}'
 # or
-sed '/"Network"/s#:.*$#: "'"$cidr"'",#' k8s.local/flannel.yaml \
-  > k8s.local/data/flannel.yaml
+sed '/"Network"/s#:.*$#: "'"$cidr"'",#' k8s.local/flannel.yaml > k8s.local/data/flannel.yaml
 
 kubectl apply -f k8s.local/data/flannel.yaml
 
@@ -95,7 +94,8 @@ spec:
   - local-ip-pool
 EOF
 
-kubectl apply -f k8s.local/data/metallb-config.yaml
+ansible $cp_node -m synchronize -a "mode=push src=k8s.local/data/ dest=./k8s.local/data/"
+ansible $cp_node -m shell -a 'kubectl apply -f k8s.local/data/metallb-config.yaml'
 
 #### 5. storage
 ansible $cp_node --become -a "bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
@@ -105,4 +105,4 @@ ansible $cp_node --become -a "bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi
 
 #### 6. monitor
 kubectl top nodes
-kubectl top pods
+kubectl top pods -A
