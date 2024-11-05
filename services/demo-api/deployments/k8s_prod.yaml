@@ -91,7 +91,7 @@ spec:
       - name: config
         configMap: { name: demo-api }
       - name: local
-        hostPath: { path: "/data/local", type: "DirectoryOrCreate" }
+        hostPath: { path: "/data/k8s/local", type: "DirectoryOrCreate" }
       - name: pvc
         persistentVolumeClaim: { claimName: "k8s-cp01" }
       containers:
@@ -139,4 +139,4 @@ spec:
         - { name: "rpc", containerPort: 5040, protocol: "TCP" }
         # command: [ tail, -f, /etc/hosts ]
         command: ["./target/main"]
-        args: ["-release", "-config=configs/prod.yaml", "-http_addr=0.0.0.0:5030", "-rpc_addr=0.0.0.0:5040"]
+        args: ["-release", "-config=configs/prod.yaml", "-http.addr=0.0.0.0:5030", "-rpc.addr=0.0.0.0:5040"]
