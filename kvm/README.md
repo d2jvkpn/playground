@@ -1,4 +1,4 @@
-### Install Virtual Machines
+# Install Virtual Machines
 ---
 
 #### C01. Install KVM
@@ -40,14 +40,20 @@ virsh net-list
 virsh net-dhcp-leases default
 # rm /var/lib/libvirt/dnsmasq/virbr0.*
 
-addr=$(virsh domifaddr $target | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
+addr=$(
+  virsh domifaddr $target |
+  awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}'
+)
+
 ssh-keygen -f ~/.ssh/known_hosts -R "$addr"
 
-sshpass -f configs/$target.password ssh -o StrictHostKeyChecking=no $username@$addr pwd
-sshpass -f configs/$target.password rsync ubuntu_config.sh $username@$addr:
+sshpass -f configs/$target.password ssh \
+  -o StrictHostKeyChecking=no $username@$addr mkdir -p apps
+
+sshpass -f configs/$target.password rsync ubuntu_setup.sh $username@$addr:apps/
 
 # ssh -o StrictHostKeyChecking=no $username@$addr
-# bash ubuntu_config.sh $target
+# bash ubuntu_setup.sh $target
 ```
 
 #### C04. Config SSH Access from Host
@@ -66,7 +72,10 @@ if [ ! -f $kvm_ssh_key ]; then
     chmod 0400 $kvm_ssh_key
 fi
 
-addr=$(virsh domifaddr $target | awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}')
+addr=$(
+  virsh domifaddr $target |
+  awk '$1!=""{split($NF, a, "/"); addr=a[1]} END{print addr}'
+)
 
 bash virsh_fix_ip.sh $target
 
@@ -75,7 +84,7 @@ ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 record="Include ${HOME}/.ssh/kvm/*.conf"
 [ -z "$(grep -c "$record" ~/.ssh/config)" ] && sed -i "1i $record" ~/.ssh/config
 
-cat > $kvm_ssh_dir/$target.conf << EOF
+cat > $kvm_ssh_dir/$target.conf <<EOF
 Host $target
     HostName      $addr
     User          $username
@@ -89,8 +98,8 @@ EOF
 ssh-copy-id -i $kvm_ssh_key $target
 # ssh $target
 
-scp ubuntu_config.sh $target:
-ssh -t $target sudo ./ubuntu_config.sh $username
+scp ubuntu_setup.sh $target:
+ssh -t $target sudo ./apps/ubuntu_setup.sh $username
 
 virsh shutdown $target
 ```

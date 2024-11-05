@@ -68,6 +68,15 @@ systemctl enable serial-getty@ttyS0.service
 systemctl start serial-getty@ttyS0.service
 # allow longin "virsh console target" from host machine
 
+#### reset machine-id and ssh
+# rm /etc/machine-id
+# dbus-uuidgen --ensure=/etc/machine-id
+
+# rm -v /etc/ssh/ssh_host_*
+# dpkg-reconfigure openssh-server --default-priority
+
+# systemctl restart sshd
+
 #### 4. apt install
 # update /etc/apt/sources.list
 apt update && apt -y upgrade
@@ -82,8 +91,7 @@ apt install -y software-properties-common apt-transport-https ca-certificates \
 
 #### 5. apt remove
 apt clean && apt autoclean
-apt remove
-apt autoremove
+apt remove && apt autoremove
 dpkg -l | awk '/^rc/{print $2}' | xargs -i sudo dpkg -P {}
 
 apt remove -y --autoremove snapd
