@@ -94,7 +94,9 @@ spec:
   - local-ip-pool
 EOF
 
-ansible $cp_node -m synchronize -a "mode=push src=k8s.local/data/ dest=./k8s.local/data/"
+ansible $cp_node -m synchronize \
+  -a "mode=push src=k8s.local/data/ dest=./k8s.local/data/"
+
 ansible $cp_node -m shell -a 'kubectl apply -f k8s.local/data/metallb-config.yaml'
 
 #### 5. storage
