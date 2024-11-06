@@ -2,14 +2,14 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   namespace: kube-system
-  name: hello
-  labels: { k8s-app: hello }
+  name: tail-f-hosts
+  labels: { app: tail-f-hosts }
 spec:
   selector:
-    matchLabels: { name: tail-f-hosts }
+    matchLabels: { app: tail-f-hosts }
   template:
     metadata:
-      labels: { name: tail-f-hosts }
+      labels: { app: tail-f-hosts }
     spec:
       tolerations:
       # these tolerations are to have the daemonset runnable on control plane nodes
@@ -24,7 +24,7 @@ spec:
       volumes:
       - { name: varlog, hostPath: { path: /var/log } }
       containers:
-      - name: hello
+      - name: tail-f-hosts
         image: alpine:latest
         resources:
           limits: { memory: 200Mi }

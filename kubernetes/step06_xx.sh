@@ -20,9 +20,9 @@ echo "==> get public ip: $ip_addr"
 
 curl $ip_addr
 
-#### 4. DaemonSet
+#### 4. daemon set
 # *https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/*
 
-kubectl apply -f k8s_demos/ds_tail-f-hosts.yaml
+kubectl apply -f k8s_demos/daemon-set_tail-f-hosts.yaml
 
-kubectl -n kube-system get pods --selector=name=tail-f-hosts
+kubectl -n kube-system get pods --selector=app=tail-f-hosts

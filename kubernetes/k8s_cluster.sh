@@ -110,9 +110,9 @@ case $action in
     bash step04_kube_apply.sh
     echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
 
-    echo "==> $(date +%FT%T%:z) step04_kube_apply.sh" >> $creation_log
+    echo "==> $(date +%FT%T%:z) step05a_baremetal.sh" >> $creation_log
     t0=$(date +%s)
-    bash step05_baremetal.sh k8s-cp01
+    bash step05a_baremetal.sh k8s-cp01
     echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
 
     creation_msg="done"
