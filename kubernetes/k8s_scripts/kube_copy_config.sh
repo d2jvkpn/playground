@@ -3,9 +3,7 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 if [ $# -gt 1 ]; then
-    for arg in $*; do
-        bash $0 $arg
-    done
+    for arg in $*; do bash $0 $arg; done
     exit 0
 else
     username=$1
