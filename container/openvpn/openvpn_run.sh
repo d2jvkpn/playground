@@ -3,8 +3,8 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 
-vpn_file=${vpn_file:-configs/data.ovpn}
-vpn_auth=${vpn_auth:-configs/openvpn.auth}
+vpn_file=${1:-configs/data.ovpn}
+vpn_auth=${2:-configs/openvpn.auth}
 
 cd ${_path}
 
