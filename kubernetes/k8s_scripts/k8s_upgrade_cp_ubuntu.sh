@@ -5,11 +5,11 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 export DEBIAN_FRONTEND=nointeractive
 
 #### control-plane
-# version=1.30.0
+# version=1.31.2
 # version=$(yq .k8s.version k8s.local/k8s_download.yaml)
 version=$1
 
-#### 
+#### 1.
 apt-get update
 
 # apt-cache madison kubeadm | head || true
@@ -33,7 +33,7 @@ kubeadm upgrade node
 # kubectl -n kube-system get cm kubeadm-config -o yaml
 # kubectl get node/$node -o wide
 
-####
+#### 2.
 apt-mark unhold kubelet kubectl
 # apt-get install -y kubelet=${version}-1.1 kubectl=${version}-1.1
 apt-get upgrade -y kubelet kubectl

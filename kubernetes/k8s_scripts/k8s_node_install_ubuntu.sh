@@ -48,6 +48,10 @@ while ! apt_install; do
     [ $n -gt 5 ] && { >&2 echo '!!!' "operation_failed: apt install"; exit 1; }
 done
 
+apt clean && apt autoclean
+apt remove && apt autoremove
+dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {}
+
 # systemctl disable kubelet
 
 kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
@@ -117,6 +121,16 @@ debug: false
 pull-image-on-create: false
 EOF
 
+#### 5. deleted pods stuck in "Terminating" on LAB K8s v1.30 on Ubuntu 24.04 [workaround]
+# https://forum.linuxfoundation.org/discussion/866759/deleted-pods-stuck-in-terminating-on-lab-k8s-v1-30-on-ubuntu-24-04-workaround
+# https://github.com/containrrr/watchtower/issues/1891
+
+mkdir -p /etc/apparmor.d/disable
+ln -s /etc/apparmor.d/runc /etc/apparmor.d/disable/
+apparmor_parser -R /etc/apparmor.d/runc
+systemctl restart containerd
+
+#### 6. restart containerd
 systemctl restart containerd
 # systemctl status containerd
 # journalctl -fexu containerd

@@ -5,7 +5,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 # yq_version=${yq_version:-4.35.2}
 # flannel_version=${flannel_version:-0.23.0}
 
-# 1.30.0
+# 1.31.2
 version=$(
   kubeadm version --output json |
   jq -r .clientVersion.gitVersion |
