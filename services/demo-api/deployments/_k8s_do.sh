@@ -14,7 +14,7 @@ ssh k8s-cp01
 # kubectl create configmap demo-api --from-file=deployments/dev.yaml
 
 kubectl -n dev create configmap demo-api \
-  --from-file=demo-api/deployments/dev.yaml -o yaml --dry-run=client |
+  --from-file=demo-api/deployments/config_dev.yaml -o yaml --dry-run=client |
   kubectl apply -f -
 
 kubectl get configmap demo-api -o yaml
