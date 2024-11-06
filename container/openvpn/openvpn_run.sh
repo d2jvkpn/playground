@@ -5,8 +5,10 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 vpn_file=${1:-configs/data.ovpn}
 vpn_auth=${2:-configs/openvpn.auth}
+goto=${goto:-false}
 
-# cd "${_path}"
+[[ "$goto" == "true" ]] && cd "${_path}"
+
 sudo openvpn --config "$vpn_file" --auth-user-pass "$vpn_auth"
 
 ####
