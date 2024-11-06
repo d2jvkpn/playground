@@ -19,7 +19,8 @@ elem='"--tcp-services-configmap=$(POD_NAMESPACE)/tcp-services"'
 
 if [ -z "$found" ]; then
     kubectl -n ingress-nginx get deploy/ingress-nginx-controller -o yaml |
-      yq eval '.spec.template.spec.containers[0].args += ['$elem']' > ingress.temp.yaml
+      yq eval '.spec.template.spec.containers[0].args += ['$elem']' \
+      > ingress.temp.yaml
 
     kubectl apply -f ingress.temp.yaml
     rm -f ingress.temp.yaml
@@ -69,10 +70,14 @@ exit
 
 ####
 {
-    kubectl -n ingress-nginx get deploy/ingress-nginx-controller -o yaml | yq 'del .status'
+    kubectl -n ingress-nginx get deploy/ingress-nginx-controller -o yaml |
+      yq 'del .status'
+
     echo "---"
 
-    kubectl -n ingress-nginx get svc/ingress-nginx-controller -o yaml | yq 'del .status'
+    kubectl -n ingress-nginx get svc/ingress-nginx-controller -o yaml |
+      yq 'del .status'
+
     echo "---"
 
     kubectl -n ingress-nginx get cm/tcp-services -o yaml
