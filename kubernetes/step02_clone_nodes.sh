@@ -45,15 +45,16 @@ EOF
 virsh net-dumpxml $network |
   awk "/<host.*name='k8s-/{print}" |
   sed "s#^.*name='##; s#ip='##; s#/>##; s#'##g" |
-  awk '{print $2, $1}' > configs/k8s_hosts.txt
+  awk '{print $2, $1}' > configs/k8s_hosts.temp
 
-[ -s configs/k8s_hosts.txt ] || { >&2 echo "k8s-xx not found!"; exit 1; }
+[ -s configs/k8s_hosts.temp ] || { >&2 echo "k8s-xx not found!"; exit 1; }
 
 text=$(
   awk '{print $2,"ansible_host="$1,"ansible_port=22 ansible_user=ubuntu"}' \
-    configs/k8s_hosts.txt
+    configs/k8s_hosts.temp
 )
 
+rm configs/k8s_hosts.temp
 
 cat > configs/k8s_hosts.ini <<EOF
 $text

@@ -100,7 +100,7 @@ case $action in
     echo "==> $(date +%FT%T%:z) step03_cluster_up.sh" >> $creation_log
     t0=$(date +%s)
 
-    bash step03_cluster_up.sh k8s-cp01
+    bash step03_cluster_up.sh
     echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
 
     ####
@@ -112,7 +112,7 @@ case $action in
 
     echo "==> $(date +%FT%T%:z) step05a_baremetal.sh" >> $creation_log
     t0=$(date +%s)
-    bash step05a_baremetal.sh k8s-cp01
+    bash step05a_baremetal.sh
     echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
 
     creation_msg="done"
@@ -120,7 +120,8 @@ case $action in
 
 "list")
     virsh list --all |
-      awk 'NR==FNR{a[$2]=1; next} FNR<3 || a[$2]{print $0}' configs/k8s_hosts.txt -
+      awk 'NR==FNR && /ansible_/ {a[$1]=1; next} FNR<3 || a[$2]{print $0}' \
+      configs/k8s_hosts.ini -
     ;;
 
 "start")
@@ -138,17 +139,15 @@ case $action in
 "down")
     ansible k8s_all -m shell --become -a 'shutdown -h now' || true
 
-    for node in $(awk '$2 !=""{print $2}' configs/k8s_hosts.txt); do
+    for node in $(awk '/ansible_/{print $1}' configs/k8s_hosts.ini); do
         bash $kvm_dir/virsh_wait_until.sh $node "shut off" 180
     done
     ;;
 
 "erase")
-    for node in $(awk '{print $2}' configs/k8s_hosts.txt); do
+    for node in $(awk '/ansible_/{print $1}' configs/k8s_hosts.ini); do
         bash $kvm_dir/virsh_delete.sh $node || true
     done
-
-    rm configs/{k8s_hosts.ini,k8s_hosts.txt}
     ;;
 
 *)

@@ -3,7 +3,8 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # cp_node=k8s-cp01
-cp_node=$1
+cp_node=$(awk '$1!=""{print $1; exit}' configs/k8s_hosts.ini)
+cp_ip=$(awk '$1!=""{sub(/.*=/, "", $2); print $2; exit}' configs/k8s_hosts.ini)
 
 # cp_node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
 
@@ -12,17 +13,10 @@ cp_node=$1
 #   yq '.all.children.k8s_cps.hosts | keys | .[0]'
 # )
 
-#### 1. set hosts
-hosts_yaml=$(ansible-inventory --list --yaml | yq .all.children.k8s_all.hosts)
-
-cp_ip=$(echo "$hosts_yaml" | yq ".$cp_node.ansible_host")
-
 mkdir -p k8s.local/data
 
+#### 1. set hosts
 ansible k8s_all -m file -a "path=./k8s.local/data state=directory"
-# ansible k8s_all -m copy -a "src=k8s.local/data/hosts.txt dest=./k8s.local/data/"
-# ansible k8s_all -m synchronize \
-#   -a "mode=push src=configs/k8s_hosts.txt dest=./k8s.local/data/"
 
 #### 2. k8s init and join the cluster
 ansible $cp_node -m shell --become -a "bash k8s_scripts/k8s_node_cp.sh $cp_ip:6443"

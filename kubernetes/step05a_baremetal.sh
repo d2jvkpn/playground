@@ -3,7 +3,8 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # cp_node=k8s-cp01
-cp_node=$1
+cp_node=$(awk '$1!=""{print $1; exit}' configs/k8s_hosts.ini)
+cp_ip=$(awk '$1!=""{sub(/.*=/, "", $2); print $2; exit}' configs/k8s_hosts.ini)
 
 #### 1. create a nfs storage
 ansible $cp_node --become -a "bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"

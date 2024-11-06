@@ -3,8 +3,6 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 
-mkdir -p k8s.local/data
-
 ##### 1. apply flannel
 grep -w Network k8s.local/flannel.yaml
 
