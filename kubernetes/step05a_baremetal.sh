@@ -72,6 +72,8 @@ spec:
   - local-ip-pool
 EOF
 
+ansible $cp_node -m shell --become -a "chown -R ubuntu:ubuntu k8s.local"
+
 ansible $cp_node -m synchronize \
   -a "mode=push src=k8s.local/data/ dest=./k8s.local/data/"
 
@@ -83,7 +85,7 @@ kubectl -n ingress-nginx patch svc ingress-nginx-controller \
 
 ingress_ip=$(
   kubectl -n ingress-nginx get services/ingress-nginx-controller -o yaml |
-  yq .status.loadBalancer.ingress[0].ip
+    yq .status.loadBalancer.ingress[0].ip
 )
 
 echo "==> ingress-nginx ip: $ingress_ip"
