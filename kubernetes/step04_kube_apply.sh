@@ -34,22 +34,3 @@ awk '
   > k8s.local/data/metrics-server_components.yaml
 
 kubectl apply -f k8s.local/data/metrics-server_components.yaml
-
-#### 3. ingress
-sed '/image:/s/@sha256:.*//' k8s.local/ingress-nginx.baremetal.yaml \
-  > k8s.local/data/ingress-nginx.baremetal.yaml
-
-kubectl apply -f k8s.local/data/ingress-nginx.baremetal.yaml
-# kubectl delete -f k8s.local/data/ingress-nginx.baremetal.yaml
-
-kubectl -n ingress-nginx get pods -o wide
-
-# kubectl -n ingress-nginx get deploy
-# kubectl -n ingress-nginx get pods --field-selector status.phase=Running -o wide
-# kubectl -n ingress-nginx get svc/ingress-nginx-controller
-
-#### 4. storage
-ansible $cp_node --become -a "bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
-
-# node=k8s-cp02
-# ansible $node -m shell --become -a "namespace=prod bash k8s_scripts/kube_storage_nfs.sh $node 10Gi"

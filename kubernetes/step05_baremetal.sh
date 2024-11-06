@@ -2,7 +2,26 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-#### 1. metallb
+#### 1. create a nfs storage
+ansible $cp_node --become -a "bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
+
+# node=k8s-cp02
+# ansible $node -m shell --become -a "namespace=prod bash k8s_scripts/kube_storage_nfs.sh $node 10Gi"
+
+#### 2. apply ingress baremetal
+sed '/image:/s/@sha256:.*//' k8s.local/ingress-nginx.baremetal.yaml \
+  > k8s.local/data/ingress-nginx.baremetal.yaml
+
+kubectl apply -f k8s.local/data/ingress-nginx.baremetal.yaml
+# kubectl delete -f k8s.local/data/ingress-nginx.baremetal.yaml
+
+kubectl -n ingress-nginx get pods -o wide
+
+# kubectl -n ingress-nginx get deploy
+# kubectl -n ingress-nginx get pods --field-selector status.phase=Running -o wide
+# kubectl -n ingress-nginx get svc/ingress-nginx-controller
+
+#### 3. apply metallb native
 # https://www.cnblogs.com/hahaha111122222/p/17222831.html
 # https://metallb.universe.tf/installation/
 
@@ -24,7 +43,7 @@ kubectl get configmap kube-proxy -n kube-system -o yaml |
 
 # https://metallb.universe.tf/configuration/_advanced_ipaddresspool_configuration/
 
-#### 2. metallb-config
+#### 4. config metallb
 cat > k8s.local/data/metallb-config.yaml <<EOF
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
@@ -54,7 +73,7 @@ ansible $cp_node -m synchronize \
 
 ansible $cp_node -m shell -a 'kubectl apply -f k8s.local/data/metallb-config.yaml'
 
-#### 3. allocate ip for ingress-nginx
+#### 5. allocate ip for ingress-nginx
 kubectl -n ingress-nginx patch svc ingress-nginx-controller \
   -p '{"spec": {"type": "LoadBalancer"}}'
 
@@ -65,6 +84,7 @@ ingress_ip=$(
 
 echo "==> ingress-nginx ip: $ingress_ip"
 
+####
 exit
 # kubectl get svc -n ingress-nginx
 
