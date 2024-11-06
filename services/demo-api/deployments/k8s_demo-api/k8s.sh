@@ -10,19 +10,22 @@ ansible k8s-cp01 -m copy -a 'src=../services/demo-api/deployments dest=./demo-ap
 ssh k8s-cp01
 
 #### Configmap
-# kubectl -n dev create configmap demo-api --from-file=demo-api/deployments/dev.yaml
+# kubectl -n dev create configmap demo-api --from-file=dev.yaml
 # kubectl create configmap demo-api --from-file=deployments/dev.yaml
 
 kubectl -n dev create configmap demo-api \
-  --from-file=demo-api.config.dev.yaml -o yaml --dry-run=client |
+  --from-file=dev.yaml -o yaml --dry-run=client |
   kubectl apply -f -
 
 kubectl get configmap demo-api -o yaml
 
 ##### ClusterIP, NodePort, Deployment, Ingress(http) and HPA
-kubectl apply -f demo-api.k8s.dev.yaml
+kubectl apply -f k8s.dev.yaml
 # kubectl get deploy/demo-api
 # kubectl describe deploy/demo-api
+
+kubectl -n dev get svc
+kubectl -n dev patch svc demo-api -p '{"spec":{"type":"LoadBalancer"}}'
 
 ####
 kubectl get pods -o wide

@@ -81,7 +81,7 @@ ansible $cp_node -m shell -a 'kubectl apply -f k8s.local/data/metallb-config.yam
 
 #### 5. allocate ip for ingress-nginx
 kubectl -n ingress-nginx patch svc ingress-nginx-controller \
-  -p '{"spec": {"type": "LoadBalancer"}}'
+  -p '{"spec":{"type":"LoadBalancer"}}'
 
 ingress_ip=$(
   kubectl -n ingress-nginx get services/ingress-nginx-controller -o yaml |
