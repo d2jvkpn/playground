@@ -2,6 +2,9 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
+# cp_node=k8s-cp01
+cp_node=$1
+
 #### 1. create a nfs storage
 ansible $cp_node --become -a "bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
 

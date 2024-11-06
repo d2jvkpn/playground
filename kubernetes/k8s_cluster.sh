@@ -83,10 +83,10 @@ case $action in
     trap creation_on_exit EXIT
 
     ####
-    echo "==> $(date +%FT%T%:z) step01_kvm_node.sh" >> $creation_log
+    echo "==> $(date +%FT%T%:z) step01_base_node.sh" >> $creation_log
     t0=$(date +%s)
 
-    bash step01_kvm_node.sh $base_vm k8s-cp01
+    bash step01_base_node.sh $base_vm k8s-cp01
     echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
 
     ####
@@ -107,7 +107,12 @@ case $action in
     echo "==> $(date +%FT%T%:z) step04_kube_apply.sh" >> $creation_log
     t0=$(date +%s)
 
-    bash step04_kube_apply.sh k8s-cp01
+    bash step04_kube_apply.sh
+    echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
+
+    echo "==> $(date +%FT%T%:z) step04_kube_apply.sh" >> $creation_log
+    t0=$(date +%s)
+    bash step05_baremetal.sh k8s-cp01
     echo "==> $(date +%FT%T%:z) elapsed: $(elapsed $t0)" >> $creation_log
 
     creation_msg="done"
