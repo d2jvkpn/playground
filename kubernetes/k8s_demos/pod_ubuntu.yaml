@@ -7,7 +7,8 @@ metadata:
 spec:
   containers:
   - name: ubuntu
-    image: ubuntu:22.04
-    command: ["tail", "-f", "/etc/hosts"]
+    image: ubuntu:24.04
     imagePullPolicy: IfNotPresent
+    workingDir: /tmp
+    command: ["tail", "-f", "/etc/hosts"]
   restartPolicy: Always

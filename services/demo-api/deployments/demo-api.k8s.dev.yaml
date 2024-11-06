@@ -170,5 +170,6 @@ spec:
         - { name: "http", containerPort: 5032, protocol: "TCP" }
         - { name: "rpc", containerPort: 5042, protocol: "TCP" }
         # command: [ tail, -f, /etc/hosts ]
+        # workingDir: /app
         command: ["./target/main"]
         args: ["-release", "-config=configs/dev.yaml", "-http.addr=0.0.0.0:5032", "-rpc.addr=0.0.0.0:5042"]
