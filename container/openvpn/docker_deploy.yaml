@@ -5,7 +5,7 @@ networks:
 
 services:
   openvpn:
-    image: kylemanna/openvpn
+    image: kylemanna/openvpn:latest
     networks: [net]
     cap_add: [NET_ADMIN]
     logging:
