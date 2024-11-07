@@ -9,7 +9,7 @@ goto=${goto:-false}
 
 [[ "$goto" == "true" ]] && cd "${_path}"
 
-if [[ "$a" == *".pass" ]]; then
+if [[ "$vpn_file" == *".pass" ]]; then
     sudo openvpn --config "$vpn_file" --askpass "$vpn_auth"
 else
     sudo openvpn --config "$vpn_file" --auth-user-pass "$vpn_auth"
