@@ -3,18 +3,19 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # https://github.com/kylemanna/docker-openvpn
-server=$1
+server=${1:-127.0.0.1}
 UDP_Port=${2:-1194}
 
-#### 1. initialize
-mkdir -p data/openvpn
+export USER_UID=$(id -u) USER_GID=$(id -g) UDP_Port=$UDP_Port
 
-docker run --rm -v $PWD/data/openvpn:/etc/openvpn kylemanna/openvpn:latest \
-  ovpn_genconfig -u udp://$server
+#### 1. initialize
+# rm -r data/openvpn/
+mkdir -p data/openvpn
 
 # -e EASYRSA_KEY_SIZE=4096
 docker run --rm -it -v $PWD/data/openvpn:/etc/openvpn \
-  kylemanna/openvpn:latest ovpn_initpki
+  kylemanna/openvpn:latest \
+  bash -c "ovpn_genconfig -u udp://$server && ovpn_initpki"
 
 # Enter New CA Key Passphrase:
 # Re-Enter New CA Key Passphrase: hello
@@ -22,8 +23,7 @@ docker run --rm -it -v $PWD/data/openvpn:/etc/openvpn \
 # Enter pass phrase for /etc/openvpn/pki/private/ca.key: hello
 
 #### 2. deploy
-export USER_UID=$(id -u) USER_GID=$(id -g) UDP_Port=$UDP_Port
-envsubst < container_deploy.yaml > docker-compose.yaml
+envsubst < docker_deploy.yaml > docker-compose.yaml
 
 #### 3. run
 exit
@@ -33,13 +33,22 @@ docker-compose up -d
 container=$(yq .services.openvpn.container_name docker-compose.yaml)
 account=d2jvkpn
 
-docker exec -it $container easyrsa build-client-full $account nopass
+# docker exec -it $container easyrsa build-client-full $account nopass
+docker exec -it $container easyrsa build-client-full $account
 
-docker run -v $PWD/data/openvpn:/etc/openvpn --rm \
-  kylemanna/openvpn:latest ovpn_getclient $account > data/$account.ovpn
+mkdir -p data/clients
 
-sudo openvpn --config data/$account.ovpn
+docker exec -it $container ovpn_getclient $account > data/clients/$account.ovpn
+
+sudo openvpn --config data/clients/$account.ovpn
 # ... Initialization Sequence Completed
+
+cat > data/clients/${account}_ovpn.pass <<EOF
+123456
+EOF
+
+sudo openvpn --config data/clients/$account.ovpn \
+  --askpass data/clients/${account}_ovpn.pass
 
 #### 5. revoke client
 docker exec -it $container easyrsa revoke $account
