@@ -10,7 +10,6 @@ services:
   postgres:
     image: postgres:17-alpine
     restart: always
-    container_name: ${CONTAINER_Name}
     shm_size: 512m # df -h | grep shm
     # network_mode: bridge
     networks: ["net"]
@@ -21,6 +20,7 @@ services:
       interval: 30s
       timeout: 3s
       retries: 3
+    container_name: ${CONTAINER_Name}
     environment:
     - TZ=Asia/Shanghai
     - PGTZ=Asia/Shanghai
