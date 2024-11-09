@@ -11,3 +11,12 @@ mkdir -p logs/supervisor logs/nginx \
 cp containers.yaml docker-compose.yaml
 
 docker-compose up -d
+
+exit
+SECRET_KEY
+BOOTSTRAP_TOKEN
+
+DB_PASSWORD
+REDIS_PASSWORD
+
+POSTGRES_PASSWORD
