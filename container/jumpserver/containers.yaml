@@ -1,0 +1,76 @@
+version: '3'
+
+networks:
+  net: { name: "jumpserver", driver: "bridge", external: false }
+
+services:
+  jumpserver:
+    image: jumpserver/jms_all:4.3.1
+    depends_on: [postgres, redis]
+    networks: ["net"]
+    ports: ["8080:80", "2222:2222"]
+    container_name: jumpserver-all
+    volumes:
+    - ./data/jumpserver:/opt/jumpserver/data
+    - ./data/koko:/opt/koko/data
+    - ./data/lion:/opt/lion/data
+    - ./data/chen:/opt/chen/data
+    - ./data/download:/opt/download
+    - ./logs/nginx:/var/log/nginx
+    - ./logs/supervior:/var/log/supervior
+    environment:
+      # min length: 50
+      SECRET_KEY: kWQdmdCQKjaWlHYpPhkNQDkfaRulM6YnHctsHLlSPs8287o2kW
+      # min length: 24
+      BOOTSTRAP_TOKEN: KXOeyNgDeTdpeu9q
+      LOG_LEVEL: ERROR
+      DB_ENGINE: postgresql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      # DB_Port: 5432
+      DB_USER: jumpserver
+      DB_NAME: jumpserver
+      DB_PASSWORD: jumpserver
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: jumpserver
+
+  postgres:
+    image: postgres:17-alpine
+    restart: always
+    networks: ["net"]
+    shm_size: 512m # df -h | grep shm
+    container_name: jumpserver-postgres
+    healthcheck:
+      test: pg_isready --username postgres --dbname postgres
+      start_period: 10s
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    environment:
+    - TZ=Asia/Shanghai
+    - PGTZ=Asia/Shanghai
+    - PGDATA=/var/lib/postgresql/data/pgdata
+    - POSTGRES_USER=jumpserver
+    - POSTGRES_DB=jumpserver
+    - POSTGRES_PASSWORD=jumpserver
+    volumes:
+    - ./data/postgres:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    networks: [net]
+    deploy:
+      resources:
+        limits: { cpus: "4", memory: 512M }
+        reservations: { cpus: "0.05", memory: 16M }
+    container_name: jumpserver-redis
+    environment:
+    - TZ=Asia/Shanghai
+    # ALLOW_EMPTY_PASSWORD is recommended only for development.
+    - ALLOW_EMPTY_PASSWORD=no
+    - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    volumes:
+    - ./data/redis:/data:rw
+    command: redis-server /data/redis.conf --loglevel warning --save 30 10
