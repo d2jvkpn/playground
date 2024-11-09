@@ -10,3 +10,9 @@ ssh -o ProxyCommand='nc --proxy-type socks4 --proxy 127.0.0.1:9050 %h %p' target
 ssh -J account1@remote,account2@remote,account2@remote target@remote
 
 ssh -o ProxyCommand="ssh -W %h:%p account@remmote" target@remote
+
+
+ssh-keygen -t rsa -b 2048 -m PEM -P "" -C "ubuntu@localhost" -f kvm.pem
+
+ssh-keygen -t rsa -b 4096 -N "" -f id_rsa
+ssh-keygen -y -f id_rsa > id_rsa.pub
