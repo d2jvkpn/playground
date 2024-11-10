@@ -6,7 +6,7 @@ mkdir -p logs/supervisor logs/nginx \
   data/chen data/download data/jumpserver data/koko data/lion \
   data/postgres data/redis
 
-cp containers.yaml compose.yaml
+cp ${_path}/compose.template.yaml compose.yaml
 
 exit
 cp examples/redis.conf data/redis
