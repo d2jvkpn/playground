@@ -13,22 +13,19 @@ services:
     container_name: jumpserver-all
     volumes:
     - ./data/jumpserver:/opt/jumpserver/data
-    - ./data/koko:/opt/koko/data
-    - ./data/lion:/opt/lion/data
     - ./data/chen:/opt/chen/data
     - ./data/download:/opt/download
+    - ./data/koko:/opt/koko/data
+    - ./data/lion:/opt/lion/data
     - ./logs/nginx:/var/log/nginx
-    - ./logs/supervior:/var/log/supervior
+    - ./logs/supervisor:/var/log/supervisor
     environment:
-      # min length: 50
       SECRET_KEY: kWQdmdCQKjaWlHYpPhkNQDkfaRulM6YnHctsHLlSPs8287o2kW
-      # min length: 24
       BOOTSTRAP_TOKEN: KXOeyNgDeTdpeu9q
       LOG_LEVEL: ERROR
       DB_ENGINE: postgresql
       DB_HOST: postgres
       DB_PORT: 5432
-      # DB_Port: 5432
       DB_USER: jumpserver
       DB_NAME: jumpserver
       DB_PASSWORD: jumpserver
@@ -66,7 +63,6 @@ services:
       resources:
         limits: { cpus: "4", memory: 512M }
         reservations: { cpus: "0.05", memory: 16M }
-    user: 1000:1000
     container_name: jumpserver-redis
     environment:
     - TZ=Asia/Shanghai
