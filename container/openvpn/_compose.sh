@@ -23,7 +23,7 @@ docker run --rm -it -v $PWD/data/openvpn:/etc/openvpn \
 # Enter pass phrase for /etc/openvpn/pki/private/ca.key: hello
 
 #### 2. deploy
-envsubst < containers.yaml > docker-compose.yaml
+envsubst < compose.template.yaml > compose.yaml
 
 #### 3. run
 exit
