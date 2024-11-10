@@ -14,6 +14,7 @@ cp examples/redis.conf data/redis
 docker-compose up -d
 
 exit
+#### jumpserver-all
 # min length: 50
 SECRET_KEY
 # min length: 24
@@ -22,6 +23,8 @@ BOOTSTRAP_TOKEN
 DB_PASSWORD
 REDIS_PASSWORD
 
+#### jumpserver-postgres
 POSTGRES_PASSWORD
 
+#### copy configs of nginx
 docker cp jumpserver-all:/etc/nginx/conf.d configs/
