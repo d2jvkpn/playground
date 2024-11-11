@@ -1,9 +1,0 @@
-names:
-- ip, arp, iptunnel, nameif, route
-- netstat, iftop, iotop, ss, netstat
-- ssh
-- sudo, sftp, scp, apt
-- grep, awk, sed
-- ufw
-- mount, lsof
-- wireguard

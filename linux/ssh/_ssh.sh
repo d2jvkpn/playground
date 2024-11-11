@@ -16,3 +16,8 @@ ssh-keygen -t rsa -b 2048 -m PEM -P "" -C "ubuntu@localhost" -f kvm.pem
 
 ssh-keygen -t rsa -b 4096 -N "" -f id_rsa
 ssh-keygen -y -f id_rsa > id_rsa.pub
+
+#  -P "current_passphrase" -N "new_passphrase"
+ssh-keygen -t ed25519 -m PEM -N "" -C "ubuntu@localhost" -f host.pem
+
+ssh-keygen -y -f host.pem > host.pem.pub
