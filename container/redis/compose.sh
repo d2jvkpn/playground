@@ -27,6 +27,6 @@ io-threads-do-reads yes
 EOF
 
 export USER_UID=$(id -u) USER_GID=$(id -g) REDIS_Port=$REDIS_Port
-envsubst < containers.yaml > docker-compose.yaml
+envsubst < compose.template.yaml > docker-compose.yaml
 
 docker-compose up -d
