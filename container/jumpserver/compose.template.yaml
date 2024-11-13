@@ -65,10 +65,10 @@ services:
         reservations: { cpus: "0.05", memory: 16M }
     container_name: jumpserver-redis
     environment:
-    - TZ=Asia/Shanghai
+      TZ: Asia/Shanghai
     # ALLOW_EMPTY_PASSWORD is recommended only for development.
-    - ALLOW_EMPTY_PASSWORD=no
-    - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+      ALLOW_EMPTY_PASSWORD: no
+      REDIS_DISABLE_COMMANDS: FLUSHDB,FLUSHALL
     volumes:
     - ./data/redis:/data:rw
     command: redis-server /data/redis.conf --loglevel warning --save 30 10
