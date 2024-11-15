@@ -8,6 +8,8 @@ services:
     user: ${USER_UID}:${USER_GID}
     container_name: http_server
     volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
     - ./data:/apps/data
     working_dir: /apps
     command:
