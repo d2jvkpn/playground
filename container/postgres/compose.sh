@@ -7,10 +7,10 @@ function display_usage() {
 Usage of docker_deploy.sh(postgres):
 
 help:
-  ./docker_deploy.sh [help | -h | --help]
+  ./compose.sh [help | -h | --help]
 
 run:
-  ./docker_deploy.sh run [DB_Port:-5432] [CONTAINER_Name:-postgres]
+  ./compose.sh run [DB_Port:-5432] [CONTAINER_Name:-postgres]
 EOF
 }
 
@@ -30,14 +30,15 @@ esac
 export DB_Port=${2:-5432} CONTAINER_Name=${3:-postgres}
 
 ####
-[ -s docker-compose.yaml ] && { >&2 echo "file exists: docker-compose.yaml"; exit 1; }
+[ -s compose.yaml ] && { >&2 echo "file already exists: compose.yaml"; exit 1; }
 
-mkdir -p configs data/postgres/backups/wal_archive data/temp
+mkdir -p configs data/postgres
+# data/postgres/backups/wal_archive data/temp
 
 [ -s configs/postgres.password ] || \
   tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 32 | head -n1 > configs/postgres.password || true
 
-envsubst < ${_path}/docker_deploy.yaml > docker-compose.yaml
+envsubst < ${_path}/compose.template.yaml > compose.yaml
 
 # docker-compose pull
 docker-compose up -d
