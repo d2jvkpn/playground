@@ -7,8 +7,8 @@ services:
     user: ${USER_UID}:${USER_GID}
     container_name: http_server
     volumes:
-    - ./data:/app/data
-    working_dir: /app
+    - ./data:/apps/data
+    working_dir: /apps
     command:
     - python3
     - -m
