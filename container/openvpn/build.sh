@@ -6,4 +6,4 @@ git clone https://github.com/kylemanna/docker-openvpn kylemanna_openvpn.git
 
 cd kylemanna_openvpn.git
 
-docker build -f Dockerfile -t local/kylemanna/openvpn .
+docker build -f Dockerfile -t kylemanna/openvpn:local .
