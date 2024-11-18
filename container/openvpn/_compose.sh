@@ -17,6 +17,13 @@ docker run --rm -it -v $PWD/data/openvpn:/etc/openvpn \
   kylemanna/openvpn:latest \
   bash -c "ovpn_genconfig -u udp://$server && ovpn_initpki"
 
+sudo sed -i "/OVPN_PORT=/s/1194/$UDP_Port/" data/openvpn/ovpn_env.sh
+
+sudo sed -i "/^port /s/1194/$UDP_Port/" data/openvpn/openvpn.conf
+
+echo -e "\n#### custom\nlog-append /etc/openvpn/openvpn.log" |
+  sudo tee -a data/openvpn/openvpn.conf
+
 # Enter New CA Key Passphrase:
 # Re-Enter New CA Key Passphrase: hello
 # Common Name(...): $server
@@ -30,27 +37,32 @@ exit
 docker-compose up -d
 
 #### 4. build client
-container=$(yq .services.openvpn.container_name docker-compose.yaml)
+exit
+
+container=$(yq .services.openvpn.container_name compose.yaml)
 account=d2jvkpn
 
 # docker exec -it $container easyrsa build-client-full $account nopass
 docker exec -it $container easyrsa build-client-full $account
 
-mkdir -p data/clients
+docker exec -it $container ovpn_getclient $account > $account.ovpn
 
-docker exec -it $container ovpn_getclient $account > data/clients/$account.ovpn
-
-sudo openvpn --config data/clients/$account.ovpn
+sudo openvpn --config data/$account.ovpn
 # ... Initialization Sequence Completed
 
-cat > data/clients/${account}_ovpn.pass <<EOF
+#### 5. connect
+exit
+
+cat > ${account}.ovpn.pass <<EOF
 123456
 EOF
 
-sudo openvpn --config data/clients/$account.ovpn \
-  --askpass data/clients/${account}_ovpn.pass
+sudo openvpn --config $account.ovpn --auth-nocache --askpass ${account}.ovpn.pass
+# ... Initialization Sequence Completed
 
-#### 5. revoke client
+#### 6. revoke client
+exit
+
 docker exec -it $container easyrsa revoke $account
 # docker exec $container ls /etc/openvpn/pki/issued
 docker exec -it $container easyrsa gen-crl
@@ -58,5 +70,7 @@ docker restart $container
 # sudo openvpn --config data/$account.ovpn
 
 #### 6. firewall and network
+exit
+
 sudo ufw allow 1194/udp
 sudo sysctl -w net.ipv4.ip_forward=1
