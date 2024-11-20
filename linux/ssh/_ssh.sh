@@ -18,9 +18,9 @@ ssh-keygen -t rsa -b 4096 -N "" -f id_rsa
 ssh-keygen -y -f id_rsa > id_rsa.pub
 
 #  -P "current_passphrase" -N "new_passphrase"
-ssh-keygen -t ed25519 -m PEM -N "" -C "ubuntu@localhost" -f host.pem
+ssh-keygen -t ed25519 -m PEM -N "" -C "ubuntu@localhost" -f host.ssh-ed25519
 
-ssh-keygen -y -f host.pem > host.pem.pub
+ssh-keygen -y -f host.pem > host.ssh-ed25519.pub
 
 
 ssh -o PreferredAuthentications=password -p 22 target@remote

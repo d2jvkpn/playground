@@ -108,3 +108,6 @@ virsh shutdown $target
 ```bash
 bash virsh_clone.sh ubuntu node01 node02 node03
 ```
+
+#### C06. TODO
+1. allocate an ip from the LAN
