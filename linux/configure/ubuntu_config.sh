@@ -76,7 +76,8 @@ sudo sed -Ezi.orig \
 
 sudo /usr/lib/update-notifier/update-motd-updates-available --force
 
-sudo sed -i '/^deb/s/^/#-- /' /var/lib/ubuntu-advantage/apt-esm/etc/apt/sources.list.d/ubuntu-esm-apps.list
+p=/var/lib/ubuntu-advantage/apt-esm/etc/apt/sources.list.d/ubuntu-esm-apps.list
+[ -s "$p" ] && sudo sed -i '/^deb/s/^/#-- /' $p
 
 sudo sed -i '/ENABLED/s/1/0/' /etc/default/motd-news
 #- sudo sed -i '/=motd.dynamic/s/^/#-- /' /etc/pam.d/sshd
