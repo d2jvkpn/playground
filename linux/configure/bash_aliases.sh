@@ -1,5 +1,5 @@
 # path: ~/apps/bash_aliases
-# $: ln -sr ~/apps/bash_aliases ~/.bash_aliases
+# $ ln -sr ~/apps/bash_aliases ~/.bash_aliases
 
 #### 1.
 export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
@@ -25,8 +25,8 @@ alias ..='cd ../'
 alias ...='cd ../../'
 alias ....='cd ../../../'
 
-alias quick_nmap='nmap -vv --max-retries=5 -sV -T4 -p-'
 alias quick_rsync='rsync -arvP'
+alias quick_nmap='nmap -vv --max-retries=5 -sV -T4 -p-'
 
 #### 3.
 # sudo apt -y install xclip
