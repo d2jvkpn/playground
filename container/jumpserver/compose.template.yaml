@@ -5,7 +5,7 @@ networks:
 
 services:
   jumpserver:
-    image: jumpserver/jms_all:4.3.1
+    image: jumpserver/jms_all:4.4.0
     depends_on: [postgres, redis]
     networks: ["net"]
     ports: ["8080:80", "2222:2222"]
@@ -22,7 +22,6 @@ services:
     environment:
       SECRET_KEY: kWQdmdCQKjaWlHYpPhkNQDkfaRulM6YnHctsHLlSPs8287o2kW
       BOOTSTRAP_TOKEN: KXOeyNgDeTdpeu9q
-      LOG_LEVEL: ERROR
       DB_ENGINE: postgresql
       DB_HOST: postgres
       DB_PORT: 5432
@@ -32,6 +31,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: jumpserver
+      LOG_LEVEL: ERROR
 
   postgres:
     image: postgres:17-alpine
@@ -46,12 +46,12 @@ services:
       timeout: 3s
       retries: 3
     environment:
-    - TZ=Asia/Shanghai
-    - PGTZ=Asia/Shanghai
-    - PGDATA=/var/lib/postgresql/data/pgdata
-    - POSTGRES_USER=jumpserver
-    - POSTGRES_DB=jumpserver
-    - POSTGRES_PASSWORD=jumpserver
+      TZ: Asia/Shanghai
+      PGTZ: Asia/Shanghai
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_USER: jumpserver
+      POSTGRES_DB: jumpserver
+      POSTGRES_PASSWORD: jumpserver
     volumes:
     - ./data/postgres:/var/lib/postgresql/data
 

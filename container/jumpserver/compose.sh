@@ -2,9 +2,8 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-mkdir -p logs/supervisor logs/nginx \
-  data/chen data/download data/jumpserver data/koko data/lion \
-  data/postgres data/redis
+mkdir -p logs/supervisor logs/nginx data/postgres data/redis
+  data/chen data/download data/jumpserver data/koko data/lion
 
 cp ${_path}/compose.template.yaml compose.yaml
 
