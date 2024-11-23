@@ -1,12 +1,12 @@
 # path: ~/apps/bash_aliases
 # $ ln -sr ~/apps/bash_aliases ~/.bash_aliases
+# $ mkdir -p ~/apps/x/bin
 
 #### 1.
 export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
 # %Y-%m-%dT%H:%M:%S%:z doesn't work as expected
 export PROMPT_DIRTRIM=2
-
-export PATH=~/.local/bin:$PATH
+# export PATH=~/.local/bin:$PATH
 
 for d in $(ls -d ~/apps/x/*/ /opt/*/ 2> /dev/null); do
     d=${d%/}

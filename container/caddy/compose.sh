@@ -8,7 +8,7 @@ export USER_UID=$(id -u) USER_GID=$(id -g) HTTP_Port=$HTTP_Port
 mkdir -p logs configs
 mkdir -p data/caddy/data data/caddy/config data/metube
 
-envsubst < docker_deploy.yaml > docker-compose.yaml
+envsubst < compose.template.yaml > compose.yaml
 
 exit
 docker-compose pull
