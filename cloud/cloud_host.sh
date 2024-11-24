@@ -31,36 +31,3 @@ echo "ubuntu-$tag ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/custom
 
 echo -e "Port 2222\nPermitRootLogin no" > /etc/ssh/sshd_config.d/custom.conf
 systemctl restart ssh
-
-
-exit
-# aliyun: aegis, aliyun, AssistDaemon
-# path: /usr/local/share/assist-daemon/assist_daemon
-systemctl stop AssistDaemon
-systemctl disable AssistDaemon
-
-# /usr/local/share/aliyun-assist
-systemctl stop aliyun
-systemctl disable aliyun
-
-# /usr/local/aegis
-systemctl stop aegis
-# !!! can't disable this service
-systemctl disable aegis
-mv /etc/systemd/system/aegis.service /etc/systemd/system/aegis.service.bk
-
-for s in pmcd pmie pmie_farm pmlogger pmlogger_farm pmproxy; do
-    systemctl stop $s
-    systemctl disable $s
-done
-
-
-exit
-# tencent cloud
-# barad_agent YDLive
-# systemctl stop cron
-# systemctl disable cron
-
-systemctl stop tat_agent
-systemctl disable tat_agent
-# /usr/local/qcloud/tat_agent/tat_agent
