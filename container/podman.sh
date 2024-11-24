@@ -10,3 +10,12 @@ podman machine init
 pod machine start
 
 pip3 install podman-compose
+
+exit
+
+podman generate systemd --name mycontainer
+
+sudo cp container-mycontainer.service /etc/systemd/system/
+
+sudo systemctl enable container-mycontainer.service
+sudo systemctl start container-mycontainer.service
