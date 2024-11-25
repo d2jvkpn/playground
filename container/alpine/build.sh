@@ -13,12 +13,12 @@ image_tag=3
 image=$image_name:$image_tag
 
 ####
-docker pull alpine:3
+# docker pull alpine:3
 
 docker build --no-cache \
   --build-arg=BUILD_Region="$BUILD_Region" \
   --build-arg=BUILD_Time="$BUILD_Time" \
-  -f ${_path}/Dockerfile -t $image ./
+  -f ${_path}/Containerfile -t $image ./
 
 ####
 docker images -q -f dangling=true $image_name | xargs -i docker rmi {}

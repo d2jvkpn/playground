@@ -12,10 +12,10 @@ RUN if [ "$BUILD_Region" = "cn" ]; then \
 
 RUN apk --no-cache update && \
   apk --no-cache upgrade && \
-  apk --no-cache add tzdata gcompat curl
-  # wget
+  apk --no-cache add tzdata bash gcompat curl supervisor
+  # nmap openssh openvpn
 
-RUN mkdir -p /app
-WORKDIR /app
+RUN mkdir -p /apps/configs /apps/logs /apps/data
+WORKDIR /apps
 
-CMD ["/bin/sh"]
+CMD ["/bin/bash"]
