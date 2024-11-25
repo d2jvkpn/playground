@@ -14,3 +14,7 @@ exit
 # save ssl of a site to file
 echo | openssl s_client -servername example.com -connect example.com:443 |
   openssl x509 > example_com.crt
+
+
+exit
+openssl x509 -in tls.crt -noout -dates

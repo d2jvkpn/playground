@@ -2,6 +2,8 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
+exit
+
 # 1. 安装与启动
 sudo apt-get install firewalld
 
@@ -33,6 +35,9 @@ sudo firewall-cmd --reload
 # 4. 端口管理
 # 开放一个端口
 sudo firewall-cmd --zone=public --add-port=8080/tcp
+sudo firewall-cmd --runtime-to-permanent
+
+sudo firewall-cmd --zone=public --add-port=51820/udp
 sudo firewall-cmd --runtime-to-permanent
 
 # 从区域中删除端口
