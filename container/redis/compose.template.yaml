@@ -24,7 +24,7 @@ services:
     # ALLOW_EMPTY_PASSWORD is recommended only for development.
     - ALLOW_EMPTY_PASSWORD=yes
     - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
-    working_dir: /app
+    # working_dir: /apps
     volumes:
     # - ./data/redis:/data
     - ./data/redis:/data:rw

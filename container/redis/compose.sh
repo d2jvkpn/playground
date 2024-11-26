@@ -8,9 +8,11 @@ mkdir -p data/redis
 
 touch data/redis/aclfile.acl
 
-password=$(tr -dc 'A-Za-z0-9!@#$%^&*()' < /dev/urandom | head -c 24 || true)
-
-[ -f configs/redis.password ] || echo "$password" > configs/redis.password
+if [ ! -f configs/redis.pass ]; then
+    password=$(tr -dc 'A-Za-z0-9!@#$%^&*()' < /dev/urandom | head -c 24 || true)
+    mkdir -p configs/
+    echo "$password" > configs/redis.pass
+fi
 
 [ -f data/redis/redis.conf ] || \
 cat > data/redis/redis.conf <<EOF

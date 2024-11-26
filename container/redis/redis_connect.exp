@@ -6,7 +6,7 @@ set timeout 60
 # set username [lindex \$argv 0];
 # set password [lindex \$argv 1];
 
-set fh [open "./configs/redis.password" r]
+set fh [open "./configs/redis.pass" r]
 set password [read -nonewline $fh]
 close $fh
 
