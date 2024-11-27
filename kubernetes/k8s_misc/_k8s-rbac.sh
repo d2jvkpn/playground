@@ -64,6 +64,9 @@ rules:
 - apiGroups: [""]
   resources: ["configmaps", "pods", "deployments", "services"] # "secrets"
   verbs: ["get", "list", "watch", "create", "update", "delete"]
+- apiGroups: ["metrics.k8s.io"]
+  resources: ["pods"]
+  verbs: ["get", "list"]
 EOF
 
 kubectl apply -f $role.role.yaml
@@ -94,3 +97,4 @@ export KUBECONFIG=$account.k8s-config.yaml
 
 kubectl config current-context
 kubectl get pods
+kubectl top pods
