@@ -4,75 +4,71 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # sudo apt update && apt -y upgrade && apt install -y nfs-kernel-server nfs-common
 
-# name=k8s-cp01 # node name as pv name
-# cap=10Gi
-name=$1; cap=$2
-
+# name=k8s-cp01
+name=$1
+cap=10Gi
 node_ip=$(ip route show default | awk '/default/ {print $9}')
-namespace=${namespace:-dev}
 
 mkdir -p k8s.local/data
 
 #### 1. NFS
-nfs=/data/nfs/$name
+nfs=/data/nfs/k8s/dev
+echo "==> 1. Create $nfs"
 
 mkdir -p $nfs
-chmod 1777 /data/nfs
+chmod 1777 $nfs
 
-record="$nfs *(rw,sync,no_root_squash,subtree_check)"
+record="$nfs *(rw,sync,no_root_squash,subtree_check)" # insecure
 
 [ -z "$(grep "^$nfs " /etc/exports)" ] && \
   echo "$record" | sudo tee -a /etc/exports
 
 sudo exportfs -ra
-sudo showmount -e $name
+sudo showmount -e --no-headers
 
 echo "Hello, world!" | sudo tee $nfs/hello.txt
 
 #### 2. Namespace
-echo "==> Creating Namespace: $namespace"
-kubectl create ns $namespace &> /dev/null || true
+kubectl create ns dev &> /dev/null || true
 
 #### 3. PersistentVolume
-echo "==> Creating PersistentVolume: $name"
+echo "==> 2. Creating PersistentVolume: dev"
 
-cat > k8s.local/data/pv_$name.yaml << EOF
+cat > k8s.local/data/pv_nfs01.yaml << EOF
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: $name
+  name: nfs01
 spec:
   storageClassName: manual
   capacity: { storage: $cap }
-  accessModes: [ ReadWriteMany ]
-  persistentVolumeReclaimPolicy: Retain
-  # nfs: { path: /data/nfs/$name, server: $name, readOnly: false }
-  nfs: { path: /data/nfs/$name, server: $node_ip, readOnly: false }
+  accessModes: [ ReadWriteMany ] # ReadWriteOnce, ReadOnlyMany
+  persistentVolumeReclaimPolicy: Retain # Recycle, Delete
+  nfs: { path: /data/nfs/k8s/dev, server: $node_ip, readOnly: false }
 EOF
 
-kubectl apply -f k8s.local/data/pv_$name.yaml
-# kubectl delete pv/$name
+kubectl apply -f k8s.local/data/pv_nfs01.yaml
+# kubectl delete pv/nfs01
 
 #### 4. PersistentVolumeClaim
-echo "==> Creating PersistentVolumeClaim: $name"
+echo "==> 3. Creating PersistentVolumeClaim: dev"
 
-cat > k8s.local/data/pvc_$name.$namespace.yaml << EOF
+cat > k8s.local/data/pvc_nfs01.dev.yaml << EOF
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: $name
-  namespace: $namespace
+  namespace: dev
+  name: nfs01
 spec:
   storageClassName: manual
   accessModes: [ ReadWriteMany ]
   resources:
     requests: { storage: $cap }
   # mannual bound
-  volumeName: $name
+  volumeName: nfs01
 EOF
 
-kubectl apply -f k8s.local/data/pvc_$name.$namespace.yaml
-# kubectl -n $namespace delete pvc/$name
-
-# kubectl -n $namespace get pvc --show-labels
-# kubectl -n $namespace describe pvc/$name
+kubectl apply -f k8s.local/data/pvc_nfs01.dev.yaml
+# kubectl -n dev get pvc --show-labels
+# kubectl -n dev describe pvc/nfs01
+# kubectl -n dev delete pvc/nfs01
