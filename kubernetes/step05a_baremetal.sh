@@ -90,6 +90,9 @@ ingress_ip=$(
 
 echo "==> ingress-nginx ip: $ingress_ip"
 
+exit
+curl -H "Host: demo-api.dev.k8s.local"  $ingress_ip
+
 ####
 exit
 # kubectl get svc -n ingress-nginx
