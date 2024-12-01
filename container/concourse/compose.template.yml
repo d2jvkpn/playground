@@ -1,0 +1,45 @@
+networks:
+  net: { name: concourse, driver: bridge, external: false }
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: always
+    networks: [net]
+    container_name: concourse-postgres
+    environment:
+      POSTGRES_DB: concourse
+      POSTGRES_PASSWORD: concourse
+      POSTGRES_USER: concourse
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumns:
+    - ./data/postgres:/var/lib/postgresql/data/pgdata
+
+  concourse:
+    image: concourse/concourse
+    restart: always
+    privileged: true
+    cgroup: host
+    depends_on: [postgres]
+    networks: [net]
+    container_name: concourse-app
+    ports: ["127.0.0.1:8080:8080"]
+    environment:
+      CONCOURSE_POSTGRES_HOST: concourse
+      CONCOURSE_POSTGRES_USER: concourse
+      CONCOURSE_POSTGRES_PASSWORD: concourse
+      CONCOURSE_POSTGRES_DATABASE: concourse
+      CONCOURSE_EXTERNAL_URL: http://localhost:8080
+      CONCOURSE_ADD_LOCAL_USER: test:test
+      CONCOURSE_MAIN_TEAM_LOCAL_USER: test
+      # instead of relying on the default "detect"
+      CONCOURSE_WORKER_BAGGAGECLAIM_DRIVER: overlay
+      CONCOURSE_CLIENT_SECRET: Y29uY291cnNlLXdlYgo=
+      CONCOURSE_TSA_CLIENT_SECRET: Y29uY291cnNlLXdvcmtlcgo=
+      CONCOURSE_X_FRAME_OPTIONS: allow
+      CONCOURSE_CONTENT_SECURITY_POLICY: "*"
+      CONCOURSE_CLUSTER_NAME: tutorial
+      CONCOURSE_WORKER_CONTAINERD_DNS_SERVER: "8.8.8.8"
+      # For ARM-based machine, change the Concourse runtime to "houdini"
+      CONCOURSE_WORKER_RUNTIME: "containerd"
+    command: quickstart
