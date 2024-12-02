@@ -29,16 +29,16 @@ unpushed=$(git diff origin/$git_branch..HEAD --name-status)
 [[ ! -z "$unpushed" ]] && git_tree_state="unpushed"
 [[ ! -z "$uncommitted" ]] && git_tree_state="uncommitted"
 
+build_time=$(date +'%FT%T%:z')
+
 VITE_API_URL=$(yq .$tag.VITE_API_URL $yaml)
 VUE_APP_PUBLIC_PATH=$(yq .$tag.VUE_APP_PUBLIC_PATH $yaml)
 
 
-build_time=$(date +'%FT%T%:z')
-
 #### 2.
 mkdir -p cache.local
 
-cat > cache.local/.env.prod <<EOF
+cat > cache.local/.env <<EOF
 VITE_API_URL=$VITE_API_URL
 VUE_APP_PUBLIC_PATH=$VUE_APP_PUBLIC_PATH
 EOF
@@ -55,6 +55,7 @@ git_tree_state: $git_tree_state
 build_time: $build_time
 
 VITE_API_URL: $VITE_API_URL
+VUE_APP_PUBLIC_PATH: $VUE_APP_PUBLIC_PATH
 EOF
 
 #### 3. pull image
@@ -81,7 +82,10 @@ git checkout $git_branch
 echo "==> Building image: $image..."
 
 # --build-arg=mode=$mode
-docker build --no-cache --file ${_path}/Dockerfile --tag $image ./
+docker build --no-cache --file ${_path}/Containerfile --tag $image \
+  --build-arg=VUE_APP_PUBLIC_PATH="$(echo $VUE_APP_PUBLIC_PATH | sed 's#^/##; s#/$##')" \
+  ./
+
 docker image prune --force --filter label=stage=${app_name}_builder &> /dev/null
 
 [ "$DOCKER_Push" != "false" ] && docker push $image
