@@ -1,3 +1,0 @@
-BRANCH="dev"
-VUE_APP_API="http://127.0.0.1:3012"
-PORT=3022

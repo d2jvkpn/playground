@@ -1,3 +1,0 @@
-BRANCH="master"
-VUE_APP_API="http://127.0.0.1:3010"
-PORT=3020

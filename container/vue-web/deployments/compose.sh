@@ -8,7 +8,7 @@ IMAGE_Tag="$1"; HTTP_Port="$2"
 #### deploy
 export IMAGE_Tag="${IMAGE_Tag}" HTTP_Port="${HTTP_Port}"
 
-envsubst < ${_path}/docker_deploy.yaml > docker-compose.yaml
+envsubst < ${_path}/compose.template.yaml > compose.yaml
 
 exit 0
 

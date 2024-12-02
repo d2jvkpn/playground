@@ -4,17 +4,13 @@ run-local:
 	npm run local
 
 run-dev:
-	# load config .env.dev
 	npm run dev
 
-build-dev:
-	npm run build
-
 image-dev:
-	DOCKER_Pull=false DOCKER_Push=false bash deployments/docker_build.sh dev
+	DOCKER_Pull=false DOCKER_Push=false bash deployments/build.sh dev
 
 image-test:
-	DOCKER_Pull=false DOCKER_Push=false bash deployments/docker_build.sh test
+	DOCKER_Pull=false DOCKER_Push=false bash deployments/build.sh test
 
 image-main:
-	DOCKER_Pull=false DOCKER_Push=false bash deployments/docker_build.sh main
+	DOCKER_Pull=false DOCKER_Push=false bash deployments/build.sh main

@@ -8,7 +8,7 @@ tag=$1
 DOCKER_Pull=${DOCKER_Pull:-false}
 DOCKER_Push=${DOCKER_Push:-false}
 
-yaml=${yaml:-${_path}/docker_build.yaml}
+yaml=${yaml:-${_path}/build.yaml}
 
 # app_name=$(yq -p json -o yaml package.json | yq .name)
 # app_version=$(yq -p json -o yaml package.json | yq .version)
@@ -30,6 +30,7 @@ unpushed=$(git diff origin/$git_branch..HEAD --name-status)
 [[ ! -z "$uncommitted" ]] && git_tree_state="uncommitted"
 
 VITE_API_URL=$(yq .$tag.VITE_API_URL $yaml)
+VUE_APP_PUBLIC_PATH=$(yq .$tag.VUE_APP_PUBLIC_PATH $yaml)
 
 
 build_time=$(date +'%FT%T%:z')
@@ -38,7 +39,8 @@ build_time=$(date +'%FT%T%:z')
 mkdir -p cache.local
 
 cat > cache.local/.env.prod <<EOF
-VITE_API_URL = $VITE_API_URL
+VITE_API_URL=$VITE_API_URL
+VUE_APP_PUBLIC_PATH=$VUE_APP_PUBLIC_PATH
 EOF
 
 cat > cache.local/build.yaml << EOF
@@ -59,7 +61,7 @@ EOF
 echo "==> Pull image(s) $image"
 
 [[ "$DOCKER_Pull" != "false" ]] && \
-for base in $(awk '/^FROM/{print $2}' ${_path}/Dockerfile); do
+for base in $(awk '/^FROM/{print $2}' ${_path}/Containerfile); do
     echo ">>> pull $base"
     docker pull $base
 

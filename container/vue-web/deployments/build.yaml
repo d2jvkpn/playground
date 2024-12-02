@@ -7,13 +7,16 @@ web:
     branch: dev
     image_tag: dev
     VITE_API_URL: https://domain.local:9021
+    VUE_APP_PUBLIC_PATH: /site
 
   test:
     branch: test
     image_tag: test
     VITE_API_URL: https://domain.local:9022
+    VUE_APP_PUBLIC_PATH: /
 
   main:
     branch: main
     image_tag: main
     VITE_API_URL: https://domain.local:9020
+    VUE_APP_PUBLIC_PATH: /

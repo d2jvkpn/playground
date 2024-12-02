@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "local": "vue-cli-service serve --mode local.x # load env file .env.local.x",
-    "test": "vue-cli-service serve --mode test.x",
+    "local": "vue-cli-service serve --mode local # load env file .env.local",
+    "dev": "vue-cli-service serve --mode dev",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --mode test.x",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
