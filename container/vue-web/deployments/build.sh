@@ -24,7 +24,7 @@ git_commit_id=$(git rev-parse --verify HEAD) # git log --pretty=format:'%h' -n 1
 git_commit_time=$(git log -1 --format="%at" | xargs -I{} date -d @{} +%FT%T%:z)
 git_tree_state="clean"
 uncommitted=$(git status --short)
-unpushed=$(git diff origin/$git_branch..HEAD --name-status)
+unpushed=$(git diff origin/$git_branch..HEAD --name-status || true)
 # [[ ! -z "$uncommitted$unpushed" ]] && git_tree_state="dirty"
 [[ ! -z "$unpushed" ]] && git_tree_state="unpushed"
 [[ ! -z "$uncommitted" ]] && git_tree_state="uncommitted"
@@ -59,17 +59,16 @@ VUE_APP_PUBLIC_PATH: $VUE_APP_PUBLIC_PATH
 EOF
 
 #### 3. pull image
-echo "==> Pull image(s) $image"
-
 [[ "$DOCKER_Pull" != "false" ]] && \
 for base in $(awk '/^FROM/{print $2}' ${_path}/Containerfile); do
-    echo ">>> pull $base"
+    echo ">>> Pull $base"
     docker pull $base
 
     bn=$(echo $base | awk -F ":" '{print $1}')
     if [[ -z "$bn" ]]; then continue; fi
     docker images --filter "dangling=true" --quiet "$bn" | xargs -i docker rmi {}
 done
+
 
 #### 4.
 function onExit {
@@ -78,6 +77,7 @@ function onExit {
 trap onExit EXIT
 
 git checkout $git_branch
+
 
 echo "==> Building image: $image..."
 
