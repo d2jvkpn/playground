@@ -5,7 +5,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 # https://www.yanxurui.cc/posts/server/2017-03-21-NGINX-as-a-file-server/
 
 export PORT="8100"
-envsubst < ${_path}/docker_deploy.yaml > docker-compose.yaml
+envsubst < ${_path}/compose.template.yaml > compose.yaml
 docker-compose up -d
 
 exit
