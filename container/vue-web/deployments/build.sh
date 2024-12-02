@@ -24,7 +24,7 @@ git_commit_id=$(git rev-parse --verify HEAD) # git log --pretty=format:'%h' -n 1
 git_commit_time=$(git log -1 --format="%at" | xargs -I{} date -d @{} +%FT%T%:z)
 git_tree_state="clean"
 uncommitted=$(git status --short)
-unpushed=$(git diff origin/$git_branch..HEAD --name-status || true)
+unpushed=$(git diff origin/$git_branch..HEAD --name-status)
 # [[ ! -z "$uncommitted$unpushed" ]] && git_tree_state="dirty"
 [[ ! -z "$unpushed" ]] && git_tree_state="unpushed"
 [[ ! -z "$uncommitted" ]] && git_tree_state="uncommitted"
@@ -83,7 +83,7 @@ echo "==> Building image: $image..."
 
 # --build-arg=mode=$mode
 docker build --no-cache --file ${_path}/Containerfile --tag $image \
-  --build-arg=VUE_APP_PUBLIC_PATH="$(echo $VUE_APP_PUBLIC_PATH | sed 's#^/##; s#/$##')" \
+  --build-arg=VUE_APP_PUBLIC_PATH="$VUE_APP_PUBLIC_PATH" \
   ./
 
 docker image prune --force --filter label=stage=${app_name}_builder &> /dev/null

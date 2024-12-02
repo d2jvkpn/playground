@@ -39,11 +39,10 @@ COPY --from=builder /apps/dist ./dist
 
 RUN echo "==> VUE_APP_PUBLIC_PATH: $VUE_APP_PUBLIC_PATH"
 
-RUN if [ -z "$VUE_APP_PUBLIC_PATH" ]; then \
-     mv dist static; \
-  else \
-    mkdir -p static && mv dist/index.html static/ && mv dist static/$VUE_APP_PUBLIC_PATH; \
-  fi
+RUN mkdir -p static && mv dist/index.html static/
+
+RUN path=${VUE_APP_PUBLIC_PATH%/}; path=${path%/}; \
+    if [ -z "$pp" ]; then mv dist/* static/; rmdir dist; else mv dist static/$pp; fi
 
 RUN mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bk
 COPY deployments/static.nginx.conf /etc/nginx/conf.d/
