@@ -38,7 +38,7 @@ VUE_APP_PUBLIC_PATH=$(yq .$tag.VUE_APP_PUBLIC_PATH $yaml)
 #### 2.
 mkdir -p cache.local
 
-cat > cache.local/.env <<EOF
+cat > cache.local/env <<EOF
 VITE_API_URL=$VITE_API_URL
 VUE_APP_PUBLIC_PATH=$VUE_APP_PUBLIC_PATH
 EOF

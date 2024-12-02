@@ -14,7 +14,7 @@ COPY public/ ./public
 COPY src/ ./src
 
 COPY cache.local ./cache.local
-RUN cp cache.local/.env.prod ./
+RUN cp cache.local/env ./.env
 
 RUN if [ -d ./cache.local/node_modules ]; then \
     echo "==> Found ./cache.local/node_modules"; \
