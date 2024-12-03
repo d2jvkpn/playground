@@ -104,14 +104,25 @@ done
 
 metallb_images=$(awk '$1=="image:"{print $2}' k8s.local/metallb-*.yaml | sort -u)
 
+
 #### 6. yq
 # https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64.tar.gz
 # https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64
-wget -O k8s.local/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+wget -O k8s.local/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64.tar.gz
 chmod a+x k8s.local/yq
-yq_version=$(./k8s.local/yq --version | awk '{print $NF}')
+# yq_version=$(./k8s.local/yq --version | awk '{print $NF}')
 
-#### 7. yaml info
+
+#### 7. cilium
+# --remote-name
+curl -o k8s.local/cilium-linux-amd64.tar.gz \
+  -L https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz
+
+tar -xf k8s.local/cilium-linux-amd64.tar.gz -C k8s.local/
+rm k8s.local/cilium-linux-amd64.tar.gz
+
+
+#### 8. yaml info
 cat > k8s.local/k8s_download.yaml << EOF
 k8s:
   version: $version
@@ -133,9 +144,6 @@ $(echo "$metrics_images" | sed 's/^/  - image: /')
 metallb-server:
   images:
 $(echo "$metallb_images" | sed 's/^/  - image: /')
-
-yq:
-  version: $yq_version
 EOF
 
 download_images k8s.local/k8s_download.yaml k8s.local/images
