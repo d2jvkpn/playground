@@ -31,7 +31,7 @@ unpushed=$(git diff origin/$git_branch..HEAD --name-status)
 
 build_time=$(date +'%FT%T%:z')
 
-VITE_API_URL=$(yq .$tag.VITE_API_URL $yaml)
+VUE_APP_API_URL=$(yq .$tag.VUE_APP_API_URL $yaml)
 VUE_APP_PUBLIC_PATH=$(yq .$tag.VUE_APP_PUBLIC_PATH $yaml)
 
 
@@ -39,11 +39,11 @@ VUE_APP_PUBLIC_PATH=$(yq .$tag.VUE_APP_PUBLIC_PATH $yaml)
 mkdir -p cache.local
 
 cat > cache.local/env <<EOF
-VITE_API_URL=$VITE_API_URL
+VUE_APP_API_URL=$VUE_APP_API_URL
 VUE_APP_PUBLIC_PATH=$VUE_APP_PUBLIC_PATH
 EOF
 
-cat > cache.local/build.yaml << EOF
+cat > cache.local/build.yaml <<EOF
 app_name: $app_name
 app_version: $app_version
 
@@ -54,7 +54,7 @@ git_tree_state: $git_tree_state
 
 build_time: $build_time
 
-VITE_API_URL: $VITE_API_URL
+VUE_APP_API_URL: $VUE_APP_API_URL
 VUE_APP_PUBLIC_PATH: $VUE_APP_PUBLIC_PATH
 EOF
 

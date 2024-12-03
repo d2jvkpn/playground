@@ -21,4 +21,7 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
-/config.env
+
+# custom
+*.local
+.env*
