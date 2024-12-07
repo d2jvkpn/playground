@@ -9,3 +9,5 @@ systemctl start app
 systemctl stop app
 
 journalctl -efxu app
+
+systemctl daemon-reload

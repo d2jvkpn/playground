@@ -1,0 +1,15 @@
+[Unit]
+Description=My Custom Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot # simple, forking, oneshot, dbus, notify, idle
+ExecStart=/path/to/your/script.sh
+#Restart=on-failure # no, on-success, on-failure, always, on-abnormal
+#RestartSec=5
+#StartLimitInterval=5
+#StartLimitBurst=5
+
+[Install]
+WantedBy=default.target
