@@ -85,3 +85,7 @@ kubectl apply -f k8s.local/data/$domain.secret.yaml
 kubectl create secret docker-registry/"my-registry" \
   --docker-server="REGISTRY.SITE.COM" --docker-email="EMAIL" \
   --docker-username="USERNAME" --docker-password="PASSWORD"
+
+#### ingress logs
+kubectl -n kube-system logs nginx-ingress-controller-xxxx-yyyy |
+  grep site.domain
