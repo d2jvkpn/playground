@@ -14,7 +14,7 @@ set -eu -o pipefail
 
 
 {
-    date +"==> %FT%T%:z"
+    date +"==> %FT%T%:z start log rotating"
 
     yesterday=$(date -d 'yesterday' '+%Y-%m-%d')
     pid=$(cat /var/run/nginx.pid)
