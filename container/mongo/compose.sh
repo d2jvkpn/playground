@@ -7,6 +7,6 @@ DB_Port=${1:-27017}
 mkdir -p data/mongo
 
 export DB_Port=$DB_Port
-envsubst < docker_deploy.yaml > docker-compose.yaml
+envsubst < compose.mongo.yaml > compose.yaml
 
 docker-compose up -d

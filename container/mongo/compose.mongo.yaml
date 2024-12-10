@@ -1,18 +1,16 @@
-version: '3'
+networks:
+  net: { name: "mongo", driver: "bridge", external: false }
 
 services:
   mongo:
-    image: mongo:7
+    image: mongo:8
     container_name: mongo
     restart: always
-    # networks: ["net"]
-    network_mode: bridge
+    networks: ["net"]
+    # network_mode: bridge
     ports: ["127.0.0.1:${DB_Port}:27017"]
     environment:
     - MONGO_INITDB_ROOT_USERNAME=root
     - MONGO_INITDB_ROOT_PASSWORD=root
     volumes:
     - ./data/mongo:/data/db
-
-# networks:
-#   net: { name: "mongo", driver: "bridge", external: false }
