@@ -17,10 +17,11 @@ oss_dir=oss://bucket/path/to/remote_dir
 
 eval ls -lh $source_dir/$batch_args
 
-echo "==> $(date +%FT%T%:z) start: files=$source_dir/$batch_args, oss_dir=$oss_dir/"
-
 mkdir -p $tag
 eval ln -rfs $source_dir/$batch_args $tag/
 
-ossutil64 cp -r $tag $oss_dir/ > ossutil64.${tag}-$(date +%s).log
-echo "<== $(date +%FT%T%:z) end"
+{
+    echo "==> $(date +%FT%T%:z) start: files=$source_dir/$batch_args, oss_dir=$oss_dir/"
+    ossutil64 cp -r $tag $oss_dir/
+    echo "<== $(date +%FT%T%:z) end"
+} > ossutil64.${tag}-$(date +%s).log
