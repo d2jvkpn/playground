@@ -1,0 +1,21 @@
+# path: /etc/logrotate.d/nginx.logrotate
+# command: logrotate -f /etc/logrotate.d/nginx.logrotate
+
+/path/to/nginx/logs/*.log {
+    rotate 12
+    monthly
+    # daily
+    # size 100M
+    dateext
+    dateformat -%Y%m%dS%s
+    missingok
+    compress
+    delaycompress
+    notifempty
+    copytruncate
+    create 0640 www-data adm
+    sharedscripts
+    postrotate
+        [ -s /run/nginx.pid ] && kill -USR1 `cat /run/nginx.pid`
+    endscript
+}
