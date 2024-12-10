@@ -4,6 +4,7 @@ networks:
 # volumes:
 #   data: { name: postgres, driver: local }
 
+services:
   postgres_exporter:
     image: quay.io/prometheuscommunity/postgres-exporter
     restart: always
