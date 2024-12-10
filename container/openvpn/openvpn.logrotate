@@ -1,0 +1,14 @@
+/etc/openvpn/openvpn.log {
+    rotate 12
+    monthly
+    # daily
+    # size 100M
+    missingok
+    compress
+    delaycompress
+    notifempty
+    copytruncate
+    # create
+    # postrotate
+    # endscript
+}
