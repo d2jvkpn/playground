@@ -1,0 +1,22 @@
+networks:
+  net: { name: "postgres", driver: "bridge", external: false }
+
+# volumes:
+#   data: { name: postgres, driver: local }
+
+  postgres_exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter
+    restart: always
+    container_name: postgres-exporter
+    depends_on: [postgres]
+    networks: [net]
+    ports: ["9187:9187"]
+    env_file: [./configs/postgres-exporter.env]
+    # environment:
+    #   DATA_SOURCE_NAME: postgresql://account:password@127.0.0.1:5432/database?sslmode=disable
+    #   DATA_SOURCE_URI: "localhost:5432/postgres?sslmode=disable"
+    #   DATA_SOURCE_USER: postgres
+    #   DATA_SOURCE_PASS: password
+    # volumes:
+    # - ./configs/postgres_exporter.yaml:/app/configs/postgres_exporter.yaml
+    # command: --config.file=/app/configs/postgres_exporter.yaml

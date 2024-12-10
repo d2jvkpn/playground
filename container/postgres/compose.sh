@@ -40,6 +40,7 @@ mkdir -p configs data/postgres
 
 envsubst < ${_path}/compose.template.yaml > compose.yaml
 
+exit
 # docker-compose pull
 docker-compose up -d
 
