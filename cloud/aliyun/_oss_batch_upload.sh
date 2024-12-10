@@ -24,4 +24,4 @@ eval ln -rfs $source_dir/$batch_args $tag/
     echo "==> $(date +%FT%T%:z) start: files=$source_dir/$batch_args, oss_dir=$oss_dir/"
     ossutil64 cp -r $tag $oss_dir/
     echo "<== $(date +%FT%T%:z) end"
-} > ossutil64.${tag}-$(date +%s).log
+} &> ossutil64.${tag}S$(date +%s).log
