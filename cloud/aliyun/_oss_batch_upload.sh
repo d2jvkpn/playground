@@ -17,7 +17,8 @@ oss_dir=oss://bucket/path/to/remote_dir
 
 eval ls -lh $source_dir/$batch_args
 
-echo "==> ${date +%FT%T%:z} start: $batch_args"
+echo "==> ${date +%FT%T%:z} start: files=$source_dir/$batch_args, oss_dir=$oss_dir/"
+
 mkdir -p $tag
 eval ln -rfs $source_dir/$batch_args $tag/
 
