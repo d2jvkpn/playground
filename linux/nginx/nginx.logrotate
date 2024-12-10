@@ -1,7 +1,7 @@
 # path: /etc/logrotate.d/nginx.logrotate
 # command: logrotate -f /etc/logrotate.d/nginx.logrotate
 
-/path/to/nginx/logs/*.log {
+/root/apps/nginx/logs/*.log {
     rotate 12
     monthly
     # daily
