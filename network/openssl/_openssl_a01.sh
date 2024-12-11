@@ -37,6 +37,15 @@ openssl rsa -in <(kubectl get secret TLS_name -o jsonpath="{.data['tls\.key']}" 
 openssl x509 -in your_certificate.crt -text -noout
 
 # extract key and cert from pem
-openssl pkey -in site.pem -out key.pem
+# -passin password
+openssl pkey -in site.pem -out site.key.pem
 
-openssl x509 -in site.pem -out cert.pem
+#
+openssl x509 -in site.pem -pubkey -noout -out site.pub.pem
+
+# awk 'BEGIN {c=0;} /-----BEGIN CERTIFICATE-----/ {c++} { print > "cert" c ".pem"} /-----END CERTIFICATE-----/ {close("cert" c ".pem")}' yourfile.pem
+
+# openssl rsa -in privatekey.pem -pubout -out publickey.pem
+
+# show cert
+openssl x509 -in site.pem -text -noout

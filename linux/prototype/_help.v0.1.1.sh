@@ -19,7 +19,7 @@ case "${1:-help}" in
     ;;
 "help" | "-h" | "--help")
     display_usage
-    exit 1
+    exit 0
     ;;
 "*")
     display_usage
