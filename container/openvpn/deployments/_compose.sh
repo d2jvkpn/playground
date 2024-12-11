@@ -31,7 +31,7 @@ echo -e "\n#### custom\nlog-append /apps/logs/openvpn.log" |
 # Enter pass phrase for /etc/openvpn/pki/private/ca.key: hello
 
 #### 2. deploy
-envsubst < ${_path}/compose.template.yaml > compose.yaml
+envsubst < ${_path}/compose.bridge.yaml > compose.yaml
 
 #### 3. run
 exit

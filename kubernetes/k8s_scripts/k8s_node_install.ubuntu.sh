@@ -95,6 +95,9 @@ EOF
 # sysctl: setting key "net.ipv4.conf.all.promote_secondaries": Invalid argument
 
 sysctl --system
+# temporary
+# sudo sysctl -w net.ipv6.conf.default.forwarding=1
+
 
 #### 4. containerd
 containerd config default | grep SystemdCgroup

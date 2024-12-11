@@ -1,0 +1,26 @@
+#networks:
+#  net: { name: "openvpn", driver: bridge, external: false }
+
+services:
+  openvpn:
+    image: kylemanna/openvpn:local
+    restart: always
+    cap_add: [NET_ADMIN]
+    #logging:
+    #  driver: "none"
+    #sysctls:
+    #- net.ipv6.conf.default.forwarding=1
+    #- net.ipv6.conf.all.disable_ipv6=0
+    #- net.ipv6.conf.all.forwarding=0
+    #network_mode: host
+    #networks: [net]
+    #ports: ["${UDP_Port}:${UDP_Port}/udp"]
+    container_name: openvpn
+    environment:
+      EASYRSA_KEY_SIZE: 4096
+    volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
+    - ./data/openvpn/:/etc/openvpn
+    - ./logs:/apps/logs
+    command: ["supervisord", "-l", "/apps/logs/supervisord.log", "-c", "/etc/supervisord.conf"]
