@@ -10,18 +10,19 @@ export USER_UID=$(id -u) USER_GID=$(id -g) UDP_Port=$UDP_Port
 
 #### 1. initialize
 # rm -r data/openvpn/
-mkdir -p data/openvpn
+mkdir -p data/openvpn logs
 
 # -e EASYRSA_KEY_SIZE=4096
+# kylemanna/openvpn:latest
 docker run --rm -it -v $PWD/data/openvpn:/etc/openvpn \
-  kylemanna/openvpn:latest \
+  kylemanna/openvpn:local \
   bash -c "ovpn_genconfig -u udp://$server && ovpn_initpki"
 
 sudo sed -i "/OVPN_PORT=/s/1194/$UDP_Port/" data/openvpn/ovpn_env.sh
 
 sudo sed -i "/^port /s/1194/$UDP_Port/" data/openvpn/openvpn.conf
 
-echo -e "\n#### custom\nlog-append /etc/openvpn/openvpn.log" |
+echo -e "\n#### custom\nlog-append /apps/logs/openvpn.log" |
   sudo tee -a data/openvpn/openvpn.conf
 
 # Enter New CA Key Passphrase:
@@ -30,7 +31,7 @@ echo -e "\n#### custom\nlog-append /etc/openvpn/openvpn.log" |
 # Enter pass phrase for /etc/openvpn/pki/private/ca.key: hello
 
 #### 2. deploy
-envsubst < compose.template.yaml > compose.yaml
+envsubst < ${_path}/compose.template.yaml > compose.yaml
 
 #### 3. run
 exit

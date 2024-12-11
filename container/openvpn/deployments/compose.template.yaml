@@ -1,5 +1,3 @@
-version: '3'
-
 networks:
   net: { name: "openvpn", driver: bridge, external: false }
 
@@ -11,12 +9,17 @@ services:
     cap_add: [NET_ADMIN]
     # logging:
     #   driver: "none"
+    sysctls:
+    - net.ipv6.conf.default.forwarding=1
+    #- net.ipv6.conf.all.disable_ipv6=0
     ports: ["${UDP_Port}:${UDP_Port}/udp"]
     restart: always
     container_name: openvpn
     environment:
-    - EASYRSA_KEY_SIZE=4096
+      EASYRSA_KEY_SIZE: 4096
     volumes:
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
     - ./data/openvpn/:/etc/openvpn
+    - ./logs:/apps/logs
+    command: ["supervisord", "-l", "/apps/logs/supervisord.log", "-c", "/etc/supervisord.conf"]

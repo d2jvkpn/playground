@@ -1,5 +1,5 @@
 # path: /etc/logrotate.d/nginx.logrotate
-# command: logrotate -f /etc/logrotate.d/nginx.logrotate
+# command: logrotate -f -l nginx_logrotate.log /etc/logrotate.d/nginx.logrotate
 
 /root/apps/nginx/logs/*.log {
     rotate 12
@@ -15,6 +15,8 @@
     copytruncate
     create 0640 www-data adm
     sharedscripts
+    # prerotate
+    # endscript
     postrotate
         [ -s /run/nginx.pid ] && kill -USR1 `cat /run/nginx.pid`
     endscript
