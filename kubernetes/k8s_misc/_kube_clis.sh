@@ -72,11 +72,15 @@ kubectl get pods -A  -o wide \
 domain=dev.local
 prefix=~/.acme.sh/$domain/$domain
 
-kubectl -n prod create secret tls/$domain --key $prefix.key --cert $prefix.cer
-kubectl -n prod get secret/$domain
+kubectl -n prod create secret tls 20241211-$domain --key $prefix.key --cert $prefix.cer
+kubectl -n prod get secret/20241211-$domain
+
+kubectl -n prod create secret tls 20251211-$domain \
+  --cert=domain.crt --key=domain.key --dry-run=client -o yaml |
+  kubectl apply -f -
 
 ## update tls
-kubectl -n prod create secret tls/$domain --dry-run=client \
+kubectl -n prod create secret tls $domain --dry-run=client \
   --key $prefix.key --cert $prefix.cer -o yaml > k8s.local/data/$domain.secret.yaml
 
 kubectl apply -f k8s.local/data/$domain.secret.yaml
