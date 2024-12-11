@@ -8,7 +8,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # crond -l 0 -f -L /apps/logs/crond.log
 
-if [ ! -s  /apps/logs/openvpn.log ]; then
+if [ ! -s /apps/logs/openvpn.log ]; then
     exit 0
 fi
 

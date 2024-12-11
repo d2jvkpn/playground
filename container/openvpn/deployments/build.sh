@@ -10,11 +10,7 @@ else
     cd kylemanna_openvpn.git
 fi
 
-docker build -f Dockerfile -t kylemanna/openvpn:local .
-image_id=$(docker images kylemanna/openvpn:local -q)
+docker build -f Dockerfile -t kylemanna/openvpn:local ./
 
 cd ${_wd}
-
 docker build --no-cache -f ${_path}/Containerfile -t kylemanna/openvpn:local ./
-
-docker rmi $image_id || true
