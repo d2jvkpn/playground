@@ -13,7 +13,6 @@ RUN apk --no-cache update && \
   apk --no-cache add supervisor coreutils tzdata
 
 RUN cp /etc/supervisord.conf /etc/supervisord.conf.bk
-
 ADD deployments/supervisord.conf /etc/supervisord.conf
 ADD deployments/supervisor.ini /etc/supervisor.d/
 
