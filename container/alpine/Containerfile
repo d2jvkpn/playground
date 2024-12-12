@@ -4,6 +4,8 @@ ARG BUILD_Region BUILD_Time
 
 ENV TZ=${TZ:-Asia/Shanghai} BUILD_Region=${BUILD_Region} BUILD_Time=${BUILD_Time}
 
+ADD Containerfile /apps/
+
 RUN if [ "$BUILD_Region" = "cn" ]; then \
     echo "==> BUILD_Region: $BUILD_Region"; \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
@@ -17,4 +19,5 @@ RUN apk --no-cache update && \
 RUN mkdir -p /apps/configs /apps/logs /apps/data
 WORKDIR /apps
 
-CMD ["/bin/bash"]
+# CMD ["/bin/bash"]
+CMD [sleep, infinity]
