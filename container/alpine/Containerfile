@@ -5,9 +5,12 @@ ARG BUILD_Region BUILD_Time
 ENV TZ=${TZ:-Asia/Shanghai} BUILD_Region=${BUILD_Region} BUILD_Time=${BUILD_Time}
 
 ADD Containerfile /apps/
+RUN mkdir -p /apps/configs /apps/logs /apps/data
+WORKDIR /apps
 
 RUN if [ "$BUILD_Region" = "cn" ]; then \
     echo "==> BUILD_Region: $BUILD_Region"; \
+    cp /etc/apk/repositories /etc/apk/repositories.bk && \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
   fi
 
@@ -16,8 +19,5 @@ RUN apk --no-cache update && \
   apk --no-cache add tzdata coreutils curl openssl bash yq
   # vim jq gcompat supervisor
   # nmap openssh logroate openvpn
-
-RUN mkdir -p /apps/configs /apps/logs /apps/data
-WORKDIR /apps
 
 CMD [sleep, infinity]
