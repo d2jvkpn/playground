@@ -10,7 +10,7 @@ WORKDIR /apps
 
 RUN if [ "$BUILD_Region" = "cn" ]; then \
     echo "==> BUILD_Region: $BUILD_Region"; \
-    cp /etc/apk/repositories /etc/apk/repositories.bk && \
+    cp /etc/apk/repositories /etc/apk/repositories.bk; \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
   fi
 
