@@ -10,10 +10,10 @@ help:
   docker_clean.sh [help | -h | --help]
 
 remove dangling images(dangling=true):
-  docker_clean.sh image
+  docker_clean.sh image(s)
 
 remove exited containers(status=exited):
-  docker_clean.sh container
+  docker_clean.sh container(s)
 EOF
 }
 
@@ -25,10 +25,10 @@ fi
 action=$1
 
 case "$action" in
-"image")
+"image" | "images")
     docker images --filter "dangling=true" --quiet | xargs -i docker rmi {}
     ;;
-"container")
+"container" | "containers")
     docker ps --filter "status=exited" --quiet | xargs -i docker rm {}
     ;;
 "help" | "-h" | "--help")
