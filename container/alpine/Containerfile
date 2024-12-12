@@ -4,9 +4,9 @@ ARG BUILD_Region BUILD_Time
 
 ENV TZ=${TZ:-Asia/Shanghai} BUILD_Region=${BUILD_Region} BUILD_Time=${BUILD_Time}
 
-ADD Containerfile /apps/
 RUN mkdir -p /apps/configs /apps/logs /apps/data
 WORKDIR /apps
+ADD Containerfile /apps/
 
 RUN if [ "$BUILD_Region" = "cn" ]; then \
     echo "==> BUILD_Region: $BUILD_Region"; \
