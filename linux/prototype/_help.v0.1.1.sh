@@ -21,7 +21,7 @@ case "${1:-help}" in
     display_usage
     exit 0
     ;;
-"*")
+*)
     display_usage
     exit 1
     ;;
