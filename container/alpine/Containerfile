@@ -13,7 +13,8 @@ RUN if [ "$BUILD_Region" = "cn" ]; then \
 
 RUN apk --no-cache update && \
   apk --no-cache upgrade && \
-  apk --no-cache add tzdata coreutils vim jq yq bash curl supervisor gcompat openssl
+  apk --no-cache add tzdata coreutils bash curl openssl supervisor
+  # vim jq yq gcompat
   # nmap openssh logroate openvpn
 
 RUN mkdir -p /apps/configs /apps/logs /apps/data
