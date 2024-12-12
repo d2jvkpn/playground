@@ -19,3 +19,7 @@ sudo cp container-mycontainer.service /etc/systemd/system/
 
 sudo systemctl enable container-mycontainer.service
 sudo systemctl start container-mycontainer.service
+
+
+exit
+sudo apt insall podman podman-compose buildah
