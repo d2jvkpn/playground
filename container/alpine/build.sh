@@ -3,7 +3,7 @@ set -eu -o pipefail
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # set -x
-BUILD_Region=$${BUILD_Region:-cn}
+BUILD_Region=${BUILD_Region:-cn}
 DOCKER_Push=${DOCKER_Push:-true}
 BUILD_Time=$(date +'%FT%T%:z')
 
