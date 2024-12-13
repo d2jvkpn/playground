@@ -5,7 +5,7 @@ networks:
 
 services:
   jumpserver:
-    image: jumpserver/jms_all:4.4.0
+    image: jumpserver/jms_all:v4.4.1
     depends_on: [postgres, redis]
     networks: ["net"]
     ports: ["8080:80", "2222:2222"]
