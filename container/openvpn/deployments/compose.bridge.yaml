@@ -23,4 +23,5 @@ services:
     - /etc/timezone:/etc/timezone:ro
     - ./data/openvpn/:/etc/openvpn
     - ./logs:/apps/logs
+    working_dir: /apps
     command: ["supervisord", "-l", "/apps/logs/supervisord.log", "-c", "/etc/supervisord.conf"]
