@@ -1,5 +1,5 @@
 build:
-	bash deployments/build.sh
+	bash containers/build.sh
 
 save:
 	mkdir -p data

@@ -1,10 +1,11 @@
 FROM kylemanna/openvpn:local
 
 RUN mkdir -p /apps/target /apps/logs
-ADD deployments/openvpn_logrotate.sh /apps/target/
+ADD containers/openvpn_logrotate.sh /apps/target/
 
+# https://crontab.guru/#0_0_*_*_1
 RUN crontab -l > /etc/crontab.bk && \
-  echo "0 0 1 * * bash /apps/target/openvpn_logrotate.sh" > temp.crontab && \
+  echo "0 0 * * 1 bash /apps/target/openvpn_logrotate.sh" > temp.crontab && \
   crontab temp.crontab && \
   rm temp.crontab
 
@@ -13,7 +14,7 @@ RUN apk --no-cache update && \
   apk --no-cache add supervisor coreutils tzdata
 
 RUN cp /etc/supervisord.conf /etc/supervisord.conf.bk
-ADD deployments/supervisord.conf /etc/supervisord.conf
-ADD deployments/supervisor.ini /etc/supervisor.d/
+ADD containers/supervisord.conf /etc/supervisord.conf
+ADD containers/supervisor.ini /etc/supervisor.d/
 
 CMD [supervisord, -l, /apps/logs/supervisord.log, -c, /etc/supervisord.conf]
