@@ -17,4 +17,4 @@ RUN DEBIAN_FRONTEND=nointeractive apt update && \
   rm -rf /var/lib/apt/lists/*
 
 CMD [kcptun-server, -c, configs/kcptun-server.json, --target, 127.0.0.1:22, --listen, :2900]
-# CMD [kcptun-client, -c, configs/kcptun-client.json, --remoteaddr, 192.168.1.42:29900, --localaddr, :2022]
+# CMD [kcptun-client, -c, configs/kcptun-client.json, --remoteaddr, 192.168.1.42:29900, --localaddr, 127.0.0.1:2022]

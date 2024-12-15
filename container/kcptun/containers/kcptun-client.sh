@@ -4,7 +4,7 @@ _wd=$(pwd); _path=$(dirname $0)
 
 
 remote_addr=$1 # 192.168.1.42:29900
-local_addr=$2  # :2022
+local_addr=$2  # 127.0.0.1:2022
 
 mkdir -p logs
 
