@@ -12,3 +12,6 @@ archive:
 
 test:
 	nc -uvw1 localhost 1194
+
+connect:
+	bash openvpn_conn.sh configs/client.ovpn configs/client.ovpn.pass
