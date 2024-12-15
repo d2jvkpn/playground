@@ -22,8 +22,12 @@ sudo sed -i "/OVPN_PORT=/s/1194/$UDP_Port/" data/openvpn/ovpn_env.sh
 
 sudo sed -i "/^port /s/1194/$UDP_Port/" data/openvpn/openvpn.conf
 
-echo -e "\n#### custom\nlog-append /apps/logs/openvpn.log" |
-  sudo tee -a data/openvpn/openvpn.conf
+cat | sudo tee -a data/openvpn/openvpn.conf <<EOF
+
+#### custom
+log-append /apps/logs/openvpn.log
+ifconfig-pool-persist /etc/openvpn/ifconfig-pool-persist.txt 3600
+EOF
 
 # Enter New CA Key Passphrase:
 # Re-Enter New CA Key Passphrase: hello
@@ -51,6 +55,11 @@ docker exec -it $container ovpn_getclient $account > $account.ovpn
 sudo openvpn --config data/$account.ovpn
 # ... Initialization Sequence Completed
 
+ls data/openvpn/pki/issued/$account.crt \
+  data/openvpn/pki/private/$account.key \
+  data/openvpn/pki/reqs/$account.req \
+  data/openvpn/pki/inline/private/$account.inline
+
 #### 5. connect
 exit
 
@@ -60,6 +69,8 @@ EOF
 
 sudo openvpn --config $account.ovpn --auth-nocache --askpass ${account}.ovpn.pass
 # ... Initialization Sequence Completed
+
+grep "Peer Connection Initiated with" logs/openvpn.log
 
 #### 6. revoke client
 exit

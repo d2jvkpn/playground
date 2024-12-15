@@ -1,6 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+_wd=$(pwd); _path=$(dirname $0)
+
 
 if [ -d kylemanna_openvpn.git ]; then
     cd kylemanna_openvpn.git
@@ -10,7 +11,12 @@ else
     cd kylemanna_openvpn.git
 fi
 
-docker build -f Dockerfile -t kylemanna/openvpn:local ./
+BUILD_Region=${BUILD_Region:-""}
+
+docker build -f Dockerfile --no-cache -t kylemanna/openvpn:latest ./
 
 cd ${_wd}
-docker build --no-cache -f ${_path}/Containerfile -t kylemanna/openvpn:local ./
+
+docker build -f ${_path}/Containerfile --no-cache \
+  --build-arg=BUILD_Region="$BUILD_Region" \
+  -t kylemanna/openvpn:local ./

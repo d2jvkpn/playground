@@ -1,7 +1,10 @@
 build:
 	bash containers/build.sh
 
-save:
+build-cn:
+	BUILD_Region=cn bash containers/build.sh
+
+archive:
 	mkdir -p data
 	docker save kylemanna/openvpn:local -o data/kylemanna_openvpn_local.tar
 	pigz -f data/kylemanna_openvpn_local.tar
