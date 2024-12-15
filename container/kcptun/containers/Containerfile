@@ -1,0 +1,20 @@
+FROM ubuntu:24.04
+
+RUN mkdir -p /apps/configs /apps/logs /apps/target
+
+WORKDIR /apps
+
+ADD containers/kcptun-client.sh containers/kcptun-server.sh target/
+
+RUN DEBIAN_FRONTEND=nointeractive apt update && \
+  apt -y upgrade && \
+  apt install -y --no-install-recommends tzdata kcptun && \
+  apt remove && \
+  apt autoremove && \
+  apt clean && \
+  apt autoclean && \
+  dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {} && \
+  rm -rf /var/lib/apt/lists/*
+
+CMD [kcptun-server, -c, configs/kcptun-server.json, --target, 127.0.0.1:22, --listen, :2900]
+# CMD [kcptun-client, -c, configs/kcptun-client.json, --remoteaddr, 192.168.1.42:29900, --localaddr, :2022]
