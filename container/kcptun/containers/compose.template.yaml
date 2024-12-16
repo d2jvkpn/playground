@@ -4,6 +4,12 @@ services:
     restart: always
     container_name: kcptun-client
     network_mode: host
+    healthcheck:
+      test: ["CMD", "nc", "-zv", "localhost", "1080"]
+      start_period: 5s
+      interval: 10s
+      timeout: 3s
+      retries: 2
     volumes:
     - ./configs:/apps/configs
     - ./logs:/apps/logs
