@@ -7,4 +7,4 @@ export USER_UID=$(id -u) USER_GID=$(id -g)
 
 mkdir -p configs logs
 
-envsubst < ${_path}/compose.template.yaml > compose.yaml
+envsubst < ${_path}/compose.kcptun-server.yaml > compose.yaml

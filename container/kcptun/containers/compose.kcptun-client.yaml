@@ -1,0 +1,13 @@
+services:
+  kcptun:
+    image: kcptun:local
+    restart: always
+    container_name: kcptun-client
+    network_mode: host
+    volumes:
+    - ./configs:/apps/configs
+    - ./logs:/apps/logs
+    environment:
+      TZ: Asia/Shanghai
+    command: [supervisord, -l, /apps/logs/supervisord.log, -c, /etc/supervisord.conf]
+    # command: [kcptun-client, -c, configs/kcptun-client.json, --remoteaddr, 192.168.1.42:29900, --localaddr, 127.0.0.1:2022]

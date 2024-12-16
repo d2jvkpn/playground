@@ -1,0 +1,10 @@
+{
+  "crypt": "aes",
+  "mode": "fast3",
+  "nocomp": true,
+  "autoexpire": 900,
+  "sockbuf": 16777217,
+  "dscp": 46,
+  "log": "logs/kcptun-client.log",
+  "key": "your_password"
+}
