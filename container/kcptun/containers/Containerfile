@@ -1,20 +1,56 @@
-FROM ubuntu:24.04
+####
+FROM golang:1-alpine as builder
 
-RUN mkdir -p /apps/configs /apps/logs /apps/target
+ARG BUILD_Region
 
+RUN mkdir -p /apps/configs /apps/target /apps/logs
 WORKDIR /apps
 
-ADD containers/kcptun-client.sh containers/kcptun-server.sh target/
+RUN if [ "$BUILD_Region" = "cn" ]; then \
+    echo "==> BUILD_Region: $BUILD_Region"; \
+    cp /etc/apk/repositories /etc/apk/repositories.bk; \
+    sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
+  fi
 
-RUN DEBIAN_FRONTEND=nointeractive apt update && \
-  apt -y upgrade && \
-  apt install -y --no-install-recommends tzdata kcptun && \
-  apt remove && \
-  apt autoremove && \
-  apt clean && \
-  apt autoclean && \
-  dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {} && \
-  rm -rf /var/lib/apt/lists/*
+RUN apk --no-cache update && \
+  apk --no-cache upgrade && \
+  apk add --no-cache git
 
-CMD [kcptun-server, -c, configs/kcptun-server.json, --target, 127.0.0.1:22, --listen, :2900]
+RUN git clone https://github.com/xtaci/kcptun kcptun.git
+
+COPY kcptun.git /apps/kcptun.git
+
+RUN cd /apps/kcptun.git && \
+	go build -ldflags "-s -w -X main.VERSION=$(date -u +%Y%m%d)" \
+	  -o /apps/target/kcptun-client github.com/xtaci/kcptun/client && \
+	go build -ldflags "-s -w -X main.VERSION=$(date -u +%Y%m%d)" \
+	  -o /apps/target/kcptun-server github.com/xtaci/kcptun/server
+
+####
+FROM alpine:3
+
+ARG BUILD_Region
+
+RUN if [ "$BUILD_Region" = "cn" ]; then \
+    echo "==> BUILD_Region: $BUILD_Region"; \
+    cp /etc/apk/repositories /etc/apk/repositories.bk; \
+    sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
+  fi
+
+RUN apk --no-cache update && \
+  apk --no-cache upgrade && \
+  apk add --no-cache iptables tzdata coreutils openssh supervisor
+
+ADD ./containers/supervisord.conf /etc/
+COPY --from=builder /apps/target/kcptun-client /bin/
+COPY --from=builder /apps/target/kcptun-server /bin/
+
+RUN mkdir -p /apps/configs /apps/target /apps/logs
+WORKDIR /apps
+
+EXPOSE 29900/udp
+EXPOSE 12948
+
+CMD [kcptun-server, -c, configs/kcptun-server.json, --target, 127.0.0.1:22, --listen, ":2900"]
 #CMD [kcptun-client, -c, configs/kcptun-client.json, --remoteaddr, 192.168.1.42:29900, --localaddr, 127.0.0.1:2022]
+#CMD [supervisord, -l, /apps/logs/supervisord.log, -c, /etc/supervisord.conf]
