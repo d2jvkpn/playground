@@ -6,6 +6,9 @@ run-local:
 run-dev:
 	npm run dev
 
+build-local:
+	npm run build-local
+
 image-dev:
 	DOCKER_Pull=false DOCKER_Push=false bash containers/build.sh dev
 

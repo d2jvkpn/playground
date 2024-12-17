@@ -58,6 +58,8 @@ VUE_APP_API_URL: $VUE_APP_API_URL
 VUE_APP_PUBLIC_PATH: $VUE_APP_PUBLIC_PATH
 EOF
 
+yq -o json cache.local/build.yaml > cache.local/build.json
+
 #### 3. pull image
 [[ "$DOCKER_Pull" != "false" ]] && \
 for base in $(awk '/^FROM/{print $2}' ${_path}/Containerfile); do
@@ -79,7 +81,7 @@ trap onExit EXIT
 git checkout $git_branch
 
 
-echo "==> Building image: $image..."
+echo "==> Building image: $image, $VUE_APP_PUBLIC_PATH"
 
 # --build-arg=mode=$mode
 docker build --no-cache --tag $image \

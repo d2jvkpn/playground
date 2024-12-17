@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "local": "vue-cli-service serve --mode local # load env file .env.local",
-    "build:local": "vue-cli-service build --mode local",
+    "build-local": "vue-cli-service build --mode local",
     "dev": "vue-cli-service serve --mode dev",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

@@ -34,6 +34,7 @@ ARG VUE_APP_PUBLIC_PATH
 
 WORKDIR /apps
 ADD cache.local/build.yaml ./
+ADD cache.local/build.json ./dist/build.json
 
 COPY --from=builder /apps/dist ./dist
 
@@ -41,7 +42,7 @@ RUN echo "==> VUE_APP_PUBLIC_PATH: $VUE_APP_PUBLIC_PATH"; \
   path=${VUE_APP_PUBLIC_PATH%/}; path=${path%/}; \
   mkdir -p static; \
   cp dist/index.html static/; \
-  if [ -z "$pp" ]; then mv dist/* static/; rmdir dist; else mv dist static/$pp; fi
+  if [ -z "$path" ]; then mv dist/* static/; rmdir dist; else mv dist static/$path; fi
 
 RUN mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bk; \
   sed -i '/worker_processes/s#auto#4#' /etc/nginx/nginx.conf
