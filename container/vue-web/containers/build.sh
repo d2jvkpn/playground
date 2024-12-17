@@ -72,7 +72,7 @@ done
 
 #### 4.
 function onExit {
-    git checkout dev
+    git checkout dev || true
 }
 trap onExit EXIT
 
@@ -82,7 +82,8 @@ git checkout $git_branch
 echo "==> Building image: $image..."
 
 # --build-arg=mode=$mode
-docker build --no-cache --file ${_path}/Containerfile --tag $image \
+docker build --no-cache --tag $image \
+  --file ${_path}/Containerfile \
   --build-arg=VUE_APP_PUBLIC_PATH="$VUE_APP_PUBLIC_PATH" \
   ./
 

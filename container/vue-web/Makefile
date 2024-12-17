@@ -7,10 +7,10 @@ run-dev:
 	npm run dev
 
 image-dev:
-	DOCKER_Pull=false DOCKER_Push=false bash deployments/build.sh dev
+	DOCKER_Pull=false DOCKER_Push=false bash containers/build.sh dev
 
 image-test:
-	DOCKER_Pull=false DOCKER_Push=false bash deployments/build.sh test
+	DOCKER_Pull=false DOCKER_Push=false bash containers/build.sh test
 
 image-main:
-	DOCKER_Pull=false DOCKER_Push=false bash deployments/build.sh main
+	DOCKER_Pull=false DOCKER_Push=false bash containers/build.sh main
