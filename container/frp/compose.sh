@@ -22,7 +22,7 @@ esac
 mkdir -p configs logs
 ls configs/frp_${cmd}.toml
 
-envsubst < ${_path}/docker_deploy.$cmd.yaml > docker-compose.yaml
+envsubst < ${_path}/compose.$cmd.yaml > compose.yaml
 
 echo "==> docker-compose.yaml"
 

@@ -1,11 +1,11 @@
 image:
-	BUILD_Region=cn bash docker_build.sh
+	BUILD_Region=cn bash compose.sh
 
 client:
-	bash docker_deploy.sh client
+	bash compose.sh client
 
 server:
-	bash docker_deploy.sh server
+	bash compose.sh server
 
 tls:
 	server_ip=127.0.0.1 bash frp_tls.sh

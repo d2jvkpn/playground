@@ -6,8 +6,9 @@ mkdir -p logs configs
 [ -s config/turnserver.no-tls.conf ] || cp turnserver.no-tls.conf configs/
 
 export USER_UID=$(id -u) USER_GID=$(id -g)
-envsubst < docker_deploy.no-tls.yaml > docker-compose.yaml
+envsubst < compose.template.yaml > compose.yaml
 
+exit
 docker-compose pull
 docker-compose up -d
 

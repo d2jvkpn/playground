@@ -8,7 +8,7 @@ mkdir -p configs logs data/prometheus data/grafana data/badger
 
 cp examples/{otel-collector.yaml,prometheus.yaml} configs/
 
-envsubst > docker-compose.yaml < docker_deploy.yaml
+envsubst < compose.template.yaml > compose.yaml
 
 exit
 # docker network create grafana

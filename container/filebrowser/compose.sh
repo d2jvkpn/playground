@@ -22,7 +22,7 @@ EOF
 #### 2.
 export HTTP_Port=$HTTP_Port USER_UID=$(id -u) USER_GID=$(id -g)
 
-envsubst < docker_deploy.yaml > docker-compose.yaml
+envsubst < compose.template.yaml > compose.yaml
 
 #### 3.
 docker-compose pull

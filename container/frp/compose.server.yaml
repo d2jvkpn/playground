@@ -1,10 +1,8 @@
-version: '3'
-
 services:
-  frp-client:
+  frp-server:
     image: frp:latest
     restart: always
-    container_name: frp-client
+    container_name: frp-server
     user: "${USER_UID}:${USER_GID}"
     network_mode: host
     environment: ["TZ=Asia/Shanghai"]
@@ -12,4 +10,4 @@ services:
     volumes:
     - ./configs/:/app/configs:ro
     - ./logs/:/app/logs
-    command: [./target/frpc, --config, configs/frp_client.toml]
+    command: [./target/frps, --config, configs/frp_server.toml]

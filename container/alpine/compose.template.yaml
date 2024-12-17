@@ -1,5 +1,3 @@
-version: "3"
-
 networks:
   net: { name: alpine, driver: bridge, external: false }
 
