@@ -4,6 +4,7 @@ services:
     restart: always
     container_name: kcptun-client
     network_mode: host
+    labels: { autoheal: true }
     healthcheck:
       test: ["CMD", "nc", "-zv", "localhost", "1080"]
       start_period: 5s
