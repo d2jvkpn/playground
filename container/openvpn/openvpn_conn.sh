@@ -12,9 +12,9 @@ vpn_server=$(awk '$1=="remote"{print $2":"$3}' $vpn_file)
 echo "==> $(date +%FT%T%:z) Connecting to vpn: $vpn_server"
 
 if [[ "$vpn_pass" == *".pass" ]]; then
-    sudo openvpn --config "$vpn_file" --auth-nocache --askpass "$vpn_pass"
+    sudo openvpn --auth-nocache --config "$vpn_file" --askpass "$vpn_pass"
 else
-    sudo openvpn --config "$vpn_file" --auth-nocache --auth-user-pass "$vpn_pass"
+    sudo openvpn --auth-nocache --config "$vpn_file" --auth-user-pass "$vpn_pass"
 fi
 
 ####
