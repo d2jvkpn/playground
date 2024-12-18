@@ -11,7 +11,7 @@ swap_gb=${1:-$swap_gb}
 sudo swapoff --all
 
 sudo fallocate -l ${swap_gb}G /swap.img
-# dd if=/dev/zero of=/swap.img bs=1G count=8
+# dd if=/dev/zero of=/swap.img bs=1G count=${swap_gb}
 sudo chmod 600 /swap.img
 
 sudo mkswap /swap.img

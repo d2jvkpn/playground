@@ -1,7 +1,7 @@
-build:
+image:
 	bash containers/build.sh
 
-build-cn:
+image-cn:
 	BUILD_Region=cn bash containers/build.sh
 
 archive:

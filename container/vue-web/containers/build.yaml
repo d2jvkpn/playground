@@ -2,21 +2,23 @@ app_name: vue-web
 app_version: 1.0.0
 image_name: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-web
 
+
 dev:
   branch: master
   image_tag: dev
   VUE_APP_PUBLIC_PATH: /site
-  VUE_APP_API_URL: https://api.domain.local:9022
-#  VITE_API_URL: https://api.domain.local:9022
+  # window.location.protocol+"//api.domain.local:9022"
+  VUE_APP_API_URL: api.domain.local:9022
+#  VITE_API_URL: api.domain.local:9022
 
 test:
   branch: master
   image_tag: test
   VUE_APP_PUBLIC_PATH: /
-  VUE_APP_API_URL: https://api.domain.local:9023
+  VUE_APP_API_URL: api.domain.local:9023
 
 main:
   branch: master
   image_tag: main
   VUE_APP_PUBLIC_PATH: /
-  VUE_APP_API_URL: https://api.domain.local
+  VUE_APP_API_URL: api.domain.local
