@@ -28,6 +28,6 @@ ln -rfs "$files" $tag/
 
 {
     echo "==> $start_at start: files=$files, oss_dir=$oss_dir/"
-    ossutil64 -c oss.ini cp -r $tag $oss_dir/
+    ossutil -c oss.ini cp -r $tag $oss_dir/
     echo "<== $(date +%FT%T%:z) end"
 } &> ossutil64.${tag}S$(date +%s).log
