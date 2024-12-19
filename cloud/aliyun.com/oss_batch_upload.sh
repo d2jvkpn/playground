@@ -2,6 +2,9 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
+# wget -O ossutil-v1.7.19-linux-amd64.zip 'https://gosspublic.alicdn.com/ossutil/1.7.19/ossutil-v1.7.19-linux-amd64.zip?spm=a2c4g.11186623.0.0.38fd4e3enju3ic&file=ossutil-v1.7.19-linux-amd64.zip'
+# unzip ossutil-v1.7.19-linux-amd64.zip
+
 # mkdir -p 2024-12-06
 # ln -rfs /mnt/vdb1/account/postgres.dump 2024-12-06/
 # nohup ossutil64 cp -r 2024-12-06  oss://bucket/postgres_backup/ &
