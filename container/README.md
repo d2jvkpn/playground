@@ -8,3 +8,4 @@
 - https://github.com/eip-work/kuboard-press
 - https://github.com/concourse/concourse
 - fiora
+- next-terminal
