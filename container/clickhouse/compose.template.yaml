@@ -1,0 +1,34 @@
+networks:
+  net: { name: clickhouse, driver: bridge, external: false }
+
+services:
+  zookeeper:
+    image: zookeeper:3.9
+    # ports: ["2181:2181"]
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888
+
+  clickhouse-node1:
+    image: clickhouse/clickhouse-server:24.12-alpine
+    ports:
+    - "8121:8123"
+    - "9001:9000"
+    - "9011:9009"
+    volumes:
+    - ./data/node1:/var/lib/clickhouse
+    - ./configs/node1.xml:/etc/clickhouse-server/config.xml
+    environment:
+      ZOOKEEPER_NODES: "zookeeper:2181"
+
+  clickhouse-node2:
+    image: clickhouse/clickhouse-server:24.12-alpine
+    ports:
+    - "8122:8123"
+    - "9002:9000"
+    - "9012:9009"
+    volumes:
+    - ./data/node2:/var/lib/clickhouse
+    - ./configs/node2.xml:/etc/clickhouse-server/config.xml
+    environment:
+      ZOOKEEPER_NODES: "zookeeper:2181"

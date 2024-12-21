@@ -26,6 +26,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ### .env.local
 ```bash
 PORT=3021
-VUE_APP_PUBLIC_PATH="/"
-VUE_APP_API_URL="http://127.0.0.1:3011"
+VUE_APP_PUBLIC_PATH=/static
+VUE_APP_API_URL=http://127.0.0.1:3011
 ```
