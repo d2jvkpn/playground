@@ -1,13 +1,12 @@
-run-local:
-	# load config .env.local
+run:
 	# node_modules/vite/bin/vite.js
-	npm run local
+	# --mode dev # load config .env.dev
+	npm run serve
 
-run-dev:
-	npm run dev
-
-build-local:
-	npm run build-local
+build:
+	rm -rf dist
+	# --mode dev
+	npm run build -- --dest ./dist/static
 
 image-dev:
 	DOCKER_Pull=false DOCKER_Push=false bash containers/build.sh dev
