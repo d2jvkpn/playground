@@ -13,3 +13,6 @@
 - openldap
 - Answer
 - mrdoc
+- public.ecr.aws/gravitational/teleport-distroless
+- gateone
+- concourse
