@@ -12,15 +12,14 @@ export DEBIAN_FRONTEND=noninteractive
 
 version=$1 # 1.32.0
 ver=v${version%.*} # v1.32
-key_url=https://pkgs.k8s.io/core:/stable:/$ver/deb
-key_file=/etc/apt/keyrings/k8s.$ver.gpg
 
-[ ! -s $key_file ] && {
-  curl -fsSL $key_url/Release.key | sudo gpg --dearmor -o $key_file;
-}
+key_url=https://pkgs.k8s.io/core:/stable:/$ver/deb
+key_file=/etc/apt/keyrings/k8s.gpg
+
+curl -fsSL $key_url/Release.key | sudo gpg --dearmor -o $key_file
 
 echo "deb [signed-by=$key_file] $key_url /" |
-  sudo tee /etc/apt/sources.list.d/k8s.$ver.list > /dev/null
+  sudo tee /etc/apt/sources.list.d/k8s.list > /dev/null
 
 #### 2. apt install
 function apt_install() {
