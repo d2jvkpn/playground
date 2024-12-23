@@ -6,10 +6,11 @@ services:
     devices:
     - /dev/net/tun:/dev/net/tun
     network_mode: host
-    container_name: vpn
+    container_name: openvpn-client
     working_dir: /apps
     volumes:
     - ./configs/:/apps/configs:ro
     environment: ["TZ=Asia/Shanghai"]
     command: [openvpn, --auth-nocache, --config, configs/client.ovpn, --askpass, configs/client.ovpn.pass]
     # command: [openvpn, --auth-nocache, --config, configs/client.ovpn, --auth-user-pass, configs/client.ovpn.auth]
+    # command: [supervisord, -l, /apps/logs/supervisord.log, -c, /app/supervisord.nginx.conf]

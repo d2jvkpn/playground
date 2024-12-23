@@ -15,7 +15,7 @@ services:
     network_mode: host
     #networks: [net]
     #ports: ["${UDP_Port}:${UDP_Port}/udp"]
-    container_name: openvpn
+    container_name: openvpn-server
     environment:
       EASYRSA_KEY_SIZE: 4096
     volumes:

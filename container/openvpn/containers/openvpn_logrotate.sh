@@ -8,14 +8,16 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # crond -l 0 -f -L /apps/logs/crond.log
 
+day=${1:-yesterday}
+
 if [ ! -s /apps/logs/openvpn.log ]; then
     exit 0
 fi
 
-yesterday=$(date -d"yesterday" +%F)
+day=$(date -d"$day" +%F)
 
 supervisorctl stop openvpn
 
-mv /apps/logs/openvpn.log /apps/logs/openvpn.${yesterday}.log
+mv /apps/logs/openvpn.log /apps/logs/openvpn.${day}.log
 
 supervisorctl start openvpn

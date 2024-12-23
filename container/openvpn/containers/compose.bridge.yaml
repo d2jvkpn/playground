@@ -15,7 +15,7 @@ services:
     - net.ipv6.conf.default.forwarding=1
     - net.ipv6.conf.all.forwarding=1
     ports: ["${UDP_Port}:${UDP_Port}/udp"]
-    container_name: openvpn
+    container_name: openvpn-server
     environment:
       EASYRSA_KEY_SIZE: 4096
     volumes:
