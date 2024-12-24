@@ -6,17 +6,17 @@ dev:
   branch: master
   image_tag: dev
   VUE_APP_PUBLIC_PATH: /site
-  VUE_APP_API_URL: api.domain.local:9022
-  # window.location.protocol+"//domain.local:9022"
+  VUE_APP_API_URL: domain.local:3012
+  # window.location.protocol+"//domain.local:3012"
 
 test:
   branch: master
   image_tag: test
   VUE_APP_PUBLIC_PATH: /
-  VUE_APP_API_URL: api.domain.local:9023
+  VUE_APP_API_URL: domain.local:3013
 
 main:
   branch: master
   image_tag: main
   VUE_APP_PUBLIC_PATH: /
-  VUE_APP_API_URL: api.domain.local
+  VUE_APP_API_URL: domain.local:3010

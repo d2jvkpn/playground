@@ -1,7 +1,6 @@
-#! /usr/bin/env bash
+#!/bin/bash
 set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+_wd=$(pwd); _path=$(dirname $0)
 
 #### 1.
 tag=$1
@@ -31,6 +30,7 @@ unpushed=$(git diff origin/$git_branch..HEAD --name-status)
 
 build_time=$(date +'%FT%T%:z')
 
+VUE_APP_ENV=$tag
 VUE_APP_API_URL=$(yq .$tag.VUE_APP_API_URL $yaml)
 VUE_APP_PUBLIC_PATH=$(yq .$tag.VUE_APP_PUBLIC_PATH $yaml)
 
@@ -39,6 +39,7 @@ VUE_APP_PUBLIC_PATH=$(yq .$tag.VUE_APP_PUBLIC_PATH $yaml)
 mkdir -p cache.local
 
 cat > cache.local/env <<EOF
+VUE_APP_ENV=$VUE_APP_ENV
 VUE_APP_API_URL=$VUE_APP_API_URL
 VUE_APP_PUBLIC_PATH=$VUE_APP_PUBLIC_PATH
 EOF
@@ -54,6 +55,7 @@ git_tree_state: $git_tree_state
 
 build_time: $build_time
 
+VUE_APP_ENV: $VUE_APP_ENV
 VUE_APP_API_URL: $VUE_APP_API_URL
 VUE_APP_PUBLIC_PATH: $VUE_APP_PUBLIC_PATH
 EOF
