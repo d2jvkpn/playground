@@ -25,11 +25,7 @@ RUN if [ -d ./cache.local/node_modules ]; then \
 RUN npm install --registry=https://registry.npmmirror.com &> /dev/null
 # RUN node_modules/.bin/vue-cli-service build --mode ${mode}
 
-RUN npm run build -- --dest ./target/static${VUE_APP_PUBLIC_PATH}
-
-RUN if [ ! -f ./target/static/index.html ]; then \
-    cp ./target/static${VUE_APP_PUBLIC_PATH}/index.html ./target/static/; \
-  fi
+RUN npm run build
 
 ####
 FROM nginx:1-alpine
@@ -38,9 +34,15 @@ ARG VUE_APP_PUBLIC_PATH
 
 WORKDIR /apps
 ADD cache.local/build.yaml ./
-ADD cache.local/build.json ./target/static/build.json
+ADD cache.local/build.json ./dist/build.json
 
-COPY --from=builder /apps/target ./target
+COPY --from=builder /apps/dist ./dist
+
+RUN echo "==> VUE_APP_PUBLIC_PATH: $VUE_APP_PUBLIC_PATH"; \
+  path=${VUE_APP_PUBLIC_PATH%/}; path=${path%/}; \
+  mkdir -p static; \
+  cp dist/index.html static/; \
+  if [ -z "$path" ]; then mv dist/* static/; rmdir dist; else mv dist static/$path; fi
 
 RUN mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bk; \
   sed -i '/worker_processes/s#auto#4#' /etc/nginx/nginx.conf
