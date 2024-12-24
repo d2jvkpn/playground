@@ -23,7 +23,6 @@ RUN if [ -d ./cache.local/node_modules ]; then \
 
 # npm config set registry https://registry.npmmirror.com
 RUN npm install --registry=https://registry.npmmirror.com &> /dev/null
-# RUN node_modules/.bin/vue-cli-service build --mode ${mode}
 
 RUN npm run build -- --dest ./target/static${VUE_APP_PUBLIC_PATH}
 
