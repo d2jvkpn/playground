@@ -1,9 +1,8 @@
 include .env
 
 run:
-	# node_modules/vite/bin/vite.js
-	# --mode dev # load config .env.dev
-	npm run serve
+	# node node_modules/@vue/cli-service/bin/vue-cli-service.js serve --help
+	npm run serve -- --port=$(PORT) --host=0.0.0.0
 
 build:
 	#rm -rf dist
