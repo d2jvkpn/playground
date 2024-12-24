@@ -30,14 +30,13 @@ RUN if [ ! -f ./target/static/index.html ]; then \
     cp ./target/static${VUE_APP_PUBLIC_PATH}/index.html ./target/static/; \
   fi
 
+ADD cache.local/build.json ./target/static${VUE_APP_PUBLIC_PATH}/build.json
+
 ####
 FROM nginx:1-alpine
 
-ARG VUE_APP_PUBLIC_PATH
-
 WORKDIR /apps
 ADD cache.local/build.yaml ./
-ADD cache.local/build.json ./target/static/build.json
 
 COPY --from=builder /apps/target ./target
 
