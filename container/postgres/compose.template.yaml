@@ -14,8 +14,8 @@ services:
     ports: ["127.0.0.1:${DB_Port}:5432"]
     healthcheck:
       test: pg_isready --username postgres --dbname postgres
-      start_period: 10s
-      interval: 30s
+      start_period: 15s
+      interval: 15s
       timeout: 3s
       retries: 3
     container_name: ${CONTAINER_Name}
