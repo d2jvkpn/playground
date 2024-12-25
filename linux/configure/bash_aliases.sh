@@ -6,10 +6,10 @@
 export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
 # %Y-%m-%dT%H:%M:%S%:z doesn't work as expected
 export PROMPT_DIRTRIM=2
-# export PATH=~/.local/bin:$PATH
 
-export PATH=~/apps/bin:$PATH
+export PATH=~/apps/bin:$PATH # PATH=~/.local/bin:$PATH
 
+# mkdir -p apps/exports
 # tar -xf downloads/go1.23.4.linux-amd64.tar.gz -C apps/
 # ln -rs apps/go apps/exports
 
