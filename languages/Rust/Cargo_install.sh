@@ -21,7 +21,7 @@ rustup toolchain install nightly
 rustup override set nightly
 
 
-rustup component add rust-analyzer
+rustup component add rust-analyzer rust-src
 rust-analyzer --version
 
 rustup component list | grep "(installed)"
