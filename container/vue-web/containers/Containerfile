@@ -4,9 +4,11 @@ FROM node:lts-alpine AS builder
 
 LABEL stage=vue-web_builder
 
-ARG VUE_APP_PUBLIC_PATH
+ARG BASE
 
 WORKDIR /apps
+
+RUN echo "==> BASE: ${BASE}"
 
 # *.env.* index.html
 ADD  *.js *.json  ./
@@ -24,13 +26,9 @@ RUN if [ -d ./cache.local/node_modules ]; then \
 # npm config set registry https://registry.npmmirror.com
 RUN npm install --registry=https://registry.npmmirror.com &> /dev/null
 
-RUN npm run build -- --dest ./target/static${VUE_APP_PUBLIC_PATH}
+RUN npm run build -- --dest ${BASE}
 
-RUN if [ ! -f ./target/static/index.html ]; then \
-    cp ./target/static${VUE_APP_PUBLIC_PATH}/index.html ./target/static/; \
-  fi
-
-ADD cache.local/build.json ./target/static${VUE_APP_PUBLIC_PATH}/build.json
+ADD cache.local/build.json ${BASE}/build.json
 
 ####
 FROM nginx:1-alpine
