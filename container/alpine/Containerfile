@@ -16,7 +16,7 @@ RUN if [ "$BUILD_Region" = "cn" ]; then \
 
 RUN apk --no-cache update && \
   apk --no-cache upgrade && \
-  apk --no-cache add tzdata coreutils curl openssl bash yq
+  apk --no-cache add tzdata coreutils curl openssl bash yq iproute2
   # vim jq gcompat supervisor nmap logroate openvpn openssh
 
 CMD [sleep, infinity]

@@ -33,3 +33,5 @@ docker network create -d macvlan \
 
 
 docker run --network=macvlan --name http-server -d  python:3-alpine python3 -m http.server 8000
+
+docker build --network=host -f Containerfile -t name:tag ./
