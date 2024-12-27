@@ -19,8 +19,8 @@ kubectl config set-context --current --namespace=dev
 exit
 kubectl config set-context --cluster=cluster01
 
-kubectl config current-context
-
 kubectl config use-context ctx01
+
+kubectl config current-context
 
 kubectl config get-clusters

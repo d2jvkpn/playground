@@ -19,3 +19,6 @@ exit
 #### view the service
 echo | openssl s_client -connect localhost:443 -servername $domain |
   openssl x509 -noout -subject -dates
+
+####
+curl https://$domain --resolve "$domain:443:$ip"
