@@ -3,9 +3,9 @@ set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0)
 
 
-echo "aliyun.com: ali-{region}-{project}-{sn}"
-echo "cloud.tencent.com: tce-{region}-{project}-{sn}"
-echo "aws.amazon.com: aws-{region}-{project}-{sn}"
+echo "aliyun.com: ali-{project}--[region][sn]"
+echo "cloud.tencent.com: tce-{project}--[region][sn]"
+echo "aws.amazon.com: aws-{project}--[region][sn]"
 
-echo "ali-sh-a01"
-echo "ali-sh-ai-b01"
+echo "aws-ai--sh-01"
+echo "aws-un--sh-01"

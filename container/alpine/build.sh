@@ -7,8 +7,8 @@ BUILD_Region=${BUILD_Region:-""}
 DOCKER_Push=${DOCKER_Push:-true}
 BUILD_Time=$(date +'%FT%T%:z')
 
-image_name=registry.cn-shanghai.aliyuncs.com/d2jvkpn/alpine
-image_tag=3
+image_name=${1:-registry.cn-shanghai.aliyuncs.com/d2jvkpn/alpine}
+image_tag=${2:-3}
 
 image=$image_name:$image_tag
 
