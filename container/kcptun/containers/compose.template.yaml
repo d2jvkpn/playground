@@ -18,5 +18,12 @@ services:
     environment:
       TZ: Asia/Shanghai
     command: [supervisord, -l, /apps/logs/supervisord.log, -c, /etc/supervisord.conf]
-    # command: [kcptun-client, -c, configs/kcptun-client.json, --remoteaddr, 192.168.1.42:29900, --localaddr, 127.0.0.1:2022]
-    # command: [kcptun-server, -c, configs/kcptun-server.json, --target, 127.0.0.1:22, --listen, ":2900"]
+    #command: [kcptun-server, -c, configs/kcptun-server.json, --target, 127.0.0.1:22, --listen, ":2900"]
+    #command:
+    #- kcptun-client
+    #- -c
+    #- configs/kcptun-client.json
+    #- --remoteaddr
+    #- 192.168.1.42:29900
+    #- --localaddr
+    #- 127.0.0.1:2022
