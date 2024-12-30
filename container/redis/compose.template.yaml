@@ -8,9 +8,9 @@ services:
   redis:
     image: redis:7-alpine
     restart: always
+    user: ${USER_UID}:${USER_GID}
     network_mode: host
     # networks: ["net"]
-    user: ${USER_UID}:${USER_GID}
     # ports: ['127.0.0.1:${REDIS_Port}:6379']
     container_name: redis
     deploy:

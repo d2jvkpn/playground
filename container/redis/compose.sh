@@ -14,9 +14,11 @@ fi
 
 password=$(cat configs/redis.pass)
 
-[ -s data/redis/redis.conf ] || envsubst < redis.conf > data/redis/redis.conf
+[ -s data/redis/redis.conf ] ||
+  PASSWORD=$password envsubst < redis.conf > data/redis/redis.conf
 
 export USER_UID=$(id -u) USER_GID=$(id -g) REDIS_Port=$REDIS_Port
 envsubst < compose.template.yaml > compose.yaml
 
+exit
 docker-compose up -d

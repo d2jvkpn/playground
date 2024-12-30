@@ -57,28 +57,33 @@ CONFIG GET *preamble*
 ```
 
 #### C03. ACL
+1. create acl file
 ```bash
 touch data/redis/aclfile.acl
+
+sed -i '/^#aclfile/s/#aclfile/aclfile/' /data/redis.acl
 ```
 
+2. acl auth
 ```redis
 # set password for default account
-ACL SETUSER default on >mystrongpassword
+ACL SETUSER default on >dont_use_this_password
 
 # create account with password
-ACL SETUSER myuser on >mypassword
-
-# allow account to access all databases
-ACL SETUSER myuser ~* +@all
+ACL SETUSER alice on >dont_use_this_password +@all
 
 # allow account to access database 1
-ACL SETUSER myuser >mypassword resetchannels +@all resetkeys ~db1:* on
+ACL SETUSER bob >dont_use_this_password ~bob:* +get +mget +set +exists +ttl
 
 # verify
-AUTH myuser mypassword
+AUTH bob dont_use_this_password
 SELECT 1
 
 ACL SAVE
+ACL LIST
+
+ACL DELUSER bob
+ACL SETUSER bob on
 ```
 
 #### C04. Connect
