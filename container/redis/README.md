@@ -52,10 +52,16 @@ auth d2jvkpn
 acl setuser hello -keys -flushall -flushdb -config on >world
 acl list
 auth hello world
+
+CONFIG GET *preamble*
 ```
 
 #### C03. ACL
+```bash
+touch data/redis/aclfile.acl
 ```
+
+```redis
 # set password for default account
 ACL SETUSER default on >mystrongpassword
 
@@ -73,4 +79,9 @@ AUTH myuser mypassword
 SELECT 1
 
 ACL SAVE
+```
+
+#### C04. Connect
+```
+docker exec -it redis redis-cli -a "$password"
 ```

@@ -1,34 +1,22 @@
 #!/usr/bin/env bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0) # set -x
 
 
 REDIS_Port=${1:-6379}
 mkdir -p data/redis
 
-touch data/redis/aclfile.acl
-
-if [ ! -f configs/redis.pass ]; then
-    password=$(tr -dc 'A-Za-z0-9!@#$%^&*()' < /dev/urandom | head -c 24 || true)
+if [ ! -s configs/redis.pass ]; then
+    # password=$(tr -dc 'A-Za-z0-9!@#$%^&*()' < /dev/urandom | head -c 24 || true)
+    password=$(tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 32 || true)
     mkdir -p configs/
     echo "$password" > configs/redis.pass
 fi
 
-[ -f data/redis/redis.conf ] || \
-cat > data/redis/redis.conf <<EOF
-requirepass "$password"
+password=$(cat configs/redis.pass)
 
-logfile /data/redis-server.log
-dir /data
-dbfilename dump.rdb
-
-aof-use-rdb-preamble yes
-proto-max-bulk-len 32mb
-io-threads 4
-io-threads-do-reads yes
-EOF
+[ -s data/redis/redis.conf ] || envsubst < redis.conf > data/redis/redis.conf
 
 export USER_UID=$(id -u) USER_GID=$(id -g) REDIS_Port=$REDIS_Port
-envsubst < compose.template.yaml > docker-compose.yaml
+envsubst < compose.template.yaml > compose.yaml
 
 docker-compose up -d
