@@ -1,4 +1,5 @@
-version: "3"
+networks:
+  net: { name: kafka-kraft, driver: bridge, external: false }
 
 services:
   kafka-node01:
@@ -9,8 +10,8 @@ services:
     networks: ["net"]
     ports: ["127.0.0.1:29091:9092"]
     environment: [TZ=Asia/Shanghai]
-    volumes: ["./data/kafka-node01:/app/kafka"]
-    command: ["/app/bin/entrypoint.sh"]
+    volumes: ["./data/kafka-node01:/apps/data/kafka"]
+    command: ["/apps/target/entrypoint.sh"]
 
   kafka-node02:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
@@ -20,8 +21,8 @@ services:
     networks: ["net"]
     ports: ["127.0.0.1:29092:9092"]
     environment: [TZ=Asia/Shanghai]
-    volumes: [./data/kafka-node02:/app/kafka]
-    command: ["/app/bin/entrypoint.sh"]
+    volumes: [./data/kafka-node02:/apps/data/kafka]
+    command: ["/apps/target/entrypoint.sh"]
 
   kafka-node03:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
@@ -31,8 +32,5 @@ services:
     networks: ["net"]
     ports: ["127.0.0.1:29093:9092"]
     environment: [TZ=Asia/Shanghai]
-    volumes: ["./data/kafka-node03:/app/kafka"]
-    command: ["/app/bin/entrypoint.sh"]
-
-networks:
-  net: { name: kafka-kraft, driver: bridge, external: false }
+    volumes: ["./data/kafka-node03:/apps/data/kafka"]
+    command: ["/apps/target/entrypoint.sh"]

@@ -7,17 +7,19 @@ ARG SCALA_Version=${SCALA_Version}
 ENV KAFKA_Version=${KAFKA_Version}
 ENV SCALA_Version=${SCALA_Version}
 
-COPY bin /app/bin
-# RUN chmod a+x /app/bin/*.sh
+RUN mkdir -p /apps/target
+COPY entrypoint.sh kraft_config.sh /apps/target/
+# RUN chmod a+x /apps/target/*.sh
 
 RUN if [ "$BUILD_Region" = "cn" ]; then \
     echo "==> BUILD_Region: $BUILD_Region"; \
+    cp /etc/apk/repositories /etc/apk/repositories.bk; \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
   fi
 
 RUN apk --no-cache update && \
   apk --no-cache upgrade && \
-  apk --no-cache add tzdata bash wget openjdk21
+  apk --no-cache add tzdata bash wget yq openjdk21
 
 RUN tag=${SCALA_Version}-${KAFKA_Version}; \
   wget https://downloads.apache.org/kafka/${KAFKA_Version}/kafka_${tag}.tgz && \
@@ -27,11 +29,11 @@ RUN tag=${SCALA_Version}-${KAFKA_Version}; \
   apk del wget
 # mkdir -p /opt/kafka && tar -xf kafka_${tag}.tgz --strip-components=1 -C /opt/kafka
 
-RUN mkdir -p /app/kafka/data /app/kafka/logs && ln -s /app/kafka/logs /opt/logs
+RUN mkdir -p /apps/kafka/data /apps/kafka/logs && ln -s /apps/kafka/logs /opt/logs
 
 ENV PATH=/opt/kafka/bin:$PATH
-WORKDIR /app
+WORKDIR /apps
 
 EXPOSE 9092 9093
-# ENTRYPOINT ["/app/bin/entrypoint.sh"]
-CMD ["/app/bin/entrypoint.sh"]
+# ENTRYPOINT ["/apps/target/entrypoint.sh"]
+CMD ["/apps/target/entrypoint.sh"]

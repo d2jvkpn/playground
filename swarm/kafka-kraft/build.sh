@@ -4,7 +4,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # set -x
 BUILD_Region=$${BUILD_Region:-}
-KAFKA_Version=${KAFKA_Version:-3.7.0}
+KAFKA_Version=${KAFKA_Version:-3.9.0}
 SCALA_Version=${SCALA_Version:-2.13}
 DOCKER_Push=${DOCKER_Push:-"true"}
 
@@ -18,7 +18,7 @@ docker build --no-cache \
   --build-arg=BUILD_Region="$BUILD_Region" \
   --build-arg=KAFKA_Version="$KAFKA_Version" \
   --build-arg=SCALA_Version="$SCALA_Version" \
-  -f ${_path}/Dockerfile -t $image ./
+  -f ${_path}/Containerfile -t $image ./
 
 docker images -q -f dangling=true $name | xargs -i docker rmi {}
 
