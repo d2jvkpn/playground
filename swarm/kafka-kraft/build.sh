@@ -3,7 +3,7 @@ set -eu -o pipefail
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # set -x
-BUILD_Region=$${BUILD_Region:-}
+BUILD_Region=${BUILD_Region:-}
 KAFKA_Version=${KAFKA_Version:-3.9.0}
 SCALA_Version=${SCALA_Version:-2.13}
 DOCKER_Push=${DOCKER_Push:-"true"}
