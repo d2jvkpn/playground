@@ -81,8 +81,7 @@ trap onExit EXIT
 
 git checkout $git_branch
 
-
-echo "==> Building image: $image, $VUE_APP_PUBLIC_PATH"
+echo "==> Building image=$image, base_path=$VUE_APP_PUBLIC_PATH"
 
 # --build-arg=mode=$mode
 docker build --no-cache --tag $image \
