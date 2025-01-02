@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu -o pipefaill _wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefaill; _wd=$(pwd); _path=$(dirname $0)
 
 name=registry.cn-shanghai.aliyuncs.com/d2jvkpn/nginx-app:latest
 
