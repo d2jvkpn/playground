@@ -45,3 +45,4 @@ done
 #### P04. TODO
 - 2024-01-01 StatefulSet
 - 2024-12-24 Traefik Ingress
+- 2025-01-01 Helm
