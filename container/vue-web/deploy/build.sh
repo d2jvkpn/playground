@@ -3,8 +3,6 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 #### 1.
 tag=$1
-
-# env variables
 # GIT_Pull=$(printenv GIT_Pull || true)
 GIT_Pull=${GIT_Pull:-"true"}
 DOCKER_Pull=${DOCKER_Pull:-false}
@@ -20,6 +18,7 @@ app_version=$(yq .app_version $yaml)
 image_name=$(yq .image_name $yaml)
 image_tag=$(yq .$tag.image_tag $yaml)
 image=$image_name:$image_tag
+
 build_time=$(date +'%FT%T%:z')
 build_host=$(hostname)
 
@@ -101,6 +100,7 @@ docker build --no-cache --tag $image \
 
 [ "$DOCKER_Push" != "false" ] && docker push $image
 
+#### 5.
 docker image prune --force --filter label=app=${app_name} --filter label=stage=build &> /dev/null
 
 # docker images --filter "dangling=true" --quiet $image | xargs -i docker rmi {}
