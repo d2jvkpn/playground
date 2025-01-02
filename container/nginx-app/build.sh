@@ -1,6 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefaill _wd=$(pwd); _path=$(dirname $0)
 
 name=registry.cn-shanghai.aliyuncs.com/d2jvkpn/nginx-app:latest
 
