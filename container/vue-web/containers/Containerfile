@@ -2,12 +2,12 @@
 FROM node:lts-alpine AS builder
 
 ARG APP_Name
-ARG APP_Env
+ARG APP_Version
 ARG BASE_Path
 
 MAINTAINER github.com/d2jvkpn <d2jvkpn@noreply.local>
 LABEL app=${APP_Name}
-LABEL env=${APP_Env}
+LABEL version=${APP_Version}
 LABEL stage=build
 
 #SHELL ["/bin/bash", "-c"]
@@ -32,25 +32,25 @@ RUN if [ -d ./cache.local/node_modules ]; then \
 # npm config set registry https://registry.npmmirror.com
 RUN npm install --registry=https://registry.npmmirror.com &> /dev/null
 
-RUN npm run build -- --dest ${BASE_Path}
+RUN npm run build -- --dest target/static${BASE_Path}
 
-ADD cache.local/build.json ${BASE_Path}/build.json
+ADD cache.local/build.json target/static${BASE_Path}/build.json
 
 ####
 FROM nginx:1-alpine
 
 ARG APP_Name
-ARG APP_Env
+ARG APP_Version
 ARG BASE_Path
 
 MAINTAINER github.com/d2jvkpn <d2jvkpn@noreply.local>
 
 LABEL app=${APP_Name}
-LABEL env=${APP_Env}
+LABEL version=${APP_Version}
 LABEL stage=running
 
 ENV APP_Name=${APP_Name}
-ENV APP_Env=${APP_Env}
+ENV APP_Version=${APP_Version}
 ENV BASE_Path=${BASE_Path}
 ENV TZ=${TZ:-Asia/Shanghai}
 
@@ -59,7 +59,7 @@ ENV TZ=${TZ:-Asia/Shanghai}
 WORKDIR /apps
 
 COPY --from=builder /apps/target ./target
-ADD cache.local/build.yaml ./target$BASE_Path
+ADD cache.local/build.yaml ./target/static$BASE_Path
 
 RUN mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bk && \
   sed -i '/worker_processes/s#auto#4#' /etc/nginx/nginx.conf

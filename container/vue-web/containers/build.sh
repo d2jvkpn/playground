@@ -1,6 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail
-_wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 #### 1.
 tag=$1
@@ -88,7 +87,9 @@ echo "==> Building image: $image, $VUE_APP_PUBLIC_PATH"
 # --build-arg=mode=$mode
 docker build --no-cache --tag $image \
   --file ${_path}/Containerfile \
-  --build-arg=BASE_Path="./target/static$VUE_APP_PUBLIC_PATH" \
+  --build-arg=APP_Name=$app_name \
+  --build-arg=APP_Version=$app_version \
+  --build-arg=BASE_Path="$VUE_APP_PUBLIC_PATH" \
   ./
 
 docker image prune --force --filter label=app=${app_name} --filter label=stage=build &> /dev/null
