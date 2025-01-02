@@ -1,4 +1,5 @@
-version: "3"
+# networks:
+#   net: { name: nginx-app, driver: bridge, external: false }
 
 services:
   nginx-app:
@@ -6,14 +7,14 @@ services:
     container_name: nginx-app
     restart: always
     user: "${USER_UID}:${USER_GID}"
-    network_mode: bridge
+    network_mode: host
     # networks: ["net"]
     ports: ["${HTTP_Port}:80"]
     working_dir: /app
     volumes:
     - ./static/:/app/static
     # - ./htpasswd:/opt/nginx/htpasswd
-    environment: ["PORT=80"]
-
-# networks:
-#   net: { name: nginx-app, driver: bridge, external: false }
+    environment:
+      PORT: "80"
+      TZ: Asia/Shanghai
+    #command: ["nginx", "-g", "daemon off;"]
