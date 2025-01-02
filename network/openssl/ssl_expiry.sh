@@ -1,7 +1,9 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
+
 if [ $# -eq 0 ]; then
+    >&2 echo '!!! hosts are required'
     exit 1
 elif [ $# -eq 1 ]; then
     :
@@ -11,6 +13,7 @@ else
     done
     exit 0
 fi
+
 
 host=$(echo $1 | sed 's#.*//##; s#/.*##')
 port=${port:-443}
