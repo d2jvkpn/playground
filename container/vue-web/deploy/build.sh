@@ -103,6 +103,7 @@ docker build --no-cache --tag $image \
 
 docker image prune --force --filter label=app=${app_name} --filter label=stage=build &> /dev/null
 
-for img in $(docker images --filter "dangling=true" --quiet $image); do
+# docker images --filter "dangling=true" --quiet $image | xargs -i docker rmi {}
+for img in $(docker images --filter=dangling=true --filter=label=app=$app_name --quiet); do
     docker rmi $img || true
 done
