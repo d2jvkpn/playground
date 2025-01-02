@@ -29,18 +29,16 @@ unpushed=$(git diff origin/$git_branch..HEAD --name-status)
 
 build_time=$(date +'%FT%T%:z')
 
-VUE_APP_ENV=$tag
-VUE_APP_API_URL=$(yq .$tag.VUE_APP_API_URL $yaml)
 VUE_APP_PUBLIC_PATH=$(yq .$tag.VUE_APP_PUBLIC_PATH $yaml)
+VUE_APP_API_URL=$(yq .$tag.VUE_APP_API_URL $yaml)
 
 
 #### 2.
 mkdir -p cache.local
 
 cat > cache.local/env <<EOF
-VUE_APP_ENV=$VUE_APP_ENV
-VUE_APP_API_URL=$VUE_APP_API_URL
 VUE_APP_PUBLIC_PATH=$VUE_APP_PUBLIC_PATH
+VUE_APP_API_URL=$VUE_APP_API_URL
 EOF
 
 cat > cache.local/build.yaml <<EOF
@@ -54,9 +52,8 @@ git_tree_state: $git_tree_state
 
 build_time: $build_time
 
-VUE_APP_ENV: $VUE_APP_ENV
-VUE_APP_API_URL: $VUE_APP_API_URL
 VUE_APP_PUBLIC_PATH: $VUE_APP_PUBLIC_PATH
+VUE_APP_API_URL: $VUE_APP_API_URL
 EOF
 
 yq -o json cache.local/build.yaml > cache.local/build.json
@@ -91,7 +88,10 @@ docker build --no-cache --tag $image \
   --build-arg=BASE_Path="$VUE_APP_PUBLIC_PATH" \
   ./
 
+[ "$DOCKER_Push" != "false" ] && docker push $image
+
 docker image prune --force --filter label=app=${app_name} --filter label=stage=build &> /dev/null
 
-[ "$DOCKER_Push" != "false" ] && docker push $image
-docker images --filter "dangling=true" --quiet $image | xargs -i docker rmi {}
+for img in $(docker images --filter "dangling=true" --quiet $image); do
+    docker rmi $img || true
+done
