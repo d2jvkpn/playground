@@ -6,6 +6,7 @@ ARG APP_Version
 ARG BASE_Path
 
 MAINTAINER github.com/d2jvkpn <d2jvkpn@noreply.local>
+
 LABEL app=${APP_Name}
 LABEL version=${APP_Version}
 LABEL stage=build
