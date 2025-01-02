@@ -9,11 +9,14 @@ build:
 	rm -rf target/static
 	npm run build -- --dest ./target/static$(VUE_APP_PUBLIC_PATH) # --mode dev
 
+image-local:
+	GIT_Pull=false DOCKER_Pull=false DOCKER_Push=false bash deploy/build.sh dev
+
 image-dev:
-	DOCKER_Pull=false DOCKER_Push=false bash containers/build.sh dev
+	DOCKER_Pull=false DOCKER_Push=false bash deploy/build.sh dev
 
 image-test:
-	DOCKER_Pull=false DOCKER_Push=false bash containers/build.sh test
+	DOCKER_Pull=false DOCKER_Push=false bash deploy/build.sh test
 
 image-main:
-	DOCKER_Pull=false DOCKER_Push=false bash containers/build.sh main
+	DOCKER_Pull=false DOCKER_Push=false bash deploy/build.sh main
