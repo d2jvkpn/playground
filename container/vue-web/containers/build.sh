@@ -88,10 +88,10 @@ echo "==> Building image: $image, $VUE_APP_PUBLIC_PATH"
 # --build-arg=mode=$mode
 docker build --no-cache --tag $image \
   --file ${_path}/Containerfile \
-  --build-arg=BASE="./target/static$VUE_APP_PUBLIC_PATH" \
+  --build-arg=BASE_Path="./target/static$VUE_APP_PUBLIC_PATH" \
   ./
 
-docker image prune --force --filter label=stage=${app_name}_builder &> /dev/null
+docker image prune --force --filter label=stage=${app_name}_build &> /dev/null
 
 [ "$DOCKER_Push" != "false" ] && docker push $image
 docker images --filter "dangling=true" --quiet $image | xargs -i docker rmi {}
