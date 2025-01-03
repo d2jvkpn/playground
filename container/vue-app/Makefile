@@ -1,4 +1,8 @@
+#!/bin/make
+
 include .env
+
+SHELL = /bin/bash
 
 run:
 	# node node_modules/@vue/cli-service/bin/vue-cli-service.js serve --help
