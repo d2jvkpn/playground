@@ -1,6 +1,6 @@
-app_name: vue-web
+app_name: vue-app
 app_version: 1.0.0
-image_name: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-web
+image_name: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-app
 
 dev:
   branch: master

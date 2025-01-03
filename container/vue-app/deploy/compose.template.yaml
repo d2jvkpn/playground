@@ -1,9 +1,9 @@
 version: "3"
 
 services:
-  web:
-    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-web:${IMAGE_Tag}
-    container_name: vue-web
+  vue-app:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-app:${IMAGE_Tag}
+    container_name: vue-app
     restart: always
     network_mode: bridge
     ports: ["${HTTP_Port}:80"]

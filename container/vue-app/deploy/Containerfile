@@ -52,7 +52,6 @@ LABEL stage=running
 
 ENV APP_Name=${APP_Name}
 ENV APP_Version=${APP_Version}
-ENV BASE_Path=${BASE_Path}
 ENV TZ=${TZ:-Asia/Shanghai}
 
 #SHELL ["/bin/bash", "-c"]
