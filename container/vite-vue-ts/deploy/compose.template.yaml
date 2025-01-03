@@ -1,0 +1,12 @@
+services:
+  vite-vue-ts:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vite-vue-ts:${IMAGE_Tag}
+    container_name: vite-vue-ts
+    restart: always
+    network_mode: host
+    ports: ["${HTTP_Port}:80"]
+    deploy:
+      resources:
+        limits: { cpus: "4", memory: 512M }
+        reservations: { cpus: "0.05", memory: 16M }
+    environment: ["TZ=Asia/Shanghai", "PORT=80"]
