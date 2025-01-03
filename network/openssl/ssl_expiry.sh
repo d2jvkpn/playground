@@ -18,13 +18,15 @@ fi
 host=$(echo $1 | sed 's#.*//##; s#/.*##')
 port=${port:-443}
 
-expiry_date=$(echo |
+# openssl x509 -noout -subject -dates
+expiry_date=$(
+  echo |
   openssl s_client -connect $host:$port 2> /dev/null |
-  openssl x509 -noout -subject -dates |
-  grep "notAfter" |
+  openssl x509 --noout --enddate |
   cut -d= -f2
 )
 
-ans=$(date -u -d "${expiry_date}" +"%Y-%m-%dT%H:%M:%SZ")
+# ans=$(date -u -d "${expiry_date}" +"%Y-%m-%dT%H:%M:%SZ")
+ans=$(date -d "${expiry_date}" +"%Y-%m-%dT%H:%M:%S%:z")
 
 echo $host, $ans
