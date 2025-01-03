@@ -31,7 +31,6 @@ RUN if [ -d ./cache.local/node_modules ]; then \
     mv ./cache.local/node_modules ./; \
   fi
 
-
 RUN if [ "$region" = "cn" ]; then \
     echo "==> region: $region"; \
     npm config set registry https://registry.npmmirror.com; \
@@ -41,7 +40,7 @@ RUN if [ "$region" = "cn" ]; then \
 RUN npm install && npm run build -- --dest target/static${BASE_Path}
 
 ADD cache.local/build.yaml ./target/
-ADD cache.local/build.json target/static${BASE_Path}/build.json
+ADD cache.local/build.json target/static${BASE_Path}/
 
 ####
 FROM nginx:1-alpine
