@@ -7,6 +7,7 @@ tag=$1
 GIT_Pull=${GIT_Pull:-"true"}
 DOCKER_Pull=${DOCKER_Pull:-false}
 DOCKER_Push=${DOCKER_Push:-false}
+region=${region:-""}
 
 yaml=${yaml:-${_path}/build.yaml}
 
@@ -96,6 +97,7 @@ docker build --no-cache --tag $image \
   --build-arg=APP_Name=$app_name \
   --build-arg=APP_Version=$app_version \
   --build-arg=BASE_Path="$VUE_APP_PUBLIC_PATH" \
+  --build-arg=region="$region" \
   ./
 
 [ "$DOCKER_Push" != "false" ] && docker push $image
