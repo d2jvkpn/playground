@@ -12,7 +12,7 @@ build:
 image-local:
 	GIT_Pull=false DOCKER_Pull=false DOCKER_Push=false bash deploy/build.sh dev
 
-image-cn:
+image-dev-cn:
 	region=cn DOCKER_Pull=false DOCKER_Push=false bash deploy/build.sh dev
 
 image-dev:
