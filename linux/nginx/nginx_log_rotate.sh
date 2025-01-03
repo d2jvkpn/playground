@@ -1,5 +1,7 @@
-#!/usr/bin/env bash
-set -eu -o pipefail
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+
+# 2025-01-03 cat /etc/logrotate.d/nginx
 
 # cron: 0 0 1 * *
 # $ crontab -e
