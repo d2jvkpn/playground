@@ -3,7 +3,7 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
 # npm init vite@latest # interactive
-npm init vite@latest vite-vue-ts -- --template vue-ts
+npm init vite@latest vite-vue-ts -- --template=vue-ts
 
 cd vite-vue-ts
 
