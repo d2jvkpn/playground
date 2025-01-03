@@ -7,7 +7,7 @@ run:
 build:
 	#rm -rf dist
 	rm -rf target/static
-	npm run build -- --dest ./target/static$(VUE_APP_PUBLIC_PATH) # --mode dev
+	npm run build -- --dest=./target/static$(VUE_APP_PUBLIC_PATH) # --mode dev
 
 image-local:
 	GIT_Pull=false DOCKER_Pull=false DOCKER_Push=false bash deploy/build.sh dev
