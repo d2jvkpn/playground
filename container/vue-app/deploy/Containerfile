@@ -18,8 +18,8 @@ WORKDIR /apps
 
 RUN echo "==> BASE_Path: ${BASE_Path}"
 
-# *.env.* index.html
-ADD  *.js *.json  ./
+# *.ts index.html
+ADD  *.js *.json ./
 COPY public/ ./public
 COPY src/ ./src
 
