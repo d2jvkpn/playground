@@ -1,15 +1,12 @@
-version: "3"
-
 services:
   vue-app:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-app:${IMAGE_Tag}
     container_name: vue-app
     restart: always
-    network_mode: bridge
+    network_mode: host
     ports: ["${HTTP_Port}:80"]
     deploy:
       resources:
         limits: { cpus: "4", memory: 512M }
         reservations: { cpus: "0.05", memory: 16M }
-
     environment: ["TZ=Asia/Shanghai", "PORT=80"]

@@ -1,7 +1,5 @@
-#! /usr/bin/env bash
-set -eu -o pipefail
-_wd=$(pwd)
-_path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 IMAGE_Tag="$1"; HTTP_Port="$2"
 
@@ -14,4 +12,3 @@ exit 0
 
 docker-compose pull
 docker-compose up -d
-docker logs vue-app
