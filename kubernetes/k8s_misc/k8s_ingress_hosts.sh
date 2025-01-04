@@ -8,7 +8,7 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0) # set -x
 
 # kubectl get ingress -A -o jsonpath='{range .items[*]}{.metadata.namespace}{"\t"}{range .spec.rules[*]}{.host}{"\n"}{end}{end}'
 
-output=ingress_hosts.$(date +%F).tsv
+output=ingress_hosts.$(date +%Y%m%d-%s).tsv
 
 kubectl get ingress --all-namespaces -o json |
   jq -r '.items[] | "\(.metadata.namespace)\t\(.spec.rules | map(.host) | join(","))"' |

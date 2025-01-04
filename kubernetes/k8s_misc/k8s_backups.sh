@@ -15,9 +15,9 @@ mkdir -p $bk_dir
     $kubectl get all --all-namespaces -o yaml > $bk_dir/all-resources.yaml
 }
 
-for e in deployments services ingress \
-  daemonSets configmaps secrets \
-  persistentVolumes persistentVolumeClaims statefulSets cronJob nodes; do
+for e in deployments services ingress daemonSets configmaps \
+  secrets persistentVolumes persistentVolumeClaims statefulSets cronJob \
+  nodes; do
     [ -s $bk_dir/resource.$e.yaml ] && continue
 
     echo "==> $bk_dir/resource.$e.yaml"

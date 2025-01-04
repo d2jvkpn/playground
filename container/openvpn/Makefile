@@ -1,8 +1,8 @@
 image:
-	bash containers/build.sh
+	bash deploy/build.sh
 
 image-cn:
-	BUILD_Region=cn bash containers/build.sh
+	BUILD_Region=cn bash deploy/build.sh
 
 archive:
 	mkdir -p data
