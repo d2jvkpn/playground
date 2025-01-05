@@ -20,7 +20,6 @@ port=${port:-443}
 
 # openssl x509 -noout -subject -dates
 # date -u -d "${expiry_date}" +"%Y-%m-%dT%H:%M:%SZ"
-
 output=$(
   echo |
   openssl s_client -connect $host:$port 2> /dev/null |
@@ -33,5 +32,7 @@ if [[ "${output}" != "notAfter="* ]]; then
     exit 0
 fi
 
-expiry_date=$(echo $output | cut -d= -f2 | xargs -i date -d "{}" +"%Y-%m-%dT%H:%M:%S%:z")
-echo $host, $expiry_date
+date1=$(echo $output | cut -d= -f2 | xargs -i date -u -d "{}" +"%Y-%m-%dT%H:%M:%SZ")
+date2=$(echo $output | cut -d= -f2 | xargs -i date -d "{}" +"%Y-%m-%dT%H:%M:%S%:z")
+
+echo $host, $date1, $date2
