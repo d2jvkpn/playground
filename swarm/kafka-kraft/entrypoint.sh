@@ -2,7 +2,7 @@
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 # PWD: /apps
-yaml_config=./data/kafka/kafka.yaml
+yaml=./data/kafka/kafka.yaml
 conf=./data/kafka/kafka.properties
 
 #cluster_id=$(awk '/^cluster_id: /{print $2; exit}' $yaml)

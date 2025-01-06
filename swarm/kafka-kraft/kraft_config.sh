@@ -1,8 +1,7 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
-yaml_config=$1
-output=$2
+yaml=$1; output=$2
 template=${template:-/opt/kafka/config/kraft/server.properties}
 
 ####
@@ -29,7 +28,7 @@ cat $template | sed \
 
 exit
 
-cat /app/data/kafka/kafka.yaml <<EOF
+cat > /apps/data/kafka/kafka.yaml <<EOF
 version: 3.9.0
 cluster_id: kFTN1eu1TaSvi4aY5pLVGg
 data_dir: /apps/data/kafka
