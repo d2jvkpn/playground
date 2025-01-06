@@ -4,14 +4,14 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 # [ -z "$(docker network ls | grep -w mongo-cluster)" ] && docker network create mongo-cluster
 
 export USER_UID=$(id -u) USER_GID=$(id -g)
-envsubst < docker_deploy.yaml > docker-compose.yaml
+envsubst < compose.template.yaml > compose.yaml
 
 echo "==> docker-compose up"
 docker-compose up -d
 
 exit
-# if you start services mongos in docker-compose.yaml, you can't connect to mongos through ports mapping
-sed -i -e '/mongos-1:\|mongos-2:\|mongos-3:/,+15d' docker-compose.yaml
+# if you start services mongos in compose.yaml, you can't connect to mongos through ports mapping
+sed -i -e '/mongos-1:\|mongos-2:\|mongos-3:/,+15d' compose.yaml
 docker-compose up -d configsvr-1{a..c} shard-{1..3}{a..c}
 
 echo "==> create mongo-mongos-{1..3}"

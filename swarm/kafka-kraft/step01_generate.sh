@@ -39,7 +39,12 @@ cluster_id: $cluster_id
 # controller_quorum_voters: 1@kafka-node01:9093,2@kafka-node02:9093,3@kafka-node03:9093
 EOF
 
-controller_quorum_voters=$(for i in $(seq 1 $num); do printf "%d@$template:9093," $i $i; done)
+controller_quorum_voters=$(
+  for i in $(seq 1 $num); do
+      printf "%d@$template:9093," $i $i
+  done
+)
+
 controller_quorum_voters=${controller_quorum_voters%,}
 
 echo "==> controller_quorum_voters: $controller_quorum_voters"
@@ -62,11 +67,11 @@ EOF
     echo "==> node: $node, config: data/$node/kafka.yaml"
 done
 
-#### 2. generate docker-compose.yaml
+#### 2. generate compose.yaml
 export TAG=$kafka_version USER_UID=$(id -u) USER_GID=$(id -g)
-envsubst < docker_deploy.yaml > docker-compose.yaml
+envsubst < compose.yaml.yaml > compose.yaml
 
-echo "==> docker-compose.yaml created"
+echo "==> compose.yaml created"
 
 exit
 

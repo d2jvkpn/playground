@@ -17,7 +17,7 @@ docker exec -it postgres-node01 bash
 # echo "host    all    all     172.25.0.0/16    trust" >> /var/lib/postgresql/data/pgdata/pg_hba.conf
 # echo "host    all    all     172.25.0.0/16    scram-sha-256" >> /var/lib/postgresql/data/pgdata/pg_hba.conf
 
-# yq .networks.net.ipam.config[0].subnet docker-compose.yaml
+# yq .networks.net.ipam.config[0].subnet compose.yaml
 
 #### connect
 psql --username=postgres --host=localhost --port=5441 --password

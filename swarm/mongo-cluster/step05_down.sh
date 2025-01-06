@@ -2,7 +2,7 @@
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
-[ -z "$(grep "mongos-1:" docker-compose.yaml)" ] && \
+[ -z "$(grep "mongos-1:" compose.yaml)" ] && \
   docker stop mongo-mongos-{1..3} && docker rm mongo-mongos-{1..3}
 
 docker-compose down

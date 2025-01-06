@@ -2,7 +2,7 @@
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 nodes=(postgres-node{01..04})
-subnet=$(yq .networks.net.ipam.config[0].subnet docker-compose.yaml)
+subnet=$(yq .networks.net.ipam.config[0].subnet compose.yaml)
 replicator_user=replicator
 
 mkdir -p configs data

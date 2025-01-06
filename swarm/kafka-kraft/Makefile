@@ -1,4 +1,4 @@
-#!/bin/expect
+#!/bin/make
 
 TAG = 3.9.0
 USER_UID = $(shell id -u)

@@ -90,7 +90,7 @@ config_db=$configsvr_id/mongo-configsvr-1a:27017,mongo-configsvr-1b:27017,mongo-
 #### 5. mongos.conf
 for idx in {1..3}; do
     node=mongos-${idx}
-    # ip=$(yq .services.$node.networks[].ipv4_address docker_deploy.yaml)
+    # ip=$(yq .services.$node.networks[].ipv4_address compose.template.yaml)
 
     config_db=$config_db bind_ip=mongo-$node \
       envsubst < docs/mongos.conf | sed '/^#/d' > configs/$node.conf
