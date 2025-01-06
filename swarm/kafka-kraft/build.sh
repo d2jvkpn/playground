@@ -1,8 +1,7 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
-# set -x
-BUILD_Region=${BUILD_Region:-}
+region=${region:-}
 KAFKA_Version=${KAFKA_Version:-3.9.0}
 SCALA_Version=${SCALA_Version:-2.13}
 DOCKER_Push=${DOCKER_Push:-"true"}
@@ -14,7 +13,7 @@ image=$name:$KAFKA_Version
 docker pull alpine:3
 
 docker build --no-cache \
-  --build-arg=BUILD_Region="$BUILD_Region" \
+  --build-arg=region="$region" \
   --build-arg=KAFKA_Version="$KAFKA_Version" \
   --build-arg=SCALA_Version="$SCALA_Version" \
   -f ${_path}/Containerfile -t $image ./
