@@ -1,5 +1,9 @@
+# path: ~/.Rprofile
+
 # chooseCRANmirror(graphics=FALSE, ind=24)
 
 options(repos = c(CRAN="https://mirrors.tuna.tsinghua.edu.cn/CRAN/"))
+# https://mirrors.ustc.edu.cn/CRAN/
+# https://mirrors.pku.edu.cn/cran/
 
 # install.packages("rover", repos = c("https://lair.functionalfinances.com/repos/shared", "https://lair.functionalfinances.com/repos/cran"))
