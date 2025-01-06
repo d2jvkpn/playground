@@ -3,14 +3,14 @@ app_version: 1.0.0
 image_name: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vite-vue-ts
 
 local:
-  branch: dev
+  branch: master
   image_tag: local
   VITE_BASE: /
   VITE_API_URL: domain.local:9011
   # window.location.protocol+"//domain.local:9011"
 
 dev:
-  branch: dev
+  branch: master
   image_tag: dev
   VITE_BASE: /site
   VITE_API_URL: domain.local:9012
