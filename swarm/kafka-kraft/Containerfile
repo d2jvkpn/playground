@@ -7,9 +7,8 @@ ARG SCALA_Version
 ENV KAFKA_Version=${KAFKA_Version}
 ENV SCALA_Version=${SCALA_Version}
 
-RUN mkdir -p /apps/target
-COPY entrypoint.sh kraft_config.sh /apps/target/
-# RUN chmod a+x /apps/target/*.sh
+COPY bin /apps/bin
+# RUN chmod a+x /apps/bin/*.sh
 
 RUN if [ "$region" = "cn" ]; then \
     echo "==> region: $region"; \
@@ -36,5 +35,5 @@ ENV PATH=/opt/kafka/bin:$PATH
 WORKDIR /apps
 
 EXPOSE 9092 9093
-# ENTRYPOINT ["/apps/target/entrypoint.sh"]
-CMD ["/apps/target/entrypoint.sh"]
+# ENTRYPOINT ["/apps/bin/entrypoint.sh"]
+CMD ["/apps/bin/entrypoint.sh"]

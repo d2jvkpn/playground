@@ -9,7 +9,7 @@ conf=./data/kafka/kafka.properties
 cluster_id=$(yq .cluster_id $yaml)
 
 [ -z "$cluster_id" ] && { >&2 echo "cluster_id is unset in $yaml"; exit 1; }
-[ ! -f "$conf" ] && ${_path}/target/kraft_config.sh $yaml $conf
+[ ! -f "$conf" ] && ${_path}/kraft_config.sh $yaml $conf
 
 mkdir -p kafka/{data,logs}
 

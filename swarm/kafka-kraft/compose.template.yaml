@@ -11,7 +11,7 @@ services:
     ports: ["127.0.0.1:29091:9092"]
     environment: [TZ=Asia/Shanghai]
     volumes: ["./data/kafka-node01:/apps/data/kafka"]
-    command: ["/apps/target/entrypoint.sh"]
+    command: ["/apps/bin/entrypoint.sh"]
 
   kafka-node02:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
@@ -22,7 +22,7 @@ services:
     ports: ["127.0.0.1:29092:9092"]
     environment: [TZ=Asia/Shanghai]
     volumes: [./data/kafka-node02:/apps/data/kafka]
-    command: ["/apps/target/entrypoint.sh"]
+    command: ["/apps/bin/entrypoint.sh"]
 
   kafka-node03:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:${TAG}
@@ -33,4 +33,4 @@ services:
     ports: ["127.0.0.1:29093:9092"]
     environment: [TZ=Asia/Shanghai]
     volumes: ["./data/kafka-node03:/apps/data/kafka"]
-    command: ["/apps/target/entrypoint.sh"]
+    command: ["/apps/bin/entrypoint.sh"]
