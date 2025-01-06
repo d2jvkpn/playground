@@ -1,6 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 nodes=(postgres-node{01..04})
 subnet=$(yq .networks.net.ipam.config[0].subnet docker-compose.yaml)
@@ -14,11 +13,11 @@ mkdir -p data/$primary
 sudo chown 70:70 data/$primary
 # sudo chmod 0750 data/$primary
 
-password=$(tr -dc '0-9a-zA-Z._\-' < /dev/urandom | fold -w 32 | head -n 1 || true)
+password=$(tr -dc '0-9a-zA-Z' < /dev/urandom | fold -w 32 | head -n 1 || true)
 
 # data_dir: /var/lib/postgresql/data/pgdata
 cat > configs/$primary.yaml <<EOF
-data_dir: /app/data
+data_dir: /apps/data
 subnet: $subnet
 role: primary
 replicator_user: $replicator_user
@@ -26,7 +25,7 @@ replicator_password: $password
 EOF
 
 cat > configs/replica.yaml <<EOF
-data_dir: /app/data
+data_dir: /apps/data
 subnet: $subnet
 role: replica
 replicator_user: $replicator_user

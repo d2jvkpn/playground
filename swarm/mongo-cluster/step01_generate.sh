@@ -1,6 +1,6 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+
 
 #### 1. generate directories, ssl cert
 mkdir -p configs docs
@@ -27,7 +27,7 @@ sharding:
   clusterRole: configsvr
 security:
   authorization: enabled
-  keyFile: /app/configs/mongo.key
+  keyFile: /apps/configs/mongo.key
 EOF
 
 [ -s docs/mongos.conf ] || cat > docs/mongos.conf <<'EOF'
@@ -37,7 +37,7 @@ net:
 sharding:
   configDB: ${config_db}
 security:
-  keyFile: /app/configs/mongo.key
+  keyFile: /apps/configs/mongo.key
 EOF
 
 [ -s docs/shard.conf ] || cat > docs/shard.conf <<'EOF'
@@ -58,7 +58,7 @@ sharding:
   clusterRole: shardsvr
 security:
   authorization: enabled
-  keyFile: /app/configs/mongo.key
+  keyFile: /apps/configs/mongo.key
 EOF
 
 #### 2. generate key and secret

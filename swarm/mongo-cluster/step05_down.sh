@@ -1,6 +1,6 @@
 #!/bin/bash
-set -eu -o pipefail -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+
 
 [ -z "$(grep "mongos-1:" docker-compose.yaml)" ] && \
   docker stop mongo-mongos-{1..3} && docker rm mongo-mongos-{1..3}

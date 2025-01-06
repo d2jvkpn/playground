@@ -1,6 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 # [ -z "$(docker network ls | grep -w mongo-cluster)" ] && docker network create mongo-cluster
 
@@ -25,10 +24,10 @@ for idx in {1..3}; do
       -p 127.0.0.1:$port:27017 \
       --net=mongo-cluster \
       -e TZ=Asia/Shanghai \
-      -v $PWD/bin:/app/bin \
-      -v $PWD/configs:/app/configs \
+      -v $PWD/bin:/apps/bin \
+      -v $PWD/configs:/apps/configs \
       -v $PWD/data/$node/db:/data/db \
       -v $PWD/data/$node/logs:/var/log/mongodb \
       --entrypoint=mongos \
-      mongo:6 --config /app/configs/$node.conf
+      mongo:7 --config /apps/configs/$node.conf
 done

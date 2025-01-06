@@ -1,6 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 #### step6: tests
 docker exec -it mongo-mongos-1 mongosh mongodb://root@mongo-mongos-1:27017/admin

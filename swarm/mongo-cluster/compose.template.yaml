@@ -1,4 +1,5 @@
-version: "3"
+networks:
+  net: { name: mongo-cluster, driver: bridge, external: false }
 
 services:
   configsvr-1a:
@@ -7,13 +8,14 @@ services:
     container_name: mongo-configsvr-1a
     user: "${USER_UID}:${USER_GID}"
     networks: ["net"]
-    environment: [TZ=Asia/Shanghai]
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
     - ./data/configsvr-1a/db:/data/db
     - ./data/configsvr-1a/logs:/var/log/mongodb
-    command: [--config, /app/configs/configsvr-1.conf]
+    command: [--config, /apps/configs/configsvr-1.conf]
 
   configsvr-1b:
     image: mongo:7
@@ -21,13 +23,14 @@ services:
     container_name: mongo-configsvr-1b
     user: "${USER_UID}:${USER_GID}"
     networks: ["net"]
-    environment: [TZ=Asia/Shanghai]
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
     - ./data/configsvr-1b/db:/data/db
     - ./data/configsvr-1b/logs:/var/log/mongodb
-    command: [--config, /app/configs/configsvr-1.conf]
+    command: [--config, /apps/configs/configsvr-1.conf]
 
   configsvr-1c:
     image: mongo:7
@@ -35,13 +38,14 @@ services:
     container_name: mongo-configsvr-1c
     user: "${USER_UID}:${USER_GID}"
     networks: ["net"]
-    environment: [TZ=Asia/Shanghai]
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
     - ./data/configsvr-1c/db:/data/db
     - ./data/configsvr-1c/logs:/var/log/mongodb
-    command: [--config, /app/configs/configsvr-1.conf]
+    command: [--config, /apps/configs/configsvr-1.conf]
 
   shard-1a:
     image: mongo:7
@@ -49,13 +53,14 @@ services:
     container_name: mongo-shard-1a
     user: "${USER_UID}:${USER_GID}"
     networks: ["net"]
-    environment: [TZ=Asia/Shanghai]
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
     - ./data/shard-1a/db:/data/db
     - ./data/shard-1a/logs:/var/log/mongodb
-    command: [--config, /app/configs/shard-1.conf]
+    command: [--config, /apps/configs/shard-1.conf]
 
   shard-1b:
     image: mongo:7
@@ -63,13 +68,14 @@ services:
     container_name: mongo-shard-1b
     user: "${USER_UID}:${USER_GID}"
     networks: ["net"]
-    environment: [TZ=Asia/Shanghai]
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
     - ./data/shard-1b/db:/data/db
     - ./data/shard-1b/logs:/var/log/mongodb
-    command: [--config, /app/configs/shard-1.conf]
+    command: [--config, /apps/configs/shard-1.conf]
 
   shard-1c:
     image: mongo:7
@@ -77,13 +83,14 @@ services:
     container_name: mongo-shard-1c
     user: "${USER_UID}:${USER_GID}"
     networks: ["net"]
-    environment: [TZ=Asia/Shanghai]
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
     - ./data/shard-1c/db:/data/db
     - ./data/shard-1c/logs:/var/log/mongodb
-    command: [--config, /app/configs/shard-1.conf]
+    command: [--config, /apps/configs/shard-1.conf]
 
   shard-2a:
     image: mongo:7
@@ -91,13 +98,14 @@ services:
     container_name: mongo-shard-2a
     user: "${USER_UID}:${USER_GID}"
     networks: ["net"]
-    environment: [TZ=Asia/Shanghai]
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
     - ./data/shard-2a/db:/data/db
     - ./data/shard-2a/logs:/var/log/mongodb
-    command: [--config, /app/configs/shard-2.conf]
+    command: [--config, /apps/configs/shard-2.conf]
 
   shard-2b:
     image: mongo:7
@@ -105,13 +113,14 @@ services:
     container_name: mongo-shard-2b
     user: "${USER_UID}:${USER_GID}"
     networks: ["net"]
-    environment: [TZ=Asia/Shanghai]
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
     - ./data/shard-2b/db:/data/db
     - ./data/shard-2b/logs:/var/log/mongodb
-    command: [--config, /app/configs/shard-2.conf]
+    command: [--config, /apps/configs/shard-2.conf]
 
   shard-2c:
     image: mongo:7
@@ -119,13 +128,14 @@ services:
     container_name: mongo-shard-2c
     user: "${USER_UID}:${USER_GID}"
     networks: ["net"]
-    environment: [TZ=Asia/Shanghai]
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
     - ./data/shard-2c/db:/data/db
     - ./data/shard-2c/logs:/var/log/mongodb
-    command: [--config, /app/configs/shard-2.conf]
+    command: [--config, /apps/configs/shard-2.conf]
 
   shard-3a:
     image: mongo:7
@@ -133,13 +143,14 @@ services:
     container_name: mongo-shard-3a
     user: "${USER_UID}:${USER_GID}"
     networks: ["net"]
-    environment: [TZ=Asia/Shanghai]
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
     - ./data/shard-3a/db:/data/db
     - ./data/shard-3a/logs:/var/log/mongodb
-    command: [--config, /app/configs/shard-3.conf]
+    command: [--config, /apps/configs/shard-3.conf]
 
   shard-3b:
     image: mongo:7
@@ -147,13 +158,14 @@ services:
     container_name: mongo-shard-3b
     user: "${USER_UID}:${USER_GID}"
     networks: ["net"]
-    environment: [TZ=Asia/Shanghai]
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
     - ./data/shard-3b/db:/data/db
     - ./data/shard-3b/logs:/var/log/mongodb
-    command: [--config, /app/configs/shard-3.conf]
+    command: [--config, /apps/configs/shard-3.conf]
 
   shard-3c:
     image: mongo:7
@@ -161,13 +173,14 @@ services:
     container_name: mongo-shard-3c
     user: "${USER_UID}:${USER_GID}"
     networks: ["net"]
-    environment: [TZ=Asia/Shanghai]
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
     - ./data/shard-3c/db:/data/db
     - ./data/shard-3c/logs:/var/log/mongodb
-    command: [--config, /app/configs/shard-3.conf]
+    command: [--config, /apps/configs/shard-3.conf]
 
   mongos-1:
     image: mongo:7
@@ -177,14 +190,15 @@ services:
     user: "${USER_UID}:${USER_GID}"
     networks: [net]
     ports: [127.0.0.1:27021:2017]
-    environment: [TZ=Asia/Shanghai]
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
     - ./data/mongos-3/db:/data/db
     - ./data/mongos-3/logs:/var/log/mongodb
     entrypoint: [mongos]
-    command: [--bind_ip_all, --config, /app/configs/mongos-1.conf]
+    command: [--bind_ip_all, --config, /apps/configs/mongos-1.conf]
 
   mongos-2:
     image: mongo:7
@@ -194,14 +208,15 @@ services:
     user: "${USER_UID}:${USER_GID}"
     networks: [net]
     ports: [127.0.0.1:27022:2017]
-    environment: [TZ=Asia/Shanghai]
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
     - ./data/mongos-3/db:/data/db
     - ./data/mongos-3/logs:/var/log/mongodb
     entrypoint: [mongos]
-    command: [--bind_ip_all, --config, /app/configs/mongos-2.conf]
+    command: [--bind_ip_all, --config, /apps/configs/mongos-2.conf]
 
   mongos-3:
     image: mongo:7
@@ -211,14 +226,12 @@ services:
     user: "${USER_UID}:${USER_GID}"
     networks: [net]
     ports: [127.0.0.1:27023:2017]
-    environment: [TZ=Asia/Shanghai]
+    environment:
+      TZ: Asia/Shanghai
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
     - ./data/mongos-3/db:/data/db
     - ./data/mongos-3/logs:/var/log/mongodb
     entrypoint: [mongos]
-    command: [--bind_ip_all, --config, /app/configs/mongos-3.conf]
-
-networks:
-  net: { name: mongo-cluster, driver: bridge, external: false }
+    command: [--bind_ip_all, --config, /apps/configs/mongos-3.conf]

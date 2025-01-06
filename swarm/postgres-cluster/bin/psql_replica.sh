@@ -1,9 +1,9 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+
 
 ####
-config=${1:-/app/configs/psql.yaml}
+config=${1:-/apps/configs/psql.yaml}
 
 data_dir=$(awk -v k="data_dir" '$0 ~ "^"k": " {print $2; exit}' $config)
 subnet=$(awk -v k="subnet" '$0 ~ "^"k": " {print $2; exit}' $config)

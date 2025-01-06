@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0) # -x
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 kafka_version=${kafka_version:-3.9.0}
 template=${template:-kafka-node%02d}

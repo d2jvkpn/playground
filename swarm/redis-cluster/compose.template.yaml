@@ -1,4 +1,8 @@
-version: '3'
+networks:
+  net: { name: redis-cluster, driver: bridge, external: false }
+
+# volumes:
+#   redis: { name: redis, driver: local }
 
 services:
   redis-node01:
@@ -11,13 +15,13 @@ services:
       resources:
         limits: { memory: 1.0G } # memory: 512M
     environment:
-    - TZ=Asia/Shanghai
-    - ALLOW_EMPTY_PASSWORD=yes
-    - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+      TZ: Asia/Shanghai
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_DISABLE_COMMANDS: FLUSHDB,FLUSHALL
     volumes:
-    - ./configs/:/app/configs/:ro
+    - ./configs/:/apps/configs/:ro
     - ./data/redis-node01:/data
-    command: redis-server /app/configs/redis.conf --enable-debug-command local
+    command: redis-server /apps/configs/redis.conf --enable-debug-command local
 
   redis-node02:
     image: redis:7-alpine
@@ -29,13 +33,13 @@ services:
       resources:
         limits: { memory: 1.0G } # memory: 512M
     environment:
-    - TZ=Asia/Shanghai
-    - ALLOW_EMPTY_PASSWORD=yes
-    - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+      TZ: Asia/Shanghai
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_DISABLE_COMMANDS: FLUSHDB,FLUSHALL
     volumes:
-    - ./configs/:/app/configs/:ro
+    - ./configs/:/apps/configs/:ro
     - ./data/redis-node02:/data
-    command: redis-server /app/configs/redis.conf --enable-debug-command local
+    command: redis-server /apps/configs/redis.conf --enable-debug-command local
 
   redis-node03:
     image: redis:7-alpine
@@ -47,13 +51,13 @@ services:
       resources:
         limits: { memory: 1.0G } # memory: 512M
     environment:
-    - TZ=Asia/Shanghai
-    - ALLOW_EMPTY_PASSWORD=yes
-    - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+      TZ: Asia/Shanghai
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_DISABLE_COMMANDS: FLUSHDB,FLUSHALL
     volumes:
-    - ./configs/:/app/configs/
+    - ./configs/:/apps/configs/
     - ./data/redis-node03:/data
-    command: redis-server /app/configs/redis.conf --enable-debug-command local
+    command: redis-server /apps/configs/redis.conf --enable-debug-command local
 
   redis-node04:
     image: redis:7-alpine
@@ -65,13 +69,13 @@ services:
       resources:
         limits: { memory: 1.0G } # memory: 512M
     environment:
-    - TZ=Asia/Shanghai
-    - ALLOW_EMPTY_PASSWORD=yes
-    - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+      TZ: Asia/Shanghai
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_DISABLE_COMMANDS: FLUSHDB,FLUSHALL
     volumes:
-    - ./configs/:/app/configs/
+    - ./configs/:/apps/configs/
     - ./data/redis-node04:/data
-    command: redis-server /app/configs/redis.conf --enable-debug-command local
+    command: redis-server /apps/configs/redis.conf --enable-debug-command local
 
   redis-node05:
     image: redis:7-alpine
@@ -83,13 +87,13 @@ services:
       resources:
         limits: { memory: 1.0G } # memory: 512M
     environment:
-    - TZ=Asia/Shanghai
-    - ALLOW_EMPTY_PASSWORD=yes
-    - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+      TZ: Asia/Shanghai
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_DISABLE_COMMANDS: FLUSHDB,FLUSHALL
     volumes:
-    - ./configs/:/app/configs/
+    - ./configs/:/apps/configs/
     - ./data/redis-node05:/data
-    command: redis-server /app/configs/redis.conf --enable-debug-command local
+    command: redis-server /apps/configs/redis.conf --enable-debug-command local
 
   redis-node06:
     image: redis:7-alpine
@@ -101,16 +105,10 @@ services:
       resources:
         limits: { memory: 1.0G } # memory: 512M
     environment:
-    - TZ=Asia/Shanghai
-    - ALLOW_EMPTY_PASSWORD=yes
-    - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+      TZ: Asia/Shanghai
+      ALLOW_EMPTY_PASSWORD: yes
+      REDIS_DISABLE_COMMANDS: FLUSHDB,FLUSHALL
     volumes:
-    - ./configs/:/app/configs/
+    - ./configs/:/apps/configs/
     - ./data/redis-node06:/data
-    command: redis-server /app/configs/redis.conf --enable-debug-command local
-
-networks:
-  net: {name: redis-cluster, driver: bridge, external: false}
-
-# volumes:
-#   redis: {name: redis, driver: local}
+    command: redis-server /apps/configs/redis.conf --enable-debug-command local

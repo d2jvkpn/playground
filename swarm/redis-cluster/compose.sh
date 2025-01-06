@@ -1,6 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 # https://redis.io/docs/management/scaling/#create-a-redis-cluster
 
@@ -9,7 +8,7 @@ mkdir -p configs data/redis-node{01..06}
 [ -s configs/redis.conf ] || cp redis.conf configs/
 
 export USER_UID=$(id -u) USER_GID=$(id -g)
-envsubst < docker_deploy.yaml > docker-compose.yaml
+envsubst < compose.template.yaml > compose.yaml
 
 docker-compose up -d
 

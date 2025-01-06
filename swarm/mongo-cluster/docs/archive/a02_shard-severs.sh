@@ -1,6 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 ####
 for shard in 1 2 3; do
@@ -12,7 +11,7 @@ for shard in 1 2 3; do
           -v $PWD/scripts:/data/scripts \
           -v $PWD/data/shard-${shard}${node}/db:/data/db \
           -v $PWD/data/shard-${shard}${node}/logs:/data/logs \
-          mongo:6 --config /data/configs/shard-$shard.conf
+          mongo:7 --config /data/configs/shard-$shard.conf
     done
 done
 

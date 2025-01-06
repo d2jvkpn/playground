@@ -1,6 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 # set -x
 BUILD_Region=${BUILD_Region:-}

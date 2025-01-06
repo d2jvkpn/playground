@@ -1,8 +1,15 @@
-version: '3'
+networks:
+  net:
+    name: postgres-cluster
+    driver: bridge
+    external: false
+    ipam:
+      config:
+      - { subnet: 172.25.0.0/16, gateway: 172.25.0.1 }
 
 services:
   postgres-node01:
-    image: postgres:16-alpine
+    image: postgres:17-alpine
     container_name: postgres-node01
     restart: always
     healthcheck:
@@ -21,13 +28,13 @@ services:
     # - POSTGRES_PASSWORD_FILE=/run/secrets/postgres-passwd
     # - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
-    - ./data/postgres-node01:/app/data
-    command: [/app/bin/psql_primary.sh, /app/configs/postgres-node01.yaml]
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
+    - ./data/postgres-node01:/apps/data
+    command: [/apps/bin/psql_primary.sh, /apps/configs/postgres-node01.yaml]
 
   postgres-node02:
-    image: postgres:16-alpine
+    image: postgres:17-alpine
     container_name: postgres-node02
     restart: always
     healthcheck:
@@ -42,13 +49,13 @@ services:
     ports: ["127.0.0.1:5442:5432"]
     environment: [TZ=Asia/Shanghai, PGTZ=Asia/Shanghai]
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
-    - ./data/postgres-node02:/app/data
-    command: [/app/bin/psql_replica.sh, /app/configs/postgres-node02.yaml]
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
+    - ./data/postgres-node02:/apps/data
+    command: [/apps/bin/psql_replica.sh, /apps/configs/postgres-node02.yaml]
 
   postgres-node03:
-    image: postgres:16-alpine
+    image: postgres:17-alpine
     container_name: postgres-node03
     restart: always
     healthcheck:
@@ -63,13 +70,13 @@ services:
     ports: ["127.0.0.1:5443:5432"]
     environment: [TZ=Asia/Shanghai, PGTZ=Asia/Shanghai]
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
-    - ./data/postgres-node03:/app/data
-    command: [/app/bin/psql_replica.sh, /app/configs/postgres-node03.yaml]
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
+    - ./data/postgres-node03:/apps/data
+    command: [/apps/bin/psql_replica.sh, /apps/configs/postgres-node03.yaml]
 
   postgres-node04:
-    image: postgres:16-alpine
+    image: postgres:17-alpine
     container_name: postgres-node04
     restart: always
     healthcheck:
@@ -84,16 +91,7 @@ services:
     ports: ["127.0.0.1:5444:5432"]
     environment: [TZ=Asia/Shanghai, PGTZ=Asia/Shanghai]
     volumes:
-    - ./bin:/app/bin:ro
-    - ./configs:/app/configs:ro
-    - ./data/postgres-node04:/app/data
-    command: [/app/bin/psql_replica.sh, /app/configs/postgres-node04.yaml]
-
-networks:
-  net:
-    name: postgres-cluster
-    driver: bridge
-    external: false
-    ipam:
-      config:
-      - { subnet: 172.25.0.0/16, gateway: 172.25.0.1 }
+    - ./bin:/apps/bin:ro
+    - ./configs:/apps/configs:ro
+    - ./data/postgres-node04:/apps/data
+    command: [/apps/bin/psql_replica.sh, /apps/configs/postgres-node04.yaml]
