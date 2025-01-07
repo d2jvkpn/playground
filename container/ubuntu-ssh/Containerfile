@@ -1,0 +1,34 @@
+FROM ubuntu:24.04
+
+MAINTAINER github.com/d2jvkpn <d2jvkpn@noreply.local>
+
+LABEL app=ubuntu-ssh
+LABEL version=24.04
+
+ENV DEBIAN_FRONTEND=noninteractive 
+
+RUN apt-get update && \
+  apt upgrade -y && \
+  apt-get install -y openssh-server tzdata supervisor && \
+  mkdir /var/run/sshd && \
+  apt remove && apt autoremove && \
+  apt clean && apt autoclean && \
+  dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {} && \
+  rm -rf /var/lib/apt/lists/*
+
+ENV DEBIAN_FRONTEND=
+
+# RUN echo 'root:password' | chpasswd
+# RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+RUN cp /etc/pam.d/sshd /etc/pam.d/sshd.bk && \
+  sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd
+
+WORKDIR /root
+RUN mkdir -p apps && rmdir .ssh && ln -sr apps/ssh .ssh
+
+VOLUME [/root/apps/, /var/log]
+
+EXPOSE 22
+
+CMD ["/usr/sbin/sshd", "-D"]
