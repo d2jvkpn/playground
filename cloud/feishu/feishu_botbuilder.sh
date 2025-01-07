@@ -2,10 +2,13 @@
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
-id=$(yq .feishu.id configs/feishu.yaml)
+config=${config:-configs/feishu.yaml}
+key=${key:-feishu}
+
+id=$(yq ".$key.id" $config)
 
 if [ $# -eq 0 ]; then
-    vars=$(yq -o=json .feishu.vars configs/feishu.yaml)
+    vars=$(yq -o=json ".$key.vars" $config)
 
     if [[ "$vars" == "null" || "$vars" == "" ]]; then
         vars=""
