@@ -6,7 +6,9 @@ services:
     restart: always
     # networks: ["net"]
     network_mode: bridge
-    ports: ["127.0.0.1:${DB_Port}:3306"]
+    # networks: ["net"]
+    network_mode: bridge
+    ports: ["127.0.0.1:2022:2022"]
     container_name: mariadb
     environment:
     # - TZ=Asia/Shanghai

@@ -1,0 +1,40 @@
+FROM ubuntu:24.04
+
+#### 1. meta
+MAINTAINER github.com/d2jvkpn <d2jvkpn@noreply.local>
+
+LABEL app=ubuntu-ssh
+LABEL version=24.04
+
+#### 2. install
+RUN export DEBIAN_FRONTEND=noninteractive; \
+  apt-get update && \
+  apt upgrade -y && \
+  apt-get install -y tzdata net-tools netcat-openbsd openssh-server supervisor && \
+  apt remove && apt autoremove && \
+  apt clean && apt autoclean && \
+  dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {} && \
+  rm -rf /var/lib/apt/lists/*
+
+#### 3. config
+RUN mkdir -p /var/run/sshd && \
+  cp /etc/pam.d/sshd /etc/pam.d/sshd.bk && \
+  sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' \
+    /etc/pam.d/sshd
+
+# RUN echo 'root:password' | chpasswd
+
+ADD deploy/sshd_custom.conf /etc/ssh/sshd_config.d/
+ADD deploy/bash_aliases.sh /root/.bash_aliases
+ADD deploy/entrypoint.sh /entrypoint.sh
+
+WORKDIR /root
+
+#### 4. up
+VOLUME ["/root/apps/", "/root/.ssh", "/var/log"]
+# "/etc/ssh/"
+
+EXPOSE 2022
+# ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["/bin/bash", "/entrypoint.sh"]

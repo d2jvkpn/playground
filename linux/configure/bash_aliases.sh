@@ -3,8 +3,10 @@
 # $ mkdir -p ~/apps/x/bin
 
 #### 1.
-export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
+# export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
 # %Y-%m-%dT%H:%M:%S%:z doesn't work as expected
+# export HISTTIMEFORMAT="%Y%m%d-%H%M-%s "
+export HISTTIMEFORMAT="%Y%m%d-%H%M-%s "
 export PROMPT_DIRTRIM=2
 
 export PATH=~/apps/bin:$PATH # PATH=~/.local/bin:$PATH

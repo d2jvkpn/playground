@@ -3,7 +3,7 @@
 SHELL = /bin/bash
 
 build:
-	bash build.sh
+	bash deploy/build.sh
 
 run:
 	mkdir -p apps.local/ssh logs
@@ -12,3 +12,15 @@ run:
 	  -v $(PWD)/apps.local:/root/apps \
 	  -v $(PWD)/logs:/var/log \
 	  ubuntu-ssh:local
+
+compose:
+	if [ ! -s compose.yaml ]; then cp deploy/compose.template.yaml compose.yaml; fi
+	docker-compose up -d
+
+exec:
+	docker exec -it ubuntu-ssh bash
+
+connect:
+	ssh-keyscan -p 2022 -H ubuntu-ssh,127.0.0.1 > configs/ssh.known_hosts
+	docker exec ubuntu-ssh chown -R root:root /root/.ssh
+	ssh -F configs/ssh.conf ubuntu-ssh
