@@ -34,5 +34,5 @@ template="Something happened, id=﻿{{id}} , target=﻿{{target}}, ﻿{{today}}.
 feishu:
   id: x01
   vars:
-    id: x01
+    id: event01
     target: Tom
