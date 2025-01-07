@@ -14,7 +14,7 @@ ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N ""
 
 
 exit
-mkdir -p configs apps.local/ssh
+mkdir -p configs data/apps data/ssh
 
 [ -s configs/host.ssh-ed25519 ] ||
   ssh-keygen -t ed25519 -m PEM -N "" -C "ubuntu@localhost" -f configs/host.ssh-ed25519
@@ -31,7 +31,7 @@ Host ubuntu-ssh
     ServerAliveInterval 15
 EOF
 
-cat configs/host.ssh-ed25519.pub > apps.local/ssh/authorized_keys
+cat configs/host.ssh-ed25519.pub > data/ssh/authorized_keys
 
 docker exec ubuntu-ssh chown -R root:root /root/.ssh
 

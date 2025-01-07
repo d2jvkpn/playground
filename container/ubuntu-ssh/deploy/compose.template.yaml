@@ -13,6 +13,6 @@ services:
     environment:
       TZ: Asia/Shanghai
     volumes:
-    - ./apps.local:/root/apps
+    - ./data/apps:/root/apps
+    - ./data/ssh:/root/.ssh
     - ./logs:/var/log
-    - ./apps.local/ssh:/root/.ssh

@@ -6,10 +6,11 @@ build:
 	bash deploy/build.sh
 
 run:
-	mkdir -p apps.local/ssh logs
+	mkdir -p data/apps data/ssh logs
 	docker run -d --name=ubuntu-ssh \
 	  -e TZ=Asia/Shanghai -p 2022:22 \
-	  -v $(PWD)/apps.local:/root/apps \
+	  -v $(PWD)/data/apps:/root/apps \
+	  -v $(PWD)/data/ssh:/root/.ssh \
 	  -v $(PWD)/logs:/var/log \
 	  ubuntu-ssh:local
 
