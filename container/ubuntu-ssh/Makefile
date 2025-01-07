@@ -15,6 +15,7 @@ run:
 	  ubuntu-ssh:local
 
 compose:
+	mkdir -p data/apps data/ssh logs
 	if [ ! -s compose.yaml ]; then cp deploy/compose.template.yaml compose.yaml; fi
 	docker-compose up -d
 
