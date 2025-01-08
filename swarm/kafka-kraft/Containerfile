@@ -1,8 +1,8 @@
 FROM alpine:3
 
-ARG region
 ARG KAFKA_Version
 ARG SCALA_Version
+ARG region
 
 ENV KAFKA_Version=${KAFKA_Version}
 ENV SCALA_Version=${SCALA_Version}
@@ -29,11 +29,12 @@ RUN tag=${SCALA_Version}-${KAFKA_Version}; \
   apk del wget
 # mkdir -p /opt/kafka && tar -xf kafka_${tag}.tgz --strip-components=1 -C /opt/kafka
 
-RUN mkdir -p /apps/kafka/data /apps/kafka/logs && ln -s /apps/kafka/logs /opt/logs
+RUN mkdir -p /apps/data/kafka
 
 ENV PATH=/opt/kafka/bin:$PATH
-WORKDIR /apps
 
+VOLUMNES ["/apps/data/kafka", "/opt/logs"]
+WORKDIR /apps
 EXPOSE 9092 9093
 # ENTRYPOINT ["/apps/bin/entrypoint.sh"]
 CMD ["/apps/bin/entrypoint.sh"]
