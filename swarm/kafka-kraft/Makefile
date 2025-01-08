@@ -1,17 +1,21 @@
 #!/bin/make
 
-TAG = 3.9.0
+SHELL = /bin/bash
 USER_UID = $(shell id -u)
 USER_GID = $(shell id -g)
 
 build-cn:
 	region=cn bash build.sh
 
-build-local:
+build:
 	bash build.sh
 
 generate:
-	bash step01_generate.sh
+	bash generate.sh
+
+down:
+	bash down.sh
 
 echo:
-	echo "==> ${USER_UID}, ${USER_GID}"
+	# TAG=0.1.0 make echo
+	echo "==> user=${USER}, uid=${USER_UID}, gid=${USER_GID}, tag=${TAG}"
