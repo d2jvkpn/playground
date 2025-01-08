@@ -11,6 +11,7 @@ build:
 	bash build.sh
 
 generate:
+	# kafka_version=3.9.0 make generate
 	bash generate.sh
 
 down:
