@@ -1,5 +1,5 @@
 networks:
-  net: { name: kafka, driver: bridge, external: false }
+  net: { name: kafka-cluster, driver: bridge, external: false }
 
 services:
   kafka-node01:
