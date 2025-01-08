@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
-kafka_version=${kafka_version:-3.9.0}
+kafka_version=${1:-3.9.0}
 template=${template:-kafka-node%02d}
 port_zero=${port_zero:-29090}
 data_dir=${data_dir:-/apps/data/kafka}
@@ -54,7 +54,7 @@ for node_id in $(seq 1 $num); do
     node_id=$node_id
     advertised_listeners=PLAINTEXT://localhost:$(($port_zero + $node_id))
 
-    mkdir -p data/$node
+    mkdir -p data/$node logs/$node
 cat > data/$node/kafka.yaml <<EOF
 $(cat data/kafka.yaml)
 
@@ -69,7 +69,7 @@ done
 
 #### 2. generate compose.yaml
 export TAG=$kafka_version USER_UID=$(id -u) USER_GID=$(id -g)
-envsubst < compose.yaml.yaml > compose.yaml
+envsubst < compose.template.yaml > compose.yaml
 
 echo "==> compose.yaml created"
 
@@ -80,5 +80,5 @@ docker-compose ps
 sleep 5
 
 ls -1 \
-   data/kafka-node*/data/meta.properties \
-   data/kafka-node*/logs
+   data/kafka-node*/meta.properties \
+   data/logs/kafka-node*

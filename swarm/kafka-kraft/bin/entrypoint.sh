@@ -9,11 +9,9 @@ conf=./data/kafka/kafka.properties
 cluster_id=$(yq .cluster_id $yaml)
 
 [ -z "$cluster_id" ] && { >&2 echo "cluster_id is unset in $yaml"; exit 1; }
-[ ! -f "$conf" ] && ${_path}/kraft_config.sh $yaml $conf
-
-mkdir -p kafka/{data,logs}
+[ ! -s "$conf" ] && ${_path}/kafka-kraft_config.sh $yaml $conf
 
 kafka-storage.sh format --ignore-formatted -t $cluster_id -c $conf # --add-scram
 
 # -daemon
-kafka-server-start.sh $conf "$@"
+kafka-server-start.sh $conf $@
