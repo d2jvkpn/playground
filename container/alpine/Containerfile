@@ -1,14 +1,21 @@
 FROM alpine:3
 
-ARG BUILD_Region BUILD_Time
+ARG APP_Name
+ARG APP_Version
+ARG region
 
-ENV TZ=${TZ:-Asia/Shanghai} BUILD_Region=${BUILD_Region} BUILD_Time=${BUILD_Time}
+MAINTAINER github.com/d2jvkpn <d2jvkpn@noreply.local>
+LABEL app=${APP_Name}
+LABEL version=${APP_Version}
 
-RUN mkdir -p /apps/configs /apps/logs /apps/data
+ENV APP_Name=${APP_Name}
+ENV APP_Version=${APP_Version}
+ENV TZ=${TZ:-Asia/Shanghai}
+
+RUN mkdir -p /apps/configs /apps/data /apps/logs
 WORKDIR /apps
-ADD Containerfile /apps/
 
-RUN if [ "$BUILD_Region" = "cn" ]; then \
+RUN if [ "$region" = "cn" ]; then \
     echo "==> BUILD_Region: $BUILD_Region"; \
     cp /etc/apk/repositories /etc/apk/repositories.bk; \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
@@ -19,4 +26,5 @@ RUN apk --no-cache update && \
   apk --no-cache add tzdata coreutils curl openssl bash yq iproute2
   # vim jq gcompat supervisor nmap logroate openvpn openssh
 
-CMD [sleep, infinity]
+VOLUME ["/apps/configs", "/apps/data", "/apps/logs"]
+CMD ["sleep", "infinity"]
