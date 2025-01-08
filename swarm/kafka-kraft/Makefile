@@ -10,9 +10,13 @@ build-cn:
 build:
 	bash build.sh
 
-generate:
+generate-1:
 	# kafka_version=3.9.0 make generate
-	bash generate.sh
+	bash generate.sh 1
+
+generate-3:
+	# kafka_version=3.9.0 make generate
+	bash generate.sh 3
 
 down:
 	bash down.sh
