@@ -5,7 +5,7 @@ USER_UID = $(shell id -u)
 USER_GID = $(shell id -g)
 
 build-cn:
-	BUILD_Region=cn bash build.sh
+	region=cn bash build.sh
 
 build-local:
 	bash build.sh

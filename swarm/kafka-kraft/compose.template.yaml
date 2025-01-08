@@ -44,5 +44,5 @@ services:
       TZ: Asia/Shanghai
     volumes:
     - ./data/kafka-node03:/apps/data/kafka
-    - ./logs/kafka-node02:/opt/kafka/logs
+    - ./logs/kafka-node03:/opt/kafka/logs
     command: ["/opt/entrypoint.sh"]

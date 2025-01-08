@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
-kafka_version=${1:-3.9.0}
+kafka_version=${kafka_version:-3.9.0}
 template=${template:-kafka-node%02d}
 port_zero=${port_zero:-29090}
 data_dir=${data_dir:-/apps/data/kafka}
@@ -10,7 +10,7 @@ num_partitions=${num_partitions:-3}
 # echo "==> Number of kafka node: "
 # read -t 5 num || true
 # [ -z "$num" ] && num=3
-num=3
+num=${1:-3}
 
 ####
 num_re='^[1-9]+$'
