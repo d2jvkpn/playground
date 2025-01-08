@@ -1,4 +1,4 @@
-export HISTTIMEFORMAT="%Y%m%d-%H%M-%s "
+export HISTTIMEFORMAT="%Y-%m-%d %H:%M %s  "
 export PROMPT_DIRTRIM=2
 
 export PATH=~/apps/bin:$PATH # PATH=~/.local/bin:$PATH

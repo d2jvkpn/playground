@@ -26,7 +26,7 @@ RUN mkdir -p /var/run/sshd && \
 
 ADD deploy/sshd_custom.conf /etc/ssh/sshd_config.d/
 ADD deploy/bash_aliases.sh /root/.bash_aliases
-ADD deploy/entrypoint.sh /entrypoint.sh
+ADD deploy/entrypoint.sh /opt/entrypoint.sh
 
 WORKDIR /root
 
@@ -37,4 +37,4 @@ VOLUME ["/root/apps/", "/root/.ssh", "/var/log"]
 EXPOSE 2022
 # ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["/bin/bash", "/entrypoint.sh"]
+CMD ["/bin/bash", "/opt/entrypoint.sh"]
