@@ -26,8 +26,8 @@ cat $template | sed \
   -e "/^controller.quorum.voters=/s#=.*#=$controller_quorum_voters#" \
   > $output
 
+####
 exit
-
 cat > /apps/data/kafka/kafka.yaml <<EOF
 version: 3.9.0
 cluster_id: kFTN1eu1TaSvi4aY5pLVGg
