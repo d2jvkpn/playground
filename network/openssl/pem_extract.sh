@@ -27,10 +27,10 @@ filepath=$2
 
 case "$action" in
 "private")
-    awk 'BEGIN{k=0} /-----BEGIN PRIVATE KEY-----/{k=1} k==1{print} /-----END PRIVATE KEY-----/{exit}' $filepath
+    awk 'BEGIN{k=0} /-----BEGIN PRIVATE KEY-----/{k=1} k==1{print} /-----END PRIVATE KEY-----/{exit}' "$filepath"
     ;;
 "public")
-    awk 'BEGIN{k=0} /-----BEGIN CERTIFICATE-----/{k=1} k==1{print} /-----END CERTIFICATE-----/{k=0}' $filepath
+    awk 'BEGIN{k=0} /-----BEGIN CERTIFICATE-----/{k=1} k==1{print} /-----END CERTIFICATE-----/{k=0}' "$filepath"
     ;;
 "help" | "-h" | "--help")
     display_usage
