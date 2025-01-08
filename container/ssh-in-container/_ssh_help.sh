@@ -20,7 +20,7 @@ mkdir -p configs data/apps data/ssh
   ssh-keygen -t ed25519 -m PEM -N "" -C "ubuntu@localhost" -f configs/host.ssh-ed25519
 
 [ -s configs/ssh.conf ] || cat > configs/ssh.conf <<EOF
-Host ubuntu-ssh
+Host ssh-in-container
     HostName      127.0.0.1
     User          root
     Port          2022
@@ -33,8 +33,8 @@ EOF
 
 cat configs/host.ssh-ed25519.pub > data/ssh/authorized_keys
 
-docker exec ubuntu-ssh chown -R root:root /root/.ssh
+docker exec ssh-in-container chown -R root:root /root/.ssh
 
-ssh-keyscan -p 2022 -H ubuntu-ssh,127.0.0.1 > configs/ssh.known_hosts
+ssh-keyscan -p 2022 -H ssh-in-container,127.0.0.1 > configs/ssh.known_hosts
 # ssh-keygen -f "configs/ssh.known_hosts" -R "[127.0.0.1]:2022"
-ssh -F configs/ssh.conf ubuntu-ssh
+ssh -F configs/ssh.conf ssh-in-container

@@ -3,14 +3,16 @@ FROM ubuntu:24.04
 #### 1. meta
 MAINTAINER github.com/d2jvkpn <d2jvkpn@noreply.local>
 
-LABEL app=ubuntu-ssh
+LABEL app=ssh-in-container
 LABEL version=24.04
 
 #### 2. install
 RUN export DEBIAN_FRONTEND=noninteractive; \
   apt-get update && \
   apt upgrade -y && \
-  apt-get install -y tzdata net-tools netcat-openbsd openssh-server supervisor && \
+  apt-get install -y tzdata supervisor \
+    net-tools netcat-openbsd iputils-ping iproute2 \
+    openssh-server && \
   apt remove && apt autoremove && \
   apt clean && apt autoclean && \
   dpkg -l | awk '/^rc/{print $2}' | xargs -i dpkg -P {} && \
