@@ -1,15 +1,14 @@
-# networks:
-#   net: {name: "ubuntu-ssh:", driver: "bridge", external: false}
+networks:
+  net: {name: "ubuntu-ssh:", driver: "bridge", external: false}
 
 services:
   ubuntu-ssh:
     image: ubuntu-ssh:local
     container_name: ubuntu-ssh
     restart: always
-    network_mode: host
-    # networks: ["net"]
-    # network_mode: bridge
-    # ports: ["127.0.0.1:2022:2022"]
+    # network_mode: host
+    networks: ["net"]
+    ports: ["127.0.0.1:2022:2022"]
     environment:
       TZ: Asia/Shanghai
     volumes:
