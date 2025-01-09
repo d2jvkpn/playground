@@ -15,13 +15,13 @@ build:
 	ls -alt target/static
 
 image-local:
-	GIT_Pull=false DOCKER_Pull=false DOCKER_Push=false bash deploy/build.sh local
+	region=cn GIT_Pull=false DOCKER_Pull=false DOCKER_Push=false bash deploy/build.sh dev
 
 image-dev-cn:
 	region=cn DOCKER_Pull=false DOCKER_Push=false bash deploy/build.sh dev
 
 image-dev:
-	DOCKER_Pull=false DOCKER_Push=false bash deploy/build.sh master
+	DOCKER_Pull=false DOCKER_Push=false bash deploy/build.sh dev
 
 image-test:
 	DOCKER_Pull=false DOCKER_Push=false bash deploy/build.sh test

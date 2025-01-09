@@ -3,7 +3,7 @@ services:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vite-vue-ts:${IMAGE_Tag}
     container_name: vite-vue-ts
     restart: always
-    network_mode: host
+    network_mode: bridge
     ports: ["${HTTP_Port}:80"]
     deploy:
       resources:

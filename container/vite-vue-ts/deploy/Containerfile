@@ -39,8 +39,7 @@ RUN if [ "$region" = "cn" ]; then \
 # npm install --registry=https://registry.npmmirror.com &> /dev/null
 RUN npm install && npm run build -- --base=${BASE_Path} --outDir=target/static${BASE_Path}
 
-ADD cache.local/build.yaml ./target/
-ADD cache.local/build.json ./target/static$BASE_Path/
+ADD cache.local/build.yaml cache.local/build.json ./target/
 
 ####
 FROM nginx:1-alpine
