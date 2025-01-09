@@ -1,10 +1,16 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
-yaml=$1; output=$2
+#### 1. setup
+yaml=${yaml:-./data/kafaka/kafka.yaml}
+conf=./data/kafka/kafka.properties
 template=${template:-/opt/kafka/config/kraft/server.properties}
 
-####
+#cluster_id=$(awk '/^cluster_id: /{print $2; exit}' $yaml)
+cluster_id=$(yq .cluster_id $yaml)
+[ -z "$cluster_id" ] && { >&2 echo "cluster_id is unset in $yaml"; exit 1; }
+
+#### 2. generate
 num_partitions=$(yq .num_partitions $yaml)
 data_dir=$(yq .data_dir $yaml)
 
@@ -13,9 +19,8 @@ advertised_listeners=$(yq .advertised_listeners $yaml)
 process_roles=$(yq .process_roles $yaml)
 controller_quorum_voters=$(yq .controller_quorum_voters $yaml)
 
-
 ##### TODO: validate variables: $((${#a} * ${#b} * ${#c})) -eq 0
-mkdir -p $(dirname $output)
+mkdir -p $(dirname $conf)
 
 cat $template | sed \
   -e "/^num.partitions=/s#=.*#=$num_partitions#" \
@@ -24,9 +29,14 @@ cat $template | sed \
   -e "/^advertised.listeners=/s#=.*#=$advertised_listeners#" \
   -e "/^process.roles=/s#=.*#=$process_roles#" \
   -e "/^controller.quorum.voters=/s#=.*#=$controller_quorum_voters#" \
-  > $output
+  > $conf
 
-####
+#### 3. run
+kafka-storage.sh format --ignore-formatted -t $cluster_id -c $conf # --add-scram
+
+# -daemon
+kafka-server-start.sh $conf $@
+
 exit
 cat > /apps/data/kafka/kafka.yaml <<EOF
 version: 3.9.0

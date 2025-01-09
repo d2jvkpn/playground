@@ -7,7 +7,7 @@ ARG region
 ENV KAFKA_Version=${KAFKA_Version}
 ENV SCALA_Version=${SCALA_Version}
 
-ADD bin/* /opt/
+ADD entrypoint.sh /opt/
 WORKDIR /apps
 
 RUN if [ "$region" = "cn" ]; then \
