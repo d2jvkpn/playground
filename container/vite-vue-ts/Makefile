@@ -15,7 +15,7 @@ build:
 	ls -alt target/static
 
 image-local:
-	region=cn GIT_Pull=false DOCKER_Pull=false DOCKER_Push=false bash deploy/build.sh dev
+	region=cn GIT_Pull=false DOCKER_Pull=false DOCKER_Push=false bash deploy/build.sh local
 
 image-dev-cn:
 	region=cn DOCKER_Pull=false DOCKER_Push=false bash deploy/build.sh dev

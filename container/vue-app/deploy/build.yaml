@@ -2,6 +2,13 @@ app_name: vue-app
 app_version: 1.0.0
 image_name: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-app
 
+local:
+  branch: master
+  image_tag: local
+  VUE_APP_PUBLIC_PATH: /site
+  VUE_APP_API_URL: domain.local:3011
+  # window.location.protocol+"//domain.local:3012"
+
 dev:
   branch: master
   image_tag: dev
