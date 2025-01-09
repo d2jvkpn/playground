@@ -32,4 +32,4 @@ curl -i \
   -H 'Content-Type: application/json' \
   -H "Authorization: Bearer $password" \
   -X POST 'http://localhost:7700/indexes/movies/documents?primaryKey=id' \
-  --data-binary @movies.json
+  --data-binary @examples/movies.json

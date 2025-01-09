@@ -1,29 +1,20 @@
-services:
+ervices:
   autoheal:
     image: willfarrell/autoheal
     restart: always
-    network_mode: host
-    # networks: ["net"]
+    network_mode: bridge
     container_name: autoheal
     volumes:
     - /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro
     - /var/run/docker.sock:/var/run/docker.sock
     environment:
-    # - AUTOHEAL_CONTAINER_LABEL=all
-    - AUTOHEAL_CONTAINER_LABEL=autoheal
-    - AUTOHEAL_INTERVAL=5
-    - AUTOHEAL_START_PERIOD=0
-    - AUTOHEAL_DEFAULT_STOP_TIMEOUT=5
-    - AUTOHEAL_ONLY_MONITOR_RUNNING=false
-    - CURL_TIMEOUT=5
-    - WEBHOOK_URL=""
-
-#networks:
-#  net: { name: local, driver: bridge, external: true }
-
-# https://github.com/willfarrell/docker-autoheal
-
-# docker run -d --name autoheal --restart=always -e AUTOHEAL_CONTAINER_LABEL=all -v /var/run/docker.sock:/var/run/docker.sock willfarrell/autoheal
-
-# docker inspect --format '{{json .State.Health}}' container
+    #  AUTOHEAL_CONTAINER_LABEL: all
+      AUTOHEAL_CONTAINER_LABEL: autoheal
+      AUTOHEAL_INTERVAL: 5
+      AUTOHEAL_START_PERIOD: 0
+      AUTOHEAL_DEFAULT_STOP_TIMEOUT: 5
+      AUTOHEAL_ONLY_MONITOR_RUNNING: false
+      CURL_TIMEOUT: 5
+    #  WEBHOOK_URL: ""
+    env_file: [./configs/autoheal.env]
