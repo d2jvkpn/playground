@@ -24,4 +24,4 @@ services:
     - --env
     - ${MEILI_ENV}
     - --http-addr
-    - 0.0.0.0:${HTTP_Port}
+    - 127.0.0.1:${HTTP_Port}
