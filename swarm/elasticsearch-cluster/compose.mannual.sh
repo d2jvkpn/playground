@@ -38,17 +38,18 @@ auth="--cacert configs/http_ca.crt -u elastic:$(cat configs/elastic.pass)"
 addr="https://localhost:9200"
 
 curl $auth $addr
+curl $auth "$addr/_cluster/health"
 
 curl $auth -X PUT "$addr/idx"
-
 curl $auth "$addr/_cat/indices?v"
 
 curl $auth -X POST "$addr/idx/_doc/1" \
   -H 'Content-Type: application/json' \
-  -d'{"title": "Test Document","content": "This is a test document."}'
-  
+  -d'{"title":"Test Document","content":"This is a test document."}'
 
-curl $auth  "$addr/idx/_search?q=content:test"
+curl $auth "$addr/idx/_search?q=content:test"
+
+curl $auth $addr/_cat/nodes
 
 #### 4. add node es02
 docker run --name es02 --net elastic -it -m 2GB \
@@ -56,7 +57,6 @@ docker run --name es02 --net elastic -it -m 2GB \
   -e ENROLLMENT_TOKEN="$(cat configs/node.pass)" \
   docker.elastic.co/elasticsearch/elasticsearch:8.17.0
 
-curl $auth $addr/_cat/nodes
 
 #### 5. add kibana
 docker run --name kibana --net elastic -p 5601:5601 docker.elastic.co/kibana/kibana:8.17.0
