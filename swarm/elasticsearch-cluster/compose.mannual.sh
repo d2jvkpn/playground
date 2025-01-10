@@ -3,9 +3,9 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
 #### 1. prepare
-docker network create elastic
-
 mkdir -p configs
+
+docker network create elastic
 
 # sysctl -w vm.max_map_count=262144
 {
@@ -43,10 +43,10 @@ curl $auth -X PUT "$addr/idx"
 
 curl $auth "$addr/_cat/indices?v"
 
-curl $auth "$addr/idx/_doc/1" \
+curl $auth -X POST "$addr/idx/_doc/1" \
   -H 'Content-Type: application/json' \
-  -d'{"title": "Test Document","content": "This is a test document."}' \
-  -X POST "https://localhost:9200/idx/_doc/1"
+  -d'{"title": "Test Document","content": "This is a test document."}'
+  
 
 curl $auth  "$addr/idx/_search?q=content:test"
 

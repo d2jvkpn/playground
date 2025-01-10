@@ -1,0 +1,128 @@
+# url: https://github.com/elastic/elasticsearch/blob/8.17/docs/reference/setup/install/docker/docker-compose.yml
+
+networks:
+  net: { name: elastic-cluster, driver: bridge, external: false }
+
+services:
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}
+    container_name: es01
+    deploy:
+      resources:
+        limits: { cpus: "2", memory: 2GB }
+    ulimits:
+      memlock: { soft: -1, hard: -1 }
+    healthcheck:
+      interval: 10s
+      timeout: 10s
+      retries: 120
+      test:
+      - CMD-SHELL
+      - curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'
+    networks: [net]
+    ports: ["${ELASTIC_PORT}:9200"]
+    volumes:
+    - ./configs/certs:/usr/share/elasticsearch/config/certs
+    - ./data/es01:/usr/share/elasticsearch/data
+    env_file: ["configs/compose.env"]
+    environment:
+      node.name: es01
+      cluster.initial_master_nodes: es01,es02,es03
+      discovery.seed_hosts: es02,es03
+      xpack.security.http.ssl.key: certs/es01/es01.key
+      xpack.security.http.ssl.certificate: certs/es01/es01.crt
+      xpack.security.transport.ssl.key: certs/es01/es01.key
+      xpack.security.transport.ssl.certificate: certs/es01/es01.crt
+      ES_JAVA_OPTS: -Xms1g -Xmx1g
+
+  es02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}
+    container_name: es02
+    depends_on: [es01]
+    deploy:
+      resources:
+        limits: { cpus: "2", memory: 2GB }
+    ulimits:
+      memlock: { soft: -1, hard: -1 }
+    healthcheck:
+      interval: 10s
+      timeout: 10s
+      retries: 120
+      test:
+      - CMD-SHELL
+      - curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'
+    networks: [net]
+    volumes:
+    - ./configs/certs:/usr/share/elasticsearch/config/certs
+    - ./data/es02:/usr/share/elasticsearch/data
+    env_file: ["configs/compose.env"]
+    environment:
+      node.name: es02
+      cluster.initial_master_nodes: es01,es02,es03
+      discovery.seed_hosts: es01,es03
+      xpack.security.http.ssl.key: certs/es02/es02.key
+      xpack.security.http.ssl.certificate: certs/es02/es02.crt
+      xpack.security.transport.ssl.key: certs/es02/es02.key
+      xpack.security.transport.ssl.certificate: certs/es02/es02.crt
+      ES_JAVA_OPTS: -Xms1g -Xmx1g
+
+  es03:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}
+    container_name: es03
+    depends_on: [es02]
+    deploy:
+      resources:
+        limits: { cpus: "2", memory: 2GB }
+    ulimits:
+      memlock: { soft: -1, hard: -1 }
+    healthcheck:
+      interval: 10s
+      timeout: 10s
+      retries: 120
+      test:
+      - CMD-SHELL
+      - curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'
+    networks: [net]
+    volumes:
+    - ./configs/certs:/usr/share/elasticsearch/config/certs
+    - ./data/es03:/usr/share/elasticsearch/data
+    env_file: ["configs/compose.env"]
+    environment:
+      node.name: es03
+      cluster.initial_master_nodes: es01,es02,es03
+      discovery.seed_hosts: es01,es02
+      xpack.security.http.ssl.key: certs/es03/es03.key
+      xpack.security.http.ssl.certificate: certs/es03/es03.crt
+      xpack.security.transport.ssl.key: certs/es03/es03.key
+      xpack.security.transport.ssl.certificate: certs/es03/es03.crt
+      ES_JAVA_OPTS: -Xms1g -Xmx1g
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${ELASTIC_VERSION}
+    container_name: kibana
+    depends_on:
+      es01: { condition: service_healthy }
+      es02: { condition: service_healthy }
+      es03: { condition: service_healthy }
+    deploy:
+      resources:
+        limits: { cpus: "2", memory: 2GB }
+    healthcheck:
+      interval: 10s
+      timeout: 10s
+      retries: 120
+      test:
+      - CMD-SHELL
+      - curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'
+    networks: [net]
+    ports: ["${KIBANA_PORT}:5601"]
+    volumes:
+    - ./configs/certs:/usr/share/kibana/config/certs
+    - ./data/kibana:/usr/share/kibana/data
+    env_file: ["configs/compose.env"]
+    environment:
+      SERVERNAME: kibana
+      ELASTICSEARCH_HOSTS: https://es01:9200
+      ELASTICSEARCH_USERNAME: kibana_system
+      ELASTICSEARCH_PASSWORD: ${KIBANA_PASSWORD}
+      ES_JAVA_OPTS: -Xms1g -Xmx1g
