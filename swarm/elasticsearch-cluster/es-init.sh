@@ -1,27 +1,8 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
-#cat > configs/elastic.yaml <<EOF
-#instances:
-#- name: es01
-#  dns:
-#  - localhost
-#  - es01
-#  ip:
-#  - 127.0.0.1
-#- name: es02
-#  dns:
-#  - localhost
-#  - es02
-#  ip:
-#  - 127.0.0.1
-#- name: es03
-#  dns:
-#  - localhost
-#  - es03
-#  ip:
-#  - 127.0.0.1
-#EOF
+
+password=$(tr -dc '0-9a-zA-Z' < /dev/urandom | fold -w 32 | head -n1 || true)
 
 mkdir -p configs/certs # data/es{01..03}
 
@@ -40,27 +21,34 @@ if [ $# -gt 0 ]; then
     echo "==> Generating configs/elastic.yaml"
 
     {
+        echo "username: elastic"
+        echo "password: $password"
+        echo "ca: configs/certs/ca/ca.crt"
         echo "instances:"
-        for i in $(seq 1 $num); do generate es$(printf "%02d" $i); done
+
+
+        for i in $(seq 1 $num); do
+            generate es$(printf "%02d" $i)
+        done
     } > configs/elastic.yaml
 else
     echo "==> Using configs/certs/elastic.yaml"
 fi
 
+yq .password configs/elastic.yaml > configs/certs/elastic.pass
+yq e '{"instances": .instances}' configs/elastic.yaml > configs/certs/instances.yaml
+
 echo '```yaml'
-cat configs/elastic.yaml
+cat configs/certs/instances.yaml
 echo '```'
 
 for name in $(yq .instances[].name configs/elastic.yaml); do
     mkdir -p data/$name
 done
 
-
 docker run --rm \
   -v ${PWD}/es-setup.sh:/usr/share/elasticsearch/es-setup.sh \
-  -v ${PWD}/configs/elastic.yaml:/usr/share/elasticsearch/elastic.yaml \
   -v ${PWD}/configs/certs:/usr/share/elasticsearch/config/certs \
-  -v ${PWD}/data:/usr/share/elasticsearch/data \
   -w /usr/share/elasticsearch \
   -u root:root \
   docker.elastic.co/elasticsearch/elasticsearch:8.17.0 \
@@ -71,16 +59,16 @@ ls -alh configs/certs
 [ -s configs/compose.env ] || cat > configs/compose.env <<EOF
 ELASTIC_VERSION=8.17.0
 ELASTIC_PORT=9200
-ELASTIC_PASSWORD=foobar
+ELASTIC_PASSWORD_FILE=./config/certs/elastic.pass
 
 cluster.name=elastic-cluster
 bootstrap.memory_lock=true
 xpack.security.enabled=true
 xpack.security.enrollment.enabled=true
 xpack.security.http.ssl.enabled=true
-xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
+xpack.security.http.ssl.certificate_authorities=certs/ca.crt
 xpack.security.transport.ssl.enabled=true
-xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
+xpack.security.transport.ssl.certificate_authorities=certs/ca.crt
 xpack.security.transport.ssl.verification_mode=certificate
 xpack.ml.use_auto_machine_memory_percent=true
 xpack.license.self_generated.type=basic

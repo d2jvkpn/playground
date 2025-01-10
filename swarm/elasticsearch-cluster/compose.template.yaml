@@ -9,7 +9,7 @@ services:
     container_name: es01
     deploy:
       resources:
-        limits: { cpus: "2", memory: 3GB }
+        limits: { cpus: "2", memory: 4GB }
     ulimits:
       memlock: { soft: -1, hard: -1 }
     healthcheck:
@@ -27,22 +27,19 @@ services:
     env_file: ["configs/compose.env"]
     environment:
       node.name: es01
-      cluster.initial_master_nodes: es01,es02,es03
       discovery.seed_hosts: es02,es03
-      xpack.security.http.ssl.key: certs/es01/es01.key
-      xpack.security.http.ssl.certificate: certs/es01/es01.crt
-      xpack.security.transport.ssl.key: certs/es01/es01.key
-      xpack.security.transport.ssl.certificate: certs/es01/es01.crt
+      cluster.initial_master_nodes: es01,es02,es03
+      xpack.security.http.ssl.key: certs/es01.key
+      xpack.security.http.ssl.certificate: certs/es01.crt
+      xpack.security.transport.ssl.key: certs/es01.key
+      xpack.security.transport.ssl.certificate: certs/es01.crt
       ES_JAVA_OPTS: -Xms2g -Xmx2g
 
   es02:
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}
     container_name: es02
-    depends_on:
-      es01: { condition: service_healthy }
-    deploy:
-      resources:
-        limits: { cpus: "2", memory: 3GB }
+    depends_on: [es01]
+    #  es01: { condition: service_healthy }
     ulimits:
       memlock: { soft: -1, hard: -1 }
     healthcheck:
@@ -58,24 +55,19 @@ services:
     - ./data/es02:/usr/share/elasticsearch/data
     env_file: ["configs/compose.env"]
     environment:
-      ELASTICSEARCH_PASSWORD: ${KIBANA_PASSWORD}
       node.name: es02
-      cluster.initial_master_nodes: es01,es02,es03
       discovery.seed_hosts: es01,es03
-      xpack.security.http.ssl.key: certs/es02/es02.key
-      xpack.security.http.ssl.certificate: certs/es02/es02.crt
-      xpack.security.transport.ssl.key: certs/es02/es02.key
-      xpack.security.transport.ssl.certificate: certs/es02/es02.crt
+      cluster.initial_master_nodes: es01,es02,es03
+      xpack.security.http.ssl.key: certs/es02.key
+      xpack.security.http.ssl.certificate: certs/es02.crt
+      xpack.security.transport.ssl.key: certs/es02.key
+      xpack.security.transport.ssl.certificate: certs/es02.crt
       ES_JAVA_OPTS: -Xms2g -Xmx2g
 
   es03:
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}
     container_name: es03
-    depends_on:
-      es01: { condition: service_healthy }
-    deploy:
-      resources:
-        limits: { cpus: "2", memory: 3GB }
+    depends_on: [es01]
     ulimits:
       memlock: { soft: -1, hard: -1 }
     healthcheck:
@@ -92,10 +84,10 @@ services:
     env_file: ["configs/compose.env"]
     environment:
       node.name: es03
-      cluster.initial_master_nodes: es01,es02,es03
       discovery.seed_hosts: es01,es02
-      xpack.security.http.ssl.key: certs/es03/es03.key
-      xpack.security.http.ssl.certificate: certs/es03/es03.crt
-      xpack.security.transport.ssl.key: certs/es03/es03.key
-      xpack.security.transport.ssl.certificate: certs/es03/es03.crt
+      cluster.initial_master_nodes: es01,es02,es03
+      xpack.security.http.ssl.key: certs/es03.key
+      xpack.security.http.ssl.certificate: certs/es03.crt
+      xpack.security.transport.ssl.key: certs/es03.key
+      xpack.security.transport.ssl.certificate: certs/es03.crt
       ES_JAVA_OPTS: -Xms2g -Xmx2g
