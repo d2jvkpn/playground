@@ -46,11 +46,9 @@ for name in $(yq .instances[].name configs/elastic.yaml); do
     mkdir -p data/$name
 done
 
-docker run --rm \
+docker run --rm u root:root -w /usr/share/elasticsearch \
   -v ${PWD}/elastic-setup.sh:/usr/share/elasticsearch/elastic-setup.sh \
   -v ${PWD}/configs/certs:/usr/share/elasticsearch/config/certs \
-  -w /usr/share/elasticsearch \
-  -u root:root \
   docker.elastic.co/elasticsearch/elasticsearch:8.17.0 \
   bash elastic-setup.sh
 
