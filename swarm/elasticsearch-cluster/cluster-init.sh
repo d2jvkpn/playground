@@ -4,7 +4,7 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 password=$(tr -dc '0-9a-zA-Z' < /dev/urandom | fold -w 32 | head -n1 || true)
 
-mkdir -p configs/certs data/kibana # data/es{01..03}
+mkdir -p configs/certs data/kibana01 # data/es{01..03}
 
 function generate() {
     name=$1
@@ -47,12 +47,12 @@ for name in $(yq .instances[].name configs/elastic.yaml); do
 done
 
 docker run --rm \
-  -v ${PWD}/es-setup.sh:/usr/share/elasticsearch/es-setup.sh \
+  -v ${PWD}/cluster-setup.sh:/usr/share/elasticsearch/cluster-setup.sh \
   -v ${PWD}/configs/certs:/usr/share/elasticsearch/config/certs \
   -w /usr/share/elasticsearch \
   -u root:root \
   docker.elastic.co/elasticsearch/elasticsearch:8.17.0 \
-  bash es-setup.sh
+  bash cluster-setup.sh
 
 ls -alh configs/certs
 

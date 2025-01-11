@@ -23,7 +23,7 @@ services:
     ports: ["${ELASTIC_PORT}:9200"]
     volumes:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
-    - ./data/es01:/usr/share/elasticsearch/data
+    #- ./data/es01:/usr/share/elasticsearch/data
     env_file: ["configs/compose.env"]
     environment:
       node.name: es01
@@ -51,7 +51,7 @@ services:
     networks: [net]
     volumes:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
-    - ./data/es02:/usr/share/elasticsearch/data
+    #- ./data/es02:/usr/share/elasticsearch/data
     env_file: ["configs/compose.env"]
     environment:
       node.name: es02
@@ -79,7 +79,7 @@ services:
     networks: [net]
     volumes:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
-    - ./data/es03:/usr/share/elasticsearch/data
+    #- ./data/es03:/usr/share/elasticsearch/data
     env_file: ["configs/compose.env"]
     environment:
       node.name: es03
@@ -93,7 +93,7 @@ services:
 
   kibana:
     image: docker.elastic.co/kibana/kibana:${ELASTIC_VERSION}
-    container_name: kibana
+    container_name: kibana01
     depends_on:
       es01: { condition: service_healthy }
       es02: { condition: service_healthy }
@@ -112,7 +112,7 @@ services:
     ports: ["5601:5601"]
     volumes:
     - ./configs/certs:/usr/share/kibana/config/certs
-    - ./data/kibana:/usr/share/kibana/data
+    #- ./data/kibana01:/usr/share/kibana/data
     environment:
       SERVERNAME: kibana
       XPACK_APM_SERVICEMAPENABLED: "true"

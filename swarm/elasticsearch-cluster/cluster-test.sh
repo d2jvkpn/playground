@@ -1,11 +1,18 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
-ca=$(yq .ca configs/elastic.yaml)
-password=$(yq .password configs/elastic.yaml)
+# configs/elastic.yaml, configs/es.yaml
+yaml=$1
+ca=$(yq .ca $yaml)
+password=$(yq .password $yaml)
 
-auth="--cacert $ca -u elastic:$password"
-addr="https://localhost:9200"
+if [[ "$ca" == "" || "$ca" == "null" ]]; then
+    auth="-u elastic:$password"
+    addr="http://localhost:9200"
+else
+    auth="--cacert $ca -u elastic:$password"
+    addr="https://localhost:9200"
+fi
 
 echo -e "\n\n######## cluster"
 curl $auth $addr -f
