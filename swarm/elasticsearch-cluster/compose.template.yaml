@@ -1,7 +1,7 @@
 # url: https://github.com/elastic/elasticsearch/blob/8.17/docs/reference/setup/install/docker/docker-compose.yml
 
 networks:
-  net: { name: elastic-cluster, driver: bridge, external: false }
+  net: { name: elastic, driver: bridge, external: false }
 
 services:
   es01:
@@ -18,7 +18,7 @@ services:
       retries: 120
       test:
       - CMD-SHELL
-      - curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'
+      - curl -s --cacert config/certs/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'
     networks: [net]
     ports: ["${ELASTIC_PORT}:9200"]
     volumes:
@@ -39,7 +39,6 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}
     container_name: es02
     depends_on: [es01]
-    #  es01: { condition: service_healthy }
     ulimits:
       memlock: { soft: -1, hard: -1 }
     healthcheck:
@@ -48,7 +47,7 @@ services:
       retries: 120
       test:
       - CMD-SHELL
-      - curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'
+      - curl -s --cacert config/certs/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'
     networks: [net]
     volumes:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
@@ -76,7 +75,7 @@ services:
       retries: 120
       test:
       - CMD-SHELL
-      - curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'
+      - curl -s --cacert config/certs/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'
     networks: [net]
     volumes:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
@@ -91,3 +90,34 @@ services:
       xpack.security.transport.ssl.key: certs/es03.key
       xpack.security.transport.ssl.certificate: certs/es03.crt
       ES_JAVA_OPTS: -Xms2g -Xmx2g
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${ELASTIC_VERSION}
+    container_name: kibana
+    depends_on:
+      es01: { condition: service_healthy }
+      es02: { condition: service_healthy }
+      es03: { condition: service_healthy }
+    deploy:
+      resources:
+        limits: { cpus: "2", memory: 3GB }
+    healthcheck:
+      interval: 10s
+      timeout: 10s
+      retries: 120
+      test:
+      - CMD-SHELL
+      - curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'
+    networks: [net]
+    ports: ["5601:5601"]
+    volumes:
+    - ./configs/certs:/usr/share/kibana/config/certs
+    - ./data/kibana:/usr/share/kibana/data
+    environment:
+      SERVERNAME: kibana
+      XPACK_APM_SERVICEMAPENABLED: "true"
+      #XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY: aaaaaaaa-c4d3-4a0a-8290-2abcb83ab3aa
+      #ELASTICSEARCH_HOSTS: https://es01:9200
+      #ELASTICSEARCH_USERNAME: kibana_system
+      #ELASTICSEARCH_PASSWORD: foobar
+      #ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES: config/certs/ca.crt

@@ -4,7 +4,7 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 password=$(tr -dc '0-9a-zA-Z' < /dev/urandom | fold -w 32 | head -n1 || true)
 
-mkdir -p configs/certs # data/es{01..03}
+mkdir -p configs/certs data/kibana # data/es{01..03}
 
 function generate() {
     name=$1
@@ -23,7 +23,7 @@ if [ $# -gt 0 ]; then
     {
         echo "username: elastic"
         echo "password: $password"
-        echo "ca: configs/certs/ca/ca.crt"
+        echo "ca: configs/certs/ca.crt"
         echo "instances:"
 
 
@@ -63,6 +63,9 @@ ELASTIC_PASSWORD_FILE=./config/certs/elastic.pass
 
 cluster.name=elastic-cluster
 bootstrap.memory_lock=true
+
+xpack.ml.use_auto_machine_memory_percent=true
+xpack.license.self_generated.type=basic
 xpack.security.enabled=true
 xpack.security.enrollment.enabled=true
 xpack.security.http.ssl.enabled=true
@@ -70,6 +73,4 @@ xpack.security.http.ssl.certificate_authorities=certs/ca.crt
 xpack.security.transport.ssl.enabled=true
 xpack.security.transport.ssl.certificate_authorities=certs/ca.crt
 xpack.security.transport.ssl.verification_mode=certificate
-xpack.ml.use_auto_machine_memory_percent=true
-xpack.license.self_generated.type=basic
 EOF
