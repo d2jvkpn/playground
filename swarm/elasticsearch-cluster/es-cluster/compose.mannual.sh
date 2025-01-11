@@ -31,6 +31,10 @@ docker exec -it es01 \
   elasticsearch-create-enrollment-token -s node |
   dos2unix > configs/node.pass
 
+curl -s -X POST --cacert configs/http_ca.crt -u "elastic:$ELASTIC_PASSWORD" \
+  -H "Content-Type: application/json" \
+  https://es01:9200/_security/user/kibana_system/_password -d '{"password":"'${KIBANA_PASSWORD}'"}'
+
 docker cp es01:/usr/share/elasticsearch/config/certs/http_ca.crt configs/
 
 #### 3. tests

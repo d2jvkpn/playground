@@ -1,11 +1,11 @@
 init:
-	bash elastic-init.sh 3
+	bash elastic-init.sh
 
 up:
-	docker-compose --env-file=configs/compose.env -f=compose.elastic.yaml up -d
+	docker-compose -f=compose.cluster.yaml up -d
 
 down:
-	docker-compose --env-file=configs/compose.env -f=compose.elastic.yaml down
+	docker-compose -f=compose.cluster.yaml down
 
 test:
-	bash elastic-test.sh configs/elastic.yaml
+	bash elastic-test.sh
