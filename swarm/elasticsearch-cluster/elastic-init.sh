@@ -28,7 +28,7 @@ if [ $# -gt 0 ]; then
 
 
         for i in $(seq 1 $num); do
-            generate es$(printf "%02d" $i)
+            generate elastic$(printf "%02d" $i)
         done
     } > configs/elastic.yaml
 else
@@ -47,12 +47,12 @@ for name in $(yq .instances[].name configs/elastic.yaml); do
 done
 
 docker run --rm \
-  -v ${PWD}/cluster-setup.sh:/usr/share/elasticsearch/cluster-setup.sh \
+  -v ${PWD}/elastic-setup.sh:/usr/share/elasticsearch/elastic-setup.sh \
   -v ${PWD}/configs/certs:/usr/share/elasticsearch/config/certs \
   -w /usr/share/elasticsearch \
   -u root:root \
   docker.elastic.co/elasticsearch/elasticsearch:8.17.0 \
-  bash cluster-setup.sh
+  bash elastic-setup.sh
 
 ls -alh configs/certs
 

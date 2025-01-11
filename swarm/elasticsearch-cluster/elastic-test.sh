@@ -41,15 +41,15 @@ curl $auth $addr/_cat/nodes -f
 exit
 
 docker exec -it es01 bash -c \
-  "printf 'y' | elasticsearch-reset-password -u elastic --url https://127.0.0.1:9200" |
+  "printf 'y' | elasticsearch-reset-password -u elastic --url https://localhost:9200" |
   awk '/New value/{print $NF}' |
   dos2unix
 
 #### TODO
-docker exec -it es01 \
-  elasticsearch-create-enrollment-token -s kibana |
-  dos2unix > configs/kibana.pass
+docker exec -it es01 bash -c \
+  "elasticsearch-create-enrollment-token -s kibana --url https://localhost:9200" |
+  dos2unix
 
-docker exec -it es01 \
-  elasticsearch-create-enrollment-token -s node |
-  dos2unix > configs/node.pass
+docker exec -it es01 bash -c \
+  "elasticsearch-create-enrollment-token -s node --url https://localhost:9200" |
+  dos2unix
