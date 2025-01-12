@@ -34,9 +34,9 @@ services:
       #node.roles: master,data
       ES_JAVA_OPTS: -Xms1g -Xmx1g
 
-  kibana:
+  kibana01:
     image: docker.elastic.co/kibana/kibana:8.17.0
-    container_name: kibana
+    container_name: kibana01
     depends_on:
       elastic01: { condition: service_healthy }
     healthcheck:
@@ -51,7 +51,7 @@ services:
     volumes:
     - /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro
-    - ./data/kibana:/usr/share/kibana/data
+    - ./data/kibana01:/usr/share/kibana/data
     environment:
-      SERVERNAME: kibana
+      SERVERNAME: kibana01
       XPACK_APM_SERVICEMAPENABLED: "true"

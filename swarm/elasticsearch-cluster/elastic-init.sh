@@ -1,12 +1,16 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
-if [ -s configs/elastic01/certshttp_ca.crt ]; then
-    echo "file already exists: configs/elastic01/certshttp_ca.crt"
+
+container=${container:-elastic01}
+kibana=${kibana:-kibana01}
+
+if [ -s configs/$container/certshttp_ca.crt ]; then
+    echo "file already exists: configs/$container/certshttp_ca.crt"
     exit 0
 fi
 
-mkdir -p configs/elastic.config data/elastic01 data/kibana
+mkdir -p configs/elastic.config data/$container data/$kibana
 
 docker run --rm -u root:root -w /usr/share/elasticsearch \
   -v ${PWD}/configs/elastic.config:/elastic.config \
@@ -17,4 +21,4 @@ docker run --rm -u root:root -w /usr/share/elasticsearch \
       chmod 600 /elastic.config/elastic.pass;\
     fi"
 
-cp -ar configs/elastic.config configs/elastic01
+cp -ar configs/elastic.config configs/$container
