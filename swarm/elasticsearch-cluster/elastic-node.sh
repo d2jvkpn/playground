@@ -7,6 +7,8 @@ port=$2
 container=${container:-elastic01}
 pass_file=configs/$container/elastic.pass
 
+[ -f data/$node/node.lock ] && { >&2 echo "file exists: data/$node/node.lock"; exit 1; }
+
 #### 1.
 [ ! -s $pass_file ] &&
   docker exec -it $container elasticsearch-reset-password --batch -u elastic |
@@ -32,3 +34,6 @@ export ENROLLMENT_TOKEN=$token ES_NODE=$node ES_PORT=$2
 envsubst < compose.node.yaml > compose.$node.local
 
 docker-compose -f compose.$node.local up -d
+
+#### 3.
+# yq eval '.items[] | select(.name == "a01")'

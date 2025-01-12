@@ -8,6 +8,8 @@ pass_file=configs/$container/elastic.pass
 addr="https://localhost:$port"
 echo "==> addr: $addr"
 
+set -x
+
 ####
 [ ! -s $pass_file ] &&
   docker exec -it $container elasticsearch-reset-password --batch -u elastic |
@@ -36,7 +38,7 @@ echo -e "######## indices"
 curl $auth "$addr/_cat/indices?v" -f
 echo
 
-echo -e "######## add document"
+echo -e "######## add a document"
 curl $auth -X POST "$addr/idx-test/_doc/1" \
   -H 'Content-Type: application/json' \
   -d'{"title":"Test Document","content":"This is a test document."}' \

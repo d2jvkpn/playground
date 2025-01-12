@@ -28,9 +28,11 @@ services:
     - ./data/elastic01:/usr/share/elasticsearch/data
     environment:
       node.name: elastic01
-      SERVERNAME: elastic01
       cluster.name: elastic-in-container
-      ES_JAVA_OPTS: -Xms2g -Xmx2g
+      network.host: 0.0.0.0
+      #transport.port: 9300
+      #node.roles: master,data
+      ES_JAVA_OPTS: -Xms1g -Xmx1g
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.17.0
