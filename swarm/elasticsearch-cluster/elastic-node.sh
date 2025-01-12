@@ -1,15 +1,15 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
-node=$1
-port=$2
+
+node=$1; port=$2
 
 container=${container:-elastic01}
 pass_file=configs/$container/elastic.pass
 
 [ -f data/$node/node.lock ] && { >&2 echo "file exists: data/$node/node.lock"; exit 1; }
 
-#### 1.
+#### 1. Get token
 [ ! -s $pass_file ] &&
   docker exec -it $container elasticsearch-reset-password --batch -u elastic |
   awk '/New value:/{print $NF}' |
@@ -27,13 +27,16 @@ if [[ -z "$token" || "$token" == *" "* ]]; then
     exit 1
 fi
 
-#### 2.
+
+#### 2. Compose up
 mkdir -p data/$node
 
 export ENROLLMENT_TOKEN=$token ES_NODE=$node ES_PORT=$2
-envsubst < compose.node.yaml > compose.$node.local
 
+envsubst < compose.node.yaml > compose.$node.local
 docker-compose -f compose.$node.local up -d
 
-#### 3.
-# yq eval '.items[] | select(.name == "a01")'
+
+#### 3. TODO: Checking if the node has already joined
+
+# yq eval '. | select(.name == "elastic01")'

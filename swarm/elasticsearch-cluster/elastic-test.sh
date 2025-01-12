@@ -8,8 +8,6 @@ pass_file=configs/$container/elastic.pass
 addr="https://localhost:$port"
 echo "==> addr: $addr"
 
-set -x
-
 ####
 [ ! -s $pass_file ] &&
   docker exec -it $container elasticsearch-reset-password --batch -u elastic |
