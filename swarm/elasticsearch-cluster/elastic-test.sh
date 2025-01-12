@@ -45,7 +45,6 @@ echo -e "######## search"
 curl $auth "$addr/idx-test/_search?q=content:test" -f
 echo
 
-# https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-nodes.html
 echo -e "######## nodes"
 curl $auth "$addr/_cat/nodes?v=true&format=yaml" -f
 echo

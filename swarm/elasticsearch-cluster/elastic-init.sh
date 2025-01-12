@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
+
 if [ -s configs/elastic01/certshttp_ca.crt ]; then
     echo "file already exists: configs/elastic01/certshttp_ca.crt"
     exit 0
