@@ -20,7 +20,7 @@ services:
       - curl -s --cacert config/certs/http_ca.crt https://localhost:9200 |
         grep -q 'missing authentication credentials'
     networks: [net]
-    ports: [9200:9200]
+    ports: [9201:9200]
     volumes:
     - /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro

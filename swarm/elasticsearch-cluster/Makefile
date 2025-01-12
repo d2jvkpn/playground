@@ -5,10 +5,11 @@ up:
 	docker-compose -f=compose.cluster.yaml up -d
 
 down:
+	docker-compose -f=compose.nodes.yaml down
 	docker-compose -f=compose.cluster.yaml down
 
 test:
-	bash elastic-test.sh
+	port=9201 bash elastic-test.sh
 
-nodes:
-	bash elastic-nodes.sh
+node:
+	bash elastic-node.sh elastic02 9202
