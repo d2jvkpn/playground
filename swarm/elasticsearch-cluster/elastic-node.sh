@@ -38,5 +38,15 @@ docker-compose -f compose.$node.local up -d
 
 
 #### 3. TODO: Checking if the node has already joined
+while true; do
+    found=$(
+      curl -s $auth "https://localhost:9201/_cat/nodes?v=true&format=yaml" |
+        yq eval '.[] | select(.name == "'$node'")'
+    )
 
-# yq eval '. | select(.name == "elastic01")'
+    [ ! -z "$found" ] && break
+    >&2 echo "--> Node not joined yet: $node"
+    sleep 5
+done
+
+echo "<== Done"

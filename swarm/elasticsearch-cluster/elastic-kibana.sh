@@ -13,7 +13,6 @@ token=$(
 code=$(cat data/kibana/verification_code)
 
 cat <<EOF
-kibana:
-  token: $token
-  code: $code
+enrollment_token: $token
+verification_code: $code
 EOF
