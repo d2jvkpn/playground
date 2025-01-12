@@ -2,8 +2,8 @@
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
-pass_file=configs/elastic.conf/elastic.pass
 container=${container:-elastic01}
+pass_file=configs/$container/elastic.pass
 port=${port:-9200}
 
 ####
@@ -13,7 +13,7 @@ port=${port:-9200}
   awk '/New value/{print $NF}' |
   dos2unix > $pass_file
 
-auth="--cacert configs/elastic.conf/certs/http_ca.crt -u elastic:$(cat $pass_file)"
+auth="--cacert configs/$container/certs/http_ca.crt -u elastic:$(cat $pass_file)"
 addr="https://localhost:$port"
 
 ####

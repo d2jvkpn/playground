@@ -9,3 +9,6 @@ down:
 
 test:
 	bash elastic-test.sh
+
+nodes:
+	bash elastic-nodes.sh
