@@ -34,7 +34,15 @@ make init
 make up
 
 make test
+```
 
+2. config kibana
+```
+make kibana
+```
+
+3. add nodes
+```
 make elastic02
 
 make elastic03
@@ -42,7 +50,7 @@ make elastic03
 make test
 ```
 
-2. shutdown
+4. shutdown
 ```bash
 make shutdown
 ```
