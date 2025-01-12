@@ -28,6 +28,7 @@ services:
     - ./data/elastic01:/usr/share/elasticsearch/data
     environment:
       node.name: elastic01
+      SERVERNAME: elastic01
       cluster.name: elastic-in-container
       ES_JAVA_OPTS: -Xms2g -Xmx2g
 

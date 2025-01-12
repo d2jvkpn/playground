@@ -27,6 +27,7 @@ services:
     - ./data/${ES_NODE}:/usr/share/elasticsearch/data
     environment:
       node.name: ${ES_NODE}
-      ENROLLMENT_TOKEN: ${ENROLLMENT_TOKEN2}
+      SERVERNAME: ${ES_NODE}
+      ENROLLMENT_TOKEN: ${ENROLLMENT_TOKEN}
       cluster.name: elastic-in-container
       ES_JAVA_OPTS: -Xms2g -Xmx2g

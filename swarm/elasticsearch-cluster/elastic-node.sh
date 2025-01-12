@@ -21,7 +21,7 @@ auth="--cacert configs/$container/certs/http_ca.crt -u elastic:$password"
 token=$(docker exec $container elasticsearch-create-enrollment-token -s node | dos2unix)
 
 if [[ -z "$token" || "$token" == *" "* ]]; then
-    echo "Invalid token2: $token2"
+    echo "Invalid token: $token"
     exit 1
 fi
 
