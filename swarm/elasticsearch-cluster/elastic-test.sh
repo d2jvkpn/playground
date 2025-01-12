@@ -1,21 +1,23 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
+port=${port:-9201}
 
 container=${container:-elastic01}
 pass_file=configs/$container/elastic.pass
-port=${port:-9201}
+addr="https://localhost:$port"
+echo "==> addr: $addr"
 
 ####
 [ ! -s $pass_file ] &&
-  docker exec -it $container \
-  bash -c "printf 'y' | elasticsearch-reset-password -u elastic" |
-  awk '/New value/{print $NF}' |
+  docker exec -it $container elasticsearch-reset-password --batch -u elastic |
+  awk '/New value:/{print $NF}' |
   dos2unix > $pass_file
 
-auth="--cacert configs/$container/certs/http_ca.crt -u elastic:$(cat $pass_file)"
-addr="https://localhost:$port"
-echo "==> addr: $addr"
+password=$(cat $pass_file)
+[ -z "$password" ] && { >&2 echo "failed to run elasticsearch-reset-password "; exit 1; }
+
+auth="--cacert configs/$container/certs/http_ca.crt -u elastic:$password"
 
 ####
 echo -e "######## cluster"
