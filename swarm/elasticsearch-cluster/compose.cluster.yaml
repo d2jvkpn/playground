@@ -22,8 +22,6 @@ services:
     networks: [net]
     ports: [9201:9200]
     volumes:
-    - /etc/timezone:/etc/timezone:ro
-    - /etc/localtime:/etc/localtime:ro
     - ./configs/elastic01:/usr/share/elasticsearch/config
     - ./data/elastic01:/usr/share/elasticsearch/data
     environment:
@@ -49,8 +47,6 @@ services:
     networks: [net]
     ports: ["5601:5601"]
     volumes:
-    - /etc/timezone:/etc/timezone:ro
-    - /etc/localtime:/etc/localtime:ro
     - ./data/kibana01:/usr/share/kibana/data
     environment:
       SERVERNAME: kibana01
