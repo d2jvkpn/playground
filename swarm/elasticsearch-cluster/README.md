@@ -61,3 +61,16 @@ make shutdown
 ```bash
 make up
 ```
+
+#### C04. Node configurations
+1.  node roles
+```yaml
+node.master: true
+node.data: true
+```
+
+2. discovery
+```yaml
+discovery.seed_hosts: ["host1", "host2", "host3"]
+cluster.initial_master_nodes: ["host1", "host2", "host3"]
+```
