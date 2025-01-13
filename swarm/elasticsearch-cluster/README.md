@@ -71,6 +71,6 @@ node.data: true
 
 2. discovery
 ```yaml
-discovery.seed_hosts: ["host1", "host2", "host3"]
-cluster.initial_master_nodes: ["host1", "host2", "host3"]
+discovery.seed_hosts: ["elastic01", "elastic02", "elastic02"]
+cluster.initial_master_nodes: ["elastic01", "elastic02", "elastic02"]
 ```
