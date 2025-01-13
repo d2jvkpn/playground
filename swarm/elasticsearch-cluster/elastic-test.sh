@@ -48,6 +48,5 @@ curl $auth "$addr/idx-test/_search?q=content:test" -f
 echo
 
 echo -e "######## nodes"
-curl $auth "$addr/_cat/nodes?v=true&format=yaml" -f |
-tee configs/nodes.yaml
+curl $auth "$addr/_cat/nodes?v=true&format=yaml" -f
 echo
