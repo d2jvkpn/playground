@@ -36,9 +36,9 @@ services:
       ES_JAVA_OPTS: -Xms1g -Xmx1g
       bootstrap.memory_lock: "true"
       discovery.type: single-node
-      #xpack.security.enabled: "ftrue"
+      #xpack.security.enabled: "true"
       #xpack.security.enrollment.enabled: "true"
-      # ELASTIC_PASSWORD_FILE: /run/secrets/bootstrapPassword.txt
+      #ELASTIC_PASSWORD_FILE: /run/secrets/bootstrapPassword.txt
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.17.0
