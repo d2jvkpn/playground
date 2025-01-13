@@ -30,6 +30,7 @@ password=$(cat $pass_file)
 code=$(docker exec -it $kibana cat data/verification_code)
 
 cat <<EOF
+created_at: $(date +%FT%T%:z)
 enrollment_token: $token
 verification_code: $code
 account: elastic

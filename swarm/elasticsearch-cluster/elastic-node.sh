@@ -2,12 +2,14 @@
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
-node=$1; port=$2
+# WARN: add one node once at a time
+node=$1; port=$2; es_ip=$3
 
 container=${container:-elastic01}
 pass_file=configs/$container/elastic.pass
 
 [ -f data/$node/node.lock ] && { >&2 echo "file exists: data/$node/node.lock"; exit 1; }
+
 
 #### 1. Get token
 [ ! -s $pass_file ] &&
@@ -23,21 +25,28 @@ auth="--cacert configs/$container/certs/http_ca.crt -u elastic:$password"
 token=$(docker exec $container elasticsearch-create-enrollment-token -s node | dos2unix)
 
 if [[ -z "$token" || "$token" == *" "* ]]; then
-    echo "Invalid token: $token"
+    echo '!!! Invalid token: '$token
     exit 1
 fi
 
 
 #### 2. Compose up
-mkdir -p data/$node
+mkdir -p configs/$node data/$node
+cp -r configs/elastic.config/* configs/$node/
+cp -r configs/elastic01/certs configs/$node/
 
-export ENROLLMENT_TOKEN=$token ES_NODE=$node ES_PORT=$2
+docker run --rm -u root:root -w /usr/share/elasticsearch \
+  -v ${PWD}/configs/$node:/elastic.config \
+  docker.elastic.co/elasticsearch/elasticsearch:8.17.0 \
+  chown -R elasticsearch:root config
+
+export ENROLLMENT_TOKEN=$token ES_NODE=$node ES_PORT=$port ES_IP=$es_ip
 
 envsubst < compose.node.yaml > compose.$node.local
 docker-compose -f compose.$node.local up -d
 
 
-#### 3. TODO: Checking if the node has already joined
+#### 3. Checking if the node has already joined
 while true; do
     found=$(
       curl -s $auth "https://localhost:9201/_cat/nodes?v=true&format=yaml" |
@@ -48,5 +57,4 @@ while true; do
     >&2 echo "--> Node not joined yet: $node"
     sleep 5
 done
-
 echo "<== Done"

@@ -5,6 +5,7 @@ services:
   ${ES_NODE}:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
     container_name: ${ES_NODE}
+    hostname: ${ES_NODE}
     ulimits:
       memlock: {soft: -1, hard: -1}
       nofile: {soft: 65536, hard: 65536}
@@ -19,15 +20,19 @@ services:
       - CMD-SHELL
       - curl -s --cacert config/certs/http_ca.crt https://localhost:9200 |
         grep -q 'missing authentication credentials'
-    networks: [net]
+    networks:
+      net: { ipv4_address: ${ES_IP} }
     ports: [${ES_PORT}:9200]
     volumes:
+    - ./configs/${ES_NODE}:/usr/share/elasticsearch/config
     - ./data/${ES_NODE}:/usr/share/elasticsearch/data
     environment:
       node.name: ${ES_NODE}
       ENROLLMENT_TOKEN: ${ENROLLMENT_TOKEN}
       cluster.name: elastic-in-container
-      network.host: 0.0.0.0
+      ES_JAVA_OPTS: -Xms1g -Xmx1g
+      #network.host: 0.0.0.0
       #transport.port: 9300
       #node.roles: master,data
-      ES_JAVA_OPTS: -Xms1g -Xmx1g
+      #discovery.seed_hosts: elastic01,elastic03
+      #cluster.initial_master_nodes: elastic01,elastic02,elastic03
