@@ -1,4 +1,4 @@
-# Elasticsearch Cluster(Not Ready Yet)
+# Elasticsearch Cluster
 ---
 **version**: 0.1.0
 **author**: [github.com/d2jvkpn]
@@ -31,7 +31,9 @@ docker run --name es01 --net elastic -p 9200:9200 -it -m 6GB \
 ```bash
 make init
 
-make up
+make elastic01
+
+make check
 
 make test
 ```
@@ -47,10 +49,15 @@ make elastic02
 
 make elastic03
 
-make test
+make check
 ```
 
 4. shutdown
 ```bash
 make shutdown
+```
+
+5. up
+```bash
+make up
 ```

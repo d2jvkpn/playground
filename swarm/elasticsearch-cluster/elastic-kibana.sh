@@ -5,7 +5,7 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 ####
 port=${port:-9201}
 container=${container:-elastic01}
-kibana=${kibana:-kibana01}
+kibana=$1
 
 pass_file=configs/$container/elastic.pass
 addr="https://localhost:$port"

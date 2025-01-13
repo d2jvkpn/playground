@@ -1,5 +1,5 @@
 init:
-	container=elastic01 kibana=kibana01 bash elastic-init.sh
+	container=elastic01 bash elastic-init.sh
 
 elastic01:
 	docker-compose -f=compose.elastic01.yaml up -d
@@ -11,7 +11,7 @@ test:
 	port=9201 container=elastic01 bash elastic-test.sh test
 
 kibana:
-	port=9201 container=elastic01 kibana=kibana01 bash elastic-kibana.sh
+	port=9201 container=elastic01 bash elastic-kibana.sh kibana01
 
 elastic02:
 	container=elastic01 bash elastic-node.sh elastic02 9202 172.22.0.12

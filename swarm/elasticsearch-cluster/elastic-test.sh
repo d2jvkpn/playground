@@ -28,7 +28,7 @@ case "$1" in
     curl $auth "$addr/_cat/indices?v" -f
     echo
 
-    curl $auth "$addr/_cat/nodes?v=true&format=yaml" -f
+    curl $auth "$addr/_cat/nodes?v=true&format=yaml" -f | tee configs/nodes.yaml
     echo
     ;;
 "test")

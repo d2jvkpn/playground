@@ -31,14 +31,9 @@ fi
 
 
 #### 2. Compose up
-mkdir -p configs/$node data/$node
-cp -r configs/elastic.config/* configs/$node/
-cp -r configs/elastic01/certs configs/$node/
-
-docker run --rm -u root:root -w /usr/share/elasticsearch \
-  -v ${PWD}/configs/$node:/elastic.config \
-  docker.elastic.co/elasticsearch/elasticsearch:8.17.0 \
-  chown -R elasticsearch:root config
+mkdir -p configs/$node/certs data/$node
+container=$node bash elastic-init.sh
+cp -r configs/elastic01/certs/http_ca.crt configs/$node/certs/
 
 export ENROLLMENT_TOKEN=$token ES_NODE=$node ES_PORT=$port ES_IP=$es_ip
 

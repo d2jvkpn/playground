@@ -3,22 +3,19 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
 container=${container:-elastic01}
-kibana=${kibana:-kibana01}
 
-if [ -s configs/$container/certshttp_ca.crt ]; then
-    echo "file already exists: configs/$container/certshttp_ca.crt"
+if [ -s configs/$container/elasticsearch.yml ]; then
+    echo '!!! file already exists:' configs/$container/elasticsearch.yml
     exit 0
 fi
 
-mkdir -p configs/elastic.config data/$container data/$kibana
+mkdir -p configs/$container data/$container
 
 docker run --rm -u root:root -w /usr/share/elasticsearch \
-  -v ${PWD}/configs/elastic.config:/elastic.config \
+  -v ${PWD}/configs:/apps/configs \
   docker.elastic.co/elasticsearch/elasticsearch:8.17.0 \
-  bash -c "cp -ar config/* /elastic.config/ && \
-    chown -R elasticsearch:root /elastic.config && \
-    if [ -f  /elastic.config/elastic.pass ]; then \
-      chmod 600 /elastic.config/elastic.pass;\
+  bash -c "cp -ar config/* /apps/configs/$container/ && \
+    chown -R elasticsearch:root /apps/configs/$container && \
+    if [ -f  /apps/configs/$container/elastic.pass ]; then \
+      chmod 600 /apps/configs/$container/elastic.pass; \
     fi"
-
-cp -ar configs/elastic.config configs/$container
