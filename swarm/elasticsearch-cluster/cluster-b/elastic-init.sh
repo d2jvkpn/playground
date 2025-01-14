@@ -3,6 +3,7 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
 template=$1
+subnet=${2:-172.24.0}
 
 if [ -s configs/elastic.yaml ]; then
     echo '!!! file already exists:' configs/elastic.yaml
@@ -11,7 +12,7 @@ fi
 
 mkdir -p configs/certs
 password=$(tr -dc '0-9a-zA-Z' < /dev/urandom | fold -w 32 | head -n1 || true)
-PASSWORD="$password" envsubst < $template > configs/elastic.yaml
+PASSWORD="$password" SUBNET=$subnet envsubst < $template > configs/elastic.yaml
 
 yq .password configs/elastic.yaml > configs/certs/elastic.pass
 yq e '{"instances": .instances}' configs/elastic.yaml > configs/certs/instances.yaml
@@ -33,9 +34,9 @@ docker run --rm -u root:root -w /usr/share/elasticsearch \
   docker.elastic.co/elasticsearch/elasticsearch:8.17.0 \
   bash elastic-setup.sh
 
-ls -alh configs/certs
-
 [ -s configs/compose.env ] || cat > configs/compose.env <<EOF
+SUBNET=$subnet
+
 ELASTIC_PASSWORD_FILE=./config/certs/elastic.pass
 
 cluster.name=elastic-cluster
@@ -56,3 +57,5 @@ xpack.security.http.ssl.certificate: certs/node/node.crt
 xpack.security.transport.ssl.key: certs/node/node.key
 xpack.security.transport.ssl.certificate: certs/node/node.crt
 EOF
+
+ls -alh configs/elastic.yaml configs/compose.env configs/certs

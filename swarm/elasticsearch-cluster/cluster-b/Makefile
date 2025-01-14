@@ -1,5 +1,5 @@
 init:
-	bash elastic-init.sh elastic.template.yaml
+	bash elastic-init.sh elastic.template.yaml 172.24.0
 
 up:
 	docker-compose --env-file=configs/compose.env -f=compose.elastic.yaml up -d

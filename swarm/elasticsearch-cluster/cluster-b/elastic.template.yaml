@@ -9,18 +9,18 @@ instances:
   - elastic01
   ip:
   - 127.0.0.1
-  - 172.24.0.11
+  - ${SUBNET}.11
 - name: elastic02
   dns:
   - localhost
   - elastic02
   ip:
   - 127.0.0.1
-  - 172.24.0.12
+  - ${SUBNET}.12
 - name: elastic03
   dns:
   - localhost
   - elastic03
   ip:
   - 127.0.0.1
-  - 172.24.0.13
+  - ${SUBNET}.13
