@@ -7,8 +7,7 @@ networks:
     external: false
     ipam:
       config:
-      - subnet: ${SUBNET}.0/16
-        gateway: ${SUBNET}.1
+      - { subnet: 172.24.0.0/16, gateway: 172.24.0.1 }
 
 services:
   elastic01:
@@ -29,8 +28,7 @@ services:
       - curl -s --cacert config/certs/ca.crt https://localhost:9200 |
         grep -q 'missing authentication credentials'
     networks:
-      net:
-        ipv4_address: ${SUBNET}.11
+      net: { ipv4_address: 172.24.0.11 }
     ports: ["9201:9200"]
     volumes:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
@@ -59,8 +57,7 @@ services:
       - curl -s --cacert config/certs/ca.crt https://localhost:9200 |
         grep -q 'missing authentication credentials'
     networks:
-      net:
-        ipv4_address: ${SUBNET}.12
+      net: { ipv4_address: 172.24.0.12 }
     ports: ["9202:9200"]
     volumes:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
@@ -89,8 +86,7 @@ services:
       - curl -s --cacert config/certs/ca.crt https://localhost:9200 |
         grep -q 'missing authentication credentials'
     networks:
-      net:
-        ipv4_address: ${SUBNET}.13
+      net: { ipv4_address: 172.24.0.13 }
     ports: ["9203:9200"]
     volumes:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
@@ -113,7 +109,7 @@ services:
       elastic03: { condition: service_healthy }
     deploy:
       resources:
-        limits: { cpus: "2", memory: 3GB }
+        limits: { cpus: "1", memory: 2GB }
     healthcheck:
       interval: 10s
       timeout: 10s
@@ -121,7 +117,8 @@ services:
       test:
       - CMD-SHELL
       - curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'
-    networks: [net]
+    networks:
+      net: { ipv4_address: 172.24.0.2 }
     ports: ["5601:5601"]
     #volumes:
     #- ./data/kibana01:/usr/share/kibana/data
