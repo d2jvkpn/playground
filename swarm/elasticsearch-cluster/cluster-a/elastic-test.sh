@@ -33,14 +33,14 @@ case "$1" in
     echo -e "#### nodes"
     curl $auth "$addr/_cat/nodes?v=true&format=yaml" -f | tee configs/nodes.yaml
     echo
+
+    echo -e "#### indices"
+    curl $auth "$addr/_cat/indices?v" -f
+    echo
     ;;
 "test")
     echo -e "#### add index: idx-test"
     curl $auth -X PUT "$addr/idx-test"
-    echo
-
-    echo -e "#### indices"
-    curl $auth "$addr/_cat/indices?v" -f
     echo
 
     echo -e "#### add a document to idx-test"

@@ -11,6 +11,8 @@ make init
 
 make up
 
+make check
+
 make test
 ```
 
