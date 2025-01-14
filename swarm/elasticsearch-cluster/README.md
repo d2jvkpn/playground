@@ -22,47 +22,7 @@ docker run --name es01 --net elastic -p 9200:9200 -it -m 6GB \
   docker.elastic.co/elasticsearch/elasticsearch:8.17.0
 ```
 
-#### C02. TODO
-1. ?? elastic01 fixed ip
-
-
-#### C03. Create a cluster
-1. start
-```bash
-make init
-
-make elastic01
-
-make check
-
-make test
-```
-
-2. config kibana
-```
-make kibana
-```
-
-3. add nodes
-```
-make elastic02
-
-make elastic03
-
-make check
-```
-
-4. shutdown
-```bash
-make shutdown
-```
-
-5. up
-```bash
-make up
-```
-
-#### C04. Node configurations
+#### C02. Node configurations
 1.  node roles
 ```yaml
 node.master: true
@@ -75,7 +35,7 @@ discovery.seed_hosts: ["elastic01", "elastic02", "elastic02"]
 cluster.initial_master_nodes: ["elastic01", "elastic02", "elastic02"]
 ```
 
-#### C05. certs
+#### C03. certs
 1. 
 ```bash
 elasticsearch-certutil ca --pass "" --out http_ca.crt
@@ -123,7 +83,8 @@ xpack.security.http.ssl.certificate_authorities: ["/etc/elasticsearch/certs/ca-c
 
 3. TODO: p12
 ```
-elasticsearch-certutil ca --out elastic-stack-ca.p12
+elasticsearch-certutil ca --silent --pass "" --pem --out elastic-stack-ca.p12
+
 
 cat > instances.yaml <<EOF
 instances:

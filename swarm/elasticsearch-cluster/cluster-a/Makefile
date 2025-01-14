@@ -23,4 +23,4 @@ up:
 	docker-compose -f=compose.cluster.yaml up -d
 
 down:
-	docker-compose -fcompose.cluster.yaml down
+	docker-compose -f=compose.cluster.yaml down
