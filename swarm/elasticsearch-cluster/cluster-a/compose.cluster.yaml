@@ -12,6 +12,9 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
     container_name: elastic01
     hostname: elastic01
+    deploy:
+      resources:
+        limits: { cpus: "2", memory: 4GB }
     ulimits:
       memlock: {soft: -1, hard: -1}
       nofile: {soft: 65536, hard: 65536}
@@ -70,6 +73,9 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
     container_name: elastic02
     hostname: elastic02
+    deploy:
+      resources:
+        limits: { cpus: "2", memory: 4GB }
     ulimits:
       memlock: {soft: -1, hard: -1}
       nofile: {soft: 65536, hard: 65536}
@@ -104,6 +110,9 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
     container_name: elastic03
     hostname: elastic03
+    deploy:
+      resources:
+        limits: { cpus: "2", memory: 4GB }
     ulimits:
       memlock: {soft: -1, hard: -1}
       nofile: {soft: 65536, hard: 65536}

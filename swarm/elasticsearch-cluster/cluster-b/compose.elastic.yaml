@@ -46,6 +46,9 @@ services:
     container_name: es-node02
     hostname: es-node02
     depends_on: [es-node01]
+    deploy:
+      resources:
+        limits: { cpus: "2", memory: 4GB }
     ulimits:
       memlock: { soft: -1, hard: -1 }
     healthcheck:
@@ -75,6 +78,9 @@ services:
     container_name: es-node03
     hostname: es-node03
     depends_on: [es-node02]
+    deploy:
+      resources:
+        limits: { cpus: "2", memory: 4GB }
     ulimits:
       memlock: { soft: -1, hard: -1 }
     healthcheck:
@@ -109,7 +115,7 @@ services:
       es-node03: { condition: service_healthy }
     deploy:
       resources:
-        limits: { cpus: "1", memory: 2GB }
+        limits: { cpus: "1", memory: 1GB }
     healthcheck:
       interval: 10s
       timeout: 10s
