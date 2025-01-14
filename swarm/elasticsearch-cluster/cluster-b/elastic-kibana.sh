@@ -23,8 +23,10 @@ password=$(yq .kibana.password configs/elastic.yaml)
 
 if [[ -z "$password" || "$password" == "null" ]]; then
     password=$(
-     docker exec -it elastic01 elasticsearch-reset-password -u kibana_system --batch |
-       awk '/New value/{print $NF}' | dos2unix
+     docker exec -it elastic01 \
+       elasticsearch-reset-password -u kibana_system --batch |
+       awk '/New value/{print $NF}' |
+       dos2unix
    )
 fi
 
@@ -48,13 +50,14 @@ EOF
 
 exit
 
-docker exec -it elastic01 bash -c \
-  elasticsearch-reset-password -u elastic --url https://localhost:9200
+docker exec -it elastic01 \
+  elasticsearch-reset-password -u elastic --url https://localhost:9200 |
   awk '/New value/{print $NF}' |
   dos2unix
 
 # https://elsatic01:9201
-docker exec -it elastic01 elasticsearch-reset-password -u kibana_system --batch |
+docker exec -it elastic01 \
+  elasticsearch-reset-password -u kibana_system --batch |
   awk '/New value/{print $NF}' |
   dos2unix
 
@@ -62,10 +65,10 @@ docker exec kibana01 cat data/verification_code |
   dos2unix
 
 ####
-docker exec -it elastic01 
+docker exec -it elastic01 \
   elasticsearch-create-enrollment-token -s kibana --url https://localhost:9200 |
   dos2unix
 
-docker exec -it elastic01
+docker exec -it elastic01 \
   elasticsearch-create-enrollment-token -s node --url https://localhost:9200 |
   dos2unix
