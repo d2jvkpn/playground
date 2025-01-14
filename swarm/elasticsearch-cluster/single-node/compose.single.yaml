@@ -27,7 +27,7 @@ services:
       - curl -s --cacert config/certs/http_ca.crt https://localhost:9200 |
         grep -q 'missing authentication credentials'
     networks:
-      net: { ipv4_address: 172.23.0.11 }
+      net: { ipv4_address: 172.23.0.2 }
     ports: [9200:9200]
     volumes:
     - ./configs/es:/usr/share/elasticsearch/config

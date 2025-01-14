@@ -3,16 +3,19 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 cat <<EOF
 #### Open kibana
-1. Open http://localhost:5601, title="Configure Elastic to get started"
-2. Click "Configure manually"
-3. Enter Address: https://elastic01:9200, click "Check address"
-4. ENter account: username=kibana_system,
-generate kibana_system password,
-select "I recognize and trust this certificate:"
-5. Enter verification code
-6. Wait Saving settings -> Starting Elastic -> Completing setup
-7. Refresh webpage
-8. Enter account: username=elastic, password=configs/elastic.yaml::passowrd
+1. Run commandline: make kibana
+2. Open http://localhost:5601, title="Configure Elastic to get started"
+3. Click "Configure manually"
+4. Enter Address: https://elastic01:9200, click "Check address"
+5. Enter account(output of step1):
+- username=kibana_system,
+- password: XX01
+- select "I recognize and trust this certificate:"
+- click
+6. Enter verification code: XX02
+7. Waitting: "Saving settings" -> "Starting Elastic" -> "Completing setup"
+8. Refresh webpage
+9. Enter account(output of step1): username=elastic, password=XX03
 EOF
 
 # 4.

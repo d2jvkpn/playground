@@ -4,6 +4,11 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 template=$1
 
+if [ -s configs/elastic.yaml ]; then
+    echo '!!! file already exists:' configs/elastic.yaml
+    exit 1
+fi
+
 mkdir -p configs/certs
 password=$(tr -dc '0-9a-zA-Z' < /dev/urandom | fold -w 32 | head -n1 || true)
 PASSWORD="$password" envsubst < $template > configs/elastic.yaml
@@ -14,6 +19,11 @@ yq e '{"instances": .instances}' configs/elastic.yaml > configs/certs/instances.
 cat configs/certs/instances.yaml
 
 for name in $(yq .instances[].name $template); do
+    if [ -s configs/$name/elasticsearch.yml ]; then
+        echo '!!! file already exists:' configs/$name/elasticsearch.yml
+        exit 1
+    fi
+
     mkdir -p data/$name
 done
 
