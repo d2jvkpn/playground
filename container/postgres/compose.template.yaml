@@ -23,7 +23,7 @@ services:
       TZ: Asia/Shanghai
       PGTZ: Asia/Shanghai
       PGDATA: /var/lib/postgresql/data/pgdata
-      POSTGRES_PASSWORD_FILE: /apps/configs/postgres.password
+      POSTGRES_PASSWORD_FILE: /apps/configs/postgres.pass
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
     #  POSTGRES_PASSWORD: postgres
@@ -31,6 +31,6 @@ services:
     volumes:
     # - ./configs/postgresql.conf:/var/lib/postgresql/data/pgdata/postgresql.conf
     # - ./configs/pg_hba.conf:/var/lib/postgresql/data/pgdata/pg_hba.conf
-    - ./configs/postgres.password:/apps/configs/postgres.password:ro
+    - ./configs/postgres.pass:/apps/configs/postgres.pass:ro
     - ./data/postgres:/var/lib/postgresql/data
     # - ./data/share:/apps/data/share
