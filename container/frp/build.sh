@@ -1,6 +1,5 @@
-#!/usr/bin/env bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 ####
 mkdir -p cache.local
@@ -12,11 +11,11 @@ mkdir -p cache.local
 # tar -xf cache.local/frp-${app_version}.tar.gz -C cache.local
 # mv cache.local/frp-${app_version} frp.git
 
-BUILD_Region=${BUILD_Region:-""}
-app_version=""
+region=${region:-""}
 app_name=frp
+app_version=""
 image_name=frp
-image_tag=latest
+image_tag=local
 image=$image_name:$image_tag
 
 build_time=$(date +'%FT%T%:z')
@@ -51,10 +50,19 @@ build_time: $build_time
 image: $image
 EOF
 
-docker build --no-cache --file Dockerfile \
+docker build --no-cache --file Containerfile \
   --build-arg=APP_Name="$app_name" \
-  --build-arg=BUILD_Region="$BUILD_Region" \
+  --build-arg=region="$region" \
   --tag $image ./
 
 docker save $image -o cache.local/${image_name}_${image_tag}.tar
-pigz cache.local/${image_name}_${image_tag}.tar
+pigz -f cache.local/${image_name}_${image_tag}.tar
+
+
+docker image prune --force --filter label=app=${app_name} --filter label=stage=build &> /dev/null
+
+# docker images --filter "dangling=true" --quiet $image | xargs -i docker rmi {}
+for img in $(docker images --filter=dangling=true --filter=label=app=$app_name --quiet); do
+    >&2 echo "==> remove image: $img"
+    docker rmi $img || true
+done

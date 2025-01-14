@@ -1,6 +1,6 @@
 services:
   frp-client:
-    image: frp:latest
+    image: frp:local
     restart: always
     container_name: frp-client
     user: "${USER_UID}:${USER_GID}"

@@ -1,5 +1,5 @@
 image:
-	BUILD_Region=cn bash compose.sh
+	region=cn bash build.sh
 
 client:
 	bash compose.sh client
