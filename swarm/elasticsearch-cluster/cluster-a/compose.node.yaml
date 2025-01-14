@@ -6,12 +6,12 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
     container_name: ${ES_NODE}
     hostname: ${ES_NODE}
+    deploy:
+      resources:
+        limits: { cpus: "2", memory: 4GB }
     ulimits:
       memlock: {soft: -1, hard: -1}
       nofile: {soft: 65536, hard: 65536}
-    deploy:
-      resources:
-        limits: { cpus: "2", memory: 2GB }
     healthcheck:
       interval: 10s
       timeout: 10s
