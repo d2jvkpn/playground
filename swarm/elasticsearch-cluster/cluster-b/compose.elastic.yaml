@@ -123,8 +123,7 @@ services:
       test:
       - CMD-SHELL
       - curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'
-    networks:
-      net: { ipv4_address: 172.24.0.2 }
+    networks: [net]
     ports: ["5601:5601"]
     #volumes:
     #- ./data/es-kibana:/usr/share/kibana/data
