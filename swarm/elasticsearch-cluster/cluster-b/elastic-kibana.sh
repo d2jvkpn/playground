@@ -58,12 +58,12 @@ EOF
 
 exit
 
+####
 docker exec -it es-node01 \
   elasticsearch-reset-password -u elastic --url https://localhost:9200 |
   awk '/New value/{print $NF}' |
   dos2unix
 
-# https://elsatic01:9201
 docker exec -it es-node01 \
   elasticsearch-reset-password -u kibana_system --batch |
   awk '/New value/{print $NF}' |
@@ -79,3 +79,9 @@ docker exec -it es-node01 \
 docker exec -it es-node01 \
   elasticsearch-create-enrollment-token -s node --url https://localhost:9200 |
   dos2unix
+
+####
+curl -s -X POST --cacert configs/certs/ca.crt \
+  -u "elastic:$(cat configs/certs/elastic.pass)" \
+  -H "Content-Type: application/json" \
+  https://localhost:9200/_security/user/kibana_system/_password -d '{"password":"foobar"}'

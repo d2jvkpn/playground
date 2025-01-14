@@ -13,8 +13,8 @@ echo "==> addr: $addr"
 
 ####
 token=$(
-  docker exec -it $container bash -c \
-    "elasticsearch-create-enrollment-token -s kibana --url https://localhost:9200" |
+  docker exec -it $container \
+    elasticsearch-create-enrollment-token -s kibana --url https://localhost:9200 |
     dos2unix
 )
 
