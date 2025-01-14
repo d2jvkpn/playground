@@ -3,24 +3,24 @@ password: ${PASSWORD}
 ca: configs/certs/ca.crt
 
 instances:
-- name: elastic01
+- name: es-node01
   dns:
   - localhost
-  - elastic01
+  - es-node01
   ip:
   - 127.0.0.1
   - 172.24.0.11
-- name: elastic02
+- name: es-node02
   dns:
   - localhost
-  - elastic02
+  - es-node02
   ip:
   - 127.0.0.1
   - 172.24.0.12
-- name: elastic03
+- name: es-node03
   dns:
   - localhost
-  - elastic03
+  - es-node03
   ip:
   - 127.0.0.1
   - 172.24.0.13

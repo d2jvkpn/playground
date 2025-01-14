@@ -2,7 +2,7 @@
 
 networks:
   net:
-    name: elastic
+    name: es-cluster
     driver: bridge
     external: false
     ipam:
@@ -10,10 +10,10 @@ networks:
       - { subnet: 172.24.0.0/16, gateway: 172.24.0.1 }
 
 services:
-  elastic01:
+  es-node01:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
-    container_name: elastic01
-    hostname: elastic01
+    container_name: es-node01
+    hostname: es-node01
     deploy:
       resources:
         limits: { cpus: "2", memory: 4GB }
@@ -32,20 +32,20 @@ services:
     ports: ["9201:9200"]
     volumes:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
-    - ./configs/certs/elastic01:/usr/share/elasticsearch/config/certs/node
-    - ./data/elastic01:/usr/share/elasticsearch/data
+    - ./configs/certs/es-node01:/usr/share/elasticsearch/config/certs/node
+    - ./data/es-node01:/usr/share/elasticsearch/data
     env_file: ["configs/compose.env"]
     environment:
-      node.name: elastic01
-      discovery.seed_hosts: elastic02,elastic03
-      cluster.initial_master_nodes: elastic01,elastic02,elastic03
+      node.name: es-node01
+      discovery.seed_hosts: es-node02,es-node03
+      cluster.initial_master_nodes: es-node01,es-node02,es-node03
       ES_JAVA_OPTS: -Xms2g -Xmx2g
 
-  elastic02:
+  es-node02:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
-    container_name: elastic02
-    hostname: elastic02
-    depends_on: [elastic01]
+    container_name: es-node02
+    hostname: es-node02
+    depends_on: [es-node01]
     ulimits:
       memlock: { soft: -1, hard: -1 }
     healthcheck:
@@ -61,20 +61,20 @@ services:
     ports: ["9202:9200"]
     volumes:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
-    - ./configs/certs/elastic02:/usr/share/elasticsearch/config/certs/node
-    - ./data/elastic02:/usr/share/elasticsearch/data
+    - ./configs/certs/es-node02:/usr/share/elasticsearch/config/certs/node
+    - ./data/es-node02:/usr/share/elasticsearch/data
     env_file: ["configs/compose.env"]
     environment:
-      node.name: elastic02
-      discovery.seed_hosts: elastic01,elastic03
-      cluster.initial_master_nodes: elastic01,elastic02,elastic03
+      node.name: es-node02
+      discovery.seed_hosts: es-node01,es-node03
+      cluster.initial_master_nodes: es-node01,es-node02,es-node03
       ES_JAVA_OPTS: -Xms2g -Xmx2g
 
-  elastic03:
+  es-node03:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
-    container_name: elastic03
-    hostname: elastic03
-    depends_on: [elastic02]
+    container_name: es-node03
+    hostname: es-node03
+    depends_on: [es-node02]
     ulimits:
       memlock: { soft: -1, hard: -1 }
     healthcheck:
@@ -90,23 +90,23 @@ services:
     ports: ["9203:9200"]
     volumes:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
-    - ./configs/certs/elastic03:/usr/share/elasticsearch/config/certs/node
-    - ./data/elastic03:/usr/share/elasticsearch/data
+    - ./configs/certs/es-node03:/usr/share/elasticsearch/config/certs/node
+    - ./data/es-node03:/usr/share/elasticsearch/data
     env_file: ["configs/compose.env"]
     environment:
-      node.name: elastic03
-      discovery.seed_hosts: elastic01,elastic02
-      cluster.initial_master_nodes: elastic01,elastic02,elastic03
+      node.name: es-node03
+      discovery.seed_hosts: es-node01,es-node02
+      cluster.initial_master_nodes: es-node01,es-node02,es-node03
       ES_JAVA_OPTS: -Xms2g -Xmx2g
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.17.0
-    container_name: kibana01
-    hostname: kibana01
+    container_name: es-kibana
+    hostname: es-kibana
     depends_on:
-      elastic01: { condition: service_healthy }
-      elastic02: { condition: service_healthy }
-      elastic03: { condition: service_healthy }
+      es-node01: { condition: service_healthy }
+      es-node02: { condition: service_healthy }
+      es-node03: { condition: service_healthy }
     deploy:
       resources:
         limits: { cpus: "1", memory: 2GB }
@@ -121,7 +121,7 @@ services:
       net: { ipv4_address: 172.24.0.2 }
     ports: ["5601:5601"]
     #volumes:
-    #- ./data/kibana01:/usr/share/kibana/data
+    #- ./data/es-kibana:/usr/share/kibana/data
     environment:
       SERVERNAME: kibana
       XPACK_APM_SERVICEMAPENABLED: "true"

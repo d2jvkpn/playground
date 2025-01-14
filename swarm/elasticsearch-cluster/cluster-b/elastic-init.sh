@@ -36,7 +36,7 @@ docker run --rm -u root:root -w /usr/share/elasticsearch \
 [ -s configs/compose.env ] || cat > configs/compose.env <<EOF
 ELASTIC_PASSWORD_FILE=./config/certs/elastic.pass
 
-cluster.name=elastic-cluster
+cluster.name=es-cluster
 bootstrap.memory_lock=true
 xpack.ml.use_auto_machine_memory_percent=true
 xpack.license.self_generated.type=basic
