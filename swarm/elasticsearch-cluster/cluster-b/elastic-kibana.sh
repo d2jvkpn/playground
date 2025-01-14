@@ -45,9 +45,14 @@ verification_code=$(docker exec $kibana cat data/verification_code | dos2unix)
 cat <<EOF
 
 # kibana account
-elastic: $(yq .password configs/elastic.yaml)
-kibana_system: $(yq .kibana.password configs/elastic.yaml)
-verification_code: $verification_code
+kibana:
+  account: kibana_system
+  password: $(yq .kibana.password configs/elastic.yaml)
+  verification_code: $verification_code
+
+elastic:
+  account: elastic
+  password: $(yq .password configs/elastic.yaml)
 EOF
 
 
