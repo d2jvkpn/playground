@@ -28,8 +28,10 @@ RUN apk --no-cache update && \
 RUN cp /etc/supervisord.conf /etc/supervisord.conf.bk
 ADD deploy/supervisord.conf /etc/supervisord.conf
 ADD deploy/supervisor.ini /etc/supervisor.d/
+ADD deploy/nginx.logrotate /etc/logrotate.d/nginx
 
 CMD [supervisord, -l, /apps/logs/supervisord.log, -c, /etc/supervisord.conf]
+# CMD: [supervisord, -l, /apps/logs/supervisord.log, -c, /apps/configs/supervisord.nginx.conf]
+
 # CMD: [openvpn, --auth-nocache, --config, configs/client.ovpn, --askpass, configs/client.ovpn.pass]
 # CMD: [openvpn, --auth-nocache, --config, configs/client.ovpn, --auth-user-pass, configs/client.ovpn.auth]
-# CMD: [supervisord, -l, /apps/logs/supervisord.log, -c, /app/supervisord.nginx.conf]

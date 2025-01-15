@@ -13,4 +13,4 @@ services:
     environment: ["TZ=Asia/Shanghai"]
     command: [openvpn, --auth-nocache, --config, configs/client.ovpn, --askpass, configs/client.ovpn.pass]
     # command: [openvpn, --auth-nocache, --config, configs/client.ovpn, --auth-user-pass, configs/client.ovpn.auth]
-    # command: [supervisord, -l, /apps/logs/supervisord.log, -c, /app/supervisord.nginx.conf]
+    # command: [supervisord, -l, /apps/logs/supervisord.log, -c, /apps/configs/supervisord.nginx.conf]
