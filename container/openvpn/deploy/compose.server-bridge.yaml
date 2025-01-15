@@ -8,7 +8,7 @@ services:
     cap_add: [NET_ADMIN]
     #logging:
     #  driver: "none"
-    network_mode: host
+    # network_mode: host
     networks: [net]
     sysctls:
     - net.ipv6.conf.all.disable_ipv6=0
