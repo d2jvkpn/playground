@@ -1,6 +1,8 @@
 FROM kylemanna/openvpn:latest
 
-ARG BUILD_Region
+ARG region
+
+ENV TZ=${TZ:-Asia/Shanghai}
 
 WORKDIR /apps
 
@@ -13,8 +15,8 @@ RUN crontab -l > /etc/crontab.bk && \
   echo "0 0 1 * * bash /apps/target/openvpn_logrotate.sh yesterday" > /tmp/crontab && \
   crontab /tmp/crontab
 
-RUN if [ "$BUILD_Region" = "cn" ]; then \
-    echo "==> BUILD_Region: $BUILD_Region"; \
+RUN if [ "$region" = "cn" ]; then \
+    echo "==> region: $region"; \
     cp /etc/apk/repositories /etc/apk/repositories.bk; \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
   fi
