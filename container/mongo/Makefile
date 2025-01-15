@@ -9,4 +9,5 @@ create:
 	  'db = db.getSiblingDB("admin"); db.changeUserPassword("root", passwordPrompt())'
 
 connect:
-	docker exec -it mongo mongosh --username root --password
+	#docker exec -it mongo mongosh --username root --password
+	./connect.exp configs/mongo.pass

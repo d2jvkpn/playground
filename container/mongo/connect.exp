@@ -1,0 +1,22 @@
+#!/usr/bin/expect
+set prompt "#"
+set timeout 60
+
+# set password "DontUseThisPassword"
+# set username [lindex $argv 0];
+# set password [lindex $argv 1];
+
+set pass_file [lindex $argv 0];
+
+set fh [open $pass_file r]
+set password [read -nonewline $fh]
+close $fh
+
+spawn docker exec -it mongo mongosh --username root --password
+
+# expect "Password for user postgres:"
+expect "Enter password: "
+
+send "$password\r"
+interact
+# expect eof

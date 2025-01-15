@@ -10,7 +10,10 @@ services:
     # network_mode: bridge
     ports: ["127.0.0.1:${DB_Port}:27017"]
     environment:
-    - MONGO_INITDB_ROOT_USERNAME=root
-    - MONGO_INITDB_ROOT_PASSWORD=root
+      TZ: Asia/Shanghai
+      MONGO_INITDB_ROOT_USERNAME: root
+      #MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /apps/configs/mongo.pass
     volumes:
+    - ./configs:/apps/configs
     - ./data/mongo:/data/db

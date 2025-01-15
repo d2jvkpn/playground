@@ -1,6 +1,5 @@
 #!//bin/bash
-set -eu -o pipefail
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 function display_usage() {
 >&2 cat <<'EOF'
@@ -35,8 +34,8 @@ export DB_Port=${2:-5432} CONTAINER_Name=${3:-postgres}
 mkdir -p configs data/postgres data/share
 # data/postgres/backups/wal_archive data/temp
 
-[ -s configs/postgres.password ] || \
-  tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 32 | head -n1 > configs/postgres.password || true
+[ -s configs/postgres.pass ] || \
+  tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 32 | head -n1 > configs/postgres.pass || true
 
 envsubst < ${_path}/compose.template.yaml > compose.yaml
 
@@ -57,7 +56,7 @@ docker exec postgres bash -c "chown -R postgres:postgres backups"
 ####
 exit
 container=$(yq .services.postgres.container_name docker-compose.yaml)
-password=$(cat configs/postgres.password)
+password=$(cat configs/postgres.pass)
 
 printf "$password\r\n" |
   docker exec -i -u postgres $container psql --username postgres --password
@@ -81,6 +80,6 @@ docker exec -it postgres psql --username=$username
 #### remove secret from config
 docker-compose down
 
-sed -i -e '/postgres\.password/d' -e '/POSTGRES_PASSWORD_FILE/d' docker-compose.yaml
+sed -i -e '/postgres\.pass/d' -e '/POSTGRES_PASSWORD_FILE/d' docker-compose.yaml
 
 docker-compose up -d
