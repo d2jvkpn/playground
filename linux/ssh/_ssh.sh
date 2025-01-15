@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
+exit
+#### 1. 
 ssh-keygen -R [hostname],[ip_address]
 ssh-keyscan -p 22 -H [hostname],[ip_address] >> ~/.ssh/known_hosts
 
@@ -24,3 +25,22 @@ ssh-keygen -y -f host.pem > host.ssh-ed25519.pub
 
 
 ssh -o PreferredAuthentications=password -p 22 target@remote
+
+exit
+#### 2. ssh tunneling
+# 1. access a remote service(postgres) from local
+ssh -NC -L 127.0.0.1:5432:127.0.0.1:5432 remote
+
+psql -h 127.0.0.1 -U postgres -p 5432 # local
+
+# 2. reverse(local serivce 8000, remote port 9090)
+python3 -m http.server # local
+
+ssh -NC -R 9000:localhost:8000 user@remote-server.com
+
+curl localhost:9000 # remote
+
+# 3. socks5 service
+ssh -NC -D 127.0.0.1:1081 remote
+
+curl --connect-timeout 2 -x socks5h://127.0.0.1:1081 https://www.google.com # local

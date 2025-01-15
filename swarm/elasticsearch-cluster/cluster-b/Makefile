@@ -1,8 +1,11 @@
+pull:
+	docker-compose --env-file=compose.env -f=compose.elastic.yaml pull
+
 init:
 	bash elastic-init.sh elastic
 
 up:
-	docker-compose --env-file=configs/compose.env -f=compose.elastic.yaml up -d
+	docker-compose --env-file=compose.env -f=compose.elastic.yaml up -d
 
 check:
 	bash elastic-test.sh configs/elastic.yaml check
@@ -14,4 +17,4 @@ kibana:
 	bash elastic-kibana.sh
 
 down:
-	docker-compose --env-file=configs/compose.env -f=compose.elastic.yaml down
+	docker-compose --env-file=compose.env -f=compose.elastic.yaml down

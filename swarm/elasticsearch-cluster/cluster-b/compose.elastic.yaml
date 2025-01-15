@@ -34,7 +34,7 @@ services:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
     - ./configs/certs/es-node01:/usr/share/elasticsearch/config/certs/node
     - ./data/es-node01:/usr/share/elasticsearch/data
-    env_file: ["configs/compose.env"]
+    env_file: ["./compose.env"]
     environment:
       node.name: es-node01
       discovery.seed_hosts: es-node02,es-node03
@@ -66,7 +66,7 @@ services:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
     - ./configs/certs/es-node02:/usr/share/elasticsearch/config/certs/node
     - ./data/es-node02:/usr/share/elasticsearch/data
-    env_file: ["configs/compose.env"]
+    env_file: ["./compose.env"]
     environment:
       node.name: es-node02
       discovery.seed_hosts: es-node01,es-node03
@@ -98,7 +98,7 @@ services:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
     - ./configs/certs/es-node03:/usr/share/elasticsearch/config/certs/node
     - ./data/es-node03:/usr/share/elasticsearch/data
-    env_file: ["configs/compose.env"]
+    env_file: ["./compose.env"]
     environment:
       node.name: es-node03
       discovery.seed_hosts: es-node01,es-node02
