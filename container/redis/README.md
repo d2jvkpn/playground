@@ -61,13 +61,18 @@ CONFIG GET *preamble*
 ```bash
 touch data/redis/aclfile.acl
 
-sed -i '/^#aclfile/s/#aclfile/aclfile/' /data/redis.acl
+sed -i 's/^requirepass/#requirepass/; /^#aclfile/s/#aclfile/aclfile/' data/redis/redis.conf
+
+docker-compose down
+docker-compose up -d
 ```
 
 2. acl auth
 ```redis
 # set password for default account
 ACL SETUSER default on >dont_use_this_password
+
+ACL SAVE
 
 # create account with password
 ACL SETUSER alice on >dont_use_this_password +@all
