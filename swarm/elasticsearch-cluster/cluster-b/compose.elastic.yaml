@@ -17,6 +17,9 @@ services:
     deploy:
       resources:
         limits: { cpus: "2", memory: 4GB }
+        reservations: { cpu: "0.1", memory: "128M"}
+      ulimits:
+        nofile: { soft: 65535, hard: 65535 }
     ulimits:
       memlock: { soft: -1, hard: -1 }
     healthcheck:
@@ -49,6 +52,9 @@ services:
     deploy:
       resources:
         limits: { cpus: "2", memory: 4GB }
+        reservations: { cpu: "0.1", memory: "128M"}
+      ulimits:
+        nofile: { soft: 65535, hard: 65535 }
     ulimits:
       memlock: { soft: -1, hard: -1 }
     healthcheck:
@@ -81,6 +87,9 @@ services:
     deploy:
       resources:
         limits: { cpus: "2", memory: 4GB }
+        reservations: { cpu: "0.1", memory: "128M"}
+      ulimits:
+        nofile: { soft: 65535, hard: 65535 }
     ulimits:
       memlock: { soft: -1, hard: -1 }
     healthcheck:

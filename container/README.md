@@ -16,4 +16,4 @@
 - public.ecr.aws/gravitational/teleport-distroless
 - gateone
 - concourse
-- go
+- gotify
