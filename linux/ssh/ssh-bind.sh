@@ -18,14 +18,19 @@ config=~/apps/configs/ssh-bind.yaml
 
 #### 3. Configuration file:
 ```yaml
-host:
+# aws-ai-la
+aws:
   kibana: { port: 5601, addr: 127.0.0.1, target_port: 5601 }
+  kafka: { port: 9092 }
+
+# ali-api-prod
+ali:
   redis: { port: 6379 }
   postgres: { port: 5432 }
+```
 
 #### 4. Examples
 - Bind a local port to access the postgres service on a remote server.
-```
 EOF
 }
 
