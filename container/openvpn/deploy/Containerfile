@@ -23,8 +23,10 @@ RUN if [ "$region" = "cn" ]; then \
 
 RUN apk --no-cache update && \
   apk --no-cache upgrade && \
-  apk --no-cache add supervisor coreutils tzdata nginx curl iproute2 yq jq
-  # installed: tzdata, bash, openssl, bash
+  apk --no-cache add tzdata coreutils supervisor nginx \
+    curl iproute2 bind-tools stunnel \
+    yq jq
+  # installed: bash, openssl
 
 RUN cp /etc/supervisord.conf /etc/supervisord.conf.bk
 ADD deploy/supervisord.conf /etc/supervisord.conf
