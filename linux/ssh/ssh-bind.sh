@@ -2,6 +2,7 @@
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
+#### 1. funcs
 function display_usage() {
 >&2 cat <<'EOF'
 Usage of ssh-bind.sh
@@ -9,6 +10,7 @@ Usage of ssh-bind.sh
 #### 1. Run
 - ssh-bind.sh host postgres redis
 - ssh-bind.sh "-F path/to/ssh.conf host" postgres redis
+- ssh-bind.sh config
 
 #### 2. environment variables
 local_addr=localhost
@@ -27,6 +29,13 @@ host:
 EOF
 }
 
+function on_exit() {
+    echo -en "\n<== $(date +%FT%T%:z) received SIGINT, exit.\n"
+    exit 0
+}
+
+
+#### 2. configs
 case "${1:-""}" in
 "" | "help" | "-h" | "--help")
     display_usage
@@ -34,14 +43,20 @@ case "${1:-""}" in
     ;;
 esac
 
+local_addr=${local_addr:-localhost}
+config=${config:-~/apps/configs/ssh-bind.yaml}
+if [[ $# -eq 1 && "$1" == "config" ]]; then
+    cat $config
+    exit 0
+fi
+
 if [ $# -lt 2 ]; then
     >&2 echo '!!! Args are required: host <service...>'
     exit 1
 fi
 
+#### 3. load
 host=$1
-local_addr=${local_addr:-localhost}
-config=${config:-~/apps/configs/ssh-bind.yaml}
 ls $config > /dev/null
 
 shift
@@ -70,5 +85,9 @@ binds=$(
     done
 )
 
-set -x
+#### 4. run
+trap on_exit SIGINT
+echo "==> $(date +%FT%T%:z) running"
+
+echo "+ ssh -N $binds $host"
 ssh -N $binds $host
