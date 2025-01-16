@@ -11,7 +11,7 @@ Usage of ssh-bind.sh
 - ssh-bind.sh "-F path/to/ssh.conf host" postgres redis
 
 #### 2. environment variables
-local_addr=locahost
+local_addr=localhost
 config=~/apps/configs/ssh-bind.yaml
 
 #### 3. Configuration file:
