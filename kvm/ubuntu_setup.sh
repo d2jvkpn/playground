@@ -81,9 +81,12 @@ systemctl start serial-getty@ttyS0.service
 # update /etc/apt/sources.list
 apt update && apt -y upgrade
 
-apt install -y software-properties-common apt-transport-https ca-certificates \
-  lsb-release gnupg net-tools vim tree file pigz curl jq zip duf openvpn
+apt install -y software-properties-common \
+  apt-transport-https ca-certificates lsb-release gnupg duf \
+  vim tree file pigz jq zip dos2unix \
+  curl openvpn net-tools
 # landscape-common
+# yq, docker-compose
 
 # wget -O Apps/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
 # chmod a+x Apps/bin/yq

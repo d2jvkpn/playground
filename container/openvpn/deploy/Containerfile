@@ -23,7 +23,9 @@ RUN if [ "$region" = "cn" ]; then \
 
 RUN apk --no-cache update && \
   apk --no-cache upgrade && \
-  apk --no-cache add tzdata coreutils supervisor nginx \
+  apk --no-cache add \
+    tzdata coreutils \
+    supervisor nginx \
     curl iproute2 bind-tools stunnel \
     yq jq
   # installed: bash, openssl
