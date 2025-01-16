@@ -2,7 +2,7 @@
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
-#### 1. funcs
+#### 1. functionss
 function display_usage() {
 >&2 cat <<'EOF'
 Usage of ssh-bind.sh
@@ -30,12 +30,13 @@ EOF
 }
 
 function on_exit() {
-    echo -en "\n<== $(date +%FT%T%:z) received SIGINT, exit.\n"
+    echo
+    echo "<== $(date +%FT%T%:z) received SIGINT, exit."
     exit 0
 }
 
 
-#### 2. configs
+#### 2. configure
 case "${1:-""}" in
 "" | "help" | "-h" | "--help")
     display_usage
