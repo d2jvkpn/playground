@@ -87,7 +87,7 @@ binds=$(
 
 #### 4. run
 trap on_exit SIGINT
-echo "==> $(date +%FT%T%:z) running"
+echo "==> $(date +%FT%T%:z) run"
 
 echo "+ ssh -N $binds $host"
 ssh -N $binds $host
