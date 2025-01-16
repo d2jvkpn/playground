@@ -6,13 +6,13 @@ function display_usage() {
 cat <<'EOF'
 # Usage of ssh-socks5
 
-#### 1. run
+#### 1. Run
 ssh-socks5.sh <remote_host> [127.0.0.1:1081]
 
-#### 2. environment variables
+#### 2. Environment variables
 config=""
 
-#### 3. ssh config
+#### 3. SSH config
 ```conf
 Host remote_host
     ProxyJump host1,host2
@@ -29,7 +29,7 @@ Host remote_host
     ExitOnForwardFailure yes
 ```
 
-#### 4. applications
+#### 4. Examples
 https_proxy=socks5h://127.0.0.1:1081 git pull
 
 https_proxy=socks5h://127.0.0.1:1081 curl https://icanhazip.com

@@ -2,7 +2,7 @@ image:
 	bash deploy/build.sh
 
 image-cn:
-	BUILD_Region=cn bash deploy/build.sh
+	region=cn bash deploy/build.sh
 
 archive:
 	mkdir -p data
@@ -15,3 +15,4 @@ test:
 
 connect:
 	openvpn --auth-nocache --config configs/client.ovpn --askpass configs/client.ovpn.pass
+	openvpn --auth-nocache --config configs/client.ovpn -auth-user-pass configs/client.ovpn.auth
