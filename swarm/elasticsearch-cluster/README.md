@@ -5,7 +5,7 @@
 **date**: 2025-01-12
 
 
-#### C01. References
+#### Ch01. References
 1. links
 - https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
 - https://github.com/elastic/elasticsearch/blob/8.17/docs/reference/setup/install/docker/docker-compose.yml
@@ -22,7 +22,7 @@ docker run --name es01 --net elastic -p 9200:9200 -it -m 6GB \
   docker.elastic.co/elasticsearch/elasticsearch:8.17.0
 ```
 
-#### C02. Node configurations
+#### Ch02. Node configurations
 1.  node roles
 ```yaml
 node.master: true
@@ -35,7 +35,7 @@ discovery.seed_hosts: ["elastic01", "elastic02", "elastic02"]
 cluster.initial_master_nodes: ["elastic01", "elastic02", "elastic02"]
 ```
 
-#### C03. certs
+#### Ch03. certs
 1. 
 ```bash
 elasticsearch-certutil ca --pass "" --out http_ca.crt
@@ -163,3 +163,17 @@ environment:
 - xpack.ml.use_auto_machine_memory_percent=true
 EOF
 ```
+
+#### Ch04. Chinese
+1. 
+```
+elasticsearch-plugin install \
+  https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.15.0/elasticsearch-analysis-ik-7.15.0.zip
+
+```
+
+2. 
+- Analyzer
+- Tokenizer
+- Token Filters
+- Field Mappings

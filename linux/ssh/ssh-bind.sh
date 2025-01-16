@@ -1,12 +1,14 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
+
 function display_usage() {
 >&2 cat <<'EOF'
 Usage of ssh-bind.sh
 
 #### 1. Run
-ssh-bin.sh host postgres redis
+- ssh-bind.sh host postgres redis
+- ssh-bind.sh "-F path/to/ssh.conf host" postgres redis
 
 #### 2. environment variables
 local_addr=locahost
