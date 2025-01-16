@@ -23,14 +23,14 @@ kafka-topics.sh --bootstrap-server $addrs --list
 kafka-topics.sh --bootstrap-server $addrs --describe --topic $topic
 
 mkdir -p data
-cat > data/msg01.txt <<EOF
+cat > /tmp/msg01.txt <<EOF
 this is a string message
 with a line break/this is
 another message with two
 line breaks!
 EOF
 
-kafka-console-producer.sh --broker-list $addrs --topic $topic < data/msg01.txt
+kafka-console-producer.sh --broker-list $addrs --topic $topic < /tmp/msg01.txt
 
 kafka-console-consumer.sh --bootstrap-server $addrs \
   --topic $topic --from-beginning --max-messages 4
