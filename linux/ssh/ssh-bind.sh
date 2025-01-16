@@ -6,7 +6,7 @@ function display_usage() {
 Usage of ssh-bind.sh
 
 #### 1. Run
-$ ssh-bin.sh host postgres redis
+ssh-bin.sh host postgres redis
 
 #### 2. environment variables
 local_addr=locahost
@@ -20,7 +20,7 @@ host:
   postgres: { port: 5432 }
 
 #### 4. Examples
-- Bind a local port to access the Postgres service on a remote server.
+- Bind a local port to access the postgres service on a remote server.
 ```
 EOF
 }
