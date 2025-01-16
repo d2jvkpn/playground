@@ -1,10 +1,11 @@
 # Title
 ---
 **version**: 0.1.0
-**author**: []
+**author**: ["Jane Doe<jane.doe@noreply.local>"]
 **date**: 1970-01-01
 
-#### C01. chapter01
+
+#### Ch01. 
 1. hello
 - a.
 - b.
@@ -12,4 +13,5 @@
 
 2. world
 
-#### C02. chapter01
+
+#### Ch02. 

@@ -1,12 +1,12 @@
-# Document Title
+# Title
 ---
 **version**: 0.1.0
-**author**: {{author}}
-**date**: {{date}}
+**author**: ["Jane Doe<jane.doe@noreply.local>"]
+**date**: 1970-01-01
 
 
 #### P01. Part01
-##### C01. chapter01
+##### Ch01. 
 1. hello
 - a.
 - b.
@@ -14,7 +14,7 @@
 
 2. world
 
-##### C02. chapter01
+##### Ch02. 
 
 
 #### P02. Part02

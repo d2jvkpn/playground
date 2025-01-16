@@ -1,7 +1,7 @@
 # Conda
 ---
 
-#### C01. chapter01
+#### Ch01. chapter01
 1. links
 - https://hub.docker.com/r/continuumio/miniconda3
 
@@ -31,16 +31,14 @@ python --version
 
 6. docker
 ```bash
-docker pull continuumio/miniconda3
+docker pull continuumio/miniconda3:main
 
-docker run -it continuumio/miniconda3 /bin/bash
+docker run --rm -it continuumio/miniconda3:main /bin/bash
 
-docker run -i -t -p 8888:8888 continuumio/miniconda3 /bin/bash -c "\
+docker run -it -p 8888:8888 continuumio/miniconda3:main /bin/bash -c '
   conda install jupyter -y --quiet && \
   mkdir -p /opt/notebooks && \
   jupyter notebook \
-  --notebook-dir=/opt/notebooks --ip='*' --port=8888 \
-  --no-browser --allow-root"
+  --notebook-dir=/opt/notebooks --ip="*" --port=8888 \
+  --no-browser --allow-root'
 ```
-
-#### C02. chapter01
