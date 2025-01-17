@@ -17,3 +17,4 @@
 - gateone
 - concourse
 - gotify
+- portainer

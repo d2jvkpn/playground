@@ -8,8 +8,8 @@ function display_usage() {
 Usage of ssh-bind.sh
 
 #### 1. Run
-- ssh-bind.sh host postgres redis
-- ssh-bind.sh "-F path/to/ssh.conf host" postgres redis
+- ssh-bind.sh <name> <services...>
+- ssh-bind.sh ali postgres redis
 - ssh-bind.sh config
 
 #### 2. environment variables
@@ -18,13 +18,13 @@ config=~/apps/configs/ssh-bind.yaml
 
 #### 3. Configuration file:
 ```yaml
-# aws-ai-la
 aws:
-  kibana: { port: 5601, addr: 127.0.0.1, target_port: 5601 }
+  _args: -F path/to/ssh.conf remote_host
+  kibana: { port: 5601, host: 127.0.0.1, local_port: 5601 }
   kafka: { port: 9092 }
 
-# ali-api-prod
 ali:
+  _args: ali-web-prod
   redis: { port: 6379 }
   postgres: { port: 5432 }
 ```
@@ -40,54 +40,51 @@ function on_exit() {
     exit 0
 }
 
-
 #### 2. configure
+local_addr=${local_addr:-localhost}
+config=${config:-~/apps/configs/ssh-bind.yaml}
+
 case "${1:-""}" in
 "" | "help" | "-h" | "--help")
     display_usage
     exit 0
     ;;
-esac
-
-local_addr=${local_addr:-localhost}
-config=${config:-~/apps/configs/ssh-bind.yaml}
-if [[ $# -eq 1 && "$1" == "config" ]]; then
+"config")
     cat $config
     exit 0
-fi
+    ;;
+esac
 
 if [ $# -lt 2 ]; then
-    >&2 echo '!!! Args are required: host <service...>'
+    >&2 echo '!!! Args are required: name <services...>'
     exit 1
 fi
 
-#### 3. load
-host=$1
 ls $config > /dev/null
 
+#### 3. load
+name=$1
 shift
 
+args=$(yq ".$name._args" $config)
+
 for svc in $@; do
-    port=$(yq .$svc.port $config)
-    #echo "~~> service: $svc, $port"
+    port=$(yq .$name.$svc.port $config)
     if [[ -z "$port" || "$port" == "null" ]]; then
-        >&2 echo 'Sevice is unset in' $svc, $config
+        >&2 echo '!!! Port is unset in ': $name.$svc, $config
         exit 1
     fi
 done
 
 binds=$(
     for svc in $@; do
-        port=$(yq .$svc.port $config)
+        key="$name.$svc"
+        port=$(yq .$key.port $config)
 
-        targetPort=$(
-          yq '.'$svc'.targetPort |= "'$port'"' $config |
-          yq .$svc.targetPort
-        )
+        local_port=$(yq '.'$key'.local_port // "'$port'"' $config)
+        host=$(yq '.'$key'.host // "localhost"' $config)
 
-        addr=$(yq '.'$svc'.addr |= "localhost"' $config | yq .$svc.addr)
-
-        echo "-L $local_addr:$port:$addr:$port"
+        echo "-L $local_addr:$local_port:$host:$port"
     done
 )
 
@@ -95,5 +92,5 @@ binds=$(
 trap on_exit SIGINT
 echo "==> $(date +%FT%T%:z) run"
 
-echo "+ ssh -N $binds $host"
-ssh -N $binds $host
+echo "+ ssh -N $binds $args"
+ssh -N $binds $args
