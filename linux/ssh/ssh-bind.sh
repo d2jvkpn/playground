@@ -91,6 +91,7 @@ binds=$(
 #### 4. run
 trap on_exit SIGINT
 echo "==> $(date +%FT%T%:z) run"
+args="-o ServerAliveInterval=5 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes $args"
 
 echo "+ ssh -N $binds $args"
 ssh -N $binds $args
