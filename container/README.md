@@ -18,3 +18,9 @@
 - concourse
 - gotify
 - portainer
+- jupyter
+- jekins
+- odoo
+- onlyoffice
+- syncthing
+- wiki.js

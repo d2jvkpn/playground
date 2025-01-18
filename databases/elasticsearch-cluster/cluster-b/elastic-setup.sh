@@ -22,7 +22,7 @@ if [ ! -f config/certs/certs.zip ]; then
     # for crt in $(ls config/certs/*.crt | grep -v "config/certs/ca.crt"); do ...; done
     unzip config/certs/certs.zip -d config/certs;
 
-    echo "==> Modifing certs of nodes"    
+    echo "==> Modifing certs of nodes"
     for crt in $(ls config/certs/*/*.crt | grep -v "config/certs/ca.crt"); do
         node=$(basename $crt .crt);
 

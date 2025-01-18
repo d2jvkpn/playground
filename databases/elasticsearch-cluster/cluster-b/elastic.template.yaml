@@ -7,20 +7,20 @@ instances:
   dns:
   - localhost
   - es-node01
-  ip:
-  - 127.0.0.1
-  - 172.24.0.11
+  #ip:
+  #- 127.0.0.1
+  #- 172.24.0.11
 - name: es-node02
   dns:
   - localhost
   - es-node02
-  ip:
-  - 127.0.0.1
-  - 172.24.0.12
+  #ip:
+  #- 127.0.0.1
+  #- 172.24.0.12
 - name: es-node03
   dns:
   - localhost
   - es-node03
-  ip:
-  - 127.0.0.1
-  - 172.24.0.13
+  #ip:
+  #- 127.0.0.1
+  #- 172.24.0.13

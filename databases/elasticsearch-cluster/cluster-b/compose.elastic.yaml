@@ -5,9 +5,9 @@ networks:
     name: es-cluster
     driver: bridge
     external: false
-    ipam:
-      config:
-      - { subnet: 172.24.0.0/16, gateway: 172.24.0.1 }
+    #ipam:
+    #  config:
+    #  - { subnet: 172.24.0.0/16, gateway: 172.24.0.1 }
 
 services:
   es-node01:
@@ -17,11 +17,9 @@ services:
     deploy:
       resources:
         limits: { cpus: "2", memory: 4GB }
-        reservations: { cpu: "0.1", memory: "128M"}
-      ulimits:
-        nofile: { soft: 65535, hard: 65535 }
     ulimits:
       memlock: { soft: -1, hard: -1 }
+      nofile: { soft: 65535, hard: 65535 }
     healthcheck:
       interval: 10s
       timeout: 10s
@@ -30,8 +28,8 @@ services:
       - CMD-SHELL
       - curl -s --cacert config/certs/ca.crt https://localhost:9200 |
         grep -q 'missing authentication credentials'
-    networks:
-      net: { ipv4_address: 172.24.0.11 }
+    networks: [net]
+      #net: { ipv4_address: 172.24.0.11 }
     ports: ["9201:9200"]
     volumes:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
@@ -52,11 +50,9 @@ services:
     deploy:
       resources:
         limits: { cpus: "2", memory: 4GB }
-        reservations: { cpu: "0.1", memory: "128M"}
-      ulimits:
-        nofile: { soft: 65535, hard: 65535 }
     ulimits:
       memlock: { soft: -1, hard: -1 }
+      nofile: { soft: 65535, hard: 65535 }
     healthcheck:
       interval: 10s
       timeout: 10s
@@ -65,8 +61,8 @@ services:
       - CMD-SHELL
       - curl -s --cacert config/certs/ca.crt https://localhost:9200 |
         grep -q 'missing authentication credentials'
-    networks:
-      net: { ipv4_address: 172.24.0.12 }
+    networks: [net]
+      #net: { ipv4_address: 172.24.0.12 }
     ports: ["9202:9200"]
     volumes:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
@@ -87,11 +83,9 @@ services:
     deploy:
       resources:
         limits: { cpus: "2", memory: 4GB }
-        reservations: { cpu: "0.1", memory: "128M"}
-      ulimits:
-        nofile: { soft: 65535, hard: 65535 }
     ulimits:
       memlock: { soft: -1, hard: -1 }
+      nofile: { soft: 65535, hard: 65535 }
     healthcheck:
       interval: 10s
       timeout: 10s
@@ -100,8 +94,8 @@ services:
       - CMD-SHELL
       - curl -s --cacert config/certs/ca.crt https://localhost:9200 |
         grep -q 'missing authentication credentials'
-    networks:
-      net: { ipv4_address: 172.24.0.13 }
+    networks: [net]
+      #net: { ipv4_address: 172.24.0.13 }
     ports: ["9203:9200"]
     volumes:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
