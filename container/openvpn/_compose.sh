@@ -3,8 +3,8 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 
 # https://github.com/kylemanna/docker-openvpn
-server=$1
-port=${2:-1194}
+host=$1 # ip or domain
+port=$2 # 1194
 
 #### 1. initialize
 # rm -r data/openvpn/
@@ -12,12 +12,11 @@ mkdir -p data/openvpn logs
 
 # kylemanna/openvpn:latest
 docker run --rm -it -v $PWD/data/openvpn:/etc/openvpn \
-  -e EASYRSA_KEY_SIZE=4096
+  -e EASYRSA_KEY_SIZE=4096 \
   kylemanna/openvpn:local \
-  bash -c "ovpn_genconfig -u udp://$server && ovpn_initpki"
+  bash -c "ovpn_genconfig -u udp://$host && ovpn_initpki"
 
 sudo sed -i "/OVPN_PORT=/s/1194/$port/" data/openvpn/ovpn_env.sh
-
 sudo sed -i "/^port /s/1194/$port/" data/openvpn/openvpn.conf
 
 cat | sudo tee -a data/openvpn/openvpn.conf <<EOF
@@ -29,7 +28,7 @@ EOF
 
 # Enter New CA Key Passphrase:
 # Re-Enter New CA Key Passphrase: hello
-# Common Name(...): $server
+# Common Name(...): $host
 # Enter pass phrase for /etc/openvpn/pki/private/ca.key: hello
 
 #### 2. deploy
@@ -49,6 +48,7 @@ account=d2jvkpn
 
 # docker exec -it $container easyrsa build-client-full $account nopass
 docker exec -it $container easyrsa build-client-full $account
+# TODO:
 
 docker exec -it $container ovpn_getclient $account > $account.ovpn
 
