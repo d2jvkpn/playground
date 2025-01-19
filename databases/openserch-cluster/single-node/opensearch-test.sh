@@ -5,30 +5,31 @@ addr="https://localhost:9200"
 auth="-k -u admin:abcABC123@_"
 
 ####
-echo -e "######## cluster"
+echo "######## cluster"
 curl $auth $addr -f
 echo
 
-echo -e "######## health"
+echo "######## health"
 curl $auth "$addr/_cluster/health" -f
 echo
 
-echo -e "######## indices"
+echo "######## nodes"
+curl $auth "$addr/_cat/nodes?v=true&format=yaml" -f |
+  tee configs/nodes.yaml
+echo
+
+echo "######## indices"
 curl $auth "$addr/_cat/indices?v" -f
 echo
 
-echo -e "######## add a document"
+####
+echo "######## add a document"
 curl $auth -X POST "$addr/idx-test/_doc/1" \
   -H 'Content-Type: application/json' \
   -d'{"title":"Test Document","content":"This is a test document."}' \
   -f
 echo
 
-echo -e "######## search"
+echo "######## search"
 curl $auth "$addr/idx-test/_search?q=content:test" -f
-echo
-
-echo -e "######## nodes"
-curl $auth "$addr/_cat/nodes?v=true&format=yaml" -f |
-tee configs/nodes.yaml
 echo

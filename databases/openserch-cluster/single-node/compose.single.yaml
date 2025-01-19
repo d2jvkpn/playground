@@ -1,6 +1,3 @@
-#volumes:
-#  opensearch: { name: opensearch, driver: local }
-
 networks:
   net: { name: opensearch, driver: bridge, external: false }
 
@@ -21,22 +18,20 @@ services:
     networks: [net]
     ports: [9200:9200, 9600:9600]
     environment:
-      - node.name=opensearch-node
-      - cluster.name=opensearch-cluster
-      - discovery.type=single-node
-      - bootstrap.memory_lock=true
-      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
-      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=abcABC123@_
+      node.name: opensearch-node
+      cluster.name: opensearch-cluster
+      discovery.type: single-node
+      bootstrap.memory_lock: "true"
+      OPENSEARCH_JAVA_OPTS: -Xms2g -Xmx2g
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: abcABC123@_
     volumes:
-    #- opensearch:/usr/share/opensearch/data
     - ./data/opensearch:/usr/share/opensearch/data
-
 
   opensearch-dashboards:
     image: opensearchproject/opensearch-dashboards:2
     container_name: opensearch-dashboards
+    networks: [net]
     ports: [5601:5601]
     expose: ["5601"]
     environment:
       OPENSEARCH_HOSTS: '["https://opensearch-node:9200"]'
-    networks: [net]
