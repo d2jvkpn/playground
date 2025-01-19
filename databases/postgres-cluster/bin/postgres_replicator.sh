@@ -3,7 +3,7 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
 ####
-config=${1:-/apps/configs/psql.yaml}
+config=${1:-/apps/configs/postgres_replicator.yaml}
 
 data_dir=$(awk -v k="data_dir" '$0 ~ "^"k": " {print $2; exit}' $config)
 subnet=$(awk -v k="subnet" '$0 ~ "^"k": " {print $2; exit}' $config)

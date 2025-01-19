@@ -21,17 +21,20 @@ services:
     user: postgres
     networks: ["net"]
     ports: ["127.0.0.1:5441:5432"]
-    environment: {TZ: Asia/Shanghai, PGTZ: Asia/Shanghai}
+    environment:
+      TZ: Asia/Shanghai
+      PGTZ: Asia/Shanghai
     #  POSTGRES_USER: postgres
     #  POSTGRES_DB: postgres
     #  POSTGRES_PASSWORD: postgres
     #  POSTGRES_PASSWORD_FILE: /run/secrets/postgres-passwd
     #  PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-    - ./bin:/apps/bin:ro
+    - ./bin:/opt/bin:ro
     - ./configs:/apps/configs:ro
     - ./data/postgres-node01:/apps/data
-    command: [/apps/bin/psql_primary.sh, /apps/configs/postgres-node01.yaml]
+    working_dir: /apps
+    command: [/opt/bin/postgres_primary.sh, configs/postgres_primary.yaml]
 
   postgres-node02:
     image: postgres:17-alpine
@@ -47,12 +50,15 @@ services:
     depends_on: [postgres-node01]
     networks: [net]
     ports: ["127.0.0.1:5442:5432"]
-    environment: {TZ: Asia/Shanghai, PGTZ: Asia/Shanghai}
+    environment:
+      TZ: Asia/Shanghai
+      PGTZ: Asia/Shanghai
     volumes:
-    - ./bin:/apps/bin:ro
+    - ./bin:/opt/bin:ro
     - ./configs:/apps/configs:ro
     - ./data/postgres-node02:/apps/data
-    command: [/apps/bin/psql_replica.sh, /apps/configs/postgres-node02.yaml]
+    working_dir: /apps
+    command: [/opt/bin/postgres_replicator.sh, configs/postgres_replicator.yaml]
 
   postgres-node03:
     image: postgres:17-alpine
@@ -68,12 +74,15 @@ services:
     depends_on: [postgres-node01]
     networks: [net]
     ports: ["127.0.0.1:5443:5432"]
-    environment: {TZ: Asia/Shanghai, PGTZ: Asia/Shanghai}
+    environment:
+      TZ: Asia/Shanghai
+      PGTZ: Asia/Shanghai
     volumes:
-    - ./bin:/apps/bin:ro
+    - ./bin:/opt/bin:ro
     - ./configs:/apps/configs:ro
     - ./data/postgres-node03:/apps/data
-    command: [/apps/bin/psql_replica.sh, /apps/configs/postgres-node03.yaml]
+    working_dir: /apps
+    command: [/opt/bin/postgres_replicator.sh, configs/postgres_replicator.yaml]
 
   postgres-node04:
     image: postgres:17-alpine
@@ -89,9 +98,12 @@ services:
     depends_on: [postgres-node01]
     networks: [net]
     ports: ["127.0.0.1:5444:5432"]
-    environment: {TZ: Asia/Shanghai, PGTZ: Asia/Shanghai}
+    environment:
+      TZ: Asia/Shanghai
+      PGTZ: Asia/Shanghai
     volumes:
-    - ./bin:/apps/bin:ro
+    - ./bin:/opt/bin:ro
     - ./configs:/apps/configs:ro
     - ./data/postgres-node04:/apps/data
-    command: [/apps/bin/psql_replica.sh, /apps/configs/postgres-node04.yaml]
+    working_dir: /apps
+    command: [/opt/bin/postgres_replicator.sh, configs/postgres_replicator.yaml]

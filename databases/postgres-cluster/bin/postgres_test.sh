@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
+
 docker exec -u postgres postgres-node01 psql -x -c "select * from pg_stat_replication;"
 
 docker exec -u postgres postgres-node02 psql -x -c "select * from pg_stat_wal_receiver;"

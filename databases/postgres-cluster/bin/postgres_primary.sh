@@ -2,7 +2,7 @@
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
-config=${1:-/apps/configs/psql.yaml}
+config=${1:-/apps/configs/postgres_primary.yaml}
 
 data_dir=$(awk -v k="data_dir" '$0 ~ "^"k": " {print $2; exit}' $config)
 subnet=$(awk -v k="subnet" '$0 ~ "^"k": " {print $2; exit}' $config)
@@ -12,13 +12,13 @@ replicator_password=$(awk -v k="replicator_password" '$0 ~ "^"k": " {print $2; e
 
 ####
 if [ -f $data_dir/postgresql.conf ]; then
-    echo "==> nodes is ready: role=$role"
+    echo "==> The node is ready: role=$role"
     postgres -D $data_dir
     exit
 fi
 
 ####
-echo "==> init psql node: role=$role"
+echo "==> Init psql node: role=$role"
 
 # initdb -D $data_dir
 # psql -U postgres -c 'SHOW config_file'
