@@ -21,8 +21,8 @@ down:
 hello:
 	psql --username=hello --host=127.0.0.1 --port=5441
 
-connect-direct:
-	docker exec -it -u postgres postgres-node03 psql --user postgres
-
-connect-local:
+connect:
 	./connect.exp
+
+connect-container:
+	docker exec -it -u postgres postgres-node03 psql --user postgres

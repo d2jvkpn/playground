@@ -1,8 +1,0 @@
-# TODO:
-postgres:
-  read:
-  - r01
-  - r02
-  write:
-  - w01
-  - w02
