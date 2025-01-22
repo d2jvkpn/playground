@@ -1,0 +1,2 @@
+up:
+	bash compose.sh

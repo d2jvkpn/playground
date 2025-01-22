@@ -1,15 +1,19 @@
-version: '3'
-
 services:
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:4-management-alpine
     restart: always
     container_name: rabbitmq
     network_mode: bridge
     ports: ["127.0.0.1:5672:5672", "127.0.0.1:15672:15672"]
+    user: ${USER_UID}:${USER_GID}
+    environment:
+      # default: guest, RABBITMQ_DEFAULT_USER_FILE
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      # default: guest, RABBITMQ_DEFAULT_PASS_FILE
+      RABBITMQ_DEFAULT_PASS: rabbitmq
     volumes:
-    - ./data/rabbitmq:/var/lib/rabbitmq
     - ./configs/rabbitmq:/etc/rabbitmq
+    - ./data/rabbitmq:/var/lib/rabbitmq
 
 # home dir       : /var/lib/rabbitmq
 # config file(s) : /etc/rabbitmq/rabbitmq.config
