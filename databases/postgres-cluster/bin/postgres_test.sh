@@ -2,6 +2,7 @@
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
+# select client_addr, client_hostname, state, sync_priority, sync_state from pg_stat_replication;
 docker exec -u postgres postgres-node01 psql -x -c "select * from pg_stat_replication;"
 
 docker exec -u postgres postgres-node02 psql -x -c "select * from pg_stat_wal_receiver;"

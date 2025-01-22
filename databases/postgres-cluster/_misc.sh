@@ -42,3 +42,35 @@ while true; do
     [ $exists -eq 0 ] && { echo "~~~ role replicator doesn't exist"; sleep 1; continue; };
     break
 done
+
+
+####
+exit
+SELECT client_addr, client_hostname, state, sync_priority, sync_state FROM pg_stat_replication;
+
+SHOW ALL;
+SHOW work_mem;
+SELECT * FROM pg_settings;
+SELECT * FROM pg_settings WHERE name = 'max_connections';
+SELECT * FROM pg_settings WHERE name = 'synchronous_standby_names';
+
+SELECT name, setting, source FROM pg_settings WHERE name = 'shared_buffers';
+
+SELECT * FROM pg_settings WHERE name = 'log_hostname';
+
+
+-- ANY one of nodes
+ALTER SYSTEM SET synchronous_standby_names TO '"standby01", "standby02", "standby03"';
+
+ALTER SYSTEM SET synchronous_standby_names TO 'FIRST 1 ("standby01", "standby02", "standby03")';
+
+SELECT pg_reload_conf();
+
+ALTER SYSTEM SET synchronous_standby_names TO 'ANY 1 ("standby01", "standby02", "standby03")';
+
+SELECT pg_reload_conf();
+
+
+ALTER SYSTEM SET synchronous_standby_names TO 'ANY 1 ("*")';
+
+insert into tests(data) values ('xx01');

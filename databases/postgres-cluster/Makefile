@@ -5,15 +5,17 @@
 
 current = $(shell pwd)
 
-up:
+init:
 	bash ./bin/postgres_config.sh
+
+up:
 	docker-compose up -d
 
 test:
 	bash bin/postgres_test.sh
 
-set-password:
-	bash bin/postgres_set-password.sh
+reset-password:
+	bash bin/postgres_reset-password.sh
 
 down:
 	docker-compose down

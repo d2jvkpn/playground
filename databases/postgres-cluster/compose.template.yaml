@@ -11,6 +11,7 @@ services:
   postgres-node01:
     image: postgres:17-alpine
     container_name: postgres-node01
+    hostname: postgres-node01
     restart: always
     healthcheck:
       test: pg_isready --username postgres --dbname postgres
@@ -32,13 +33,14 @@ services:
     volumes:
     - ./bin:/opt/bin:ro
     - ./configs:/apps/configs:ro
-    - ./data/postgres-node01:/apps/data
+    - ./data/postgres-node01:/apps/data/postgres
     working_dir: /apps
     command: [/opt/bin/postgres_primary.sh, configs/postgres_primary.yaml]
 
   postgres-node02:
     image: postgres:17-alpine
     container_name: postgres-node02
+    hostname: postgres-node02
     restart: always
     healthcheck:
       test: pg_isready --username postgres --dbname postgres
@@ -56,13 +58,14 @@ services:
     volumes:
     - ./bin:/opt/bin:ro
     - ./configs:/apps/configs:ro
-    - ./data/postgres-node02:/apps/data
+    - ./data/postgres-node02:/apps/data/postgres
     working_dir: /apps
-    command: [/opt/bin/postgres_replicator.sh, configs/postgres_replicator.yaml]
+    command: [/opt/bin/postgres_secondary.sh, configs/postgres_secondary.yaml]
 
   postgres-node03:
     image: postgres:17-alpine
     container_name: postgres-node03
+    hostname: postgres-node03
     restart: always
     healthcheck:
       test: pg_isready --username postgres --dbname postgres
@@ -80,13 +83,14 @@ services:
     volumes:
     - ./bin:/opt/bin:ro
     - ./configs:/apps/configs:ro
-    - ./data/postgres-node03:/apps/data
+    - ./data/postgres-node03:/apps/data/postgres
     working_dir: /apps
-    command: [/opt/bin/postgres_replicator.sh, configs/postgres_replicator.yaml]
+    command: [/opt/bin/postgres_secondary.sh, configs/postgres_secondary.yaml]
 
   postgres-node04:
     image: postgres:17-alpine
     container_name: postgres-node04
+    hostname: postgres-node04
     restart: always
     healthcheck:
       test: pg_isready --username postgres --dbname postgres
@@ -104,6 +108,6 @@ services:
     volumes:
     - ./bin:/opt/bin:ro
     - ./configs:/apps/configs:ro
-    - ./data/postgres-node04:/apps/data
+    - ./data/postgres-node04:/apps/data/postgres
     working_dir: /apps
-    command: [/opt/bin/postgres_replicator.sh, configs/postgres_replicator.yaml]
+    command: [/opt/bin/postgres_secondary.sh, configs/postgres_secondary.yaml]

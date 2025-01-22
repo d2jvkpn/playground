@@ -3,7 +3,7 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
 ####
-config=${1:-/apps/configs/postgres_replicator.yaml}
+config=${1:-/apps/configs/postgres_secondary.yaml}
 
 data_dir=$(awk -v k="data_dir" '$0 ~ "^"k": " {print $2; exit}' $config)
 subnet=$(awk -v k="subnet" '$0 ~ "^"k": " {print $2; exit}' $config)
@@ -17,20 +17,20 @@ delay_secs=$(awk -v k="delay_secs" '$0 ~ "^"k": " {print $2; exit}' $config)
 
 ####
 if [ -f $data_dir/postgresql.conf ]; then
-    echo "==> nodes is ready: role=$role"
+    echo "==> 4. Postgres(secondary) has been initialized, role=$role"
     postgres -D $data_dir
     exit
 fi
 
 ####
-echo "==> init psql node: role=$role, primary_host=$primary_host, primary_port=$primary_port"
+echo "==> 1. Initializing: role=$role, primary_host=$primary_host, primary_port=$primary_port"
 sleep $delay_secs
 
 while ! nc -z $primary_host $primary_port; do
     sleep 1 && echo -n .
 done
 
-echo "==> sync data from primary node"
+echo "==> 2. Sync data from the primary"
 rm -rf $data_dir/* || true
 
 echo $replicator_password |
@@ -42,11 +42,15 @@ cp $data_dir/postgresql.conf $data_dir/postgresql.conf.primary
 conn="host=$primary_host port=$primary_port user=$replicator_user password=$replicator_password"
 
 cat > $data_dir/postgresql.conf <<EOF
+
+
 primary_conninfo = '$conn'
-# synchronous_standby_names = 'standby_server_1, standby_server_2'
+#synchronous_standby_names = 'standby01, standby02'
+#primary_slot_name = 'your_replication_slot'
 synchronous_commit = on
 EOF
-# application_name=NotWorking
+#application_name=NotWorking
 
+echo "==> 3. Starting postgres secondary"
 postgres -D $data_dir
 # pg_ctl -D $data_dir start

@@ -15,35 +15,30 @@ primary=${nodes[0]}
 
 mkdir -p data/$primary
 
-docker run -u root --rm -it -v $PWD/data:/apps/data $image \
-  bash -c "chown 70:70 /apps/data/$primary"
+docker run -u root --rm -it -v $PWD/data/$primary:/apps/data/postgres $image \
+  bash -c "chown 70:70 /apps/data/postgres"
 
 for node in ${nodes[@]:1}; do
     mkdir -p data/$node
 
-    docker run -u root --rm -it -v $PWD/data:/apps/data $image \
-      bash -c "chown 70:70 /apps/data/$node && chmod 0750 /apps/data/$node"
+    docker run -u root --rm -it -v $PWD/data/$node:/apps/data/postgres $image \
+      bash -c "chown 70:70 /apps/data/postgres && chmod 0750 /apps/data/postgres"
 done
 
 #### 2. 
-if [ ! -s configs/postgres.pass ]; then
-    password=$(tr -dc '0-9a-zA-Z' < /dev/urandom | fold -w 32 | head -n 1 || true)
-    echo "$password" > configs/postgres.pass
-fi
-
 replicator_password=$(tr -dc '0-9a-zA-Z' < /dev/urandom | fold -w 32 | head -n 1 || true)
 
 # data_dir: /var/lib/postgresql/data/pgdata
 [ -s configs/postgres_primary.yaml ] || cat > configs/postgres_primary.yaml <<EOF
-data_dir: /apps/data
+data_dir: /apps/data/postgres
 subnet: $subnet
 role: primary
 replicator_user: $replicator_user
 replicator_password: $replicator_password
 EOF
 
-[ -s configs/postgres_replicator.yaml ] || cat > configs/postgres_replicator.yaml <<EOF
-data_dir: /apps/data
+[ -s configs/postgres_secondary.yaml ] || cat > configs/postgres_secondary.yaml <<EOF
+data_dir: /apps/data/postgres
 subnet: $subnet
 role: replica
 replicator_user: $replicator_user
