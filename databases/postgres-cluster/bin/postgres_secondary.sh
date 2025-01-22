@@ -16,7 +16,7 @@ primary_port=$(awk -v k="primary_port" '$0 ~ "^"k": " {print $2; exit}' $config)
 delay_secs=$(awk -v k="delay_secs" '$0 ~ "^"k": " {print $2; exit}' $config)
 
 ####
-if [ -f $data_dir/postgresql.conf ]; then
+if [ -s $data_dir/postgresql.conf ]; then
     echo "==> 4. Postgres(secondary) has been initialized, role=$role"
     postgres -D $data_dir
     exit

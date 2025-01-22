@@ -11,7 +11,7 @@ replicator_user=$(awk -v k="replicator_user" '$0 ~ "^"k": " {print $2; exit}' $c
 replicator_password=$(awk -v k="replicator_password" '$0 ~ "^"k": " {print $2; exit}' $config)
 
 ####
-if [ -f $data_dir/postgresql.conf ]; then
+if [ -s $data_dir/postgresql.conf ]; then
     echo "==> 6. Postgres(primary) has been initialized: role=$role"
     postgres -D $data_dir
     exit
