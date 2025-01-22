@@ -7,10 +7,10 @@ services:
     ports: ["127.0.0.1:5672:5672", "127.0.0.1:15672:15672"]
     user: ${USER_UID}:${USER_GID}
     environment:
-      # default: guest, RABBITMQ_DEFAULT_USER_FILE
+      # default: guest
       RABBITMQ_DEFAULT_USER: rabbitmq
-      # default: guest, RABBITMQ_DEFAULT_PASS_FILE
-      RABBITMQ_DEFAULT_PASS: rabbitmq
+      # default: guest
+      RABBITMQ_DEFAULT_PASS: ${PASSWORD}
     volumes:
     - ./configs/rabbitmq:/etc/rabbitmq
     - ./data/rabbitmq:/var/lib/rabbitmq
