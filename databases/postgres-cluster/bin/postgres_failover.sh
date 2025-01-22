@@ -18,8 +18,8 @@ docker exec -u postgres postgres-node02 psql -c "select pg_is_in_recovery();"
 docker exec -u postgres postgres-node03 psql -c "select pg_is_in_recovery();"
 
 docker exec -u postgres postgres-node02 bash -c '
-  mv /apps/data/postgresql.conf /apps/data/postgresql.conf.replica && \
-  cp /apps/data/postgresql.conf.primary /apps/data/postgresql.conf'
+  mv /apps/data/postgresql.conf /apps/data/postgresql.secondary-conf && \
+  cp /apps/data/postgresql.primary-conf /apps/data/postgresql.conf'
 
 cp configs/postgres-node02.yaml configs/postgres-node02.yaml.bk
 sed -i '/role: /s/replica/primary/' configs/postgres-node02.yaml
@@ -38,7 +38,7 @@ docker exec -u postgres postgres-node02 psql -U postgres \
 
 #### config node03
 cp configs/postgres-node03.yaml configs/postgres-node03.yaml.bk
-sed -i '/primary_host/s/postgres-node01/postgres-node02/' configs/postgres-node03.yaml
+sed -i '/^primary_host/s/postgres-node01/postgres-node02/' configs/postgres-node03.yaml
 
 # docker exec -u postgres postgres-node03 bash -c "rm -rf /apps/data/postgresql.conf"
 

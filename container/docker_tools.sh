@@ -22,5 +22,8 @@ docker ps |
   xargs -i docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
   assaflavie/runlike {}
 
+docker run -t --rm -v /var/run/docker.sock:/var/run/docker.sock:ro pegleg/whaler \
+  -sV=1.36 nginx:latest
+
 exit
 docker build --network=host -f Containerfile -t name:tag ./

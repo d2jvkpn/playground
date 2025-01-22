@@ -37,7 +37,7 @@ echo $replicator_password |
   pg_basebackup -D $data_dir -Fp -Xs -R -c fast -P \
   --host=$primary_host --port=$primary_port --username=$replicator_user
 
-cp $data_dir/postgresql.conf $data_dir/postgresql.conf.primary
+cp $data_dir/postgresql.conf $data_dir/postgresql.primary-conf
 
 conn="host=$primary_host port=$primary_port user=$replicator_user password=$replicator_password"
 
