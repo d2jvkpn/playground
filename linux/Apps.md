@@ -15,3 +15,10 @@
 1. docker-compose
 2. protoc-gen-go
 3. LocalSend
+
+#### 4. monitor
+- top
+- htop
+- watch
+- glances
+- btop

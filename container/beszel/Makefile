@@ -2,7 +2,7 @@ init:
 	bash compose.sh
 
 up:
-	docker-compose up -d
+	bash up.sh
 
 down:
 	docker-compose down

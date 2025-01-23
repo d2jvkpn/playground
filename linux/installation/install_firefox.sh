@@ -31,3 +31,14 @@ Pin-Priority: 1000
 
 #### 6. Update your package list and install the Firefox .deb package:
 sudo apt-get update && sudo apt-get install firefox
+
+exit
+
+# Disable RDD Process
+https://askubuntu.com/questions/1483112/high-cpu-usage-by-a-firefox-subprocess-called-rdd-process
+
+on firefix goto URL     about:config
+and search for          media.rdd
+
+then double click on    media.rdd-process.enabled
+to give it a value of   false

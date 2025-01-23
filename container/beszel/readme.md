@@ -10,4 +10,14 @@
 - https://beszel.dev/guide/getting-started
 - https://github.com/henrygd/beszel
 
+2. run
+```
+make init
+ls compose.yaml
+
+make up
+
+make down
+```
+
 #### Ch02. 
