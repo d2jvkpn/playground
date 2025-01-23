@@ -2,6 +2,7 @@
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
+# docker-compose pull
 key=$(yq '.services.beszel-agent.environment.KEY' compose.yaml)
 
 if [[ "$key" == "ssh-ed25519 "* ]]; then
