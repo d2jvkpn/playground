@@ -1,8 +1,8 @@
 init:
-	bash compose.sh
+	bash compose.init.sh
 
 up:
-	bash up.sh
+	bash compose.up.sh
 
 down:
 	docker-compose down
