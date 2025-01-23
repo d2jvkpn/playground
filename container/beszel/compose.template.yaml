@@ -11,7 +11,7 @@ services:
     user: ${USER_UID}:${USER_GID}
     extra_hosts:
     - host.docker.internal:host-gateway
-    ports: [ 8090:8090 ]
+    ports: [ ${HTTP_Port}:8090 ]
     volumes:
     - ./data/beszel:/beszel_data
 
