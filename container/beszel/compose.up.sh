@@ -6,13 +6,13 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 key=$(yq '.services.beszel-agent.environment.KEY' compose.yaml)
 
 if [[ "$key" == "ssh-ed25519 "* ]]; then
-    echo "==> compose up"
+    echo "==> 4. Compose up"
     docker-compose up -d
     exit 0
 fi
 
-echo "==> 1. Compose up beszel"
-docker-compose up -d beszel
+echo "==> 1. Compose up beszel-server"
+docker-compose up -d beszel-server
 
 echo "==> 2. Checking data/beszel/id_ed25519.pub"
 until ls data/beszel/id_ed25519.pub; do

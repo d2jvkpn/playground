@@ -2,9 +2,9 @@ networks:
   net: { name: beszel, driver: bridge, external: false }
 
 services:
-  beszel:
+  beszel-server:
     image: henrygd/beszel:latest
-    container_name: beszel
+    container_name: beszel-server
     hostname: beszel
     restart: always # unless-stopped
     networks: [ net ]
@@ -15,10 +15,10 @@ services:
     volumes:
     - ./data/beszel:/beszel_data
 
-  beszel-agent:
+  beszel-local:
     image: henrygd/beszel-agent:latest
-    container_name: beszel-agent
-    hostname: beszel-agent
+    container_name: beszel-local
+    hostname: beszel-local
     restart: always # unless-stopped
     networks: [ net ]
     volumes:
