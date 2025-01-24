@@ -1,0 +1,19 @@
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+
+
+ls compose.yaml > /dev/null
+
+docker-compose up -d
+
+docker exec -it rabbitmq-node02 bash -c '
+rabbitmqctl stop_app
+rabbitmqctl join_cluster rabbit@rabbitmq-node01
+rabbitmqctl start_app
+'
+
+docker exec -it rabbitmq-node03 bash -c '
+rabbitmqctl stop_app
+rabbitmqctl join_cluster rabbit@rabbitmq-node01
+rabbitmqctl start_app
+'

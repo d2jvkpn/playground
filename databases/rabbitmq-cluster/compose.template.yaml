@@ -1,0 +1,38 @@
+networks:
+  net: { name: rabbitmq-cluster, driver: bridge, external: false }
+
+services:
+  rabbitmq-node01:
+    image: rabbitmq:4-management-alpine
+    hostname: rabbitmq-node01
+    container_name: rabbitmq-node01
+    networks: [net]
+    ports: ["15672:15672", "5672:5672"] # Management UI, AMQP Port
+    environment:
+      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_Cookie}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_User}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_Password}
+    volumes:
+    - ./data/rabbitmq-node01:/var/lib/rabbitmq
+
+  rabbitmq-node02:
+    image: rabbitmq:4-management-alpine
+    hostname: rabbitmq-node02
+    container_name: rabbitmq-node02
+    depends_on: [rabbitmq-node01]
+    networks: [net]
+    environment:
+      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_Cookie}
+    volumes:
+    - ./data/rabbitmq-node02:/var/lib/rabbitmq
+
+  rabbitmq-node03:
+    image: rabbitmq:4-management-alpine
+    hostname: rabbitmq-node03
+    container_name: rabbitmq-node03
+    depends_on: [rabbitmq-node01]
+    networks: [net]
+    environment:
+      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_Cookie}
+    volumes:
+    - ./data/rabbitmq-node03:/var/lib/rabbitmq
