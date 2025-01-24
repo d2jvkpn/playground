@@ -8,6 +8,7 @@ services:
     container_name: rabbitmq-node01
     networks: [net]
     ports: ["15672:15672", "5672:5672"] # Management UI, AMQP Port
+    user: "${USER_UID}:${USER_GID}"
     environment:
       RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_Cookie}
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_User}
@@ -21,6 +22,7 @@ services:
     container_name: rabbitmq-node02
     depends_on: [rabbitmq-node01]
     networks: [net]
+    user: "${USER_UID}:${USER_GID}"
     environment:
       RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_Cookie}
     volumes:
@@ -32,6 +34,7 @@ services:
     container_name: rabbitmq-node03
     depends_on: [rabbitmq-node01]
     networks: [net]
+    user: "${USER_UID}:${USER_GID}"
     environment:
       RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_Cookie}
     volumes:
