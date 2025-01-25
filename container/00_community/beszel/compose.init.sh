@@ -14,6 +14,3 @@ echo -e "\ncompose.yaml"
 echo '```yaml'
 cat compose.yaml
 echo '```'
-
-exit
-docker-compose up -d
