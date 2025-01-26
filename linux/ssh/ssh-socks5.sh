@@ -70,6 +70,7 @@ else
     ssh -NC -D "$address" \
       -o ServerAliveInterval=5 \
       -o ServerAliveCountMax=3 \
+      -o ConnectTimeout=10 \
       -o ExitOnForwardFailure=yes \
       "$remote_host"
 fi
