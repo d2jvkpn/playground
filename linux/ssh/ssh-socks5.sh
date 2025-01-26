@@ -67,9 +67,9 @@ if [ ! -z "$config" ]; then
     ssh -NC -F "$config" -D "$address" "$remote_host"
 else
     set -x
-    ssh -NC -D \
-      -o "ServerAliveInterval 5" \
-      -o "ServerAliveCountMax 3" \
-      -o "ExitOnForwardFailure yes" \
-      "$address" "$remote_host"
+    ssh -NC -D "$address" \
+      -o ServerAliveInterval=5 \
+      -o ServerAliveCountMax=3 \
+      -o ExitOnForwardFailure=yes \
+      "$remote_host"
 fi
