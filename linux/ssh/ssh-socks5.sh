@@ -61,7 +61,7 @@ config=${config:-""}
     exit 1
 }
 
-# autossh -f -p 22 -i ~/.ssh/id_rsa -o "UserKnownHostsFile ~/.ssh/known_hosts"
+# autossh -f -p 22 -i ~/.ssh/id_rsa -o "UserKnownHostsFile=~/.ssh/known_hosts"
 if [ ! -z "$config" ]; then
     set -x
     ssh -NC -F "$config" -D "$address" "$remote_host"
