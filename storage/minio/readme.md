@@ -6,6 +6,11 @@
 
 
 #### Ch01. 
-1. hello
+1. references
 - https://github.com/minio/minio/tree/master/docs/orchestration/docker-compose
 - https://min.io/
+
+2. alternatives
+- moosefs
+- glusterfs
+- fastdfs
