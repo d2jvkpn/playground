@@ -9,8 +9,30 @@ networks:
     #  config:
     #  - { subnet: 172.24.0.0/16, gateway: 172.24.0.1 }
 
+x-service-common: &service-common
+  image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
+  restart: always
+  deploy:
+    resources:
+      limits: { cpus: "2", memory: 4GB }
+      reservations: { cpus: "0.5", memory: "2GB"}
+  ulimits:
+    memlock: { soft: -1, hard: -1 }
+    nofile: { soft: 65535, hard: 65535 }
+  healthcheck:
+    interval: 10s
+    timeout: 10s
+    retries: 120
+    test:
+    - CMD-SHELL
+    - curl -s --cacert config/certs/ca.crt https://localhost:9200 |
+      grep -q 'missing authentication credentials'
+  networks: [net]
+    #net: { ipv4_address: 172.24.0.11 }
+
 x-env-common: &env-common
   ELASTIC_PASSWORD_FILE: ./config/certs/elastic.pass
+  ES_JAVA_OPTS: -Xms2g -Xmx2g
 
   cluster.name: es-cluster
   bootstrap.memory_lock: "true"
@@ -32,26 +54,9 @@ x-env-common: &env-common
 
 services:
   es-node01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
+    <<: *service-common
     container_name: es-node01
     hostname: es-node01
-    deploy:
-      resources:
-        limits: { cpus: "2", memory: 4GB }
-        reservations: { cpus: "0.5", memory: "2GB"}
-    ulimits:
-      memlock: { soft: -1, hard: -1 }
-      nofile: { soft: 65535, hard: 65535 }
-    healthcheck:
-      interval: 10s
-      timeout: 10s
-      retries: 120
-      test:
-      - CMD-SHELL
-      - curl -s --cacert config/certs/ca.crt https://localhost:9200 |
-        grep -q 'missing authentication credentials'
-    networks: [net]
-      #net: { ipv4_address: 172.24.0.11 }
     ports: ["9201:9200"]
     volumes:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
@@ -63,30 +68,12 @@ services:
       node.name: es-node01
       discovery.seed_hosts: es-node02,es-node03
       cluster.initial_master_nodes: es-node01,es-node02,es-node03
-      ES_JAVA_OPTS: -Xms2g -Xmx2g
 
   es-node02:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
+    <<: *service-common
     container_name: es-node02
     hostname: es-node02
     depends_on: [es-node01]
-    deploy:
-      resources:
-        limits: { cpus: "2", memory: 4GB }
-        reservations: { cpus: "0.5", memory: "2GB"}
-    ulimits:
-      memlock: { soft: -1, hard: -1 }
-      nofile: { soft: 65535, hard: 65535 }
-    healthcheck:
-      interval: 10s
-      timeout: 10s
-      retries: 120
-      test:
-      - CMD-SHELL
-      - curl -s --cacert config/certs/ca.crt https://localhost:9200 |
-        grep -q 'missing authentication credentials'
-    networks: [net]
-      #net: { ipv4_address: 172.24.0.12 }
     ports: ["9202:9200"]
     volumes:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
@@ -97,30 +84,12 @@ services:
       node.name: es-node02
       discovery.seed_hosts: es-node01,es-node03
       cluster.initial_master_nodes: es-node01,es-node02,es-node03
-      ES_JAVA_OPTS: -Xms2g -Xmx2g
 
   es-node03:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
+    <<: *service-common
     container_name: es-node03
     hostname: es-node03
     depends_on: [es-node02]
-    deploy:
-      resources:
-        limits: { cpus: "2", memory: 4GB }
-        reservations: { cpus: "0.5", memory: "2GB"}
-    ulimits:
-      memlock: { soft: -1, hard: -1 }
-      nofile: { soft: 65535, hard: 65535 }
-    healthcheck:
-      interval: 10s
-      timeout: 10s
-      retries: 120
-      test:
-      - CMD-SHELL
-      - curl -s --cacert config/certs/ca.crt https://localhost:9200 |
-        grep -q 'missing authentication credentials'
-    networks: [net]
-      #net: { ipv4_address: 172.24.0.13 }
     ports: ["9203:9200"]
     volumes:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
@@ -131,7 +100,6 @@ services:
       node.name: es-node03
       discovery.seed_hosts: es-node01,es-node02
       cluster.initial_master_nodes: es-node01,es-node02,es-node03
-      ES_JAVA_OPTS: -Xms2g -Xmx2g
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.17.0
