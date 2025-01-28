@@ -9,6 +9,27 @@ networks:
     #  config:
     #  - { subnet: 172.24.0.0/16, gateway: 172.24.0.1 }
 
+x-env-common: &env-common
+  ELASTIC_PASSWORD_FILE: ./config/certs/elastic.pass
+
+  cluster.name: es-cluster
+  bootstrap.memory_lock: "true"
+  xpack.ml.use_auto_machine_memory_percent: "true"
+  xpack.license.self_generated.type: basic
+
+  xpack.security.enabled: "true"
+  xpack.security.enrollment.enabled: "true"
+  xpack.security.http.ssl.enabled: "true"
+  xpack.security.http.ssl.certificate_authorities: certs/ca.crt
+  xpack.security.transport.ssl.enabled: "true"
+  xpack.security.transport.ssl.certificate_authorities: certs/ca.crt
+  xpack.security.transport.ssl.verification_mode: certificate
+
+  xpack.security.http.ssl.key: certs/node/node.key
+  xpack.security.http.ssl.certificate: certs/node/node.crt
+  xpack.security.transport.ssl.key: certs/node/node.key
+  xpack.security.transport.ssl.certificate: certs/node/node.crt
+
 services:
   es-node01:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
@@ -36,8 +57,9 @@ services:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
     - ./configs/certs/es-node01:/usr/share/elasticsearch/config/certs/node
     - ./data/es-node01:/usr/share/elasticsearch/data
-    env_file: ["./compose.env"]
+    #env_file: ["./compose.env"]
     environment:
+      <<: *env-common
       node.name: es-node01
       discovery.seed_hosts: es-node02,es-node03
       cluster.initial_master_nodes: es-node01,es-node02,es-node03
@@ -70,8 +92,8 @@ services:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
     - ./configs/certs/es-node02:/usr/share/elasticsearch/config/certs/node
     - ./data/es-node02:/usr/share/elasticsearch/data
-    env_file: ["./compose.env"]
     environment:
+      <<: *env-common
       node.name: es-node02
       discovery.seed_hosts: es-node01,es-node03
       cluster.initial_master_nodes: es-node01,es-node02,es-node03
@@ -104,8 +126,8 @@ services:
     - ./configs/certs:/usr/share/elasticsearch/config/certs
     - ./configs/certs/es-node03:/usr/share/elasticsearch/config/certs/node
     - ./data/es-node03:/usr/share/elasticsearch/data
-    env_file: ["./compose.env"]
     environment:
+      <<: *env-common
       node.name: es-node03
       discovery.seed_hosts: es-node01,es-node02
       cluster.initial_master_nodes: es-node01,es-node02,es-node03

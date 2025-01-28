@@ -2,6 +2,14 @@
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
+vm_max_map_count=$(sysctl -a 2> /dev/null | awk -F ' *= *' '$1=="vm.max_map_count"{print $2}')
+
+if [ "$vm_max_map_count" -lt 262144 ]; then
+    echo "vm.max_map_count is too low,  increase to at least [262144]"
+    echo "run sysctl -w vm.max_map_count=262144 or add to /etc/sysctl.conf"
+    exit 1
+fi
+
 template=${_path}/elastic.template.yaml
 
 mkdir -p configs/certs
