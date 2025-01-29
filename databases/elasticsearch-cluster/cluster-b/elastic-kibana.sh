@@ -16,16 +16,18 @@ cat <<EOF
 7. Waitting: "Saving settings" -> "Starting Elastic" -> "Completing setup"
 8. Refresh webpage
 9. Enter account(output of step1): username=elastic, password=XX03
+
 EOF
 
+es_node=${es_node:-es-node01}
 kibana=${kibana:-es-kibana}
 
 password=$(yq .kibana.password configs/elastic.yaml)
 
 if [[ -z "$password" || "$password" == "null" ]]; then
     password=$(
-     docker exec -it es-node01 \
-       elasticsearch-reset-password -u kibana_system --batch |
+     docker exec -it $es_node \
+       elasticsearch-reset-password -u kibana_system --batch --url https://localhost:9200 |
        awk '/New value/{print $NF}' |
        dos2unix
    )

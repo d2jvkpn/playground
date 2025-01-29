@@ -2,6 +2,7 @@
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
+#### 1. check vm.max_map_count
 vm_max_map_count=$(sysctl -a 2> /dev/null | awk -F ' *= *' '$1=="vm.max_map_count"{print $2}')
 
 if [ "$vm_max_map_count" -lt 262144 ]; then
@@ -12,6 +13,8 @@ fi
 
 template=${_path}/elastic.template.yaml
 
+
+#### 2. generate certs
 mkdir -p configs/certs
 
 [ ! -s configs/elastic.yaml ] && {
@@ -40,3 +43,12 @@ docker run --rm -u root:root -w /usr/share/elasticsearch \
   bash elastic-setup.sh
 
 ls -alh configs/elastic.yaml configs/certs
+
+
+#### 3. copy configs of kibana
+mkdir -p configs/es-kibana data/es-kibana
+
+docker run --rm -u root:root -w /usr/share/kibana \
+  -v ${PWD}/configs/es-kibana:/tmp/es-kibana \
+  docker.elastic.co/kibana/kibana:8.17.0 \
+  bash -c 'cp config/* /tmp/es-kibana && chown -R kibana:root /tmp/es-kibana'
