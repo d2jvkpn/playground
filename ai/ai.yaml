@@ -8,3 +8,5 @@ openai:
 deepseek:
   sites:
   - https://www.deepseek.com
+
+claude:

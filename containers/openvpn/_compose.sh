@@ -18,13 +18,16 @@ docker run --rm -it -v $PWD/data/openvpn:/etc/openvpn \
 
 sudo sed -i "/OVPN_PORT=/s/1194/$port/" data/openvpn/ovpn_env.sh
 sudo sed -i "/^port /s/1194/$port/" data/openvpn/openvpn.conf
+sudo mkdir -p data/openvpn/ccd
 
 cat | sudo tee -a data/openvpn/openvpn.conf <<EOF
 
 #### custom
+client-config-dir /etc/openvpn/ccd
 log-append /apps/logs/openvpn.log
 ifconfig-pool-persist /etc/openvpn/ifconfig-pool-persist.txt 3600
 EOF
+
 
 # Enter New CA Key Passphrase:
 # Re-Enter New CA Key Passphrase: hello
@@ -81,7 +84,12 @@ docker exec -it $container easyrsa gen-crl
 docker restart $container
 # sudo openvpn --config data/$account.ovpn
 
-#### 6. firewall and network
+#### 7. fix ip of client
+exit
+grep "^server " /etc/openvpn/openvpn.conf # server 192.168.255.0 255.255.255.0
+echo "ifconfig-push 192.168.255.4 192.168.255.1" > /etc/openvpn/ccd/client1
+
+#### 8. firewall and network
 exit
 
 sudo ufw allow 1194/udp
