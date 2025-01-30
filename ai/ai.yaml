@@ -1,12 +1,19 @@
 title: Artificial Intelligence
 
-openai:
+companies:
+- name: openai
   sites:
   - https://chatgpt.com/
   - https://openai.com/index/chatgpt/
 
-deepseek:
+- name: deepseek
   sites:
   - https://www.deepseek.com
 
-claude:
+- name: claude
+
+links:
+- https://zhuanlan.zhihu.com/p/670437303
+- https://zhuanlan.zhihu.com/p/687501772
+- https://zhuanlan.zhihu.com/p/61898234
+- https://zhuanlan.zhihu.com/p/597645266

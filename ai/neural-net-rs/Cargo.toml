@@ -1,0 +1,7 @@
+[workspace]
+resolver = "2"
+members = [
+    "matrix",
+    "neural-network",
+    "consumer_binary"
+]

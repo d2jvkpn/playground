@@ -26,6 +26,8 @@ services:
     hostname: minio-node01
     <<: *minio-common
     volumes:
+    - /etc/localtime:/etc/localtime
+    - /etc/timezone:/etc/timezone
     - ./data/minio-node01/data1:/data1
     - ./data/minio-node01/data2:/data2
 
@@ -34,6 +36,8 @@ services:
     hostname: minio-node02
     <<: *minio-common
     volumes:
+    - /etc/localtime:/etc/localtime
+    - /etc/timezone:/etc/timezone
     - ./data/minio-node02/data1:/data1
     - ./data/minio-node02/data2:/data2
 
@@ -42,6 +46,8 @@ services:
     hostname: minio-node03
     <<: *minio-common
     volumes:
+    - /etc/localtime:/etc/localtime
+    - /etc/timezone:/etc/timezone
     - ./data/minio-node03/data1:/data1
     - ./data/minio-node03/data2:/data2
 
@@ -58,5 +64,5 @@ services:
     volumes:
     - /etc/localtime:/etc/localtime
     - /etc/timezone:/etc/timezone
-    - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    - ./configs/nginx.conf:/etc/nginx/nginx.conf:ro
     - ./logs/nginx:/var/log/nginx
