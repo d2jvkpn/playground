@@ -58,10 +58,8 @@ impl Network {
             gradients = gradients.elementwise_multiply(&errors);
             gradients.inplace_multiply(self.learning_rate);
 
-            self.weights[i] =
-                self.weights[i].add(&gradients.dot_multiply(&self.data[i].transpose()));
-
-            self.biases[i] = self.biases[i].add(&gradients);
+            self.weights[i].inplace_add(&gradients.dot_multiply(&self.data[i].transpose()));
+            self.biases[i].inplace_add(&gradients);
 
             errors = self.weights[i].transpose().dot_multiply(&errors);
             gradients = self.data[i].map(self.activation.derivative);

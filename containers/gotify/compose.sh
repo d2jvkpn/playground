@@ -10,4 +10,17 @@ exit
 # GOTIFY_SERVER_PORT=8030 ./gotify-linux-amd64
 # default: { account: admin, password: admin }
 
-curl "localhost:8030/message?token=AjX248in24F6Ejw" -F "title=A Test" -F "message=你好，世界！" -F "priority=10"
+curl -X 'POST' \
+  'http://localhost:8030/user' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "admin": true,
+  "name": "unicorn",
+  "pass": "nrocinu"
+}'
+
+curl "http://localhost:8030/message?token=$token" \
+  -F "priority=10" \
+  -F "title=A Test" \
+  -F "message=Hello, world, $(date +%FT%T%:z)!"

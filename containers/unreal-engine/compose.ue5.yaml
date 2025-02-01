@@ -1,0 +1,27 @@
+services:
+  ue:
+    image: adamrehn/ue4-runtime:latest
+    container_name: ue-${APP_Name}
+    restart: always
+    network_mode: host
+    user: "${USER_UID}:${USER_GID}"
+    deploy:
+      resources:
+        reservations:
+          # cpus: "1"
+          # memory: 4g
+          devices:
+          - driver: nvidia
+            # device_ids: ['0', '3']
+            # count: all
+            count: 1
+            capabilities: [gpu]
+    volumes:
+    - ./${APP_Name}:/opt
+    - ./logs:/opt/${APP_Name}/Saved
+    working_dir: /opt
+    command:
+    - ./${APP_Name}/Binaries/Linux/${APP_Name}
+    - -AudioMixer
+    - -RenderOffScreen
+    - -PixelStreamingURL=ws://127.0.0.1:3032/ws/streamer?project=${APP_Name}

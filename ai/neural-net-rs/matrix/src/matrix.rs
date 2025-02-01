@@ -65,6 +65,16 @@ impl Matrix {
         Matrix { rows: self.rows, cols: self.cols, data: buffer }
     }
 
+    pub fn inplace_add(&mut self, other: &Matrix) {
+        if self.rows != other.rows || self.cols != other.cols {
+            panic!("Attempted to add matrix of incorrect dimensions");
+        }
+
+        for i in 0..self.data.len() {
+            self.data[i] += other.data[i];
+        }
+    }
+
     pub fn subtract(&self, other: &Matrix) -> Matrix {
         assert!(
             self.rows == other.rows && self.cols == other.cols,
@@ -80,6 +90,17 @@ impl Matrix {
         }
 
         Matrix { rows: self.rows, cols: self.cols, data: buffer }
+    }
+
+    pub fn inplace_subtract(&mut self, other: &Matrix) {
+        assert!(
+            self.rows == other.rows && self.cols == other.cols,
+            "Cannot subtract matrices with different dimensions"
+        );
+
+        for i in 0..self.data.len() {
+            self.data[i] -= other.data[i];
+        }
     }
 
     pub fn inplace_multiply(&mut self, val: f64) {
