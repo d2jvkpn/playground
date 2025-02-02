@@ -52,3 +52,21 @@ function git_root() {
         cd ../
     done
 }
+
+####
+function pyvenv() {
+    if [ ! -s venv.local/bin/python3 ]; then
+        python3 -m venv venv.local
+    fi
+    # ls venv
+
+    source venv.local/bin/activate
+    python3 --version
+
+    # export PIP_CONFIG_FILE=$PWD/venv.local/pip.conf
+    # deactivate
+
+    # pip3 install requests ipython pandas
+    # pip3 freeze > requirements.txt
+    # pip3 install -r requirements.txt
+}
