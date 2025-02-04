@@ -11,6 +11,25 @@ cat > configs/element.json <<EOF
 {
   "default_server_config": {
     "m.homeserver": {
+      "base_url": "http://127.0.0.1:8008"
+    }
+  }
+}
+EOF
+
+
+[ ! -s data/synapse/homeserver.yaml ] && docker run -it --rm \
+  -v "$PWD/data/synapse:/data" \
+  -e SYNAPSE_SERVER_NAME=matrix.example.com \
+  -e SYNAPSE_REPORT_STATS=yes \
+  matrixdotorg/synapse:latest generate
+
+
+exit
+cat <<EOF
+{
+  "default_server_config": {
+    "m.homeserver": {
       "base_url": "https://matrix-client.matrix.org"
     },
     "m.identity_server": {
@@ -20,14 +39,8 @@ cat > configs/element.json <<EOF
 }
 EOF
 
+docker exec -it synapse register_new_matrix_user http://localhost:8008 -c /data/homeserver.yaml
 
-docker run -it --rm \
-  -v "$PWD/data/synapse:/data" \
-  -e SYNAPSE_SERVER_NAME=matrix.example.com \
-  -e SYNAPSE_REPORT_STATS=yes \
-  matrixdotorg/synapse:latest generate
-
-exit
 database:
   name: psycopg2
   args:

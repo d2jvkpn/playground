@@ -21,7 +21,9 @@ services:
     container_name: synapse-element
     networks: [net]
     #  net: { ipv4_address: 10.10.10.3 }
-    ports: [1100:80]
+    ports: [8009:80]
+    environment:
+      TZ: Asia/Shanghai
     volumes:
     - ./configs/element.json:/app/config.json
 
@@ -31,6 +33,11 @@ services:
     container_name: synapse
     networks: [net]
     #  net: { ipv4_address: 10.10.10.4 }
-    ports: [1101:8008]
+    ports: [8008:8008]
+    environment:
+      TZ: Asia/Shanghai
+      SYNAPSE_SERVER_NAME: my.matrix.host
+      SYNAPSE_REPORT_STATS: yes
+      SYNAPSE_CONFIG_PATH: /data/homeserver.yaml
     volumes:
     - ./data/synapse:/data
