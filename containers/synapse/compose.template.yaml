@@ -1,0 +1,36 @@
+networks:
+  net: { name: matrix, driver: bridge, external: false }
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    container_name: synapse-postgres
+    networks: [net]
+    #  net: { ipv4_address: 10.10.10.2 }
+    volumes:
+    - ./data/postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: synapse
+      POSTGRES_USER: synapse
+      POSTGRES_PASSWORD: STRONG_PASSWORD
+
+  element:
+    image: vectorim/element-web:latest
+    restart: unless-stopped
+    container_name: synapse-element
+    networks: [net]
+    #  net: { ipv4_address: 10.10.10.3 }
+    ports: [1100:80]
+    volumes:
+    - ./configs/element.json:/app/config.json
+
+  synapse:
+    image: matrixdotorg/synapse:latest
+    restart: unless-stopped
+    container_name: synapse
+    networks: [net]
+    #  net: { ipv4_address: 10.10.10.4 }
+    ports: [1101:8008]
+    volumes:
+    - ./data/synapse:/data
