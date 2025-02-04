@@ -26,9 +26,11 @@ RUN mkdir -p /var/run/sshd && \
 
 # RUN echo 'root:password' | chpasswd
 
-ADD deploy/sshd_custom.conf /etc/ssh/sshd_config.d/
-ADD deploy/bash_aliases.sh /root/.bash_aliases
+RUN mkdir -p /root/apps
+ADD deploy/bash_aliases.sh /root/apps/
+ADD deploy/sshd.conf /etc/ssh/sshd_config.d/
 ADD deploy/entrypoint.sh /opt/entrypoint.sh
+RUN ln -sr /root/apps/bash_aliases.sh /root/.bash_aliases
 
 WORKDIR /root
 

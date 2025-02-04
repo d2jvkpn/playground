@@ -56,12 +56,14 @@ function git_root() {
 ####
 function pyvenv() {
     if [ ! -s venv.local/bin/python3 ]; then
+        echo "==> python3 -m venv venv.local"
         python3 -m venv venv.local
     fi
     # ls venv
 
     source venv.local/bin/activate
     python3 --version
+    export PY_VENV=$PWD/venv.local
 
     # export PIP_CONFIG_FILE=$PWD/venv.local/pip.conf
     # deactivate
