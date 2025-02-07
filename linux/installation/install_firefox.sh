@@ -1,6 +1,5 @@
-#!/usr/bin/env bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 # https://askubuntu.com/questions/1502031/how-to-install-firefox-directly-from-mozilla-with-apt
 # https://support.mozilla.org/en-US/kb/install-firefox-linux
@@ -30,7 +29,7 @@ Pin-Priority: 1000
 ' | sudo tee /etc/apt/preferences.d/mozilla
 
 #### 6. Update your package list and install the Firefox .deb package:
-sudo apt-get update && sudo apt-get install firefox
+sudo apt-get update && sudo apt-get -y install firefox
 
 exit
 

@@ -4,11 +4,11 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 # https://librewolf.net/installation/debian/
 
-sudo apt update && sudo apt install extrepo -y
+sudo apt update && sudo apt install -y extrepo
 
 sudo extrepo enable librewolf
 
-sudo apt update && sudo apt install librewolf -y
+sudo apt update && sudo apt install -y librewolf
 
 
 exit

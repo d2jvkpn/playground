@@ -15,14 +15,13 @@ def w_sum(a, b):
 
   return output
 
-def ele_mul(number, vector):
+def ele_mul(scalar, vector):
   output = [0.0 for _ in range(len(vector))]
 
   for i in range(len(vector)):
-    output[i] = number * vector[i]
+    output[i] = scalar * vector[i]
 
   return output
-
 
 weights = [0.1, 0.2, -0.1]
 
@@ -45,10 +44,10 @@ print("--> 1. pred={}, error={}, weight_deltas={}".format(pred, error, weight_de
 
 alpha = 0.01
 
-print("~~~ weights: {}".format(weights))
+print("~~~ 2. origin weights: {}".format(weights))
 
 for i in range(len(weights)):
   weights[i] -= alpha * weight_deltas[i]
 
-print("~~~ weights: {}".format(weights))
+print("~~~ 3. updated weights: {}".format(weights))
 

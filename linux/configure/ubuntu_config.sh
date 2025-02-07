@@ -1,6 +1,5 @@
-#!/usr/bin/env bash
-set -eu -o pipefail
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 #### config files
 # [ -f ~/.ssh/id_rsa ] || ssh-keygen -P "" -f ~/.ssh/id_rsa
@@ -10,7 +9,7 @@ _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 # chmod 0400 ~/.ss/kvm.pem
 
 ####
-mkdir -p ~/Apps/bin ~/.local/bin
+mkdir -p ~/apps/bin ~/.local/bin
 cp ./bash_aliases.sh ~/.bash_aliases
 
 ####

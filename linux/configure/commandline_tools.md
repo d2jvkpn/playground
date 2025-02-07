@@ -31,6 +31,7 @@ alias find='fd'
 1. yq
 2. plow
 3. duf
+4. docker-compose
 
 
 #### 3.

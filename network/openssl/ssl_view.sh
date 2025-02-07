@@ -4,8 +4,8 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 domain=$1
 host=${2:-$domain}
 
-
-openssl s_client -connect $host:443 -servername $domain 2>/dev/null |
+echo |
+  openssl s_client -connect $host:443 -servername $domain 2>/dev/null |
   openssl x509 -noout -subject -dates
 
 # openssl x509 -noout -text
@@ -17,7 +17,8 @@ openssl x509 -in domain.crt -noout -subject -dates
 
 exit
 #### view the service
-openssl s_client -connect localhost:443 -servername $domain |
+echo |
+  openssl s_client -connect localhost:443 -servername $domain |
   openssl x509 -noout -subject -dates
 
 ####
