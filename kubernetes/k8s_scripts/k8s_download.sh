@@ -111,7 +111,14 @@ wget -O k8s.local/yq https://github.com/mikefarah/yq/releases/latest/download/yq
 chmod a+x k8s.local/yq
 # yq_version=$(./k8s.local/yq --version | awk '{print $NF}')
 
-#### 7. download info
+#### 7. cilium
+# --remote-name
+curl -o /tmp/cilium-linux-amd64.tar.gz \
+  -L https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz
+
+tar -xf /tmp/cilium-linux-amd64.tar.gz -C k8s.local/
+
+#### 8. download info
 cat > k8s.local/k8s_download.yaml << EOF
 k8s:
   version: $version
@@ -136,11 +143,3 @@ $(echo "$metallb_images" | sed 's/^/  - image: /')
 EOF
 
 download_images k8s.local/k8s_download.yaml k8s.local/images
-
-exit
-#### 8. cilium
-# --remote-name
-curl -o /tmp/cilium-linux-amd64.tar.gz \
-  -L https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz
-
-tar -xf /tmp/cilium-linux-amd64.tar.gz -C k8s.local/
