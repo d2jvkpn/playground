@@ -9,9 +9,11 @@ apt install -y software-properties-common \
   curl net-tools openvpn
 
 apt install -y lm-sensors mpv git btop make \
-  fcitx5 fcitx5-pinyin docker.io python3-pip python3-ipython python3.12-venv ipython3
+  fcitx5 fcitx5-pinyin docker.io \
+  python3-pip python3-venv python3-ipython ipython3 pipx
 
-# pip3 install requests numpy pandas polar
+# python3 -m venv ~/apps/pyvenv
+# pip install requests numpy pandas polar
 
 #### 2. desktop apps
 cat <<EOF

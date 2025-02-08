@@ -72,3 +72,5 @@ function pyvenv() {
     # pip3 freeze > requirements.txt
     # pip3 install -r requirements.txt
 }
+
+alias pyvenv-local='source ~/apps/pyvenv/bin/activate'
