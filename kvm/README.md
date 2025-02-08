@@ -2,13 +2,17 @@
 ---
 
 #### C01. Install KVM
+- https://www.linuxtechi.com/how-to-install-kvm-on-ubuntu/
 ```bash
 grep -Eoc '(vmx|svm)' /proc/cpuinfo
 
-sudo apt install qemu-system-x86 libvirt-daemon-system libvirt-clients bridge-utils virtinst virt-manager
+sudo apt install -y qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virt-manager \
+  qemu-system-x86 libosinfo-bin virtinst
 
 systemctl is-active libvirtd
-usermod -aG libvirt $USER && usermod -aG kvm $USER
+usermod -aG libvirt,kvm $USER
+
+sudo systemctl enable --now libvirtd
 
 brctl show
 ```

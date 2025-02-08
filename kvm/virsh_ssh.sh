@@ -1,11 +1,11 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 target=$1; username=$2
 
 kvm_ssh_dir=${kvm_ssh_dir:-$HOME/.ssh/kvm}
 kvm_ssh_key="$kvm_ssh_dir/kvm.pem"
+kvm_ssh_known_hosts="$kvm_ssh_dir/kvm.known_hosts"
 
 ls configs/$target.password > /dev/null
 command -v sshpass || { >&2 echo "no sshpass installed"; exit 1; }
@@ -38,11 +38,12 @@ Host $target
     Port          22
     LogLevel      INFO
     Compression   yes
-    IdentityFile  $kvm_ssh_key
+    IdentityFile        $kvm_ssh_key
+    UserKnownHostsFile  $kvm_ssh_known_hosts
 EOF
 
 ssh-keygen -f ~/.ssh/known_hosts -R "$addr"
-ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
+ssh-keygen -F $addr || ssh-keyscan -H $addr >> $kvm_ssh_known_hosts
 sshpass -f configs/$target.password ssh-copy-id -i $kvm_ssh_key $target
 
 # ssh -o StrictHostKeyChecking=no $username@$addr
@@ -52,9 +53,9 @@ sshpass -f configs/$target.password ssh-copy-id -i $kvm_ssh_key $target
 #### 3. ubuntu setup
 echo "==> 3.1 ubuntu setup on $target"
 
-rsync ubuntu_setup.sh ubuntu_cleanup.sh $target:
+rsync ubuntu_setup.sh $target:apps/
 # ssh -t $target sudo bash ./ubuntu_setup.sh $username
-cat configs/$target.password | ssh $target sudo -S bash ./ubuntu_setup.sh $username
+cat configs/$target.password | ssh $target sudo -S bash ./apps/ubuntu_setup.sh $username
 
 echo "==> 3.2 shutdown $target"
 virsh shutdown $target

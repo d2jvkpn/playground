@@ -6,7 +6,7 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 # 1. Create the config file
 mkdir -p /etc/systemd/system/docker.service.d
 
-cat <<EOF > /etc/systemd/system/docker.service.d/http-proxy.conf
+cat <<EOF | sudo tee /etc/systemd/system/docker.service.d/http-proxy.conf
 [Service]
 Environment="HTTP_PROXY=socks5://127.0.0.1:1080"
 Environment="HTTPS_PROXY=socks5://127.0.0.1:1080"

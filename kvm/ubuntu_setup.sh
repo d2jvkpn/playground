@@ -1,6 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 username=${1:-ubuntu}
 time_zone=${time_zone:-Asia/Shanghai}
@@ -13,7 +12,7 @@ export DEBIAN_FRONTEND=noninteractive
 # hostnamectl hostname node
 # sed -i '/127.0.1.1/s/ .*/ node/' /etc/hosts
 
-mkdir -p $home_dir/apps/x
+mkdir -p $home_dir/apps/bin $home_dir/apps/exports
 
 if [ ! -f $home_dir/.bash_aliases ]; then
 
@@ -23,10 +22,12 @@ export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
 export PROMPT_DIRTRIM=2
 # export PATH=~/.local/bin:$PATH
 
-for d in $(ls -d ~/apps/x/*/ /opt/*/ 2> /dev/null); do
+export PATH=~/apps/bin:$PATH
+
+for d in $(ls -d ~/apps/exports/*/ 2> /dev/null); do
     d=${d%/}
     b=$(basename $d)
-    [ "${b:0:1}" == "_" ] && continue
+    #[ "${b:0:1}" == "_" ] && continue
     [ -d $d/bin ] && d=$d/bin
     [ -r $d ] || continue
     export PATH=$d:$PATH

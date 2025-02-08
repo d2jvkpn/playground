@@ -9,7 +9,9 @@ apt install -y software-properties-common \
   curl net-tools openvpn
 
 apt install -y lm-sensors mpv git btop make \
-  fcitx5 fcitx5-pinyin docker.io
+  fcitx5 fcitx5-pinyin docker.io python3-pip python3-ipython python3.12-venv ipython3
+
+# pip3 install requests numpy pandas polar
 
 #### 2. desktop apps
 cat <<EOF
@@ -17,10 +19,12 @@ apps:
 - firefox
 - librewolf
 - chrome/chromium
+  https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 EOF
 
 #### 3. commandlines
 cat <<EOF
 apps:
 - docker-compose
+- yq
 EOF
