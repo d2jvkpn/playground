@@ -1,6 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 # version=1.28.2; node=node01
 # version=$(yq .version k8s.local/k8s.yaml)

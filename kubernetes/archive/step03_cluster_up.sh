@@ -1,6 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 # cp_node=k8s-cp01; ingress_node=k8s-node01
 cp_node=$1; ingress_node=$2

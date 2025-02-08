@@ -1,6 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 # https://docs.projectcalico.org/manifests/calico.yaml
 mkdir -p k8s.local/data

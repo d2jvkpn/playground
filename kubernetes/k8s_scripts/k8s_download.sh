@@ -1,6 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 # yq_version=${yq_version:-4.35.2}
 # flannel_version=${flannel_version:-0.23.0}

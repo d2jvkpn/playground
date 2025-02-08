@@ -1,6 +1,5 @@
-#!/usr/bin/env bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 
 # ansible k8s_all -m shell --become -a 'apt update'
