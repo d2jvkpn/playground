@@ -1,25 +1,19 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
-domain=$1
-host=${2:-$domain}
+input=$1
+domain=${2:-$input}
 
-echo |
-  openssl s_client -connect $host:443 -servername $domain 2>/dev/null |
-  openssl x509 -noout -subject -dates
-
-# openssl x509 -noout -text
-
-exit
-#### view file
-openssl x509 -in domain.crt -noout -text
-openssl x509 -in domain.crt -noout -subject -dates
+if [[ "$input" == *".crt" || "$input" == *".cer" || "$input" == *".pem" ]]; then
+    openssl x509 -in "$input" -noout -subject -ext subjectAltName -dates
+else
+    echo |
+      openssl s_client -connect $input:443 -servername $domain 2>/dev/null |
+      openssl x509 -noout -subject -ext subjectAltName -dates
+fi
 
 exit
-#### view the service
-echo |
-  openssl s_client -connect localhost:443 -servername $domain |
-  openssl x509 -noout -subject -dates
-
 ####
+openssl x509 -in domain.crt -noout -text
+
 curl https://$domain --resolve "$domain:443:$ip"
