@@ -10,8 +10,10 @@ apt install -y software-properties-common \
 
 apt install -y lm-sensors mpv git btop make \
   fcitx5 fcitx5-pinyin docker.io \
-  python3-pip python3-venv python3-ipython ipython3 pipx
+  python3-venv python3-ipython ipython3 pipx \
+  ansible-core
 
+# python3-pip
 # python3 -m venv ~/apps/pyvenv
 # pip install requests numpy pandas polar
 

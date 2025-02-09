@@ -5,9 +5,11 @@
 # bash k8s_scripts/k8s_downloads.sh 1.30.2
 # ansible k8s_all --list-hosts | awk 'NR>1' | xargs -i virsh start {}
 
-bash step01_base_node.sh k8s-cp{01..03} k8s-node{01..04}
+bash step01_base_node.sh k8s-cp01
 
-bash step02_cluster_up.sh
+bash step02_clone_nodes.sh k8s-cp01 k8s-node{01..03}
+
+bash step03_cluster_up.sh
 ```
 
 #### P02. Explore

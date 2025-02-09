@@ -5,6 +5,8 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 cp_node=$(awk '$1!=""{print $1; exit}' configs/k8s_hosts.ini)
 cp_ip=$(awk '$1!=""{sub(/.*=/, "", $2); print $2; exit}' configs/k8s_hosts.ini)
 
+echo "==> cp: $cp_node, $cp_ip"
+
 # cp_node=$(ansible k8s_cps[0] --list-hosts | awk 'NR==2{print $1; exit}')
 
 # cp_node=$(
@@ -42,11 +44,11 @@ done
 
 #### 4. sync data and kube
 # rsync -arPv $cp_node:k8s.local/data/ k8s.local/data/
-ansible $cp_node -m synchronize \
-  -a "mode=pull src=k8s.local/data/ dest=./k8s.local/data"
+ansible $cp_node -m synchronize -a "mode=pull src=k8s.local/data/ dest=./k8s.local/data"
 
 ansible $cp_node -m synchronize -a "mode=pull src=.kube dest=~/"
 
+# kubectl config use-context kubernetes-admin@kubernetes
 kubectl get ns
 
 kubectl create ns dev

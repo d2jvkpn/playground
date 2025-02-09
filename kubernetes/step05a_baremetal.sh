@@ -4,6 +4,7 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 # cp_node=k8s-cp01
 cp_node=$(awk '$1!=""{print $1; exit}' configs/k8s_hosts.ini)
 cp_ip=$(awk '$1!=""{sub(/.*=/, "", $2); print $2; exit}' configs/k8s_hosts.ini)
+echo "==> cp: $cp_node, $cp_ip"
 
 #### 1. create a nfs storage
 ansible $cp_node --become -a "bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
@@ -88,6 +89,7 @@ ingress_ip=$(
 )
 
 echo "==> ingress-nginx ip: $ingress_ip"
+curl -i $ingress_ip
 
 exit
 curl -H "Host: demo-api.dev.k8s.local"  $ingress_ip

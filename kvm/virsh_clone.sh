@@ -20,6 +20,8 @@ fi
 username="${username:-ubuntu}"
 kvm_ssh_dir=${kvm_ssh_dir:-$HOME/.ssh/kvm}
 kvm_ssh_key="$kvm_ssh_dir/kvm.pem"
+#kvm_ssh_known_hosts="$kvm_ssh_dir/kvm.known_hosts"
+kvm_ssh_known_hosts=~/.ssh/known_hosts
 
 echo "==> Cloning $vm_src into $target, username: $username, kvm_ssh_key: $kvm_ssh_key"
 
@@ -50,7 +52,8 @@ Host $target
     Port          22
     LogLevel      INFO
     Compression   yes
-    IdentityFile  $kvm_ssh_key
+    IdentityFile        $kvm_ssh_key
+    UserKnownHostsFile  $kvm_ssh_known_hosts
 EOF
 
 # wait_for_tcp_port.sh $addr 22
@@ -65,7 +68,7 @@ done
 
 # addr=$(ssh -G $target | awk '/^hostname/{print $2}')
 ssh-keygen -f ~/.ssh/known_hosts -R $addr
-ssh-keyscan -H $addr >> ~/.ssh/known_hosts
+ssh-keyscan -H $addr >> $kvm_ssh_known_hosts
 # ssh-keygen -F $addr || ssh-keyscan -H $addr >> ~/.ssh/known_hosts
 ssh-copy-id -i $kvm_ssh_key $target
 
