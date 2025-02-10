@@ -4,12 +4,12 @@ from os import sys
 import torch, transformers
 
 if len(sys.argv) < 3:
-   print("run.py <model_dir>  <content...>")
+    print("run.py <model_dir>  <content...>")
     sys.exit(1)
 
 # e.g. data/deepseek-ai/deepseek-coder-1.3b-instruct hello, who are you?
-model_dir = os.sys.argv[1]
-content = " ".join(os.sys.argv[2:])
+model_dir = sys.argv[1]
+content = " ".join(sys.argv[2:])
 
 pipeline = transformers.pipeline(
   "text-generation",
