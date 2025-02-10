@@ -10,7 +10,7 @@ networks:
     #  - { subnet: 172.24.0.0/16, gateway: 172.24.0.1 }
 
 x-service-common: &service-common
-  image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
+  image: docker.elastic.co/elasticsearch/elasticsearch:8.17.1
   restart: always
   deploy:
     resources:
@@ -108,7 +108,7 @@ services:
       cluster.initial_master_nodes: es-node01,es-node02,es-node03
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:8.17.0
+    image: docker.elastic.co/kibana/kibana:8.17.1
     container_name: es-kibana
     hostname: es-kibana
     depends_on:

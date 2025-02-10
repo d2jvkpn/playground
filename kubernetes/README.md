@@ -7,7 +7,7 @@
 
 bash step01_base_node.sh k8s-cp01
 
-bash step02_clone_nodes.sh k8s-cp01 k8s-node{01..03}
+bash step02_clone_nodes.sh k8s-cp01 k8s-node{01..02}
 
 bash step03_cluster_up.sh
 ```
