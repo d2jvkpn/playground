@@ -10,9 +10,7 @@ sudo extrepo enable librewolf
 
 sudo apt update && sudo apt install -y librewolf
 
-
 exit
-
 sudo rm -f \
   /etc/apt/sources.list.d/librewolf.sources \
   /etc/apt/keyrings/librewolf.gpg \
