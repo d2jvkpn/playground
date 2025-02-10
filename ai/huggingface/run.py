@@ -7,8 +7,7 @@ if len(sys.argv) < 3:
    print("run.py <model_dir>  <content...>")
     sys.exit(1)
 
-# "data/deepseek-ai/deepseek-coder-1.3b-instruct"
-# 
+# e.g. data/deepseek-ai/deepseek-coder-1.3b-instruct hello, who are you?
 model_dir = os.sys.argv[1]
 content = " ".join(os.sys.argv[2:])
 
