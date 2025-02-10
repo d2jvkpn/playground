@@ -1,0 +1,6 @@
+pysocks
+
+transformers
+torch
+accelerate
+#huggingface_hub
