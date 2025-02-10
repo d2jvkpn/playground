@@ -14,8 +14,10 @@ models:
 ```
 2. run
 ```bash
-python3 download.py deepseek-ai/deepseek-coder-1.3b-instruct
-python3 run.py data/deepseek-ai/deepseek-coder-1.3b-instruct Hello, world
+pip install -r requirements.txt
+
+python download.py deepseek-ai/deepseek-coder-1.3b-instruct
+python run.py data/deepseek-ai/deepseek-coder-1.3b-instruct Hello, world
 ```
 
 
