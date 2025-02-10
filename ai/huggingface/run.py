@@ -1,6 +1,7 @@
 #!/bin/python3
 
 from os import sys
+
 import torch, transformers
 
 if len(sys.argv) < 3:
