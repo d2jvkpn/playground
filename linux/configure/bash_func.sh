@@ -55,18 +55,18 @@ function git_root() {
 
 ####
 function pyvenv_new() {
-    if [ ! -s venv.local/bin/python3 ]; then
-        echo "==> python3 -m venv venv.local"
-        python3 -m venv venv.local
+    if [ ! -s pyvenv.local/bin/python3 ]; then
+        echo "==> python3 -m venv pyvenv.local"
+        python3 -m venv pyvenv.local
     fi
-    source venv.local/bin/activate
-    python3 --version
-    export PY_VENV=$PWD/venv.local
+    source pyvenv.local/bin/activate
+    export PY_VENV=$PWD/pyvenv.local
 
-    if [ -f $PWD/venv.local/pip.conf ]; then
-        echo "--> found PIP_CONFIG_FILE: venv.local/pip.conf"
-        export PIP_CONFIG_FILE=$PWD/venv.local/pip.conf
+    if [ -f $PWD/pyvenv.local/pip.conf ]; then
+        echo "--> found PIP_CONFIG_FILE: pyvenv.local/pip.conf"
+        export PIP_CONFIG_FILE=$PWD/pyvenv.local/pip.conf
     fi
+    python3 --version
     # deactivate
 
     # pip3 install requests ipython pandas
