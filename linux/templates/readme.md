@@ -1,9 +1,10 @@
 # Title
 ---
-**version**: 0.1.0
-**author**: ["Jane Doe<jane.doe@noreply.local>"]
-**date**: 1970-01-01
-
+```
+version: 0.1.0
+author: ["Jane Doe<jane.doe@noreply.local>"]
+date: 1970-01-01
+```
 
 #### Ch01. 
 1. hello
@@ -11,7 +12,10 @@
 - b.
 - c.
 
-2. world
+2. run
+```bash
+echo "Hello, world"
+```
 
 
 #### Ch02. 
