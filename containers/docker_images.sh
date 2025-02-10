@@ -6,7 +6,7 @@ image=${1:-""}
 docker images --format "{{.Repository}} {{.Tag}} {{.ID}} {{.Size}}" $image |
   while read repository tag img_id img_size; do
       created_at=$(docker inspect --format='{{.Created}}' $img_id | sed 's/\.[0-9]*Z/Z/')
-      rfc3339=$(date --date="$created_at" +%Y-%m-%dT%H:%M:%S%:z)
+      rfc3339=$(date --date="$created_at" +%FT%T%:z) # %Y-%m-%dT%H:%M:%S%:z
       timestamp=$(date --date="$created_at" +%s)
       echo "$repository $timestamp $tag $img_id $rfc3339 $img_size"
   done |
