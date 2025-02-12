@@ -8,10 +8,11 @@ apt install -y software-properties-common \
   vim tree file pigz jq zip dos2unix gnome-shell-extension-manager \
   curl net-tools openvpn
 
-apt install -y lm-sensors mpv git btop make \
-  fcitx5 fcitx5-pinyin docker.io \
+apt install -y lm-sensors  git  make  iftop  expect nmap \
   python3-venv python3-ipython ipython3 pipx \
-  ansible-core iftop
+  docker.io ansible-core \
+  btop  mpv fcitx5 fcitx5-pinyin remmina remmina-plugin-vnc qbittorrent \
+  postgresql-client-common postgresql-client-16
 
 # python3-pip
 # python3 -m venv ~/apps/pyvenv
