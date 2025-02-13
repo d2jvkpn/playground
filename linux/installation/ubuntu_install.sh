@@ -6,13 +6,16 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 apt install -y software-properties-common \
   apt-transport-https ca-certificates lsb-release gnupg duf \
   vim tree file pigz jq zip dos2unix gnome-shell-extension-manager \
-  curl net-tools openvpn
+  curl net-tools btop iftop nmap
 
-apt install -y lm-sensors  git  make  iftop  expect nmap \
+apt install -y \
+  make  expect git  lm-sensors \
   python3-venv python3-ipython ipython3 pipx \
-  docker.io ansible-core \
-  btop  mpv fcitx5 fcitx5-pinyin remmina remmina-plugin-vnc qbittorrent \
+  docker.io ansible-core openvpn \
   postgresql-client-common postgresql-client-16
+
+apt install  fcitx5 fcitx5-pinyin mpv \
+  qbittorrent remmina remmina-plugin-vnc  libreoffice
 
 # python3-pip
 # python3 -m venv ~/apps/pyvenv
