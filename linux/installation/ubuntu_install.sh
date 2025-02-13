@@ -9,17 +9,20 @@ apt install -y software-properties-common \
   curl net-tools btop iftop nmap
 
 apt install -y \
-  make  expect git  lm-sensors \
-  python3-venv python3-ipython ipython3 pipx \
+  make expect git  lm-sensors  \
+  python3-venv pipx \
   docker.io ansible-core openvpn \
   postgresql-client-common postgresql-client-16
 
 apt install  fcitx5 fcitx5-pinyin mpv \
   qbittorrent remmina remmina-plugin-vnc  libreoffice
 
-# python3-pip
+pipx install ipython runlike
+
+# sydo apt install python3-pip python3-ipython ipython3
 # python3 -m venv ~/apps/pyvenv
-# pip install requests numpy pandas polar
+# source ~/apps/pyvenv/bin/activate
+# pip install requests numpy pandas polar scikit-learn
 
 #### 2. desktop apps
 cat <<EOF
