@@ -1,7 +1,6 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
-
 #### 1. system apps
 apt install -y software-properties-common \
   apt-transport-https ca-certificates lsb-release gnupg duf \
@@ -22,20 +21,20 @@ pipx install ipython runlike
 # sydo apt install python3-pip python3-ipython ipython3
 # python3 -m venv ~/apps/pyvenv
 # source ~/apps/pyvenv/bin/activate
-# pip install requests numpy pandas polar scikit-learn
+# pip install requests numpy pandas polar scikit-learn pyyaml
 
-#### 2. desktop apps
-cat <<EOF
-apps:
-- firefox
-- librewolf
-- chrome/chromium
-  https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-EOF
-
-#### 3. commandlines
+#### 2. commandlines
 cat <<EOF
 apps:
 - docker-compose
 - yq
+EOF
+
+#### 3. desktop apps
+cat <<EOF
+apps:
+- firefox
+- librewolf
+- chrome/chromium, https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+- codium
 EOF

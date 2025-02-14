@@ -62,7 +62,7 @@ function pyvenv_new() {
     source pyvenv.local/bin/activate
     export PY_VENV=$PWD/pyvenv.local
 
-    if [ -f $PWD/pyvenv.local/pip.conf ]; then
+    if [ -s $PWD/pyvenv.local/pip.conf ]; then
         echo "--> found PIP_CONFIG_FILE: pyvenv.local/pip.conf"
         export PIP_CONFIG_FILE=$PWD/pyvenv.local/pip.conf
     fi
@@ -74,3 +74,8 @@ function pyvenv_new() {
     # pip3 install -r requirements.txt
 }
 alias pyvenv='source ~/apps/pyvenv/bin/activate'
+
+function ssh_no_hist() {
+     local host="$1"
+     ssh -t  "$host" 'HISTFILE="" bash --login'
+}
