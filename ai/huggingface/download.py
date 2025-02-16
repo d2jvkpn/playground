@@ -5,11 +5,13 @@ from os import sys, path
 
 from transformers import AutoTokenizer, AutoModel
 
-# e.g. deepseek-ai/deepseek-coder-1.3b-instruct
-# e.g. sentence-transformers/all-MiniLM-L6-v2
-model_name =  sys.argv[1]
+# e.g. sentence-transformers/all-MiniLM-L6-v2  data
+# e.g. deepseek-ai/deepseek-coder-1.3b-instruct  data
 
-model_dir = path.join("data", model_name)
+model_name =  sys.argv[1]
+model_dir = sys.argv[2] if 3 < len(sys.argv) else "data"
+model_dir = path.join(model_dir, model_name)
+
 os.makedirs(model_dir, mode=511, exist_ok=True)
 
 print(f"==> downloading: model_name={model_name}, model_dir={model_dir}")

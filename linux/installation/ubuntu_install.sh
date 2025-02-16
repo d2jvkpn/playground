@@ -16,7 +16,7 @@ apt install -y \
 apt install  fcitx5 fcitx5-pinyin mpv \
   qbittorrent remmina remmina-plugin-vnc  libreoffice
 
-pipx install ipython runlike
+pipx install ipython runlike ansible
 
 # sydo apt install python3-pip python3-ipython ipython3
 # python3 -m venv ~/apps/pyvenv
@@ -26,8 +26,12 @@ pipx install ipython runlike
 #### 2. commandlines
 cat <<EOF
 apps:
-- docker-compose
-- yq
+- docker-compose: https://github.com/docker/compose/releases
+- yq: https://github.com/mikefarah/yq/releases
+- tokei: cargo install tokei
+- bat: cargo install bat
+- eza: cargo install eza
+- rg: cargo install ripgrep
 EOF
 
 #### 3. desktop apps
