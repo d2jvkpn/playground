@@ -9,7 +9,9 @@
 1. hello
 - Grokking deep learning
 
-2. world
-
+2. install
+```
+pip install -r py.txt
+```
 
 #### Ch02. 

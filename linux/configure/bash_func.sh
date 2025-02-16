@@ -54,7 +54,7 @@ function git_root() {
 }
 
 ####
-function pyvenv_new() {
+function pyvenv_local() {
     if [ ! -s pyvenv.local/bin/python3 ]; then
         echo "==> python3 -m venv pyvenv.local"
         python3 -m venv pyvenv.local
@@ -73,7 +73,7 @@ function pyvenv_new() {
     # pip3 freeze > requirements.txt
     # pip3 install -r requirements.txt
 }
-alias pyvenv='source ~/apps/pyvenv/bin/activate'
+alias pyvenv_home='source ~/apps/pyvenv/bin/activate'
 
 function ssh_no_hist() {
      local host="$1"
