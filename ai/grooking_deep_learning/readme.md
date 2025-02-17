@@ -6,10 +6,15 @@
 
 
 #### Ch01. 
-1. hello
-- Grokking deep learning
+1. references
+- book: Grokking deep learning
+- code: https://github.com/iamtrask/Grokking-Deep-Learning
+- container_image: jupyter/tensorflow-notebook
 
-2. install
+2. data
+- https://storage.googleapis.com/tensorflow/tf-keras-datasets/mnist.npz
+
+3. install
 ```
 pip install -r requirements.txt
 ```

@@ -7,4 +7,4 @@ pip install -r requirements.txt
 exit
 pip install ipython
 
-pip install numpy
+pip install numpy keras tensorflow
