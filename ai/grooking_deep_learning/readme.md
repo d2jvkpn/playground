@@ -11,7 +11,7 @@
 
 2. install
 ```
-pip install -r py.txt
+pip install -r requirements.txt
 ```
 
 #### Ch02. 
