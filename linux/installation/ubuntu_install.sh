@@ -13,8 +13,9 @@ apt install -y \
   docker.io ansible-core openvpn \
   postgresql-client-common postgresql-client-16
 
-apt install  fcitx5 fcitx5-pinyin mpv \
-  qbittorrent remmina remmina-plugin-vnc  libreoffice
+apt install  fcitx5 fcitx5-pinyin ibus-pinyin \
+  mpv qbittorrent libreoffice \
+  remmina remmina-plugin-vnc
 
 pipx install ipython runlike ansible
 
@@ -32,6 +33,7 @@ apps:
 - bat: cargo install bat
 - eza: cargo install eza
 - rg: cargo install ripgrep
+- xsv: cargo install xsv
 EOF
 
 #### 3. desktop apps
