@@ -39,8 +39,8 @@ EOF
 #### 3. desktop apps
 cat <<EOF
 apps:
-- firefox
+- firefox, addons=[Orbit, Privacy Badger]
 - librewolf
-- chrome/chromium, https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+- chrome/chromium, url=https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 - codium
 EOF

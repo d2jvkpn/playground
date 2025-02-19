@@ -12,3 +12,4 @@ data/
 temp/
 *.local
 local
+*.git

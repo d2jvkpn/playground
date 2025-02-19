@@ -1,51 +1,72 @@
 #!/bin/python3
 
-import sys
+from sys import stdout, stderr
 
 import numpy as np
 from keras.datasets import mnist
 
-#### 1.
+#### 1. init
+np.random.seed(1)
+alpha, iterations, hidden_size, pixels = (0.005, 350, 40, 28*28)
+
+relu = lambda x: (x>=0) * x     # returns x if x > 0, return 0 otherwise
+relu2deriv = lambda x: x>=0  # returns 1 for input > 0, return 0 otherwise
+
+def one_hot_labels(labels): # [2] -> [[0, 0, 1, 0, 0, 0, 0, 0, 0, 0]]
+    ouput = np.zeros((len(labels),10))
+
+    for i,v in enumerate(labels):
+        ouput[i][v] = 1
+
+    return ouput
+
+#### 2. load data
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-# images, labels = (x_train[0:1000].reshape(1000, 28*28) / 255, y_train[0:1000])
-images = x_train[0:1000].reshape(1000, 28*28) / 255
-labels = y_train[0:1000]
-one_hot_labels = np.zeros((len(labels), 10))
+train_inputs = x_train[0:1000].reshape(1000, pixels) / 255
+train_labels = one_hot_labels(y_train[0:1000])
 
-test_images = x_test.reshape((len(x_test), 28*28)) / 255
-test_labels = np.zeros((len(y_test), 10))
+test_inputs = x_test.reshape(len(x_test), pixels) / 255
+test_labels = one_hot_labels(y_test)
 
-for i, l in enumerate(labels):
-  one_hot_labels[i][1] = 1
+#### 3. trainning
+# layer_0 * weights_0_1 => layer_1 * weights_1_2 => layer_2
 
-labels = one_hot_labels
+print(f"==> parameters: alpha={alpha}, iterations={iterations}, hidden_size={hidden_size}, pixels={pixels}")
 
-#### 2.
-np.random.seed(1)
-relu = lambda x: (x>=0) * x
-relu2deriv = lambda x: x>=0
-
-alpha, iterations, hidden_size, pixels_per_image, num_labels = (0.005, 350, 40, 28*28, 10)
-
-#### 3.
-w0 = 0.2*np.random.random((pixels_per_image, hidden_size)) - 0.1  # weights_0_1
-w1 = 0.2*np.random.random((hidden_size, num_labels)) - 0.1            # weights_1_2
+weights_0_1 = 0.2*np.random.random((pixels, hidden_size)) - 0.1
+weights_1_2 = 0.2*np.random.random((hidden_size, 10)) - 0.1
 
 for j in range(iterations):
-  error, correct_cnt = (0.0, 0)
+    error, correct_cnt, size = (0.0, 0, len(train_inputs))
 
-  for i in range(len(images)):
-    l0 = images[i:i+1]            # layer 0: input layer
-    l1 = relu(np.dot(l0, w0))  # layer 1: hidden layer
-    l2 = relu(np.dot(l1, w1))  # layer 2: output layer
-    error += np.sum(labels[i:i+1] - l2) ** 2
-    correct_cnt += int(np.argmax(l2) == np.argmax(labels[i:i+1]))
+    for i in range(size):
+        layer_0 = train_inputs[i:i+1]
+        layer_1 = relu(np.dot(layer_0, weights_0_1))
+        layer_2 = np.dot(layer_1, weights_1_2)
 
-    d2 = (labels[i:i+1] - l2)                      # layer 2 delta
-    d1 = d2.dot(w1.T) * relu2deriv(l1)  # layer 1 delta
+        error += np.sum((train_labels[i:i+1] - layer_2) ** 2)
+        correct_cnt += int(np.argmax(layer_2) == np.argmax(train_labels[i:i+1]))
 
-    w1 += l1.T.dot(d2) * alpha
-    w0 += l0.T.dot(d1) * alpha
+        delta_2 = layer_2 - train_labels[i:i+1]  # predication - target
+        delta_1 = np.dot(delta_2, weights_1_2.T)  * relu2deriv(layer_1)
+        weights_1_2 -= np.dot(layer_1.T, delta_2) * alpha
+        weights_0_1 -= np.dot(layer_0.T, delta_1) * alpha
 
-  sys.stdout.write("--> I{:03d}: error={:.6f}, correct={:.2f}\n".format(j, error/len(images), correct_cnt/(len(images))))
+    stdout.write("--> I{:03d}: train_error={:.6f}, train_acc={:.2f}\n".format(j+1, error/size, correct_cnt/size))
+    
+    if(j % 10 == 0 or j == iterations-1):
+        error, correct_cnt, size = (0.0, 0, len(test_inputs))
+
+        for i in range(size):
+            layer_0 = test_inputs[i:i+1]
+            layer_1 = relu(np.dot(layer_0, weights_0_1))
+            layer_2 = np.dot(layer_1, weights_1_2)
+
+            error += np.sum((test_labels[i:i+1] - layer_2) ** 2)
+            correct_cnt += int(np.argmax(layer_2) ==  np.argmax(test_labels[i:i+1]))
+
+        stdout.write("    E{:03d}: test_error={:.6f}, test_acc={:.2f}\n".format(j+1, error/size, correct_cnt/size))
+
+print(f"<== weights_0_1[0:3]: {weights_0_1[0:3]}")
+print(f"<== weights_1_2[0:3]: {weights_1_2[0:3]}")
