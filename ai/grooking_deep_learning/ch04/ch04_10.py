@@ -1,12 +1,11 @@
 #!/bin/python3
 
-
 weight = 0.1
 alpha = 0.01
 
 def neural_network(data, weight):
-  pred = data * weight
-  return pred
+    pred = data * weight
+    return pred
 
 number_of_toes = [8.5]
 win_or_lose_binary = [1] # (won!!!)

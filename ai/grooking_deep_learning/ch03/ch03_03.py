@@ -2,8 +2,8 @@
 
 
 def neural_network(d, weight):
-  predication = d * weight
-  return predication
+    predication = d * weight
+    return predication
 
 
 weight = 0.1

@@ -1,9 +1,8 @@
 import numpy as np
 
-
 def neural_network(data, weights):
-  pred = data.dot(weights)
-  return pred
+    pred = data.dot(weights)
+    return pred
 
 
 weights = np.array([0.1, 0.2, 0])
@@ -18,7 +17,7 @@ print("~~~ output: win")
 
 print()
 for i in range(len(toes)):
-  d = np.array([toes[i], wrate[i], nfans[i]])
-  pred = neural_network(d, weights)
+    d = np.array([toes[i], wrate[i], nfans[i]])
+    pred = neural_network(d, weights)
 
-  print("--> Predication: index={}, inputs={}, output={:.3f}".format(i, d, pred))
+    print("--> Predication: index={}, inputs={}, output={:.3f}".format(i, d, pred))

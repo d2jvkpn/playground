@@ -33,19 +33,19 @@ input = streelights[0]
 goal = walk_vs_stop[0]
 
 for i in range(40):
-  for row in range(streelights.shape[0]):
-    input = streelights[row]
-    goal = walk_vs_stop[row]
-    pred = input.dot(weights)
+    for row in range(streelights.shape[0]):
+        input = streelights[row]
+        goal = walk_vs_stop[row]
+        pred = input.dot(weights)
 
-    delta = pred - goal
-    error = delta ** 2
-    weights -= alpha*(input * delta)
+        delta = pred - goal
+        error = delta ** 2
+        weights -= alpha*(input * delta)
 
-    if row == streelights.shape[0] - 1:
-      print("--> {}-{}: error={}, prediction={}, weights={};".format(
-        i+1, row+1, np.round(error, 6), np.round(pred, 6), np.round(weights, 6),
-      ))
+        if row == streelights.shape[0] - 1:
+             print("--> {}-{}: error={}, prediction={}, weights={};".format(
+               i+1, row+1, np.round(error, 6), np.round(pred, 6), np.round(weights, 6),
+            ))
 
 # weights = [0.013892, 1.013815, -0.015993]
 

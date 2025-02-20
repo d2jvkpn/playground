@@ -2,26 +2,26 @@
 
 
 def neural_network(data, weights):
-  pred = w_sum(data, weights)
-  return pred
+    pred = w_sum(data, weights)
+    return pred
 
 
 def w_sum(a, b):
-  assert(len(a) == len(b))
-  output = 0
+    assert(len(a) == len(b))
+    output = 0
 
-  for i in range(len(a)):
-    output += a[i] * b[i]
+    for i in range(len(a)):
+        output += a[i] * b[i]
 
-  return output
+    return output
 
 def ele_mul(scalar, vector):
-  output = [0.0 for _ in range(len(vector))]
+    output = [0.0 for _ in range(len(vector))]
 
-  for i in range(len(vector)):
-    output[i] = scalar * vector[i]
+    for i in range(len(vector)):
+        output[i] = scalar * vector[i]
 
-  return output
+    return output
 
 weights = [0.1, 0.2, -0.1]
 
@@ -47,7 +47,6 @@ alpha = 0.01
 print("~~~ 2. origin weights: {}".format(weights))
 
 for i in range(len(weights)):
-  weights[i] -= alpha * weight_deltas[i]
+    weights[i] -= alpha * weight_deltas[i]
 
 print("~~~ 3. updated weights: {}".format(weights))
-

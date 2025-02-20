@@ -3,10 +3,9 @@
 weight = 0.1
 lr = 0.01 # learning rate
 
-
 def neural_network(data, weight):
-  pred = data * weight
-  return pred
+    pred = data * weight
+    return pred
 
 
 number_of_toes = [8.5]
@@ -35,14 +34,13 @@ err_dn = (pred - val) ** 2
 
 print("--> 4. err_dn={:.6f}".format(err_dn))
 
-
 #### 4.
 print("~~~ updated weight: {}".format(weight))
 if (error > err_dn or error > err_up):
-  if (err_dn < err_up):
-    weight -= lr
-  elif (err_dn > err_up):
-    weight += lr
+    if (err_dn < err_up):
+        weight -= lr
+    elif (err_dn > err_up):
+        weight += lr
 
 print("~~~ updated weight: {}".format(weight))
 pred = neural_network(d, weight)

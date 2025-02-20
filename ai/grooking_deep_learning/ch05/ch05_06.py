@@ -7,40 +7,39 @@
 
 # array[M] * array[M] -> scalar
 def w_sum(a, b):
-  assert(len(a) == len(b))
-  output = 0
+    assert(len(a) == len(b))
+    output = 0
 
-  for i in range(len(a)):
-    output += a[i] * b[i]
+    for i in range(len(a)):
+        output += a[i] * b[i]
 
-  return output
+    return output
 
 
 # array[M] * matrix[M, M] = array[M]
 def vect_mat_mul(vect, matrix):
-  assert(len(matrix) > 0 and len(vect) == len(matrix[0]))
-  output = [0.0 for _ in range(len(matrix))]
+    assert(len(matrix) > 0 and len(vect) == len(matrix[0]))
+    output = [0.0 for _ in range(len(matrix))]
 
-  for i in range(len(matrix)):
-    output[i] = w_sum(vect, matrix[i])
+    for i in range(len(matrix)):
+        output[i] = w_sum(vect, matrix[i])
 
-  return output
+    return output
 
 
 def neural_network(data, weights):
-  pred = vect_mat_mul(data, weights)
-  return pred
+    pred = vect_mat_mul(data, weights)
+    return pred
 
 
 def outer_prod(vec_a, vec_b):
-  out = [[0.0 for _ in range(len(vec_b))] for _ in range(len(vec_a))]
+    out = [[0.0 for _ in range(len(vec_b))] for _ in range(len(vec_a))]
 
-  for i in range(len(vec_a)):
-    for j in range(len(vec_b)):
-      out[i][j] = vec_a[i] * vec_b[j]
+    for i in range(len(vec_a)):
+        for j in range(len(vec_b)):
+            out[i][j] = vec_a[i] * vec_b[j]
 
-  return out
-
+    return out
 
 # toes %win fans
 weights = [
@@ -71,8 +70,8 @@ deltas = [0.0 for _ in range(len(goal))] # number of pred
 pred = neural_network(inputs, weights)
 
 for i in range(len(goal)):
-  deltas[i] = pred[i] - goal[i]
-  error[i] = deltas[i] ** 2
+    deltas[i] = pred[i] - goal[i]
+    error[i] = deltas[i] ** 2
 
 print("==> 1. deltas={}\n    error={}, {}".format(deltas, error, sum(error)))
 
@@ -84,8 +83,8 @@ print("--> weights={}".format(weights))
 print("--> weight_deltas={}".format(weight_deltas))
 
 for i in range(len(goal)):
-  for j in range(len(inputs)):
-    weights[i][i] -= weight_deltas[i][j] * alpha
+    for j in range(len(inputs)):
+        weights[i][i] -= weight_deltas[i][j] * alpha
 
 print("--> weights={}".format(weights))
 
@@ -93,8 +92,8 @@ print("--> weights={}".format(weights))
 pred = neural_network(inputs, weights)
 
 for i in range(len(goal)):
-  deltas[i] = pred[i] - goal[i]
-  error[i] = deltas[i] ** 2
+    deltas[i] = pred[i] - goal[i]
+    error[i] = deltas[i] ** 2
 
 print("==> 2. deltas={}\n    error={}, {}".format(deltas, error, sum(error)))
 
@@ -106,7 +105,7 @@ print("--> weights={}".format(weights))
 print("--> weight_deltas={}".format(weight_deltas))
 
 for i in range(len(goal)):
-  for j in range(len(inputs)):
-    weights[i][i] -= weight_deltas[i][j] * alpha
+    for j in range(len(inputs)):
+        weights[i][i] -= weight_deltas[i][j] * alpha
 
 print("--> weights={}".format(weights))

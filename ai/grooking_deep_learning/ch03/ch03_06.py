@@ -1,24 +1,23 @@
 #!/bin/python3
 
-
 def elementwise_multiplication(vec_a, vec_b):
-  assert(len(vec_a) == len(vec_b))
+    assert(len(vec_a) == len(vec_b))
 
-  result = 0
-  for i in range(len(vec_a)):
-    result += vec_a[i] * vec_b[i]
+    result = 0
+    for i in range(len(vec_a)):
+        result += vec_a[i] * vec_b[i]
 
-  return result
+    return result
 
 
 def w_sum(a, b):
-  assert(len(a) == len(b))
-  output = 0
+    assert(len(a) == len(b))
+    output = 0
 
-  for i in range(len(a)):
-    output += a[i] * b[i]
+    for i in range(len(a)):
+        output += a[i] * b[i]
 
-  return output
+    return output
 
 
 a = [0, 1, 0, 1]

@@ -2,30 +2,28 @@
 
 import numpy as np
 
-
 def neural_network(data, weights):
-  pred = vect_mat_mul(data, weights)
-  return pred
+    pred = vect_mat_mul(data, weights)
+    return pred
 
 def w_sum(a, b):
-  assert(len(a) == len(b))
-  output = 0
+    assert(len(a) == len(b))
+    output = 0
 
-  for i in range(len(a)):
-    output += a[i] * b[i]
+    for i in range(len(a)):
+        output += a[i] * b[i]
 
-  return output
+    return output
 
 def vect_mat_mul(vect, matrix):
-  assert(len(vect) == len(matrix))
-  output = [0.0 for _ in range(len(vect))]
+    assert(len(vect) == len(matrix))
+    output = [0.0 for _ in range(len(vect))]
 
-  for i in range(len(matrix)):
-    output[i] = w_sum(vect, matrix[i])
+    for i in range(len(matrix)):
+        output[i] = w_sum(vect, matrix[i])
 
-  # [hurt, win, sad]
-  return [round(float(v), 3) for v in output]
-
+    # [hurt, win, sad]
+    return [round(float(v), 3) for v in output]
 
 # toes % win # fans
 weights = [
@@ -44,7 +42,7 @@ print("~~~ inputs: [hurt, win, sad]")
 
 print()
 for i in range(len(toes)):
-  d = np.array([toes[i], wrates[i], nfans[i]])
-  pred = neural_network(d, weights)
+    d = np.array([toes[i], wrates[i], nfans[i]])
+    pred = neural_network(d, weights)
 
-  print("--> Predication: index={}, inputs={}, outputs={}".format(i, d, pred))
+    print("--> Predication: index={}, inputs={}, outputs={}".format(i, d, pred))

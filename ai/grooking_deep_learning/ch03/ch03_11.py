@@ -2,12 +2,11 @@
 
 import numpy as np
 
-
 def neural_network(data, weights):
-  hid = data.dot(weights[0])
-  pred = hid.dot(weights[1])
+    hid = data.dot(weights[0])
+    pred = hid.dot(weights[1])
 
-  return pred
+    return pred
 
 # input->hidden: toes % win # fans
 ih_wgt = np.array([
@@ -35,5 +34,5 @@ print("~~~ layers: input, hidden, output")
 print()
 
 for d in data:
-  pred = neural_network(d, weights)
-  print("--> Predications: inputs={}, outputs={}".format(d, pred))
+    pred = neural_network(d, weights)
+    print("--> Predications: inputs={}, outputs={}".format(d, pred))
