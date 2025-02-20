@@ -9,8 +9,8 @@ import polars as pl
 from keras.datasets import mnist
 
 np.random.seed(1)
-alpha, iterations = 0.005, 350
-hidden_size, number_of_pixels = 40, 28*28
+alpha, iterations = 0.001, 300
+hidden_size, number_of_pixels = 100, 28*28
 
 relu = lambda x: (x>=0) * x     # returns x if x > 0, return 0 otherwise
 relu2deriv = lambda x: x>=0  # returns 1 for input > 0, return 0 otherwise
@@ -53,14 +53,22 @@ for n in range(iterations):
 
     for i in range(train_size):
         layer_0 = train_inputs[i:i+1]
+
         layer_1 = relu(np.dot(layer_0, weights_0_1))
+        dropout_mask = np.random.randint(2, size=layer_1.shape) # [0, 1] 50%
+        layer_1 *= (dropout_mask * 2)                                                # [0, 1] * 2 => [0, 2]
+
         layer_2 = np.dot(layer_1, weights_1_2)
 
         train_error += np.sum((train_labels[i:i+1] - layer_2) ** 2)
-        if np.argmax(layer_2) == np.argmax(train_labels[i:i+1]): correct_cnt+=1
+
+        equals = np.argmax(layer_2, axis=1) == np.argmax(train_labels[i:i+1], axis=1)
+        correct_cnt += np.sum(equals.astype(int))
 
         delta_2 = layer_2 - train_labels[i:i+1]  # predication - target
         delta_1 = np.dot(delta_2, weights_1_2.T)  * relu2deriv(layer_1)
+        delta_1 *= dropout_mask
+
         weights_1_2 -= np.dot(layer_1.T, delta_2) * alpha
         weights_0_1 -= np.dot(layer_0.T, delta_1) * alpha
 

@@ -9,8 +9,8 @@ import polars as pl
 from keras.datasets import mnist
 
 np.random.seed(1)
-alpha, iterations = 0.005, 350
-hidden_size, number_of_pixels = 40, 28*28
+batch_size, alpha, iterations  = 100, 0.001, 300
+hidden_size, number_of_pixels = 100, 28*28
 
 relu = lambda x: (x>=0) * x     # returns x if x > 0, return 0 otherwise
 relu2deriv = lambda x: x>=0  # returns 1 for input > 0, return 0 otherwise
@@ -30,7 +30,7 @@ print(f"==> 1. Parameters: alpha={alpha}, iterations={iterations}, hidden_size={
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
 train_size = min(1000, len(x_train))
-test_size = len(x_test)
+test_size = min(1000, len(x_test))
 train_inputs = x_train[0:train_size].reshape(train_size, number_of_pixels) / 255
 train_labels = one_hot_labels(y_train[0:train_size])
 
@@ -51,16 +51,24 @@ for n in range(iterations):
     n += 1 # iteration number
     correct_cnt, train_error = 0, 0.0
 
-    for i in range(train_size):
-        layer_0 = train_inputs[i:i+1]
+    for i in range(int(train_size/batch_size)):
+        batch_start, batch_end = i * batch_size, (i+1) * batch_size
+        layer_0 = train_inputs[batch_start:batch_end]
+
         layer_1 = relu(np.dot(layer_0, weights_0_1))
+        dropout_mask = np.random.randint(2, size=layer_1.shape) # [0, 1] 50%
+        layer_1 *= (dropout_mask * 2)                                                # [0, 1] * 2 => [0, 2]
+
         layer_2 = np.dot(layer_1, weights_1_2)
+        train_error += np.sum((train_labels[batch_start:batch_end] - layer_2) ** 2)
 
-        train_error += np.sum((train_labels[i:i+1] - layer_2) ** 2)
-        if np.argmax(layer_2) == np.argmax(train_labels[i:i+1]): correct_cnt+=1
+        equals = np.argmax(layer_2, axis=1) == np.argmax(train_labels[batch_start:batch_end], axis=1)
+        correct_cnt += np.sum(equals.astype(int))
 
-        delta_2 = layer_2 - train_labels[i:i+1]  # predication - target
+        delta_2 = (layer_2 - train_labels[batch_start:batch_end])  # predication - target
         delta_1 = np.dot(delta_2, weights_1_2.T)  * relu2deriv(layer_1)
+        delta_1 *= dropout_mask
+
         weights_1_2 -= np.dot(layer_1.T, delta_2) * alpha
         weights_0_1 -= np.dot(layer_0.T, delta_1) * alpha
 
