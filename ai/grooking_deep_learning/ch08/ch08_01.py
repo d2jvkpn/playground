@@ -85,6 +85,9 @@ for n in range(iterations):
 t2 = datetime.now().astimezone()
 
 print()
-print(f"<== 3. Results:\n    end_at={t2.isoformat('T')}\n    elapsed={t2-t1}")
+print(f"==> 3. Results:")
 print(f"    weights_0_1={pl.from_numpy(weights_0_1)}")
 print(f"    weights_1_2={pl.from_numpy(weights_1_2)}")
+
+print()
+print("<== 4. Exit: end_at={t2.isoformat('T')}, elapsed={t2-t1}")

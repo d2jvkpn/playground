@@ -18,7 +18,7 @@ relu2deriv = lambda x: x>=0  # returns 1 for input > 0, return 0 otherwise
 def one_hot_labels(labels): # [2] -> [[0, 0, 1, 0, 0, 0, 0, 0, 0, 0]]
     result = np.zeros((len(labels),10))
 
-    for i,v in enumerate(labels):
+    for i, v in enumerate(labels):
         result[i][v] = 1
 
     return result
@@ -26,11 +26,14 @@ def one_hot_labels(labels): # [2] -> [[0, 0, 1, 0, 0, 0, 0, 0, 0, 0]]
 print()
 print(f"==> 1. Parameters: alpha={alpha}, iterations={iterations}, hidden_size={hidden_size}, number_of_pixels={number_of_pixels}")
 
+
 #### 1. load data
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-train_size = min(1000, len(x_train))
+train_size = 1000
+assert(train_size <= len(x_train))
 test_size = len(x_test)
+
 train_inputs = x_train[0:train_size].reshape(train_size, number_of_pixels) / 255
 train_labels = one_hot_labels(y_train[0:train_size])
 
@@ -53,19 +56,18 @@ for n in range(iterations):
 
     for i in range(train_size):
         layer_0 = train_inputs[i:i+1]
+        goal = train_labels[i:i+1]
 
         layer_1 = relu(np.dot(layer_0, weights_0_1))
         dropout_mask = np.random.randint(2, size=layer_1.shape) # [0, 1] 50%
         layer_1 *= (dropout_mask * 2)                                                # [0, 1] * 2 => [0, 2]
-
         layer_2 = np.dot(layer_1, weights_1_2)
 
-        train_error += np.sum((train_labels[i:i+1] - layer_2) ** 2)
-
-        equals = np.argmax(layer_2, axis=1) == np.argmax(train_labels[i:i+1], axis=1)
+        train_error += np.sum((goal - layer_2) ** 2)
+        equals = np.argmax(layer_2, axis=1) == np.argmax(goal, axis=1)
         correct_cnt += np.sum(equals.astype(int))
 
-        delta_2 = layer_2 - train_labels[i:i+1]  # predication - target
+        delta_2 = layer_2 - goal  # predication - target
         delta_1 = np.dot(delta_2, weights_1_2.T)  * relu2deriv(layer_1)
         delta_1 *= dropout_mask
 
@@ -73,7 +75,6 @@ for n in range(iterations):
         weights_0_1 -= np.dot(layer_0.T, delta_1) * alpha
 
     train_error, train_acc = train_error/train_size, correct_cnt/train_size
-    # stdout.write(f"--> I{n:03d}: train_error={train_error:.6f}, train_accuracy={train_accuracy:.3f}\n")
 
     if n% 10 == 0 or n == iterations-1:
         correct_cnt, test_error = 0, 0.0
@@ -89,10 +90,13 @@ for n in range(iterations):
         test_error, test_acc = test_error/test_size, correct_cnt/test_size
         stdout.write(f"--> I{n:03d}: train_error={train_error:.6f}, train_accuracy={train_acc:.3f}, test_error={test_error:.6f}, test_accuracy={test_acc:.3f}\n")
 
-#### 3. Output the results
 t2 = datetime.now().astimezone()
 
+#### 3. Output the results
 print()
-print(f"<== 3. Results:\n    end_at={t2.isoformat('T')}\n    elapsed={t2-t1}")
+print(f"==> 3. Results:")
 print(f"    weights_0_1={pl.from_numpy(weights_0_1)}")
 print(f"    weights_1_2={pl.from_numpy(weights_1_2)}")
+
+print()
+print(f"<== 4. Exit: end_at={t2.isoformat('T')}, elapsed={t2-t1}")
