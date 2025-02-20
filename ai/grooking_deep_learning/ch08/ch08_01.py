@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
+
 from sys import stdout, stderr
+from datetime import datetime
 
 import numpy as np
+import polars as pl
 from keras.datasets import mnist
 
-#### 1. init
 np.random.seed(1)
 alpha, iterations, hidden_size, number_of_pixels = (0.005, 350, 40, 28*28)
 
@@ -20,22 +22,29 @@ def one_hot_labels(labels): # [2] -> [[0, 0, 1, 0, 0, 0, 0, 0, 0, 0]]
 
     return ouput
 
-#### 2. load data
+print()
+print(f"==> 1. Parameters: alpha={alpha}, iterations={iterations}, hidden_size={hidden_size}, number_of_pixels={number_of_pixels}")
+
+#### 1. load data
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-train_inputs = x_train[0:1000].reshape(1000, number_of_pixels) / 255
-train_labels = one_hot_labels(y_train[0:1000])
+train_size = 1000
+test_size = len(x_test)
+train_inputs = x_train[0:train_size].reshape(train_size, number_of_pixels) / 255
+train_labels = one_hot_labels(y_train[0:train_size])
 
-test_inputs = x_test.reshape(len(x_test), number_of_pixels) / 255
+test_inputs = x_test[0:test_size].reshape(test_size, number_of_pixels) / 255
 test_labels = one_hot_labels(y_test)
 
-#### 3. trainning
+#### 2. Trainning the neural network
 # Neural Network: layer_0 * weights_0_1 => layer_1 * weights_1_2 => layer_2
-print(f"==> Parameters: alpha={alpha}, iterations={iterations}, hidden_size={hidden_size}, number_of_pixels={number_of_pixels}")
 
 weights_0_1 = 0.2*np.random.random((number_of_pixels, hidden_size)) - 0.1
 weights_1_2 = 0.2*np.random.random((hidden_size, 10)) - 0.1
-train_size, test_size = len(train_inputs), len(test_inputs)
+
+t1 = datetime.now().astimezone()
+print()
+print(f"==> 2. Trainning: start_at={t1.isoformat('T')}, train_size={train_size}, test_size={test_size}")
 
 for n in range(iterations):
     n += 1 # iteration number
@@ -55,7 +64,7 @@ for n in range(iterations):
         weights_0_1 -= np.dot(layer_0.T, delta_1) * alpha
 
     train_error, train_acc = train_error/train_size, correct_cnt/train_size
-    # stdout.write(f"--> I{n:03d}: train_error={train_error:.6f}, train_acc={train_acc:.3f}\n")
+    # stdout.write(f"--> I{n:03d}: train_error={train_error:.6f}, train_accuracy={train_accuracy:.3f}\n")
 
     if n% 10 == 0 or n == iterations-1:
         correct_cnt, test_error = 0, 0.0
@@ -69,8 +78,12 @@ for n in range(iterations):
             if np.argmax(layer_2) ==  np.argmax(test_labels[i:i+1]): correct_cnt += 1
 
         test_error, test_acc = test_error/test_size, correct_cnt/test_size
-        stdout.write(f"--> I{n:03d}: train_error={train_error:.6f}, train_acc={train_acc:.3f}, test_error={test_error:.6f}, test_acc={test_acc:.3f}\n")
+        stdout.write(f"--> I{n:03d}: train_error={train_error:.6f}, train_accuracy={train_acc:.3f}, test_error={test_error:.6f}, test_accuracy={test_acc:.3f}\n")
 
-print("<== Results:")
-print(f"    weights_0_1[0:3]: {weights_0_1[0:3]}")
-print(f"    weights_1_2[0:3]: {weights_1_2[0:3]}")
+#### 3. Output the results
+t2 = datetime.now().astimezone()
+
+print()
+print(f"<== 3. Results:\n    end_at={t2.isoformat('T')}\n    elapsed={t2-t1}")
+print(f"    weights_0_1={pl.from_numpy(weights_0_1)}")
+print(f"    weights_1_2={pl.from_numpy(weights_1_2)}")
