@@ -55,7 +55,8 @@ function git_root() {
 
 ####
 function pyvenv.local() {
-    py_venv=${1:-pyvenv.local}
+    py_venv=${1:-pyvenv.local}; py_venv=${py_venv%/}
+
     if [ ! -s $py_venv/bin/python3 ]; then
         echo "==> python3 -m venv $py_venv"
         python3 -m venv $py_venv
