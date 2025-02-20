@@ -7,7 +7,7 @@ from keras.datasets import mnist
 
 #### 1. init
 np.random.seed(1)
-alpha, iterations, hidden_size, pixels = (0.005, 350, 40, 28*28)
+alpha, iterations, hidden_size, number_of_pixels = (0.005, 350, 40, 28*28)
 
 relu = lambda x: (x>=0) * x     # returns x if x > 0, return 0 otherwise
 relu2deriv = lambda x: x>=0  # returns 1 for input > 0, return 0 otherwise
@@ -23,18 +23,18 @@ def one_hot_labels(labels): # [2] -> [[0, 0, 1, 0, 0, 0, 0, 0, 0, 0]]
 #### 2. load data
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-train_inputs = x_train[0:1000].reshape(1000, pixels) / 255
+train_inputs = x_train[0:1000].reshape(1000, number_of_pixels) / 255
 train_labels = one_hot_labels(y_train[0:1000])
 
-test_inputs = x_test.reshape(len(x_test), pixels) / 255
+test_inputs = x_test.reshape(len(x_test), number_of_pixels) / 255
 test_labels = one_hot_labels(y_test)
 
 #### 3. trainning
 # layer_0 * weights_0_1 => layer_1 * weights_1_2 => layer_2
 
-print(f"==> parameters: alpha={alpha}, iterations={iterations}, hidden_size={hidden_size}, pixels={pixels}")
+print(f"==> parameters: alpha={alpha}, iterations={iterations}, hidden_size={hidden_size}, number_of_pixels={number_of_pixels}")
 
-weights_0_1 = 0.2*np.random.random((pixels, hidden_size)) - 0.1
+weights_0_1 = 0.2*np.random.random((number_of_pixels, hidden_size)) - 0.1
 weights_1_2 = 0.2*np.random.random((hidden_size, 10)) - 0.1
 
 for j in range(iterations):
