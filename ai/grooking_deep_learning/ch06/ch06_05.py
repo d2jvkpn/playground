@@ -1,6 +1,9 @@
-#!/bin/python3
+#!/usr/bin/env python3
 
 import numpy as np
+
+alpha = 0.1
+
 
 # 6*3
 streelights = np.array([
@@ -23,7 +26,6 @@ walk_vs_stop = np.array([
 ])
 
 weights = np.array([0.5, 0.48, -0.7])
-alpha = 0.1
 
 input = streelights[0]
 goal = walk_vs_stop[0]

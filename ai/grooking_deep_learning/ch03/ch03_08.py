@@ -1,11 +1,11 @@
-#!/bin/python3
+#!/usr/bin/env python3
+
 
 # one input => multiply outputs
 
 def neural_network(data, weights):
     pred = ele_mul(data, weights)
     return pred
-
 
 def ele_mul(number, vector):
     output = [0.0 for _ in range(len(vector))] # [hurt, win, sad]

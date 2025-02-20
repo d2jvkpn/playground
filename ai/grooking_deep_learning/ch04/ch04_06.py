@@ -1,4 +1,5 @@
-#!/bin/python3
+#!/usr/bin/env python3
+
 
 weight = 0.1
 lr = 0.01 # learning rate

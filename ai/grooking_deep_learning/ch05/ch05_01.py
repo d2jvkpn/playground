@@ -1,10 +1,9 @@
-#!/bin/python3
+#!/usr/bin/env python3
 
 
 def neural_network(data, weights):
     pred = w_sum(data, weights)
     return pred
-
 
 def w_sum(a, b):
     assert(len(a) == len(b))
@@ -22,6 +21,7 @@ def ele_mul(scalar, vector):
         output[i] = scalar * vector[i]
 
     return output
+
 
 weights = [0.1, 0.2, -0.1]
 

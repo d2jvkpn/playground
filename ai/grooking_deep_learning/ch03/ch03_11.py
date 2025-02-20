@@ -1,4 +1,5 @@
-#!/bin/python3
+#!/usr/bin/env python3
+
 
 import numpy as np
 
@@ -7,6 +8,7 @@ def neural_network(data, weights):
     pred = hid.dot(weights[1])
 
     return pred
+
 
 # input->hidden: toes % win # fans
 ih_wgt = np.array([

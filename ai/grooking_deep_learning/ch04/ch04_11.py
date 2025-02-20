@@ -1,9 +1,12 @@
-#!/bin/python3
+#!/usr/bin/env python3
+
+
+alpha = 1.0
+
 
 data = 0.85
 goal = 1.0
 weight = 0.1
-alpha = 1.0
 
 for iteration in range(10):
     pred = data * weight

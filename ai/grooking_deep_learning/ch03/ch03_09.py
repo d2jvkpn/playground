@@ -1,4 +1,5 @@
-#!/bin/python3
+#!/usr/bin/env python3
+
 
 import numpy as np
 
@@ -24,6 +25,7 @@ def vect_mat_mul(vect, matrix):
 
     # [hurt, win, sad]
     return [round(float(v), 3) for v in output]
+
 
 # toes % win # fans
 weights = [

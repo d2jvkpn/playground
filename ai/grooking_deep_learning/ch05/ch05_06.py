@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/env python3
 
 
 # inputs: array[m]
@@ -15,7 +15,6 @@ def w_sum(a, b):
 
     return output
 
-
 # array[M] * matrix[M, M] = array[M]
 def vect_mat_mul(vect, matrix):
     assert(len(matrix) > 0 and len(vect) == len(matrix[0]))
@@ -26,11 +25,9 @@ def vect_mat_mul(vect, matrix):
 
     return output
 
-
 def neural_network(data, weights):
     pred = vect_mat_mul(data, weights)
     return pred
-
 
 def outer_prod(vec_a, vec_b):
     out = [[0.0 for _ in range(len(vec_b))] for _ in range(len(vec_a))]
@@ -40,6 +37,7 @@ def outer_prod(vec_a, vec_b):
             out[i][j] = vec_a[i] * vec_b[j]
 
     return out
+
 
 # toes %win fans
 weights = [

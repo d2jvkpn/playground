@@ -1,4 +1,5 @@
-#!/bin/python3
+#!/usr/bin/env python3
+
 
 data = 0.5
 goal = 0.8

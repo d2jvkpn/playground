@@ -1,6 +1,11 @@
-#!/bin/python3
+#!/usr/bin/env python3
+
 
 import numpy as np
+
+np.random.seed(1)
+alpha = 0.2
+
 
 #### 1. funcs
 def relu(x: np.typing.ArrayLike): # Rectified Linear Unit
@@ -9,8 +14,6 @@ def relu(x: np.typing.ArrayLike): # Rectified Linear Unit
 def relu2deriv(output: np.typing.ArrayLike):
     return (output > 0).astype(int) # numpy array
 
-np.random.seed(1)
-alpha = 0.2
 hidden_size = 4
 
 weights_0_1 = 2*np.random.random((3, hidden_size)) - 1

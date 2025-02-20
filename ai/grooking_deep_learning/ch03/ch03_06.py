@@ -1,4 +1,5 @@
-#!/bin/python3
+#!/usr/bin/env python3
+
 
 def elementwise_multiplication(vec_a, vec_b):
     assert(len(vec_a) == len(vec_b))
@@ -8,7 +9,6 @@ def elementwise_multiplication(vec_a, vec_b):
         result += vec_a[i] * vec_b[i]
 
     return result
-
 
 def w_sum(a, b):
     assert(len(a) == len(b))
