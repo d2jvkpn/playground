@@ -12,9 +12,12 @@ import polars as pl
 from keras.datasets import mnist
 
 random_seed = 1
+batch_size = 100
+alpha = 0.001
+iterations = 5000  # 1000, 2000, 5000
+hidden_size = 256 # 128, 256
+
 np.random.seed(random_seed)
-batch_size, alpha, iterations  = 100, 0.001, 1000
-hidden_size = 128
 
 relu = lambda x: (x>=0) * x     # returns x if x > 0, return 0 otherwise
 relu2deriv = lambda x: x>=0  # returns 1 for input > 0, return 0 otherwise
@@ -103,7 +106,7 @@ for n in range(iterations):
         test_error, test_acc = test_error/test_size, correct_cnt/test_size
 
         trainning_steps.append((n, train_error, train_acc, test_error, test_acc))
-        stdout.write(f"--> I{n:03d}: train_error={train_error:.6f}, train_accuracy={train_acc:.3f}, test_error={test_error:.6f}, test_accuracy={test_acc:.3f}\n")
+        stdout.write(f"--> I{n:04d}: train_error={train_error:.6f}, train_accuracy={train_acc:.3f}, test_error={test_error:.6f}, test_accuracy={test_acc:.3f}\n")
 
 t2 = datetime.now().astimezone()
 
