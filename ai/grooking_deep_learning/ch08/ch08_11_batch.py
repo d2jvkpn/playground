@@ -64,9 +64,9 @@ weights_0_1 = 0.2*np.random.random((pixels, hidden_size)) - 0.1
 weights_1_2 = 0.2*np.random.random((hidden_size, 10)) - 0.1
 trainning_steps = []
 
-start_at = datetime.now().astimezone()
+t1 = datetime.now().astimezone()
 print()
-print(f"==> 2. Trainning: start_at={start_at.isoformat('T')}, train_size={train_size}, test_size={test_size}")
+print(f"==> 2. Trainning: start_at={t1.isoformat('T')}, train_size={train_size}, test_size={test_size}")
 
 for n in range(iterations):
     n += 1 # iteration number
@@ -113,8 +113,7 @@ for n in range(iterations):
         trainning_steps.append((n, train_error, train_acc, test_error, test_acc))
         stdout.write(f"--> I{n:03d}: train_error={train_error:.6f}, train_accuracy={train_acc:.3f}, test_error={test_error:.6f}, test_accuracy={test_acc:.3f}\n")
 
-end_at = datetime.now().astimezone()
-elapsed = end_at - start_at
+t2 = datetime.now().astimezone()
 
 #### 3. Output the results
 os.makedirs("data", mode=511, exist_ok=True)
@@ -129,9 +128,9 @@ parameters = {
   "alpha": 0.001,
   "iterations": 500,
   "hidden_size": 120,
-  "start_at": start_at.isoformat('T'),
-  "end_at": end_at.isoformat('T'),
-  "elapsed": format_timedelta(elapsed),
+  "start_at": t1.isoformat('T'),
+  "end_at": t2.isoformat('T'),
+  "elapsed": format_timedelta(t2 - t1),
 }
 
 wts_0_1.write_csv(path.join("data", "wts_0_1.tsv"), separator='\t')
@@ -147,4 +146,4 @@ print(f"    weights_0_1={wts_0_1}")
 print(f"    weights_1_2={wts_1_2}")
 
 print()
-print(f"<== 4. Exit: elapsed={elapsed}")
+print(f"<== 4. Exit: elapsed={t2 - t1}")
