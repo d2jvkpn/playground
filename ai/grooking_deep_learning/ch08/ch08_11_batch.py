@@ -75,9 +75,8 @@ for n in range(iterations):
         layer_1 = relu(np.dot(layer_0, weights_0_1))
         #dropout_mask = np.random.randint(2, size=layer_1.shape) # [0, 1] 50%
         #layer_1 *= (dropout_mask * 2)   # [0, 1] * 2 => [0, 2]
-        perc = 0.5
-        dropout_mask = np.random.choice([0, 1], size=layer_1.shape, p=[perc, 1-perc])
-        layer_1 *= (dropout_mask / (1-perc))
+        dropout_mask = np.random.choice([0, 1], size=layer_1.shape, p=[0.5, 0.5])
+        layer_1 *= (dropout_mask / 0.5)
 
         layer_2 = np.dot(layer_1, weights_1_2)
 
