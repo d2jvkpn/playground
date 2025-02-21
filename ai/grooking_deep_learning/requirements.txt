@@ -9,7 +9,7 @@ flatbuffers==25.2.10
 gast==0.6.0
 google-pasta==0.2.0
 grpcio==1.70.0
-h5py==3.12.1
+h5py==3.13.0
 idna==3.10
 ipython==8.32.0
 jedi==0.19.2
@@ -28,11 +28,13 @@ optree==0.14.0
 packaging==24.2
 parso==0.8.4
 pexpect==4.9.0
+polars==1.22.0
 prompt_toolkit==3.0.50
 protobuf==5.29.3
 ptyprocess==0.7.0
 pure_eval==0.2.3
 Pygments==2.19.1
+PyYAML==6.0.2
 requests==2.32.3
 rich==13.9.4
 setuptools==75.8.0

@@ -5,6 +5,6 @@ if [ -s  requirements.txt ]; then
     pip install -r requirements.txt
 else
     pip install ipython
-    pip install numpy keras tensorflow polars
+    pip install numpy keras tensorflow polars pyyaml
     pip3 freeze > requirements.txt
 fi
