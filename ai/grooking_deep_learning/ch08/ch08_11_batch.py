@@ -31,10 +31,9 @@ print(f"==> 1. Parameters: random_seed={random_seed}, alpha={alpha}, iterations=
 #### 1. load data
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-train_size = 1000
-assert(train_size <= len(x_train))
+train_size = min(1000, len(x_train))
 test_size = len(x_test)
-pixels = x_train[0].shape[0] * x_train[0].shape[1] # 28*28
+pixels = x_train[0].size # 28*28
 
 train_inputs = x_train[0:train_size].reshape(train_size, pixels) / 255
 train_labels = one_hot_labels(y_train[0:train_size])
@@ -63,8 +62,12 @@ for n in range(iterations):
         goal = train_labels[batch_start:batch_end]
 
         layer_1 = relu(np.dot(layer_0, weights_0_1))
-        dropout_mask = np.random.randint(2, size=layer_1.shape) # [0, 1] 50%
-        layer_1 *= (dropout_mask * 2)                                                # [0, 1] * 2 => [0, 2]
+        #dropout_mask = np.random.randint(2, size=layer_1.shape) # [0, 1] 50%
+        #layer_1 *= (dropout_mask * 2)   # [0, 1] * 2 => [0, 2]
+        perc = 0.2
+        dropout_mask = np.random.choice([0, 1], size=layer_1.shape, p=[perc, 1-perc])
+        layer_1 *= (dropout_mask / (1-perc))
+
         layer_2 = np.dot(layer_1, weights_1_2)
 
         train_error += np.sum((goal - layer_2) ** 2)
