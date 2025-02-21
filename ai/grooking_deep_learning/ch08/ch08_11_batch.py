@@ -14,7 +14,7 @@ from keras.datasets import mnist
 random_seed = 1
 np.random.seed(random_seed)
 batch_size, alpha, iterations  = 100, 0.001, 500
-hidden_size = 120
+hidden_size = 100
 
 relu = lambda x: (x>=0) * x     # returns x if x > 0, return 0 otherwise
 relu2deriv = lambda x: x>=0  # returns 1 for input > 0, return 0 otherwise
@@ -28,14 +28,8 @@ def one_hot_labels(labels): # [2] -> [[0, 0, 1, 0, 0, 0, 0, 0, 0, 0]]
     return result
 
 def format_timedelta(td: timedelta) -> str:
-    if td < timedelta(0):
-        sign = "-"
-        td = -td
-    else:
-        sign = ""
-
-    total_seconds = int(td.total_seconds())
-    microseconds = td.microseconds
+    sign, td = ("-", -td) if td < timedelta(0) else ("", td)
+    total_seconds, microseconds = int(td.total_seconds()), td.microseconds
     hours, remainder = divmod(total_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
 
@@ -80,7 +74,7 @@ for n in range(iterations):
         layer_1 = relu(np.dot(layer_0, weights_0_1))
         #dropout_mask = np.random.randint(2, size=layer_1.shape) # [0, 1] 50%
         #layer_1 *= (dropout_mask * 2)   # [0, 1] * 2 => [0, 2]
-        perc = 0.2
+        perc = 0.5
         dropout_mask = np.random.choice([0, 1], size=layer_1.shape, p=[perc, 1-perc])
         layer_1 *= (dropout_mask / (1-perc))
 
@@ -120,7 +114,12 @@ os.makedirs("data", mode=511, exist_ok=True)
 
 wts_0_1 = pl.from_numpy(weights_0_1)
 wts_1_2 = pl.from_numpy(weights_1_2)
-trainning_steps = pl.from_records(trainning_steps, schema=["iteration", "train_error", "train_accuracy", "test_error", "test_accuracy"])
+
+trainning_steps = pl.from_records(
+  trainning_steps,
+  orient="row",
+  schema=["iteration", "train_error", "train_accuracy", "test_error", "test_accuracy"],
+)
 
 parameters = {
   "random_seed": 1,
