@@ -13,8 +13,8 @@ from keras.datasets import mnist
 
 random_seed = 1
 np.random.seed(random_seed)
-batch_size, alpha, iterations  = 100, 0.001, 500
-hidden_size = 100
+batch_size, alpha, iterations  = 100, 0.001, 1000
+hidden_size = 128
 
 relu = lambda x: (x>=0) * x     # returns x if x > 0, return 0 otherwise
 relu2deriv = lambda x: x>=0  # returns 1 for input > 0, return 0 otherwise
