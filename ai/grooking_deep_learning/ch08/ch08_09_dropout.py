@@ -38,7 +38,7 @@ train_inputs = x_train[0:train_size].reshape(train_size, number_of_pixels) / 255
 train_labels = one_hot_labels(y_train[0:train_size])
 
 test_inputs = x_test[0:test_size].reshape(test_size, number_of_pixels) / 255
-test_labels = one_hot_labels(y_test)
+test_labels = one_hot_labels(y_test[0:test_size])
 
 #### 2. Trainning the neural network
 # Neural Network: layer_0 * weights_0_1 => layer_1 * weights_1_2 => layer_2
