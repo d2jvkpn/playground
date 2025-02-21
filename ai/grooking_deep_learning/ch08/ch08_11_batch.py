@@ -29,11 +29,9 @@ def one_hot_labels(labels): # [2] -> [[0, 0, 1, 0, 0, 0, 0, 0, 0, 0]]
 
 def format_timedelta(td: timedelta) -> str:
     sign, td = ("-", -td) if td < timedelta(0) else ("", td)
-    total_seconds, microseconds = int(td.total_seconds()), td.microseconds
-    hours, remainder = divmod(total_seconds, 3600)
+    hours, remainder = divmod(int(td.total_seconds()), 3600)
     minutes, seconds = divmod(remainder, 60)
-
-    return f"{sign}{hours}:{minutes:02}:{seconds:02}.{microseconds:06}"
+    return f"{sign}{hours}:{minutes:02}:{seconds:02}.{td.microseconds:06}"
 
 print()
 print(f"==> 1. Parameters: random_seed={random_seed}, alpha={alpha}, iterations={iterations}, hidden_size={hidden_size}")
