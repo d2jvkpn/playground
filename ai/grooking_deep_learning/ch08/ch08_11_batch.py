@@ -125,6 +125,8 @@ parameters = {
   "alpha": 0.001,
   "iterations": 500,
   "hidden_size": 120,
+  "train_size": train_size,
+  "test_size": test_size,
   "start_at": t1.isoformat('T'),
   "end_at": t2.isoformat('T'),
   "elapsed": format_timedelta(t2 - t1),
