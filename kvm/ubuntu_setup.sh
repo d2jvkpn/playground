@@ -58,9 +58,13 @@ fi
 /usr/lib/update-notifier/update-motd-updates-available --force
 
 fp=/var/lib/ubuntu-advantage/apt-esm/etc/apt/sources.list.d/ubuntu-esm-apps.list
-[ -s $fp ] && sed -i '/^deb/s/^/#-- /' $fp
+[ -s $fp ] && sudo sed -i '/^deb/s/^/#-- /' $fp
 
-[ -s /etc/default/motd-news ] && sed -i '/ENABLED/s/1/0/' /etc/default/motd-news
+#### ??? How to disable esm-apps notification
+#  /var/lib/ubuntu-advantage/apt-esm/etc/apt/sources.list.d/ubuntu-esm-apps.sources
+# /usr/share/keyrings/ubuntu-pro-esm-apps.gpg
+
+[ -s /etc/default/motd-news ] && sudo sed -i '/ENABLED/s/1/0/' /etc/default/motd-news
 #- sudo sed -i '/=motd.dynamic/s/^/#-- /' /etc/pam.d/sshd
 
 #### 3. setup
