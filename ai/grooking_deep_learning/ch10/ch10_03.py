@@ -38,7 +38,7 @@ def one_hot_labels(labels): # [2] -> [[0, 0, 1, 0, 0, 0, 0, 0, 0, 0]]
 
     return result
 
-def flatten_layer_v1(layer, shape): # matrix(n, 28, 28), tuple(3, 3) -> ??
+def flatten_layer_v1(layer, shape): # matrix(n, 28, 28), tuple(3, 3) -> matrix(n*(28-3)*(28-3), 9*9)
     sects = list()
     for row in range(layer.shape[1] - shape[0]):
         for col in range(layer.shape[2] - shape[1]):
@@ -101,7 +101,7 @@ for n in range(iterations):
         #es = expanded_input.shape
         #flattened_input =  expanded_input.reshape(es[0]*es[1], -1) # shape=(62500, 9)
 
-        flattened_input = flatten_layer_v1(layer_0, kernel_shape)
+        flattened_input = flatten_layer_v1(layer_0, kernel_shape)  # shape=(62500, 9)
 
         kernel_output = np.dot(flattened_input, weights_kernels)    # shape=(62500, 16)
         layer_1 = tanh(kernel_output.reshape(layer_0.shape[0], -1)) # shape=(100, 10000)
