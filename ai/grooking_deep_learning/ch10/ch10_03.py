@@ -38,7 +38,7 @@ def one_hot_labels(labels): # [2] -> [[0, 0, 1, 0, 0, 0, 0, 0, 0, 0]]
 
     return result
 
-def flatten_layer_v1(layer, shape): # matrix(n, 28, 28), tuple(3, 3) -> matrix(n*(28-3)*(28-3), 9*9)
+def flatten_layer_v1(layer, shape): # matrix(n, 28, 28), tuple(3, 3) -> matrix(n*(28-3)*(28-3), 3*3)
     sects = list()
     for row in range(layer.shape[1] - shape[0]):
         for col in range(layer.shape[2] - shape[1]):
