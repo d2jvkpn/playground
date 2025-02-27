@@ -38,6 +38,12 @@ def one_hot_labels(labels): # [2] -> [[0, 0, 1, 0, 0, 0, 0, 0, 0, 0]]
 
     return result
 
+def format_timedelta(td: timedelta) -> str:
+    sign, td = ("-", -td) if td < timedelta(0) else ("", td)
+    hours, remainder = divmod(int(td.total_seconds()), 3600)
+    minutes, seconds = divmod(remainder, 60)
+    return f"{sign}{hours}:{minutes:02}:{seconds:02}.{td.microseconds:06}"
+
 def flatten_v1(layer, shape): # matrix(n, 28, 28), tuple(3, 3) -> matrix(n*(28-3)*(28-3), 3*3)
     sects = list()
     for row in range(layer.shape[1] - shape[0]):
@@ -55,10 +61,11 @@ def flatten_v2(layer, shape):  # matrix(n, 28, 28), tuple(3, 3) -> matrix(n*(28-
         dims = (matrix.shape[0] - shape[0], matrix.shape[1] - shape[1], shape[0], shape[1])
         output = np.lib.stride_tricks.as_strided(matrix, shape=dims, strides=matrix.strides*2)
         return output.reshape(output.shape[0] * output.shape[1], -1)
-    #np.apply_along_axis(lambda m: flatten(m, (3, 3)), axis=0, arr=layer) # can't do this as the input.shape != output.shape
 
+    #np.apply_along_axis(lambda m: flatten(m, (3, 3)), axis=0, arr=layer) # can't do this as the input.shape != output.shape
     #sects =  [cnn_convert(layer[i], (3, 3)) for i in range(layer.shape[0])]
     #return np.concat(sects, axis=0)
+
     dim2 = (layer.shape[1] - shape[0]) * (layer.shape[2] - shape[1])
     dims = (layer.shape[0], dim2, shape[0] * shape[1])
     result = np.zeros(dims)
@@ -68,11 +75,6 @@ def flatten_v2(layer, shape):  # matrix(n, 28, 28), tuple(3, 3) -> matrix(n*(28-
 
     return result.reshape((result.shape[0]*result.shape[1], result.shape[2]))
 
-def format_timedelta(td: timedelta) -> str:
-    sign, td = ("-", -td) if td < timedelta(0) else ("", td)
-    hours, remainder = divmod(int(td.total_seconds()), 3600)
-    minutes, seconds = divmod(remainder, 60)
-    return f"{sign}{hours}:{minutes:02}:{seconds:02}.{td.microseconds:06}"
 
 print()
 print(f"==> 1. Parameters: random_seed={random_seed}, alpha={alpha}, iterations={iterations}, hidden_size={hidden_size}, num_kernels={num_kernels}")

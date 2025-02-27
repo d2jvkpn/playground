@@ -14,8 +14,8 @@ from keras.datasets import mnist
 random_seed = 1
 batch_size = 100
 alpha = 5
-iterations = 500  # 500, 1000, 2000, 5000
-hidden_size = 128 # 128, 256, 512, 1024
+iterations = 1000  # 500, 1000, 2000, 5000
+hidden_size = 256# 128, 256, 512, 1024
 
 np.random.seed(random_seed)
 
