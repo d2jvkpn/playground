@@ -38,7 +38,7 @@ def one_hot_labels(labels): # [2] -> [[0, 0, 1, 0, 0, 0, 0, 0, 0, 0]]
 
     return result
 
-def flatten_layer_v1(layer, shape): # matrix(n, 28, 28), tuple(3, 3) -> matrix(n*(28-3)*(28-3), 3*3)
+def flatten_v1(layer, shape): # matrix(n, 28, 28), tuple(3, 3) -> matrix(n*(28-3)*(28-3), 3*3)
     sects = list()
     for row in range(layer.shape[1] - shape[0]):
         for col in range(layer.shape[2] - shape[1]):
@@ -49,6 +49,24 @@ def flatten_layer_v1(layer, shape): # matrix(n, 28, 28), tuple(3, 3) -> matrix(n
     es = expanded_input.shape
     result = expanded_input.reshape(es[0] * es[1], -1)
     return result
+
+def flatten_v2(layer, shape):  # matrix(n, 28, 28), tuple(3, 3) -> matrix(n*(28-3)*(28-3), 3*3)
+    def  cnn_convert(matrix, shape): # Convolutional Neural Networks
+        dims = (matrix.shape[0] - shape[0], matrix.shape[1] - shape[1], shape[0], shape[1])
+        output = np.lib.stride_tricks.as_strided(matrix, shape=dims, strides=matrix.strides*2)
+        return output.reshape(output.shape[0] * output.shape[1], -1)
+    #np.apply_along_axis(lambda m: flatten(m, (3, 3)), axis=0, arr=layer) # can't do this as the input.shape != output.shape
+
+    #sects =  [cnn_convert(layer[i], (3, 3)) for i in range(layer.shape[0])]
+    #return np.concat(sects, axis=0)
+    dim2 = (layer.shape[1] - shape[0]) * (layer.shape[2] - shape[1])
+    dims = (layer.shape[0], dim2, shape[0] * shape[1])
+    result = np.zeros(dims)
+
+    for i in range(layer.shape[0]):
+        result[i] = cnn_convert(layer[i], shape)
+
+    return result.reshape((result.shape[0]*result.shape[1], result.shape[2]))
 
 def format_timedelta(td: timedelta) -> str:
     sign, td = ("-", -td) if td < timedelta(0) else ("", td)
@@ -64,7 +82,6 @@ print(f"==> 1. Parameters: random_seed={random_seed}, alpha={alpha}, iterations=
 
 train_size = min(1000, len(x_train))
 test_size = len(x_test)
-image = x_train[0]
 
 train_inputs = x_train[0:train_size] / 255
 train_labels = one_hot_labels(y_train[0:train_size])
@@ -101,7 +118,7 @@ for n in range(iterations):
         #es = expanded_input.shape
         #flattened_input =  expanded_input.reshape(es[0]*es[1], -1) # shape=(62500, 9)
 
-        flattened_input = flatten_layer_v1(layer_0, kernel_shape)  # shape=(62500, 9)
+        flattened_input = flatten_v2(layer_0, kernel_shape)  # shape=(62500, 9)
 
         kernel_output = np.dot(flattened_input, weights_kernels)    # shape=(62500, 16)
         layer_1 = tanh(kernel_output.reshape(layer_0.shape[0], -1)) # shape=(100, 10000)
@@ -124,10 +141,10 @@ for n in range(iterations):
 
     train_acc = correct_cnt/train_size
 
-    if n%10 == 0 or n == iterations-1:
+    if n%10 == 0 or n == iterations:
         layer_0, goal = test_inputs, test_labels
 
-        flattened_input = flatten_layer_v1(layer_0, kernel_shape)
+        flattened_input = flatten_v2(layer_0, kernel_shape)
         kernel_output = np.dot(flattened_input, weights_kernels)
 
         layer_1 = tanh(kernel_output.reshape(-1, hidden_size))
@@ -138,8 +155,9 @@ for n in range(iterations):
         correct_cnt = np.sum(equals.astype(int))
         test_acc = correct_cnt/test_size
 
-        trainning_steps.append((n, train_acc, test_acc))
-        stdout.write(f"--> I{n:04d}: train_accuracy={train_acc:.3f}, test_accuracy={test_acc:.3f}\n")
+        end_at = datetime.now().astimezone().isoformat('T')
+        trainning_steps.append((n, train_acc, test_acc, end_at))
+        stdout.write(f"--> I{n:04d}: train_accuracy={train_acc:.3f}, test_accuracy={test_acc:.3f}, end_at={end_at}\n")
 
 t2 = datetime.now().astimezone()
 
@@ -152,7 +170,7 @@ wts_1_2 = pl.from_numpy(weights_1_2)
 trainning_steps = pl.from_records(
   trainning_steps,
   orient="row",
-  schema=["iteration", "train_accuracy", "test_accuracy"],
+  schema=["iteration", "train_accuracy", "test_accuracy", "end_at"],
 )
 
 parameters = {

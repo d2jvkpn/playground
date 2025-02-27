@@ -95,7 +95,7 @@ for n in range(iterations):
 
     train_acc = correct_cnt/train_size
 
-    if n%10 == 0 or n == iterations-1:
+    if n%10 == 0 or n == iterations:
         layer_0, goal = test_inputs, test_labels
 
         layer_1 = tanh(np.dot(layer_0, weights_0_1))
@@ -106,8 +106,9 @@ for n in range(iterations):
         correct_cnt = np.sum(equals.astype(int))
         test_acc = correct_cnt/test_size
 
-        trainning_steps.append((n, train_acc, test_acc))
-        stdout.write(f"--> I{n:04d}: train_accuracy={train_acc:.3f}, test_accuracy={test_acc:.3f}\n")
+        end_at = datetime.now().astimezone().isoformat('T')
+        trainning_steps.append((n, train_acc, test_acc, end_at))
+        stdout.write(f"--> I{n:04d}: train_accuracy={train_acc:.3f}, test_accuracy={test_acc:.3f}, end_at={end_at}\n")
 
 t2 = datetime.now().astimezone()
 
@@ -120,7 +121,7 @@ wts_1_2 = pl.from_numpy(weights_1_2)
 trainning_steps = pl.from_records(
   trainning_steps,
   orient="row",
-  schema=["iteration", "train_accuracy", "test_accuracy"],
+  schema=["iteration", "train_accuracy", "test_accuracy", "end_at"],
 )
 
 parameters = {
