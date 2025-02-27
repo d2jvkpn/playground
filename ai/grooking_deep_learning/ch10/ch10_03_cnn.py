@@ -18,8 +18,8 @@ iterations = 500  # 500, 1000, 2000, 5000
 
 # CNN
 image_shape, kernel_shape = (28, 28), (3, 3)
-num_kernels =  16
-hidden_size = (image_shape[0] - kernel_shape[0]) * (image_shape[1] - kernel_shape[1])  * num_kernels
+num_kernels =  16 # 4, 8, 16, 32
+hidden_size = (image_shape[0] - kernel_shape[0] + 1) * (image_shape[1] - kernel_shape[1] + 1)  * num_kernels
 
 np.random.seed(random_seed)
 
@@ -46,8 +46,8 @@ def format_timedelta(td: timedelta) -> str:
 
 def flatten_v1(layer, shape): # matrix(n, 28, 28), tuple(3, 3) -> matrix(n*(28-3)*(28-3), 3*3)
     sects = list()
-    for row in range(layer.shape[1] - shape[0]):
-        for col in range(layer.shape[2] - shape[1]):
+    for row in range(layer.shape[1] - shape[0] + 1):
+        for col in range(layer.shape[2] - shape[1] + 1):
             sect = layer[:, row:(row+shape[0]), col:(col+shape[1])]
             sects.append(sect.reshape(-1, 1, shape[0], shape[1]))
 
@@ -58,7 +58,7 @@ def flatten_v1(layer, shape): # matrix(n, 28, 28), tuple(3, 3) -> matrix(n*(28-3
 
 def flatten_v2(layer, shape):  # matrix(n, 28, 28), tuple(3, 3) -> matrix(n*(28-3)*(28-3), 3*3)
     def  cnn_convert(matrix, shape): # Convolutional Neural Networks
-        dims = (matrix.shape[0] - shape[0], matrix.shape[1] - shape[1], shape[0], shape[1])
+        dims = (matrix.shape[0] - shape[0] + 1, matrix.shape[1] - shape[1] + 1, shape[0], shape[1])
         output = np.lib.stride_tricks.as_strided(matrix, shape=dims, strides=matrix.strides*2)
         return output.reshape(output.shape[0] * output.shape[1], -1)
 
@@ -66,7 +66,7 @@ def flatten_v2(layer, shape):  # matrix(n, 28, 28), tuple(3, 3) -> matrix(n*(28-
     #sects =  [cnn_convert(layer[i], (3, 3)) for i in range(layer.shape[0])]
     #return np.concat(sects, axis=0)
 
-    dim2 = (layer.shape[1] - shape[0]) * (layer.shape[2] - shape[1])
+    dim2 = (layer.shape[1] - shape[0] + 1) * (layer.shape[2] - shape[1] + 1)
     dims = (layer.shape[0], dim2, shape[0] * shape[1])
     result = np.zeros(dims)
 
@@ -116,13 +116,13 @@ for n in range(iterations):
         #        sect = sect.reshape(-1, 1, kernel_shape[0], kernel_shape[1])
         #        sects.append(sect)
 
-        #expanded_input = np.concat(sects, axis=1) # shape=(100, 625, 3, 3)
+        #expanded_input = np.concat(sects, axis=1) # shape=(100, 676, 3, 3)
         #es = expanded_input.shape
-        #flattened_input =  expanded_input.reshape(es[0]*es[1], -1) # shape=(62500, 9)
+        #flattened_input =  expanded_input.reshape(es[0]*es[1], -1) # shape=(67600, 9)
 
-        flattened_input = flatten_v2(layer_0, kernel_shape)  # shape=(62500, 9)
+        flattened_input = flatten_v2(layer_0, kernel_shape)  # shape=(67600, 9)
 
-        kernel_output = np.dot(flattened_input, weights_kernels)    # shape=(62500, 16)
+        kernel_output = np.dot(flattened_input, weights_kernels)    # shape=(67600, 16)
         layer_1 = tanh(kernel_output.reshape(layer_0.shape[0], -1)) # shape=(100, 10000)
 
         dropout_mask = np.random.choice([0, 1], size=layer_1.shape, p=[0.5, 0.5]) # np.random.randint(2, size=layer_1.shape)

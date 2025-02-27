@@ -76,7 +76,7 @@ for n in range(iterations):
 
     train_error, train_acc = train_error/train_size, correct_cnt/train_size
 
-    if n% 10 == 0 or n == iterations-1:
+    if n% 10 == 0 or n == iterations:
         correct_cnt, test_error = 0, 0.0
 
         for i in range(test_size):

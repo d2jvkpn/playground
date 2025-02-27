@@ -67,7 +67,7 @@ for n in range(iterations):
     train_error, train_acc = train_error/train_size, correct_cnt/train_size
     # stdout.write(f"--> I{n:03d}: train_error={train_error:.6f}, train_accuracy={train_accuracy:.3f}\n")
 
-    if n% 10 == 0 or n == iterations-1:
+    if n% 10 == 0 or n == iterations:
         correct_cnt, test_error = 0, 0.0
 
         for i in range(test_size):

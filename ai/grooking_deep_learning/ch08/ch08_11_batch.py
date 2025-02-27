@@ -91,7 +91,7 @@ for n in range(iterations):
 
     train_error, train_acc = train_error/train_size, correct_cnt/train_size
 
-    if n%10 == 0 or n == iterations-1:
+    if n%10 == 0 or n == iterations:
         layer_0, goal = test_inputs, test_labels
 
         layer_1 = relu(np.dot(layer_0, weights_0_1))
