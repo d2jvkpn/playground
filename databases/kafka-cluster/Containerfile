@@ -22,7 +22,7 @@ RUN apk --no-cache update && \
 
 RUN tag=${SCALA_Version}-${KAFKA_Version}; \
   apk --no-cache add wget && \
-  wget https://downloads.apache.org/kafka/${KAFKA_Version}/kafka_${tag}.tgz && \
+  wget -q https://downloads.apache.org/kafka/${KAFKA_Version}/kafka_${tag}.tgz && \
   tar -xf kafka_${tag}.tgz && \
   mv kafka_${tag} /opt/kafka && \
   rm kafka_${tag}.tgz && \
@@ -34,6 +34,7 @@ RUN mkdir -p /apps/data/kafka
 ENV PATH=/opt/kafka/bin:$PATH
 
 VOLUME ["/apps/data/kafka", "/opt/kafka/logs"]
+
 EXPOSE 9092 9093
 # ENTRYPOINT ["/apps/bin/entrypoint.sh"]
 CMD ["/opt/entrypoint.sh"]

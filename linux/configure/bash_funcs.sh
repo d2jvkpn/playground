@@ -82,7 +82,7 @@ function ssh_no_hist() {
      ssh -t  "$host" 'HISTFILE="" bash --login'
 }
 
-function kube.local() {
+function KubeLocal() {
     kubeconfig=${1:-./configs/kube.yaml}
     if [ ! -s "$kubeconfig" ]; then
         >&2 echo "config not found: $kubeconfig"

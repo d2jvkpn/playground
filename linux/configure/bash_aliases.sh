@@ -32,7 +32,7 @@ alias ..='cd ../'
 alias ...='cd ../../'
 alias ....='cd ../../../'
 
-alias quick_rsync='rsync -arvP'
+alias quick_rsync='rsync -arvP -e "ssh -O RemoteCommand= -O RequestTTY="'
 alias quick_nmap='nmap -vv --max-retries=5 -sV -T4 -p-'
 
 #### 3.
