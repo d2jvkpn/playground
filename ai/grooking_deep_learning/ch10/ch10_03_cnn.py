@@ -118,7 +118,7 @@ for n in range(iterations):
 
         #expanded_input = np.concat(sects, axis=1) # shape=(100, 676, 3, 3)
         #es = expanded_input.shape
-        #flattened_input =  expanded_input.reshape(es[0]*es[1], -1) # shape=(67600, 9)
+        #flattened_input =  expanded_input.reshape(es[0]*es[1], -1) # shape=(67600, 9)=(100 * (28-3+1)**2, 3**2)
 
         flattened_input = flatten_v2(layer_0, kernel_shape)  # shape=(67600, 9)
 
