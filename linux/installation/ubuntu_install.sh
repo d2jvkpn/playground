@@ -11,7 +11,8 @@ apt install -y \
   make expect git  lm-sensors  \
   python3-venv pipx \
   docker.io ansible-core openvpn \
-  postgresql-client-common postgresql-client-16
+  postgresql-client-common postgresql-client-16 \
+  imagemagick
 
 apt install  fcitx5 fcitx5-pinyin ibus-pinyin \
   mpv qbittorrent libreoffice \
