@@ -1,4 +1,4 @@
-FROM alpine:3
+FROM alpine/java:21-jre
 
 ARG KAFKA_Version
 ARG SCALA_Version
@@ -18,7 +18,8 @@ RUN if [ "$region" = "cn" ]; then \
 
 RUN apk --no-cache update && \
   apk --no-cache upgrade && \
-  apk --no-cache add tzdata bash yq openjdk21
+  apk --no-cache add tzdata bash yq
+# openjdk21
 
 RUN tag=${SCALA_Version}-${KAFKA_Version}; \
   apk --no-cache add wget && \

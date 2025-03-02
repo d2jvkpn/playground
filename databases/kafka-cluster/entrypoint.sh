@@ -2,7 +2,7 @@
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 #### 1. setup
-yaml=${yaml:-./data/kafaka/kafka.yaml}
+yaml=${yaml:-./data/kafka/kafka.yaml}
 conf=./data/kafka/kafka.properties
 template=${template:-/opt/kafka/config/kraft/server.properties}
 
