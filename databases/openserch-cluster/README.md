@@ -40,3 +40,4 @@ sudo sysctl --system
 
 #### C04. Links
 - https://github.com/opensearch-project/opensearch-go
+- https://github.com/flavienbwk/opensearch-docker-compose/blob/main/docker-compose.hot-warm.yml
