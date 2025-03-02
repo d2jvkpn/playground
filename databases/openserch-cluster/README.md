@@ -20,11 +20,13 @@ ERROR: [1] bootstrap checks failed
 
 fix01
 ```
-sudo sysctl -w vm.max_map_count=262144
+# sudo sysctl -w vm.max_map_count=262144
+sudo cp /etc/sysctl.conf /etc/sysctl.conf.bk
 
-# echo "vm.max_map_count=262144" >> configs/sysctl.conf
-# sysctl -a | grep vm.max_map_count
-# sysctl --system
+sudo sysctl -a | grep vm.max_map_count
+
+echo "vm.max_map_count=262144" | sudo tee -a /etc/sysctl.conf
+sudo sysctl --system
 ```
 
 #### C03. Create a cluster
