@@ -19,7 +19,7 @@ RUN if [ "$region" = "cn" ]; then \
 RUN apk --no-cache update && \
   apk --no-cache upgrade && \
   apk --no-cache add tzdata bash yq
-# openjdk21
+# openjdk21 or openjdk21-jre
 
 RUN tag=${SCALA_Version}-${KAFKA_Version}; \
   apk --no-cache add wget && \
