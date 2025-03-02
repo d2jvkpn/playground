@@ -68,6 +68,7 @@ services:
     environment:
       <<: *environment-common
       node.name: es-node01
+      hostname: es-node01
       discovery.seed_hosts: es-node02,es-node03
       cluster.initial_master_nodes: es-node01,es-node02,es-node03
 
@@ -86,6 +87,7 @@ services:
     environment:
       <<: *environment-common
       node.name: es-node02
+      hostname: es-node02
       discovery.seed_hosts: es-node01,es-node03
       cluster.initial_master_nodes: es-node01,es-node02,es-node03
 
@@ -104,6 +106,7 @@ services:
     environment:
       <<: *environment-common
       node.name: es-node03
+      hostname: es-node03
       discovery.seed_hosts: es-node01,es-node02
       cluster.initial_master_nodes: es-node01,es-node02,es-node03
 

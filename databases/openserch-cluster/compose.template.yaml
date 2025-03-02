@@ -5,9 +5,9 @@ x-service-common: &service-common
   image: opensearchproject/opensearch:2
   ulimits:
     # Set memlock to unlimited (no soft or hard limit)
-    memlock: {soft: -1, hard: -1}
+    memlock: { soft: -1, hard: -1 }
       # Maximum number of open files for the opensearch user - set to at least 65536
-    nofile: {soft: 65536, hard: 65536}
+    nofile: { soft: 65536, hard: 65536 }
   healthcheck:
     interval: 10s
     timeout: 5s
@@ -20,11 +20,9 @@ x-service-common: &service-common
 
 x-environment-common: &environment-common
   cluster.name: opensearch-cluster # Name the cluster
-  # Nodes to look for when discovering the cluster
-  discovery.seed_hosts: opensearch-node01,opensearch-node02
   bootstrap.memory_lock: "true" # Disable JVM heap memory swapping
   # Set min and max JVM heap sizes to at least 50% of system RAM
-  OPENSEARCH_JAVA_OPTS: -Xms512m -Xmx512m
+  OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
   # Prevents execution of bundled demo script which installs demo certificates and security
   #   configurations to OpenSearch
   DISABLE_INSTALL_DEMO_CONFIG: "true"
@@ -45,6 +43,8 @@ services:
     environment:
       <<: *environment-common
       node.name: opensearch-node01 # Name the node that will run in this container
+      discovery.seed_hosts: opensearch-node01,opensearch-node02,opensearch-node03 # Nodes to look for when discovering the cluster
+      cluster.initial_cluster_manager_nodes: opensearch-node01,opensearch-node02,opensearch-node03 # Nodes eligibile to serve as cluster manager
 
   opensearch-node02:
     <<: *service-common
@@ -59,6 +59,8 @@ services:
     environment:
       <<: *environment-common
       node.name: opensearch-node02 # Name the node that will run in this container
+      discovery.seed_hosts: opensearch-node01,opensearch-node02,opensearch-node03 # Nodes to look for when discovering the cluster
+      cluster.initial_cluster_manager_nodes: opensearch-node01,opensearch-node02,opensearch-node03 # Nodes eligibile to serve as cluster manager
 
   opensearch-node03:
     <<: *service-common
@@ -73,6 +75,8 @@ services:
     environment:
       <<: *environment-common
       node.name: opensearch-node03 # Name the node that will run in this container
+      discovery.seed_hosts: opensearch-node01,opensearch-node02,opensearch-node03 # Nodes to look for when discovering the cluster
+      cluster.initial_cluster_manager_nodes: opensearch-node01,opensearch-node02,opensearch-node03 # Nodes eligibile to serve as cluster manager
 
   opensearch-dashboards:
     image: opensearchproject/opensearch-dashboards:2

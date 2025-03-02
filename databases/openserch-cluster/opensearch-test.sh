@@ -1,7 +1,8 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
-addr=${1:-http://localhost:9201}
+port=${1:-9201}
+addr=http://localhost:$port
 auth="-u admin:abcABC123-@"
 
 ####

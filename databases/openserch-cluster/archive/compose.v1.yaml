@@ -1,0 +1,122 @@
+networks:
+  net: { name: opensearch-cluster, driver: bridge, external: false }
+
+services:
+  opensearch-node01:
+    image: opensearchproject/opensearch:2
+    container_name: opensearch-node01
+    hostname: opensearch-node01
+    ulimits:
+      # Set memlock to unlimited (no soft or hard limit)
+      memlock: { soft: -1, hard: -1 }
+      # Maximum number of open files for the opensearch user - set to at least 65536
+      nofile: { soft: 65536, hard: 65536 }
+    healthcheck:
+      interval: 15s
+      timeout: 5s
+      retries: 30
+      test:
+      - CMD-SHELL
+      - curl http://localhost:9200 | grep -q '"cluster_name"'
+    networks: [net] # All of the containers will join the same Docker bridge network
+    ports: [9201:9200, 9601:9600] # REST API and Performance Analyzer
+    volumes:
+    - /etc/timezone:/etc/timezone:ro
+    - /etc/localtime:/etc/localtime:ro
+    # Creates volume called opensearch-data1 and mounts it to the container
+    - ./data/opensearch-node01:/usr/share/opensearch/data
+    environment:
+      node.name: opensearch-node01 # Name the node that will run in this container
+      cluster.name: opensearch-cluster # Name the cluster
+      # Nodes to look for when discovering the cluster
+      discovery.seed_hosts: opensearch-node01,opensearch-node02,opensearch-node03
+      # Nodes eligibile to serve as cluster manager
+      cluster.initial_cluster_manager_nodes: opensearch-node01,opensearch-node02,opensearch-node03
+      bootstrap.memory_lock: "true" # Disable JVM heap memory swapping
+      # Set min and max JVM heap sizes to at least 50% of system RAM
+      OPENSEARCH_JAVA_OPTS: -Xms512m -Xmx512m
+      # Prevents execution of bundled demo script which installs demo certificates and security
+      #   configurations to OpenSearch
+      DISABLE_INSTALL_DEMO_CONFIG: "true"
+      DISABLE_SECURITY_PLUGIN: "true" # Disables Security plugin
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: "abcABC123-@"
+
+  opensearch-node02:
+    image: opensearchproject/opensearch:2
+    container_name: opensearch-node02
+    hostname: opensearch-node02
+    ulimits:
+      memlock: { soft: -1, hard: -1 }
+      nofile: { soft: 65536, hard: 65536 }
+    healthcheck:
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      test:
+      - CMD-SHELL
+      - curl http://localhost:9200 | grep -q '"cluster_name"'
+    networks: [net]
+    ports: [9202:9200, 9602:9600] # REST API and Performance Analyzer
+    volumes:
+    - /etc/timezone:/etc/timezone:ro
+    - /etc/localtime:/etc/localtime:ro
+    - ./data/opensearch-node02:/usr/share/opensearch/data
+    environment:
+      node.name: opensearch-node02
+      cluster.name: opensearch-cluster
+      discovery.seed_hosts: opensearch-node01,opensearch-node02,opensearch-node03
+      cluster.initial_cluster_manager_nodes: opensearch-node01,opensearch-node03
+      bootstrap.memory_lock: "true"
+      OPENSEARCH_JAVA_OPTS: -Xms512m -Xmx512m
+      DISABLE_INSTALL_DEMO_CONFIG: "true"
+      DISABLE_SECURITY_PLUGIN: "true"
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: "abcABC123-@"
+
+  opensearch-node03:
+    image: opensearchproject/opensearch:2
+    container_name: opensearch-node03
+    hostname: opensearch-node03
+    ulimits:
+      memlock: { soft: -1, hard: -1 }
+      nofile: { soft: 65536, hard: 65536 }
+    healthcheck:
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      test:
+      - CMD-SHELL
+      - curl http://localhost:9200 | grep -q '"cluster_name"'
+    networks: [net]
+    ports: [9203:9200, 9603:9600]
+    volumes:
+    - /etc/timezone:/etc/timezone:ro
+    - /etc/localtime:/etc/localtime:ro
+    - ./data/opensearch-node03:/usr/share/opensearch/data
+    environment:
+      node.name: opensearch-node03
+      cluster.name: opensearch-cluster
+      discovery.seed_hosts: opensearch-node01,opensearch-node02,opensearch-node03
+      cluster.initial_cluster_manager_nodes: opensearch-node01,opensearch-node03
+      bootstrap.memory_lock: "true"
+      OPENSEARCH_JAVA_OPTS: -Xms512m -Xmx512m
+      DISABLE_INSTALL_DEMO_CONFIG: "true"
+      DISABLE_SECURITY_PLUGIN: "true"
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: "abcABC123-@"
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:2
+    container_name: opensearch-dashboards
+    hostname: opensearch-dashboards
+    depends_on:
+      opensearch-node01: { condition: service_healthy }
+      opensearch-node02: { condition: service_healthy }
+      opensearch-node03: { condition: service_healthy }
+    networks: [net]
+    expose: ["5601"] # Expose port 5601 for web access to OpenSearch Dashboards
+    ports: [5601:5601] # Map host port 5601 to container port 5601
+    volumes:
+    - /etc/timezone:/etc/timezone:ro
+    - /etc/localtime:/etc/localtime:ro
+    environment:
+      OPENSEARCH_HOSTS: '["http://opensearch-node01:9200","http://opensearch-node02:9200","http://opensearch-node03:9200"]'
+      DISABLE_SECURITY_DASHBOARDS_PLUGIN: "true"
