@@ -49,11 +49,12 @@ hidden_size = 100
 
 iterations = 20
 
-weights_0_1 = 0.2 * np.random.random((len(vocabs), hidden_size)) - 0.1
+weights_0_1 = 0.2 * np.random.random((len(word2index), hidden_size)) - 0.1
 weights_1_2 = 0.2 * np.random.random((hidden_size, 1)) - 0.1
 
-test_size = int(len(dataset)*0.2)
-train_size = len(dataset) - test_size
+train_size = int(len(dataset)*0.8)
+test_size = len(dataset) - train_size
+
 print(f"==> iterations={iterations}, train_size={train_size}, test_size={test_size}")
 
 for n in range(iterations):
