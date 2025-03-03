@@ -39,7 +39,7 @@ done
 docker run --rm -u root:root -w /usr/share/elasticsearch \
   -v ${PWD}/elastic-setup.sh:/usr/share/elasticsearch/elastic-setup.sh \
   -v ${PWD}/configs/certs:/usr/share/elasticsearch/config/certs \
-  docker.elastic.co/elasticsearch/elasticsearch:8.17.0 \
+  docker.elastic.co/elasticsearch/elasticsearch:8.17.2 \
   bash elastic-setup.sh
 
 ls -alh configs/elastic.yaml configs/certs
@@ -50,5 +50,5 @@ mkdir -p configs/es-kibana data/es-kibana
 
 docker run --rm -u root:root -w /usr/share/kibana \
   -v ${PWD}/configs/es-kibana:/tmp/es-kibana \
-  docker.elastic.co/kibana/kibana:8.17.0 \
+  docker.elastic.co/kibana/kibana:8.17.2 \
   bash -c 'cp config/* /tmp/es-kibana && chown -R kibana:root /tmp/es-kibana'

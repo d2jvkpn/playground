@@ -16,7 +16,7 @@ apt install -y \
 
 apt install  fcitx5 fcitx5-pinyin ibus-pinyin \
   mpv qbittorrent libreoffice \
-  remmina remmina-plugin-vnc
+  remmina remmina-plugin-vnc fbreader
 
 pipx install ipython runlike ansible
 
