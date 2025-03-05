@@ -15,7 +15,7 @@ apt install -y \
   imagemagick
 
 apt install  fcitx5 fcitx5-pinyin ibus-pinyin \
-  mpv qbittorrent libreoffice \
+  mpv vlc qbittorrent libreoffice \
   remmina remmina-plugin-vnc fbreader
 
 pipx install ipython runlike ansible
@@ -35,6 +35,7 @@ apps:
 - eza: cargo install eza
 - rg: cargo install ripgrep
 - xsv: cargo install xsv
+- dufs: cargo install dufs
 EOF
 
 #### 3. desktop apps
@@ -42,6 +43,13 @@ cat <<EOF
 apps:
 - firefox, addons=[Orbit, Privacy Badger]
 - librewolf
-- chrome/chromium, url=https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-- codium
+- codium, url=https://github.com/VSCodium/vscodium/releases
+- LocalSend, urls=[https://localsend.org/, https://github.com/localsend/localsend/releases]
+EOF
+
+#### 3. alt
+cat <<EOF
+- protoc-gen-go
+- htop
+- glances
 EOF
