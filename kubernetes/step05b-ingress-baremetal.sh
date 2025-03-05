@@ -6,15 +6,8 @@ cp_node=$(awk '$1!=""{print $1; exit}' configs/k8s_hosts.ini)
 cp_ip=$(awk '$1!=""{sub(/.*=/, "", $2); print $2; exit}' configs/k8s_hosts.ini)
 echo "==> cp: $cp_node, $cp_ip"
 
-#### 1. create a nfs storage
-ansible $cp_node --become -a "bash k8s_scripts/kube_storage_nfs.sh $cp_node 10Gi"
-
-# node=k8s-cp02
-# ansible $node -m shell --become -a "namespace=prod bash k8s_scripts/kube_storage_nfs.sh $node 10Gi"
-
-#### 2. apply ingress baremetal
-sed '/image:/s/@sha256:.*//' k8s.local/ingress-nginx.baremetal.yaml \
-  > k8s.local/data/ingress-nginx.baremetal.yaml
+#### 1. apply ingress baremetal
+sed '/image:/s/@sha256:.*//' k8s.local/ingress-nginx.baremetal.yaml > k8s.local/data/ingress-nginx.baremetal.yaml
 
 kubectl apply -f k8s.local/data/ingress-nginx.baremetal.yaml
 # kubectl delete -f k8s.local/data/ingress-nginx.baremetal.yaml
@@ -25,7 +18,7 @@ kubectl -n ingress-nginx get pods -o wide
 # kubectl -n ingress-nginx get pods --field-selector status.phase=Running -o wide
 # kubectl -n ingress-nginx get svc/ingress-nginx-controller
 
-#### 3. apply metallb native
+#### 2. apply metallb native
 # https://www.cnblogs.com/hahaha111122222/p/17222831.html
 # https://metallb.universe.tf/installation/
 
@@ -47,7 +40,7 @@ kubectl get configmap kube-proxy -n kube-system -o yaml |
 
 # https://metallb.universe.tf/configuration/_advanced_ipaddresspool_configuration/
 
-#### 4. config metallb
+#### 3. config metallb
 cat > k8s.local/data/metallb-config.yaml <<EOF
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
