@@ -18,6 +18,9 @@ apt install  fcitx5 fcitx5-pinyin ibus-pinyin \
   mpv vlc qbittorrent libreoffice \
   remmina remmina-plugin-vnc fbreader
 
+# https://extensions.gnome.org/extension/261/kimpanel/
+# Input Method Panel using KDE's kimpanel protocol for Gnome-Shell
+
 pipx install ipython runlike ansible
 
 # sydo apt install python3-pip python3-ipython ipython3

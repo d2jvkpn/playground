@@ -1,0 +1,8 @@
+services:
+  ollama:
+    image: ollama/ollama:0.5.12
+    container_name: ollama
+    network_mode: bridge
+    ports: ["127.0.0.1:11434:11434"]
+    volumes:
+    - ./data/ollama:/root/.ollama 
