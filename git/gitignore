@@ -1,13 +1,14 @@
-path: .gitignore
+# path: .gitignore
 
 #### directories
 configs/
 data/
 logs/
 target/
-*.local
-local
+local/
+
 *.git
+*.local
 
 #### files
 docker-compose.yaml
