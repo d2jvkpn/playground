@@ -39,19 +39,23 @@ docker pull ollama/ollama:0.5.12
 3. download models
 ```
 # https://ollama.com/library/deepseek-r1:7b
-ollama pull deepseek-r1
+ollama pull deepseek-r1:7b
 ollama pull deepseek-r1:14b
+
+ollama pull deepseek-coder-v2:16b
 ```
 
 4. request with api
 ```
+####
 curl -X POST http://localhost:11434/api/generate -d '{
-  "model": "deepseek-r1",
+  "model": "deepseek-r1:7b",
   "prompt": "Why is the sky blue?"
 }' > data/response_a01.json
 
 jq -r .response data/response_a01.json | awk '{printf "%s", $0} END{print}'
 
+#####
 curl -X POST http://localhost:11434/api/generate -d '{
   "model": "deepseek-r1:14b",
   "prompt": "Why is the sky blue?"

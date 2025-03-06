@@ -16,4 +16,6 @@ services:
     network_mode: bridge
     ports: ["127.0.0.1:11434:11434"]
     volumes:
+    #- /ect/localtime:/ect/localtime:ro
+    #- /etc/timezone:/etc/timezone:ro
     - ./data/ollama:/root/.ollama 
