@@ -1,6 +1,6 @@
-# path: ~/apps/bash_aliases
-# $ ln -sr ~/apps/bash_aliases ~/.bash_aliases
-# $ mkdir -p ~/apps/x/bin
+# path: ~/apps/bash_aliases.sh
+# $ ln -sr ~/apps/bash_aliases.sh ~/.bash_aliases
+# $ mkdir -p ~/apps/bin
 
 #### 1.
 # export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
@@ -25,12 +25,8 @@ for d in $(ls -d ~/apps/exports/*/ 2> /dev/null); do
 done
 
 #### 2.
-alias tree2='tree -L 2'
-alias tree3='tree -L 3'
-
-alias ..='cd ../'
-alias ...='cd ../../'
-alias ....='cd ../../../'
+alias tree2='tree -L 2'; alias tree3='tree -L 3'
+alias ..='cd ../'; alias ...='cd ../../'; alias ....='cd ../../../'
 
 alias quick_nmap='nmap -vv --max-retries=5 -sV -T4 -p-'
 alias quick_rsync='rsync -arvP  -e "ssh -o RemoteCommand=none -o RequestTTY=no"'

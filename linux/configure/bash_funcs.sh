@@ -1,6 +1,6 @@
 ####
 function docker_connect() {
-    target=~/Work/docker/$1
+    target=~/apps/$1.container
     [ -d "$target" ] || { >&2 echo "directory not found: $target"; exit 1; }
     cd "$target"
     make connect
@@ -10,7 +10,7 @@ function docker_up() {
     _wd=$(pwd)
 
     for d in "$@"; do
-        target=~/Work/docker/$d
+        target=~/apps/$d.container
         [ -d "$target" ] || { >&2 echo "directory not found: $target"; continue; }
         cd "$target"
         docker-compose up -d
@@ -23,11 +23,25 @@ function docker_down() {
     _wd=$(pwd)
 
     for d in "$@"; do
-        target=~/Work/docker/$d
+        target=~/apps/$d.container
         [ -d "$target" ] || { >&2 echo "directory not found: $target"; continue; }
         cd "$target"
         docker-compose down
     done
+
+    cd ${_wd}
+}
+
+function docker_restart() {
+    _wd=$(pwd)
+
+    target=~/apps/$d.container
+
+    if [ ! -z "$target" ]; then
+        cd $target
+        docker-compose down
+        docker-compose up -d
+    fi
 
     cd ${_wd}
 }
@@ -54,7 +68,7 @@ function git_root() {
 }
 
 ####
-function pyvenv() {
+function PyvLocal() {
     py_venv=${1:-pyvenv.local}; py_venv=${py_venv%/}
 
     if [ ! -s $py_venv/bin/python3 ]; then
@@ -75,7 +89,7 @@ function pyvenv() {
     # pip3 freeze > requirements.txt
     # pip3 install -r requirements.txt
 }
-alias pyvenv.home='source ~/apps/pyvenv/bin/activate'
+alias PyvHome='source ~/apps/pyvenv/bin/activate'
 
 function ssh_no_hist() {
      local host="$1"
