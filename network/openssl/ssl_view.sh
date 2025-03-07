@@ -8,7 +8,8 @@ if [[ "$input" == *".crt" || "$input" == *".cer" || "$input" == *".pem" ]]; then
     openssl x509 -in "$input" -noout -subject -ext subjectAltName -dates
 else
     echo |
-      openssl s_client -connect $input:443 -servername $domain 2>/dev/null |
+      openssl s_client -connect $input:443 -servername $domain -showcerts |
+      #openssl s_client -connect $input:443 -servername $domain 2>/dev/null |
       openssl x509 -noout -subject -ext subjectAltName -dates
 fi
 

@@ -6,6 +6,8 @@ data/
 logs/
 target/
 local/
+dist/
+build/
 
 *.git
 *.local
