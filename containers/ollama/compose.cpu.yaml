@@ -1,10 +1,28 @@
+networks:
+   net: { name: ollama, driver: bridge, external: false }
+
 services:
   ollama:
-    image: ollama/ollama:0.5.12
     container_name: ollama
-    network_mode: bridge
+    image: ollama/ollama:0.5.13
+    #image: ollama/ollama:0.5.13-rocm
+    #network_mode: bridge
+    networks: [net]
     ports: ["127.0.0.1:11434:11434"]
     volumes:
     #- /ect/localtime:/ect/localtime:ro
     #- /etc/timezone:/etc/timezone:ro
-    - ./data/ollama:/root/.ollama 
+    - ./data/ollama:/root/.ollama
+
+  open-webui:
+    container_name: open-webui
+    image: ghcr.io/open-webui/open-webui:0.5
+    depends_on: [ollama]
+    networks: [net]
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    ports: ["3000:8080"]
+    environment:
+      OLLAMA_BASE_URL: http://ollama:11434
+    volumes:
+    - ./data/open-webui:/app/backend/data
