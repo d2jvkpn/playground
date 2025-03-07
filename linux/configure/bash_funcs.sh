@@ -89,7 +89,7 @@ function PyvLocal() {
     # pip3 freeze > requirements.txt
     # pip3 install -r requirements.txt
 }
-alias PyvHome='source ~/apps/pyvenv/bin/activate'
+alias PyvHome='source ~/apps/pyvenv.home/bin/activate'
 
 function ssh_no_hist() {
      local host="$1"

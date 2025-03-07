@@ -63,3 +63,12 @@ curl -X POST http://localhost:11434/api/generate -d '{
 
 jq -r .response data/response_a02.json | awk '{printf "%s", $0} END{print}'
 ```
+
+5. models
+- deepseek-r1:7b
+- deepseek-r1:14b
+- deepseek-coder-v2:16b
+- linux6200/bge-reranker-v2-m3:latest
+- llama3.2:3b
+- bge-m3:latest
+- mxbai-embed-large:latest
