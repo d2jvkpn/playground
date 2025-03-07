@@ -24,8 +24,8 @@ services:
     ports: ["127.0.0.1:3000:3000"]
     environment:
       PORT: 3000 # default=8080
+      CORS_ALLOW_ORIGIN: "*"
       ENABLE_OPENAI_API: "false"
       OLLAMA_BASE_URL: http://ollama:11434
-      CORS_ALLOW_ORIGIN: "*"
     volumes:
     - ./data/open-webui:/app/backend/data
