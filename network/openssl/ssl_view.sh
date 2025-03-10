@@ -15,6 +15,16 @@ fi
 
 exit
 ####
-openssl x509 -in domain.crt -noout -text
+domain=domain.crt
 
-curl https://$domain --resolve "$domain:443:$ip"
+openssl x509 -in $domain -noout -subject -ext subjectAltName -dates
+
+openssl x509 -in $domain -noout -text
+
+openssl crl2pkcs7 -nocrl -certfile $domain |
+  openssl pkcs7 -print_certs -noout -text |
+  grep "Subject: "
+
+curl -vI https://$domain
+
+curl -vI https://$domain --resolve "$domain:443:$ip"
