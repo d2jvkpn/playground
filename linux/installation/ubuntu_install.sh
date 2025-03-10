@@ -8,15 +8,16 @@ apt install -y software-properties-common \
   curl net-tools btop iftop nmap whois traceroute
 
 apt install -y \
-  make expect git  lm-sensors  \
+  make expect git lm-sensors \
   python3-venv pipx \
   docker.io ansible-core openvpn \
   postgresql-client-common postgresql-client-16 \
   imagemagick
 
 apt install  fcitx5 fcitx5-pinyin ibus-pinyin \
-  mpv vlc qbittorrent libreoffice \
-  remmina remmina-plugin-vnc fbreader
+  mpv vlc qbittorrent libreoffice gparted \
+  remmina remmina-plugin-vnc fbreader \
+  gedit gedit-plugins
 
 # https://extensions.gnome.org/extension/261/kimpanel/
 # Input Method Panel using KDE's kimpanel protocol for Gnome-Shell

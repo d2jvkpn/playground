@@ -4,8 +4,9 @@ networks:
 services:
   ollama:
     container_name: ollama
+    hostname: ollama
     image: ollama/ollama:0.5.13
-    #image: ollama/ollama:0.5.13-rocm
+    #image: ollama/ollama:0.5.13-rocm # AMD  ROCm
     #network_mode: bridge
     networks: [net]
     ports: ["127.0.0.1:11434:11434"]
@@ -16,6 +17,7 @@ services:
 
   open-webui:
     container_name: open-webui
+    hostname: open-webui
     image: ghcr.io/open-webui/open-webui:0.5
     depends_on: [ollama]
     networks: [net]
@@ -27,5 +29,12 @@ services:
       CORS_ALLOW_ORIGIN: "*"
       ENABLE_OPENAI_API: "false"
       OLLAMA_BASE_URL: http://ollama:11434
+
+      #HF_ENDPOINT: https://hf-mirror.com
+      # /app/backend/data/cache/embedding/models/models--sentence-transformers--all-MiniLM-L6-v2/
+      RAG_EMBEDDING_MODEL_AUTO_UPDATE: "false"
+
+      #?RAG_RERANKING_MODEL_AUTO_UPDATE: "false"
+      #?WHISPER_MODEL_AUTO_UPDATE: "false"
     volumes:
     - ./data/open-webui:/app/backend/data

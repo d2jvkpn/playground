@@ -23,7 +23,9 @@ RUN if [ "$region" = "cn" ]; then \
 
 RUN apk --no-cache update && \
   apk --no-cache upgrade && \
-  apk --no-cache add tzdata coreutils curl openssl bash yq iproute2
+  apk --no-cache add tzdata coreutils \
+    curl bash yq \
+    openssl iproute2
   # vim jq gcompat supervisor nmap logroate openvpn openssh
 
 VOLUME ["/apps/configs", "/apps/data", "/apps/logs"]

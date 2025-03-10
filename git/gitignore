@@ -3,14 +3,10 @@
 #### directories
 configs/
 data/
+local/
 logs/
 target/
-local/
-dist/
-build/
-
-*.git
-*.local
+#?? dist/, build/, *.git, *.local
 
 #### files
 docker-compose.yaml

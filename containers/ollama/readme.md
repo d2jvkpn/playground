@@ -71,4 +71,5 @@ jq -r .response data/response_a02.json | awk '{printf "%s", $0} END{print}'
 - linux6200/bge-reranker-v2-m3:latest
 - llama3.2:3b
 - bge-m3:latest
+- ollama run qwq:32b
 - mxbai-embed-large:latest
