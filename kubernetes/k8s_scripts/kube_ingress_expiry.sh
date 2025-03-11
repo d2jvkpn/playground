@@ -6,12 +6,12 @@ now_ts=$(date +%s)
 
 function tls_expiry() {
     namespace=$1; ingress=$2
-    secret_names=$(kubectl -n $namespace get ingress $ingress -o jsonpath="{.spec.tls[*].secretName}")
 
-    hosts=$(
-      kubectl -n $namespace get ingress $ingress -o jsonpath="{.spec.tls[*].hosts}" |
-      jq -r '. | join(",")'
-    )
+    #secret_names=$(kubectl -n $namespace get ingress $ingress -o jsonpath="{.spec.tls[*].secretName}")
+    tls=$(kubectl -n $namespace get ingress $ingress -o jsonpath="{.spec.tls[]}")
+
+    secret_names=$(echo $tls | jq -r ".secretName")
+    hosts=$(echo $tls | jq -r '.hosts | join(",")')
 
     for name in $secret_names; do
         tls_crt=$(kubectl -n $namespace get secret $name -o jsonpath="{.data.tls\.crt}")
