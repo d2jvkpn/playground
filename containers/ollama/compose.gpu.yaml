@@ -29,7 +29,18 @@ services:
   open-webui:
     container_name: open-webui
     hostname: open-webui
-    image: ghcr.io/open-webui/open-webui:0.5
+    image: ghcr.io/open-webui/open-webui:0.5-cuda
+    deploy:
+      resources:
+        reservations:
+          # cpus: "1"
+          # memory: 4g
+          devices:
+          - driver: nvidia
+            # device_ids: ['0', '3']
+            # count: all
+            count: 1
+            capabilities: [gpu]
     depends_on: [ollama]
     networks: [net]
     extra_hosts:
