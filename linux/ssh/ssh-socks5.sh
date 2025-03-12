@@ -24,6 +24,7 @@ Host remote_host
     UserKnownHostsFile ~/.ssh/known_hosts
     Compression yes
     LogLevel INFO
+    TCPKeepAlive        yes
     ServerAliveInterval 5
     ServerAliveCountMax 3
     ExitOnForwardFailure yes
@@ -36,7 +37,7 @@ https_proxy=socks5h://127.0.0.1:1081 curl https://icanhazip.com
 
 curl -x socks5h://127.0.0.1:1081 https://icanhazip.com
 
-# neither firefox or chromium support socks5 with auth
+# neither firefox or chromium supports socks5 with auth
 chromium --disable-extensions --incognito --proxy-server=socks5h://127.0.0.1:1081
 
 firefox -p proxy
