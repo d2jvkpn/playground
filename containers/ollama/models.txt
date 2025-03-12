@@ -1,0 +1,10 @@
+deepseek-r1:7b
+deepseek-r1:14b
+deepseek-coder-v2:16b
+linux6200/bge-reranker-v2-m3:latest
+llama3.2:3b
+bge-m3:latest
+qwq:32b
+qwen2.5-coder:7b
+qwen2.5-coder:14b
+mxbai-embed-large:latest
