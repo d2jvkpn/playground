@@ -28,8 +28,8 @@ done
 alias tree2='tree -L 2'; alias tree3='tree -L 3'
 alias ..='cd ../'; alias ...='cd ../../'; alias ....='cd ../../../'
 
-alias quick_nmap='nmap -vv --max-retries=5 -sV -T4 -p-'
-alias quick_rsync='rsync -arvP  -e "ssh -o RemoteCommand=none -o RequestTTY=no"'
+alias x-nmap='nmap -vv --max-retries=5 -sV -T4 -p-'
+alias x-rsync='rsync -arvP  -e "ssh -o RemoteCommand=none -o RequestTTY=no"'
 
 #### 3.
 # sudo apt -y install xclip

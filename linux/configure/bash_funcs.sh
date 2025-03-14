@@ -68,7 +68,7 @@ function git_root() {
 }
 
 ####
-function PyvLocal() {
+function x-pyvl() {
     py_venv=${1:-pyvenv.local}; py_venv=${py_venv%/}
 
     if [ ! -s $py_venv/bin/python3 ]; then
@@ -89,14 +89,14 @@ function PyvLocal() {
     # pip3 freeze > requirements.txt
     # pip3 install -r requirements.txt
 }
-alias PyvHome='source ~/apps/pyvenv.home/bin/activate'
+alias x-pyvh='source ~/apps/pyvenv.home/bin/activate'
 
-function ssh_no_hist() {
+function x-ssh() {
      local host="$1"
      ssh -t  "$host" 'HISTFILE="" bash --login'
 }
 
-function KubeLocal() {
+function x-kube() {
     kubeconfig=${1:-./configs/kube.yaml}
     if [ ! -s "$kubeconfig" ]; then
         >&2 echo "config not found: $kubeconfig"
