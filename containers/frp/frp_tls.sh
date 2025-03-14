@@ -35,7 +35,8 @@ EOF
 #### build ca certificates
 openssl genrsa -out configs/frp_ca.key 2048
 
-openssl req -x509 -new -nodes -subj "/CN=ca.frp.localhost" -days 5000 \
+openssl req -x509 -new -nodes \
+  -subj "/CN=ca.frp.localhost" -days 5000 \
   -key configs/frp_ca.key -out configs/frp_ca.crt
 
 # C (Country)

@@ -14,7 +14,7 @@ case "$cmd" in
     echo "==> server"
     ;;
 *)
-    >&2 echo "unknown cmd"
+    >&2 echo "unknown command: $cmd"
     exit 1
     ;;
 esac
@@ -24,6 +24,6 @@ ls configs/frp_${cmd}.toml
 
 envsubst < ${_path}/compose.$cmd.yaml > compose.yaml
 
-echo "==> docker-compose.yaml"
+echo "==> Generated compose.yaml"
 
-cat docker-compose.yaml
+cat compose.yaml
