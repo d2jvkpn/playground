@@ -1,0 +1,4 @@
+repositories:
+- name: Model Context Protocol Servers
+  links:
+  - https://github.com/modelcontextprotocol/servers
