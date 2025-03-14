@@ -72,9 +72,17 @@ function x-pyvl() {
     py_venv=${1:-pyvenv.local}; py_venv=${py_venv%/}
 
     if [ ! -s $py_venv/bin/python3 ]; then
-        echo "==> python3 -m venv $py_venv"
-        python3 -m venv $py_venv
+        #echo "==> python3 -m venv $py_venv"
+        ans=$(read -t 5 -p "Create venv $py_venv?(y/Y) " || true)
+
+        if [[ "$ans" == "y" || "$ans" == "Y" ]]; then
+            python3 -m venv $py_venv
+        else
+            echo -e '\nAbort!!!'
+            return
+        fi
     fi
+
     source $py_venv/bin/activate
     export PY_VENV=$(readlink -f $py_venv)
 
@@ -89,6 +97,7 @@ function x-pyvl() {
     # pip3 freeze > requirements.txt
     # pip3 install -r requirements.txt
 }
+
 alias x-pyvh='source ~/apps/pyvenv.home/bin/activate'
 
 function x-ssh() {
