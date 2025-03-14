@@ -22,7 +22,7 @@ apt install  fcitx5 fcitx5-pinyin ibus-pinyin \
 # https://extensions.gnome.org/extension/261/kimpanel/
 # Input Method Panel using KDE's kimpanel protocol for Gnome-Shell
 
-pipx install ipython runlike ansible
+pipx install ipython runlike ansible jupyterlab
 
 # sydo apt install python3-pip python3-ipython ipython3
 # python3 -m venv ~/apps/pyvenv
