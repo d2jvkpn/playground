@@ -6,9 +6,9 @@ auth.token = "connection_token"
 log.to = "configs/client.log"
 
 transport.tls.enable = true
+transport.tls.trustedCaFile = "configs/frp_ca.crt"
 transport.tls.certFile = "configs/frp_client.crt"
 transport.tls.keyFile = "configs/frp_client.key"
-transport.tls.trustedCaFile = "configs/frp_ca.crt"
 # transport.tls.serverName = "example.com"
 
 # webServer.addr = "127.0.0.1"

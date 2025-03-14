@@ -10,9 +10,9 @@ auth.method = "token"
 auth.token = "connection_token"
 
 transport.tls.force = true
+transport.tls.trustedCaFile = "configs/frp_ca.crt"
 transport.tls.certFile = "configs/frp_server.crt"
 transport.tls.keyFile = "configs/frp_server.key"
-transport.tls.trustedCaFile = "configs/frp_ca.crt"
 
 # webServer.addr = "127.0.0.1"
 # webServer.port = 3051
