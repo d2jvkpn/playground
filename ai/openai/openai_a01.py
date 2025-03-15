@@ -35,10 +35,10 @@ print(f"QUESTION: {content}")
 
 response = client.chat.completions.create(
   model = args.model,
+  max_tokens = args.max_tokens,
   messages = [
     { "role": "user", "content": content },
   ],
-  max_tokens=args.max_tokens,
 )
 
 ans = response.choices[0].message.content.strip()

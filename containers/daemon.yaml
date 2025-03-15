@@ -1,0 +1,3 @@
+path: /etc/docker/daemon.json
+links:
+- https://docs.docker.com/reference/cli/dockerd/#daemon-configuration-file
