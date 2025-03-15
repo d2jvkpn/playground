@@ -1,35 +1,45 @@
+#!/usr/bin/env python3
+
 import os, argparse
-#from os import sys
 
 import yaml
 from openai import OpenAI
 
-#config_file = sys.argv[1] if len(sys.argv) > 1 else  "configs/dev.yaml"
 
 parser = argparse.ArgumentParser(description="parse commandline arguments")
 #parser.add_argument("config", help="config path", default="configs/dev.yaml")
+
 parser.add_argument("-c", "--config", help="config path", default="configs/dev.yaml")
+parser.add_argument("-m", "--model", help="model name: gpt-3.5-turbo, gpt-4o", default="gpt-4o")
+parser.add_argument("-n", "--max_tokens", help="max tokens", type=int, default=100)
 parser.add_argument("-v", "--verbose", help="verbose", action="store_true")
-parser.add_argument("-n", "--number", type=int, help="a number", default=10)
+
+parser.add_argument('msg', nargs='*')
+
 args = parser.parse_args()
 
-https_proxy = configs.get("https_proxy", "")
-if https_proxy != "":
-    os.environ["https_proxy"] = https_proxy
 
 with open(args.config, 'r') as f:
     configs = yaml.safe_load(f)
 
-client = OpenAI(api_key=configs["openai"]["api_key"])
-model = configs["openai"].get("model",  "gpt-3.5-turbo")
-print(f"--> model={model}")
+os.environ["https_proxy"] = configs.get("https_proxy", "")
+
+api_key = configs["openai"].get("api_key", "")
+assert(api_key != "")
+
+content = "Hello!" if len(args.msg) == 0 else " ".join(args.msg)
+
+client = OpenAI(api_key=api_key)
+
+print(f"QUESTION: {content}")
 
 response = client.chat.completions.create(
-    model = model,
+    model = args.model,
     messages = [
-      { "role": "user", "content": "Hello, World!"},
+      { "role": "user", "content": "content"},
     ],
-    max_tokens=50,
+    max_tokens=args.max_tokens,
 )
+
 ans = response.choices[0].message.content.strip()
-print(f"Ans: {ans}")
+print(f"ANSWER: {ans}")
