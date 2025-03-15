@@ -5,6 +5,7 @@ import yaml
 from openai import OpenAI
 
 
+#### 1.
 parser = argparse.ArgumentParser(description="parse commandline arguments")
 #parser.add_argument("config", help="config path", default="configs/dev.yaml")
 
@@ -17,17 +18,17 @@ parser.add_argument('msg', nargs='*')
 
 args = parser.parse_args()
 
-
+#### 2.
 with open(args.config, 'r') as f:
     configs = yaml.safe_load(f)
 
 os.environ["https_proxy"] = configs.get("https_proxy", "")
+content = "Hello!" if len(args.msg) == 0 else " ".join(args.msg)
 
 api_key = configs["openai"].get("api_key", "")
 assert(api_key != "")
 
-content = "Hello!" if len(args.msg) == 0 else " ".join(args.msg)
-
+##### 3.
 client = OpenAI(api_key=api_key)
 
 print(f"QUESTION: {content}")
