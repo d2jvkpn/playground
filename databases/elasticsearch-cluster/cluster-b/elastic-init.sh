@@ -12,7 +12,7 @@ if [ "$vm_max_map_count" -lt 262144 ]; then
 fi
 
 template=${_path}/elastic.template.yaml
-
+version=$(yq .services.kibana.image compose.template.yaml | awk -F ":" '{print $2}')
 
 #### 2. generate certs
 mkdir -p configs/certs
@@ -39,7 +39,7 @@ done
 docker run --rm -u root:root -w /usr/share/elasticsearch \
   -v ${PWD}/elastic-setup.sh:/usr/share/elasticsearch/elastic-setup.sh \
   -v ${PWD}/configs/certs:/usr/share/elasticsearch/config/certs \
-  docker.elastic.co/elasticsearch/elasticsearch:8.17.2 \
+  docker.elastic.co/elasticsearch/elasticsearch:$version \
   bash elastic-setup.sh
 
 ls -alh configs/elastic.yaml configs/certs
@@ -50,5 +50,5 @@ mkdir -p configs/es-kibana data/es-kibana
 
 docker run --rm -u root:root -w /usr/share/kibana \
   -v ${PWD}/configs/es-kibana:/tmp/es-kibana \
-  docker.elastic.co/kibana/kibana:8.17.2 \
+  docker.elastic.co/kibana/kibana:$version \
   bash -c 'cp config/* /tmp/es-kibana && chown -R kibana:root /tmp/es-kibana'
