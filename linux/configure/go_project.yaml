@@ -1,9 +1,10 @@
 # path: ./project.yaml
 
-app: demo-api
-version: 0.1.0
+app_name: demo-api
+app_version: 0.1.0
+authors: ["d2jvkpn <d2jvkpn@noreply.local>"]
 repository: https://github.com/d2jvkpn/playground
-image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api
+image_name: registry.cn-shanghai.aliyuncs.com/d2jvkpn/demo-api
 
 # configs/{{.APP_ENV}}.yaml
 config: |
