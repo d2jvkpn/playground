@@ -14,7 +14,7 @@ parser.add_argument("-m", "--model", help="model name: gpt-3.5-turbo, gpt-4o", d
 parser.add_argument("-n", "--max_tokens", help="max tokens", type=int, default=1000)
 parser.add_argument("-v", "--verbose", help="verbose", action="store_true")
 
-parser.add_argument('msg', nargs='*')
+parser.add_argument('msg', help="message", nargs='*')
 
 args = parser.parse_args()
 

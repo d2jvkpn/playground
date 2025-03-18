@@ -73,9 +73,9 @@ function x-pyvl() {
 
     if [ ! -s $py_venv/bin/python3 ]; then
         #echo "==> python3 -m venv $py_venv"
-        read -t 5 -p "Create venv $py_venv?(y/Y) " ans || true
+        read -t 5 -p "Create venv $py_venv?(yes/no) " ans || true
 
-        if [[ "$ans" == "y" || "$ans" == "Y" ]]; then
+        if [[ "$ans" != "yes" ]]; then
             python3 -m venv $py_venv
         else
             echo -e '\nAbort!!!'

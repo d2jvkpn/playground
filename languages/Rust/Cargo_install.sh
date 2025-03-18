@@ -11,8 +11,9 @@ sudo apt install gcc-mingw-w64-x86-64
 rustup target add x86_64-pc-windows-gnu
 cargo build --target=x86_64-pc-windows-msvc
 
-cargo install cargo-watch cargo-watch bench \
-  cargo-generate cargo-udeps flamegraph cargo-profiler
+cargo install bench flamegraph \
+  cargo-watch cargo-generate cargo-udeps cargo-profiler \
+  cargo-modules
 
 cargo +stable test
 cargo +nightly test
