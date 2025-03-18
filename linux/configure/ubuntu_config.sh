@@ -48,8 +48,8 @@ cp ./VSCodium.json ~/.config/VSCodium/User/settings.json
 cp templates/* ~/Templates/
 
 ####
-mkdir -p ~/Apps/npm
-cp ./npm.conf ~/.npmrc
+mkdir -p ~/apps/npm
+cp ./npmrc.conf ~/.npmrc
 
 ####
 mkdir -p ~/.vim

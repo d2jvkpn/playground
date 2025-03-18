@@ -13,7 +13,7 @@ cargo build --target=x86_64-pc-windows-msvc
 
 cargo install bench flamegraph \
   cargo-watch cargo-generate cargo-udeps cargo-profiler \
-  cargo-modules
+  cargo-modules cargo-expand
 
 cargo +stable test
 cargo +nightly test
