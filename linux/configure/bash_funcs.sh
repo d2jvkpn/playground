@@ -112,6 +112,16 @@ function x-kube() {
         return
     fi
 
-   >&2 echo "+ export KUBECONFIG=$kubeconfig"
+    #>&2 echo "+ export KUBECONFIG=$kubeconfig"
     export KUBECONFIG=$kubeconfig
+
+    yaml=$(kubectl config view --minify)
+    current=$(echo "$yaml" | yq .current-context)
+    context=$(echo "$yaml" | yq '.contexts.[] | select(.name == "'$current'")')
+    cluster=$(echo "$context" | yq .context.cluster)
+    server=$(echo "$yaml" | yq '.clusters.[] | select(.name == "'$cluster'") | .cluster.server')
+
+    echo "config: $kubeconfig"
+    echo "server: $server"
+    echo "$context"
 }

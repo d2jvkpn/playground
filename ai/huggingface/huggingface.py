@@ -16,7 +16,7 @@ parser.add_argument("-m", "--model",
   required=True, default="",
 )
 
-parser.add_argument("-d", "--dir", help="directory", default="data")
+parser.add_argument("-d", "--dir", help="parent directory of models", default="./data")
 parser.add_argument("-c", "--content", help="message content", default="Hello!")
 
 args = parser.parse_args()
@@ -42,7 +42,7 @@ elif args.command == "run":
     pipeline = transformers.pipeline(
       "text-generation",
       model=model_dir,
-      model_kwargs={"torch_dtype": torch.bfloat16},
+      model_kwargs={ "torch_dtype": torch.bfloat16 },
       device_map="auto", # gpu, cpu
     )
 
