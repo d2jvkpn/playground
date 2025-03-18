@@ -18,16 +18,15 @@ config=~/apps/configs/ssh.yaml
 
 #### 3. Configuration file:
 ```yaml
-ssh-access:
-  aws:
-    _args: -F /path/to/ssh.conf remote_host
-    kibana: { port: 5601, host: 127.0.0.1, local_port: 5601 }
-    kafka: { port: 9092 }
+aws:
+  _args: -F /path/to/ssh.conf remote_host
+  kibana: { port: 5601, host: 127.0.0.1, local_port: 5601 }
+  kafka: { port: 9092 }
 
-  ali:
-    _args: ali-web-prod
-    redis: { port: 6379 }
-    postgres: { port: 5432 }
+ali:
+  _args: ali-web-prod
+  redis: { port: 6379 }
+  postgres: { port: 5432 }
 ```
 
 #### 4. Examples
@@ -43,7 +42,7 @@ function on_exit() {
 
 #### 2. configure
 local_addr=${local_addr:-localhost}
-config=${config:-~/apps/configs/ssh.yaml}
+config=${config:-~/apps/configs/ssh-access.yaml}
 
 case "${1:-""}" in
 "" | "help" | "-h" | "--help")
@@ -67,19 +66,19 @@ ls $config > /dev/null
 name=$1
 shift
 
-args=$(yq ".ssh-access.$name._args" $config)
+args=$(yq ".$name._args" $config)
 
 for svc in $@; do
-    port=$(yq .ssh-access.$name.$svc.port $config)
+    port=$(yq .$name.$svc.port $config)
     if [[ -z "$port" || "$port" == "null" ]]; then
-        >&2 echo '!!! Port is unset in ': .ssh-access.$name.$svc, $config
+        >&2 echo '!!! Port is unset in ': .$name.$svc, $config
         exit 1
     fi
 done
 
 binds=$(
     for svc in $@; do
-        key="ssh-access.$name.$svc"
+        key="$name.$svc"
         port=$(yq .$key.port $config)
 
         local_port=$(yq .$key'.local_port // "'$port'"' $config)
