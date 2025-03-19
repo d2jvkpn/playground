@@ -6,7 +6,8 @@ data/
 local/
 logs/
 target/
-#?? dist/, build/, *.git, *.local
+*.local
+#?? dist/, build/, *.git
 
 #### files
 docker-compose.yaml
