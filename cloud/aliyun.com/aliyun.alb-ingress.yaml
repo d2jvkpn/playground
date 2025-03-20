@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: drink.test
+spec:
+  ingressClassName: alb
+  tls:
+  - hosts:
+    - drink.test.domain
+    secretName: test.domain
+  rules:
+  - host: drink.test.domain
+    http:
+      paths:
+      - path: /tea
+        pathType: Prefix # ImplementationSpecific
+        backend:
+          service:
+            name: tea
+            port: { number: 80 }
+
+      - path: /coffee
+        pathType: Prefix
+        backend:
+          service:
+            name: coffee
+            port: { number: 80 }
