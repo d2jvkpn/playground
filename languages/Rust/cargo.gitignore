@@ -11,7 +11,10 @@
 
 
 #### rust
-configs/
-logs/
 .env
+configs
+data
+logs
+local
+*.local
 target
