@@ -98,7 +98,7 @@ function x-pyvl() {
     # pip3 install -r requirements.txt
 }
 
-alias x-pyvh='source ~/apps/pyvenv.home/bin/activate'
+alias pyvh='source ~/apps/pyvenv.home/bin/activate'
 
 function x-ssh() {
      local host="$1"
