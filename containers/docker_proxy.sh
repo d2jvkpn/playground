@@ -10,16 +10,17 @@ cat <<EOF | sudo tee /etc/systemd/system/docker.service.d/http-proxy.conf
 [Service]
 Environment="HTTP_PROXY=socks5://127.0.0.1:1080"
 Environment="HTTPS_PROXY=socks5://127.0.0.1:1080"
-Environment="NO_PROXY=example.com,127.0.0.1"
+Environment="NO_PROXY=127.0.0.1,example.com,*.example.com"
 EOF
 
 # 2. Flush changes
+cat <<EOF
 systemctl daemon-reload
 
 systemctl show --property Environment docker
 
 systemctl restart docker
-```
+EOF
 
 # 3. test
 docker pull alpine:3

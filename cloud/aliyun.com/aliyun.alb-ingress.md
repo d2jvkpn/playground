@@ -12,3 +12,10 @@ date: 1970-01-01
 2. 容器服务 ACK / 集群列表 / 集群 / 网络 / 路由
 获取 ingress 的端点 AddressX
 3. 域名解析到 CNAME 端点 AddressX
+
+#### Ch02.
+```
+kubectl get CustomResourceDefinition | grep alb
+
+kubectl describe AlbConfig
+```
