@@ -3,7 +3,11 @@
 import os, argparse
 
 
-parser = argparse.ArgumentParser(description="parse commandline arguments")
+parser = argparse.ArgumentParser(
+  description="parse commandline arguments",
+  formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+)
+
 parser.add_argument("command", help="command name", choices=["download", "run"])
 
 parser.add_argument("-c", "--config", help="config path", default="./configs/dev.yaml")

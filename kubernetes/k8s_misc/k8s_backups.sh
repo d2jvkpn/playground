@@ -1,14 +1,15 @@
 #!/bin/bash
-# set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0) # set -x
+# set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 secs=${secs:-10}
-[ -s ./kubeconfig.yaml ] && export KUBECONFIG=./configs/kube.yaml
-echo "==> load $(ls $KUBECONFIG)"
+if [ -s ./configs/kube.yaml ]; then
+    export KUBECONFIG=./configs/kube.yaml
+    echo "==> load $KUBECONFIG"
+fi
 
 kubectl=${kubectl:-kubectl} # kubectl="ssh remote kubectl"
 
 bk_dir=backups_$(date +%F)
-
 mkdir -p $bk_dir
 
 [ -s $bk_dir/all-resources.yaml ] || {
@@ -18,9 +19,8 @@ mkdir -p $bk_dir
     sleep $secs
 }
 
-for e in deployments services ingress daemonSets configmaps \
-  secrets persistentVolumes persistentVolumeClaims statefulSets cronJob \
-  nodes; do
+for e in deployments services ingress configmaps secrets persistentVolumes persistentVolumeClaims \
+  daemonSets statefulSets cronJob nodes customResourceDefinition; do
     [ -s $bk_dir/resource.$e.yaml ] && continue
 
     echo "==> $bk_dir/resource.$e.yaml"
