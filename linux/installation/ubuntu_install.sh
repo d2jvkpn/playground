@@ -15,7 +15,7 @@ apt install -y \
 
 apt install  fcitx5 fcitx5-pinyin ibus-pinyin \
   mpv vlc qbittorrent libreoffice gparted \
-  remmina remmina-plugin-vnc fbreader \
+  remmina remmina-plugin-vnc fbreader okular \
   gedit gedit-plugins
 
 apt install smbclient cifs-utils \
