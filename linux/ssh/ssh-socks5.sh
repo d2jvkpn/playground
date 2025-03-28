@@ -15,19 +15,22 @@ config=""
 #### 3. SSH config
 ```conf
 Host remote_host
-    ProxyJump host1,host2
-    ProxyCommand  nc -X 5 -x 127.0.0.1:1090 %h %p
-    HostName 127.0.0.1
-    User account
-    Port 22
-    IdentityFile ~/.ssh/id_rsa
-    UserKnownHostsFile ~/.ssh/known_hosts
-    Compression yes
-    LogLevel INFO
-    TCPKeepAlive        yes
-    ServerAliveInterval 5
-    ServerAliveCountMax 3
-    ExitOnForwardFailure yes
+	ProxyJump     host1,host2
+	ProxyCommand  nc -X 5 -x 127.0.0.1:1090 %h %p
+	HostName      127.0.0.1
+	User          account
+	Port          22
+
+	IdentityFile       ~/.ssh/id_rsa
+	UserKnownHostsFile ~/.ssh/known_hosts
+
+	Compression          yes
+	LogLevel             INFO
+	TCPKeepAlive         yes
+	ServerAliveInterval  5
+	ServerAliveCountMax  3
+	ConnectTimeout       10
+	ExitOnForwardFailure yes
 ```
 
 #### 4. Examples
@@ -69,6 +72,7 @@ if [ ! -z "$config" ]; then
 else
     set -x
     ssh -NC -D "$address" \
+      -o TCPKeepAlive=yes \
       -o ServerAliveInterval=5 \
       -o ServerAliveCountMax=3 \
       -o ConnectTimeout=10 \
