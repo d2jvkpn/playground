@@ -8,7 +8,7 @@ ENV KAFKA_Version=${KAFKA_Version}
 ENV SCALA_Version=${SCALA_Version}
 
 ADD entrypoint.sh /opt/
-WORKDIR /apps
+WORKDIR /opt
 
 RUN if [ "$region" = "cn" ]; then \
     echo "==> region: $region"; \
@@ -29,12 +29,11 @@ RUN tag=${SCALA_Version}-${KAFKA_Version}; \
 
 # mkdir -p /opt/kafka && tar -xf kafka_${tag}.tgz --strip-components=1 -C /opt/kafka
 
-RUN mkdir -p /apps/data/kafka
+RUN mkdir -p /opt/data/kafka
 
 ENV PATH=/opt/kafka/bin:$PATH
 
-VOLUME ["/apps/data/kafka", "/opt/kafka/logs"]
+VOLUME ["/opt/data/kafka", "/opt/kafka/logs"]
 
 EXPOSE 9092 9093
-# ENTRYPOINT ["/apps/bin/entrypoint.sh"]
 CMD ["/opt/entrypoint.sh"]

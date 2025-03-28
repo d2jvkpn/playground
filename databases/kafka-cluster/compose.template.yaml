@@ -20,7 +20,7 @@ services:
     hostname: kafka-node01
     ports: ["127.0.0.1:29091:9092"]
     volumes:
-    - ./data/kafka-node01:/apps/data/kafka
+    - ./data/kafka-node01:/opt/data/kafka
     - ./logs/kafka-node01:/opt/kafka/logs
     command: ["/opt/entrypoint.sh"]
 
@@ -30,7 +30,7 @@ services:
     hostname: kafka-node02
     ports: ["127.0.0.1:29092:9092"]
     volumes:
-    - ./data/kafka-node02:/apps/data/kafka
+    - ./data/kafka-node02:/opt/data/kafka
     - ./logs/kafka-node02:/opt/kafka/logs
     command: ["/opt/entrypoint.sh"]
 
@@ -40,6 +40,6 @@ services:
     hostname: kafka-node03
     ports: ["127.0.0.1:29093:9092"]
     volumes:
-    - ./data/kafka-node03:/apps/data/kafka
+    - ./data/kafka-node03:/opt/data/kafka
     - ./logs/kafka-node03:/opt/kafka/logs
     command: ["/opt/entrypoint.sh"]

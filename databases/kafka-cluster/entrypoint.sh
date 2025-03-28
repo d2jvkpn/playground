@@ -38,10 +38,10 @@ kafka-storage.sh format --ignore-formatted -t $cluster_id -c $conf # --add-scram
 kafka-server-start.sh $conf $@
 
 exit
-cat > /apps/data/kafka/kafka.yaml <<EOF
+cat > /opt/data/kafka/kafka.yaml <<EOF
 version: 3.9.0
 cluster_id: kFTN1eu1TaSvi4aY5pLVGg
-data_dir: /apps/data/kafka
+data_dir: /opt/data/kafka
 num_partitions: 3
 
 node_id: 1
