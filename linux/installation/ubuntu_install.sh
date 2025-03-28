@@ -5,7 +5,7 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 apt install -y software-properties-common \
   apt-transport-https ca-certificates lsb-release gnupg duf \
   vim tree file pigz jq zip dos2unix gnome-shell-extension-manager \
-  curl net-tools btop iftop nmap whois traceroute iotop
+  curl net-tools btop iftop nmap whois traceroute iotop socat
 
 apt install -y \
   make expect git lm-sensors \
