@@ -22,22 +22,21 @@ kafka-topics.sh --bootstrap-server $addrs --list
 
 kafka-topics.sh --bootstrap-server $addrs --describe --topic $topic
 
-mkdir -p data
-cat > /tmp/msg01.txt <<EOF
+cat > data/temp_msg01.txt <<EOF
 this is a string message
 with a line break/this is
 another message with two
 line breaks!
 EOF
 
-kafka-console-producer.sh --broker-list $addrs --topic $topic < /tmp/msg01.txt
+kafka-console-producer.sh --broker-list $addrs --topic $topic < data/temp_msg01.txt
 
 kafka-console-consumer.sh --bootstrap-server $addrs \
   --topic $topic --from-beginning --max-messages 4
 
+exit
 kafka-console-consumer.sh --bootstrap-server $addrs \
   --topic $topic --partition 0 --offset 1 --max-messages 2
 
 kafka-topics.sh --bootstrap-server $addrs --delete --topic $topic
-
 # kafka-dump-log.sh --cluster-metadata-decoder --files tmp/kraft-combined-logs/_cluster_metadata-0/00000000000000023946.log

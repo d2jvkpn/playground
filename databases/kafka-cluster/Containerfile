@@ -24,7 +24,8 @@ RUN apk --no-cache update && \
 RUN tag=${SCALA_Version}-${KAFKA_Version}; \
   wget https://downloads.apache.org/kafka/${KAFKA_Version}/kafka_${tag}.tgz && \
   tar -xf kafka_${tag}.tgz && \
-  mv kafka_${tag} kafka
+  mv kafka_${tag} kafka && \
+  rm kafka_${tag}.tgz
 
 # mkdir -p /opt/kafka && tar -xf kafka_${tag}.tgz --strip-components=1 -C /opt/kafka
 
