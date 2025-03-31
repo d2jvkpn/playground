@@ -7,7 +7,7 @@ cat <<'EOF'
 # Usage of ssh-socks5
 
 #### 1. Run
-ssh-socks5.sh <remote_host> [127.0.0.1:1081]
+ssh-socks5.sh <remote_host> [127.0.0.1:1080]
 
 #### 2. Environment variables
 config=""
@@ -34,18 +34,18 @@ Host remote_host
 ```
 
 #### 4. Examples
-https_proxy=socks5h://127.0.0.1:1081 git pull
+https_proxy=socks5h://127.0.0.1:1080 git pull
 
-https_proxy=socks5h://127.0.0.1:1081 curl https://icanhazip.com
+https_proxy=socks5h://127.0.0.1:1080 curl https://icanhazip.com
 
-curl -x socks5h://127.0.0.1:1081 https://icanhazip.com
+curl -x socks5h://127.0.0.1:1080 https://icanhazip.com
 
 # neither firefox or chromium supports socks5 with auth
-chromium --disable-extensions --incognito --proxy-server=socks5h://127.0.0.1:1081
+chromium --disable-extensions --incognito --proxy-server=socks5h://127.0.0.1:1080
 
 firefox -p proxy
 
-https_proxy=socks5h://127.0.0.1:1081 remmina
+https_proxy=socks5h://127.0.0.1:1080 remmina
 EOF
 }
 
@@ -57,7 +57,7 @@ case "${1:-""}" in
 esac
 
 remote_host="$1"
-address="${2:-127.0.0.1:1081}"
+address="${2:-127.0.0.1:1080}"
 config=${config:-""}
 
 [ ! -z "$(netstat -tulpn 2>/dev/null | grep -w "$address")" ] && {
