@@ -44,3 +44,6 @@ curl localhost:9000 # remote
 ssh -NC -D 127.0.0.1:1081 remote
 
 curl --connect-timeout 2 -x socks5h://127.0.0.1:1081 https://www.google.com # local
+
+# 4. rsync
+rsync -e 'ssh -F ssh.conf -o RemoteCommand=none -o RequestTTY=no"' -arvP $source_path $target_path
