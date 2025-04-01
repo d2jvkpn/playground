@@ -5,6 +5,7 @@ configs
 data
 local
 logs
+cache
 target
 *.local
 #?? dist, build, *.git
@@ -15,3 +16,18 @@ docker-compose.yml
 compose.yaml
 compose.yml
 nohup.out
+
+####
+# node.js
+node_modules
+dist
+build
+.env*
+
+# python
+__pycache__
+
+# golang
+vendor
+
+# rust
