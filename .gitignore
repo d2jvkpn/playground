@@ -13,3 +13,4 @@ temp/
 *.local
 local
 *.git
+__pycache__
