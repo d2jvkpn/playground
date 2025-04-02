@@ -10,6 +10,9 @@ date: 1970-01-01
 #### Ch01. 
 1. links
 - https://hub.docker.com/r/ollama/ollama
+- https://docs.openwebui.com/pipelines
+- https://github.com/open-webui/pipelines/pkgs/container/pipelines
+- https://github.com/open-webui/open-webui/releases
 
 2. commands
 ```bash
@@ -63,3 +66,8 @@ curl -X POST http://localhost:11434/api/generate -d '{
 
 jq -r .response data/response_a02.json | awk '{printf "%s", $0} END{print}'
 ```
+
+5. pipeline
+docker run -d --restart always --name pipelines \
+  -p 9099:9099 --add-host=host.docker.internal:host-gateway \
+  -v pipelines:/app/pipelines ghcr.io/open-webui/pipelines:main

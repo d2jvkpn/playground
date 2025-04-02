@@ -17,7 +17,7 @@ case "$action" in
 
     # don't use -p$password in order to avoid message in ouyput "mysqldump: [Warning] Using a password on the command line..."
     docker exec --env-file=configs/mysql_root.env -it $container \
-      mysqldump -u root --databases $database > $output
+      mysqldump -u root --single-transaction --databases $database > $output
 
     pigz $output
     echo "==> saved ${output}.gz"

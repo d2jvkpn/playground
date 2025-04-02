@@ -5,7 +5,7 @@ services:
   ollama:
     container_name: ollama
     hostname: ollama
-    image: ollama/ollama:0.6.2
+    image: ollama/ollama:0.6.3
     #network_mode: bridge
     networks: [net]
     ports: ["127.0.0.1:11434:11434"]
@@ -17,7 +17,7 @@ services:
   open-webui:
     container_name: open-webui
     hostname: open-webui
-    image: ghcr.io/open-webui/open-webui:0.5
+    image: ghcr.io/open-webui/open-webui:0.6
     depends_on: [ollama]
     networks: [net]
     extra_hosts:
@@ -37,3 +37,23 @@ services:
       #?WHISPER_MODEL_AUTO_UPDATE: "false"
     volumes:
     - ./data/open-webui:/app/backend/data
+
+  # Open WebUI:
+  #   Admin Panel ->
+  #   Settings ->
+  #   Connections ->
+  #   OpenAI API ->
+  #   Add Connection(+): URL="http://pipelines:9099", Key="0p3n-w3bu!" ->
+  #   Pipelines
+  pipelines:
+    container_name: pipelines
+    image: ghcr.io/open-webui/pipelines:main
+    depends_on: [open-webui]
+    extra_hosts:
+      host.docker.internal: host-gateway
+    networks: [net]
+    #ports: ["127.0.0.1:9099:9099"]
+    #environment:
+    #  PIPELINES_URLS: https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py
+    volumes:
+    - ./data/pipelines:/app/pipelines
