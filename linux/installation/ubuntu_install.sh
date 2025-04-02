@@ -11,7 +11,7 @@ apt install -y \
   make expect git lm-sensors \
   python3-venv pipx \
   docker.io ansible-core openvpn \
-  imagemagick
+  imagemagick tldr-hs
 
 apt install  fcitx5 fcitx5-pinyin ibus-pinyin \
   mpv vlc qbittorrent libreoffice gparted \
