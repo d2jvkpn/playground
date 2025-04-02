@@ -28,7 +28,6 @@ services:
       CORS_ALLOW_ORIGIN: "*"
       ENABLE_OPENAI_API: "false"
       OLLAMA_BASE_URL: http://ollama:11434
-
       #HF_ENDPOINT: https://hf-mirror.com
       # /app/backend/data/cache/embedding/models/models--sentence-transformers--all-MiniLM-L6-v2/
       RAG_EMBEDDING_MODEL_AUTO_UPDATE: "false"
