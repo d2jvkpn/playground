@@ -8,5 +8,5 @@ def handler(sig, frame):
 
 signal.signal(signal.SIGINT, handler)
 
-print('Press Ctrl+C')
+print("Press Ctrl+C")
 signal.pause()
