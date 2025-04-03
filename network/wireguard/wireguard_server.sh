@@ -24,7 +24,7 @@ Table = off
 
 [Peer]
 PublicKey = GtL7fZc/bLnqZldpVofMCD6hDjrK28SsdLxevJ+qtKU=  # client public key
-AllowedIPs = 0.0.0.0/0
+AllowedIPs = 10.0.0.2/24                                  # fixed client ip
 EOF
 
 wg-quick up wg0
