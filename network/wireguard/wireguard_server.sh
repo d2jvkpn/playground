@@ -29,13 +29,17 @@ EOF
 
 wg-quick up wg0
 
-wg show
+wg show all
+wg show wg0
+
 # wg-quick down wg0
 # netstat -alup
 
 # 2. autostart
 exit
 systemctl enable wg-quick@wg0
+journalctl -u wg-quick@wg0
+dmesg | grep wireguard
 
 # 3. network
 exit

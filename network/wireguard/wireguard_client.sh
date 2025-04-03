@@ -20,7 +20,7 @@ DNS = 8.8.8.8 # 1.1.1.1
 [Peer]
 PublicKey = GtL7fZc/bLnqZldpVofMCD6hDjrK28SsdLxevJ+qtKU=  # serevr public key
 Endpoint = demo.wireguard.com:51820                       # server address
-AllowedIPs = 0.0.0.0/0
+AllowedIPs = 0.0.0.0/0, ::/0
 PersistentKeepalive = 25
 EOF
 

@@ -1,0 +1,29 @@
+FROM alpine:3
+
+ARG region
+
+MAINTAINER github.com/d2jvkpn <d2jvkpn@noreply.local>
+
+RUN if [ "$region" = "cn" ]; then \
+    echo "==> region: $region"; \
+    cp /etc/apk/repositories /etc/apk/repositories.bk; \
+    sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
+    go env -w GOPROXY="https://goproxy.cn,direct"; \
+  fi
+
+WORKDIR /opt
+
+RUN apk --no-cache update && \
+  apk --no-cache upgrade && \
+  apk --no-cache add \
+    tzdata coreutils bash python3 supervisor \
+    iproute2 bind-tools stunnel curl traceroute iptables nmap openssl openssh \
+    socat openvpn wireguard-tools dante-server
+    # alternatives: gcompat expect ansible sshpass
+
+RUN mkdir -p /opt/logs /opt/configs
+
+VOLUME ["/opt/configs", "/opt/logs", "/opt/data"]
+EXPOSE 1080
+
+CMD [supervisord, -l, /opt/logs/supervisord.log, -c, /opt/configs/supervisord.conf]
