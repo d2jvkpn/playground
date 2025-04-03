@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 # 1. wireguard server
 exit
 sudo apt update
-sudo apt install -y wireguard
+sudo apt install -y wireguard wireguard-tools
 
 [ -f /usr/local/bin/resolvconf ] &&
   ln -s /usr/bin/resolvectl /usr/local/bin/resolvconf
@@ -15,13 +14,17 @@ wg genkey | tee /etc/wireguard/wg0.key | wg pubkey > /etc/wireguard/wg0.pub
 
 cat > /etc/wireguard/wg0.conf <<EOF
 [Interface]
-PrivateKey = $(cat /etc/wireguard/wg0.key)  # 服务器的私钥
-Address = 10.0.0.1/24                       # VPN 网络的 IP 地址
-ListenPort = 51820                          # 监听的端口
+PrivateKey = oK56DE9Ue9zK76rAc8pBl6opph+1v36lm7cXXsQKrQM=  # server private key
+Address = 10.0.0.1/24                                      # server ip addres in wg0
+ListenPort = 51820                                         # listening port
+Table = off
+#Table = 1234
+#PostUp = ip rule add ipproto tcp dport 22 table 1234
+#PreDown = ip rule delete ipproto tcp dport 22 table 1234
 
-# [Peer]
-# PublicKey = client.pub::text  # 客户端的公钥
-# AllowedIPs = 0.0.0.0/0      # 允许客户端访问的网络
+[Peer]
+PublicKey = GtL7fZc/bLnqZldpVofMCD6hDjrK28SsdLxevJ+qtKU=  # client public key
+AllowedIPs = 0.0.0.0/0
 EOF
 
 wg-quick up wg0
