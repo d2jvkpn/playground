@@ -1,0 +1,28 @@
+networks:
+  net: { name: "vpn-socks5", driver: bridge, external: false }
+
+services:
+  vpn-socks5:
+    image: local/vpn-socks5:dev
+    restart: always
+    cap_add: [NET_ADMIN]
+    #logging:
+    #  driver: "none"
+    # network_mode: host
+    networks: [net]
+    sysctls: # bridge network 
+    - net.ipv6.conf.all.disable_ipv6=0
+    - net.ipv6.conf.default.forwarding=1
+    - net.ipv6.conf.all.forwarding=1
+    - net.ipv4.conf.all.src_valid_mark=1
+    ports: ["127.0.0.01:1080:1080/tcp"]
+    container_name: vpn-socks5
+    #environment:
+    #  TZ: Asia/Shanghai
+    volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
+    - ./configs:/opt/configs
+    - ./logs:/opt/logs
+    working_dir: /opt
+    command: ["supervisord", "-l", "/opt/logs/supervisord.log", "-c", "/opt/supervisord.conf"]
