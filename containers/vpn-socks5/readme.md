@@ -10,6 +10,7 @@ date: 1970-01-01
 #### Ch01. 
 1. links
 - https://hub.docker.com/r/linuxserver/wireguard
+- https://github.com/wg-easy/wg-easy
 
 2. run
 ```wireguard
