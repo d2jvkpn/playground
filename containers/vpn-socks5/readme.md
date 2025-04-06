@@ -24,7 +24,12 @@ docker run -d --name vpn-socks5 -p 1200:1080 \
 # --cap-add=SYS_MODULE `#optional`
 # -v /lib/modules:/lib/modules `#optional`
 
-docker run -d --name vpn-socks5 -p 1200:1080 \
-  --cap-add=NET_ADMIN --sysctl="net.ipv4.conf.all.src_valid_mark=1"
-  -e TZ=Asia/Shanghai local/vpn-socks5:dev tail -f /etc/hosts
+docker run -d --name vpn-socks5 \
+  -p 1201:1201 -p 1202:1202 \
+  --privileged \
+  --cap-add=NET_ADMIN \
+  --sysctl="net.ipv4.conf.all.src_valid_mark=1" \
+  --sysctl="net.ipv4.ip_forward=1" \
+  -e TZ=Asia/Shanghai \
+  local/vpn-socks5:dev tail -f /etc/hosts
 ```
