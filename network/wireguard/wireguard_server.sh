@@ -22,6 +22,10 @@ Table = off
 #PostUp = ip rule add ipproto tcp dport 22 table 1234
 #PreDown = ip rule delete ipproto tcp dport 22 table 1234
 
+#PostUp = iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o eth0 -j MASQUERADE
+#PostDown = iptables -t nat -D POSTROUTING -s 10.0.0.0/24 -o eth0 -j MASQUERADE
+
+
 [Peer]
 PublicKey = GtL7fZc/bLnqZldpVofMCD6hDjrK28SsdLxevJ+qtKU=  # client public key
 AllowedIPs = 10.0.0.2/24                                  # fixed client ip
@@ -46,8 +50,6 @@ exit
 # temporary: sysctl -w net.ipv4.ip_forward=1
 
 cat >> /etc/sysctl.conf<<EOF
-
-# custom
 net.ipv4.ip_forward=1
 EOF
 
@@ -57,3 +59,10 @@ sysctl --system
 
 sudo iptables -A FORWARD -i wg0 -j ACCEPT
 sudo iptables -t nat -A POSTROUTING -o wg0 -j MASQUERADE
+
+# 2025-04-06
+sudo wg
+ip route
+cat /proc/sys/net/ipv4/ip_forward
+iptables -t nat -L -n
+dig ifconfig.me
