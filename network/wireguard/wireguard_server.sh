@@ -45,18 +45,3 @@ exit
 systemctl enable wg-quick@wg0
 journalctl -u wg-quick@wg0
 dmesg | grep wireguard
-
-# 3. network
-exit
-# temporary: sysctl -w net.ipv4.ip_forward=1
-
-cat >> /etc/sysctl.conf<<EOF
-net.ipv4.ip_forward=1
-EOF
-
-sudo sysctl -p
-sysctl net.ipv4.ip_forward
-sysctl --system
-
-sudo iptables -A FORWARD -i wg0 -j ACCEPT
-sudo iptables -t nat -A POSTROUTING -o wg0 -j MASQUERADE
