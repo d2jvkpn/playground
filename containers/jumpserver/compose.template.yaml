@@ -5,7 +5,7 @@ networks:
 
 services:
   jumpserver:
-    image: jumpserver/jms_all:v4.4.1
+    image: jumpserver/jms_all:v4.8.1
     depends_on: [postgres, redis]
     networks: ["net"]
     ports: ["8080:80", "2222:2222"]
@@ -66,8 +66,7 @@ services:
     container_name: jumpserver-redis
     environment:
       TZ: Asia/Shanghai
-    # ALLOW_EMPTY_PASSWORD is recommended only for development.
-      ALLOW_EMPTY_PASSWORD: no
+      ALLOW_EMPTY_PASSWORD: no # ALLOW_EMPTY_PASSWORD is recommended only for development.
       REDIS_DISABLE_COMMANDS: FLUSHDB,FLUSHALL
     volumes:
     - ./data/redis:/data:rw

@@ -5,7 +5,7 @@ services:
   ollama:
     container_name: ollama
     hostname: ollama
-    image: ollama/ollama:0.6.3
+    image: ollama/ollama:0.6.4
     #network_mode: bridge
     networks: [net]
     ports: ["127.0.0.1:11434:11434"]
