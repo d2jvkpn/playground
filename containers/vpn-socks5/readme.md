@@ -26,10 +26,22 @@ docker run -d --name vpn-socks5 -p 1200:1080 \
 
 docker run -d --name vpn-socks5 \
   -p 1201:1201 -p 1202:1202 \
-  --privileged \
   --cap-add=NET_ADMIN \
-  --sysctl="net.ipv4.conf.all.src_valid_mark=1" \
-  --sysctl="net.ipv4.ip_forward=1" \
+  --cap-add=SYS_MODULE \
+  --device /dev/net/tun \
+  --sysctl net.ipv4.conf.all.src_valid_mark=1 \
   -e TZ=Asia/Shanghai \
   local/vpn-socks5:dev tail -f /etc/hosts
+
+--sysctl="net.ipv4.ip_forward=1" \
+
+docker exec -it vpn-socks5 bash
+
+iptables -t nat -A POSTROUTING -s 10.1.1.0/24 -o eth0 -j MASQUERADE
+```
+
+3. danted
+```
+apt install dante-server
+systemctl status danted
 ```

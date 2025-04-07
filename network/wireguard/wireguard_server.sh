@@ -18,6 +18,7 @@ PrivateKey = oK56DE9Ue9zK76rAc8pBl6opph+1v36lm7cXXsQKrQM=  # server private key
 Address = 10.0.0.1/24                                      # server ip addres in wg0
 ListenPort = 51820                                         # listening port
 Table = off
+
 #Table = 1234
 #PostUp = ip rule add ipproto tcp dport 22 table 1234
 #PreDown = ip rule delete ipproto tcp dport 22 table 1234
@@ -59,10 +60,3 @@ sysctl --system
 
 sudo iptables -A FORWARD -i wg0 -j ACCEPT
 sudo iptables -t nat -A POSTROUTING -o wg0 -j MASQUERADE
-
-# 2025-04-06
-sudo wg
-ip route
-cat /proc/sys/net/ipv4/ip_forward
-iptables -t nat -L -n
-dig ifconfig.me
