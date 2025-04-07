@@ -48,12 +48,12 @@ curl -4 -v https://ifconfig.me
 
 curl --interface wg0 https://ifconfig.me
 
-nslookup ifconfig.me # dig ifconfig.me
-ping 1.1.1.1         # ping 8.8.8,8 # ping ifconfig.me
+dig ifconfig.me  # nslookup ifconfig.me
+ping 1.1.1.1     # ping 8.8.8,8 # ping ifconfig.me
+traceroute 1.1.1.1
 
 tcpdump -i wg0
 iptables -nvL
-traceroute 1.1.1.1
 
 #### server
 iptables -L -n -v | grep DROP
