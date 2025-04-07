@@ -12,7 +12,16 @@ sudo apt install -y wireguard wireguard-tools
   ln -s /usr/bin/resolvectl /usr/local/bin/resolvconf
 
 umask 077
-wg genkey | tee /etc/wireguard/wg0.key | wg pubkey > /etc/wireguard/wg0.pub
+# wg genkey | tee /etc/wireguard/wg0.key | wg pubkey > /etc/wireguard/wg0.pub
+wg_key=$(wg genkey)
+wg_pub=$(echo $wg_key | wg pubkey)
+
+mkdir configs
+cat > configs/wireguard.yaml <<EOF
+wg:
+  key: $wg_key
+  pub: $wg_pub
+EOF
 
 
 #### 2. configs
