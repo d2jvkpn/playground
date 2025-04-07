@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail;_wd=$(pwd); _path=$(dirname $0)
 
 mkdir -p logs/supervisor logs/nginx data/postgres data/redis
   data/chen data/download data/jumpserver data/koko data/lion
 
-cp ${_path}/compose.template.yaml compose.yaml
+cp ${_path}/compose.jumpserver.yaml compose.yaml
 
 exit
 cp examples/redis.conf data/redis
