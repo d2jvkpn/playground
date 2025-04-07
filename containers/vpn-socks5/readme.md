@@ -30,10 +30,9 @@ docker run -d --name vpn-socks5 \
   --cap-add=SYS_MODULE \
   --device /dev/net/tun \
   --sysctl net.ipv4.conf.all.src_valid_mark=1 \
+  --sysctl="net.ipv4.ip_forward=1" \
   -e TZ=Asia/Shanghai \
   local/vpn-socks5:dev tail -f /etc/hosts
-
---sysctl="net.ipv4.ip_forward=1" \
 
 docker exec -it vpn-socks5 bash
 

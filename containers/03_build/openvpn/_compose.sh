@@ -6,6 +6,16 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 host=$1 # ip or domain
 port=$2 # 1194
 
+# NAT
+iptables -A FORWARD -i tun0 -j ACCEPT   # up command
+# iptables -D FORWARD -i tun0 -j ACCEPT # down command
+iptables -t nat -L -n -v                # check command
+
+#iptables -t nat -A POSTROUTING -s 10.1.1.0/24 -o eth0 -j MASQUERADE # up command
+#iptables -t nat -D POSTROUTING -s 10.1.1.0/24 -o eth0 -j MASQUERADE # down command
+#iptables -t nat -L -n -v                                            # check command
+
+
 #### 1. initialize
 # rm -r data/openvpn/
 mkdir -p data/openvpn logs
