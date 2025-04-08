@@ -26,6 +26,22 @@ iptables -A FORWARD -i wg0 -j ACCEPT  # up command
 #iptables -D FORWARD -i wg0 -j ACCEPT # down command
 iptables -L FORWARD -n -v             # check command
 
+# example 01
+#iptables -A FORWARD -p tcp --dport 443 -s 10.1.1.0/24 -j ACCEPT
+#iptables -t nat -A POSTROUTING -p udp --dport 53 -s 10.1.1.0/24 -o eth0 -j MASQUERADE
+# -p tcp / udp / icmp    protocol
+# --dport 80             destination port
+# -d 8.8.8.8             destination address
+# --sport 12345          source port
+# -s 10.1.1.0/24         source address
+# -i wg0                 input interface
+# -o eth0                output interface
+
+# example 02
+# iptables -A FORWARD -i wg0 -p tcp --dport 443 -j ACCEPT
+# iptables -A FORWARD -i wg0 -p tcp --dport 25 -j DROP
+
+
 #### 3. set nat masquerading, from 10.1.1.0/24 to eth0
 iptables -t nat -A POSTROUTING -s 10.1.1.0/24 -o eth0 -j MASQUERADE  # up command
 #iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
@@ -33,7 +49,7 @@ iptables -t nat -A POSTROUTING -s 10.1.1.0/24 -o eth0 -j MASQUERADE  # up comman
 iptables -t nat -L -n -v                                             # check command
 
 #### 4. persiste iptables rules
-exit
+exit # alternative
 apt install iptables-persistent
 systemctl status netfilter-persistent
 
