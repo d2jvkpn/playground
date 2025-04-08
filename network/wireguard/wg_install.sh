@@ -33,9 +33,14 @@ ls examples/wg-proxy.client.conf examples/wg-proxy.server.conf
 
 #### 3. services
 wg show all
-
 wg show wg0
+wg showconf wg0
+
 wg-quick up wg0
+wg-quick down wg0
+
+wg syncconf wg0 <(wg-quick strip wg0)
+wg syncconf wg0 <(wg-quick strip /etc/wireguard/wg0)
 
 netstat -ulnp
 
