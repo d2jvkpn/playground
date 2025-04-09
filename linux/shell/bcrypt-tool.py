@@ -18,7 +18,8 @@ parser.add_argument("--password", help="password", type=str, required=False, def
 parser.add_argument("--cost", help="hash cost", type=int, required=False, default=12)
 
 parser.add_argument(
-  "--hashed", help="bcrypt hashed password", type=str, required=False, default="",
+  "--hashed", help="bcrypt hashed password",
+  type=str, required=False, default="",
 )
 
 args = parser.parse_args()
@@ -37,7 +38,6 @@ args.password = args.password.strip()
 if args.password == "":
     print(f"⚠️ Password is empty")
     sys.exit(1)
-
 
 if args.command == "hash":
     hashed_password = bcrypt.hashpw(

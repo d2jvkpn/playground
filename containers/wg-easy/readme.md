@@ -13,7 +13,7 @@ date: 1970-01-01
 - https://www.wireguard.com/
 - https://github.com/wg-easy/wg-easy
 
-2. bcrypt-tool.py
+2. bcrypt-tool.py (path=linux/shell/bcrypt-tool.py)
 ```
 ./bcrypt-tool.py hash --cost=12 --password=123456
 
