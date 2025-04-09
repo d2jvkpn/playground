@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
 # TODO: read and write with a yaml file
-# emoj: warn=⚠️, forbidden=🚫, unexpect=💥, ok=✅, no=❌
+# emoj: warn=⚠️, forbidden=🚫, unexpect=💥, ok=✅, no=❌, bug=🔥
 import sys, argparse, getpass
 
 import bcrypt
-
 
 
 parser = argparse.ArgumentParser(
@@ -53,6 +52,7 @@ else:
     except Exception as e:
         print(f"💥 Unexpected error: {e}")
         sys.exit(1)
+
     if ok:
         print("✅ Password match")
     else:
