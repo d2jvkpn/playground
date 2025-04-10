@@ -1,5 +1,5 @@
-#!//bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 function display_usage() {
 >&2 cat <<'EOF'
