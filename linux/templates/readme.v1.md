@@ -6,7 +6,7 @@ authors: ["Jane Doe<jane.doe@noreply.local>"]
 date: 1970-01-01
 ```
 
-#### Ch01. 
+#### ch01. 
 1. hello
 - a.
 - b.
@@ -18,4 +18,4 @@ echo "Hello, world"
 ```
 
 
-#### Ch02. 
+#### ch02. 

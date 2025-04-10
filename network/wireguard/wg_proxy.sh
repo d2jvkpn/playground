@@ -55,21 +55,3 @@ systemctl status netfilter-persistent
 
 iptables-save > /etc/iptables/rules.v4  # iptables-restore < /etc/iptables/rules.v4
 ip6tables-save > /etc/iptables/rules.v6 # ip6tables-restore < /etc/iptables/rules.v6
-
-### 5. debug
-exit
-##### client
-curl -4 https://icanhazip.com
-curl -4 -v https://ifconfig.me
-
-curl --interface wg0 https://ifconfig.me
-
-dig ifconfig.me  # nslookup ifconfig.me
-ping 1.1.1.1     # ping 8.8.8,8 # ping ifconfig.me
-traceroute 1.1.1.1
-
-tcpdump -i wg0
-iptables -nvL
-
-#### server
-iptables -L -n -v | grep DROP

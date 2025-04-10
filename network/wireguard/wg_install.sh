@@ -35,6 +35,7 @@ ls examples/wg-proxy.client.conf examples/wg-proxy.server.conf
 wg show all
 wg show wg0
 wg showconf wg0
+wg show all dump
 
 wg-quick up wg0
 wg-quick down wg0
