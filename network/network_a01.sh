@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _path=$(readlink -f `dirname $0`)
 
 exit
 
@@ -35,3 +35,16 @@ dig ns site.domain
 pip3 install grip
 
 grip docs/api/open/login.md 
+
+
+####
+ss -t
+ss -u
+
+ss -tlnp
+
+ss -tunap
+
+ss -tulpn | grep :8080
+
+ss -tan | awk '{print $4}' | cut -d':' -f2 | sort | uniq -c | sort -nr
