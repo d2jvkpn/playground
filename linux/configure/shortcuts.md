@@ -1,7 +1,7 @@
 ### Shortcuts
 ---
 
-#### Ch01. Ubuntu
+#### ch01. Ubuntu
 1. Launchers
 - Home folder: Ctrl+Alt+H
 
@@ -25,7 +25,7 @@
 - Gedit: Ctrl + Alt + G
 
 
-#### Ch02. MPV
+#### ch02. MPV
 - s: save screenshorts
 - ] [: speed up, speed down
 - m: mute yes/no
@@ -38,5 +38,5 @@
 - shift + j: switch to the first subtitle
 - v: show/hide subtutile
 
-#### Ch03. VIM
+#### ch03. Vim
 - TODO: 

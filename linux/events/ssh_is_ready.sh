@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-set -eu -o pipefail
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 target=$1 # remote_host, -p 2048 remote_host
 retries=${2:-300}
