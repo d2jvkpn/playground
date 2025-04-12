@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-set -eu -o pipefail
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 node=$1; state=$2
 echo "==> vm_state_until: $node, $state"

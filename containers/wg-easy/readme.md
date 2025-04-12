@@ -30,3 +30,7 @@ htpasswd -nbB "admin" "123456"
 
 
 #### Ch02. 
+docker run --rm --name wg -it \
+  --cap-add=NET_ADMIN --cap-add=SYS_MODULE \
+  --sysctl=net.ipv4.conf.all.src_valid_mark=1 --sysctl=net.ipv4.ip_forward=1 \
+  ghcr.io/wg-easy/wg-easy:14 bash

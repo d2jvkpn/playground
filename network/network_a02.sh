@@ -1,9 +1,14 @@
-#!/usr/bin/env bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-# echo "Hello, world!"
 
+#### block an ip
+iptables -I INPUT -s x.x.x.x -j DROP
+cat /etc/hosts.deny
+netstat -ano | grep 1234
+
+
+####
 netstat -tulpn | grep 5432
 netstat -uulpn | grep 5432
 
