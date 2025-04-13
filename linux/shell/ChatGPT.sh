@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _path=$(readlink -f `dirname $0`)
 
 [ $# -eq 0 ] && {
     >&2 echo "Hello! How can I assist you today?"

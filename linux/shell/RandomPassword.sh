@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(readlink -f `dirname "$0"`)
 
 if [[ $# -gt 0 && ("$1" == "help" || "$1" == "-h" || "$1" == "--help") ]]; then
     >&2 echo 'Default parameters of RandomPassword.sh:

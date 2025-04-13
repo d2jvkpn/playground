@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
 if [[ $# -eq 0 || "$1" == *"-h"* ]]; then
     echo "$(basename $0) [duration] [command] [args...]"

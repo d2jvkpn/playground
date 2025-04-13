@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eu -o pipefail # -x
+set -eu -o pipefail; _wd=$(pwd); _path=$(readlink -f `dirname "$0"`)
 
 # Count Lines of Code
 
