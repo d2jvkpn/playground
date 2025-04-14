@@ -1,19 +1,19 @@
 function datetime(at=null) {
   if (!at) { at = new Date(); }
 
-  function padH0 (value, len=2) { return value.toString().padStart(len, '0')}
+  function padZeros (value, len=2) { return value.toString().padStart(len, '0')}
 
   function timezoneOffset(offset) {
     if (offset === 0) { return "Z"; }
 
-    let hour = padH0(Math.floor(Math.abs(offset) / 60));
-    let minute = padH0(Math.abs(offset) % 60);
+    let hour = padZeros(Math.floor(Math.abs(offset) / 60));
+    let minute = padZeros(Math.abs(offset) % 60);
     return `${(offset < 0) ? "+" : "-"}${hour}:${minute}`;
   }
 
-  at.date = `${at.getFullYear()}-${padH0(at.getMonth() + 1)}-${padH0(at.getDate())}`;
-  at.time = `${padH0(at.getHours())}:${padH0(at.getMinutes())}:${padH0(at.getSeconds())}`;
-  at.ms = padH0(at.getMilliseconds(), 3);
+  at.date = `${at.getFullYear()}-${padZeros(at.getMonth() + 1)}-${padZeros(at.getDate())}`;
+  at.time = `${padZeros(at.getHours())}:${padZeros(at.getMinutes())}:${padZeros(at.getSeconds())}`;
+  at.ms = padZeros(at.getMilliseconds(), 3);
   at.tz = timezoneOffset(at.getTimezoneOffset());
 
   at.datetime = `${at.date}T${at.time}`;
