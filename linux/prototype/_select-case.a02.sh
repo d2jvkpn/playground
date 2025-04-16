@@ -19,7 +19,7 @@ select choice in "${options[@]}"; do
         break
         ;;
     *)
-        echo "<== Invaid Option"
+        echo "<== Invalid Option"
         break
         ;;
     esac
