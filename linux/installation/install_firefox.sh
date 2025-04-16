@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _path=$(readlink -f `dirname $0`)
 
 # https://askubuntu.com/questions/1502031/how-to-install-firefox-directly-from-mozilla-with-apt
 # https://support.mozilla.org/en-US/kb/install-firefox-linux
