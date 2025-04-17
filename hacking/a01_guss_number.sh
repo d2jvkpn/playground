@@ -14,7 +14,7 @@ win="no"
 while (($n <= $max_times)); do
     n=$((n+1))
     ####
-    read -p "--> 请输入一个猜测的数字 ($min_range - $max_range), ${n}/${max_times}: " guess
+    read -p "--> 请输入一个猜测的数字 range=[$min_range, $max_range], times=${n}/${max_times}: " guess
 
     if [[ ! "$guess" =~ ^[0-9]+$ ]]; then
         >&2 echo '!!! 错误：请输入一个有效的数字。'
