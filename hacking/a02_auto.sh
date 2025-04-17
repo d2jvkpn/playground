@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(readlink -f `dirname "$0"`)
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 function main_logic {
@@ -7,8 +7,8 @@ function main_logic {
 }
 
 function load_user_code {
-    if [ -s lib.sh ]; then
-        source lib.sh
+    if [ -s ${_dir}/lib.sh ]; then
+        source ${_dir}/lib.sh
     fi
 }
 
