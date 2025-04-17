@@ -47,6 +47,10 @@ function reproduce_and_execute() {
     child=$(mutate)
     sleep $((RANDOM%3))
     echo "    🔁 $SPECIES generation $gen creates ${child}."
+
+    if (( gen > 0 )); then
+        rm $self
+    fi
     ./$child $MAX_GEN
 }
 
