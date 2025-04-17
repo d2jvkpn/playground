@@ -27,7 +27,7 @@ function mutate() {
     segments=$(tr -dc "ATCG" < /dev/urandom | fold -w 42 | awk '{print $1; exit}')
 
     # 😈
-    sed "${LINE_NUM}s|:.*|: $at, g$next, $segments|" "$ME" > "$child"
+    sed "${LINE_NUM} s|:.*|: $at, g$next, $segments|" "$ME" > "$child"
     chmod +x "$child"
 
     echo ${child}
