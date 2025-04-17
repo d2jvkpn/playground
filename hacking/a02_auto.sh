@@ -9,11 +9,15 @@ function main_logic {
 function load_user_code {
     if [ -s ${_dir}/lib.sh ]; then
         source ${_dir}/lib.sh
+    else
+        >&2 echo "lib.sh not found"
     fi
 }
 
 main_logic
 
 load_user_code
+
+new_feature
 
 echo "exit"
