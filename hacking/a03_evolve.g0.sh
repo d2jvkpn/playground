@@ -36,11 +36,11 @@ function mutate() {
 # 模拟繁殖：复制自己并生成下一代
 function reproduce_and_execute() {
     child=$(mutate)
-    sleep $((RANDOM%5))
+    sleep $((RANDOM%3))
 
     if (( GEN + 1 <= MAX_GEN )); then
         echo "    🔁 $NAME generation $GEN creates ${child}"
-        ./$child
+        ./$child $MAX_GEN
     else
         echo "<== 🏁 Evolution of $NAME ends at generation $GEN"
     fi
