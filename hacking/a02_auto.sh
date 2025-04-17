@@ -1,14 +1,14 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(readlink -f `dirname "$0"`)
+
 
 function main_logic {
     echo "This is main_logic."
 }
 
 function load_user_code {
-    if [ -f a02_lib.sh ]; then
-        source a02_lib.sh
+    if [ -s lib.sh ]; then
+        source lib.sh
     fi
 }
 

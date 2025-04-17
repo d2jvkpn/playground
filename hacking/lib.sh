@@ -1,6 +1,6 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(readlink -f `dirname "$0"`)
+
 
 function main_logic {
     echo "This is main_logic after modification ."

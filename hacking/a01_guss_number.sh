@@ -1,19 +1,18 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(readlink -f `dirname "$0"`)
 
-min_range=1
-max_range=100
+
+min_range=${min_range:-1}
+max_range=${max_range:-100}
 max_times=${1:-7}
 echo "==> 欢迎参加数字猜谜游戏(max_times=${max_times})！"
 
 target=$((RANDOM % ($max_range - $min_range + 1) + $min_range))
 n=1
 while (($n <= $max_times)); do
-    n=$((n+1))
-
     ####
-    read -p "--> 请输入一个猜测的数字 ($min_range - $max_range): " guess
+    read -p "--> 请输入一个猜测的数字 ($min_range - $max_range), ${n}/${max_times}: " guess
+    n=$((n+1))
 
     if [[ ! "$guess" =~ ^[0-9]+$ ]]; then
         echo '!!! 错误：请输入一个有效的数字。'
