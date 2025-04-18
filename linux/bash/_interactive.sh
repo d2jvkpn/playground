@@ -12,7 +12,7 @@ read -r name
 echo -e "\n"
 
 echo "2. Are you human?"
-echo -n "y/n: "
+echo -t 5 -n "y/n: "
 read -r ans
 echo -e "\n"
 

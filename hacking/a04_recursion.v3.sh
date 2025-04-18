@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname `readlink -f "$0"`)
 
 if [ $# -eq 0 ]; then
     :
