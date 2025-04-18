@@ -1,0 +1,23 @@
+#### system
+pip
+ipython
+
+#### utils
+PyYAML
+pytz
+requests
+httpx
+httpx[http2]
+httpx[socks]
+# PySocks
+jupyterlab
+
+#### data science
+numpy
+scipy
+pandas
+xlrd
+polars
+matplotlib
+# torch
+# tiktoken

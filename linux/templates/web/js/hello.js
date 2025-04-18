@@ -15,5 +15,5 @@ function helloWorld() {
 helloWorld();
 
 module.exports = {
-	helloWorld,
+  helloWorld,
 }
