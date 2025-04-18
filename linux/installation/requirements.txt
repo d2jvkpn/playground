@@ -3,8 +3,9 @@ pip
 ipython
 
 #### utils
-PyYAML
 pytz
+PyYAML
+loguru
 requests
 httpx
 httpx[http2]
@@ -18,6 +19,9 @@ scipy
 pandas
 xlrd
 polars
+# tabulate
 matplotlib
+# seaborn
 # torch
 # tiktoken
+transformers
