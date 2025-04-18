@@ -15,7 +15,7 @@ SPECIES=$(basename "$self" | sed 's#\.g[0-9]\+\.sh$##')
 
 gen=$(basename "$self" | grep -o "\.g[0-9]\+.sh$" | sed 's/\.g//; s/\.sh$//')
 if [[ ! "$gen" =~ ^[0-9]+$ ]]; then
-    >&2 echo "Unexpected generation number"
+    >&2 echo "Unexpected generation number: {name}.g{number}.sh"
     exit 1
 fi
 
