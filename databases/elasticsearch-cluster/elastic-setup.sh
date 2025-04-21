@@ -1,9 +1,11 @@
 #!/bin/bash
-set -eu
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
+instances_yaml=${1:-config/certs/instances.yaml}
 
 cd /usr/share/elasticsearch
 
-if [ ! -f config/certs/ca.crt ]; then
+if [ ! -s config/certs/ca.crt ]; then
     echo "==> Creating CA";
 
     elasticsearch-certutil ca --silent --pem -out config/certs/ca.zip;
@@ -14,8 +16,9 @@ if [ ! -f config/certs/certs.zip ]; then
     echo "==> Creating certs";
 
     elasticsearch-certutil cert --silent --pem \
-      --ca-cert config/certs/ca.crt --ca-key config/certs/ca.key \
-      --in config/certs/instances.yaml \
+      --ca-cert config/certs/ca.crt \
+      --ca-key config/certs/ca.key \
+      --in $instances_yaml \
       -out config/certs/certs.zip;
 
     # unzip -j config/certs/certs.zip "*/*" -d config/certs;

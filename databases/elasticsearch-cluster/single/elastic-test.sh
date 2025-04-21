@@ -1,23 +1,26 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
-
-# configs/elastic.yaml, configs/es.yaml
-yaml=$1; action=$2
-ca=$(yq .ca $yaml)
-password=$(yq .password $yaml)
+set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 port=${port:-9201}
 
-if [[ "$ca" == "" || "$ca" == "null" ]]; then
-    auth="-u elastic:$password"
-    addr="http://localhost:$port"
-else
-    auth="--cacert $ca -u elastic:$password"
-    addr="https://localhost:$port"
-fi
+container=${container:-elastic01}
+pass_file=configs/$container/elastic.pass
+addr="https://localhost:$port"
+echo "==> addr=$addr, container=$container"
 
 ####
-case "$action" in
+[ ! -s $pass_file ] &&
+  docker exec -it $container elasticsearch-reset-password --batch -u elastic |
+  awk '/New value:/{print $NF}' |
+  dos2unix > $pass_file
+
+password=$(cat $pass_file)
+[ -z "$password" ] && { >&2 echo "failed to run elasticsearch-reset-password "; exit 1; }
+
+auth="--cacert configs/$container/certs/http_ca.crt -u elastic:$password"
+
+####
+case "$1" in
 "check")
     echo -e "#### cluster"
     curl $auth $addr -f
@@ -28,7 +31,7 @@ case "$action" in
     echo
 
     echo -e "#### nodes"
-    curl $auth $addr/_cat/nodes -f
+    curl $auth "$addr/_cat/nodes?v=true&format=yaml" -f | tee configs/nodes.yaml
     echo
 
     echo -e "#### indices"
@@ -44,7 +47,7 @@ case "$action" in
     curl $auth -X POST "$addr/idx-test/_doc/1" \
       -H 'Content-Type: application/json' \
       -d'{"title":"Test Document","content":"This is a test document."}' \
-    -f
+      -f
     echo
 
     echo -e "#### search documents from idx-test"

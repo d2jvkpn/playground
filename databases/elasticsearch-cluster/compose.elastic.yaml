@@ -1,4 +1,5 @@
 # url: https://github.com/elastic/elasticsearch/blob/8.17/docs/reference/setup/install/docker/docker-compose.yml
+# path: compose.yaml
 
 networks:
   net:

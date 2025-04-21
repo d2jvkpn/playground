@@ -1,7 +1,7 @@
 networks:
   net: { name: kafka-cluster, driver: bridge, external: false }
 
-x-service-common: &service-common
+x-kafka-common: &kafka-common
   image: local/kafka:${TAG}
   restart: always
   user: "${USER_UID}:${USER_GID}"
@@ -15,7 +15,7 @@ x-service-common: &service-common
 
 services:
   kafka-node01:
-    <<: *service-common
+    <<: *kafka-common
     container_name: kafka-node01
     hostname: kafka-node01
     ports: ["127.0.0.1:29091:9092"]
