@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
 
 command -v sqlx || \
   cargo install --version=0.7.3 sqlx-cli --no-default-features --features native-tls,postgres
