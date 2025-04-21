@@ -1,0 +1,41 @@
+FROM alpine/java:21-jre
+
+ARG SCALA_Version
+ARG KAFKA_Version
+ARG region
+
+ENV SCALA_Version=${SCALA_Version}
+ENV KAFKA_Version=${KAFKA_Version}
+
+ADD entrypoint.sh /opt/
+WORKDIR /opt
+
+RUN if [ "$region" = "cn" ]; then \
+    echo "==> region: $region"; \
+    cp /etc/apk/repositories /etc/apk/repositories.bk; \
+    sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
+  fi
+
+RUN apk --no-cache update && \
+  apk --no-cache upgrade && \
+  apk --no-cache add tzdata bash yq wget
+# openjdk21 or openjdk21-jre
+
+RUN --mount=type=bind,target=cache,source=cache \
+  tag=${SCALA_Version}-${KAFKA_Version}; \
+  if [ ! -s cache/kafka_${tag}.tgz ]; then \
+      wget -O cache/kafka_${tag}.tgz https://downloads.apache.org/kafka/${KAFKA_Version}/kafka_${tag}.tgz; \
+  fi; \
+  tar -xf cache/kafka_${tag}.tgz && \
+  ln -s kafka_${tag} kafka
+
+# mkdir -p /opt/kafka && tar -xf kafka_${tag}.tgz --strip-components=1 -C /opt/kafka
+
+RUN mkdir -p /opt/data/kafka
+
+ENV PATH=/opt/kafka/bin:$PATH
+
+VOLUME ["/opt/data/kafka", "/opt/kafka/logs"]
+
+EXPOSE 9092 9093
+CMD ["/opt/entrypoint.sh"]

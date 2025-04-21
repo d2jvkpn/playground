@@ -4,8 +4,13 @@
 **author**: []
 **date**: 1970-01-01
 
-#### C01. Create a cluster
-1. start
+#### ch01. Create a cluster
+1. docs
+- https://www.elastic.co/
+- https://hub.docker.com/_/elasticsearch
+- https://github.com/infinilabs/analysis-ik
+
+2. start
 ```bash
 make init
 
@@ -16,17 +21,12 @@ make check
 make test
 ```
 
-2. config kibana
+3. config kibana
 ```
 make kibana
 ```
 
-3. shutdown
+4. shutdown
 ```bash
 make shutdown
-```
-
-4. up
-```bash
-make up
 ```

@@ -1,10 +1,10 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 #### 1. setup
 yaml=${yaml:-./data/kafka/kafka.yaml}
 conf=./data/kafka/kafka.properties
-template=${template:-/opt/kafka/config/kraft/server.properties}
+template=${template:-/opt/kafka/config/server.properties}
 
 #cluster_id=$(awk '/^cluster_id: /{print $2; exit}' $yaml)
 cluster_id=$(yq .cluster_id $yaml)
@@ -28,18 +28,19 @@ cat $template | sed \
   -e "/^node.id=/s#=.*#=$node_id#" \
   -e "/^advertised.listeners=/s#=.*#=$advertised_listeners#" \
   -e "/^process.roles=/s#=.*#=$process_roles#" \
-  -e "/^controller.quorum.voters=/s#=.*#=$controller_quorum_voters#" \
   > $conf
+# -e "/^controller.quorum.voters=/s#=.*#=$controller_quorum_voters#"
 
 #### 3. run
-kafka-storage.sh format --ignore-formatted -t $cluster_id -c $conf # --add-scram
+kafka-storage.sh format --ignore-formatted -t $cluster_id --initial-controllers $controller_quorum_voters \
+  --config $conf # --add-scram
 
 # -daemon
-kafka-server-start.sh $conf $@
+kafka-server-start.sh  $conf $@
 
 exit
 cat > /opt/data/kafka/kafka.yaml <<EOF
-version: 3.9.0
+version: 4.0.0
 cluster_id: kFTN1eu1TaSvi4aY5pLVGg
 data_dir: /opt/data/kafka
 num_partitions: 3
@@ -47,5 +48,6 @@ num_partitions: 3
 node_id: 1
 # advertised.listeners: PLAINTEXT://kafka-node1:9092
 advertised_listeners: PLAINTEXT://localhost:29091
-controller_quorum_voters: 1@kafka-node01:9093,2@kafka-node02:9093,3@kafka-node03:9093
 EOF
+
+# controller_quorum_voters: 1@kafka-node01:9093,2@kafka-node02:9093,3@kafka-node03:9093

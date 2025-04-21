@@ -1,0 +1,45 @@
+networks:
+  net: { name: kafka-cluster, driver: bridge, external: false }
+
+x-service-common: &service-common
+  image: local/kafka:${TAG}
+  restart: always
+  user: "${USER_UID}:${USER_GID}"
+  deploy:
+    resources:
+      limits: { cpus: "2.0", memory: 2.0G }
+      reservations: { cpus: "0.25", memory: 512M }
+  networks: [net]
+  environment:
+    TZ: Asia/Shanghai
+
+services:
+  kafka-node01:
+    <<: *service-common
+    container_name: kafka-node01
+    hostname: kafka-node01
+    ports: ["127.0.0.1:29091:9092"]
+    volumes:
+    - ./data/kafka-node01:/opt/data/kafka
+    - ./logs/kafka-node01:/opt/kafka/logs
+    command: ["/opt/entrypoint.sh"]
+
+  kafka-node02:
+    <<: *service-common
+    container_name: kafka-node02
+    hostname: kafka-node02
+    ports: ["127.0.0.1:29092:9092"]
+    volumes:
+    - ./data/kafka-node02:/opt/data/kafka
+    - ./logs/kafka-node02:/opt/kafka/logs
+    command: ["/opt/entrypoint.sh"]
+
+  kafka-node03:
+    <<: *service-common
+    container_name: kafka-node03
+    hostname: kafka-node03
+    ports: ["127.0.0.1:29093:9092"]
+    volumes:
+    - ./data/kafka-node03:/opt/data/kafka
+    - ./logs/kafka-node03:/opt/kafka/logs
+    command: ["/opt/entrypoint.sh"]
