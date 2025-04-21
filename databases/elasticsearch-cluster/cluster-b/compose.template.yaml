@@ -9,8 +9,11 @@ networks:
     #  config:
     #  - { subnet: 172.24.0.0/16, gateway: 172.24.0.1 }
 
-x-service-common: &service-common
-  image: docker.elastic.co/elasticsearch/elasticsearch:8.18.0
+x-kibana-common: &kibana-common
+  image: docker.elastic.co/kibana/kibana:9.0.0
+
+x-elastic-common: &elastic-common
+  image: docker.elastic.co/elasticsearch/elasticsearch:9.0.0
   restart: always
   deploy:
     resources:
@@ -54,7 +57,7 @@ x-environment-common: &environment-common
 
 services:
   es-node01:
-    <<: *service-common
+    <<: *elastic-common
     container_name: es-node01
     hostname: es-node01
     ports: ["9201:9200"]
@@ -73,7 +76,7 @@ services:
       cluster.initial_master_nodes: es-node01,es-node02,es-node03
 
   es-node02:
-    <<: *service-common
+    <<: *elastic-common
     container_name: es-node02
     hostname: es-node02
     depends_on: [es-node01]
@@ -92,7 +95,7 @@ services:
       cluster.initial_master_nodes: es-node01,es-node02,es-node03
 
   es-node03:
-    <<: *service-common
+    <<: *elastic-common
     container_name: es-node03
     hostname: es-node03
     depends_on: [es-node02]
@@ -111,7 +114,7 @@ services:
       cluster.initial_master_nodes: es-node01,es-node02,es-node03
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:8.18.0
+    <<: *kibana-common
     container_name: es-kibana
     hostname: es-kibana
     depends_on:

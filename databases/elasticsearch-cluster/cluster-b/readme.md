@@ -30,3 +30,12 @@ make kibana
 ```bash
 make shutdown
 ```
+
+#### ch02.
+1. v8
+- docker.elastic.co/elasticsearch/elasticsearch:8.18.0
+- docker.elastic.co/kibana/kibana:8.18.0
+
+2. v9
+- docker.elastic.co/elasticsearch/elasticsearch:9.0.0
+- docker.elastic.co/kibana/kibana:9.0.0
