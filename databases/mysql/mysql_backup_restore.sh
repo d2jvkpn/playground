@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `$dirname "$0"`)
+
 
 action=$1
-container=$(yq .services.mysql.container_name docker-compose.yaml)
+container=$(yq .services.mysql.container_name compose.yaml)
 
 [ -s configs/mysql_root.env ] || \
   echo "MYSQL_PWD=$(cat configs/mysql_root.password)" > configs/mysql_root.env

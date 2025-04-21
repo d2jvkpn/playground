@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `$dirname "$0"`)
+
 
 docker-compose down
 
-sed -i -e '/mysql_root\.password/d' -e '/mysql\.env/d' docker-compose.yaml
+sed -i -e '/mysql_root\.password/d' -e '/mysql\.env/d' compose.yaml
 
 docker-compose up -d

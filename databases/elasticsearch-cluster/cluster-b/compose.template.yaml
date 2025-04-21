@@ -33,7 +33,7 @@ x-elastic-common: &elastic-common
   networks: [net]
     #net: { ipv4_address: 172.24.0.11 }
 
-x-environment-common: &environment-common
+x-elastic-env: &elastic-env
   ELASTIC_PASSWORD_FILE: ./config/certs/elastic.pass
   ES_JAVA_OPTS: -Xms2g -Xmx2g
 
@@ -69,7 +69,7 @@ services:
     - ./data/es-node01:/usr/share/elasticsearch/data
     #env_file: ["./compose.env"]
     environment:
-      <<: *environment-common
+      <<: *elastic-env
       node.name: es-node01
       hostname: es-node01
       discovery.seed_hosts: es-node02,es-node03
@@ -88,7 +88,7 @@ services:
     - ./configs/certs/es-node02:/usr/share/elasticsearch/config/certs/node
     - ./data/es-node02:/usr/share/elasticsearch/data
     environment:
-      <<: *environment-common
+      <<: *elastic-env
       node.name: es-node02
       hostname: es-node02
       discovery.seed_hosts: es-node01,es-node03
@@ -107,7 +107,7 @@ services:
     - ./configs/certs/es-node03:/usr/share/elasticsearch/config/certs/node
     - ./data/es-node03:/usr/share/elasticsearch/data
     environment:
-      <<: *environment-common
+      <<: *elastic-env
       node.name: es-node03
       hostname: es-node03
       discovery.seed_hosts: es-node01,es-node02

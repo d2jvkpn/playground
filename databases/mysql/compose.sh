@@ -1,6 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail #  -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `$dirname "$0"`)
 
 export DB_Port=${1:-3306} CONTAINER_Name=${2:-mysql}
 user=${user:-d2jvkpn}
@@ -21,7 +20,7 @@ MYSQL_DATABASE=$user
 MYSQL_PASSWORD=$db_user_password
 EOF
 
-envsubst < ${_path}/docker_deploy.yaml > docker-compose.yaml
+envsubst < ${_dir}/compose.mysql.yaml > compose.yaml
 
 # docker-compose pull
 docker-compose up -d
@@ -45,7 +44,7 @@ echo -e "\n==> $((n/60))m$((n%60))s elapsed\n"
 
 ####
 echo "==> restart container $container"
-sed -i 's/    env_file: /    # env_file: /' docker-compose.yaml
+sed -i 's/    env_file: /    # env_file: /' compose.yaml
 rm configs/mysql.env
 
 docker-compose down
@@ -53,7 +52,7 @@ docker-compose up -d
 
 exit
 
-container=$(yq .services.mysql.container_name docker-compose.yaml)
+container=$(yq .services.mysql.container_name compose.yaml)
 docker exec -it $container mysql -u root -p
 
 # sudo apt install -y mysql-client
