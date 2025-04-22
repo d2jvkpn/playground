@@ -21,6 +21,7 @@ func main() {
 		postDown string
 		shell    string
 		err      error
+		postCmd  *exec.Cmd
 		mainCmd  *exec.Cmd
 
 		sigChan chan os.Signal
@@ -28,8 +29,8 @@ func main() {
 	)
 
 	flag.StringVar(&cmd, "cmd", "", "main command to run")
-	flag.StringVar(&postUp, "postup", "", "command to run after service starts")
-	flag.StringVar(&postDown, "postdown", "", "command to run after service stops")
+	flag.StringVar(&postUp, "postUp", "", "command to run after service starts")
+	flag.StringVar(&postDown, "postDown", "", "command to run after service stops")
 	flag.StringVar(&shell, "shell", "bash", "shell name")
 	flag.Parse()
 
@@ -55,50 +56,43 @@ func main() {
 	}
 
 	if postUp != "" {
-		_Logger.Info("PostUp", slog.String("command", postUp))
-		_ = runCommand("PostUp", shell, postUp)
+		_Logger.Info("run PostUp", slog.String("command", postUp)) // 👉
+		postCmd = exec.Command(shell, "-c", postUp)
+		postCmd.Stdout, postCmd.Stderr = os.Stdout, os.Stderr
+
+		if err = postCmd.Run(); err == nil {
+			_Logger.Info("PostUp successful")
+		} else {
+			_Logger.Error("PostUp failed", slog.Any("error", err))
+		}
 	}
 
 	sigChan = make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
 	go func() {
-		err := mainCmd.Wait()
-		if err != nil {
+		var err error
+
+		if err = mainCmd.Wait(); err != nil {
 			_Logger.Error("Service exited with error", slog.Any("error", err)) // ⚠️
 		}
 		sigChan <- syscall.SIGTERM
 	}()
 
 	sig = <-sigChan
-	_Logger.Warn("caught signal, preparing to shut down.", slog.Any("signal", sig)) // 🛑
+	_Logger.Warn("caught signal, preparing to shut down.", slog.String("signal", sig.String())) // 🛑
 
 	if postDown != "" {
 		_Logger.Info("run PostDown", slog.String("command", postDown))
-		_ = runCommand("PostDown", shell, postDown)
+		postCmd = exec.Command(shell, "-c", postUp) // 👉
+		postCmd.Stdout, postCmd.Stderr = os.Stdout, os.Stderr
+
+		if err = postCmd.Run(); err == nil {
+			_Logger.Info("postDown successful")
+		} else {
+			_Logger.Error("postDown failed", slog.Any("error", err))
+		}
 	}
 
 	_Logger.Info("gosuper shut down complete") // ✅
-}
-
-func runCommand(label, shell, cmdStr string) (err error) {
-	var cmd *exec.Cmd
-
-	_Logger.Info("run command", slog.String("label", label), slog.String("command", cmdStr)) // 👉
-	cmd = exec.Command("bash", "-c", cmdStr)
-	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
-
-	if err = cmd.Run(); err == nil {
-		_Logger.Info(
-			"run successful",
-			slog.String("label", label), slog.String("command", cmdStr),
-		)
-	} else {
-		_Logger.Error(
-			"run failed",
-			slog.String("label", label), slog.String("command", cmdStr), slog.Any("error", err),
-		)
-	}
-
-	return err
 }
