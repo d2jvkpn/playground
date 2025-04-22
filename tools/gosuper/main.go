@@ -36,10 +36,8 @@ func main() {
 	}
 
 	logger.Info( // 🚀
-		"starting service",
-		slog.String("command", cmd),
-		slog.String("postUp", postUp),
-		slog.String("postDown", postDown),
+		"starting service", slog.String("command", cmd),
+		slog.String("postUp", postUp), slog.String("postDown", postDown),
 	)
 
 	mainCmd = exec.Command(shell, "-c", cmd)
@@ -51,14 +49,14 @@ func main() {
 	}
 
 	if postUp != "" {
-		logger.Info("run PostUp", slog.String("command", postUp)) // 👉
+		logger.Info("run postUp", slog.String("command", postUp)) // 👉
 		postCmd = exec.Command(shell, "-c", postUp)
 		postCmd.Stdout, postCmd.Stderr = os.Stdout, os.Stderr
 
 		if err = postCmd.Run(); err == nil {
-			logger.Info("PostUp successful")
+			logger.Info("postUp successful")
 		} else {
-			logger.Error("PostUp failed", slog.Any("error", err))
+			logger.Error("postUp failed", slog.Any("error", err))
 		}
 	}
 
@@ -69,7 +67,7 @@ func main() {
 		var err error
 
 		if err = mainCmd.Wait(); err != nil {
-			logger.Error("Service exited with error", slog.Any("error", err)) // ⚠️
+			logger.Error("service exited with error", slog.Any("error", err)) // ⚠️
 		}
 		sigChan <- syscall.SIGTERM
 	}()
@@ -78,7 +76,7 @@ func main() {
 	logger.Warn("caught signal, preparing to shut down.", slog.String("signal", sig.String())) // 🛑
 
 	if postDown != "" {
-		logger.Info("run PostDown", slog.String("command", postDown))
+		logger.Info("run postDown", slog.String("command", postDown))
 		postCmd = exec.Command(shell, "-c", postUp) // 👉
 		postCmd.Stdout, postCmd.Stderr = os.Stdout, os.Stderr
 
