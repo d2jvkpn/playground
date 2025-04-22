@@ -1,5 +1,6 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
 
 action=$1
 base_vm=${base_vm:-ubuntu}

@@ -1,9 +1,10 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
 
 port=${port:-9201}
+container=${1:-elastic01}
 
-container=${container:-elastic01}
 pass_file=configs/$container/elastic.pass
 addr="https://localhost:$port"
 echo "==> addr=$addr, container=$container"

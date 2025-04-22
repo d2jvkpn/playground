@@ -1,8 +1,8 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
-container=${container:-elastic01}
+container=${1:-elastic01}
 
 if [ -s configs/$container/elasticsearch.yml ]; then
     echo '!!! file already exists:' configs/$container/elasticsearch.yml

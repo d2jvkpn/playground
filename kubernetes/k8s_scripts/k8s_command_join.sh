@@ -1,5 +1,6 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
 
 node_kind=$1
 yaml_file=${yaml_file:-k8s.local/data/kubeadm-init.yaml}

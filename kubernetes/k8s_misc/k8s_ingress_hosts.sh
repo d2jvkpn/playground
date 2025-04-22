@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0) # set -x
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 # kubectl -n $namespace get ingress $name -o custom-columns=ADRESS:spec.tls[*].hosts[*]

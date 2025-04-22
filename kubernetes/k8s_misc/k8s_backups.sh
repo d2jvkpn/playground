@@ -1,5 +1,6 @@
 #!/bin/bash
-# set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
 
 secs=${secs:-10}
 if [ -s ./configs/kube.yaml ]; then
