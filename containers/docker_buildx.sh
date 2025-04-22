@@ -16,3 +16,5 @@ exit
 ```Containerfile
 RUN --mount=type=bind,target=cache,source=cache ls cache/
 ```
+
+echo "https://github.com/docker/buildx/releases"

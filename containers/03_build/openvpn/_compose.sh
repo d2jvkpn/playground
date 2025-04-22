@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 # https://github.com/kylemanna/docker-openvpn
@@ -33,9 +33,11 @@ sudo mkdir -p data/openvpn/ccd
 cat | sudo tee -a data/openvpn/openvpn.conf <<EOF
 
 #### custom
-client-config-dir /etc/openvpn/ccd
-log-append /apps/logs/openvpn.log
+client-config-dir     /etc/openvpn/ccd
+log-append            /apps/logs/openvpn.log
 ifconfig-pool-persist /etc/openvpn/ifconfig-pool-persist.txt 3600
+#client-connect       /apps/target/client_connect.sh
+#client-disconnect    /apps/target/client_disconnect.sh
 EOF
 
 

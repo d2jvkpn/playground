@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 #### C01. docker pull through socks5(not socks5h)
 # - https://gist.github.com/alphamarket/404fb8dda86edfe204ab38719379833a
