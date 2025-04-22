@@ -10,28 +10,6 @@ import (
 	"syscall"
 )
 
-func runCommand(label, shell, cmdStr string) (err error) {
-	var cmd *exec.Cmd
-
-	_Logger.Info("run command", slog.String("label", label), slog.String("command", cmdStr)) // 👉
-	cmd = exec.Command("bash", "-c", cmdStr)
-	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
-
-	if err = cmd.Run(); err == nil {
-		_Logger.Info(
-			"run successful",
-			slog.String("label", label), slog.String("command", cmdStr),
-		)
-	} else {
-		_Logger.Error(
-			"run failed",
-			slog.String("label", label), slog.String("command", cmdStr), slog.Any("error", err),
-		)
-	}
-
-	return err
-}
-
 var (
 	_Logger *slog.Logger = slog.New(slog.NewJSONHandler(os.Stderr, nil))
 )
@@ -49,9 +27,9 @@ func main() {
 		sig     os.Signal
 	)
 
-	flag.StringVar(&cmd, "cmd", "", "Main command to run")
-	flag.StringVar(&postUp, "postup", "", "Command to run after service starts")
-	flag.StringVar(&postDown, "postdown", "", "Command to run after service stops")
+	flag.StringVar(&cmd, "cmd", "", "main command to run")
+	flag.StringVar(&postUp, "postup", "", "command to run after service starts")
+	flag.StringVar(&postDown, "postdown", "", "command to run after service stops")
 	flag.StringVar(&shell, "shell", "bash", "shell name")
 	flag.Parse()
 
@@ -61,12 +39,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	_Logger.Info(
+	_Logger.Info( // 🚀
 		"starting service",
 		slog.String("command", cmd),
 		slog.String("postUp", postUp),
 		slog.String("postDown", postDown),
-	) // 🚀
+	)
 
 	mainCmd = exec.Command(shell, "-c", cmd)
 	mainCmd.Stdout, mainCmd.Stderr = os.Stdout, os.Stderr
@@ -101,4 +79,26 @@ func main() {
 	}
 
 	_Logger.Info("gosuper shut down complete") // ✅
+}
+
+func runCommand(label, shell, cmdStr string) (err error) {
+	var cmd *exec.Cmd
+
+	_Logger.Info("run command", slog.String("label", label), slog.String("command", cmdStr)) // 👉
+	cmd = exec.Command("bash", "-c", cmdStr)
+	cmd.Stdout, cmd.Stderr = os.Stdout, os.Stderr
+
+	if err = cmd.Run(); err == nil {
+		_Logger.Info(
+			"run successful",
+			slog.String("label", label), slog.String("command", cmdStr),
+		)
+	} else {
+		_Logger.Error(
+			"run failed",
+			slog.String("label", label), slog.String("command", cmdStr), slog.Any("error", err),
+		)
+	}
+
+	return err
 }
