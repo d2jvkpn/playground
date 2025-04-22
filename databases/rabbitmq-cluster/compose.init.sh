@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 function check_value() {
@@ -22,4 +22,4 @@ check_value rabbitmq.cookie "$RABBITMQ_Cookie"
 check_value rabbitmq.user "$RABBITMQ_User"
 check_value rabbitmq.password "$RABBITMQ_Password"
 
-envsubst < compose.template.yaml > compose.yaml
+envsubst < compose.rabbitmq.yaml > compose.yaml

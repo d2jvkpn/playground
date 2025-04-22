@@ -26,8 +26,8 @@ RUN apk --no-cache update && \
   apk --no-cache add \
     tzdata coreutils \
     supervisor nginx \
-    curl iproute2 bind-tools stunnel iptables iptables-persistent vim \
-    yq jq
+    curl iproute2 bind-tools stunnel iptables iptables-persistent nmap \
+    yq jq vim
   # installed: bash, openssl
 
 RUN cp /etc/supervisord.conf /etc/supervisord.conf.bk
