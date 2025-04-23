@@ -51,7 +51,7 @@ services:
     depends_on: [kafka-node01, kafka-node02, kafka-node03]
     network_mode: host
     expose: ["9000"]
-    user: "1000:1000"
+    user: "${USER_UID}:${USER_GID}"
     volumes:
     - ./data/kafka-kafdrop:/var/protobuf_desc
     environment:
