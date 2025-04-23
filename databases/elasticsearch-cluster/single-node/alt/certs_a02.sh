@@ -28,13 +28,19 @@ req_extensions = v3_req
 prompt = no
 
 [req_distinguished_name]
-CN = es.local
+C = CN           # Country
+ST = Shanghai    # State
+L = Shanghai     # Locality
+O = MyCompany    # Organization
+OU = DevOps      # Organizational Unit
+CN = es.local    # Common Name
 
 [v3_req]
 subjectAltName = @alt_names
 
 [alt_names]
 DNS.1 = es.local
+DNS.2 = localhost
 IP.1 = 127.0.0.1
 IP.2 = 192.168.1.100
 EOF

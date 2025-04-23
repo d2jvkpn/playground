@@ -13,9 +13,9 @@ fi
 
 if [ ! -s compose.yaml ]; then
     cp compose.elastic.yaml compose.yaml
-    echo "==> Created compose file: compose.yaml"
+    echo "==> Created compose from compose.elastic.yaml: compose.yaml"
 else
-    echo "==> Using existing compose file"
+    echo "==> Using existing compose file: compose.yaml"
 fi
 version=$(yq .services.kibana.image compose.yaml | awk -F ":" '{print $2}')
 
