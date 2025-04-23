@@ -38,11 +38,11 @@ services:
       resources:
         limits: { cpus: "1", memory: 1GB }
     network_mode: bridge
-    ports: [127.0.0.1:5600:5601]`
+    ports: [127.0.0.1:5600:5601]
     #volumes:
     #- ./configs/kibana:/usr/share/kibana/config
     #- ./data/kibana:/usr/share/kibana/data
     environment:
       SERVERNAME: kibana
-      XPACK_SECURITY_ENABLED: "true"
+      XPACK_APM_SERVICEMAPENABLED: "true"
       #XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY: aaaaaaaa-c4d3-4a0a-8290-2abcb83ab3aa
