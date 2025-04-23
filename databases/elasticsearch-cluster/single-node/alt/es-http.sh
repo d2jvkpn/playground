@@ -1,12 +1,15 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
+
+version=${1:-9.0.0}
+
 ####
 mkdir -p configs/es data/es
 
 docker run --rm -u root:root -w /usr/share/elasticsearch \
   -v ${PWD}/configs/es:/tmp/es \
-  docker.elastic.co/elasticsearch/elasticsearch:9.0.0 \
+  docker.elastic.co/elasticsearch/elasticsearch:$version \
   bash -c 'cp -r config/* /tmp/es/ && chown -R elasticsearch:root /tmp/es'
 
 ls configs/es
@@ -20,14 +23,15 @@ docker run -d --name es \
   -e "discovery.type=single-node" \
   -e "xpack.security.enabled=false" \
   -e "xpack.security.http.ssl.enabled=false" \
-  docker.elastic.co/elasticsearch/elasticsearch:9.0.0
+  docker.elastic.co/elasticsearch/elasticsearch:$version
+
 
 ####
 mkdir -p configs/kibana data/kibana
 
 docker run --rm -u root:root -w /usr/share/kibana \
   -v ${PWD}/configs/kibana:/tmp/kibana \
-  docker.elastic.co/kibana/kibana:9.0.0 \
+  docker.elastic.co/kibana/kibana:$version \
   bash -c 'cp config/* /tmp/kibana && chown -R kibana:root /tmp/kibana'
 
 ls configs/kibana
@@ -41,4 +45,4 @@ docker run -d --name kibana \
   -e "SERVER_NAME=kibana" \
   -e "XPACK_SECURITY_ENABLED=false" \
   -e "ELASTICSEARCH_HOSTS=http://127.0.0.1:9200" \
-  docker.elastic.co/kibana/kibana:9.0.0
+  docker.elastic.co/kibana/kibana:$version
