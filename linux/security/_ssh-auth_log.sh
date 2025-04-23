@@ -1,8 +1,6 @@
-#!/usr/bin/env bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
-# echo "Hello, world!"
 
 #### C01. rsyslog
 systemctl status rsyslog
@@ -11,7 +9,11 @@ systemctl status rsyslog
 # systemctl start rsyslog
 # systemctl enable rsyslog
 
+# debian
 tail -f /var/log/auth.log
+
+# centos
+tail -f /var/log/secure
 
 #### C02. journalctl
 # 1. 查看所有身份验证日志
@@ -47,3 +49,15 @@ ls \
   /var/log/journal/ \
   /run/log/journal/ \
   ~/.bash_history
+
+# 9. auditd
+sudo apt-get install auditd
+echo "auditctl -a always,exit -F arch=b64 -S execve -k exec_commands" >> /etc/audit/rules.d/audit.rules
+ausearch -k exec_commands
+
+# 10. ssh login fingprint
+ssh-keygen -lf id_rsa.pub
+head -n1 .ssh/authorized_keys | ssh-keygen -lf -
+
+grep Accepted /var/log/secure
+grep Accepted /var/log/auth.log
