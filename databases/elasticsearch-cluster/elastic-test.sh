@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
+
 # configs/elastic.yaml
 yaml=$1; action=$2
 ca=$(yq .ca $yaml)
@@ -44,7 +45,7 @@ case "$action" in
     curl $auth -X POST "$addr/idx-test/_doc/1" \
       -H 'Content-Type: application/json' \
       -d'{"title":"Test Document","content":"This is a test document."}' \
-    -f
+      -f
     echo
 
     echo -e "#### search documents from idx-test"

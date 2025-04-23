@@ -6,6 +6,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:9.0.0
     container_name: es
     hostname: es
+    restart: always
     deploy:
       resources:
         limits: { cpus: "1", memory: 2GB }
@@ -13,7 +14,7 @@ services:
       memlock: { soft: -1, hard: -1 }
       nofile: { soft: 65536, hard: 65536 }
     networks: [net]
-    ports: [127.0.0.1:9200:9200]
+    ports: [${HOST_IP}:9200:9200]
     volumes:
     - ./configs/es:/usr/share/elasticsearch/config
     - ./data/es:/usr/share/elasticsearch/data
@@ -29,12 +30,13 @@ services:
     image: docker.elastic.co/kibana/kibana:9.0.0
     container_name: kibana
     hostname: kibana
+    restart: always
+    depends_on: [es]
     deploy:
       resources:
         limits: { cpus: "1", memory: 1GB }
     networks: [net]
-    ports: [127.0.0.1:5600:5601]
-    depends_on: [es]
+    ports: [${HOST_IP}:5600:5601]
     volumes:
     - ./configs/kibana:/usr/share/kibana/config
     - ./data/kibana:/usr/share/kibana/data
