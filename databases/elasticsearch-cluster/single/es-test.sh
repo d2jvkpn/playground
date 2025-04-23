@@ -2,26 +2,22 @@
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
-port=${port:-9201}
-container=${1:-elastic01}
+port=${port:-9200}; account=${account:-elastic}
+container="$1"; action="$2"
 
-pass_file=configs/$container/elastic.pass
 addr="https://localhost:$port"
 echo "==> addr=$addr, container=$container"
 
 ####
-[ ! -s $pass_file ] &&
-  docker exec -it $container elasticsearch-reset-password --batch -u elastic |
-  awk '/New value:/{print $NF}' |
-  dos2unix > $pass_file
-
-password=$(cat $pass_file)
-[ -z "$password" ] && { >&2 echo "failed to run elasticsearch-reset-password "; exit 1; }
-
-auth="--cacert configs/$container/certs/http_ca.crt -u elastic:$password"
+password=$(yq ".$account" configs/es.yaml)
+if [[ "$password" == "" || "$password" == "null" ]]; then
+    >&2 echo "failed to run elasticsearch-reset-password "
+    exit 1
+fi
+auth="--cacert configs/$container/certs/http_ca.crt -u $account:$password"
 
 ####
-case "$1" in
+case "$action" in
 "check")
     echo -e "#### cluster"
     curl $auth $addr -f
@@ -32,7 +28,7 @@ case "$1" in
     echo
 
     echo -e "#### nodes"
-    curl $auth "$addr/_cat/nodes?v=true&format=yaml" -f | tee configs/nodes.yaml
+    curl $auth "$addr/_cat/nodes?v=true&format=yaml" -f
     echo
 
     echo -e "#### indices"
@@ -57,5 +53,6 @@ case "$1" in
     ;;
 *)
     >&2 echo '!!! unknown command'
-    exit 1;
+    exit 1
+    ;;
 esac

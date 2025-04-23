@@ -10,10 +10,10 @@ networks:
     #  config:
     #  - { subnet: 172.24.0.0/16, gateway: 172.24.0.1 }
 
-x-kibana-common: &kibana-common
+x-kibana-service: &kibana-service
   image: docker.elastic.co/kibana/kibana:9.0.0
 
-x-elastic-common: &elastic-common
+x-elastic-service: &elastic-service
   image: docker.elastic.co/elasticsearch/elasticsearch:9.0.0
   restart: always
   deploy:
@@ -58,10 +58,10 @@ x-elastic-env: &elastic-env
 
 services:
   elastic-node01:
-    <<: *elastic-common
+    <<: *elastic-service
     container_name: elastic-node01
     hostname: elastic-node01
-    ports: ["9201:9200"]
+    ports: ["127.0.0.1:9201:9200"]
     volumes:
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
@@ -77,11 +77,11 @@ services:
       cluster.initial_master_nodes: elastic-node01,elastic-node02,elastic-node03
 
   elastic-node02:
-    <<: *elastic-common
+    <<: *elastic-service
     container_name: elastic-node02
     hostname: elastic-node02
     depends_on: [elastic-node01]
-    ports: ["9202:9200"]
+    ports: ["127.0.0.1:9202:9200"]
     volumes:
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
@@ -96,11 +96,11 @@ services:
       cluster.initial_master_nodes: elastic-node01,elastic-node02,elastic-node03
 
   elastic-node03:
-    <<: *elastic-common
+    <<: *elastic-service
     container_name: elastic-node03
     hostname: elastic-node03
     depends_on: [elastic-node02]
-    ports: ["9203:9200"]
+    ports: ["127.0.0.1:9203:9200"]
     volumes:
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
@@ -115,7 +115,7 @@ services:
       cluster.initial_master_nodes: elastic-node01,elastic-node02,elastic-node03
 
   kibana:
-    <<: *kibana-common
+    <<: *kibana-service
     container_name: elastic-kibana
     hostname: elastic-kibana
     depends_on:
@@ -133,7 +133,7 @@ services:
       - CMD-SHELL
       - curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'
     networks: [net]
-    ports: ["5601:5601"]
+    ports: ["127.0.0.1:5601:5601"]
     volumes:
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro

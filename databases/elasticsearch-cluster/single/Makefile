@@ -1,11 +1,14 @@
-es-init:
-	bash elastic-init.sh es
+init:
+	bash es-init.sh es
 
-es-check:
-	port=9200 bash elastic-test.sh es check
+reset-password:
+	bash es-reset-password.sh es elastic
 
-es-test:
-	port=9200 bash elastic-test.sh es test
+kibana:
+	bash es-kibana.sh es kibana
 
-es-kibana:
-	port=9200 bash elastic-kibana.sh es kibana
+check:
+	bash es-test.sh es check
+
+test:
+	bash es-test.sh es test
