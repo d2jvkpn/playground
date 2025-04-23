@@ -25,7 +25,7 @@ image=local/kafka:$kafka_version
 cluster_id=$(docker run --rm $image kafka-storage.sh random-uuid)
 echo "==> Kafka cluster id: $cluster_id, number of nodes: $num"
 
-mkdir -p data
+mkdir -p data data/kafka-kafdrop
 
 cat > data/kafka.yaml <<EOF
 version: $kafka_version
