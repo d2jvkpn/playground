@@ -37,7 +37,6 @@ x-elastic-service: &elastic-service
 x-elastic-env: &elastic-env
   ELASTIC_PASSWORD_FILE: ./config/certs/elastic.pass
   ES_JAVA_OPTS: -Xms2g -Xmx2g
-
   cluster.name: elastic-cluster
   bootstrap.memory_lock: "true"
   xpack.ml.use_auto_machine_memory_percent: "true"

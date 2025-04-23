@@ -8,7 +8,7 @@ fi
 
 version=$(yq .services.kibana.image compose.yaml | awk -F ":" '{print $2}')
 
-mkdir -p configs/es data/es configs/kibana
+mkdir -p configs/es data/es configs/kibana data/kibana
 
 ####
 docker run --rm -u root:root -w /usr/share/elasticsearch \
