@@ -18,7 +18,7 @@ services:
     - ./configs/es:/usr/share/elasticsearch/config
     - ./data/es:/usr/share/elasticsearch/data
     environment:
-      ES_JAVA_OPTS: -Xms1g -Xmx1g
+      ES_JAVA_OPTS: -Xms512m -Xmx1280m
       bootstrap.memory_lock: "true"
       discovery.type: single-node
       xpack.security.enabled: "false"
@@ -37,7 +37,7 @@ services:
     volumes:
     - ./configs/kibana:/usr/share/kibana/config
     environment:
-      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      ES_JAVA_OPTS: -Xms256m -Xmx512m
       SERVERNAME: kibana
       XPACK_SECURITY_ENABLED: "false"
       ELASTICSEARCH_HOSTS: http://es:9200
