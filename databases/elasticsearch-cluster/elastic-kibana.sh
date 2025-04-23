@@ -39,8 +39,7 @@ if [[ -z "$password" || "$password" == "null" ]]; then
     exit 1
 fi
 
-yq -i '.kibana.account = "kibana_system"' configs/elastic.yaml
-yq -i e '.kibana.password = "'$password'"' configs/elastic.yaml
+yq -i '.kibana.account = "kibana_system" | .kibana.password = "'$password'"' configs/elastic.yaml
 
 # 5.
 verification_code=$(docker exec $kibana cat data/verification_code | dos2unix)

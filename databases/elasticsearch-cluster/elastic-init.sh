@@ -45,10 +45,10 @@ for name in $(yq .instances[].name configs/elastic.yaml); do
 done
 
 docker run --rm -u root:root -w /usr/share/elasticsearch \
-  -v ${PWD}/elastic-setup.sh:/usr/share/elasticsearch/elastic-setup.sh \
+  -v ${PWD}/elastic-certs.sh:/opt/elastic-certs.sh \
   -v ${PWD}/configs/certs:/usr/share/elasticsearch/config/certs \
   docker.elastic.co/elasticsearch/elasticsearch:$version \
-  bash elastic-setup.sh config/certs/instances.yaml
+  bash /opt/elastic-certs.sh config/certs/instances.yaml
 
 ls -alh configs/elastic.yaml configs/certs
 
