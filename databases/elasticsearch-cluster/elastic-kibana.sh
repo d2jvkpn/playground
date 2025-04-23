@@ -7,7 +7,7 @@ cat <<EOF
 1. Run commandline: make kibana
 2. Open http://localhost:5601, title="Configure Elastic to get started"
 3. Click "Configure manually"
-4. Enter Address: https://es-node01:9200, click "Check address"
+4. Enter Address: https://elastic-node01:9200, click "Check address"
 5. Enter account(output of step1):
 - username=kibana_system,
 - password: XX01
@@ -20,14 +20,14 @@ cat <<EOF
 
 EOF
 
-es_node=${es_node:-es-node01}
-kibana=${kibana:-es-kibana}
+elastic_node=${elastic_node:-elastic-node01}
+kibana=${kibana:-elastic-kibana}
 
 password=$(yq .kibana.password configs/elastic.yaml)
 
 if [[ -z "$password" || "$password" == "null" ]]; then
     password=$(
-     docker exec -it $es_node \
+     docker exec -it $elastic_node \
        elasticsearch-reset-password -u kibana_system --batch --url https://localhost:9200 |
        awk '/New value/{print $NF}' |
        dos2unix
@@ -62,12 +62,12 @@ EOF
 exit
 
 ####
-docker exec -it es-node01 \
+docker exec -it elastic-node01 \
   elasticsearch-reset-password -u elastic --url https://localhost:9200 |
   awk '/New value/{print $NF}' |
   dos2unix
 
-docker exec -it es-node01 \
+docker exec -it elastic-node01 \
   elasticsearch-reset-password -u kibana_system --batch |
   awk '/New value/{print $NF}' |
   dos2unix
@@ -75,7 +75,7 @@ docker exec -it es-node01 \
 docker exec $kibana cat data/verification_code | dos2unix
 
 ####
-docker exec -it es-node01 \
+docker exec -it elastic-node01 \
   elasticsearch-create-enrollment-token -s kibana --url https://localhost:9200 |
   dos2unix
 

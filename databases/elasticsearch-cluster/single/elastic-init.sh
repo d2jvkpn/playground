@@ -9,7 +9,7 @@ if [ -s configs/$container/elasticsearch.yml ]; then
     exit 0
 fi
 
-mkdir -p configs/$container data/$container
+mkdir -p configs/$container data/$container data/kibana
 
 docker run --rm -u root:root -w /usr/share/elasticsearch \
   -v ${PWD}/configs:/apps/configs \

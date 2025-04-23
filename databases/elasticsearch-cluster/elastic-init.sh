@@ -54,9 +54,9 @@ ls -alh configs/elastic.yaml configs/certs
 
 
 #### 3. copy configs of kibana
-mkdir -p configs/es-kibana data/es-kibana
+mkdir -p configs/elastic-kibana data/elastic-kibana
 
 docker run --rm -u root:root -w /usr/share/kibana \
-  -v ${PWD}/configs/es-kibana:/tmp/es-kibana \
+  -v ${PWD}/configs/elastic-kibana:/tmp/elastic-kibana \
   docker.elastic.co/kibana/kibana:$version \
-  bash -c 'cp config/* /tmp/es-kibana && chown -R kibana:root /tmp/es-kibana'
+  bash -c 'cp config/* /tmp/elastic-kibana && chown -R kibana:root /tmp/elastic-kibana'

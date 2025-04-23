@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
-# configs/elastic.yaml, configs/es.yaml
+# configs/elastic.yaml
 yaml=$1; action=$2
 ca=$(yq .ca $yaml)
 password=$(yq .password $yaml)

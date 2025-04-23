@@ -5,11 +5,15 @@
 **date**: 2025-01-12
 
 
-#### Ch01. References
-1. links
+#### ch01. References
+1. docs
 - https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
 - https://github.com/elastic/elasticsearch/blob/8.17/docs/reference/setup/install/docker/docker-compose.yml
 - https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-nodes.html
+
+- https://www.elastic.co/
+- https://hub.docker.com/_/elasticsearch
+- https://github.com/infinilabs/analysis-ik
 
 2. machine learning
 Machine learning features such as semantic search with ELSER require a larger container with more 
@@ -22,7 +26,30 @@ docker run --name es01 --net elastic -p 9200:9200 -it -m 6GB \
   docker.elastic.co/elasticsearch/elasticsearch:8.17.0
 ```
 
-#### Ch02. Node configurations
+3. sysctl
+```
+sudo sysctl -a | grep vm.max_map_count
+
+# temporary
+sudo sysctl -w vm.max_map_count=262144
+
+# permanently
+sudo cp /etc/sysctl.conf /etc/sysctl.conf.bk
+
+echo "vm.max_map_count=262144" | sudo tee -a /etc/sysctl.conf
+sudo sysctl --system
+```
+
+4. v8
+- docker.elastic.co/elasticsearch/elasticsearch:8.18.0
+- docker.elastic.co/kibana/kibana:8.18.0
+
+5. v9
+- docker.elastic.co/elasticsearch/elasticsearch:9.0.0
+- docker.elastic.co/kibana/kibana:9.0.0
+
+
+#### ch02. Node configurations
 1.  node roles
 ```yaml
 node.master: true
@@ -35,7 +62,7 @@ discovery.seed_hosts: ["elastic01", "elastic02", "elastic02"]
 cluster.initial_master_nodes: ["elastic01", "elastic02", "elastic02"]
 ```
 
-#### Ch03. certs
+#### ch03. certs
 1. 
 ```bash
 elasticsearch-certutil ca --pass "" --out http_ca.crt
@@ -164,12 +191,11 @@ environment:
 EOF
 ```
 
-#### Ch04. Chinese
+#### ch04. Chinese
 1. 
 ```
 elasticsearch-plugin install \
   https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.15.0/elasticsearch-analysis-ik-7.15.0.zip
-
 ```
 
 2. 
