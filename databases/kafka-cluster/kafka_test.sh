@@ -34,8 +34,8 @@ kafka-console-producer.sh --bootstrap-server $addrs --topic $topic < data/temp_m
 kafka-console-consumer.sh --bootstrap-server $addrs \
   --topic $topic --from-beginning --max-messages 4
 
-kafka-console-consumer.sh --bootstrap-server $addrs \
-  --topic $topic --partition 1 --offset 1 --max-messages 2
+#kafka-console-consumer.sh --bootstrap-server $addrs \
+#  --topic $topic --partition 1 --offset 1 --max-messages 2
 
 kafka-topics.sh --bootstrap-server $addrs --delete --topic $topic
 
