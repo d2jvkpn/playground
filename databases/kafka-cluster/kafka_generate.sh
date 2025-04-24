@@ -3,8 +3,7 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 kafka_version=${kafka_version:-4.0.0}
-template=${template:-kafka-node%02d}
-port_zero=${port_zero:-29090}
+expose_port=${expose_port:-29090}
 data_dir=${data_dir:-/opt/data/kafka}
 num_partitions=${num_partitions:-3}
 
@@ -15,16 +14,19 @@ num=${1:-3}
 
 ####
 num_re='^[1-9]+$'
-[[ ! "$num" =~ $num_re ]] && { >&2 echo '!!! Error not a valid number': $num; exit 1; }
+if [[ ! "$num" =~ $num_re ]]; then
+    >&2 echo '!!! Error not a valid number': $num
+    exit 1
+fi
 
 #image=registry.cn-shanghai.aliyuncs.com/d2jvkpn/kafka:$kafka_version
 #docker pull $image
 image=local/kafka:$kafka_version
 
-#### 1. generate configs
+#### 1. generate configs of cluster
 # cluster_id=$(kafka-storage.sh random-uuid)
 cluster_id=$(docker run --rm $image kafka-storage.sh random-uuid)
-echo "==> Kafka cluster id: $cluster_id, number of nodes: $num"
+echo "==> Kafka cluster id: $cluster_id, number_of_nodes: $num, num_partitions: $num_partitions"
 
 mkdir -p data data/kafka-kafdrop
 
@@ -35,38 +37,45 @@ num_partitions: $num_partitions
 cluster_id: $cluster_id
 
 # node_id: 1
+# node_name: kafka-node01
+# node_uuid: xxxx
 # advertised_listeners: PLAINTEXT://kafka-node1:9092
 # advertised_listeners: PLAINTEXT://localhost:29091
 # process_roles: broker,controller
-EOF
 # controller_quorum_voters: 1@kafka-node01:9093:JEXY6aqzQY-32P5TStzaFg,2@kafka-node02:9093:MvDxzVmcRsaTz33bUuRU6A,3@kafka-node03:9093:07R5amHmR32VDA6jHkGbTA
+EOF
+
+
+#### 2. generate configs of nodes
+for node_id in $(seq 1 $num); do
+    node_name=$(printf "kafka-node%02d" $node_id)
+    node_uuid=$(docker run --rm $image kafka-storage.sh random-uuid)
+    advertised_listeners=PLAINTEXT://localhost:$(($expose_port + $node_id))
+
+    mkdir -p data/$node_name logs/$node_name
+cat > data/$node_name/kafka.yaml <<EOF
+$(sed '/^#/d' data/kafka.yaml)
+
+node_id: $node_id
+node_name: $node_name
+node_uuid: $node_uuid
+advertised_listeners: $advertised_listeners
+process_roles: broker,controller
+controller_quorum_voters: $node_id@$node_name:9093:$node_uuid
+EOF
+
+    echo "==> node: $node_name, config: data/$node_name/kafka.yaml"
+done
+
 
 controller_quorum_voters=$(
-  for i in $(seq 1 $num); do
-      printf "%d@$template:9093:$(docker run --rm $image kafka-storage.sh random-uuid)," $i $i
-  done
+  yq -e '.controller_quorum_voters' data/kafka-node*/kafka.yaml |
+    sed ':a; N; $!ba; s/\n---\n/\,/g'
 )
-
-controller_quorum_voters=${controller_quorum_voters%,}
 
 echo "==> controller_quorum_voters: $controller_quorum_voters"
 
-for node_id in $(seq 1 $num); do
-    node=$(printf $template $node_id)
-    advertised_listeners=PLAINTEXT://localhost:$(($port_zero + $node_id))
-
-    mkdir -p data/$node logs/$node
-cat > data/$node/kafka.yaml <<EOF
-$(cat data/kafka.yaml)
-
-node_id: $node_id
-advertised_listeners: $advertised_listeners
-process_roles: broker,controller
-controller_quorum_voters: $controller_quorum_voters
-EOF
-
-    echo "==> node: $node, config: data/$node/kafka.yaml"
-done
+sed -i "/controller_quorum_voters:/ s/:.*/: $controller_quorum_voters/" data/kafka-node*/kafka.yaml
 
 #### 2. generate compose.yaml
 export TAG=$kafka_version USER_UID=$(id -u) USER_GID=$(id -g)
