@@ -1,5 +1,7 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
+
 
 target=$1
 kvm_network=${kvm_network:-default}

@@ -1,7 +1,8 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
-region=${region:-}
+
+region=${region:-""}
 SCALA_Version=${SCALA_Version:-2.13}
 KAFKA_Version=${KAFKA_Version:-4.0.0}
 DOCKER_Push=${DOCKER_Push:-"true"}

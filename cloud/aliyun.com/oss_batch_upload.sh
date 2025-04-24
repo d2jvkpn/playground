@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
 
 # wget -O ossutil-v1.7.19-linux-amd64.zip 'https://gosspublic.alicdn.com/ossutil/1.7.19/ossutil-v1.7.19-linux-amd64.zip?spm=a2c4g.11186623.0.0.38fd4e3enju3ic&file=ossutil-v1.7.19-linux-amd64.zip'
 # unzip ossutil-v1.7.19-linux-amd64.zip

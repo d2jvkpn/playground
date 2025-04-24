@@ -1,6 +1,6 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
 
 vm_src=$1
 shutdown_vm=${shutdown_vm:-"true"}
@@ -28,13 +28,13 @@ echo "==> Cloning $vm_src into $target, username: $username, kvm_ssh_key: $kvm_s
 ####
 echo "==> Shutting down $vm_src"
 virsh shutdown $vm_src 2>/dev/null || true
-bash ${_path}/virsh_wait_until.sh $vm_src "shut off" 180
+bash ${_dir}/virsh_wait_until.sh $vm_src "shut off" 180
 
 virt-clone --original $vm_src --name $target --file /var/lib/libvirt/images/$target.qcow2
 # virt-clone --original $vm_src --vm_src $target --auto-clone
 
 ####
-bash ${_path}/virsh_fix_ip.sh $target
+bash ${_dir}/virsh_fix_ip.sh $target
 
 addr=$(
   virsh domifaddr $target |
@@ -78,7 +78,7 @@ ssh -t $target 'sudo sed -i "2s/^127.0.1.1 .*$/127.0.1.1 '$target'/" /etc/hosts'
 ####
 if [[ "$shutdown_vm" != "false" ]]; then
     virsh shutdown $target
-    ${_path}/virsh_wait_until.sh $target "shut off" 30
+    ${_dir}/virsh_wait_until.sh $target "shut off" 30
 fi
 
 #### reset machine-id and ssh

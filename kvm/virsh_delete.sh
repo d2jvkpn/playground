@@ -1,6 +1,7 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
+
 
 if [ $# -eq 1 ]; then
     target=$1
@@ -34,7 +35,7 @@ virsh shutdown $target 2>/dev/null || true
 # done
 # echo ""
 
-bash ${_path}/virsh_wait_until.sh $target "shut off" 180
+bash ${_dir}/virsh_wait_until.sh $target "shut off" 180
 
 rm -f $source_file
 
