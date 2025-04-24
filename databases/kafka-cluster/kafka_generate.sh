@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
+
 kafka_version=${kafka_version:-4.0.0}
 template=${template:-kafka-node%02d}
 port_zero=${port_zero:-29090}
@@ -52,7 +53,6 @@ echo "==> controller_quorum_voters: $controller_quorum_voters"
 
 for node_id in $(seq 1 $num); do
     node=$(printf $template $node_id)
-    node_id=$node_id
     advertised_listeners=PLAINTEXT://localhost:$(($port_zero + $node_id))
 
     mkdir -p data/$node logs/$node
@@ -70,7 +70,7 @@ done
 
 #### 2. generate compose.yaml
 export TAG=$kafka_version USER_UID=$(id -u) USER_GID=$(id -g)
-envsubst < compose.template.yaml > compose.yaml
+envsubst < compose.kafka.yaml > compose.yaml
 
 echo "==> compose.yaml created"
 
