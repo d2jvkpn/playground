@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 port=${1:-7700}
 MEILI_ENV=${MEILI_ENV:-development} # production
@@ -23,7 +23,7 @@ password=$(yq -oy .master_key configs/meilisearch.toml)
 export USER_UID=$(id -u) USER_GID=$(id -g) \
   MEILI_ENV=${MEILI_ENV} HTTP_Port=$port
 
-envsubst < compose.template.yaml > compose.yaml
+envsubst < compose.meilisearch.yaml > compose.yaml
 
 exit
 docker-compose up -d
