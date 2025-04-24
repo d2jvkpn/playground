@@ -17,9 +17,10 @@ generate-1:
 generate-3:
 	# kafka_version=4.0.0 make generate
 	bash kafka_generate.sh 3
+	# bash kafka_generate.sh 3 $(ip route show default | awk '{print $9}')
 
 test:
-	bash kafka_test.sh
+	bash kafka_test.sh # $(ip route show default | awk '{print $9}')
 
 echo:
 	# TAG=0.1.0 make echo

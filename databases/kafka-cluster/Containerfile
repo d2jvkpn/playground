@@ -37,5 +37,5 @@ ENV PATH=/opt/kafka/bin:$PATH
 
 VOLUME ["/opt/data/kafka", "/opt/kafka/logs"]
 
-EXPOSE 9092 9093
+EXPOSE 9092 9093 9192
 CMD ["/opt/entrypoint.sh"]

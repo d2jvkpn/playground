@@ -30,9 +30,7 @@ if [ ! -s "$conf" ]; then
       -e "/^num.partitions=/s#=.*#=$num_partitions#" \
       -e "/^log.dirs/s#=/.*#=$data_dir#" \
       -e "/^node.id=/s#=.*#=$node_id#" \
-      -e '/listeners=/s#$#,EXTERNAL://:9192#' \
       -e "/^advertised.listeners=/s#=.*#=$advertised_listeners#" \
-      -e '/^listener.security.protocol.map=/s#$#,EXTERNAL:PLAINTEXT#' \
       -e "/^process.roles=/s#=.*#=$process_roles#" \
       > $conf
 fi

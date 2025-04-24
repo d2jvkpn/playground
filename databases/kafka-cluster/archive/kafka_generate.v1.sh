@@ -3,14 +3,14 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 kafka_version=${kafka_version:-4.0.0}
-expose_port=${expose_port:-9190}
+expose_port=${expose_port:-29090}
 data_dir=${data_dir:-/opt/data/kafka}
 num_partitions=${num_partitions:-3}
 
 # echo "==> Number of kafka node: "
 # read -t 5 num || true
 # [ -z "$num" ] && num=3
-num=$1; external_ip=${2:-127.0.0.1}
+num=$1
 
 
 ####
@@ -27,7 +27,7 @@ image=local/kafka:$kafka_version
 #### 1. generate configs of cluster
 # cluster_id=$(kafka-storage.sh random-uuid)
 cluster_id=$(docker run --rm $image kafka-storage.sh random-uuid)
-echo "==> Kafka: cluster_id=$cluster_id, number_of_nodes=$num, num_partitions=$num_partitions, external_ip=$external_ip"
+echo "==> Kafka cluster id: $cluster_id, number_of_nodes: $num, num_partitions: $num_partitions"
 
 mkdir -p data data/kafka-kafdrop
 
@@ -40,7 +40,7 @@ cluster_id: $cluster_id
 # node_id: 1
 # node_name: kafka-node01
 # node_uuid: xxxx
-# advertised_listeners: PLAINTEXT://kafka-node01:9092,PLAINTEXT://external_ip:9192
+# advertised_listeners: PLAINTEXT://kafka-node01:9092,PLAINTEXT://localhost:29091
 # process_roles: broker,controller
 # controller_quorum_voters: 1@kafka-node01:9093:JEXY6aqzQY-32P5TStzaFg,2@kafka-node02:9093:MvDxzVmcRsaTz33bUuRU6A,3@kafka-node03:9093:07R5amHmR32VDA6jHkGbTA
 EOF
@@ -50,10 +50,7 @@ EOF
 for node_id in $(seq 1 $num); do
     node_name=$(printf "kafka-node%02d" $node_id)
     node_uuid=$(docker run --rm $image kafka-storage.sh random-uuid)
-    #advertised_listeners=PLAINTEXT://localhost:$(($expose_port + $node_id))
-
-    export_port=$((expose_port + node_id)) # export 9192 -> external_port
-    advertised_listeners=PLAINTEXT://$node_name:9092,EXTERNAL://$external_ip:$export_port
+    advertised_listeners=PLAINTEXT://localhost:$(($expose_port + $node_id))
 
     mkdir -p data/$node_name logs/$node_name
 cat > data/$node_name/kafka.yaml <<EOF
