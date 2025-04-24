@@ -18,7 +18,7 @@ services:
     <<: *kafka-service
     container_name: kafka-node01
     hostname: kafka-node01
-    ports: ["127.0.0.1:29091:9092"]
+    ports: ["29091:9092"]
     volumes:
     - ./data/kafka-node01:/opt/data/kafka
     - ./logs/kafka-node01:/opt/kafka/logs
@@ -28,7 +28,7 @@ services:
     <<: *kafka-service
     container_name: kafka-node02
     hostname: kafka-node02
-    ports: ["127.0.0.1:29092:9092"]
+    ports: ["29092:9092"]
     volumes:
     - ./data/kafka-node02:/opt/data/kafka
     - ./logs/kafka-node02:/opt/kafka/logs
@@ -38,7 +38,7 @@ services:
     <<: *kafka-service
     container_name: kafka-node03
     hostname: kafka-node03
-    ports: ["127.0.0.1:29093:9092"]
+    ports: ["29093:9092"]
     volumes:
     - ./data/kafka-node03:/opt/data/kafka
     - ./logs/kafka-node03:/opt/kafka/logs

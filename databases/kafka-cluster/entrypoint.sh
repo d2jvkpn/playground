@@ -8,7 +8,10 @@ template=${template:-/opt/kafka/config/server.properties}
 
 #cluster_id=$(awk '/^cluster_id: /{print $2; exit}' $yaml)
 cluster_id=$(yq .cluster_id $yaml)
-[ -z "$cluster_id" ] && { >&2 echo "cluster_id is unset in $yaml"; exit 1; }
+if [ -z "$cluster_id" ]; then
+    >&2 echo "cluster_id is unset in $yaml"
+    exit 1
+fi
 
 #### 2. generate
 num_partitions=$(yq .num_partitions $yaml)
@@ -22,21 +25,23 @@ controller_quorum_voters=$(yq .controller_quorum_voters $yaml)
 ##### TODO: validate variables: $((${#a} * ${#b} * ${#c})) -eq 0
 mkdir -p $(dirname $conf)
 
-cat $template | sed \
-  -e "/^num.partitions=/s#=.*#=$num_partitions#" \
-  -e "/^log.dirs/s#=/.*#=$data_dir#" \
-  -e "/^node.id=/s#=.*#=$node_id#" \
-  -e "/^advertised.listeners=/s#=.*#=$advertised_listeners#" \
-  -e "/^process.roles=/s#=.*#=$process_roles#" \
-  > $conf
+if [ ! -s "$conf" ]; then
+    cat $template | sed \
+      -e "/^num.partitions=/s#=.*#=$num_partitions#" \
+      -e "/^log.dirs/s#=/.*#=$data_dir#" \
+      -e "/^node.id=/s#=.*#=$node_id#" \
+      -e "/^advertised.listeners=/s#=.*#=$advertised_listeners#" \
+      -e "/^process.roles=/s#=.*#=$process_roles#" \
+      > $conf
+fi
 # -e "/^controller.quorum.voters=/s#=.*#=$controller_quorum_voters#"
 
 #### 3. run
-kafka-storage.sh format --ignore-formatted -t $cluster_id --initial-controllers $controller_quorum_voters \
-  --config $conf # --add-scram
+kafka-storage.sh format --ignore-formatted \
+  -t $cluster_id --initial-controllers $controller_quorum_voters --config $conf # --add-scram
 
 # -daemon
-kafka-server-start.sh  $conf $@
+kafka-server-start.sh $conf $@
 
 exit
 cat > /opt/data/kafka/kafka.yaml <<EOF
@@ -50,4 +55,4 @@ node_id: 1
 advertised_listeners: PLAINTEXT://localhost:29091
 EOF
 
-# controller_quorum_voters: 1@kafka-node01:9093,2@kafka-node02:9093,3@kafka-node03:9093
+# controller_quorum_voters: 1@kafka-node01:9093:JEXY6aqzQY-32P5TStzaFg,2@kafka-node02:9093:MvDxzVmcRsaTz33bUuRU6A,3@kafka-node03:9093:07R5amHmR32VDA6jHkGbTA

@@ -10,7 +10,8 @@ num_partitions=${num_partitions:-3}
 # echo "==> Number of kafka node: "
 # read -t 5 num || true
 # [ -z "$num" ] && num=3
-num=${1:-3}
+num=$1
+
 
 ####
 num_re='^[1-9]+$'
@@ -39,8 +40,7 @@ cluster_id: $cluster_id
 # node_id: 1
 # node_name: kafka-node01
 # node_uuid: xxxx
-# advertised_listeners: PLAINTEXT://kafka-node1:9092
-# advertised_listeners: PLAINTEXT://localhost:29091
+# advertised_listeners: PLAINTEXT://kafka-node01:9092,PLAINTEXT://localhost:29091
 # process_roles: broker,controller
 # controller_quorum_voters: 1@kafka-node01:9093:JEXY6aqzQY-32P5TStzaFg,2@kafka-node02:9093:MvDxzVmcRsaTz33bUuRU6A,3@kafka-node03:9093:07R5amHmR32VDA6jHkGbTA
 EOF

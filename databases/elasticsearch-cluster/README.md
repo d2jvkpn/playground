@@ -10,6 +10,7 @@
 - https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
 - https://github.com/elastic/elasticsearch/blob/8.17/docs/reference/setup/install/docker/docker-compose.yml
 - https://www.elastic.co/guide/en/elasticsearch/reference/current/cat-nodes.html
+- https://www.elastic.co/docs/reference/kibana/configuration-reference/general-settings
 
 - https://www.elastic.co/
 - https://hub.docker.com/_/elasticsearch
