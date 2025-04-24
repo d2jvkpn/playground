@@ -49,13 +49,15 @@ services:
     container_name: kafka-kafdrop
     restart: always
     depends_on: [kafka-node01, kafka-node02, kafka-node03]
-    network_mode: host
-    expose: ["9000"]
     user: "${USER_UID}:${USER_GID}"
+    #network_mode: host
+    #expose: ["9000"]
+    networks: [net]
+    ports: [9000:9000]
     volumes:
     - ./data/kafka-kafdrop:/var/protobuf_desc
     environment:
-      KAFKA_BROKERCONNECT: 127.0.0.1:29091,127.0.0.1:9092,127.0.0.1:9093
+      KAFKA_BROKERCONNECT: 127.0.0.1:9191,127.0.0.1:9192,127.0.0.1:9192
       SERVER_SERVLET_CONTEXTPATH: /
       CMD_ARGS: --message.format=PROTOBUF --protobufdesc.directory=/var/protobuf_desc --topic.createEnabled=false --topic.deleteEnabled=false
       JVM_OPTS: -Xms32M -Xmx64M
