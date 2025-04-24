@@ -1,0 +1,11 @@
+version: 4.0.0
+data_dir: /opt/data/kafka
+num_partitions: 3
+cluster_id: 3DoCLixAR2m-_LRY5mIzFA
+
+node_id: 1
+node_name: kafka-node01
+node_uuid: M6623F7jQfaIuGyTdiuRYw
+advertised_listeners: PLAINTEXT://kafka-node01:9092,EXTERNAL://172.16.123.45:9191
+process_roles: broker,controller
+controller_quorum_voters: 1@kafka-node01:9093:M6623F7jQfaIuGyTdiuRYw,2@kafka-node02:9093:Pq-lzcwAT-ecvbkHpEwYwQ,3@kafka-node03:9093:Eb005QefQ9CUZtzS0mn57g
