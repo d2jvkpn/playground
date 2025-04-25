@@ -41,11 +41,9 @@ echo "--> produce messages"
 kafka-console-producer.sh --bootstrap-server $addrs --topic $topic < data/temp_msg01.txt
 
 echo "--> consume messages"
-kafka-console-consumer.sh --bootstrap-server $addrs \
-  --topic $topic --from-beginning --max-messages 4
+kafka-console-consumer.sh --bootstrap-server $addrs --topic $topic --from-beginning --max-messages 4
 
-#kafka-console-consumer.sh --bootstrap-server $addrs \
-#  --topic $topic --partition 1 --offset 1 --max-messages 2
+#kafka-console-consumer.sh --bootstrap-server $addrs --topic $topic --partition 1 --offset 1 --max-messages 2
 
 echo "--> delete topic: $topic"
 kafka-topics.sh --bootstrap-server $addrs --delete --topic $topic
