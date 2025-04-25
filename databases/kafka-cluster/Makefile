@@ -25,4 +25,3 @@ test:
 echo:
 	# TAG=0.1.0 make echo
 	echo "==> user=${USER}, uid=${USER_UID}, gid=${USER_GID}, tag=${TAG}"
-

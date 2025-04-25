@@ -1,5 +1,6 @@
-#!/usr/bin/env bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
 
 last_param="${@: -1}"
 all_but_last="${@:1:$#-1}"

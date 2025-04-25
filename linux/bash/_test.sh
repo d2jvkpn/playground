@@ -1,5 +1,6 @@
-#!/usr/bin/env bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
 
 #### show error msg without abort
 test -f file_not_exists.txt || echo "file not exists"
