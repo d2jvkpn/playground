@@ -11,9 +11,12 @@
 - https://hub.docker.com/r/bitnami/kafka
 
 2. address
-kafka listens bother internal(docker network) and external(host), INTERNAL://kafka-node1:9092,EXTERNAL://localhost:29091
+kafka listens bother internal(docker network) and external(host), INTERNAL://kafka-node1:9092,EXTERNAL://192.168.1.4:9191
 
 listeners=INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:9093
 listener.security.protocol.map=INTERNAL:PLAINTEXT,EXTERNAL:SSL
 inter.broker.listener.name=INTERNAL
 advertised.listeners=INTERNAL://kafka.internal:9092,EXTERNAL://broker.example.com:9093
+
+3. TODO
+- auth

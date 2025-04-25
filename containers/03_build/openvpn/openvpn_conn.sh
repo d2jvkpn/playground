@@ -2,8 +2,7 @@
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
-table=${table:-auto}
-
+table=${table:-"auto"}
 vpn_file=${1:-configs/client.ovpn}
 vpn_pass=${2:-configs/client.ovpn.pass}
 
@@ -19,15 +18,15 @@ echo "==> $(date +%FT%T%:z) Connecting to vpn: $vpn_server"
 #  block-outside-dns and dhcp options like DNS servers.When used on the client, this option effectively bars the server
 #  from adding routes to the client's routing table, however note that this option still allows the server to set the
 #  TCP/IP properties of the client's TUN/TAP interface.
-vpn_args=""
+vpn_args="--auth-nocache"
 if [[ "$table" == "off" ]]; then
-    vpn_args="--route-noexec --route-nopull"
+    vpn_args="$vpn_args --route-noexec --route-nopull"
 fi
 
 if [[ "$vpn_pass" == *".pass" ]]; then
-    sudo openvpn --auth-nocache --config "$vpn_file" --askpass "$vpn_pass" $vpn_args
+    sudo openvpn $vpn_args --config "$vpn_file" --askpass "$vpn_pass"
 else
-    sudo openvpn --auth-nocache --config "$vpn_file" --auth-user-pass "$vpn_pass" $vpn_args
+    sudo openvpn $vpn_args --config "$vpn_file" --auth-user-pass "$vpn_pass"
 fi
 
 ####
