@@ -1,3 +1,0 @@
-k8s_tools:
-- name: k9s
-  address: https://github.com/derailed/k9s

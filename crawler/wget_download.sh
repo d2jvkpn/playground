@@ -1,6 +1,6 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
 
 # export http_proxy=socks://127.0.0.1:1081 https_proxy=socks://127.0.0.1:1081
 # jq -r .links[] scrap_*.json | xargs -n 1 -P 8 -i wget -c {}
