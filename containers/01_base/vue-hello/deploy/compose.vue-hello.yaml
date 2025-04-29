@@ -9,5 +9,7 @@ services:
       resources:
         limits: { cpus: "4", memory: 512M }
         reservations: { cpus: "0.05", memory: 16M }
-    environment: ["TZ=Asia/Shanghai", "PORT=80"]
+    environment:
+      TZ: Asia/Shanghai
+      PORT: 80
     command: ["nginx", "-g", "daemon off;"]
