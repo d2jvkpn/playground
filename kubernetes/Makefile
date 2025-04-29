@@ -1,5 +1,8 @@
 SHELL := /bin/bash
 
+latest:
+	bash k8s_misc/k8s_latest.sh
+
 # version=1.32.1 make download
 download:
 	bash k8s_cluster.sh download $(version)
