@@ -1,13 +1,12 @@
 # path: ./.gitignore
 
 #### directories
+cache
 configs
 data
 local
 logs
-cache
 target
-*.local
 #?? dist, build, *.git
 
 #### files
