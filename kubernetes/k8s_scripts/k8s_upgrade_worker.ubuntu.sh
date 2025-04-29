@@ -5,7 +5,7 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 export DEBIAN_FRONTEND=nointeractive
 
 # version=1.31.2; node=node01
-# version=$(yq .k8s.version k8s.local/k8s_download.yaml)
+# version=$(yq .k8s.version cache/k8s.downloads/k8s_download.yaml)
 version=$1; node=$2; action=$3
 
 case "$action" in

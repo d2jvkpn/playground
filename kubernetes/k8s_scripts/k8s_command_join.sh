@@ -3,7 +3,7 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 node_kind=$1
-yaml_file=${yaml_file:-k8s.local/data/kubeadm-init.yaml}
+yaml_file=${yaml_file:-"cache/k8s.data/kubeadm-init.yaml"}
 
 cp_endpoint=$(yq .cp_endpoint $yaml_file)
 token=$(yq .token $yaml_file)

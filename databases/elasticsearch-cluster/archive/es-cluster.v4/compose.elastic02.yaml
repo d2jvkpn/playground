@@ -1,0 +1,32 @@
+networks:
+  net: { name: elastic, driver: bridge, external: true }
+
+services:
+  elastic02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.0
+    container_name: elastic02
+    ulimits:
+      memlock: {soft: -1, hard: -1}
+      nofile: {soft: 65536, hard: 65536}
+    healthcheck:
+      interval: 10s
+      timeout: 10s
+      retries: 120
+      test:
+      - CMD-SHELL
+      - curl -s --cacert config/certs/http_ca.crt https://localhost:9200 |
+        grep -q 'missing authentication credentials'
+    networks: [net]
+    ports: [9202:9200]
+    volumes:
+    - /etc/timezone:/etc/timezone:ro
+    - /etc/localtime:/etc/localtime:ro
+    - ./data/elastic02:/usr/share/elasticsearch/data
+    environment:
+      node.name: elastic02
+      ENROLLMENT_TOKEN: eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTkyLjE2OC4xNDQuMjo5MjAwIl0sImZnciI6IjUyZDgxYjFmZDBiYWQyYzZmYjk3MjQyYzU3NjYwOTVhMjZjM2RiZWVmZmU0NjAxNDFhMGY1NmIyNzc5ZDNhYzkiLCJrZXkiOiJza2psV1pRQnZaZUNiYXRHWklqNjpqNm0yeHRzTlJ3Njh0V2pTSUhUeHhnIn0=
+      cluster.name: elastic-in-container
+      network.host: 0.0.0.0
+      # transport.port: 9300
+      node.roles: master,data
+      ES_JAVA_OPTS: -Xms2g -Xmx2g

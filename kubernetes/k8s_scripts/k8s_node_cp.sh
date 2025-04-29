@@ -14,12 +14,12 @@ version=$(
 )
 version=${version#v}
 
-mkdir -p k8s.local/data
+mkdir -p cache/k8s.data
 
 ####
 echo "==> cp_endpoint: $cp_endpoint, pod_subnet: $pod_subnet, version: $version"
 
-cat > k8s.local/data/kubeadm-config.yaml << EOF
+cat > cache/k8s.data/kubeadm-config.yaml << EOF
 apiVersion: kubeadm.k8s.io/v1beta3
 kind: ClusterConfiguration
 kubernetesVersion: $version
@@ -30,28 +30,28 @@ networking:
   podSubnet: ${pod_subnet}
 EOF
 
-sudo kubeadm init --config=k8s.local/data/kubeadm-config.yaml \
-  --upload-certs -v 5 &> k8s.local/data/kubeadm-init.out
+sudo kubeadm init --config=cache/k8s.data/kubeadm-config.yaml \
+  --upload-certs -v 5 &> cache/k8s.data/kubeadm-init.out
 
 # kubeadm config print init-defaults
 
 ####
 token=$(
-  grep -o "\-\-token [^ ]*" k8s.local/data/kubeadm-init.out |
+  grep -o "\-\-token [^ ]*" cache/k8s.data/kubeadm-init.out |
   awk '{print $2; exit}'
 )
 
 cert_hash=$(
-  grep -o "\-\-discovery-token-ca-cert-hash [^ ]*" k8s.local/data/kubeadm-init.out |
+  grep -o "\-\-discovery-token-ca-cert-hash [^ ]*" cache/k8s.data/kubeadm-init.out |
   awk '{print $2; exit}'
 )
 
 cert_key=$(
-  grep -o "\-\-certificate-key [^ ]*" k8s.local/data/kubeadm-init.out |
+  grep -o "\-\-certificate-key [^ ]*" cache/k8s.data/kubeadm-init.out |
   awk '{print $2; exit}'
 )
 
-cat > k8s.local/data/kubeadm-init.yaml <<EOF
+cat > cache/k8s.data/kubeadm-init.yaml <<EOF
 version: $version
 datetime: $(date +'%FT%T.%N%:z')
 pod_subnet: $pod_subnet

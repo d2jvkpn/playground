@@ -1,11 +1,12 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0) # set -x
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
 
 ansible all -m synchronize \
-  -a "mode=push src=image_traefik_v3.2.2.tar dest=./k8s.local/data"
+  -a "mode=push src=image_traefik_v3.2.2.tar.gz dest=./cache/k8s.downloads/images"
 
 ansible all -m shell --become \
-  -a "ctr -n=k8s.io image import ./k8s.local/data/image_traefik_v3.2.2.tar"
+  -a "ctr -n=k8s.io image import ./cache/k8s.downloads/images/image_traefik_v3.2.2.tar.gz"
 
 kubectl get pods --namespace kube-system -l app.kubernetes.io/name=traefik
 

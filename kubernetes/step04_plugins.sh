@@ -3,17 +3,17 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 ##### 1. apply flannel
-grep -w Network k8s.local/flannel.yaml
+grep -w Network cache/k8s.downloads/flannel.yaml
 
 # cidr=$(sudo awk '/cluster-cidr/' /etc/kubernetes/manifests/kube-controller-manager.yaml | sed 's/.*=//')
-cidr=$(yq .networking.podSubnet k8s.local/data/kubeadm-config.yaml)
+cidr=$(yq .networking.podSubnet cache/k8s.data/kubeadm-config.yaml)
 
 # kubectl patch node k8s-cp01 -p '{"spec":{"podCIDR":"'"$cidr"'"}}'
 # or
-sed '/"Network"/s#:.*$#: "'"$cidr"'",#' k8s.local/flannel.yaml \
-  > k8s.local/data/flannel.yaml
+sed '/"Network"/s#:.*$#: "'"$cidr"'",#' cache/k8s.downloads/flannel.yaml \
+  > cache/k8s.data/flannel.yaml
 
-kubectl apply -f k8s.local/data/flannel.yaml
+kubectl apply -f cache/k8s.data/flannel.yaml
 
 # kubectl get nodes
 # kubectl -n kube-flannel get pods -o wide
@@ -28,7 +28,7 @@ awk '
     sub("InternalIP,ExternalIP,Hostname", "InternalIP", $0);
     print "        - --kubelet-insecure-tls";
   }
-  {print}' k8s.local/metrics-server_components.yaml \
-  > k8s.local/data/metrics-server_components.yaml
+  {print}' cache/k8s.downloads/metrics-server_components.yaml \
+  > cache/k8s.data/metrics-server_components.yaml
 
-kubectl apply -f k8s.local/data/metrics-server_components.yaml
+kubectl apply -f cache/k8s.data/metrics-server_components.yaml

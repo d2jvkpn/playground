@@ -4,7 +4,6 @@
 cache
 configs
 data
-local
 logs
 target
 #?? dist, build, *.git

@@ -8,10 +8,11 @@ cp_ip=$(awk '$1!=""{sub(/.*=/, "", $2); print $2; exit}' configs/k8s_hosts.ini)
 echo "==> cp: $cp_node, $cp_ip"
 
 #### 1. apply ingress baremetal
-sed '/image:/s/@sha256:.*//' k8s.local/ingress-nginx.baremetal.yaml > k8s.local/data/ingress-nginx.baremetal.yaml
+sed '/image:/s/@sha256:.*//' cache/k8s.downloads/ingress-nginx.baremetal.yaml \
+  > cache/k8s.data/ingress-nginx.baremetal.yaml
 
-kubectl apply -f k8s.local/data/ingress-nginx.baremetal.yaml
-# kubectl delete -f k8s.local/data/ingress-nginx.baremetal.yaml
+kubectl apply -f cache/k8s.data/ingress-nginx.baremetal.yaml
+# kubectl delete -f cache/k8s.data/ingress-nginx.baremetal.yaml
 
 kubectl -n ingress-nginx get pods -o wide
 
@@ -25,9 +26,9 @@ kubectl -n ingress-nginx get pods -o wide
 
 # https://raw.githubusercontent.com/metallb/metallb/refs/heads/main/config/manifests/metallb-native.yamlhttps://github.com/metallb/metallb/blob/main/config/manifests/metallb-native.yaml
 
-cp k8s.local/metallb-native.yaml k8s.local/data/
+cp cache/k8s.downloads/metallb-native.yaml cache/k8s.data/
 
-kubectl apply -f k8s.local/data/metallb-native.yaml
+kubectl apply -f cache/k8s.data/metallb-native.yaml
 
 # https://metallb.universe.tf/installation/
 # kubectl get configmap kube-proxy -n kube-system -o yaml |
@@ -42,7 +43,7 @@ kubectl get configmap kube-proxy -n kube-system -o yaml |
 # https://metallb.universe.tf/configuration/_advanced_ipaddresspool_configuration/
 
 #### 3. config metallb
-cat > k8s.local/data/metallb-config.yaml <<EOF
+cat > cache/k8s.data/metallb-config.yaml <<EOF
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
@@ -66,12 +67,12 @@ spec:
   - local-ip-pool
 EOF
 
-ansible $cp_node -m shell --become -a "chown -R ubuntu:ubuntu k8s.local"
+ansible $cp_node -m shell --become -a "chown -R ubuntu:ubuntu cache/k8s.downloads cache/k8s.data"
 
 ansible $cp_node -m synchronize \
-  -a "mode=push src=k8s.local/data/ dest=./k8s.local/data/"
+  -a "mode=push src=cache/k8s.data/ dest=./cache/k8s.data/"
 
-ansible $cp_node -m shell -a 'kubectl apply -f k8s.local/data/metallb-config.yaml'
+ansible $cp_node -m shell -a 'kubectl apply -f cache/k8s.data/metallb-config.yaml'
 
 #### 5. allocate ip for ingress-nginx
 kubectl -n ingress-nginx patch svc ingress-nginx-controller \

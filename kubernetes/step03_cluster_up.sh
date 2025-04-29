@@ -15,17 +15,17 @@ echo "==> cp: $cp_node, $cp_ip"
 #   yq '.all.children.k8s_cps.hosts | keys | .[0]'
 # )
 
-mkdir -p k8s.local/data
+mkdir -p cache/k8s.data
 
 #### 1. set hosts
-ansible k8s_all -m file -a "path=./k8s.local/data state=directory"
+ansible k8s_all -m file -a "path=./cache/k8s.data state=directory"
 
 #### 2. k8s init and join the cluster
 ansible $cp_node -m shell --become -a "bash k8s_scripts/k8s_node_cp.sh $cp_ip:6443"
 # ansible $cp_node -m shell -a "sudo kubeadm reset -f"
 
 ansible $cp_node --one-line -m fetch \
-  -a "flat=true src=k8s.local/data/kubeadm-init.yaml dest=k8s.local/data/"
+  -a "flat=true src=cache/k8s.data/kubeadm-init.yaml dest=cache/k8s.data/"
 
 # kubectl join, don't use --become instead sudo
 ansible k8s_workers -m shell \
@@ -44,8 +44,8 @@ for node in $(ansible k8s_workers --list-hosts | sed '1d'); do
 done
 
 #### 4. sync data and kube
-# rsync -arPv $cp_node:k8s.local/data/ k8s.local/data/
-ansible $cp_node -m synchronize -a "mode=pull src=k8s.local/data/ dest=./k8s.local/data"
+# rsync -arPv $cp_node:cache/k8s.data/ cache/k8s.data/
+ansible $cp_node -m synchronize -a "mode=pull src=cache/k8s.data/ dest=./cache/k8s.data"
 
 ansible $cp_node -m synchronize -a "mode=pull src=.kube dest=~/"
 

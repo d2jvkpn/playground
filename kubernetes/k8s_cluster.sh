@@ -27,7 +27,7 @@ case $action in
 "download")
     version=$2 # 1.29.0
     bash k8s_scripts/k8s_download.sh $version
-    ls -al k8s.local
+    ls -al cache/k8s.downloads
     ;;
 
 "check")
@@ -40,15 +40,15 @@ case $action in
     } > /dev/null
 
     ####
-    ls k8s.local/{k8s_download.yaml,flannel.yaml} \
-      k8s.local/{ingress-nginx.yaml,metrics-server_components.yaml} > /dev/null
+    ls cache/k8s.downloads/{k8s_download.yaml,flannel.yaml} \
+      cache/k8s.downloads/{ingress-nginx.yaml,metrics-server_components.yaml} > /dev/null
 
     ls $kvm_dir/{virsh_wait_until.sh,virsh_clone.sh,virsh_delete.sh} > /dev/null
 
     awk '/image: /{
       sub("@sha256.*", "", $NF); sub(":", "_", $NF);
-      print "k8s.local/images/"$NF".tar.gz";
-    }' k8s.local/k8s_download.yaml | xargs -i ls {} > /dev/null
+      print "cache/k8s.downloads/images/"$NF".tar.gz";
+    }' cache/k8s.downloads/k8s_download.yaml | xargs -i ls {} > /dev/null
 
     ####
     # echo "Include ~/.ssh/kvm/*.conf" >> ~/.ssh/config

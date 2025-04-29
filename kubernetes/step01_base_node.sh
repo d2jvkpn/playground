@@ -30,20 +30,20 @@ done
 #### 2. copy assets
 # ansible $target --one-line -m copy -a "src=k8s_scripts dest=./"
 # ansible $target --one-line -m copy -a "src=k8s_demos dest=./"
-# ansible $target --one-line --forks 2 -m copy -a "src=k8s.local dest=./"
-# rsync -arPv ./k8s.local $target:./
+# ansible $target --one-line --forks 2 -m copy -a "src=cache/k8s.downloads dest=./cache/k8s.downloads"
+# rsync -arPv ./cache/k8s.downloads $target:./cache/k8s.downloads
 
 ansible $target --one-line -m synchronize -a "mode=push src=k8s_scripts dest=./"
 
 ansible $target --one-line -m synchronize -a "mode=push src=k8s_demos dest=./"
 
-ansible $target --one-line -m synchronize -a "mode=push src=k8s.local dest=./"
+ansible $target --one-line -m synchronize -a "mode=push src=cache/k8s.downloads dest=cache/k8s.downloads"
 
 ansible $target -m shell --become \
   -a "swapoff --all && sed -i '/swap/d' /etc/fstab && rm -f /swap.img"
 
 #### 3. k8s installation
-version=$(yq .k8s.version k8s.local/k8s_download.yaml)
+version=$(yq .k8s.version cache/k8s.downloads/k8s_download.yaml)
 
 ansible $target -m shell \
   -a "sudo bash k8s_scripts/k8s_node_install.ubuntu.sh $version"
@@ -51,7 +51,7 @@ ansible $target -m shell \
 ansible $target --forks 4 -m shell \
   -a "sudo import_image=true bash k8s_scripts/k8s_apps_install.sh"
 
-ansible $target -m file -a "path=./k8s.local/images state=absent"
+ansible $target -m file -a "path=./cache/k8s.downloads/images state=absent"
 
 #### 4. shutdown
 virsh shutdown $target

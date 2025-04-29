@@ -12,6 +12,7 @@ version=$(
 )
 
 version=${1:-$version}
+output_dir=cache/k8s.downloads
 
 function download_images() {
     yf=$1; save_dir=$2
@@ -47,7 +48,7 @@ current=$(kubeadm version -o yaml | yq .clientVersion.gitVersion | sed 's/^v//')
   exit 1;
 }
 
-mkdir -p k8s.local/images
+mkdir -p $output_dir/images
 
 
 #### 1. k8s_images
@@ -59,67 +60,68 @@ k8s_images=$(kubeadm config images list)
 for k in baremetal cloud; do
     link=https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/$k/deploy.yaml
 
-    wget -O k8s.local/ingress-nginx.$k.yaml $link
+    wget -O $output_dir/ingress-nginx.$k.yaml $link
 done
 
-# sed -i "1i # link: $link\n" k8s.local/ingress-nginx.yaml
+# sed -i "1i # link: $link\n" $output_dir/ingress-nginx.yaml
 
 ingress_images=$(
-  awk '$1=="image:"{print $2}' k8s.local/ingress-nginx.*.yaml |
+  awk '$1=="image:"{print $2}' $output_dir/ingress-nginx.*.yaml |
   sort -u
 )
 
 # https://raw.githubusercontent.com/flannel-io/flannel/v${flannel_version}/Documentation/kube-flannel.yml
 link=https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
-wget -O k8s.local/flannel.yaml $link
-sed -i "1i # link: $link\n" k8s.local/flannel.yaml
+wget -O $output_dir/flannel.yaml $link
+sed -i "1i # link: $link\n" $output_dir/flannel.yaml
 
-flannel_images=$(awk '$1=="image:"{print $2}' k8s.local/flannel.yaml | sort -u)
+flannel_images=$(awk '$1=="image:"{print $2}' $output_dir/flannel.yaml | sort -u)
 
 
 #### 3. calico
 link=https://docs.projectcalico.org/manifests/calico.yaml
-wget -O k8s.local/calico.yaml $link
-sed -i "1i # link: $link\n" k8s.local/calico.yaml
+wget -O $output_dir/calico.yaml $link
+sed -i "1i # link: $link\n" $output_dir/calico.yaml
 
-calico_images=$(awk '$1=="image:"{print $2}' k8s.local/calico.yaml | sort -u)
+calico_images=$(awk '$1=="image:"{print $2}' $output_dir/calico.yaml | sort -u)
 
 
 #### 4. metrics-server
 link=https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-wget -O k8s.local/metrics-server_components.yaml $link
-sed -i "1i # link: $link\n" k8s.local/metrics-server_components.yaml
+wget -O $output_dir/metrics-server_components.yaml $link
+sed -i "1i # link: $link\n" $output_dir/metrics-server_components.yaml
 
 metrics_images=$(
-  awk '$1=="image:"{print $2}' k8s.local/metrics-server_components.yaml |
+  awk '$1=="image:"{print $2}' $output_dir/metrics-server_components.yaml |
   sort -u
 )
 
 
 #### 5. metallb
 for k in native frr frr-k8s; do
-    wget -O k8s.local/metallb-${k}.yaml https://raw.githubusercontent.com/metallb/metallb/refs/heads/main/config/manifests/metallb-${k}.yaml
+    wget -O $output_dir/metallb-${k}.yaml \
+      https://raw.githubusercontent.com/metallb/metallb/refs/heads/main/config/manifests/metallb-${k}.yaml
 done
 
-metallb_images=$(awk '$1=="image:"{print $2}' k8s.local/metallb-*.yaml | sort -u)
+metallb_images=$(awk '$1=="image:"{print $2}' $output_dir/metallb-*.yaml | sort -u)
 
 
 #### 6. yq
 # https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64.tar.gz
 # https://github.com/mikefarah/yq/releases/download/v${yq_version}/yq_linux_amd64
-wget -O k8s.local/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-chmod a+x k8s.local/yq
-# yq_version=$(./k8s.local/yq --version | awk '{print $NF}')
+wget -O $output_dir/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+chmod a+x $output_dir/yq
+# yq_version=$(./$output_dir/yq --version | awk '{print $NF}')
 
 #### 7. cilium
 # --remote-name
 curl -o /tmp/cilium-linux-amd64.tar.gz \
   -L https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz
 
-tar -xf /tmp/cilium-linux-amd64.tar.gz -C k8s.local/
+tar -xf /tmp/cilium-linux-amd64.tar.gz -C $output_dir/
 
 #### 8. download info
-cat > k8s.local/k8s_download.yaml << EOF
+cat > $output_dir/k8s_download.yaml << EOF
 k8s:
   version: $version
   images:
@@ -142,4 +144,4 @@ metallb-server:
 $(echo "$metallb_images" | sed 's/^/  - image: /')
 EOF
 
-download_images k8s.local/k8s_download.yaml k8s.local/images
+download_images $output_dir/k8s_download.yaml $output_dir/images

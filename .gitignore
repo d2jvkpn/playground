@@ -1,17 +1,13 @@
-wk*/
+cache/
 configs/
 data/
 logs/
 target/
-cache/
 
 docker-compose.yaml
 docker-compose.yml
 compose.yaml
+compose.yml
 nohup.out
 
-temp/
-*.local
-local
-*.git
 __pycache__
