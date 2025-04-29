@@ -1,6 +1,6 @@
 #!/bin/make
 
-#include .env
+include env
 
 SHELL = /bin/bash
 
