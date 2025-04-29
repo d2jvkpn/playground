@@ -43,7 +43,7 @@ ansible $target -m shell --become \
   -a "swapoff --all && sed -i '/swap/d' /etc/fstab && rm -f /swap.img"
 
 #### 3. k8s installation
-version=$(yq .k8s.version cache/k8s.downloads/k8s_download.yaml)
+version=$(yq .k8s.version cache/k8s.downloads/k8s_downloads.yaml)
 
 ansible $target -m shell \
   -a "sudo bash k8s_scripts/k8s_node_install.ubuntu.sh $version"

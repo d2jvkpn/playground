@@ -40,7 +40,7 @@ case $action in
     } > /dev/null
 
     ####
-    ls cache/k8s.downloads/{k8s_download.yaml,flannel.yaml} \
+    ls cache/k8s.downloads/{k8s_downloads.yaml,flannel.yaml} \
       cache/k8s.downloads/{ingress-nginx.yaml,metrics-server_components.yaml} > /dev/null
 
     ls $kvm_dir/{virsh_wait_until.sh,virsh_clone.sh,virsh_delete.sh} > /dev/null
@@ -48,7 +48,7 @@ case $action in
     awk '/image: /{
       sub("@sha256.*", "", $NF); sub(":", "_", $NF);
       print "cache/k8s.downloads/images/"$NF".tar.gz";
-    }' cache/k8s.downloads/k8s_download.yaml | xargs -i ls {} > /dev/null
+    }' cache/k8s.downloads/k8s_downloads.yaml | xargs -i ls {} > /dev/null
 
     ####
     # echo "Include ~/.ssh/kvm/*.conf" >> ~/.ssh/config

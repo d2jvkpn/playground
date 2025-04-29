@@ -8,7 +8,7 @@ export DEBIAN_FRONTEND=noninteractive
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 # version=1.32.1
 # key_url=https://pkgs.k8s.io/core:/stable:/v1.31/deb
-# version=$(yq .k8s.version cache/k8s.downloads/k8s_download.yaml)
+# version=$(yq .k8s.version cache/k8s.downloads/k8s_downloads.yaml)
 
 version=$1 # 1.32.1
 ver=v${version%.*} # v1.32

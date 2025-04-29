@@ -121,7 +121,7 @@ curl -o /tmp/cilium-linux-amd64.tar.gz \
 tar -xf /tmp/cilium-linux-amd64.tar.gz -C $output_dir/
 
 #### 8. download info
-cat > $output_dir/k8s_download.yaml << EOF
+cat > $output_dir/k8s_downloads.yaml << EOF
 k8s:
   version: $version
   images:
@@ -144,4 +144,4 @@ metallb-server:
 $(echo "$metallb_images" | sed 's/^/  - image: /')
 EOF
 
-download_images $output_dir/k8s_download.yaml $output_dir/images
+download_images $output_dir/k8s_downloads.yaml $output_dir/images
