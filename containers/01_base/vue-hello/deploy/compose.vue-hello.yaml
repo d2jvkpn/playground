@@ -1,6 +1,6 @@
 services:
   vue-hello:
-    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-hello:${IMAGE_Tag}
+    image: local/vue-hello:${IMAGE_Tag}
     container_name: vue-hello
     restart: always
     network_mode: bridge

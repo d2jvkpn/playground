@@ -7,7 +7,6 @@ tag=$1
 # GIT_Pull=$(printenv GIT_Pull || true)
 GIT_Pull=${GIT_Pull:-"true"}
 DOCKER_Pull=${DOCKER_Pull:-false}
-DOCKER_Push=${DOCKER_Push:-false}
 region=${region:-""}
 
 yaml=${yaml:-${_dir}/build.yaml}
@@ -17,7 +16,11 @@ yaml=${yaml:-${_dir}/build.yaml}
 app_name=$(yq .app_name $yaml)
 app_version=$(yq .app_version $yaml)
 
-image_name=$(yq .image_name $yaml)
+image_name=${image_name:-}
+if [ -z "$image_name" ]; then
+    image_name=$(yq .image_name $yaml)
+fi
+
 image_tag=$(yq .$tag.image_tag $yaml)
 image=$image_name:$image_tag
 
@@ -101,7 +104,8 @@ DOCKER_BUILDKIT=1 docker build --no-cache --tag $image \
   --build-arg=region="$region" \
   ./
 
-[ "$DOCKER_Push" != "false" ] && docker push $image
+
+[[ "$image_name" != "local/"* ]] && docker push $image
 
 #### 5.
 docker image prune --force --filter label=app=${app_name} --filter label=stage=build &> /dev/null

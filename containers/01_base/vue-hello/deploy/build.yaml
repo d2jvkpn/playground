@@ -1,6 +1,7 @@
 app_name: vue-hello
 app_version: 1.0.0
-image_name: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-hello
+#image_name: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-hello
+image_name: local/vue-hello
 
 local:
   branch: master
