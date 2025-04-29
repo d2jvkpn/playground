@@ -33,4 +33,3 @@ services:
     # - ./configs/pg_hba.conf:/var/lib/postgresql/data/pgdata/pg_hba.conf
     - ./configs/postgres.pass:/apps/configs/postgres.pass:ro
     - ./data/postgres:/var/lib/postgresql/data
-    # - ./data/share:/apps/data/share

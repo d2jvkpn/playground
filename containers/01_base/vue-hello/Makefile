@@ -1,6 +1,6 @@
 #!/bin/make
 
-include .env
+#include .env
 
 SHELL = /bin/bash
 
@@ -9,10 +9,10 @@ run:
 	npm run dev -- --port=${PORT} --host=0.0.0.0 # --mode dev
 
 build:
-	rm -rf target/static
+	rm -rf target/dist
 	# node node_modules/vite/bin/vite.js build --help
-	npm run build -- --base=${VITE_BASE} --outDir=target/static${VITE_BASE} # --mode dev
-	ls -alt target/static
+	npm run build -- --base=${VITE_BASE} --outDir=target/dist${VITE_BASE} # --mode dev
+	ls -alt target/dist
 
 image-local:
 	region=cn GIT_Pull=false DOCKER_Pull=false DOCKER_Push=false bash deploy/build.sh local

@@ -1,7 +1,7 @@
 services:
-  vite-vue-ts:
-    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vite-vue-ts:${IMAGE_Tag}
-    container_name: vite-vue-ts
+  vue-hello:
+    image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-hello:${IMAGE_Tag}
+    container_name: vue-hello
     restart: always
     network_mode: bridge
     ports: ["${HTTP_Port}:80"]

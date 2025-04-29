@@ -1,6 +1,6 @@
-app_name: vite-vue-ts
+app_name: vue-hello
 app_version: 1.0.0
-image_name: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vite-vue-ts
+image_name: registry.cn-shanghai.aliyuncs.com/d2jvkpn/vue-hello
 
 local:
   branch: master

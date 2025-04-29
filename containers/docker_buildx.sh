@@ -17,4 +17,10 @@ exit
 RUN --mount=type=bind,target=cache,source=cache ls cache/
 ```
 
+DOCKER_BUILDKIT=1 docker build --no-cache --file ${_dir}/Containerfile \
+  --build-arg=APP_Name="$app_name" \
+  --build-arg=APP_Version="$app_version" \
+  --build-arg=region="$region" \
+  --tag $image ./
+
 echo "https://github.com/docker/buildx/releases"
