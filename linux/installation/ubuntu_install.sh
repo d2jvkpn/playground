@@ -3,15 +3,17 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname $0`)
 
 
 #### 1. system apps
-apt install -y software-properties-common \
-  apt-transport-https ca-certificates lsb-release gnupg duf \
-  vim tree file pigz jq zip dos2unix gnome-shell-extension-manager \
+apt remove -y snapd orca
+
+apt install -y software-properties-common apt-transport-https ca-certificates \
+  lsb-release gnome-shell-extension-manager lm-sensors \
+  gnupg duf vim tree file pigz jq zip dos2unix  \
   curl net-tools btop iftop nmap whois traceroute iotop socat inotify-tools
 
 apt install -y \
-  make expect git lm-sensors \
+  make expect git\
   python3-venv pipx \
-  docker.io ansible-core openvpn \
+  docker.io ansible-core openvpn wireguard wireguard-tools \
   imagemagick tldr-hs
 
 apt install  fcitx5 fcitx5-pinyin ibus-pinyin \
