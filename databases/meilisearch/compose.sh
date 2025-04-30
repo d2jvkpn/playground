@@ -12,6 +12,8 @@ mkdir -p configs data/meilisearch
 
 if [ ! -s configs/meilisearch.toml ]; then
     password=$(tr -dc '0-9a-zA-Z' < /dev/urandom | fold -w 32 | head -n1 || true)
+    echo "$password" > configs/meilisearch.pass
+
     {
         cat configs/meilisearch.default.toml
         echo -e "\n\n### custom ####\nmaster_key = \"$password\"\n"

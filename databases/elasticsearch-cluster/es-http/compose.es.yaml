@@ -3,7 +3,7 @@ networks:
 
 services:
   es:
-    image: docker.elastic.co/elasticsearch/elasticsearch:9.0.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.18.0
     container_name: es
     hostname: es
     restart: always
@@ -27,7 +27,7 @@ services:
       xpack.ml.enabled: "false"
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:9.0.0
+    image: docker.elastic.co/kibana/kibana:8.18.0
     container_name: kibana
     hostname: kibana
     restart: always
