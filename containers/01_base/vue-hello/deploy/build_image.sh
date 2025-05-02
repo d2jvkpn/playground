@@ -9,18 +9,14 @@ GIT_Pull=${GIT_Pull:-"true"}
 DOCKER_Pull=${DOCKER_Pull:-false}
 region=${region:-""}
 
-yaml=${yaml:-${_dir}/build.yaml}
+yaml=${yaml:-${_dir}/build_image.yaml}
 
 # app_name=$(yq -p json -o yaml package.json | yq .name)
 # app_version=$(yq -p json -o yaml package.json | yq .version)
 app_name=$(yq .app_name $yaml)
 app_version=$(yq .app_version $yaml)
 
-image_name=${image_name:-}
-if [ -z "$image_name" ]; then
-    image_name=$(yq .image_name $yaml)
-fi
-
+image_name=$(yq .$tag.image_name $yaml)
 image_tag=$(yq .$tag.image_tag $yaml)
 image=$image_name:$image_tag
 
