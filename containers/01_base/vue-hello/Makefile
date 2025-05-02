@@ -15,16 +15,16 @@ build:
 	ls -alt target/dist
 
 image-local:
-	region=cn GIT_Pull=false DOCKER_Pull=false bash deploy/build_image.sh local
+	region=cn GIT_Pull=false DOCKER_Pull=false bash deploy/build_image.sh deploy/build_image.yaml local
 
 image-dev-cn:
-	region=cn DOCKER_Pull=false bash deploy/build_image.sh dev
+	region=cn DOCKER_Pull=false bash deploy/build_image.sh deploy/build_image.yaml dev
 
 image-dev:
-	DOCKER_Pull=false bash deploy/build_image.sh dev
+	bash deploy/build_image.sh deploy/build_image.yaml dev
 
 image-test:
-	DOCKER_Pull=false bash deploy/build_image.sh test
+	bash deploy/build_image.sh deploy/build_image.yaml test
 
 image-main:
-	DOCKER_Pull=false bash deploy/build_image.sh main
+	bash deploy/build_image.sh deploy/build_image.yaml main

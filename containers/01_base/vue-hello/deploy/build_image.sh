@@ -3,13 +3,13 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 #### 1.
-tag=$1
+#yaml=${yaml:-${_dir}/build_image.yaml}
+yaml=$1
+tag=$2
 # GIT_Pull=$(printenv GIT_Pull || true)
 GIT_Pull=${GIT_Pull:-"true"}
 DOCKER_Pull=${DOCKER_Pull:-false}
 region=${region:-""}
-
-yaml=${yaml:-${_dir}/build_image.yaml}
 
 # app_name=$(yq -p json -o yaml package.json | yq .name)
 # app_version=$(yq -p json -o yaml package.json | yq .version)
