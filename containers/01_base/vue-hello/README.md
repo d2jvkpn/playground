@@ -6,7 +6,6 @@ Learn more about the recommended Project Setup and IDE Support in the [Vue Docs 
 
 
 #### ch01. Reference
-Large ScaleApps with Vue Vite and TypeScript
 
 #### ch02. Setup env
 ```

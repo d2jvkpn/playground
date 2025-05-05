@@ -4,7 +4,7 @@ app_version: 1.0.0
 local:
   branch: master
   image_name: local/vue-hello
-  image_tag: dev
+  image_tag: latest
   VITE_BASE: /site
   VITE_API_URL: domain.local:9011
   # window.location.protocol+"//domain.local:9012"
