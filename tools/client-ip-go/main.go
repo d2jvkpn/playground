@@ -11,13 +11,18 @@ import (
 	"time"
 )
 
+func init() {
+	log.SetFlags(0)
+	log.SetOutput(os.Stdout)
+}
+
 func main() {
 	var (
 		addr      string
 		cert, key string
+		err       error
 		listener  net.Listener
 		server    *http.Server
-		err       error
 	)
 
 	flag.StringVar(&addr, "addr", ":8080", "http listening address")
@@ -30,8 +35,6 @@ func main() {
 		return
 	}
 
-	log.SetFlags(0)
-	log.SetOutput(os.Stdout)
 	server = NewServer()
 
 	if cert != "" && key != "" {
