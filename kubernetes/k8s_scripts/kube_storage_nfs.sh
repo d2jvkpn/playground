@@ -23,8 +23,14 @@ record="$nfs *(rw,sync,no_root_squash,subtree_check)" # insecure
 [ -z "$(grep "^$nfs " /etc/exports)" ] && \
   echo "$record" | sudo tee -a /etc/exports
 
+sudo cat /etc/exports
+
 sudo exportfs -ra
 sudo showmount -e --no-headers
+
+# systemctl status nfs-server
+# mkdir -p /mnt/nfs
+# mount -t nfs $NfsServerIP:/data /mnt/nfs
 
 echo "Hello, world!" | sudo tee $nfs/hello.txt
 
