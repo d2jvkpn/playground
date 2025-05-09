@@ -1,14 +1,19 @@
-#!/usr/bin/env bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
-cd ${_path}
+# cd ${_path}
 
-for d in $(find -type d -name ".git"); do
+if [ $# -gt 0 ]; then
+   git_list=$(cat $1)
+else
+   git_list=$(find -type d -name ".git")
+fi
+
+for d in $git_list; do
     cd $d
     cd ../
     echo "==> $(pwd)"
-    git pull
+    git pull || true
     cd ${_wd}
 done

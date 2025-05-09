@@ -39,4 +39,19 @@
 - v: show/hide subtutile
 
 #### ch03. Vim
-- TODO: 
+1. exit
+- w wq
+- q q!
+
+2. navigation
+- ^ $
+- b w
+- :NumberOfLine
+- GG gg
+- h j k l (left, down, up, right)
+
+3. edit
+- dd d3
+- yy p
+- ESC
+- dw d$ d^

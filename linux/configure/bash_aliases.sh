@@ -30,6 +30,7 @@ alias ..='cd ../'; alias ...='cd ../../'; alias ....='cd ../../../'
 
 alias x-nmap='nmap -vv --max-retries=5 -sV -T4 -p-'
 alias x-rsync='rsync -arvP  -e "ssh -o RemoteCommand=none -o RequestTTY=no"'
+alias export_porxy='export https_proxy=socks5h://127.0.0.1:1080'
 
 #### 3.
 # sudo apt -y install xclip

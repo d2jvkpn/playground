@@ -24,7 +24,7 @@ ssh-keygen -t ed25519 -m PEM -N "" -C "ubuntu@localhost" -f host.ssh-ed25519
 ssh-keygen -y -f host.pem > host.ssh-ed25519.pub
 
 
-ssh -o PreferredAuthentications=password -p 22 target@remote
+ssh -o PreferredAuthentications=password -p 22 account@remote
 
 exit
 #### 2. ssh tunneling
