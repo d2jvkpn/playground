@@ -2,7 +2,7 @@ FROM node:22-alpine AS builder
 
 ARG APP_Name
 ARG APP_Version
-ARG BASE_Path
+ARG VITE_BASE_PATH
 ARG region
 
 MAINTAINER github.com/d2jvkpn <d2jvkpn@noreply.local>
@@ -15,7 +15,7 @@ LABEL stage=build
 
 WORKDIR /opt
 
-RUN echo "==> BASE_Path: ${BASE_Path}"
+RUN echo "==> VITE_BASE_PATH: ${VITE_BASE_PATH}"
 
 ADD *.js *.json *.ts index.html ./
 COPY public/ ./public
@@ -34,7 +34,7 @@ COPY node_modules ./node_modules
 
 # npm install --registry=https://registry.npmmirror.com &> /dev/null
 RUN npm install && \
-  npm run build -- --base=${BASE_Path} --outDir=target/dist${BASE_Path}
+  npm run build -- --base=${VITE_BASE_PATH} --outDir=target/dist${VITE_BASE_PATH}
 
 
 
@@ -43,7 +43,7 @@ FROM nginx:1-alpine
 
 ARG APP_Name
 ARG APP_Version
-ARG BASE_Path
+ARG VITE_BASE_PATH
 
 MAINTAINER github.com/d2jvkpn <d2jvkpn@noreply.local>
 LABEL app=${APP_Name}

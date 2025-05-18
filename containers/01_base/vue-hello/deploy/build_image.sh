@@ -40,7 +40,7 @@ fi
 
 [[ "$GIT_Pull" != "false" ]] && git pull --no-edit
 
-VITE_BASE=$(yq .$tag.VITE_BASE $yaml)
+VITE_BASE_PATH=$(yq .$tag.VITE_BASE_PATH $yaml)
 VITE_API_URL=$(yq .$tag.VITE_API_URL $yaml)
 
 
@@ -48,7 +48,7 @@ VITE_API_URL=$(yq .$tag.VITE_API_URL $yaml)
 mkdir -p node_modules
 
 cat > target/env <<EOF
-VITE_BASE=$VITE_BASE
+VITE_BASE_PATH=$VITE_BASE_PATH
 VITE_API_URL=$VITE_API_URL
 EOF
 
@@ -63,7 +63,7 @@ git_tree_state: $git_tree_state
 
 build_time: $build_time
 
-VITE_BASE: $VITE_BASE
+VITE_BASE_PATH: $VITE_BASE_PATH
 VITE_API_URL: $VITE_API_URL
 EOF
 
@@ -89,14 +89,14 @@ function onExit {
 
 git checkout $git_branch
 
-echo "==> Building image=$image, base_path=$VITE_BASE"
+echo "==> Building image=$image, VITE_BASE_PATH=$VITE_BASE_PATH"
 
 # --build-arg=mode=$mode
 DOCKER_BUILDKIT=1 docker build --no-cache --tag $image \
   --file ${_dir}/Containerfile \
   --build-arg=APP_Name=$app_name \
   --build-arg=APP_Version=$app_version \
-  --build-arg=BASE_Path="$VITE_BASE" \
+  --build-arg=VITE_BASE_PATH="$VITE_BASE_PATH" \
   --build-arg=region="$region" \
   ./
 

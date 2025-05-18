@@ -2,5 +2,5 @@
 
 PORT=9001
 
-VITE_BASE=/
-VITE_API_URL=localhost:9011
+VITE_BASE_PATH=/local
+VITE_API_URL=http://localhost:9011

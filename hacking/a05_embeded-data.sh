@@ -14,6 +14,14 @@ extract_embeded Data
 
 exit 0
 
+__START_Config__
+civilization:
+  location: earth
+  year: 2025
+  speices: Homo sapiens
+__END_Config__
+
+
 __START_Data__
 embbed data line 1
 embbed data line 2

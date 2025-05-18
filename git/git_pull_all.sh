@@ -7,13 +7,12 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 if [ $# -gt 0 ]; then
    git_list=$(cat $1)
 else
-   git_list=$(find -type d -name ".git")
+   git_list=$(find -type d -name "\.git" | xargs -i dirname {})
 fi
 
 for d in $git_list; do
     cd $d
-    cd ../
-    echo "==> $(pwd)"
+    echo "==> $(date +%FT%T%:z) $d"
     git pull || true
     cd ${_wd}
 done
