@@ -14,13 +14,13 @@ services:
     volumes:
     - /etc/timezone:/etc/timezone
     - /etc/localtime:/etc/localtime
-    - ./configs:/apps/configs
+    - ./configs:/opt/configs
     - ./data/meilisearch:/meili_data
     working_dir: /meili_data
     command:
     - meilisearch
     - --config-file-path
-    - /apps/configs/meilisearch.toml
+    - /opt/configs/configs/meilisearch.toml
     - --env
     - ${MEILI_ENV}
     - --http-addr

@@ -1,4 +1,48 @@
 services:
+  otel-node-metrics:
+    image: prom/node-exporter:latest
+    container_name: otel-node-metrics
+    restart: always
+    # restart: unless-stopped
+    networks: ["net"]
+    expose: [9100]
+    ports: [127.0.0.1:9100:9100]
+    volumes:
+    - /proc:/host/proc:ro
+    - /sys:/host/sys:ro
+    - /:/rootfs:ro
+    command:
+    - '--path.procfs=/host/proc'
+    - '--path.rootfs=/rootfs'
+    - '--path.sysfs=/host/sys'
+    - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+
+  otel-node-cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: otel-node-cadvisor
+    # network_mode: "host"
+    privileged: true
+    devices: ["/dev/kmsg"]
+    # command: ["--port=8080", "--enable_metrics=app,cpu,diskIO,memory,network"]
+    # --http_auth_file=test.htpasswd --http_auth_realm=localhost
+    deploy:
+      resources:
+        limits: { cpus: "0.5", memory: "256M" }
+    networks: ["net"]
+    ports:
+    - "127.0.0.1:8054:8080"
+    volumes:
+    - "/:/rootfs"
+    - "/var/run:/var/run"
+    - "/sys:/sys"
+    - "/var/lib/docker/:/var/lib/docker"
+    - "/dev/disk/:/dev/disk"
+    command:
+    - "--port=8080"
+    - "--enable_metrics=cpu,memory,network"
+    - "--store_container_labels=false"
+    - "--docker_only=true"
+
   jaeger-auth:
     image: registry.cn-shanghai.aliyuncs.com/d2jvkpn/http-auth-proxy:dev
     container_name: otel-jaeger-auth

@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 exit
@@ -16,9 +16,8 @@ umask 077
 wg_key=$(wg genkey)
 wg_pub=$(echo $wg_key | wg pubkey)
 
-mkdir configs
-cat > configs/wireguard.yaml <<EOF
-wg:
+cat > /etc/wireguard/wireguard.yaml <<EOF
+wg0:
   key: $wg_key
   pub: $wg_pub
 EOF

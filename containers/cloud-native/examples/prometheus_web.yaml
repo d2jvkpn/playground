@@ -1,3 +1,3 @@
-# Username: prometheus-hello, Password: world
+# username: prometheus, password: world
 basic_auth_users:
-  prometheus-hello: $2b$12$W5Hf7lwYZJENJM0GLAptV.dIUmIfbdyd.FT658.J2jRPE.tJ1xkEy
+  prometheus: $2b$12$W5Hf7lwYZJENJM0GLAptV.dIUmIfbdyd.FT658.J2jRPE.tJ1xkEy

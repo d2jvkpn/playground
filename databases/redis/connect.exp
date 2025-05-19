@@ -13,7 +13,7 @@ set fh [open $pass_file r]
 set password [read -nonewline $fh]
 close $fh
 
-spawn docker exec -it redis redis-cli --askpass
+spawn docker exec -it redis redis-cli -h 127.0.0.1 -p 6379 -n 0 --askpass
 
 expect "Please input password: "
 send "$password\r"

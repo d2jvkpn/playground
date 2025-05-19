@@ -1,0 +1,78 @@
+networks:
+  net: { name: otel, driver: bridge, external: false }
+
+services:
+  otel-prometheus:
+    image: prom/prometheus:main
+    container_name: otel-prometheus
+    restart: always
+    user: ${USER_UID}:${USER_GID}
+    networks: ["net"]
+    ports: [4050:9090]
+    volumes:
+    #- ./configs:/opt/configs
+    - ./configs/prometheus.yaml:/etc/prometheus/prometheus.yml:ro
+    - ./data/prometheus:/prometheus
+    command:
+    #- '--config.file=/etc/prometheus/prometheus.yaml'
+    #- '--web.config.file=/opt/configs/prometheus_web.yaml'
+    - '--config.file=/etc/prometheus/prometheus.yml'
+    - '--storage.tsdb.path=/prometheus'
+    - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+    - '--web.console.templates=/usr/share/prometheus/consoles'
+    - '--storage.tsdb.retention.time=100d'
+    - '--web.enable-admin-api'
+
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    container_name: otel-collector
+    restart: always
+    user: ${USER_UID}:${USER_GID}
+    volumes:
+    # - ./configs:/otel-collector/configs
+    - ./configs/otel-collector.yaml:/opt/configs/otel-collector.yaml:ro
+    networks: ["net"]
+    ports:
+    - "4317:4317"   # OTLP gRPC receiver
+    #- "127.0.0.1:4318:4318" # http receiver
+    #- "13133:13133" # health_check extension
+    #- "1888:1888"   # pprof extension
+    #- "127.0.0.1:8888:8888"   # Prometheus metrics exposed by the collector
+    #- "127.0.0.1:8889:8889"   # Prometheus exporter metrics
+    command: ["--config=/opt/configs/otel-collector.yaml"]
+
+  otel-jaeger:
+    image: jaegertracing/all-in-one:latest
+    #image: jaegertracing/all-in-one:1
+    container_name: otel-jaeger
+    restart: always
+    user: ${USER_UID}:${USER_GID}
+    networks: ["net"]
+    ports:
+    - "4051:16686" # web
+    # - "14250"       # expose to otel-collector
+    # - "4317"        # accept OpenTelemetry Protocol (OTLP) over gRPC
+    volumes:
+    - ./data/jaeger-badger:/opt/data/badger
+    environment:
+      SPAN_STORAGE_TYPE: badger
+      BADGER_EPHEMERAL: false
+      BADGER_SPAN_STORE_TTL: 168h
+      BADGER_DIRECTORY_VALUE: /opt/data/badger/data
+      BADGER_DIRECTORY_KEY: /opt/data/badger/key
+
+  # Independently deploy this service in production, username=admin, password=admin
+  otel-grafana:
+    image: grafana/grafana:main
+    container_name: otel-grafana
+    restart: always
+    user: ${USER_UID}:${USER_GID}
+    networks: ["net"]
+    ports: ["4052:3000"]
+    volumes:
+    # - ./configs:/app/configs
+    - ./data/grafana:/var/lib/grafana
+    #environment:
+    #  GF_SERVER_PROTOCOL: https
+    #  GF_SERVER_CERT_FILE: /var/lib/grafana/ssl/grafana.crt
+    #  GF_SERVER_CERT_KEY: /var/lib/grafana/ssl/grafana.key

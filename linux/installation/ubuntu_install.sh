@@ -6,15 +6,17 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname $0`)
 apt remove -y snapd orca
 
 apt install -y software-properties-common apt-transport-https ca-certificates \
-  lsb-release gnome-shell-extension-manager lm-sensors \
+  lsb-release lm-sensors \
   gnupg duf vim tree file pigz jq zip dos2unix  \
   curl net-tools btop iftop nmap whois traceroute iotop socat inotify-tools
 
 apt install -y \
-  make expect git\
-  python3-venv pipx \
-  docker.io ansible-core openvpn wireguard wireguard-tools \
-  imagemagick tldr-hs
+  make expect git python3-venv  \
+  docker.io openvpn wireguard wireguard-tools \
+  tldr-hs
+
+# gnome-shell-extension-manager
+# imagemagick pipx ansible-core
 
 apt install  fcitx5 fcitx5-pinyin ibus-pinyin \
   mpv vlc qbittorrent libreoffice gparted \

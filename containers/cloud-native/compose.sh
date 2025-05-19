@@ -1,14 +1,13 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
+
+mkdir -p configs logs data/prometheus data/grafana data/jaeger-badger
+
+cp examples/otel-collector.yaml examples/prometheus.yaml configs/
 
 export USER_UID=$(id -u) USER_GID=$(id -g)
-
-mkdir -p configs logs data/prometheus data/grafana data/badger
-
-cp examples/{otel-collector.yaml,prometheus.yaml} configs/
-
-envsubst < compose.template.yaml > compose.yaml
+envsubst < compose.cloud-native.yaml > compose.yaml
 
 exit
 # docker network create grafana

@@ -6,7 +6,7 @@
 
 services:
   redis:
-    image: redis:7-alpine
+    image: redis:8-alpine
     restart: always
     user: ${USER_UID}:${USER_GID}
     network_mode: host

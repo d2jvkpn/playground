@@ -20,6 +20,7 @@ systemctl disable ecs_mq
 systemctl stop aegis
 # !!! can't disable this service
 systemctl disable aegis
+
 mv /etc/systemd/system/aegis.service /etc/systemd/system/aegis.service.bk
 
 for s in pmcd pmie pmie_farm pmlogger pmlogger_farm pmproxy; do
