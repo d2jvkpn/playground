@@ -17,7 +17,8 @@ services:
     ports: [${HOST_IP}:9200:9200]
     volumes:
     - ./configs/es:/usr/share/elasticsearch/config
-    - ./data/es:/usr/share/elasticsearch/data
+    - ./data/es/data:/usr/share/elasticsearch/data
+    - ./data/es/plugins:/usr/share/elasticsearch/plugins
     environment:
       ES_JAVA_OPTS: -Xms512m -Xmx1280m
       bootstrap.memory_lock: "true"

@@ -14,7 +14,7 @@ fi
 
 version=$(yq .services.kibana.image compose.yaml | awk -F ":" '{print $2}')
 
-mkdir -p configs/es configs/kibana data/es data/kibana
+mkdir -p configs/es/data configs/es/plugins configs/kibana data/es data/kibana
 # chown -R 10000:0 configs/es configs/kibana
 
 ####

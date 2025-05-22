@@ -41,7 +41,7 @@ for name in $(yq .instances[].name configs/elastic.yaml); do
         exit 1
     fi
 
-    mkdir -p data/$name
+    mkdir -p data/$name/data data/$name/plugins
 done
 
 docker run --rm -u root:root -w /usr/share/elasticsearch \

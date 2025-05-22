@@ -68,7 +68,8 @@ services:
     - /etc/timezone:/etc/timezone:ro
     - ./configs/certs:/usr/share/elasticsearch/config/certs
     - ./configs/certs/elastic-node01:/usr/share/elasticsearch/config/certs/node
-    - ./data/elastic-node01:/usr/share/elasticsearch/data
+    - ./data/elastic-node01/data:/usr/share/elasticsearch/data
+    - ./data/elastic-node01/plugins:/usr/share/elasticsearch/plugins
     #env_file: ["./compose.env"]
     environment:
       <<: *elastic-env
@@ -88,7 +89,8 @@ services:
     - /etc/timezone:/etc/timezone:ro
     - ./configs/certs:/usr/share/elasticsearch/config/certs
     - ./configs/certs/elastic-node02:/usr/share/elasticsearch/config/certs/node
-    - ./data/elastic-node02:/usr/share/elasticsearch/data
+    - ./data/elastic-node02/data:/usr/share/elasticsearch/data
+    - ./data/elastic-node02/plugins:/usr/share/elasticsearch/plugins
     environment:
       <<: *elastic-env
       node.name: elastic-node02
@@ -107,7 +109,8 @@ services:
     - /etc/timezone:/etc/timezone:ro
     - ./configs/certs:/usr/share/elasticsearch/config/certs
     - ./configs/certs/elastic-node03:/usr/share/elasticsearch/config/certs/node
-    - ./data/elastic-node03:/usr/share/elasticsearch/data
+    - ./data/elastic-node03/data:/usr/share/elasticsearch/data
+    - ./data/elastic-node03/plugins:/usr/share/elasticsearch/plugins
     environment:
       <<: *elastic-env
       node.name: elastic-node03

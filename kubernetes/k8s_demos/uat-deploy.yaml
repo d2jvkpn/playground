@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alpine
+  namespace: uat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alpine
+      project: myapp
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: alpine
+        project: myapp
+    spec:
+      restartPolicy: Always
+      #securityContext:
+      #  fsGroup: 1001
+      volumes:
+      - name: ip2region
+        persistentVolumeClaim:
+          claimName: ip2region
+      containers:
+      - name: alpine
+        image: alpine:3
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - mountPath: /data/myapp/uat/ip2region
+          name: ip2region
+        command: ["tail", "-f", "/etc/hosts"]
+        args: []

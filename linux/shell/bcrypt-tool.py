@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-# TODO: read and write with a yaml file
-# emoj: warn=⚠️, forbidden=🚫, unexpect=💥, ok=✅, no=❌, bug=🔥
 import sys, argparse, getpass
 
 import bcrypt
@@ -27,16 +25,16 @@ args = parser.parse_args()
 #args.hashed = args.hashed.split(":", 1)[-1]
 args.hashed = args.hashed.strip()
 if args.command == "verify" and args.hashed == "":
-    print(f"⚠️ Argument --hashed is required for verify")
+    print(f"!!! Argument --hashed is required for verify")
     sys.exit(1)
 
 # print("password: ", password)
 if args.password == "":
-    args.password = getpass.getpass("👉 Enter password: ")
+    args.password = getpass.getpass("--> Enter password: ")
 
 args.password = args.password.strip()
 if args.password == "":
-    print(f"⚠️ Password is empty")
+    print(f"??? Password is empty")
     sys.exit(1)
 
 if args.command == "hash":
@@ -50,11 +48,11 @@ else:
     try:
         ok = bcrypt.checkpw(args.password.encode("utf-8"), args.hashed.encode("utf-8"))
     except Exception as e:
-        print(f"💥 Unexpected error: {e}")
+        print(f"!!! Unexpected error: {e}")
         sys.exit(1)
 
     if ok:
-        print("✅ Password match")
+        print("--> Password match")
     else:
-        print("❌ Incorrect password")
+        print("!!! Incorrect password")
         sys.exit(1)

@@ -1,5 +1,6 @@
 # https://prometheus.io/docs/guides/basic-auth/
 import getpass
+
 import bcrypt
 
 username = input("username: ")
