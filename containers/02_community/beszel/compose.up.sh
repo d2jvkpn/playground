@@ -2,6 +2,8 @@
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
+
+
 # docker-compose pull
 key=$(yq '.services.beszel-agent.environment.KEY' compose.yaml)
 

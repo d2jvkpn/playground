@@ -7,7 +7,7 @@ mkdir -p configs data/beszel
 
 export USER_UID=$(id -u) USER_GID=$(id -g) HTTP_Port=$HTTP_Port
 
-envsubst < compose.template.yaml > compose.yaml
+envsubst < compose.beszel.yaml > compose.yaml
 
 echo -e "\ncompose.yaml"
 echo '```yaml'
