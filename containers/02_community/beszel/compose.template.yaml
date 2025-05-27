@@ -7,18 +7,18 @@ services:
     container_name: beszel-server
     hostname: beszel
     restart: always # unless-stopped
-    networks: [ net ]
     user: ${USER_UID}:${USER_GID}
     extra_hosts:
     - host.docker.internal:host-gateway
+    networks: [ net ]
     ports: ["127.0.0.1:${HTTP_Port}:8090"]
     volumes:
     - ./data/beszel:/beszel_data
 
-  beszel-local:
+  beszel-agent:
     image: henrygd/beszel-agent:latest
-    container_name: beszel-local
-    hostname: beszel-local
+    container_name: beszel-agent
+    hostname: beszel-agent
     restart: always # unless-stopped
     networks: [ net ]
     volumes:

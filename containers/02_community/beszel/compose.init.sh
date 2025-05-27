@@ -1,12 +1,11 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 HTTP_Port=${1:-8090}
 mkdir -p configs data/beszel
 
-export USER_UID=$(id -u) USER_GID=$(id -g) \
-  HTTP_Port=$HTTP_Port
+export USER_UID=$(id -u) USER_GID=$(id -g) HTTP_Port=$HTTP_Port
 
 envsubst < compose.template.yaml > compose.yaml
 
