@@ -82,15 +82,14 @@ def create_app(config):
         file.save(save_path)
         size_bytes = os.path.getsize(save_path)
 
-        return jsonify({
-          "code": "ok",
-          "data": {
-            "filename": file.filename,
-            "save_path": save_path,
-            "id": file_id,
-            "size_bytes": size_bytes,
-          }
-        })
+        data = {
+          "filename": file.filename,
+          "save_path": save_path,
+          "id": file_id,
+          "size_bytes": size_bytes,
+        }
+
+        return jsonify({ "code": "ok", "data": data })
 
     return app
 
