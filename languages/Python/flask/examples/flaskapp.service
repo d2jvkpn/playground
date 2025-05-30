@@ -1,0 +1,14 @@
+# path: /etc/systemd/system/flaskapp.service
+[Unit]
+Description=Gunicorn Flask App
+After=network.target
+
+[Service]
+User=deployuser
+Group=www-data
+WorkingDirectory=/path/to/app
+Environment="config=/path/to/configs/local.yaml"
+ExecStart=/venv/bin/gunicorn -c gunicorn.conf.py "app:create_app()"
+
+[Install]
+WantedBy=multi-user.target
