@@ -1,0 +1,13 @@
+http:
+  cors_origins:
+  - https://127.0.0.1.8000
+  - http://localhost:8000
+  uploads: data/uploads
+  allowed_extensions: ['pdf', 'txt', 'docx', 'doc', 'ppt', 'pptx']
+  allowed_extensions:
+  - application/pdf                # pdf
+  - application/msword             # doc
+  - text/plain                     # txt
+  - application/vnd.ms-powerpoint  # ppt
+  - application/vnd.openxmlformats-officedocument.wordprocessingml.document'   # docs
+  - application/vnd.openxmlformats-officedocument.presentationml.presentation  # pptx

@@ -1,0 +1,8 @@
+pyyaml
+werkzeug
+# sudo apt-get install libmagic1
+python-magic
+flask
+flask_cors
+
+gunicorn

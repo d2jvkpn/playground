@@ -11,9 +11,11 @@ apt install -y software-properties-common apt-transport-https ca-certificates \
   curl net-tools btop iftop nmap whois traceroute iotop socat inotify-tools
 
 apt install -y \
-  make expect git python3-venv  \
+  make expect git git-lfs python3-venv  \
   docker.io openvpn wireguard wireguard-tools \
   tldr-hs
+
+git lfs install
 
 # gnome-shell-extension-manager
 # imagemagick pipx ansible-core
