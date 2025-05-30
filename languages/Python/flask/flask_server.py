@@ -35,13 +35,20 @@ def create_app(config):
         file.seek(0)
         mime = magic.from_buffer(buffer, mime=True)
         return mime in allowed_mime_types
-          
+
 
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
-            "code": "route_not_found",
-            "msg": "The requested URL was not found on the server."
+          "code": "route_not_found",
+          "msg": "The requested URL OR Method was not found on the server."
+        }), 404
+
+    @app.errorhandler(405)
+    def method_not_allowed(e):
+        return jsonify({
+          "code": "route_not_found",
+          "msg": "The requested URL OR Method was not found on the server."
         }), 404
 
     @app.route("/", methods=["GET"])
@@ -51,11 +58,12 @@ def create_app(config):
 
     @app.route("/echo", methods=["POST"])
     def echo():
+        name = request.args.get('name', "")
         if not request.is_json:
             return jsonify({"code": "not_json", "msg": "Request must be JSON"}), 400
 
         data = request.get_json()
-        return jsonify({"code": "ok", "data": {"received": data }})
+        return jsonify({"code": "ok", "data": {"name": name, "data": data }})
 
     @app.route("/upload", methods=["POST"])
     def upload_file():
