@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-import os, uuid
+import os, uuid, time
+
 
 import magic
 from werkzeug.utils import secure_filename
@@ -74,11 +75,10 @@ def create_app(config):
 
     @app.route("/slow", methods=["GET"])
     def slow():
-        import time
         print("🌙 slow request start")
         time.sleep(10)
         print("🌞 slow request done")
-        return "Done"
+        return "Done\n"
 
     @app.route("/upload", methods=["POST"])
     def upload_file():

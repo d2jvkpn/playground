@@ -7,9 +7,10 @@ import yaml
 
 
 with open(os.getenv('config', 'configs/local.yaml'), 'r') as f:
-    config = yaml.safe_load(f)
+   config = yaml.safe_load(f)
 
+
+os.makedirs(config["http"]["upload_folder"], exist_ok=True)
 app = create_app(config["http"])
 
-if __name__ == "__main__":
-    app.run()
+# TODO: graceful shutdown

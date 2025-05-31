@@ -2,10 +2,9 @@ import multiprocessing
 
 
 workers = multiprocessing.cpu_count() * 2 + 1
-worker_class = "gevent"
 graceful_timeout = 30
 timeout = 30
-keepalive = 60
+keepalive = 5
 max_requests = 1000
 max_requests_jitter = 50
 preload_app = True

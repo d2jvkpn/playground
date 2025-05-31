@@ -1,6 +1,5 @@
 run:
-	python3 make_server.py --host=127.0.0.1 --port=5000 --debug
+	python3 server.py --host=127.0.0.1 --port=5000 --debug
 
 gunicorn:
-	gunicorn --workers=4 --worker-class=gevent --graceful_timeout=10 --bind=127.0.0.1:5000 main:app
-	# gunicorn -c examples/gunicorn.conf.py --bind=127.0.0.1:5000 main:app
+	config=configs/local.yaml gunicorn -c examples/gunicorn.sync.py --workers=4 --bind=127.0.0.1:5000 main:app
