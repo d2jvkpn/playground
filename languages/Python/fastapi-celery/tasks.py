@@ -5,7 +5,6 @@ import yaml
 from celery import Celery
 from celery.signals import task_failure
 
-
 #logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
