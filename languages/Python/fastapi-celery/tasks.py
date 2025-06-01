@@ -27,7 +27,7 @@ def handle_task_failure(sender=None, task_id=None, exception=None, args=None, **
 @app.task(bind=True)
 def process_document(self, filepaths: List[str]):
     try:
-        logger.info(f"📄 Processing file(s): {filepaths}")
+        logging.info(f"📄 {self.request.id} Processing file(s): {filepaths}")
         #if "network" in file_path:
         #    raise TransientNetworkError("🌐 Simulated network error")
 
@@ -36,10 +36,10 @@ def process_document(self, filepaths: List[str]):
 
         size_bytes = 0
         for p in filepaths:
-            time.sleep(10)
             size_bytes += os.path.getsize(p)
 
-        print("✅ Done.")
+        time.sleep(100)
+        logging.info(f"✅ {self.request.id} Done.")
         return {"status": "completed", "count": len(filepaths), "size_bytes": size_bytes }
 
     except TransientNetworkError as e:

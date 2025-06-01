@@ -23,9 +23,9 @@ def json_ok(data):
 
 def json_error(code, msg, data=None):
     if data is None:
-        return { "code": cod, "ms": msg }
+        return { "code": code, "ms": msg }
     else:
-        return { "code": cod, "ms": msg, "data": data }
+        return { "code": code, "ms": msg, "data": data }
 
 ####
 with open(os.getenv('config', 'configs/local.yaml'), 'r') as f:
@@ -41,41 +41,29 @@ app = FastAPI()
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     #print("!!! global_exception_handler")
-    return JSONResponse(
-        status_code=500,
-        content={
-            "code": "internal_error",
-            "msg": "Sorry, an Internal Server Error occured",
-            "data": {
-                "detail": str(exc),
-                "trace": traceback.format_exc(),  # optinal: debug for development
-            },
-        },
-    )
+    content = {
+        "code": "internal_error",
+        "msg": "Sorry, an Internal Server Error occured",
+        # optinal: debug for development
+        "data": { "detail": str(exc),  "trace": traceback.format_exc() },
+    }
+
+    return JSONResponse(status_code=500, content=content)
 
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request: Request, exc: HTTPException):
     #print("!!! http_exception_handler")
-    return JSONResponse(
-        status_code=exc.status_code,
-        content={"code": "http_error", "msg": exc.detail},
-    )
+    return JSONResponse(status_code=exc.status_code,  content={"code": "http_error", "msg": exc.detail})
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     #print("==> validation_exception_handler")
-    return JSONResponse(
-        status_code=422,
-        content={"code": "validation_error", "msg": exc.errors()},
-    )
+    return JSONResponse(status_code=422, content={"code": "validation_error", "msg": exc.errors()})
 
 @app.exception_handler(404)
 async def not_found_handler(request: Request, exc):
     #print("!!! not_found_handler")
-    return JSONResponse(
-        status_code=404,
-        content={"code": "not_found", "msg": "api not exists"}
-    )
+    return JSONResponse(status_code=404, content={"code": "not_found", "msg": "api not exists"})
 
 @app.get("/")
 async def echo():
@@ -87,8 +75,8 @@ async def health_check():
     return "ok\n"
 
 @app.get("/hello", response_model=ApiResponse)
-def hello():
-    return json_ok({"value": 42})
+def hello(name: str = Query("Jane", description="name")):
+    return json_ok({"value": 42, "name": name})
 
 @app.post("/task/create", response_model=ApiResponse)
 async def upload_file(file: UploadFile, background_tasks: BackgroundTasks):
@@ -97,7 +85,7 @@ async def upload_file(file: UploadFile, background_tasks: BackgroundTasks):
     with open(file_path, "wb") as f:
         f.write(await file.read())
 
-    task = process_document.delay(file_path) # trigger async process
+    task = process_document.delay([file_path]) # trigger async process
     return json_ok({"task_id": task.id, "status": "processing"})
 
 
