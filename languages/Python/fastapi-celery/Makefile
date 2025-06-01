@@ -1,10 +1,13 @@
 SHELL := /bin/bash
 
 fastapi:
-	. cache/local.venv/bin/activate && uvicorn main:app --reload --log-config logging.yaml --host=127.0.0.1 --port=5000
+	. cache/local.venv/bin/activate && \
+	  uvicorn main:app --reload --log-config=logging_config.yaml --host=127.0.0.1 --port=5000
 
 celery:
-	. cache/local.venv/bin/activate && celery -A tasks worker --loglevel=info --concurrency=1
+	mkdir -p logs
+	. cache/local.venv/bin/activate && \
+	  celery -A tasks worker --loglevel=info --logfile=logs/celery.log --concurrency=1
 
 test-create:
 	mkdir -p data

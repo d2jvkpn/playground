@@ -5,22 +5,25 @@ import yaml
 from celery import Celery
 from celery.signals import task_failure
 
-#logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+
+class TransientNetworkError(Exception):
+    pass
 
 with open(os.getenv('config', 'configs/local.yaml'), 'r') as f:
    config = yaml.safe_load(f)
 
-celery = Celery('tasks', broker=config["redis"]["broker"], result_backend=config["redis"]["result_backend"])
+logger = logging.getLogger(__name__)
+#logging.basicConfig(level=logging.INFO)
+app = Celery('tasks', broker=config["redis"]["broker"], result_backend=config["redis"]["result_backend"])
+# app.config_from_object('celeryconfig')
+
 
 @task_failure.connect
 def handle_task_failure(sender=None, task_id=None, exception=None, args=None, **kwargs):
     print(f"💣 Task {sender.name}({task_id}) failed: {exception} with args: {args}")
 
-class TransientNetworkError(Exception):
-    pass
 
-@celery.task(bind=True)
+@app.task(bind=True)
 def process_document(self, file_path: str):
     try:
         logger.info(f"📄 Processing file: {file_path}")
@@ -41,4 +44,4 @@ def process_document(self, file_path: str):
 
     except Exception as e:
         logger.exception(f"❌ Fatal error: {e}")
-        raise e  # 不自动重试
+        raise e  # don't auto retry

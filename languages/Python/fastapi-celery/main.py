@@ -1,18 +1,30 @@
 #!/usr/bin/env python3
-import os
+import os, traceback
 
 from tasks import process_document
 
 import yaml
-from fastapi import FastAPI, UploadFile, BackgroundTasks, Query
+from fastapi import FastAPI, UploadFile, BackgroundTasks, Request, Query
 from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError, HTTPException
 from pydantic import BaseModel
 from celery import Celery
 import logging.config
 
-class UploadResponse(BaseModel):
-    task_id: str
-    status: str = "processing"
+
+class ApiResponse(BaseModel):
+    code: str = "ok"
+    msg: str | None = None
+    data: dict | None = None
+
+def api_ok(data):
+    return { "code": "ok", "data": data }
+
+def api_error(code, msg, data=None):
+    if data is None:
+        return { "code": cod, "ms": msg }
+    else:
+        return { "code": cod, "ms": msg, "data": data }
 
 ####
 with open(os.getenv('config', 'configs/local.yaml'), 'r') as f:
@@ -25,24 +37,63 @@ celery = Celery('tasks', broker=config["redis"]["broker"], result_backend=config
 
 app = FastAPI()
 
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    return JSONResponse(
+        status_code=500,
+        content={
+            "code": "internal_error",
+            "msg": "Sorry, an Internal Server Error occured",
+            "data": {
+                "detail": str(exc),
+                "trace": traceback.format_exc(),  # optinal: debug for development
+            },
+        },
+    )
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"code": "http_error", "msg": exc.detail},
+    )
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    return JSONResponse(
+      status_code=422,
+      content={"code": "validation_error", "msg": exc.errors()},
+    )
+
+
+@app.exception_handler(404)
+async def not_found_handler(request: Request, exc):
+    return JSONResponse(
+        status_code=404,
+        content={"code": "not_found", "msg": "api not exists"}
+    )
+
 @app.get("/")
 async def echo():
     return JSONResponse(content={"app": "fastapi-celery", "version": "1.0.0"})
 
 @app.get("/healthz")
 async def health_check():
-    return JSONResponse(content={"status": "ok"})
+    return "ok"
 
-@app.post("/task/create", response_model=UploadResponse)
+@app.get("/hello", response_model=ApiResponse)
+def hello():
+    return api_ok({"value": 42})
+
+@app.post("/task/create", response_model=ApiResponse)
 async def upload_file(file: UploadFile, background_tasks: BackgroundTasks):
-    # 保存原始文件
     file_path = f"./data/uploads/{file.filename}"
+
     with open(file_path, "wb") as f:
         f.write(await file.read())
-    
-    # 触发异步处理
-    task = process_document.delay(file_path)
-    return {"task_id": task.id, "status": "processing"}
+
+    task = process_document.delay(file_path) # trigger async process
+    return api_ok({"task_id": task.id, "status": "processing"})
 
 
 #@app.get("/task/{task_id}")
@@ -61,7 +112,7 @@ async def upload_file(file: UploadFile, background_tasks: BackgroundTasks):
 @app.post("/task/run")
 def run_task(filepath: str = Query(..., description="filepath to process")):
     task = process_document.delay(filepath)
-    return {"task_id": task.id, "status": "processing"}
+    return api_ok({"task_id": task.id, "status": "processing"})
 
 
 @app.get("/task/status")
@@ -69,9 +120,9 @@ async def get_task_status(task_id: str = Query(..., description="Celery task ID"
     result = celery.AsyncResult(task_id)
 
     if result.failed():
-        return {"status": "failed", "error": str(result.result)}
+        return api_error("task_failed", "task failed", {"status": "failed", "result": str(result.result)})
 
     if result.successful():
-        return {"status": "success", "result": result.result}
+        return api_ok({"status": "success", "result": result.result})
 
-    return {"status": result.status}
+    return api_ok({"status": result.status})

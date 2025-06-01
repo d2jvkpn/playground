@@ -2,23 +2,21 @@
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 ####
-python3 -m venv cache/local.venv
+if [ ! -d "cache/local.venv" ]; then
+    python3 -m venv cache/local.venv
+    pip3 install -r requirements.txt
+fi
 
 source cache/local.venv/bin/activate
 
-pip3 install -r requirements.txt
-
 exit
 ####
+mkdir -p logs data/uploads
+
 export config=configs/local.yaml
 
-uvicorn main:app --reload --log-config logging.yaml --host=127.0.0.1 --port=5000
+uvicorn main:app --reload --log-config=logging_config.yaml --host=127.0.0.1 --port=5000
 
-celery -A tasks worker --loglevel=info --concurrency=1
-
-exit
-####
-curl -X POST "http://127.0.0.1:5000/task/create" -F "file=@data/demo.pdf"
-
-#curl -X GET "http://127.0.0.1:5000/task/de406724-e254-406c-92ad-441696035a09"
-curl -X GET "http://127.0.0.1:5000/task/status?task_id=de406724-e254-406c-92ad-441696035a09"
+celery -A tasks worker --loglevel=info --logfile=logs/celery.log --concurrency=1
+# --log-format="[%(asctime)s] [%(levelname)s] %(processName)s - %(message)s" \
+# --task-log-format="[%(asctime)s] [%(levelname)s] [%(task_name)s(%(task_id)s)] - %(message)s"
