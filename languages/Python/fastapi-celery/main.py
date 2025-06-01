@@ -5,7 +5,7 @@ from tasks import process_document
 
 import yaml
 from fastapi import FastAPI, UploadFile, BackgroundTasks, Request, Query
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, PlainTextResponse
 from fastapi.exceptions import RequestValidationError, HTTPException
 from pydantic import BaseModel
 from celery import Celery
@@ -77,9 +77,10 @@ async def not_found_handler(request: Request, exc):
 async def echo():
     return JSONResponse(content={"app": "fastapi-celery", "version": "1.0.0"})
 
-@app.get("/healthz")
+@app.get("/healthz",  response_class=PlainTextResponse)
 async def health_check():
-    return "ok"
+    # return Response(content="ok", media_type="text/plain")
+    return "ok\n"
 
 @app.get("/hello", response_model=ApiResponse)
 def hello():
