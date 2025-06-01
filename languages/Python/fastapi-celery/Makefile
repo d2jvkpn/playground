@@ -1,11 +1,12 @@
 SHELL := /bin/bash
 
 fastapi:
+	mkdir -p logs data/uploads
 	. cache/local.venv/bin/activate && \
 	  uvicorn main:app --reload --log-config=logging_config.yaml --host=127.0.0.1 --port=5000
 
 celery:
-	mkdir -p logs
+	mkdir -p logs data/uploads
 	. cache/local.venv/bin/activate && \
 	  celery -A tasks worker --loglevel=info --logfile=logs/celery.log --concurrency=1
 

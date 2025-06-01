@@ -7,16 +7,16 @@ if [ ! -d "cache/local.venv" ]; then
     pip3 install -r requirements.txt
 fi
 
+mkdir -p logs data/uploads
 source cache/local.venv/bin/activate
+
 
 exit
 ####
-mkdir -p logs data/uploads
-
 export config=configs/local.yaml
 
 uvicorn main:app --reload --log-config=logging_config.yaml --host=127.0.0.1 --port=5000
 
 celery -A tasks worker --loglevel=info --logfile=logs/celery.log --concurrency=1
-# --log-format="[%(asctime)s] [%(levelname)s] %(processName)s - %(message)s" \
-# --task-log-format="[%(asctime)s] [%(levelname)s] [%(task_name)s(%(task_id)s)] - %(message)s"
+#  --log-format="[%(asctime)s] [%(levelname)s] %(processName)s - %(message)s" \
+#  --task-log-format="[%(asctime)s] [%(levelname)s] [%(task_name)s(%(task_id)s)] - %(message)s"
