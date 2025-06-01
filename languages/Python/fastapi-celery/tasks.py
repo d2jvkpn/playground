@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os, time, logging
+from typing import List
 
 import yaml
 from celery import Celery
@@ -24,19 +25,22 @@ def handle_task_failure(sender=None, task_id=None, exception=None, args=None, **
 
 
 @app.task(bind=True)
-def process_document(self, file_path: str):
+def process_document(self, filepaths: List[str]):
     try:
-        logger.info(f"📄 Processing file: {file_path}")
-        if "network" in file_path:
-            raise TransientNetworkError("🌐 Simulated network error")
+        logger.info(f"📄 Processing file(s): {filepaths}")
+        #if "network" in file_path:
+        #    raise TransientNetworkError("🌐 Simulated network error")
 
-        if "invalid" in file_path:
-            raise ValueError("❌ Irrecoverable format error")
+        #if "invalid" in filepaths:
+        #    raise ValueError("❌ Irrecoverable format error")
 
-        size_bytes = os.path.getsize(file_path)
-        time.sleep(10)
+        size_bytes = 0
+        for p in filepaths:
+            time.sleep(10)
+            size_bytes += os.path.getsize(p)
+
         print("✅ Done.")
-        return {"status": "completed", "size_bytes": size_bytes }
+        return {"status": "completed", "count": len(filepaths), "size_bytes": size_bytes }
 
     except TransientNetworkError as e:
         logger.error(f"⚠️ Transient error: {e}, retrying...")

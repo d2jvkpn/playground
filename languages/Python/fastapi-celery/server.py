@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os, traceback
+from typing import List
 
 from tasks import process_document
 
@@ -17,10 +18,10 @@ class ApiResponse(BaseModel):
     msg: str | None = None
     data: dict | None = None
 
-def api_ok(data):
+def json_ok(data):
     return { "code": "ok", "data": data }
 
-def api_error(code, msg, data=None):
+def json_error(code, msg, data=None):
     if data is None:
         return { "code": cod, "ms": msg }
     else:
@@ -39,6 +40,7 @@ app = FastAPI()
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
+    #print("!!! global_exception_handler")
     return JSONResponse(
         status_code=500,
         content={
@@ -53,6 +55,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request: Request, exc: HTTPException):
+    #print("!!! http_exception_handler")
     return JSONResponse(
         status_code=exc.status_code,
         content={"code": "http_error", "msg": exc.detail},
@@ -60,14 +63,15 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    #print("==> validation_exception_handler")
     return JSONResponse(
-      status_code=422,
-      content={"code": "validation_error", "msg": exc.errors()},
+        status_code=422,
+        content={"code": "validation_error", "msg": exc.errors()},
     )
-
 
 @app.exception_handler(404)
 async def not_found_handler(request: Request, exc):
+    #print("!!! not_found_handler")
     return JSONResponse(
         status_code=404,
         content={"code": "not_found", "msg": "api not exists"}
@@ -84,7 +88,7 @@ async def health_check():
 
 @app.get("/hello", response_model=ApiResponse)
 def hello():
-    return api_ok({"value": 42})
+    return json_ok({"value": 42})
 
 @app.post("/task/create", response_model=ApiResponse)
 async def upload_file(file: UploadFile, background_tasks: BackgroundTasks):
@@ -94,7 +98,7 @@ async def upload_file(file: UploadFile, background_tasks: BackgroundTasks):
         f.write(await file.read())
 
     task = process_document.delay(file_path) # trigger async process
-    return api_ok({"task_id": task.id, "status": "processing"})
+    return json_ok({"task_id": task.id, "status": "processing"})
 
 
 #@app.get("/task/{task_id}")
@@ -111,19 +115,25 @@ async def upload_file(file: UploadFile, background_tasks: BackgroundTasks):
 
 
 @app.post("/task/run")
-def run_task(filepath: str = Query(..., description="filepath to process")):
+def run_task(filepath: List[str] = Query(..., description="filepath(s) to process")):
+    if not filepath or len(filepath) == 0:
+        raise HTTPException(status_code=400, detail="Missing filepath")
+
     task = process_document.delay(filepath)
-    return api_ok({"task_id": task.id, "status": "processing"})
+    return json_ok({"task_id": task.id, "status": "processing"})
 
 
 @app.get("/task/status")
 async def get_task_status(task_id: str = Query(..., description="Celery task ID")):
+    if not task_id:
+        raise HTTPException(status_code=400, detail="Missing task_id")
+
     result = celery.AsyncResult(task_id)
 
     if result.failed():
-        return api_error("task_failed", "task failed", {"status": "failed", "result": str(result.result)})
+        return json_error("task_failed", "task failed", {"status": "failed", "result": str(result.result)})
 
     if result.successful():
-        return api_ok({"status": "success", "result": result.result})
+        return json_ok({"status": "success", "result": result.result})
 
-    return api_ok({"status": result.status})
+    return json_ok({"status": result.status})

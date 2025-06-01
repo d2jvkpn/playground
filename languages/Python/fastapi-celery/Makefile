@@ -28,4 +28,4 @@ test-create:
 	curl -X POST "http://127.0.0.1:5000/task/create" -F "file=@data/test.txt" > data/test.response.json
 
 test-status:
-	curl -X GET "http://127.0.0.1:5000/task/status?task_id=$$(jq -r .task_id data/test.response.json)"
+	curl -X GET "http://127.0.0.1:5000/task/status?task_id=$(jq -r .task_id data/test.response.json)"
