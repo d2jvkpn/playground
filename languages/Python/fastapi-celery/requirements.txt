@@ -1,0 +1,8 @@
+celery
+uvicorn
+fastapi
+slowapi
+pydantic
+redis
+python-multipart
+pyyaml
