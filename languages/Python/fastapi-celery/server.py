@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 import os, traceback
 from typing import List
+from datetime import timedelta
 
 from tasks import process_document
 
 import yaml
-from fastapi import FastAPI, UploadFile, BackgroundTasks, Request, Query
+from fastapi import FastAPI, UploadFile, File, BackgroundTasks, Request, Query
 from fastapi.responses import JSONResponse, PlainTextResponse
 from fastapi.exceptions import RequestValidationError, HTTPException
 from pydantic import BaseModel
@@ -34,6 +35,8 @@ with open(os.getenv('config', 'configs/local.yaml'), 'r') as f:
 logger = logging.getLogger(__name__)
 # logger.info("✅ Logging with RFC 3339 timestamps")
 celery = Celery('tasks', broker=config["redis"]["broker"], result_backend=config["redis"]["result_backend"])
+celery.conf.result_expires = timedelta(hours=1)
+celery.conf.task_track_started = True
 
 
 app = FastAPI()
@@ -78,15 +81,40 @@ async def health_check():
 def hello(name: str = Query("Jane", description="name")):
     return json_ok({"value": 42, "name": name})
 
+#@app.post("/task/create", response_model=ApiResponse)
+#async def upload_file(file: UploadFile, background_tasks: BackgroundTasks):
+#    filepath = f"./data/uploads/{file.filename}"
+
+#    with open(filepath, "wb") as f:
+#        f.write(await file.read())
+
+#    task = process_document.delay([filepath]) # trigger async process
+#    return json_ok({"task_id": task.id, "status": "processing"})
+
+
 @app.post("/task/create", response_model=ApiResponse)
-async def upload_file(file: UploadFile, background_tasks: BackgroundTasks):
-    file_path = f"./data/uploads/{file.filename}"
+async def upload_file(file: List[UploadFile] = File(...), background_tasks: BackgroundTasks = None):
+    files = file
+    filepaths = []
 
-    with open(file_path, "wb") as f:
-        f.write(await file.read())
+    for file in files:
+        p = f"./data/uploads/{file.filename}"
+        with open(p, "wb") as f:
+            f.write(await file.read())
+        filepaths.append(p)
 
-    task = process_document.delay([file_path]) # trigger async process
-    return json_ok({"task_id": task.id, "status": "processing"})
+    task = process_document.delay(filepaths) # trigger async process
+    return json_ok({"task_id": task.id, "status": "pending"})
+
+
+@app.post("/task/run")
+def run_task(filepath: List[str] = Query(..., description="filepath(s) to process")):
+    filepaths = filepath
+    if not filepaths or len(filepaths) == 0:
+        raise HTTPException(status_code=400, detail="Missing filepath")
+
+    task = process_document.delay(filepaths)
+    return json_ok({"task_id": task.id, "status": "pending"})
 
 
 #@app.get("/task/{task_id}")
@@ -102,26 +130,17 @@ async def upload_file(file: UploadFile, background_tasks: BackgroundTasks):
 #    return {"status": result.status}
 
 
-@app.post("/task/run")
-def run_task(filepath: List[str] = Query(..., description="filepath(s) to process")):
-    if not filepath or len(filepath) == 0:
-        raise HTTPException(status_code=400, detail="Missing filepath")
-
-    task = process_document.delay(filepath)
-    return json_ok({"task_id": task.id, "status": "processing"})
-
-
 @app.get("/task/status")
 async def get_task_status(task_id: str = Query(..., description="Celery task ID")):
     if not task_id:
         raise HTTPException(status_code=400, detail="Missing task_id")
 
     result = celery.AsyncResult(task_id)
+    # status: PENDING, RECEIVED, STARTED, SUCCESS, FAILURE, RETRY, REVOKED
+    data = {"task_id": task_id, "status": result.status, "result": str(result.result) if result.ready() else None }
 
     if result.failed():
-        return json_error("task_failed", "task failed", {"status": "failed", "result": str(result.result)})
+        return json_error("task_failed", "task failed", data)
 
-    if result.successful():
-        return json_ok({"status": "success", "result": result.result})
-
-    return json_ok({"status": result.status})
+    # if result.successful(): # status=success
+    return json_ok(data)

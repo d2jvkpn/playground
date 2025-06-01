@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os, time, logging
 from typing import List
+from datetime import timedelta
 
 import yaml
 from celery import Celery
@@ -17,6 +18,8 @@ logger = logging.getLogger(__name__)
 #logging.basicConfig(level=logging.INFO)
 app = Celery('tasks', broker=config["redis"]["broker"], result_backend=config["redis"]["result_backend"])
 # app.config_from_object('celeryconfig')
+app.conf.result_expires = timedelta(hours=1)
+app.conf.task_track_started = True
 
 
 @task_failure.connect
