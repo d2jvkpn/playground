@@ -7,3 +7,5 @@ redis
 python-multipart
 pyyaml
 python-json-logger
+# pdfminer
+# docx

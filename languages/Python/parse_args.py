@@ -4,8 +4,8 @@ import os, argparse
 
 
 parser = argparse.ArgumentParser(
-  description="parse commandline arguments",
-  formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    description="parse commandline arguments",
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
 
 parser.add_argument("command", help="command name", choices=["download", "run"])

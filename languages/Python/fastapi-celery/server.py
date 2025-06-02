@@ -94,13 +94,13 @@ def hello(name: str = Query("Jane", description="name")):
 
 @app.post("/task/create", response_model=ApiResponse)
 async def upload_file(file: List[UploadFile] = File(...), background_tasks: BackgroundTasks = None):
-    files = file
-    filepaths = []
+    files, filepaths = file, []
 
     for file in files:
         p = f"./data/uploads/{file.filename}"
         with open(p, "wb") as f:
             f.write(await file.read())
+
         filepaths.append(p)
 
     task = process_document.delay(filepaths) # trigger async process
