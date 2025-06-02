@@ -23,6 +23,10 @@ celery:
 	#  --log-format="[%(asctime)s] [%(levelname)s] %(processName)s - %(message)s" \
 	#  --task-log-format="[%(asctime)s] [%(levelname)s] [%(task_name)s(%(task_id)s)] - %(message)s"
 
+flower:
+	. cache/local.venv/bin/activate && \
+	celery -A tasks flower --port=5555
+
 test-create:
 	echo "Hello, world! 20205" > data/test.txt
 	curl -X POST "http://127.0.0.1:5000/task/create" -F "file=@data/test.txt" | tee data/test.response.json

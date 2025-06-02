@@ -1,4 +1,5 @@
 celery
+flower
 uvicorn
 fastapi
 slowapi
