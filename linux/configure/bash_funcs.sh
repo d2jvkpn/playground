@@ -68,27 +68,25 @@ function git_root() {
 }
 
 ####
-function x-pyvl() {
-    py_venv=${1:-pyvenv.local}; py_venv=${py_venv%/}
+function venv-local() {
+    venv_path=cache/venv
 
-    if [ ! -s $py_venv/bin/python3 ]; then
-        #echo "==> python3 -m venv $py_venv"
-        read -t 5 -p "Create venv $py_venv?(yes/no) " ans || true
+    if [ ! -s $venv_path/bin/python3 ]; then
+        #echo "==> python3 -m venv $venv_path"
+        read -t 5 -p "Create python venv $venv_path?(yes/no) " ans || true
 
         if [[ "$ans" != "yes" ]]; then
-            python3 -m venv $py_venv
-        else
             echo -e '\nAbort!!!'
             return
         fi
+        python3 -m venv $venv_path
     fi
 
-    source $py_venv/bin/activate
-    export PY_VENV=$(readlink -f $py_venv)
+    source $venv_path/bin/activate
 
-    if [ -s $PY_VENV/pip.conf ]; then
-        echo "--> found PIP_CONFIG_FILE: $PY_VENV/pip.conf"
-        export PIP_CONFIG_FILE=$PY_VENV/pip.conf
+    if [ -s configs/pip.conf ]; then
+        echo "--> found PIP_CONFIG_FILE: configs/pip.conf"
+        export PIP_CONFIG_FILE=configs/pip.conf
     fi
     python3 --version
     # deactivate
@@ -98,7 +96,12 @@ function x-pyvl() {
     # pip3 install -r requirements.txt
 }
 
-alias pyvh='source ~/apps/pyvenv.home/bin/activate'
+#alias venv-home='source ~/apps/home.venv/bin/activate'
+function venv() {
+    target=${1:-home}
+
+    source ~/apps/"${target}".venv/bin/activate
+}
 
 function x-ssh() {
      local host="$1"
