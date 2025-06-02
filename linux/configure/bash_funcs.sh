@@ -69,7 +69,7 @@ function git_root() {
 
 ####
 function venv-local() {
-    venv_path=cache/venv
+    venv_path=cache/local.venv
 
     if [ ! -s $venv_path/bin/python3 ]; then
         #echo "==> python3 -m venv $venv_path"
