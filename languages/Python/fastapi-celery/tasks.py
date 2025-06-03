@@ -24,31 +24,31 @@ app.conf.task_track_started = True
 
 @task_failure.connect
 def handle_task_failure(sender=None, task_id=None, exception=None, args=None, **kwargs):
-    print(f"💣 Task {sender.name}({task_id}) failed: {exception} with args: {args}")
+    print(f"!!! Task {sender.name}({task_id}) failed: {exception} with args: {args}") # 💣
 
 
 @app.task(bind=True)
 def process_document(self, filepaths: List[str]):
     try:
-        logging.info(f"📄 {self.request.id} Processing file(s): {filepaths}")
+        logging.info(f"--> {self.request.id} Processing file(s): {filepaths}") # 📄
         #if "network" in file_path:
-        #    raise TransientNetworkError("🌐 Simulated network error")
+        #    raise TransientNetworkError("!!! Simulated network error") # 🌐
 
         #if "invalid" in filepaths:
-        #    raise ValueError("❌ Irrecoverable format error")
+        #    raise ValueError("!!! Irrecoverable format error") # ❌
 
         size_bytes = 0
         for p in filepaths:
             size_bytes += os.path.getsize(p)
 
         time.sleep(100)
-        logging.info(f"✅ {self.request.id} Done.")
+        logging.info(f"<-- {self.request.id} Done.") # ✅
         return {"status": "completed", "count": len(filepaths), "size_bytes": size_bytes }
 
     except TransientNetworkError as e:
-        logger.error(f"⚠️ Transient error: {e}, retrying...")
+        logger.error(f"!!! Transient error: {e}, retrying...") # ⚠️
         raise self.retry(exc=e)
 
     except Exception as e:
-        logger.exception(f"❌ Fatal error: {e}")
+        logger.exception(f"!!! Fatal error: {e}") # ❌
         raise e  # don't auto retry

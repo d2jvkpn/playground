@@ -1,5 +1,8 @@
 # path: configs/local.yaml
 
+local:
+  venv: /home/ubuntu/apps/home.venv
+
 redis:
   broker: redis://:password@127.0.0.1:6379/0
   result_backend: redis://:password@127.0.0.1:6379/1

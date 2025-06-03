@@ -1,4 +1,35 @@
 repositories:
-- name: Model Context Protocol Servers
-  links:
+
+- name: frameworks
+  repositories:
   - https://github.com/modelcontextprotocol/servers
+  - https://github.com/infiniflow/ragflow
+  - https://github.com/langchain-ai/langchain
+  - https://github.com/Stability-AI/stablediffusion
+  - https://github.com/AUTOMATIC1111/stable-diffusion-webui
+  - https://github.com/n8n-io/n8n
+
+- name: python
+  repositories:
+  - https://github.com/deepdoctection/deepdoctection
+  - https://github.com/BerriAI/litellm
+  - langchain langchain-community faiss-cpu faiss-gpu tiktoken
+  - textract PyPDF2 pypdf
+  - transformers
+  - pytorch jax mediapipe
+
+- name: golang
+  repositories:
+  - https://github.com/pdfcpu/pdfcpu
+  - https://github.com/sausheong/breeze
+  - https://github.com/tmc/langchaingo
+  - https://github.com/sugarme/tokenizer
+  - https://github.com/Anush008/fastembed-go
+  - https://github.com/sashabaranov/go-openai
+  - https://github.com/openai/openai-go
+
+- name: rust
+  repositories:
+  - https://github.com/qdrant/qdrant
+  - https://github.com/Anush008/fastembed-rs
+  - neural-network
