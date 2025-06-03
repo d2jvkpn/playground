@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 import os, argparse
 
-import yaml
-import openai
+import yaml, openai
 from openai import OpenAI
 
 

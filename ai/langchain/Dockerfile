@@ -21,9 +21,9 @@ USER hello
 ENV PATH="/home/hello/.local/bin:$PATH"
 WORKDIR /home/hello/
 
-ADD ./pip.txt  ./
+ADD ./requirements.txt  ./
 
 RUN pip3 config set global.index-url 'https://pypi.douban.com/simple/' && \
   pip3 config set install.trusted-host 'pypi.douban/simple'
 
-RUN pip3 install --no-cache -r pip.txt
+RUN pip3 install --no-cache -r requirements.txt
