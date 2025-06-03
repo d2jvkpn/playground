@@ -48,8 +48,8 @@ EOF
 
 #### 2. deploy
 USER_UID=$(id -u) USER_GID=$(id -g) UDP_Port=$port \
-  envsubst < ${_path}/compose.server-host.yaml > compose.yaml
-# envsubst < ${_path}/compose.server-bridge.yaml > compose.yaml
+  envsubst < ${_dir}/compose.server-host.yaml > compose.yaml
+# envsubst < ${_dir}/compose.server-bridge.yaml > compose.yaml
 
 #### 3. run
 exit

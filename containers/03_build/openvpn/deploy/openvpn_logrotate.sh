@@ -1,6 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 # echo "5 0 1 * * bash /apps/target/openvpn_log.sh" > /tmp/crontab
 # crontab /tmp/crontab

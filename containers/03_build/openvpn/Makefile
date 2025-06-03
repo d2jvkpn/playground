@@ -1,8 +1,8 @@
 image:
-	bash deploy/build.sh
+	bash deploy/docker_build.sh
 
 image-cn:
-	region=cn bash deploy/build.sh
+	region=cn bash deploy/docker_build.sh
 
 archive:
 	mkdir -p data
