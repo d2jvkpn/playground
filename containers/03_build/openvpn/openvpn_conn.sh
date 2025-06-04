@@ -5,6 +5,7 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 table=${table:-"auto"}
 vpn_file=${1:-configs/client.ovpn}
 vpn_pass=${2:-configs/client.ovpn.pass}
+# --verb 4
 
 
 [[ ! -s "$vpn_file" || ! -s "$vpn_pass" ]] && { >&2 echo '!!! config files not exists' ; exit 1; }
@@ -40,3 +41,9 @@ cat > configs/client.ovpn.auth <<EOF
 ${account}
 ${password}
 EOF
+
+###
+exit
+In the ovpn file
+comment out "redirect-gateway def1"
+and add "route-nopull"

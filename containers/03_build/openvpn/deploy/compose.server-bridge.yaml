@@ -3,7 +3,7 @@ networks:
 
 services:
   openvpn:
-    image: kylemanna/openvpn:local
+    image: local/openvpn:dev
     restart: always
     cap_add: [NET_ADMIN]
     #logging:
