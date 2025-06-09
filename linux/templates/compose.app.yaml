@@ -22,6 +22,7 @@ services:
     hostname: demo
     user: 1000:1000
     #depends_on: ["db"]
+    #labels: { k1: v1 }
     expose: ["5000"]
     #network_mode: bridge
     networks: ["net"]
