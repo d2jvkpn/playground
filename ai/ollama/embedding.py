@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 import os
+from typing import Dict, Union
 
 import requests
 
 
 """
 curl https://api.openai.com/v1/embeddings \
-  -H "Authorization: Bearer $OPENAI_API_KEY" \
+  -H "Authorization: Bearer $API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "text-embedding-ada-002",
@@ -24,15 +25,12 @@ curl http://localhost:11434/api/embed \
 """
 
 
-def embedding_api(embeddings, key, source):
-    model = embeddings[key]
-    headers = { "Content-Type": "application/json", "Authorization": f"Bearer {model.get('api_key', '')}" }
+def embedding_api(embeddings: Dict, name: str, content: Union[str, list[str]]):
+    model = embeddings[name]
+    api_key = model.get('api_key', '')
 
-    data = {
-        "model": os.path.basename(key),
-        "encoding_format": "float",
-        "input": source,
-    }
+    headers = { "Content-Type": "application/json", "Authorization": f"Bearer {api_key}" }
+    data = { "model": os.path.basename(name), "encoding_format": "float", "input": content }
 
     response = requests.post(model['api_base'], headers=headers, json=data)
 
