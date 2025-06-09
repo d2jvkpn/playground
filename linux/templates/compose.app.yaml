@@ -1,0 +1,44 @@
+networks:
+  net:
+    name: demo
+    driver: bridge
+    external: false
+    #ipam:
+    #  config:
+    #  - { subnet: 172.24.0.0/24, gateway: 172.24.0.1 }
+
+volumes:
+  logs: { driver: local }
+
+x-env: &x-env
+  key1: value1
+
+# $ mkdir -p configs/ data/
+services:
+  demo:
+    image: alpine:3
+    restart: always
+    container_name: demo
+    hostname: demo
+    user: 1000:1000
+    #depends_on: ["db"]
+    expose: ["5000"]
+    #network_mode: bridge
+    networks: ["net"]
+    ports: [127.0.0.1:5000:5000/tcp]
+    #healthcheck:
+    #  test: ["CMD", "curl", "-f", "http://localhost:5000"]
+    #  start_period: 5s
+    #  interval: 30s
+    #  timeout: 10s
+    #  retries: 3
+    volumes:
+    - ./configs:/opt/configs:ro
+    - ./data:/opt/data
+    - logs:/opt/logs
+    environment:
+      <<: *x-env
+      APP: demo
+    command:
+    - sleep
+    - infinity

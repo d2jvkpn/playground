@@ -27,9 +27,11 @@ cat | sudo tee -a data/openvpn/openvpn.conf <<EOF
 client-config-dir      /etc/openvpn/ccd
 log-append             /apps/logs/openvpn.log
 ifconfig-pool-persist  /etc/openvpn/ifconfig-pool-persist.txt 3600
+push                   "redirect-gateway def1 bypass-dhcp"
 # client-connect        /apps/target/client_connect.sh
 # client-disconnect     /apps/target/client_disconnect.sh
-# push                  "redirect-gateway def1 bypass-dhcp"
+# push "dhcp-option DNS 114.114.114.114" # china mainland
+# push "dhcp-option DNS 1.1.1.1"         # cloudflare
 EOF
 
 # Enter New CA Key Passphrase:

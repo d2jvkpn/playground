@@ -8,6 +8,8 @@ repositories:
   - https://github.com/Stability-AI/stablediffusion
   - https://github.com/AUTOMATIC1111/stable-diffusion-webui
   - https://github.com/n8n-io/n8n
+  - https://github.com/matatonic/openedai-speech
+  - https://github.com/docling-project/docling
 
 - name: python
   repositories:

@@ -1,6 +1,7 @@
 services:
   rabbitmq:
     image: rabbitmq:4-management-alpine
+    # image: rabbitmq:4-alpine
     restart: always
     container_name: rabbitmq
     network_mode: bridge

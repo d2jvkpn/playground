@@ -1,9 +1,11 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
-# docker pull rabbitmq:3-management
 
-image=$(yq .services.rabbitmq.image compose.template.yaml)
+# docker pull rabbitmq:4-management-alpine
+# docker pull rabbitmq:4-alpine
+
+image=$(yq .services.rabbitmq.image compose.rabbitmq.yaml)
 
 mkdir -p data/rabbitmq configs/rabbitmq
 
@@ -18,7 +20,7 @@ export USER_UID=$(id -u) USER_GID=$(id -g) PASSWORD=$password
 docker run --rm -v $PWD/configs/rabbitmq:/tmp/rabbitmq $image \
   bash -c "cp -r /etc/rabbitmq/* /tmp/rabbitmq && chown -R $USER_UID:$USER_GID /tmp/rabbitmq"
 
-envsubst < compose.template.yaml > compose.yaml
+envsubst < compose.rabbitmq.yaml > compose.yaml
 
 docker-compose -f compose.yaml up -d
 
