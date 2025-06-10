@@ -13,6 +13,9 @@ services:
     #- /ect/localtime:/ect/localtime:ro
     #- /etc/timezone:/etc/timezone:ro
     - ./data/ollama:/root/.ollama
+    command:
+    - serve
+    # ollama serve llama3:8b
 
   open-webui:
     container_name: open-webui

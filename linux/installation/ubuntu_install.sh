@@ -13,7 +13,7 @@ apt install -y software-properties-common apt-transport-https ca-certificates \
 apt install -y \
   make expect git git-lfs python3-venv  \
   docker.io openvpn wireguard wireguard-tools \
-  tldr-hs
+  tldr-hs sqlite3
 
 git lfs install
 
@@ -30,3 +30,6 @@ apt install smbclient cifs-utils \
 
 # https://extensions.gnome.org/extension/261/kimpanel/
 # Input Method Panel using KDE's kimpanel protocol for Gnome-Shell
+
+apt install ibus ibus-pinyin ibus-libpinyin
+# ibus-setup
