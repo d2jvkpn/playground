@@ -1,8 +1,7 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+# set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
-
-secs=${secs:-10}
+secs=${secs:-3}
 if [ -s ./configs/kube.yaml ]; then
     export KUBECONFIG=./configs/kube.yaml
     echo "==> load $KUBECONFIG"
@@ -20,8 +19,29 @@ mkdir -p $bk_dir
     sleep $secs
 }
 
-for e in deployments services ingress configmaps secrets persistentVolumes persistentVolumeClaims \
-  daemonSets statefulSets cronJob nodes customResourceDefinition; do
+RESOURCES=(
+    "deployments"
+    "services"
+    "ingress"
+    "configmaps"
+    "secrets"
+    "persistentvolumes"
+    "persistentvolumeclaims"
+    "daemonsets"
+    "statefulsets"
+    "cronjobs"
+    "jobs"
+    "nodes"
+    "customresourcedefinition"
+    "roles"
+    "rolebindings"
+    "serviceaccounts"
+    "networkpolicies"
+)
+# "replicasets"
+# "pods"
+
+for e in "${RESOURCES[@]}"; do
     [ -s $bk_dir/resource.$e.yaml ] && continue
 
     echo "==> $bk_dir/resource.$e.yaml"
@@ -30,6 +50,8 @@ for e in deployments services ingress configmaps secrets persistentVolumes persi
     sleep $secs
 done
 
+$kubectl cluster-info dump > "$bk_dir/cluster-info.yaml"
+
 for ns in $($kubectl get ns | awk 'NR>1{print $1}'); do
     [ -s $bk_dir/namespace.$ns.yaml ] && continue
 
@@ -37,6 +59,7 @@ for ns in $($kubectl get ns | awk 'NR>1{print $1}'); do
     $kubectl -n $ns get all -o yaml > $bk_dir/namespace.$ns.yaml.tmp
     mv $bk_dir/namespace.$ns.yaml.tmp $bk_dir/namespace.$ns.yaml
     sleep $secs
+
 done
 
 exit

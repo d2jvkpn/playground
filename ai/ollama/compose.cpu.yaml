@@ -13,6 +13,8 @@ services:
     #- /ect/localtime:/ect/localtime:ro
     #- /etc/timezone:/etc/timezone:ro
     - ./data/ollama:/root/.ollama
+    environment:
+      OLLAMA_HOST: 127.0.0.1:11434
     command:
     - serve
     # ollama serve llama3:8b
