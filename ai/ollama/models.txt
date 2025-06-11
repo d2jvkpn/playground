@@ -14,3 +14,6 @@ all-MiniLM-L6-v2
 bge-m3:567m
 mxbai-embed-large:335m
 nomic-embed-text:latest
+
+paraphrase-multilingual-MiniLM-L12-v2
+nomic-ai/nomic-embed-text-v1.5

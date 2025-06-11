@@ -1,0 +1,43 @@
+#networks:
+#   net: { name: ollama, driver: bridge, external: false }
+
+services:
+  ollama-cpu:
+    container_name: ollama-cpu
+    hostname: ollama-cpu
+    image: ollama/ollama:0.9.0
+    network_mode: bridge
+    #networks: [net]
+    ports: ["127.0.0.1:11434:11434"]
+    volumes:
+    #- /ect/localtime:/ect/localtime:ro
+    #- /etc/timezone:/etc/timezone:ro
+    - ./data/ollama:/root/.ollama
+    environment:
+      OLLAMA_HOST: 127.0.0.1:11434
+    command:
+    - serve
+    # ollama serve llama3:8b
+
+  ollama-gpu:
+    container_name: ollama-gpu
+    hostname: ollama-gpu
+    image: ollama/ollama:0.9.0
+    deploy:
+      resources:
+        reservations:
+          # cpus: "1"
+          # memory: 4g
+          devices:
+          - driver: nvidia
+            # device_ids: ['0', '3']
+            # count: all
+            count: 1
+            capabilities: [gpu]
+    network_mode: bridge
+    #networks: [net]
+    ports: ["127.0.0.1:11434:11434"]
+    volumes:
+    #- /ect/localtime:/ect/localtime:ro
+    #- /etc/timezone:/etc/timezone:ro
+    - ./data/ollama:/root/.ollama

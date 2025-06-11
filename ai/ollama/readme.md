@@ -14,6 +14,8 @@ date: 1970-01-01
 - https://github.com/open-webui/pipelines/pkgs/container/pipelines
 - https://github.com/open-webui/open-webui/releases
 - https://ikasten.io/2024/06/03/getting-started-with-openwebui-pipelines/
+- https://github.com/ollama/ollama/blob/main/docs/api.md
+- https://ollama.com/blog/embedding-models
 
 2. commands
 ```bash

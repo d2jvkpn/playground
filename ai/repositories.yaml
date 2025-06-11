@@ -13,6 +13,7 @@ repositories:
   - libretranslate
   - pipelines
   - searxng
+  - https://github.com/qdrant/fastembed
 
 - name: python
   repositories:
