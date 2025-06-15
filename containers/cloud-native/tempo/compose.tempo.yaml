@@ -1,0 +1,12 @@
+services:
+
+  tempo:
+    image: grafana/tempo:latest
+    command: ["-config.file=/etc/tempo.yaml"]
+    volumes:
+      - ./tempo.yaml:/etc/tempo.yaml
+      - ./tempo-data:/tmp/tempo/traces
+    ports:
+      - "3200:3200"  # Tempo HTTP (Jaeger-compatible API)
+      - "4317:4317"  # OTLP gRPC
+    restart: unless-stopped

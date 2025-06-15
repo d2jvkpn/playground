@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from datetime import datetime, timedelta
-from typing import Union, Any, Self
+from typing import Union, Self # Any
 
 
 class Chrono(object):
@@ -25,8 +25,11 @@ class Chrono(object):
             return Self(self.at - t)
         elif isinstance(t, Chrono):
             return self.at - t.at
-        #elif isinstance(t, datetime):
-        #    return self.at - t
+        elif isinstance(t, datetime):
+            if t.tzinfo is None:
+                return self.at - t.astimezone()
+            else:
+                return self.at - t
         else:
             raise ValueError("t must be a timedelta or Chrono")
 

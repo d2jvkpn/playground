@@ -26,11 +26,24 @@ ollama pull mxbai-embed-large:335m
 
 ollama pull bge-m3:567m
 
-curl http://localhost:11434/api/embed -d '{
+curl -X POST http://localhost:11434/api/embed -d '{
   "model": "bge-m3:567m",
   "encoding_format": "float",
   "input": "Llamas are members of the camelid family"
 }'
+#{
+#  "model":"bge-m3:567m",
+#  "embeddings":[[-0.018423213,0.006227625,-0.04902692,...]],
+#  "total_duration": 155325930,
+#  "load_duration": 67595793,
+#  "prompt_eval_count": 10
+#}
+
+curl -X POST http://localhost:11434/v1/embeddings -d '{
+  "model": "bge-m3:567m",
+  "input": "Llamas are members of the camelid family"
+}'
+# {"object":"list","data":[{"object":"embedding","embedding":[-0.018423213,0.006227625,-0.0...]}]}
 
 
 exit

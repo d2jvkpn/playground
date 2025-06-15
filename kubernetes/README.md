@@ -1,7 +1,7 @@
 # Kubernetes
 
 
-#### C01. K8s Cluster
+#### ch01. K8s Cluster
 1. 
 ```bash
 # bash k8s_scripts/k8s_downloads.sh 1.30.2
@@ -17,7 +17,7 @@ bash step03_cluster_up.sh
 2. k8s_tools
 - k9s: https://github.com/derailed/k9s
 
-#### C02. Explore
+#### ch02. Explore
 ```bash
 ansible k8s_all -m shell -a 'top -n 1'
 
@@ -28,7 +28,7 @@ ansible k8s_cps[0] -m shell -a 'kubectl get pods --all-namespaces -o wide'
 ansible k8s_cps[0] -m shell -a 'kubectl describe node/k8s-cp01'
 ```
 
-#### C03. Upgrade nodes
+#### ch03. Upgrade nodes
 ```bash
 version=1.28.x
 
@@ -49,7 +49,14 @@ for node in $(ansible k8s_workers --list-hosts | sed '1d'); do
 done
 ```
 
-#### C04. TODO
+#### ch04. TODO
 - 2024-01-01 StatefulSet
 - 2024-12-24 Traefik Ingress
 - 2025-01-01 Helm
+
+#### ch05. News
+- HAMi
+- SkyPilot
+- Trainer
+- Envoy AI Gateway
+- k0s
