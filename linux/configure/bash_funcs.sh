@@ -1,4 +1,16 @@
 ####
+function with_proxy() {
+    if [ -z "$https_proxy" ]; then
+        _addr=socks5h://127.0.0.1:1080
+        echo "Set https_proxy to $_addr"
+        export https_proxy=$_addr
+    else
+        echo "Unset https_proxy"
+        unset https_proxy
+    fi
+}
+
+####
 function docker_connect() {
     target=~/apps/$1.container
     [ -d "$target" ] || { >&2 echo "directory not found: $target"; exit 1; }

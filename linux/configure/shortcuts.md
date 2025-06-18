@@ -22,7 +22,9 @@
 - View split on right: Ctrl+Super+Right
 
 5. Custom shortcuts
-- Gedit: Ctrl + Alt + G
+- name: gedit
+  shortcut: Ctrl + Alt + G
+  comand: /usr/bin/gedit
 
 
 #### ch02. MPV
