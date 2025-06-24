@@ -19,6 +19,8 @@ git push
 
 -
 ```bash
+git config --global init.defaultBranch main
+
 git init
 git config user.name d2jvkpn
 git config user.name d2jvkpn@noreply.local
