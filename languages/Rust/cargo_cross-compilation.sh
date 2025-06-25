@@ -12,3 +12,7 @@ sudo apt-get install mingw-w64
 #linker = "x86_64-w64-mingw32-gcc"
 
 cargo build --target x86_64-pc-windows-gnu
+
+exit
+cargo install cross
+cross build --target x86_64-pc-windows-gnu
