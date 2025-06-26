@@ -11,3 +11,7 @@ compose.yml
 nohup.out
 
 __pycache__
+
+tmp/
+vendor/
+*.git/

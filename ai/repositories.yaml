@@ -16,6 +16,7 @@ repositories:
   - https://github.com/qdrant/fastembed
   - https://github.com/mudler/LocalAI
   - https://github.com/xorbitsai/inference
+  - https://github.com/deepset-ai/haystack
 
 - name: python
   repositories:
