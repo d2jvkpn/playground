@@ -1,0 +1,17 @@
+# networks:
+#   net: { name: "registry", driver: "bridge", external: false }
+
+services:
+  registry-public:
+    image: registry:3
+    container_name: registry
+    restart: always
+    network_mode: bridge
+    # networks: ["net"]
+    ports: ["127.0.0.1:${HTTP_Port}:5000"]
+    environment:
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /var/lib/registry
+    volumes:
+    - ./configs/registry.yaml:/etc/distribution/config.yml:ro
+    - ./configs/registry.htpasswd:/etc/registry
+    - ./data/registry:/var/lib/registry
