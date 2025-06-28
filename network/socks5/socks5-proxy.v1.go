@@ -25,7 +25,7 @@ func main() {
 		err      error
 	)
 
-	flag.StringVar(&addr, "addr", "127.0.0.1:1080", "listening address")
+	flag.StringVar(&addr, "addr", "127.0.0.1:1100", "listening address")
 	flag.Parse()
 
 	if listener, err = net.Listen("tcp", addr); err != nil {

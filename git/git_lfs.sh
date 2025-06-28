@@ -8,6 +8,17 @@ git lfs install
 
 git clone https://huggingface.co/BAAI/bge-m3
 
+# without lfs
+# GIT_LFS_SKIP_SMUDGE=1 git clone <repo_url>
+
+# disable lfs
+#git config --global lfs.fetchinclude ""
+#git config --global lfs.fetchexclude "*"
+
+#### recover
+#git config --unset --global lfs.fetchinclude
+#git config --unset --global lfs.fetchexclude
+
 
 ls ~/.git/lfs/objects/
 
