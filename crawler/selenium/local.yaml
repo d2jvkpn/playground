@@ -1,0 +1,22 @@
+# path: configs/local.yaml
+
+# source: https://github.com/mozilla/geckodriver/releases
+geckodriver: ./data/geckodriver
+
+login: https://example.com/login
+username:
+  key: //input[@id='username']
+  value: hello
+
+password:
+  key: //input[@name='password']
+  value: world
+
+action: //button[@type='submit']
+post: //button[@id='accept']
+
+targets:
+- id: "x01"
+  url: https://example.com/
+  loaded: //div[@class='content']
+  target: //div[@id='xxxx']

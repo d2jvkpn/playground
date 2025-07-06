@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import time, math, os, json
+import time, math, os, json, argparse
 from datetime import datetime
 from urllib.parse import urlparse, parse_qs
 
@@ -40,21 +40,23 @@ def loading(driver, xpath, delay=0.5, max_retry=30):
 def main(dirver, config):
     open_url(driver, config["login"])
 
-    username = loading(driver, '//input[@id="username"]')
+    #username = loading(driver, '//input[@id="username"]')
     # username = driver.find_element(By.ID, 'username')
-    username.send_keys(config["username"])
+    username = loading(driver, config["username"]["key"])
+    username.send_keys(config["username"]["value"])
 
-    password = driver.find_element(By.NAME, 'password')
-    password.send_keys(config["password"])
+    # password = driver.find_element(By.NAME, 'password')
+    password = loading(driver, config["password"]["key"])
+    password.send_keys(onfig["password"]["value"])
 
-    login_button = loading(driver, '//button[@type="submit"]')
+    login_button = loading(driver, config["action"])
     # login_button = driver.find_element(By.XPATH, '//button[@type="submit"]')
     login_button.click()
 
     #accept = driver.find_element(By.ID, 'btnAccept')
     while True:
         try:
-            accept = driver.find_element(By.ID, "btnAccept")
+            accept = driver.find_element(By.XPATH, config["post"])
             if accept:
                 accept.click()
                 break
@@ -64,18 +66,19 @@ def main(dirver, config):
         time.sleep(1)
 
     driver.set_page_load_timeout(2)
-
     os.makedirs(f"data/pages", exist_ok=True)
+
     for item in config["targets"]: # id, url, loaded, target
         html_path = f"data/pages/{item['id']}.html"
         if os.path.exists(html_path): continue
 
         open_url(dirver, item["url"])
 
-        loaded = loading(driver, item["loaded"])
-        if loaded is None:
-            print(f"!!! {now()} can't get loaded from page: id={item['id']}")
-            continue
+        if item.get("loaded"):
+            loaded = loading(driver, item["loaded"])
+            if loaded is None:
+                print(f"!!! {now()} can't get loaded from page: id={item['id']}")
+                continue
 
         #target = driver.find_element(By.ID, item["id"])
         target = driver.find_element(By.XPATH, item["target"])
@@ -87,17 +90,25 @@ def main(dirver, config):
             f.write(html)
 
 if __name__ == "__main__":
-    args = {}
+    parser = argparse.ArgumentParser(
+        description="parse commandline arguments",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+
+    parser.add_argument("-c", "--config", help="config path", default="./configs/local.yaml")
+    parser.add_argument("--headless", help="headless mode", action="store_true")
+
+    parser.add_argument("msg", help="message", nargs="*")
+
+    args = parser.parse_args()
 
     with open(args.config, 'r') as f:
         config = yaml.safe_load(f)
 
-    # https://github.com/mozilla/geckodriver/releases
-    service = Service('./data/geckodriver')
+    service = Service(config["geckodriver"])
     options = webdriver.FirefoxOptions()
 
-    # os.environ.get("headless")
-    if args.headless:
+    if args.headless: # os.environ.get("headless")
          options.add_argument('--headless')
 
     driver = webdriver.Firefox(service=service, options=options)

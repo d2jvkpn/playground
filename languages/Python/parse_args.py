@@ -10,7 +10,7 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument("command", help="command name", choices=["download", "run"])
 
-parser.add_argument("-c", "--config", help="config path", default="./configs/dev.yaml")
+parser.add_argument("-c", "--config", help="config path", default="./configs/local.yaml")
 parser.add_argument("-v", "--verbose", help="verbose", action="store_true")
 parser.add_argument("--model", help="model name", required=True, default="")
 parser.add_argument("--number", help="number of max tokens", type=int, default=1024)
