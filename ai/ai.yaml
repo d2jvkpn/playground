@@ -2,6 +2,7 @@ title: Artificial Intelligence
 
 companies:
 - name: openai
+  models: [gpt, o1]
   sites:
   - https://chatgpt.com/
   - https://openai.com/index/chatgpt/
@@ -10,7 +11,22 @@ companies:
   sites:
   - https://www.deepseek.com
 
-- name: claude
+- name: authropic
+  models: [claude]
+- name: google
+  models: [gemma]
+- name: cohere
+  models: ["command r+"]
+- name: meta
+  models: [llama]
+- name: perplexity
+  models: [perplexity]
+- name: alibaba
+  models: [qwen]
+- name: mistral
+  models: [mistral]
+- name: microsoft
+  name: [phi]
 
 links:
 - https://zhuanlan.zhihu.com/p/670437303
