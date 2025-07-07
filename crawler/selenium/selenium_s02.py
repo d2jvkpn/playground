@@ -37,52 +37,50 @@ def loading(driver, xpath, delay=0.5, max_retry=30):
         time.sleep(delay)
 
 
-def main(dirver, config):
-    open_url(driver, config["login"])
+def run(dirver, config, targets):
+    login, s02 = config["login"], config["s02"]
+    open_url(driver, login["login"])
 
     #username = loading(driver, '//input[@id="username"]')
     # username = driver.find_element(By.ID, 'username')
-    username = loading(driver, config["username"]["key"])
-    username.send_keys(config["username"]["value"])
+    username = loading(driver, login["username"]["key"])
+    username.send_keys(login["username"]["value"])
 
     # password = driver.find_element(By.NAME, 'password')
-    password = loading(driver, config["password"]["key"])
-    password.send_keys(onfig["password"]["value"])
+    password = loading(driver, login["password"]["key"])
+    password.send_keys(login["password"]["value"])
 
-    login_button = loading(driver, config["action"])
+    login_button = loading(driver, login["action"])
     # login_button = driver.find_element(By.XPATH, '//button[@type="submit"]')
     login_button.click()
 
     #accept = driver.find_element(By.ID, 'btnAccept')
-    while True:
-        try:
-            accept = driver.find_element(By.XPATH, config["post"])
-            if accept:
-                accept.click()
-                break
-        except Exception as e:
-            pass
-
-        time.sleep(1)
+    #accept = driver.find_element(By.XPATH, 'btnAccept')
+    if "accept" in login:
+        accept = driver.find_element(By.XPATH, login["accept"])
+        accept.click()
 
     driver.set_page_load_timeout(2)
     os.makedirs(f"data/pages", exist_ok=True)
 
-    for item in config["targets"]: # id, url, loaded, target
-        html_path = f"data/pages/{item['id']}.html"
-        if os.path.exists(html_path): continue
+    for item in targets: # id, url, loaded, target
+        id_list = item['id']
+        html_path = f"data/pages/{id_list[0]}.html"
+        if os.path.exists(html_path):
+            continue
 
-        open_url(dirver, item["url"])
+        open_url(dirver, s02["entry"].format(id_list))
 
-        if item.get("loaded"):
-            loaded = loading(driver, item["loaded"])
-            if loaded is None:
-                print(f"!!! {now()} can't get loaded from page: id={item['id']}")
-                continue
+        
+        loaded = loading(driver, item["loaded"])
+        if loaded is None:
+            print(f"!!! {now()} can't get loaded from page: id={item['id']}")
+            continue
 
-        #target = driver.find_element(By.ID, item["id"])
-        target = driver.find_element(By.XPATH, item["target"])
-        html = target.get_attribute("outerHTML")
+        # target = driver.find_element(By.ID, item["id"])
+        # target = driver.find_element(By.XPATH, item["target"])
+        # html = target.get_attribute("outerHTML")
+        html = soup.get_attribute("outerHTML")
         if html is None: continue
 
         with open(html_path, 'w') as f:
@@ -96,27 +94,33 @@ if __name__ == "__main__":
     )
 
     parser.add_argument("-c", "--config", help="config path", default="./configs/local.yaml")
+
+    # source: https://github.com/mozilla/geckodriver/releases
+    parser.add_argument("--geckodriver", help="geckodriver path", default="./configs/geckodriver")
     parser.add_argument("--headless", help="headless mode", action="store_true")
 
-    parser.add_argument("msg", help="message", nargs="*")
+    parser.add_argument("--json_file", help="headless mode", default="data/items.json")
 
     args = parser.parse_args()
 
     with open(args.config, 'r') as f:
         config = yaml.safe_load(f)
 
-    service = Service(config["geckodriver"])
+    with open(args.json_file, 'r', encoding='utf-8') as f:
+        targets = json.load(f)
+
+    service = Service(args.geckodriver)
     options = webdriver.FirefoxOptions()
 
     if args.headless: # os.environ.get("headless")
-         options.add_argument('--headless')
+        options.add_argument('--headless')
 
     driver = webdriver.Firefox(service=service, options=options)
     driver.set_page_load_timeout(10)
 
     try:
-        main(driver, config)
+        run(driver, config, targets)
     except Exception as e:
-        print(f"!!! {now()} unexpected error: {e}")
+        print(f"!!! {now()} an unexpected error ocurred: {e}")
     finally:
         driver.quit()

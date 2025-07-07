@@ -1,22 +1,23 @@
 # path: configs/local.yaml
 
-# source: https://github.com/mozilla/geckodriver/releases
-geckodriver: ./data/geckodriver
+login:
+  site: https://example.com/login
+  username:
+    key: //input[@id='username']
+    value: hello
 
-login: https://example.com/login
-username:
-  key: //input[@id='username']
-  value: hello
+  password:
+    key: //input[@name='password']
+    value: world
 
-password:
-  key: //input[@name='password']
-  value: world
+   action: //button[@type='submit']
+   accept: //button[@id='accept']
 
-action: //button[@type='submit']
-post: //button[@id='accept']
+s01:
+  entry: "https://example.com/list"
+  loaded: "todo"
+  next: //button[@id='next']
 
-targets:
-- id: "x01"
-  url: https://example.com/
+s02:
+  entry: "https://example.com/item/{}"
   loaded: //div[@class='content']
-  target: //div[@id='xxxx']
