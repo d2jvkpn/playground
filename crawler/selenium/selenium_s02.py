@@ -96,10 +96,10 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--config", help="config path", default="./configs/local.yaml")
 
     # source: https://github.com/mozilla/geckodriver/releases
-    parser.add_argument("--geckodriver", help="geckodriver path", default="./configs/geckodriver")
+    parser.add_argument("--geckodriver", help="geckodriver filepath", default="./configs/geckodriver")
     parser.add_argument("--headless", help="headless mode", action="store_true")
 
-    parser.add_argument("--json_file", help="headless mode", default="data/items.json")
+    parser.add_argument("--json_file", help="json filepath", default="data/items.json")
 
     args = parser.parse_args()
 
