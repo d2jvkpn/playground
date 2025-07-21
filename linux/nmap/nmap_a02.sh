@@ -24,3 +24,5 @@ nmape -Pn $target_ip
 nmap -sn 192.168.0.0/24
 nmap -sP 192.168.0.0/24
 nmap -PR 192.168.0.0/24
+
+nmap -p 22 --open 192.168.0.0/24

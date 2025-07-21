@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import os
+import os, time
 import gradio as gr
 
 
@@ -33,6 +33,8 @@ def chat(message, history, files):
     message = message.strip()
     if message == "":
         return []
+
+    time.sleep(10)
    
     messages = [{"role": "system", "content": system_message}] + \
          history + [{"role": "user", "content": message}]

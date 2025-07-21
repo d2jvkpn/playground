@@ -58,6 +58,16 @@ function docker_restart() {
     cd ${_wd}
 }
 
+function docker_sh() {
+    container=$1
+
+    if [ $# -gt 1 ]; then
+        docker exec $@
+    else
+        docker exec -it $container bash || docker exec -it container sh
+    fi
+}
+
 ####
 function go_lint() {
     go mod tidy
