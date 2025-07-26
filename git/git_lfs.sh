@@ -20,6 +20,11 @@ git clone https://huggingface.co/BAAI/bge-m3
 #git config --unset --global lfs.fetchexclude
 
 
+# pull without lfs
+GIT_LFS_SKIP_SMUDGE=1 git pull
+cat .gitattributes
+git lfs ls-files
+
 ls ~/.git/lfs/objects/
 
 git config lfs.url https://your-lfs-server.com/path
@@ -36,7 +41,6 @@ git add file.psd
 git commit -m "Add large file"
 git push origin main
 
-git lfs ls-files
 git lfs pull
 git lfs env
 git lfs fetch

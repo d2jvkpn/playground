@@ -10,8 +10,11 @@ services:
     network_mode: bridge
     ports: ["127.0.0.1:3000:3000"]
     environment:
+      #OFFLINE_MODE: True
+      #HF_HUB_OFFLINE: 1
       TZ: Asia/Shanghai
       PORT: 3000 # default=8080
+      #WEBUI_SECRET_KEY: xxxxxxxxxxxxxxxx
       CORS_ALLOW_ORIGIN: "*"
       ENABLE_OPENAI_API: "false"
       #OLLAMA_BASE_URL: http://ollama:11434
@@ -20,10 +23,12 @@ services:
       #?RAG_EMBEDDING_MODEL_AUTO_UPDATE: "false"
       #?RAG_RERANKING_MODEL_AUTO_UPDATE: "false"
       #?WHISPER_MODEL_AUTO_UPDATE: "false"
-      #EMBEDDING_MODEL=nomic-embed-text
-      #QDRANT_URL=http://qdrant:6333
-      #QDRANT_API_KEY=
-      #QDRANT_COLLECTION_NAME=db
+      #EMBEDDING_MODEL: nomic-embed-text # paraphrase-multilingual-MiniLM-L12-v2
+      #QDRANT_URL: http://qdrant:6333
+      #QDRANT_API_KEY: xxxx
+      #QDRANT_COLLECTION_NAME: open-webui
+      #RAG_EMBEDDING_MODEL: BAAI/bge-m3
+      #WHISPER_MODEL: Systran/faster-whisper-large-v3
     volumes:
     - ./data/open-webui:/app/backend/data
 

@@ -37,6 +37,8 @@ RESOURCES=(
     "rolebindings"
     "serviceaccounts"
     "networkpolicies"
+    "limitrange"
+    "resourcequota"
 )
 # "replicasets"
 # "pods"
