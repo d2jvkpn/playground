@@ -5,7 +5,7 @@ services:
     container_name: qdrant
     user: 1000:1000
     network_mode: bridge
-    ports: ["6333:6333", "6334:6334"]
+    ports: ["6333:6333", "6334:6334"] # http and grpc
     volumes:
     # ./configs:/qdrant/config
     - ./data/qdrant/snapshots:/qdrant/snapshots

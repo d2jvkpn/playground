@@ -19,7 +19,7 @@ iface = gr.Interface(
     inputs="text",
     outputs="text",
     title="Hugging Face Model Demo",
-    description="Generate text using " + model_name
+    description="Generate text using " + model_name,
 )
 
 # 启动 Gradio 应用

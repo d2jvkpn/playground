@@ -12,6 +12,7 @@ date: 1970-01-01
 - https://www.youtube.com/watch?v=AecjQ9gMfsg
 - https://docs.openwebui.com/features/workspace/models/
 - https://docs.openwebui.com/tutorials/offline-mode/
+- https://docs.openwebui.com/getting-started/env-configuration/#retrieval-augmented-generation-rag
 
 2. pre download
 - source: https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2

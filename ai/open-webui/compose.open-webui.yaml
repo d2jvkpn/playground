@@ -3,32 +3,45 @@ services:
     container_name: open-webui
     hostname: open-webui
     image: ghcr.io/open-webui/open-webui:0.6
-    depends_on: [ollama]
+    #depends_on: [ollama]
     extra_hosts:
-    - host.docker.internal:host-gateway
+      host.docker.internal: host-gateway
     #networks: [net]
     network_mode: bridge
     ports: ["127.0.0.1:3000:3000"]
     environment:
-      #OFFLINE_MODE: True
-      #HF_HUB_OFFLINE: 1
+      #OFFLINE_MODE: "true"
+      #HF_HUB_OFFLINE: "1"
+      RUN_MODE: production
       TZ: Asia/Shanghai
-      PORT: 3000 # default=8080
-      #WEBUI_SECRET_KEY: xxxxxxxxxxxxxxxx
+      PORT: "3000" # default=8080
+      WEBUI_SECRET_KEY: xxxxxxxxxxxxxxxx
       CORS_ALLOW_ORIGIN: "*"
       ENABLE_OPENAI_API: "false"
       #OLLAMA_BASE_URL: http://ollama:11434
       #HF_ENDPOINT: https://hf-mirror.com
-      #/app/backend/data/cache/embedding/models/models--sentence-transformers--all-MiniLM-L6-v2/
-      #?RAG_EMBEDDING_MODEL_AUTO_UPDATE: "false"
-      #?RAG_RERANKING_MODEL_AUTO_UPDATE: "false"
-      #?WHISPER_MODEL_AUTO_UPDATE: "false"
-      #EMBEDDING_MODEL: nomic-embed-text # paraphrase-multilingual-MiniLM-L12-v2
-      #QDRANT_URL: http://qdrant:6333
+
+      #QDRANT_URL: http://127.0.0.1:6333
       #QDRANT_API_KEY: xxxx
-      #QDRANT_COLLECTION_NAME: open-webui
-      #RAG_EMBEDDING_MODEL: BAAI/bge-m3
-      #WHISPER_MODEL: Systran/faster-whisper-large-v3
+      #QDRANT_ON_DISK: "false"
+      #QDRANT_PREFER_GRPC: "true"
+      #QDRANT_COLLECTION_PREFIX: open-webui
+
+      RAG_EMBEDDING_MODEL: BAAI/bge-m3 # nomic-embed-text, paraphrase-multilingual-MiniLM-L12-v2
+      # model_path=/app/backend/data/cache/embedding/models/models--BAAI--bge-m3
+      # default_model=sentence-transformers/all-MiniLM-L6-v2
+      RAG_TEXT_SPLITTER: token
+      RAG_EMBEDDING_MODEL_AUTO_UPDATE: "false"
+
+      RAG_RERANKING_MODEL: BAAI/bge-reranker-base
+      # model_path=/app/backend/data/cache/embedding/models/models--BAAI--bge-reranker-base
+      RAG_RERANKING_MODEL_TRUST_REMOTE_CODE: "false"
+      RAG_RERANKING_MODEL_AUTO_UPDATE: "false"
+
+      WHISPER_MODEL: Systran/faster-whisper-medium
+      # options=[Systran/faster-whisper-small, Systran/faster-whisper-large-v3]
+      # model_path=/app/backend/data/cache/whisper/models/models--Systran--faster-whisper-large-v3
+      WHISPER_MODEL_AUTO_UPDATE: "false"
     volumes:
     - ./data/open-webui:/app/backend/data
 
