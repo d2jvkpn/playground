@@ -1,6 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefaill_wd=$(pwd); _path=$(readlink -f `dirname $0`)
 
 deb_src=/etc/apt/sources.list.d/debian.sources
 ubuntu_src=/etc/apt/sources.list

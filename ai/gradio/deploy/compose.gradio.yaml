@@ -1,0 +1,16 @@
+services:
+  gradio:
+    image: local/gradio:latest
+    container_name: gradio
+    restart: unless-stopped
+    network_mode: bridge
+    ports: ["127.0.0.1:7860:7860"]
+    working_dir: /opt
+    environment:
+    - TZ: Asia/Shanghai
+    - APP_ARGS: -config=configs/local.yaml
+    volumes:
+    - ./configs/opt/configs:ro
+    - ./data:/opt/data
+    - ./logs:/opt/logs
+    command: ["gunicorn", "-k=uvicorn.workers.UvicornWorker", "--bind=0.0.0.0:7872", "main:app"]

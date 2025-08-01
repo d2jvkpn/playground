@@ -1,84 +1,65 @@
 #!/usr/bin/env python3
-import os, shutil
-from pathlib import Path
-from datetime import datetime
+import os, json
+if __name__ != "__main__":
+    os.environ["APP_ARGS"] = os.getenv("APP_ARGS", "--config=configs/local.yaml")
 
+from gradio_app import webui
+
+import yaml
 import gradio as gr
+from fastapi import FastAPI, Response # Request
+from starlette.middleware.sessions import SessionMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 
 
-system_prompt = """
-You are a helpful assistant in a clothes store. You should try to gently encourage 
-the customer to try items that are on sale...
-""".strip().replace("\n", "")
+#### 1. app
+with open("project.yaml") as f:
+    project = yaml.safe_load(f)
 
-user_prompt = """
-Hi, I just walked into the store. What do you recommend?
-""".strip().replace("\n", "")
+app = FastAPI()
+app.add_middleware(SessionMiddleware, secret_key="xxxxxxxx")
 
-upload_file_types = [".txt", ".pdf", ".docx"]
-upload_dir = Path("data") / "uploads"
-os.makedirs(upload_dir, exist_ok=True)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-def save_uploaded_files(files):
-    saved_paths = []
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+#### 2. routes
+meta_response = Response(
+    content=json.dumps(
+         {"name": project['name'], "version": project['version']},
+         ensure_ascii=False
+    ) + "\n",
+    media_type="application/json",
+    headers={},
+)
+@app.get("/meta")
+def meta():
+    return meta_response
 
-    for file in files:
-        filename = os.path.basename(file.name)
-        save_path = os.path.join(upload_dir, f"{timestamp}_{filename}")
-        shutil.copy(file.name, save_path)
-        saved_paths.append(save_path)
 
-    return saved_paths
+healthz_response = Response(
+   content=json.dumps({"status": "ok"}, ensure_ascii=False) + "\n",
+   media_type="application/json", headers={},
+)
+@app.get("/healthz")
+def healthz():
+     #return Response(content="ok\n", media_type="text/plain", headers={})
+     return healthz_response
 
 
-def chat(user_input, history, system_promt, user_prompt, files):
-    print(f"??? history: {history}")
+app = gr.mount_gradio_app(
+    app,
+    webui,
+    path="",
 
-    if files:
-        filenames = [v.name for v in files]
-        print(f"📎 Uploaded: {', '.join(filenames)}")
-
-    user_input['text'] = user_input['text'].strip()
-    if user_input['text'] == "" and not len(user_input['files']) == 0:
-        return []
-
-    messages = [{"role": "system", "content": system_promt}] + \
-        history + \
-        [{"role": "user", "content": user_input['text']}]
-
-    return [user_input['text'].upper()]
-
-with gr.Blocks(title="Chatbot with editable system prompt") as webui:
-    with gr.Row():
-        with gr.Column(scale=1):
-            system_prompt_input = gr.Textbox(
-                label="System Prompt",
-                value=system_prompt,
-                lines=5,
-                max_lines=5,
-            )
-
-            user_prompt_input = gr.Textbox(
-                label="User Prompt",
-                value=user_prompt,
-                lines=5,
-                max_lines=5,
-            )
-
-            upload_files = gr.File(
-                label=f"Upload files: {', '.join(upload_file_types)}",
-                file_types=upload_file_types,
-                file_count="multiple",
-            )
-
-        with gr.Column(scale=3):
-            view = gr.ChatInterface(
-                fn=chat,
-                type="messages",
-                additional_inputs=[system_prompt_input, user_prompt_input, upload_files],
-                additional_inputs_accordion="📎 Upload files & Prompt",
-                multimodal=True, autofocus=True, flagging_mode="manual",
-            )
-
-webui.launch(share=False, server_name="127.0.0.1", server_port=7860)
+    enable_monitoring=True,
+    root_path="",
+    allowed_paths=None,
+    auth=None, # [("admin", "Admin123")]
+    auth_message="Welcome to Gradio App",
+    max_file_size=None,
+)
