@@ -1,5 +1,5 @@
 #!/bin/make
-
+include local.env
 SHELL = /bin/bash
 USER_UID = $(shell id -u)
 USER_GID = $(shell id -g)
@@ -11,7 +11,7 @@ nums += 1
 nums += 2
 
 echo:
-	echo "==> user=${USER}, uid=${USER_UID}, gid=${USER_GID}, nums=${nums}"
+	echo "==> user=${USER}, uid=${USER_UID}, gid=${USER_GID}, nums=${nums}, VENV=${VENV}"
 
 sh_files:
 	echo "==> sh_files: ${sh_files}"

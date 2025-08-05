@@ -33,8 +33,7 @@ meta_response = Response(
          {"name": project['name'], "version": project['version']},
          ensure_ascii=False
     ) + "\n",
-    media_type="application/json",
-    headers={},
+    media_type="application/json", headers={},
 )
 @app.get("/meta")
 def meta():

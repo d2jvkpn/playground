@@ -13,7 +13,7 @@ apt install -y software-properties-common apt-transport-https ca-certificates \
 apt install -y \
   make expect git git-lfs python3-venv  \
   docker.io openvpn wireguard wireguard-tools \
-  tldr-hs sqlite3
+  tldr-hs sqlite3 uuid
 
 git lfs install
 

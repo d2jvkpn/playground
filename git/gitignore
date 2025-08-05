@@ -1,22 +1,27 @@
 # path: ./.gitignore
 
+.*
+!.gitignore
+*.log
+
 #### directories
 cache
 configs
 data
 logs
-target
-#?? dist, build, *.git
 
-#### files
+target
+dist
+build
+
+#### running and deployment files
 docker-compose.yaml
 docker-compose.yml
 compose.yaml
 compose.yml
 nohup.out
 
-####
-# node.js
+#### node.js
 node_modules
 dist
 build
