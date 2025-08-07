@@ -2,11 +2,12 @@
 import os
 
 import dotenv
+dotenv.load_dotenv("configs/local.env")
+
 from datasets import load_dataset
 
+
 repo_id = os.sys.argv[1]
-dotenv.load_dotenv("configs/local.env")
-# os.environ['HF_HOME'] = "data/huggingface"
 
 #cache_dir = "data/huggingface" # default=~/.cache/huggingface/datasets
 #os.makedirs(cache_dir, exist_ok=True)
