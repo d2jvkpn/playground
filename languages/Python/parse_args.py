@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-
 import os, argparse
-
 
 parser = argparse.ArgumentParser(
     description="",
@@ -20,8 +18,7 @@ parser.add_argument("--port", help="http listening port", type=int, default=7860
 
 parser.add_argument("msg", help="message", nargs="*")
 
-args = parser.parse_args()
+args = parser.parse_args(args=None)
 # args = parser.parse_args(os.argv[1:])
-# args = parser.parse_args(["run", "--model=xx"])
 
 print(args)

@@ -8,12 +8,16 @@ date: 1970-01-01
 
 
 #### Ch01. 
-1. models
+1. docs
+- https://huggingface.co/docs/huggingface_hub/en/package_reference/environment_variables
+
+2. models
 ```yaml
 models:
 - https://huggingface.co/deepseek-ai/deepseek-coder-1.3b-instruct
 ```
-2. run
+
+3. run
 ```bash
 pip install -r requirements.txt
 
