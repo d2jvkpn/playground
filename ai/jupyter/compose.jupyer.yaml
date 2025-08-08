@@ -1,0 +1,26 @@
+
+services:
+  jupyter:
+    container_name: jupyter
+    #image: quay.io/jupyter/datascience-notebook:2025-03-26
+    image: quay.io/jupyter/base-notebook:2025-08-04
+    restart: always
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all # Or a specific number of GPUs (e.g., 1)
+              capabilities: [gpu, utility] # Ensure necessary capabilities
+              # device_ids: ["0"]  # 使用GPU 0（通过nvidia-smi查看ID）
+    network_mode: bridge
+    ports: ['8888:8888']
+    working_dir: /home/jovyan/work
+    volumes:
+    #- ./data/jupyter/work:/home/jovyan/work
+    - ./pip.conf:/home/jovyan/.config/pip/pip.conf
+    - ./data:/home/jovyan/work
+    environment:
+      JUPYTER_PORT: 8888
+      PYTHONPATH: /home/jovyan/work/pip
+      JUPYTER_TOKEN: your_secret_token # Replace with your desired token
