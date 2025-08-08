@@ -22,5 +22,5 @@ services:
     - ./data:/home/jovyan/work
     environment:
       JUPYTER_PORT: 8888
-      PYTHONPATH: /home/jovyan/work/pip
+      PYTHONPATH: /home/jovyan/work/pip-packages
       JUPYTER_TOKEN: your_secret_token # Replace with your desired token

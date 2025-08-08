@@ -15,7 +15,7 @@ version: 0.1.0
 2. commands
 ```
 # mkdir -p data/jupyter
-mkdir -p data/pip
+mkdir -p data/pip-packages
 
 # -v "${PWD}/data/jupyter":/home/jovyan/work
 
@@ -32,8 +32,8 @@ echo "jovyan ALL=(ALL:ALL) ALL" > /etc/sudoers.d/jovyan
 
 4. shell
 ```
-#python -m venv data/home.venv
-#source data/home.venv/bin/activate
+#python -m venv jupyter.venv
+#source jupyter.venv/bin/activate
 
 docker exec -u root -it jupyter bash
 apt install update && apt install -y vim
