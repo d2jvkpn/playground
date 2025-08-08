@@ -11,30 +11,49 @@ version: 0.1.0
 1. docs
 - https://hub.docker.com/r/jupyter/datascience-notebook/
 - https://jupyter-docker-stacks.readthedocs.io/en/latest/index.html
+- https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html
+- https://github.com/iot-salzburg/gpu-jupyter
+- https://hub.docker.com/r/cschranz/gpu-jupyter/tags
 
-2. commands
+2. images
+- quay.io/jupyter/datascience-notebook:2025-03-26
+- quay.io/jupyter/base-notebook:2025-08-04
+- quay.io/jupyter/pytorch-notebook:2025-08-04
+- nvidia/cuda:12.6.3-cudnn-runtime-ubuntu24.04
+- cschranz/gpu-jupyter:v1.9_cuda-12.6_ubuntu-24.04
+
+3. commands
 ```
 # mkdir -p data/jupyter
 mkdir -p data/pip-packages
 
 # -v "${PWD}/data/jupyter":/home/jovyan/work
 
-#docker run -it --rm -p 8888:8888 quay.io/jupyter/datascience-notebook:2025-03-26
-docker run -it --rm -p 8888:8888 quay.io/jupyter/base-notebook:2025-08-04
+docker run -it --rm -p 8888:8888 $image
 ```
 
-3. TODO: root
+4. TODO: root
 ```
 echo "jovyan ALL=(ALL) NOPASSWD:/usr/bin/apt-get" >> /etc/sudoers
 
 echo "jovyan ALL=(ALL:ALL) ALL" > /etc/sudoers.d/jovyan
 ```
 
-4. shell
+5. shell
 ```
 #python -m venv jupyter.venv
 #source jupyter.venv/bin/activate
 
 docker exec -u root -it jupyter bash
 apt install update && apt install -y vim
+```
+
+6. gpu
+```
+docker run --gpus all -d -it \
+    -p 8888:8888 \
+    --user root \
+    -v $(pwd)/data:/home/jovyan/work \
+    -e GRANT_SUDO=yes -e JUPYTER_ENABLE_LAB=yes
+    cschranz/gpu-jupyter:v1.9_cuda-12.6_ubuntu-24.04
 ```

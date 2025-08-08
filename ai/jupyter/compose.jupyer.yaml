@@ -2,7 +2,6 @@
 services:
   jupyter:
     container_name: jupyter
-    #image: quay.io/jupyter/datascience-notebook:2025-03-26
     image: quay.io/jupyter/base-notebook:2025-08-04
     restart: always
     deploy:
