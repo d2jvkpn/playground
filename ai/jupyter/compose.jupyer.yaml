@@ -2,7 +2,7 @@
 services:
   jupyter:
     container_name: jupyter
-    image: quay.io/jupyter/base-notebook:2025-08-04
+    image: cschranz/gpu-jupyter:v1.9_cuda-12.6_ubuntu-24.04
     restart: always
     deploy:
       resources:
@@ -18,8 +18,8 @@ services:
     volumes:
     #- ./data/jupyter/work:/home/jovyan/work
     - ./pip.conf:/home/jovyan/.config/pip/pip.conf
-    - ./data:/home/jovyan/work
+    - ./data/work:/home/jovyan/work
     environment:
       JUPYTER_PORT: 8888
-      PYTHONPATH: /home/jovyan/work/pip-packages
+      PYTHONPATH: /home/jovyan/work/data/packages:/opt/conda/lib/python3.12/site-packages
       JUPYTER_TOKEN: your_secret_token # Replace with your desired token

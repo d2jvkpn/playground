@@ -25,7 +25,9 @@ version: 0.1.0
 3. commands
 ```
 # mkdir -p data/jupyter
-mkdir -p data/pip-packages
+mkdir -p data/work/data/packages
+
+sudo apt install nvidia-driver-575
 
 # -v "${PWD}/data/jupyter":/home/jovyan/work
 
@@ -50,10 +52,12 @@ apt install update && apt install -y vim
 
 6. gpu
 ```
-docker run --gpus all -d -it \
-    -p 8888:8888 \
-    --user root \
-    -v $(pwd)/data:/home/jovyan/work \
-    -e GRANT_SUDO=yes -e JUPYTER_ENABLE_LAB=yes
+docker run -d --restart=always --gpus=all \
+    --name=jupyter --user root -p 8888:8888 \
+    -v $(pwd)/pip.conf:/home/jovyan/.config/pip/pip.conf \
+    -v $(pwd)/data/work:/home/jovyan/work \
+    -v $(pwd)/bash_aliases.sh:/home/jovyan/.bash_aliases \
+    --env-file=configs/container.env \
+    --workdir=/home/jovyan/work \
     cschranz/gpu-jupyter:v1.9_cuda-12.6_ubuntu-24.04
 ```
