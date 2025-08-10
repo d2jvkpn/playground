@@ -22,7 +22,9 @@ services:
     #- ./data/jupyter/work:/home/jovyan/work
     - ./data/work:/home/jovyan/work
     environment:
+      TZ: Asia/Shanghai
       NVIDIA_VISIBLE_DEVICES: "all"
       NVIDIA_DRIVER_CAPABILITIES: "compute,utility"
+      PYTHONPATH: /home/jovyan/work/data/pip_packages:/opt/conda/lib/python3.12/site-packages
       JUPYTER_PORT: 8888
       JUPYTER_TOKEN: your_secret_token # Replace with your desired token

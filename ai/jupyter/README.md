@@ -25,7 +25,7 @@ version: 0.1.0
 3. commands
 ```
 # mkdir -p data/jupyter
-mkdir -p data/work/data/packages
+mkdir -p data/work/data/pip_packages data/work/data/pip_cache
 
 sudo apt install nvidia-driver-575
 
@@ -50,6 +50,7 @@ docker exec -u root -it jupyter bash
 apt install update && apt install -y vim
 
 pip install --no-clean -r pip.txt
+pip install --cache-dir=data/pip_cache/ -r pip.txt
 ```
 
 6. gpu
