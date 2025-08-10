@@ -48,6 +48,8 @@ echo "jovyan ALL=(ALL:ALL) ALL" > /etc/sudoers.d/jovyan
 
 docker exec -u root -it jupyter bash
 apt install update && apt install -y vim
+
+pip install --no-clean -r pip.txt
 ```
 
 6. gpu
