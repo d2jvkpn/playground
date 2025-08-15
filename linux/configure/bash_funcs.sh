@@ -120,7 +120,7 @@ function venv() {
 }
 
 #alias venv-home='source ~/apps/home.venv/bin/activate'
-function venv-home() {
+function Venv() {
     target=${1:-home}
 
     source ~/apps/"${target}".venv/bin/activate

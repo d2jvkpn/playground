@@ -80,7 +80,7 @@ async def login(stagehand, secs):
 
 
 # 30, "衡山路"
-async def get_shop_list(stagehand, number_of_pages, search_key):
+async def get_food_shops(stagehand, number_of_pages, search_key):
     #toggle = page.locator("//span[text()='模式']/following-sibling::*[1]")
     #ai_span.locator(".current + div")
     #await p.click()
@@ -101,13 +101,13 @@ async def get_shop_list(stagehand, number_of_pages, search_key):
 
     shop_list = page.locator('div.shop-all-list').nth(0)
 
-    shop_list_dir = Path("data") / "shop_list_html"
-    shop_list_dir.mkdir(parents=True, exist_ok=True)
+    food_shops_dir = Path("data") / "food_shops_html"
+    food_shops_dir.mkdir(parents=True, exist_ok=True)
 
     #shop_list_html = await shop_list.inner_html()
     shop_list_html = await shop_list.evaluate("el => el.outerHTML")
 
-    html_path = shop_list_dir / f"page-{1:03d}.html"
+    html_path = food_shops_dir / f"page-{1:03d}.html"
     with open(html_path, "w") as f:
         f.write(shop_list_html)
         print(f"--> saved html: {html_path}")
@@ -166,7 +166,7 @@ async def visit_shop(page, shop_id, html_path): # "https://www.dianping.com/shop
     return True
 
 
-# await visit_all_shops(stagehand, "data/shop_list_html")
+# await visit_all_shops(stagehand, "data/food_shops_html")
 async def visit_all_shops(stagehand, html_dir: str):
     html_dir = Path(html_dir)
     shop_htmls = list(html_dir.glob("*.html"))
@@ -259,15 +259,15 @@ async def main():
         if args.goto == "login":
             await login(stagehand, int(args.options))
         elif args.goto == "shop_list":
-            #target = stagehand.page.locator('p.ellipsis', has_text="美食")
-            #await target.click()
+            target = stagehand.page.locator('p.ellipsis', has_text="美食")
+            await target.click()
             number_of_pages, search_key = args.options.split(" ", 1)# 30 衡山路
             number_of_pages, search_key = int(number_of_pages), search_key.strip()
 
             await stagehand.page.goto("https://www.dianping.com/shanghai/ch10/d1")
-            await get_shop_list(stagehand, number_of_pages, search_key)
+            await get_food_shops(stagehand, number_of_pages, search_key)
         elif args.goto == "visit_shops":
-            await visit_all_shops(stagehand, args.options) # "data/shop_list_html"
+            await visit_all_shops(stagehand, args.options) # "data/food_shops_html"
         else:
             print(f"!!! unknown goto: {args.goto}")
     except Exception as e:
