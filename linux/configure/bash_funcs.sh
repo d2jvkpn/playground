@@ -90,8 +90,9 @@ function git_root() {
 }
 
 ####
-function venv-local() {
-    venv_path=cache/local.venv
+function venv() {
+    #venv_path=cache/local.venv
+    venv_path=.venv
 
     if [ ! -s $venv_path/bin/python3 ]; then
         #echo "==> python3 -m venv $venv_path"
@@ -119,7 +120,7 @@ function venv-local() {
 }
 
 #alias venv-home='source ~/apps/home.venv/bin/activate'
-function venv() {
+function venv-home() {
     target=${1:-home}
 
     source ~/apps/"${target}".venv/bin/activate
