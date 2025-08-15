@@ -20,6 +20,7 @@ with sync_playwright() as p:
     #browser.new_context() # no cache
 
     browser = p.chromium.launch_persistent_context(
+        #executable_path="/path/to/chromium",
         user_data_dir=user_data_dir,
         downloads_path=downloads_dir,
         headless=False,
