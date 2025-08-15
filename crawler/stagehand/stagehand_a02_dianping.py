@@ -261,10 +261,10 @@ async def main():
         elif args.goto == "shop_list":
             target = stagehand.page.locator('p.ellipsis', has_text="美食")
             await target.click()
+
             number_of_pages, search_key = args.options.split(" ", 1)# 30 衡山路
             number_of_pages, search_key = int(number_of_pages), search_key.strip()
-
-            await stagehand.page.goto("https://www.dianping.com/shanghai/ch10/d1")
+            # await stagehand.page.goto("https://www.dianping.com/shanghai/ch10/d1")
             await get_food_shops(stagehand, number_of_pages, search_key)
         elif args.goto == "visit_shops":
             await visit_all_shops(stagehand, args.options) # "data/food_shops_html"
