@@ -27,9 +27,16 @@ parser = argparse.ArgumentParser(
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
 
-parser.add_argument("--model_id", help="huggingface model id", default="google/gemma-3-270m-it") # required=True
+parser.add_argument(
+    "--model_id", default="google/gemma-3-270m-it",
+    help="huggingface model id, e.g. " +\
+        "Qwen/Qwen2.5-0.5B-Instruct, " +\
+        "google/gemma-3-270m-it, " +\
+        "meta-llama/Llama-3.2-1B-Instruct",
+) # required=True
+
 parser.add_argument("--env", help="environment file", default=Path("configs") / "local.env")
-parser.add_argument("--q4", help="Quantization 4bit", action="store_true")
+parser.add_argument("--quant4", help="Quantization 4bit", action="store_true")
 parser.add_argument("--system_prompt", help="system prompt", default="You are a concise assistant.")
 
 args = parser.parse_args()
@@ -67,7 +74,7 @@ messages = [{ "role": "system", "content": args.system_prompt }] if args.system_
 
 #### 3.
 while True:
-    user_input = input(f"{now()} --> Enter: ")
+    user_input = input(f"{now()} --> You: ")
     user_input = user_input.strip()
 
     if user_input.lower() in ["::quit", "::q"]:
