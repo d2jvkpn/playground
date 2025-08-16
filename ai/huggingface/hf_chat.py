@@ -3,8 +3,7 @@ import os, argparse
 from pathlib import Path
 from datetime import datetime
 
-import dotenv
-import torch
+import dotenv, torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 
 
@@ -36,11 +35,12 @@ parser.add_argument(
 ) # required=True
 
 parser.add_argument("--env", help="environment file", default=Path("configs") / "local.env")
-parser.add_argument("--quant4", help="Quantization 4bit", action="store_true")
+#parser.add_argument("--quant4", help="quantization 4bit", action="store_true")
+parser.add_argument("--quant", type=int, help="quantization 4, 8", default=0)
 parser.add_argument("--system_prompt", help="system prompt", default="You are a concise assistant.")
 
 args = parser.parse_args()
-print(f"{now()} ==> args: {args}")
+print(f"{now()} ==> Args: {args}")
 
 dotenv.load_dotenv(args.env)
 
@@ -51,14 +51,18 @@ else:
 
 #### 2.
 quant_config = None
-if args.q4:
+if args.quant == 4:
     quant_config = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_use_double_quant=True,
         bnb_4bit_compute_dtype=torch.bfloat16,
         bnb_4bit_quant_type="nf4",
     )
-# quant_config = BitsAndBytesConfig(load_in_8bit=True, bnb_8bit_compute_dtype=torch.bfloat16)
+elif args.quant == 8:
+    quant_config = BitsAndBytesConfig(
+        load_in_8bit=True,
+        bnb_8bit_compute_dtype=torch.bfloat16,
+    )
 
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 
@@ -68,13 +72,14 @@ model = AutoModelForCausalLM.from_pretrained(
    device_map="auto",
 )
 
-print(f"{now()} ==> memory footprint: {model.get_memory_footprint() / 1e9:.1f} GB")
+gb_bytes = 1024**3
+print(f"{now()} ==> Memory footprint: {model.get_memory_footprint() / gb_bytes:.3f}GB")
 
 messages = [{ "role": "system", "content": args.system_prompt }] if args.system_prompt else []
 
 #### 3.
 while True:
-    user_input = input(f"{now()} --> You: ")
+    user_input = input(f"{now()} --> you: ")
     user_input = user_input.strip()
 
     if user_input.lower() in ["::quit", "::q"]:
@@ -103,7 +108,7 @@ while True:
         skip_special_tokens=True,
     ).strip()
 
-    print(f"{now()} <-- Reply: {reply}")
+    print(f"{now()} <-- reply: {reply}")
 
     messages.append({"role": "assistant", "content": reply})
 
