@@ -62,7 +62,8 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 
 print(f"{now()} ==> memory footprint: {model.get_memory_footprint() / 1e9:.1f} GB")
-messages = [{ "role": "system", "content": args.system_prompt }]
+
+messages = [{ "role": "system", "content": args.system_prompt }] if args.system_prompt else []
 
 #### 3.
 while True:
