@@ -4,7 +4,8 @@ from datetime import datetime
 from pathlib import Path
 
 import dotenv
-from huggingface_hub import snapshot_download #, login
+from huggingface_hub import snapshot_download # login
+
 
 parser = argparse.ArgumentParser(
     description="huggingface snapshot_download",
@@ -42,6 +43,6 @@ for repo_id in args.repo_ids:
         repo_type=args.repo_type,
         ignore_patterns=ignore_patterns,
         force_download=args.force_download,
-        #cache_dir="data/huggingface/hub",
+        cache_dir=os.getenv('HF_HUB_CACHE'),
         #allow_patterns=["*.json", "*.txt", "*.py"],
     )

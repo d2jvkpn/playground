@@ -14,5 +14,5 @@ repo_id = os.sys.argv[1]
 
 ds = load_dataset(
     repo_id,
-    #cache_dir=cache_dir,
+    #cache_dir=os.getenv("HF_HUB_CACHE"),
 )
