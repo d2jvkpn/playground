@@ -38,7 +38,7 @@ print(f"{now()} ==> args: {args}")
 dotenv.load_dotenv(args.env)
 
 if os.getenv("HF_HUB_OFFLINE", "").lower() in ["1", "true"]:
-    model_id = model_cache_path(model_id)
+    model_id = model_cache_path(args.model_id)
 else:
     model_id = args.model_id
 
@@ -61,11 +61,7 @@ model = AutoModelForCausalLM.from_pretrained(
    device_map="auto",
 )
 
-if model.config.pad_token_id == 0:
-    model.generation_config.pad_token_id = tokenizer.pad_token_id
-
 print(f"{now()} ==> memory footprint: {model.get_memory_footprint() / 1e9:.1f} GB")
-
 messages = [{ "role": "system", "content": args.system_prompt }]
 
 #### 3.
@@ -88,6 +84,7 @@ while True:
 
     outputs = model.generate(
         **inputs,
+        pad_token_id=tokenizer.eos_token_id,
         max_new_tokens=256,
         temperature=0.7,
         top_p=0.95,
