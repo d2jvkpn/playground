@@ -13,7 +13,7 @@ parser = argparse.ArgumentParser(
 )
 
 parser.add_argument("--env", help="environment file", default=Path("configs") / "local.env")
-parser.add_argument("--repo_type", help="repository type, e.g. model, dataset, space")
+parser.add_argument("--repo_type", help="repository type, e.g. model, dataset, space", default="model")
 parser.add_argument("--force_download", help="force download", action="store_true")
 
 parser.add_argument(
@@ -31,6 +31,7 @@ dotenv.load_dotenv(args.env)
 
 os.makedirs("data/huggingface", exist_ok=True) # ~/.cache/huggingface
 ignore_patterns = ["original/*"]
+
 if args.ignore_lfs:
     ignore_patterns.extend(["*.bin", "*.safetensors", "*.pt"])
 
