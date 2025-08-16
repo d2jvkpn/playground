@@ -8,8 +8,8 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 
 
 def model_cache_path(model_id):
-    home_dir = Path.home()
-    cache_dir = os.environ.get('HF_HUB_CACHE',  home_dir / ".cache" / "huggingface" / "hub")
+    cache_dir = Path.home() / ".cache" / "huggingface" / "hub"
+    cache_dir = os.environ.get('HF_HUB_CACHE', cache_dir)
 
     model_hf = Path(cache_dir) / ("models--" + model_id.replace("/", "--"))
     model_ref = (model_hf / "refs" / "main").read_text(encoding="utf-8").strip()
