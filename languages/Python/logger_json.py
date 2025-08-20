@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-#$ pip install python-json-logger
-
 import logging
+
+#$ pip install python-json-logger
 from pythonjsonlogger import jsonlogger
 
 

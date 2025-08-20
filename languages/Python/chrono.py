@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 from datetime import datetime, timedelta
 from typing import Union, Self # Any
 
