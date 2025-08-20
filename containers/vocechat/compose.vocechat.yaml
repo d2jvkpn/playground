@@ -1,0 +1,15 @@
+#networks:
+#  net: { name: "vocechat", driver: "bridge", external: false }
+
+services:
+  vocechat:
+    image: privoce/vocechat-server:v0.5.0
+    restart: always
+    user: 1000:1000
+    network_mode: bridge
+    #networks: [net]
+    ports: ["127.0.0.1:${HTTP_Port}:3000"]
+    container_name: vocechat
+    volumes:
+    - ./data/vocechat-server:/home/vocechat-server/data
+    # command: ["--network.frontend_url", "https://vocechat.yourdomain.com"]

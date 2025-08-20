@@ -19,6 +19,8 @@ with open("project.yaml", 'r') as f:
 
 with open(Path("configs") / "local.yaml", 'r') as f:
     config = yaml.safe_load(f)
+    for k, v in config['environment'].items():
+        os.environ[k] = v
 
 app_name = os.path.basename(__file__).rsplit(".", 1)[0]
 

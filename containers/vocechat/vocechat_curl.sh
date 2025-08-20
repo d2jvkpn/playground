@@ -1,6 +1,6 @@
 #!/bin/bash
-set -eu -o pipefail
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
 
 #### 1. setup
 command -v jq > /dev/null ||  { echo "can't find jq"; exit 1; }
