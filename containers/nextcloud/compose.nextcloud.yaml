@@ -1,15 +1,17 @@
-version: '3'
+networks:
+  net: { name: "nextcloud", driver: "bridge", external: false }
 
 services:
   nextcloud:
-    image: nextcloud:30-apache
+    image: nextcloud:31-apache
     container_name: nextcloud
     restart: unless-stopped
     user: "${USER_UID}:${USER_GID}"
     depends_on: ["database"]
     networks: ["net"]
-    ports: ["127.0.0.1:${HTTP_Port}:80"]
-    volumes: ["./data/nextcloud:/var/www/html"]
+    ports: ["${HTTP_Port}:80"]
+    volumes:
+    - ./data/nextcloud:/var/www/html
     environment: [TZ=Asia/Shanghai]
 
   database:
@@ -17,17 +19,11 @@ services:
     restart: unless-stopped
     networks: [net]
     container_name: postgres
+    volumes: ["./data/postgres:/var/lib/postgresql/data"]
     environment:
     - TZ=Asia/Shanghai
     - PGTZ=Asia/Shanghai
     - POSTGRES_USER=nextcloud
     - POSTGRES_DB=nextcloud
     - POSTGRES_PASSWORD=${POSTGRES_Password}
-    volumes: ["./data/postgres:/var/lib/postgresql/data"]
 
-# volumes:
-#  nextcloud-app:
-#  nextcloud-postgres:
-
-networks:
-  net: { name: "nextcloud", driver: "bridge", external: false }

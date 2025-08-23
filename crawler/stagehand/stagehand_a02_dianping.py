@@ -148,7 +148,7 @@ async def visit_shop(page, shop_id, html_path): # "https://www.dianping.com/shop
     else:
         shop_dish_html = ""
 
-    shop_reviewlist = page.locator("div.reviewWrap") # 网友评价
+    shop_reviewlist = page.locator("id.center") # 网友评价
     if await shop_reviewlist.is_visible():
         shop_reviewlist_html = await shop_reviewlist.inner_html()
     else:
@@ -195,17 +195,17 @@ async def visit_all_shops(stagehand, html_dir: str):
 
 async def main():
     traces_dir = Path("data") / "stagehand" / "traces"
-    data_dir = Path("data") / "stagehand" / "data"
+    user_data_dir = Path("data") / "stagehand" / "user_data"
     downloads_dir = Path("data") / "stagehand" / "downloads"
 
     traces_dir.mkdir(parents=True, exist_ok=True)
-    data_dir.mkdir(parents=True, exist_ok=True)
+    user_data_dir.mkdir(parents=True, exist_ok=True)
     downloads_dir.mkdir(parents=True, exist_ok=True)
 
     localBrowserLaunchOptions = {
         "headless": args.headless,
         "traces_dir": traces_dir,  # Directory to store trace files
-        "user_data_dir": data_dir, # Custom user data directory
+        "user_data_dir": user_data_dir, # Custom user data directory
         "accept_downloads": True,
         "downloads_path": downloads_dir,
         #"proxy": {
