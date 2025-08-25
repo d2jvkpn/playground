@@ -8,10 +8,10 @@ services:
       resources:
         reservations:
           devices:
-            - driver: nvidia
-              count: all # Or a specific number of GPUs (e.g., 1)
-              capabilities: [gpu, utility] # Ensure necessary capabilities
-              # device_ids: ["0"]  # 使用GPU 0（通过nvidia-smi查看ID）
+          - driver: nvidia
+            count: all # Or a specific number of GPUs (e.g., 1)
+            capabilities: [gpu, utility] # Ensure necessary capabilities
+            # device_ids: ["0"]  # 使用GPU 0（通过nvidia-smi查看ID）
     network_mode: bridge
     ports: ['8888:8888']
     working_dir: /home/jovyan/work

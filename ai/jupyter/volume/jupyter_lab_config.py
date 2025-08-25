@@ -15,4 +15,4 @@ c.ServerApp.port = 8888
 #c.ServerApp.password = ''
 
 #pip install jupyter-resource-usage
-#c.ResourceUseDisplay.track_cpu_percent = True
+c.ResourceUseDisplay.track_cpu_percent = True

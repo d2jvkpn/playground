@@ -1,0 +1,25 @@
+FROM pytorch/pytorch:2.8.0-cuda12.9-cudnn9-runtime
+
+RUN pip install --no-cache \
+  -U pip uv \
+  jupyterlab ipywidgets \
+  jupyterlab-execute-time jupyter-resource-usage jupyterlab-nvdashboard
+
+RUN mkdir -p /root/work /root/.config/pip /root/.ipython/profile_default /root/.jupyter
+
+ADD volume/pip.conf /root/.config/pip/
+ADD volume/bash_aliases.sh /root/.bash_alases
+ADD volume/ipython_config.py /root/.ipython/profile_default/
+ADD volume/jupyter_lab_config.py /root/.jupyter/
+
+# default=/workspace
+WORKDIR /root/work
+
+EXPOSE 8888
+
+VOLUME ["/root/work"]
+
+ENV PATH=/opt/conda/bin:$PATH
+
+# --NotebookApp.token='', --NotebookApp.password='',
+CMD ["jupyter", "lab", "--no-browser", "--allow-root", "--ip=0.0.0.0", "--port=8888"]

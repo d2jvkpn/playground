@@ -1,0 +1,21 @@
+services:
+  jupyter:
+    container_name: jupyter
+    image: local/jupyter:pytorch2.8.0-cuda12.9-cudnn9-runtime
+    restart: always
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: all # Or a specific number of GPUs (e.g., 1)
+            capabilities: [gpu] # Ensure necessary capabilities
+            # device_ids: ["0"]  # 使用GPU 0（通过nvidia-smi查看ID）
+    network_mode: bridge
+    ports: ['8888:8888']
+    volumes:
+    - ./:/root/work
+    environment:
+      TZ: Asia/Shanghai
+      NVIDIA_VISIBLE_DEVICES: "all"
+      NVIDIA_DRIVER_CAPABILITIES: "compute,utility"
