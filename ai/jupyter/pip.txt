@@ -2,6 +2,7 @@
 pip
 uv
 requests
+httpx[socks5]
 python-dotenv
 PyYAML
 uuid
