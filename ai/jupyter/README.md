@@ -19,8 +19,10 @@ docker build -f Containerfile --no-cache \
 ```bash
 mkdir -p configs data logs
 
-docker run --name=jupyter -d --restart=always \
-  --gpus=all -p 8888:8888 -v $(pwd):/root/work \
+docker run -d --restart=always \
+  --name=jupyter \
+  --gpus=all -p 8888:8888 \
+  -v $(pwd):/root/work \
   --env-file=configs/container.env \
   local/jupyter:pytorch2.8.0-cuda12.9-cudnn9-runtime
 ```
