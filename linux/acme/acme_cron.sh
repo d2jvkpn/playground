@@ -2,7 +2,8 @@
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
 # minute hour day_of_month month day_of_week command
-# cron: 0 0 * * * bash ${HOME}/apps/crons/acme_cron.sh
+# cron: 10 0 * * * bash ${HOME}/apps/crons/acme_cron.sh
+# help: https://crontab.guru
 
 acme=~/apps/acme.git # directory
 target_dir=${target_dir:-~/apps/nginx/certs}
@@ -15,9 +16,11 @@ changed="false";
     for certs_dir in $(ls -d $acme/*_ecc/ | sed 's#/$##'); do
         domain=$(basename $certs_dir | sed 's/_ecc$//')
 
-        s1=$(md5sum $certs_dir/$domain.cer | awk '{print $1}')
+        s1=$(md5sum $certs_dir/$domain.cer $certs_dir/$domain.key | awk '{print $1}')
         s2=""
-        [ -f $target_dir/$domain.cer ] && s2=$(md5sum $target_dir/$domain.cer | awk '{print $1}')
+        if [ -f $target_dir/$domain.cer ]; then
+            s2=$(md5sum $target_dir/$domain.cer $target_dir/$domain.key | awk '{print $1}')
+        fi
         [[ "$s1" == "$s2" ]] && continue
 
         changed="true"
