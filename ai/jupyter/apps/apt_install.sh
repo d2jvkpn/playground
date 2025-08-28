@@ -5,8 +5,8 @@ set -eu -o pipefail
 export DEBIAN_FRONTEND=noninteractive
 
 #apt-get -qq update 2>&1 > /dev/null
-apt-get -qq update > /dev/null
-apt-get upgrade -qq -y --no-install-recommends > /dev/null
+apt-get -qq update
+apt-get upgrade -qq -y --no-install-recommends
 
 if [ $# -gt 0 ]; then
     apt install -y --no-install-recommends "$@"

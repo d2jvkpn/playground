@@ -1,17 +1,26 @@
 FROM pytorch/pytorch:2.8.0-cuda12.9-cudnn9-runtime
 
 #### 1. setup
-COPY apps /root/apps
+COPY apps /opt/apps
+RUN chmod a+x /opt/apps/entrypoint.sh
 
-RUN bash /root/apps/apt_install.sh \
-  tzdata vim jq tree file dos2unix git openssh-client
+RUN bash /opt/apps/apt_install.sh \
+  tzdata gosu vim jq tree file dos2unix git openssh-client curl
 
-RUN pip install --no-cache-dir -U -r /root/apps/pip.txt
+RUN pip install --no-cache-dir -U -r /opt/apps/pip.txt
 # -i https://pypi.tuna.tsinghua.edu.cn/simple
 
-RUN mkdir -p /root/work && \
-  mkdir -p /root/.config/pip /root/.ipython/profile_default /root/.jupyter && \
-  cp /root/apps/jupyter_lab_config.py /root/.jupyter/
+RUN mkdir -p /root/work \
+  /root/.config/pip \
+  /root/.ipython/profile_default \
+  /root/.jupyter && \
+  cp /opt/apps/jupyter_lab_config.py /root/.jupyter/
+
+RUN mkdir -p /home/appuser/work \
+  /home/appuser/.config/pip \
+  /home/appuser/.ipython/profile_default \
+  /home/appuser/.jupyter && \
+  cp /opt/apps/jupyter_lab_config.py /home/appuser/.jupyter/
 
 #### 2. post config
 # default=/workspace
@@ -19,13 +28,14 @@ WORKDIR /root/work
 
 EXPOSE 8888
 
-VOLUME ["/root/work"]
+VOLUME ["/root/work", "/home/appuser/work"]
 
 ENV TZ=Asia/Shanghai
-ENV PATH=/root/work/bin:$PATH
 #ENV PATH=/root/work/data/pip_packages/bin:/opt/conda/bin:$PATH
 #ENV PYTHONPATH=/root/work/data/pip_packages:/opt/conda/lib/python3.11/site-packages
 
 #### 3. run
+ENTRYPOINT ["/opt/apps/entrypoint.sh"]
+
 # "--NotebookApp.token=''", "--NotebookApp.password=''", "--ip=0.0.0.0"
 CMD ["jupyter", "lab", "--no-browser", "--allow-root", "--port=8888"]
