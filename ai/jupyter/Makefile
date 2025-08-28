@@ -15,7 +15,7 @@ run_gpu:
 
 run_gpu_appuser:
 	mkdir -p configs data logs
-	docker run -d --restart=always \
+	docker run -d --restart=always --gpus=all \
 	  --name=jupyter --hostname=jupyter \
 	  -p 8888:8888 \
 	  -v $(shell pwd):/home/appuser/work \
