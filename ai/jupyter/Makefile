@@ -1,4 +1,8 @@
-image = local/jupyter:pytorch2.8.0-cuda12.9-cudnn9-runtime
+# image = local/jupyter:pytorch2.8.0-cuda12.9-cudnn9-runtime
+image = $(shell awk -F '[ :]' '/FROM/{print "local/jupyter:pytorch"$$NF}' Containerfile)
+
+echo:
+	echo $(image)
 
 build:
 	docker build -f Containerfile --no-cache -t $(image) ./
