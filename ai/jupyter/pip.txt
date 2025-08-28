@@ -1,17 +1,26 @@
 #### utils
 pip
 uv
-requests
-httpx[socks5]
+flake8
 python-dotenv
 PyYAML
 uuid
+requests
+httpx[socks5]
+
+pytest
+loguru
 
 #### data science
 numpy
 pandas
-polars
 matplotlib
+
+polars
+scipy
+scikit-learn
+seaborn
+plotly
 
 jupyterlab
 ipywidgets
