@@ -1,0 +1,36 @@
+FROM pytorch/pytorch:2.8.0-cuda12.9-cudnn9-runtime
+
+#### 1. setup
+ADD volume/pip.txt volume/apt_install.sh /root/
+
+RUN bash /root/apt_install.sh \
+  tzdata vim jq tree file dos2unix git openssh-client
+
+RUN pip install --no-cache-dir -U -r /root/pip.txt
+# -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+RUN mkdir -p \
+  /root/work \
+  /root/.config/pip \
+  /root/.ipython/profile_default \
+  /root/.jupyter
+
+#### 2. post config
+ADD volume/pip.conf /root/.config/pip/
+ADD volume/ipython_config.py /root/.ipython/profile_default/
+ADD volume/jupyter_lab_config.py /root/.jupyter/
+
+# default=/workspace
+WORKDIR /root/work
+
+EXPOSE 8888
+
+VOLUME ["/root/work"]
+
+ENV TZ=Asia/Shanghai
+ENV PATH=/root/work/bin:/root/work/data/pip_packages/bin:/opt/conda/bin:$PATH
+ENV PYTHONPATH=/root/work/data/pip_packages:/opt/conda/lib/python3.11/site-packages
+
+#### 3. run
+# "--NotebookApp.token=''", "--NotebookApp.password=''", "--ip=0.0.0.0"
+CMD ["jupyter", "lab", "--no-browser", "--allow-root", "--port=8888"]

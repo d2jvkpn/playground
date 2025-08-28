@@ -4,9 +4,9 @@ uv
 flake8
 python-dotenv
 PyYAML
-uuid
 requests
-httpx[socks5]
+httpx
+httpx-socks
 
 pytest
 loguru

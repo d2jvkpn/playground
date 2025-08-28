@@ -1,21 +1,19 @@
 FROM pytorch/pytorch:2.8.0-cuda12.9-cudnn9-runtime
 
-RUN export DEBIAN_FRONTEND=noninteractive && \
-    apt-get update && \
-    apt-get upgrade -y --no-install-recommends && \
-    rm -rf /var/lib/apt/lists/*
+#### 1. setup
+COPY apps /root/apps
 
-ADD pip.txt /root/
-RUN pip install --no-cache-dir -U -r /root/pip.txt
+RUN bash /root/apps/apt_install.sh \
+  tzdata vim jq tree file dos2unix git openssh-client
+
+RUN pip install --no-cache-dir -U -r /root/apps/pip.txt
 # -i https://pypi.tuna.tsinghua.edu.cn/simple
 
-RUN mkdir -p /root/work /root/.config/pip /root/.ipython/profile_default /root/.jupyter
+RUN mkdir -p /root/work && \
+  mkdir -p /root/.config/pip /root/.ipython/profile_default /root/.jupyter && \
+  cp /root/apps/jupyter_lab_config.py /root/.jupyter/
 
-ADD volume/bash_aliases.sh /root/.bash_alases
-ADD volume/pip.conf /root/.config/pip/
-ADD volume/ipython_config.py /root/.ipython/profile_default/
-ADD volume/jupyter_lab_config.py /root/.jupyter/
-
+#### 2. post config
 # default=/workspace
 WORKDIR /root/work
 
@@ -23,7 +21,10 @@ EXPOSE 8888
 
 VOLUME ["/root/work"]
 
-ENV PATH=/opt/conda/bin:$PATH
+ENV TZ=Asia/Shanghai
+#ENV PATH=/root/work/bin:/root/work/data/pip_packages/bin:/opt/conda/bin:$PATH
+#ENV PYTHONPATH=/root/work/data/pip_packages:/opt/conda/lib/python3.11/site-packages
 
+#### 3. run
 # "--NotebookApp.token=''", "--NotebookApp.password=''", "--ip=0.0.0.0"
 CMD ["jupyter", "lab", "--no-browser", "--allow-root", "--port=8888"]

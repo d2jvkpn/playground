@@ -99,8 +99,7 @@ apt install -y software-properties-common \
 
 
 #### 5. apt remove
-apt clean && apt autoclean
-apt remove && apt autoremove
+apt clean && apt autoclean && apt autoremove
 dpkg -l | awk '/^rc/{print $2}' | xargs -i sudo dpkg -P {}
 
 apt remove -y --autoremove snapd
