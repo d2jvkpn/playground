@@ -1,13 +1,12 @@
 #### utils
+flake8
 pip
 uv
-flake8
-python-dotenv
 PyYAML
+python-dotenv
 requests
 httpx
 httpx-socks
-
 pytest
 loguru
 
