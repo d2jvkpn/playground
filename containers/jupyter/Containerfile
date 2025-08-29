@@ -1,6 +1,6 @@
 FROM pytorch/pytorch:2.8.0-cuda12.9-cudnn9-runtime
 
-#### 1. setup
+#### 1. installation
 COPY apps /opt/apps
 RUN chmod a+x /opt/apps/entrypoint.sh
 
@@ -10,19 +10,14 @@ RUN bash /opt/apps/apt_install.sh \
 RUN pip install --no-cache-dir -U -r /opt/apps/pip.txt
 # -i https://pypi.tuna.tsinghua.edu.cn/simple
 
+#### 2. config
 RUN mkdir -p /root/work \
-  /root/.config/pip \
-  /root/.ipython/profile_default \
   /root/.jupyter && \
-  cp /opt/apps/jupyter_lab_config.py /root/.jupyter/
-
-RUN mkdir -p /home/appuser/work \
-  /home/appuser/.config/pip \
-  /home/appuser/.ipython/profile_default \
-  /home/appuser/.jupyter && \
+  cp /opt/apps/jupyter_lab_config.py /root/.jupyter/ && \
+  mkdir -p /home/appuser/.jupyter && \
   cp /opt/apps/jupyter_lab_config.py /home/appuser/.jupyter/
 
-#### 2. post config
+#### 3. define
 # default=/workspace
 WORKDIR /root/work
 
@@ -34,8 +29,8 @@ ENV TZ=Asia/Shanghai
 #ENV PATH=/root/work/data/pip_packages/bin:/opt/conda/bin:$PATH
 #ENV PYTHONPATH=/root/work/data/pip_packages:/opt/conda/lib/python3.11/site-packages
 
-#### 3. run
 ENTRYPOINT ["/opt/apps/entrypoint.sh"]
 
+#### 4. run
 # "--NotebookApp.token=''", "--NotebookApp.password=''", "--ip=0.0.0.0"
 CMD ["jupyter", "lab", "--no-browser", "--allow-root", "--port=8888"]

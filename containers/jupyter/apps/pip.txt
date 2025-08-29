@@ -7,19 +7,18 @@ python-dotenv
 requests
 httpx
 httpx-socks
-pytest
-loguru
+#pytest
+#loguru
 
 #### data science
 numpy
 pandas
-matplotlib
-
 polars
+matplotlib
 scipy
 scikit-learn
-seaborn
-plotly
+#seaborn
+#plotly
 
 jupyterlab
 ipywidgets

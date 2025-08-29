@@ -12,3 +12,4 @@ os.environ['WANDB_API_KEY'] = userdata.get('WANDB_API_KEY')
 drive.mount("/mnt/google_drive")
 data_dir = Path("/mnt/google_drive/data")
 #$ ln -s /mnt/google_drive/MyDrive/data ./data
+#print(Path("data").glob("*"))
