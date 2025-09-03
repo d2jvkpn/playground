@@ -1,10 +1,12 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 
+
 mkdir -p downloads
 
 curl -o downloads/Miniconda3-latest-Linux-x86_64.sh \
   https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+
 
 bash downloads/Miniconda3-latest-Linux-x86_64.sh -b -p /opt/miniconda3
 # /opt/miniconda3/bin/conda init --reverse $SHELL

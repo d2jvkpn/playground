@@ -9,8 +9,7 @@ build:
 
 root_gpu:
 	mkdir -p configs data/pip_packages logs
-	docker run -d --restart=always --gpus=all \
-	  --name=jupyter --hostname=jupyter \
+	docker run -d --restart=always --name=jupyter --hostname=jupyter  --gpus=all \
 	  -p 8888:8888 \
 	  -w /root/work \
 	  -v $(shell pwd):/root/work \
@@ -20,8 +19,7 @@ root_gpu:
 
 appuser_gpu:
 	mkdir -p configs data/pip_packages logs
-	docker run -d --restart=always --gpus=all \
-	  --name=jupyter --hostname=jupyter \
+	docker run -d --restart=always --name=jupyter --hostname=jupyter --gpus=all \
 	  -p 8888:8888 \
 	  -w /home/appuser/work \
 	  -v $(shell pwd):/home/appuser/work \
@@ -32,8 +30,7 @@ appuser_gpu:
 
 root_cpu:
 	mkdir -p configs data/pip_packages logs
-	docker run -d --restart=always \
-	  --name=jupyter --hostname=jupyter \
+	docker run -d --restart=always --name=jupyter --hostname=jupyter \
 	  -p 8888:8888 \
 	  -w /root/work \
 	  -v $(shell pwd):/root/work \
@@ -47,8 +44,7 @@ root_cpu:
 
 appuser_cpu:
 	mkdir -p configs data/pip_packages logs
-	docker run -d --restart=always \
-	  --name=jupyter --hostname=jupyter \
+	docker run -d --restart=always --name=jupyter --hostname=jupyter \
 	  -p 8888:8888 \
 	  -w /home/appuser/work \
 	  -v $(shell pwd):/home/appuser/work \

@@ -2,10 +2,9 @@ FROM pytorch/pytorch:2.8.0-cuda12.9-cudnn9-runtime
 
 #### 1. installation
 COPY apps /opt/apps
-RUN chmod a+x /opt/apps/entrypoint.sh
+RUN chmod a+x /opt/apps/*.sh
 
-RUN bash /opt/apps/apt_install.sh \
-  tzdata gosu vim jq tree file dos2unix git openssh-client curl
+RUN /opt/apps/apt_install.sh tzdata gosu vim jq tree file dos2unix git openssh-client curl
 
 RUN pip install --no-cache-dir -U -r /opt/apps/pip.txt
 # -i https://pypi.tuna.tsinghua.edu.cn/simple
@@ -32,5 +31,5 @@ ENV TZ=Asia/Shanghai
 ENTRYPOINT ["/opt/apps/entrypoint.sh"]
 
 #### 4. run
-# "--NotebookApp.token=''", "--NotebookApp.password=''", "--ip=0.0.0.0"
-CMD ["jupyter", "lab", "--no-browser", "--allow-root", "--port=8888"]
+# "--NotebookApp.token=''", "--NotebookApp.password=''"
+CMD ["jupyter", "lab", "--no-browser", "--allow-root", "--ip=0.0.0.0", "--port=8888"]

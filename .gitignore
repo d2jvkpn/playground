@@ -17,3 +17,5 @@ vendor/
 *.git/
 .gradio
 .*
+
+node_modules
