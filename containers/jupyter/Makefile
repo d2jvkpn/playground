@@ -1,5 +1,5 @@
 # image = local/jupyter:pytorch2.8.0-cuda12.9-cudnn9-runtime
-image = $(shell awk -F '[ :]' '/FROM/{print "local/jupyter:pytorch"$$NF}' Containerfile)
+image = $(shell awk -F '[ :]' '/^FROM/{ sub("^local/", "", $$NF); print "local/jupyter:pytorch"$$NF; exit }' Containerfile)
 
 echo:
 	echo user_uid=$(shell id -u), user_gid=$(shell id -g), image=$(image)

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os, time
 from datetime import datetime
 
@@ -30,7 +31,9 @@ while True:
 
 os.sys.exit(0)
 
+#!/usr/bin/env python3
 from bypy import ByPy
+
 
 bp = ByPy()
 

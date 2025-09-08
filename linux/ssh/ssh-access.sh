@@ -24,6 +24,7 @@ aws:
   kafka: { port: 9092 }
 
 ali:
+  _command: sshpass -F configs/ssh.pass ssh
   _args: ali-web-prod
   redis: { port: 6379 }
   postgres: { port: 5432 }
@@ -66,6 +67,10 @@ ls $config > /dev/null
 name=$1
 shift
 
+command=$(yq ".$name._command" $config)
+if [[ "$command" == "null" ]]; then
+    command="ssh"
+fi
 args=$(yq ".$name._args" $config)
 
 for svc in $@; do
@@ -93,5 +98,5 @@ trap on_exit SIGINT
 echo "==> $(date +%FT%T%:z) run"
 args="-o TCPKeepAlive=yes -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes $args"
 
-echo "+ ssh -N $binds $args"
-ssh -N $binds $args
+echo "+ $command -N $binds $args"
+$command -N $binds $args

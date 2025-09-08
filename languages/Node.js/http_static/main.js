@@ -24,7 +24,7 @@ const host = process.argv[2] || "127.0.0.1";
 const port = parseInt(process.argv[3], 10) || 3000;
 
 // 4.
-app.use("/static", express.static(path.join(__dirname, "static")));
+app.use("/assets", express.static(path.join(__dirname, "assets")));
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));

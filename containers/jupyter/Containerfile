@@ -4,17 +4,20 @@ FROM pytorch/pytorch:2.8.0-cuda12.9-cudnn9-runtime
 COPY apps /opt/apps
 RUN chmod a+x /opt/apps/*.sh
 
-RUN /opt/apps/apt_install.sh tzdata gosu vim jq tree file dos2unix git openssh-client curl
+RUN /opt/apps/apt_install.sh \
+    tzdata build-essential gosu vim file \
+    jq tree dos2unix git openssh-client curl
 
 RUN pip install --no-cache-dir -U -r /opt/apps/pip.txt
 # -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 #### 2. config
-RUN mkdir -p /root/work \
-  /root/.jupyter && \
+RUN mkdir -p /root/work /root/.jupyter && \
   cp /opt/apps/jupyter_lab_config.py /root/.jupyter/ && \
-  mkdir -p /home/appuser/.jupyter && \
+  mkdir -p  /home/appuser/work /home/appuser/.jupyter && \
   cp /opt/apps/jupyter_lab_config.py /home/appuser/.jupyter/
+
+RUN userdel -r ubuntu || true
 
 #### 3. define
 # default=/workspace

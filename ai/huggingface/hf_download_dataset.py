@@ -8,11 +8,13 @@ from datasets import load_dataset
 
 
 repo_id = os.sys.argv[1]
+repo_args = os.sys.argv[2:]
 
 #cache_dir = "data/huggingface" # default=~/.cache/huggingface/datasets
 #os.makedirs(cache_dir, exist_ok=True)
 
 ds = load_dataset(
     repo_id,
+    *repo_args,
     #cache_dir=os.getenv("HF_HUB_CACHE"),
 )
