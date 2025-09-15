@@ -64,6 +64,7 @@ func generatePass(cost int) (err error) {
 		return err
 	}
 	password = bytes.TrimSpace(password)
+	// fmt.Printf("~~~ %s\n", password)
 
 	if bts, err = bcrypt.GenerateFromPassword(password, cost); err != nil {
 		return err

@@ -10,16 +10,15 @@ if [[ "$USER_UID" == "0" ]]; then
     exit 0
 fi
 
-USER_NAME=appuser
-
 if ! getent group $USER_GID >/dev/null; then
-    groupadd -g $USER_GID $USER_NAME
+    groupadd -g $USER_GID appuser
 fi
 
-#if ! id -u $USER_NAME >/dev/null 2>&1; then
+#if ! id -u appuser >/dev/null 2>&1; then
 if ! getent passwd $USER_UID >/dev/null 2>&1; then
-    useradd -m -s /bin/bash -u $USER_UID -g $USER_GID $USER_NAME
-    chown -R appuser /home/appuser
+    # -m: directory /home/appuser already exsits
+    useradd -s /bin/bash -u $USER_UID -g $USER_GID appuser
+    chown -R $USER_UID:$USER_GID /home/appuser
 fi
 
 exec gosu $USER_UID:$USER_GID "$@"
