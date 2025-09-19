@@ -12,31 +12,31 @@ root_gpu:
 	mkdir -p configs data/pip_packages logs
 	docker run -d --restart=always --name=jupyter --hostname=jupyter  --gpus=all \
 	  -p 8888:8888 \
-	  -w /root/work \
 	  -v $(shell pwd):/root/work \
 	  -v $(shell pwd)/data/pip_packages:/root/.local/lib/$(py)/site-packages \
 	  --env-file=configs/container.env \
+	  -w /root/work \
 	  $(image)
 
 appuser_gpu:
 	mkdir -p configs data/pip_packages logs
 	docker run -d --restart=always --name=jupyter --hostname=jupyter --gpus=all \
 	  -p 8888:8888 \
-	  -w /home/appuser/work \
 	  -v $(shell pwd):/home/appuser/work \
 	  -v $(shell pwd)/data/pip_packages:/home/appuser/.local/lib/$(py)/site-packages \
 	  --env-file=configs/container.env \
 	  -e USER_UID=$(shell id -u) -e USER_GID=$(shell id -g) \
+	  -w /home/appuser/work \
 	  $(image)
 
 root_cpu:
 	mkdir -p configs data/pip_packages logs
 	docker run -d --restart=always --name=jupyter --hostname=jupyter \
 	  -p 8888:8888 \
-	  -w /root/work \
 	  -v $(shell pwd):/root/work \
 	  -v $(shell pwd)/data/pip_packages:/root/.local/lib/$(py)/site-packages \
 	  --env-file=configs/container.env \
+	  -w /root/work \
 	  $(image)
 
 # -v $(pwd)/apps/pip.conf:/root/.config/pip/pip.conf
@@ -47,9 +47,9 @@ appuser_cpu:
 	mkdir -p configs data/pip_packages logs
 	docker run -d --restart=always --name=jupyter --hostname=jupyter \
 	  -p 8888:8888 \
-	  -w /home/appuser/work \
 	  -v $(shell pwd):/home/appuser/work \
 	  -v $(shell pwd)/data/pip_packages:/home/appuser/.local/lib/$(py)/site-packages \
 	  --env-file=configs/container.env \
 	  -e USER_UID=$(shell id -u) -e USER_GID=$(shell id -g) \
+	  -w /home/appuser/work \
 	  $(image)
