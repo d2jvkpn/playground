@@ -14,7 +14,7 @@ services:
     network_mode: bridge
     ports: ['8888:8888']
     volumes:
-    - ./:/root/work
+    - ./:/root/workspace
     environment:
       TZ: Asia/Shanghai
       NVIDIA_VISIBLE_DEVICES: "all"

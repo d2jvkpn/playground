@@ -22,7 +22,7 @@ mkdir -p configs data logs
 docker run -d --restart=always --gpus=all \
   --name=jupyter --hostname=jupyter \
   -p 8888:8888 \
-  -v $(pwd):/root/work \
+  -v $(pwd):/root/workspace \
   --env-file=configs/container.env \
   local/jupyter:pytorch2.8.0-cuda12.9-cudnn9-runtime
 ```

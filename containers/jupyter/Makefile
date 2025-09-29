@@ -12,44 +12,44 @@ root_gpu:
 	mkdir -p configs data/pip_packages logs
 	docker run -d --restart=always --name=jupyter --hostname=jupyter  --gpus=all \
 	  -p 8888:8888 \
-	  -v $(shell pwd):/root/work \
+	  -v $(shell pwd):/root/workspace \
 	  -v $(shell pwd)/data/pip_packages:/root/.local/lib/$(py)/site-packages \
 	  --env-file=configs/container.env \
-	  -w /root/work \
+	  -w /root/workspace \
 	  $(image)
 
 appuser_gpu:
 	mkdir -p configs data/pip_packages logs
 	docker run -d --restart=always --name=jupyter --hostname=jupyter --gpus=all \
 	  -p 8888:8888 \
-	  -v $(shell pwd):/home/appuser/work \
+	  -v $(shell pwd):/home/appuser/workspace \
 	  -v $(shell pwd)/data/pip_packages:/home/appuser/.local/lib/$(py)/site-packages \
 	  --env-file=configs/container.env \
 	  -e USER_UID=$(shell id -u) -e USER_GID=$(shell id -g) \
-	  -w /home/appuser/work \
+	  -w /home/appuser/workspace \
 	  $(image)
 
 root_cpu:
 	mkdir -p configs data/pip_packages logs
 	docker run -d --restart=always --name=jupyter --hostname=jupyter \
 	  -p 8888:8888 \
-	  -v $(shell pwd):/root/work \
+	  -v $(shell pwd):/root/workspace \
 	  -v $(shell pwd)/data/pip_packages:/root/.local/lib/$(py)/site-packages \
 	  --env-file=configs/container.env \
-	  -w /root/work \
+	  -w /root/workspace \
 	  $(image)
 
 # -v $(pwd)/apps/pip.conf:/root/.config/pip/pip.conf
 # -v $(pwd)/apps/ipython_config.py:/root/.ipython/profile_default/ipython_config.py
-# -e PYTHONPATH=/root/work/data/pip_packages:/opt/conda/lib/$(py)/site-packages
+# -e PYTHONPATH=/root/workspace/data/pip_packages:/opt/conda/lib/$(py)/site-packages
 
 appuser_cpu:
 	mkdir -p configs data/pip_packages logs
 	docker run -d --restart=always --name=jupyter --hostname=jupyter \
 	  -p 8888:8888 \
-	  -v $(shell pwd):/home/appuser/work \
+	  -v $(shell pwd):/home/appuser/workspace \
 	  -v $(shell pwd)/data/pip_packages:/home/appuser/.local/lib/$(py)/site-packages \
 	  --env-file=configs/container.env \
 	  -e USER_UID=$(shell id -u) -e USER_GID=$(shell id -g) \
-	  -w /home/appuser/work \
+	  -w /home/appuser/workspace \
 	  $(image)

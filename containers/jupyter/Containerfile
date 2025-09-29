@@ -12,24 +12,24 @@ RUN pip install --no-cache-dir -U -r /opt/apps/pip.txt
 # -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 #### 2. config
-RUN mkdir -p /root/work /root/.jupyter && \
+RUN mkdir -p /root/workspace /root/.jupyter && \
   cp /opt/apps/jupyter_lab_config.py /root/.jupyter/ && \
-  mkdir -p  /home/appuser/work /home/appuser/.jupyter && \
+  mkdir -p  /home/appuser/workspace /home/appuser/.jupyter && \
   cp /opt/apps/jupyter_lab_config.py /home/appuser/.jupyter/
 
 RUN userdel -r ubuntu || true
 
 #### 3. define
 # default=/workspace
-WORKDIR /root/work
+WORKDIR /root/workspace
 
 EXPOSE 8888
 
-VOLUME ["/root/work", "/home/appuser/work"]
+VOLUME ["/root/workspace", "/home/appuser/workspace"]
 
 ENV TZ=Asia/Shanghai
-#ENV PATH=/root/work/data/pip_packages/bin:/opt/conda/bin:$PATH
-#ENV PYTHONPATH=/root/work/data/pip_packages:/opt/conda/lib/python3.11/site-packages
+#ENV PATH=/root/workspace/data/pip_packages/bin:/opt/conda/bin:$PATH
+#ENV PYTHONPATH=/root/workspace/data/pip_packages:/opt/conda/lib/python3.11/site-packages
 
 ENTRYPOINT ["/opt/apps/entrypoint.sh"]
 

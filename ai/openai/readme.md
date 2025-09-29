@@ -10,6 +10,8 @@ date: 1970-01-01
 #### Ch01. 
 1. links
 - https://github.com/openai/openai-python
+- https://platform.openai.com/docs/guides/text-to-speech
+- https://platform.openai.com/docs/guides/speech-to-text
 
 2. usage
 - chat
