@@ -22,3 +22,8 @@ exit
 ```text
 JUPYTER_TOKEN=xxxxx
 ```
+
+exit
+
+conda install cuda-nvcc -c nvidia
+pip install flash-attn

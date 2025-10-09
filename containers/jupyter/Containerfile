@@ -8,6 +8,8 @@ RUN /opt/apps/apt_install.sh \
     tzdata build-essential gosu vim file \
     jq tree dos2unix git openssh-client curl
 
+RUN conda install cuda-nvcc -c nvidia
+
 RUN pip install --no-cache-dir -U -r /opt/apps/pip.txt
 # -i https://pypi.tuna.tsinghua.edu.cn/simple
 
@@ -23,9 +25,10 @@ RUN userdel -r ubuntu || true
 # default=/workspace
 WORKDIR /root/workspace
 
+#USER appuser
 EXPOSE 8888
 
-VOLUME ["/root/workspace", "/home/appuser/workspace"]
+VOLUME ["/home/appuser/workspace", "/home/appuser/.local/lib/python3.11/site-packages"]
 
 ENV TZ=Asia/Shanghai
 #ENV PATH=/root/workspace/data/pip_packages/bin:/opt/conda/bin:$PATH

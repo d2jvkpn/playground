@@ -24,4 +24,4 @@ jupyterlab
 ipywidgets
 jupyterlab-execute-time
 jupyter-resource-usage
-jupyterlab-nvdashboard
+#jupyterlab-nvdashboard
