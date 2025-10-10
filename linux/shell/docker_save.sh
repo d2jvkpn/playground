@@ -11,26 +11,27 @@ name=$(echo "$image" | sed 's#/#--#g; s#:#--#')
 
 ####
 if [[ "$image" != *":"* ]]; then
-   >&2 echo '!!! expected image with :tag'
-   exit 1
+    >&2 echo '!!! Expected image with :tag'
+    exit 1
 fi
 
 ####
 if [[ "$pull" == "true" ]]; then
-    echo "--> pulling $image"
+    echo "$(date +%F:%T%:z) Pulling $image"
     docker pull "$image"
 fi
 
-echo "--> exporting $image"
+echo "$(date +%F:%T%:z) Exporting $image"
 #docker save "$image" -o "$name".tar
 #pigz -f "$name".tar
 
-docker save "$image" | pigz -c > "$name".tar.gz.tmp
+docker save "$image" | gzip -c > "$name".tar.gz.tmp
 mv "$name".tar.gz.tmp "$name".tar.gz
-
-echo "--> saved to "$name".tar.gz"
+echo "$(date +%F:%T%:z) Saved $image to $name.tar.gz"
 
 if [[ "$remove" == "true" ]]; then
-    echo "--> remove image $image"
+    echo "$(date +%F:%T%:z) Removing image $image"
     docker rmi "$image" || true
 fi
+
+echo "$(date +%F:%T%:z) Done"
