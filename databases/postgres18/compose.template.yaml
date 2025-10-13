@@ -1,0 +1,29 @@
+networks:
+  net: { name: "postgres", driver: "bridge", external: false }
+
+# volumes:
+#   data: { name: postgres, driver: local }
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    restart: always
+    shm_size: 512m # df -h | grep shm
+    # network_mode: bridge
+    networks: ["net"]
+    ports: ["127.0.0.1:5432:5432"]
+    healthcheck:
+      test: pg_isready --username postgres --dbname postgres
+      start_period: 15s
+      interval: 15s
+      timeout: 3s
+      retries: 3
+    container_name: postgres
+    volumes:
+    - ./data/postgres:/var/lib/postgresql/18/docker
+    environment:
+      TZ: Asia/Shanghai
+      PGTZ: Asia/Shanghai
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres

@@ -1,6 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 #### host driver
 sudo ubuntu-drivers devices
@@ -8,6 +7,22 @@ sudo ubuntu-drivers devices
 # sudo apt install nvidia-driver-525
 # nvidia-smi
 
+# https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
+
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey |
+sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+
+curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+    sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+    sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+ls /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+    /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+sudo apt update
+sudo apt install nvidia-container-toolkit nvidia-container-runtime
+
+exit
 #### docker nvidia
 distribution=$(. /etc/os-release; echo $ID$VERSION_ID)
 

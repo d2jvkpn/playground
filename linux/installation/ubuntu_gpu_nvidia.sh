@@ -43,5 +43,4 @@ sudo nvidia-smi -rac
 # 0=自动，1=手动
 nvidia-settings -a [gpu:0]/GPUFanControlState=0
 
-
 nvidia-smi -q -d POWER,CLOCK

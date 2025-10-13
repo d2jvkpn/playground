@@ -31,7 +31,7 @@ export DB_Port=${2:-5432} CONTAINER_Name=${3:-postgres}
 ####
 [ -s compose.yaml ] && { >&2 echo "file already exists: compose.yaml"; exit 1; }
 
-mkdir -p configs data/postgres data/share
+mkdir -p configs data/postgres
 # data/postgres/backups/wal_archive data/temp
 
 [ -s configs/postgres.pass ] || \

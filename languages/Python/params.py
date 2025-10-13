@@ -31,10 +31,20 @@ class Params():
 
             setattr(self, k, v)
 
+    def json_dumps(self, indent=None):
+        values = { k: getattr(self, k) for k in self.__keys }
+
+        return json.dumps(
+            { "name": self.name, "values": values },
+            ensure_ascii=False,
+            indent=indent,
+        )
+
 
 if __name__ == "__main__":
     p = Params(a=1, b=42)
     print(p)
+    print(p.json_dumps())
 
     p = Params("model", a=1, b=42)
     print(p)
