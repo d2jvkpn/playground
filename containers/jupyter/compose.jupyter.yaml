@@ -17,7 +17,7 @@ services:
     #- ./configs/pip.conf:/home/appuser/.config/pip/pip.conf
     - ./:/home/appuser/workspace
     - ./data/pip:/home/appuser/.local/lib/python3.11/site-packages
-    env_file: configs/container.env
+    env_file: configs/container.env # set JUPYTER_TOKEN=xxxxxxxx
     environment:
       TZ: Asia/Shanghai
       USER_UID: 1000
