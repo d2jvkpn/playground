@@ -8,7 +8,7 @@ sudo apt udpate
 sudo apt -y upgrade
 
 sudo apt install -y apt-transport-https ca-certificates \
-    iftop net-tools zip tree duf pigz uuid nmap \
+    iftop net-tools zip tree duf pigz uuid make nmap \
     docker.io docker-compose-v2
 
 timedatectl set-timezone Asia/Shanghai
