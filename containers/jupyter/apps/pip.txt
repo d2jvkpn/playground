@@ -2,9 +2,10 @@
 flake8
 pip
 uv
-PyYAML
 python-dotenv
+PyYAML
 requests
+requests[socks]
 httpx
 httpx-socks
 #pytest
