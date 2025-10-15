@@ -14,7 +14,7 @@ def generate_text(input_text):
     return output[0]['generated_text']
 
 # 创建 Gradio 界面
-iface = gr.Interface(
+webui = gr.Interface(
     fn=generate_text,
     inputs="text",
     outputs="text",
@@ -23,4 +23,4 @@ iface = gr.Interface(
 )
 
 # 启动 Gradio 应用
-iface.launch(server_name="0.0.0.0", server_port=7860)
+webui.launch(server_name="0.0.0.0", server_port=7860)

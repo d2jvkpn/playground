@@ -1,6 +1,7 @@
 FROM local/3dgrut:base
 
-RUN DEBIAN_FRONTEND=nointeractive apt update && apt install -y xvfb colmap
+RUN DEBIAN_FRONTEND=nointeractive apt update && apt install -y xvfb vim
+# colmap
 
 RUN mkdir -p /root/.cache/torch/hub/checkpoints/ && \
   wget https://download.pytorch.org/models/vgg16-397923af.pth \
