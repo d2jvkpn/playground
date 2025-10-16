@@ -7,18 +7,18 @@ networks:
 services:
   postgres:
     image: postgres:18-alpine
+    container_name: postgres
     restart: always
     shm_size: 512m # df -h | grep shm
-    # network_mode: bridge
-    networks: ["net"]
-    ports: ["127.0.0.1:5432:5432"]
     healthcheck:
       test: pg_isready --username postgres --dbname postgres
       start_period: 15s
       interval: 15s
       timeout: 3s
       retries: 3
-    container_name: postgres
+    # network_mode: bridge
+    networks: ["net"]
+    ports: ["127.0.0.1:5432:5432"]
     volumes:
     - ./data/postgres:/var/lib/postgresql/18/docker
     environment:

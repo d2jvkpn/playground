@@ -8,7 +8,7 @@ sudo apt udpate
 sudo apt -y upgrade
 
 sudo apt install -y apt-transport-https ca-certificates \
-    iftop net-tools zip tree duf pigz uuid make nmap \
+    iftop zip tree duf pigz uuid make net-tools nmap \
     docker.io docker-compose-v2
 
 timedatectl set-timezone Asia/Shanghai
@@ -28,3 +28,10 @@ sudo nmcli connection modify "SSID" connection.autoconnect yes
 #### 3. misc
 exit
 dd if=/dev/zero of=./test.tmp bs=1G count=1 oflag=direct
+
+exit
+sudo apt install pipx
+pipx install uv
+
+uv init
+uv add requests requests[socks] httpx httpx[socks]

@@ -10,3 +10,11 @@ cd vue-app
 
 npm install
 npm run dev
+
+exit
+
+#### update
+npm outdated
+npx npm-check-updates
+npx npm-check-updates -u
+npm install
