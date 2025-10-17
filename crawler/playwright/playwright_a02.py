@@ -13,8 +13,8 @@ async def run():
         title = await page.title()
         print("页面标题:", title)
 
-        h1_text = await page.text_content("h1")
-        print("h1 内容:", h1_text)
+        #h1_text = await page.text_content("h1")
+        #print("h1 内容:", h1_text)
 
         body_text = await page.text_content("body")
         print("页面正文:", body_text[:200], "...")  # 截取前200个字符

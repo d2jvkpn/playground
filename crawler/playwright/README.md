@@ -10,8 +10,10 @@ version: 0.1.0
 #### ch01. 
 1. installation
 ```
-playwright install chromium
-# playwright install # install all: chromium, firefox, webkit, ffmpeg
+pip install playwright
+
+playwright install chromium firefox
+# playwright install # all: chromium, firefox, webkit, ffmpeg
 
 exit
 https://cdn.playwright.dev/dbazure/download/playwright/builds/chromium/1179/chromium-linux.zip

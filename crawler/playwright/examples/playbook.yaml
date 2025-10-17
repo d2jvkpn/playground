@@ -1,0 +1,11 @@
+site: https://www.baidu.com
+
+steps:
+- { action: goto, target: https://wallstreetcn.com/articles/3756769 }
+- { action: wait, target: "3" }
+- { action: load, target: article }
+- { action: exec, target: data/hello.js }
+- { action: extract_html, target: article }
+- { action: extract_text, target: article }
+
+output_file: data/wallstreetcn.com_3756769.html
