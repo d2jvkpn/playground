@@ -1,29 +1,26 @@
 #!/usr/bin/env python3
 import os, argparse, asyncio
 from pathlib import Path
-import yaml
 
+import yaml
 from playwright.async_api import async_playwright
 
-####
-async def playbook_steps(ctx, playbook):
-    #page = await ctx.new_page() # this will open a new browser window
-    page = ctx.pages[0]
-    site = playbook.get('site')
-    if site is not None:
-        await page.goto(site)
+#### 1.
+async def playbook_run(page, run):
+    await page.goto(run['site'])
 
     result = None
-    for step in playbook['steps']:
+    for step in run['steps']:
         action, target = step['action'], step['target']
+        inputs = step.get("inputs", {})
 
-        if action == "goto":
-            await page.goto(target)
-
-        elif action == "load":
-           await page.wait_for_selector(target)
+        if action == "load":
+            await page.wait_for_selector(target)
         elif action == "wait":
             await asyncio.sleep(int(target))
+        elif action == "click":
+            elem = stagehand.page.locator(target, **inputs)
+            await elem.click()
 
         elif action == "exec":
             js = Path(target).read_text()
@@ -35,20 +32,22 @@ async def playbook_steps(ctx, playbook):
         elif action == "extract_html":
             await page.wait_for_selector(target)
             elem = page.locator(target)
-            result = await elem.inner_html()
+            #result = await elem.inner_html()
+            result = await elem.evaluate("el => el.outerHTML")
 
         else:
             raise(ValueError(f"Unknown action in steps: {action}"))
 
     if result is None:
-        result = await page.inner_html("html")
-        result = f"<!DOCTYPE html>\n<html>\n{result}\n</html>"
+        #result = await page.inner_html("html")
+        elem = page.locator("html")
+        result = await elem.evaluate("el => el.outerHTML")
 
-    output_file = playbook.get("output_file")
+    output_file = run.get("output_file")
     if output_file is None:
         print(f"{result}")
     else:
-        print(f"==> saved to {output_file}")
+        print(f"==> Saved to {output_file}", file=os.sys.stderr)
         with open(output_file, "w") as f:
             f.write(result)
 
@@ -64,23 +63,27 @@ async def open_async(stop_event, browser, headless, data_dir, playbook):
         #browser = await p.chromium.launch(headless=headless)
         ctx = await b.launch_persistent_context(
             headless=headless,
+            args=["--window-size=1280,800"],
+            no_viewport=True,
             traces_dir=data_dir / "traces",
             user_data_dir=data_dir / "user_data",
             accept_downloads=True,
             downloads_path=data_dir / "downloads",
-            args=["--window-size=1280,800"],
-            no_viewport=True,
-            proxy=None, # TODO
+            proxy=playbook.get("proxy"),
         )
 
-        if "steps" in playbook:
-            await playbook_steps(ctx, playbook)
+        #page = await ctx.new_page() # this will open a new browser window
+        page = ctx.pages[0]
+        if "run" in playbook:
+            await playbook_run(page, playbook['run'])
+        # TODO
 
         if headless:
             return
 
+        msg = f"The browser was closed: {ctx.browser.browser_type.executable_path}."
         ctx.on("close", lambda ctx: (
-            print(f"The browser was closed: {ctx.browser.browser_type.executable_path}."),
+            print(msg, file=os.sys.stderr),
             stop_event.set(),
         ))
 
@@ -88,7 +91,7 @@ async def open_async(stop_event, browser, headless, data_dir, playbook):
         await stop_event.wait()
         return result
 
-####
+#### 2.
 parser = argparse.ArgumentParser(
     description="Browser Open",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -110,7 +113,7 @@ parser.add_argument(
 )
 args = parser.parse_args(args=None)
 
-####
+#### 3.
 if args.data_dir is None:
     args.data_dir = Path("data") / args.browser
 else:
@@ -118,26 +121,29 @@ else:
 
 args.data_dir.mkdir(mode=511, parents=True, exist_ok=True)
 
-playbook = None
+playbook = {}
 if args.playbook not in ["", "None", "none"]: # args.playbook is not None
     with open(args.playbook, 'r') as f:
         playbook = yaml.safe_load(f)
 
-####
+#### 4.
 #loop = asyncio.get_running_loop(); loop.run_forever(); loop.run_until_complete()
 stop_event = asyncio.Event()
 
 try:
     asyncio.run(open_async(
-        stop_event, args.browser,
-        not args.open, args.data_dir, playbook,
+        stop_event,
+        args.browser,
+        not args.open,
+        args.data_dir,
+        playbook,
     ))
 except KeyboardInterrupt:
-    print("")
+    print("", file=os.sys.stderr)
     stop_event.set()
 except ValueError as e:
-    print(f"{e}")
+    print(f"{e}", file=os.sys.stderr)
     os.sys.exit(1)
 except Exception as e:
-    print(f"Unexpected error occured: {e}")
+    print(f"Unexpected error occured: {e}", file=os.sys.stderr)
     os.sys.exit(1)
