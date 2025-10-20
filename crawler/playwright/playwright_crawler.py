@@ -1,19 +1,25 @@
 #!/usr/bin/env python3
 import os, argparse, asyncio
 from pathlib import Path
+from datetime import datetime
 
 import yaml
 from playwright.async_api import async_playwright
 
 #### 1.
+def now():
+    return datetime.now().astimezone().strftime("%FT%T%:z")
+
 async def playbook_run(page, run):
     await page.goto(run['site'])
 
     result = None
     for step in run['steps']:
         action, target = step['action'], step['target']
+        msg = f"[{now()}]  playbook_run: action={action}, target={target}"
         inputs = step.get("inputs", {})
 
+        print(msg, file=os.sys.stderr)
         if action == "load":
             await page.wait_for_selector(target)
         elif action == "wait":
@@ -47,7 +53,7 @@ async def playbook_run(page, run):
     if output_file is None:
         print(f"{result}")
     else:
-        print(f"==> Saved to {output_file}", file=os.sys.stderr)
+        print(f"[{now()}]  saved to {output_file}", file=os.sys.stderr)
         with open(output_file, "w") as f:
             f.write(result)
 

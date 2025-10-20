@@ -1,6 +1,7 @@
 services:
   qdrant:
-    image: qdrant/qdrant:latest
+    image: qdrant/qdrant:v1
+    #image: qdrant/qdrant:v1-gpu-nvidia
     restart: always
     container_name: qdrant
     user: 1000:1000
