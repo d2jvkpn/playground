@@ -28,9 +28,9 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument(
     "--model_id", default="google/gemma-3-270m-it",
-    help="huggingface model id, e.g. " +\
-        "Qwen/Qwen2.5-0.5B-Instruct, " +\
-        "google/gemma-3-270m-it, " +\
+    help="huggingface model id, e.g. " + \
+        "Qwen/Qwen2.5-0.5B-Instruct, " + \
+        "google/gemma-3-270m-it, " + \
         "meta-llama/Llama-3.2-1B-Instruct",
 ) # required=True
 

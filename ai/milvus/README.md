@@ -9,4 +9,4 @@ version: 0.1.0
 
 #### ch01. 
 1. docs
-- a. 
+- https://github.com/milvus-io/milvus
