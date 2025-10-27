@@ -1,0 +1,30 @@
+services:
+  clickhouse:
+    image: clickhouse:25.7-jammy
+    container_name: clickhouse
+    restart: unless-stopped
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8123/ping || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    network_mode: bridge
+    ports:
+    - "8123:8123"   # HTTP (REST/SQL)
+    - "9000:9000"   # Native TCP (客户端/驱动)
+    #- "9009:9009"   # 内部通信(单机可不映射)
+    volumes:
+    - ./data/clickhouse_data:/var/lib/clickhouse
+    - ./data/clickhouse_logs:/var/log/clickhouse-server
+    - ./data/clickhouse_init:/docker-entrypoint-initdb.d
+    #- ./data/clickhouse_config:/etc/clickhouse-server
+    # /etc/clickhouse-server/users.d/app.xml
+    environment:
+      TZ: Asia/Shanghai
+      CLICKHOUSE_DB: appdb
+      CLICKHOUSE_USER: app
+      CLICKHOUSE_PASSWORD: secret123

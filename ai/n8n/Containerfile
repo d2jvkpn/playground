@@ -1,0 +1,20 @@
+FROM n8nio/n8n:stable
+
+USER root
+
+RUN apk --no-cache update && \
+    apk --no-cache upgrade && \
+    apk --no-cache add coreutils bash yq jq gcompat python3 py3-pip
+
+USER node
+
+RUN mkdir -p apps && \
+    python3 -m venv apps/home.venv && \
+    source apps/home.venv/bin/activate && \
+    pip install --upgrade pip ipython \
+      python-dotenv PyYAML requests requests[socks] httpx httpx-socks \
+      beautifulsoup4 lxml parsel trafilatura selectolax langdetect
+
+ENV PATH=/home/node/apps/home.venv/bin:$PATH
+
+#WORKDIR /home/node/workspace

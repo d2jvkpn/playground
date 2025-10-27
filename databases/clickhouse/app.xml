@@ -1,0 +1,13 @@
+<yandex>
+  <users>
+    <app>
+      <networks>
+        <ip>::/0</ip>
+      </networks>
+      <profile>default</profile>
+      <quota>default</quota>
+      <password>secret123</password>
+      <access_management>1</access_management>
+    </app>
+  </users>
+</yandex>

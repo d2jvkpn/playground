@@ -7,7 +7,7 @@ PyYAML
 requests
 requests[socks]
 httpx
-httpx-socks
+httpx[socks]
 #pytest
 #loguru
 
