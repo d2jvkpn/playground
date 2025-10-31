@@ -6,8 +6,9 @@ ADD compose.jupyter.yaml run.sh Containerfile /opt/
 RUN chmod a+x /opt/apps/*.sh
 
 RUN /opt/apps/apt_install.sh \
-    tzdata build-essential gosu vim file \
-    jq tree dos2unix git openssh-client curl
+  tzdata build-essential gosu vim file \
+  jq tree dos2unix git openssh-client curl
+# nvidia-cuda-toolkit
 
 RUN conda install cuda-nvcc -c nvidia
 

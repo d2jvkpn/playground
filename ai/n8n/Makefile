@@ -1,2 +1,2 @@
-build:
-	docker build -f Containerfile -t local/n8nio/n8n:stable .
+image:
+	docker build -f Containerfile --no-cache -t local/n8nio/n8n:stable ./

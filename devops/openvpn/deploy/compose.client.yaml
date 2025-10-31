@@ -1,6 +1,6 @@
 services:
   openvpn:
-    image: kylemanna/openvpn:local
+    image: local/kylemanna/openvpn:latest
     restart: always
     cap_add: [NET_ADMIN]
     devices:

@@ -17,8 +17,6 @@ def learning(r1_mins, r2_mins, total_mins, break_secs=10):
     r2_secs = r2_mins * 60
     total_secs = total_mins * 60
 
-    print(f"==> {now()} Starting: you will keep learning in {total_mins}m")
-
     while True:
         delta = int(time.time() - t0)
         if delta >= total_secs:
@@ -35,7 +33,6 @@ def learning(r1_mins, r2_mins, total_mins, break_secs=10):
         print(f"--> {now()} have a break: step={step}, seconds={break_secs}s")
         time.sleep(break_secs)
 
-    print("<== {now()} Finished: rest for 20 minutes")
     chime.success()
     chime.success()
     chime.success()
@@ -45,12 +42,15 @@ parser = argparse.ArgumentParser(
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
 
-parser.add_argument("-c", "--config", help="config path", default=Path("configs") / "local.yaml")
-parser.add_argument("--r1", help="min minutes", type=int, default=3)
-parser.add_argument("--r2", help="max minutes", type=int, default=5)
-parser.add_argument("--total", help="total minutes", type=int, default=90)
+#parser.add_argument("--config", help="yaml config filepath", default=Path("configs") / "local.yaml")
+parser.add_argument("--r1_mins", help="min minutes", type=int, default=3)
+parser.add_argument("--r2_mins", help="max minutes", type=int, default=5)
+parser.add_argument("--break_secs", help="break seconds", type=int, default=10)
+parser.add_argument("--total_mins", help="total minutes", type=int, default=90)
 
 args = parser.parse_args(args=None) # parser.parse_args(os.argv[1:])
-print(f"Args: {args}")
+#print(f"==> Args: {args}")
 
-learning(args.r1, args.r2, args.total)
+print(f"==> {now()} Starting: you will keep learning in {args.total_mins}m")
+learning(args.r1_mins, args.r2_mins, args.total_mins, args.break_secs)
+print("<== {now()} Finished: rest for 20 minutes")

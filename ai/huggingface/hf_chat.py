@@ -7,18 +7,15 @@ import dotenv, torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 
 
-def model_cache_path(model_id):
-    cache_dir = Path.home() / ".cache" / "huggingface" / "hub"
-    cache_dir = os.environ.get('HF_HUB_CACHE', cache_dir)
-
-    model_hf = Path(cache_dir) / ("models--" + model_id.replace("/", "--"))
-    model_ref = (model_hf / "refs" / "main").read_text(encoding="utf-8").strip()
-    model_path = model_hf / "snapshots" / model_ref
-
-    return model_path
-
 def now():
     return datetime.now().astimezone().strftime("%FT%T%:z")
+
+def hf_model_path(model_id):
+    hf_hub_cache = Path.home() / ".cache" / "huggingface" / "hub"
+    hf_hub_cache = os.environ.get('HF_HUB_CACHE', hf_hub_cache)
+    model_dir = Path(hf_hub_cache) / ("models--" + model_id.replace("/", "--"))
+    model_ref = (model_dir / "refs" / "main").read_text(encoding="utf-8").strip()
+    return model_hf / "snapshots" / model_ref
 
 #### 1.
 parser = argparse.ArgumentParser(
@@ -45,7 +42,7 @@ print(f"{now()} ==> Args: {args}")
 dotenv.load_dotenv(args.env)
 
 if os.getenv("HF_HUB_OFFLINE", "").lower() in ["1", "true"]:
-    model_id = model_cache_path(args.model_id)
+    model_id = hf_model_path(args.model_id)
 else:
     model_id = args.model_id
 

@@ -1,23 +1,17 @@
-#### utils
-flake8
-pip
-uv
-python-dotenv
-PyYAML
-requests
-requests[socks]
-httpx
-httpx[socks]
-
-#### data science
 numpy
 pandas
 polars
 matplotlib
 scipy
 scikit-learn
+seaborn
+plotly
+
 jupyterlab
 ipywidgets
 jupyterlab-execute-time
 jupyter-resource-usage
 #jupyterlab-nvdashboard
+
+gradio
+streamlit

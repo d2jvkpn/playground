@@ -1,0 +1,12 @@
+requests
+requests[socks]
+httpx
+httpx[socks]
+fastapi[standard]
+starlette
+pydantic
+python-multipart
+itsdangerous
+
+uvicorn
+gunicorn

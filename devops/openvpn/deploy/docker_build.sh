@@ -18,4 +18,4 @@ cd ${_wd}
 
 docker build --no-cache -f ${_dir}/Containerfile \
   --build-arg=region="$region" \
-  -t local/openvpn:dev ./
+  -t local/kylemanna/openvpn:latest ./

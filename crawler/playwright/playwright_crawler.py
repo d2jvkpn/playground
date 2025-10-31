@@ -17,18 +17,21 @@ async def playbook_run(page, run):
     for step in run['steps']:
         action, target = step['action'], step['target']
         msg = f"[{now()}]  playbook_run: action={action}, target={target}"
-        inputs = step.get("inputs", {})
+        extras = step.get("extras", {})
 
         print(msg, file=os.sys.stderr)
         if action == "load":
             await page.wait_for_selector(target)
         elif action == "wait":
             await asyncio.sleep(int(target))
+        elif action == "input":
+            await page.fill(target, extras['value']);
         elif action == "click":
-            elem = stagehand.page.locator(target, **inputs)
-            await elem.click()
+            #elem = page.locator(target, **extras)
+            #await elem.click()
+            await page.click(target);
 
-        elif action == "exec":
+        elif action == "execute":
             js = Path(target).read_text()
             result = await page.evaluate(js)
 
