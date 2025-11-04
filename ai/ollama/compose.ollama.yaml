@@ -4,15 +4,18 @@
 services:
   ollama-cpu:
     container_name: ollama-cpu
+    image: ollama/ollama:0.12.7
     hostname: ollama-cpu
-    image: ollama/ollama:0.9.0
+    user: ubuntu:ubuntu
     network_mode: bridge
     #networks: [net]
     ports: ["127.0.0.1:11434:11434"]
+    working_dir: /home/ubuntu/
     volumes:
     #- /ect/localtime:/ect/localtime:ro
     #- /etc/timezone:/etc/timezone:ro
-    - ./data/ollama:/root/.ollama
+    #- ./data/ollama:/root/.ollama
+    - ./data/ollama:/home/ubuntu/.ollama
     environment:
       OLLAMA_HOST: 127.0.0.1:11434
     command:
@@ -21,8 +24,9 @@ services:
 
   ollama-gpu:
     container_name: ollama-gpu
+    image: ollama/ollama:0.12.7
     hostname: ollama-gpu
-    image: ollama/ollama:0.9.0
+    user: ubuntu:ubuntu
     deploy:
       resources:
         reservations:
@@ -37,7 +41,14 @@ services:
     network_mode: bridge
     #networks: [net]
     ports: ["127.0.0.1:11434:11434"]
+    working_dir: /home/ubuntu/
     volumes:
     #- /ect/localtime:/ect/localtime:ro
     #- /etc/timezone:/etc/timezone:ro
-    - ./data/ollama:/root/.ollama
+    #- ./data/ollama:/root/.ollama
+    - ./data/ollama:/home/ubuntu/.ollama
+    environment:
+      OLLAMA_HOST: 127.0.0.1:11434
+    command:
+    - serve
+    # ollama serve llama3:8b

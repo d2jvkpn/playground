@@ -10,6 +10,7 @@ alibaba:
 - qwen3:8b
 - qwen2.5-coder:7b
 - qwen2.5-coder:14b
+- qwen3-vl:8b
 
 mistral:
 - mistral:7b

@@ -14,10 +14,7 @@ def now():
     return datetime.now().astimezone().strftime("%FT%T%:z")
 
 def hf_model_path(model_id):
-    hf_hub_cache = os.environ.get(
-        'HF_HUB_CACHE',
-        Path.home() / ".cache" / "huggingface" / "hub",
-    )
+    hf_hub_cache = os.environ.get("HF_HUB_CACHE", Path.home() / ".cache" / "huggingface" / "hub")
 
     model_dir = Path(hf_hub_cache) / ("models--" + model_id.replace("/", "--"))
     model_ref = (model_dir / "refs" / "main").read_text(encoding="utf-8").strip()
@@ -38,9 +35,10 @@ Answer:
 
 ####
 model_id = os.getenv("model_id", "Qwen/Qwen3-VL-4B-Instruct")
+quantization = os.getenv("quantization", "q4").lower()
+
 model_path = hf_model_path(model_id)
 
-quantization = os.getenv("quantization", "q4").lower()
 if quantization == "q4":
     bnb = BitsAndBytesConfig(
         load_in_4bit=True,
