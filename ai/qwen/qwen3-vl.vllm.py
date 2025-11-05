@@ -25,7 +25,7 @@ def image_to_uri(p):
 img_path = os.sys.argv[1]
 # img_path = "data/images/candy.jpeg"
 # img_path = "data/images/receipt.png"
-image_url = image_to_uri(img_path)
+img_url = image_to_uri(img_path)
 
 resp = client.chat.completions.create(
     model=model_id,
@@ -39,7 +39,7 @@ resp = client.chat.completions.create(
             "content": [
                 #{ "type": "text", "text": "What animal is on the candy?" },
                 { "type": "text", "text": "糖果上的是什么动物" },
-                { "type": "image_url", "image_url": { "url": image_url } },
+                { "type": "image_url", "image_url": { "url": img_url } },
                 #{ "type": "image_url", "image_url": { "url": "https://example.com/street.jpg" } },
             ],
         },
