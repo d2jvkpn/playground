@@ -25,8 +25,9 @@ services:
     #networks: [net]
     #ports: ["8000:8000"]
     volumes:
-    - ../jupyter.container/data/huggingface:/root/.cache/huggingface:ro
+    - ./data/huggingface:/root/.cache/huggingface:ro
     environment:
+      TZ: Asia/Shanghai
       HF_HUB_OFFLINE: "true"
     command:
     - --dtype=auto
