@@ -17,6 +17,10 @@ def file_to_b64(p: Union[str, Path]) -> str:
 ollama_addr = os.getenv("ollama_addr", "http://localhost:11434")
 model_id = os.getenv("model_id", "qwen3-vl:2b") # "qwen3-vl:4b"
 
+img_path = os.sys.argv[1]
+# img_path = "data/images/candy.jpeg"
+# img_path = "data/images/receipt.png"
+
 chat_endpoint = f"{ollama_addr}/api/chat"
 system_prompt = "Answer concisely with only the final answer. No reasoning, no extra words."
 
@@ -30,7 +34,7 @@ payload = {
         {
             "role": "user",
             "content": "What animal is on the candy?",
-            "images": [file_to_b64("data/images/candy.jpeg")],
+            "images": [file_to_b64(img_path)],
         },
     ],
 }

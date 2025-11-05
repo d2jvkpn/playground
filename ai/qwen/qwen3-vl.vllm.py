@@ -15,12 +15,17 @@ def image_to_uri(p):
     mime = "image/png" if p.lower().endswith(".png") else "image/jpeg"
     #with open(p, "rb") as f:
     #    b64 = base64.b64encode(f.read()).decode("utf-8")
-    b64 = base64.b64encode(Path(p).read_bytes()).decode("utf-8")
+
+    bts = Path(p).read_bytes()
+    b64 = base64.b64encode(bts).decode("utf-8")
 
     return f"data:{mime};base64,{b64}"
 
 
-image_url = image_to_uri("data/images/candy.jpeg")
+img_path = os.sys.argv[1]
+# img_path = "data/images/candy.jpeg"
+# img_path = "data/images/receipt.png"
+image_url = image_to_uri(img_path)
 
 resp = client.chat.completions.create(
     model=model_id,

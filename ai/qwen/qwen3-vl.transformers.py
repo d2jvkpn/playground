@@ -86,9 +86,9 @@ msgs = [
     {
         "role": "user",
         "content": [
-            {"type": "image"},
-            #{"type": "text", "text": prompt_en.format(question)},
-            {"type": "text", "text": question},
+            { "type": "image" },
+            #{ "type": "text", "text": prompt_en.format(question) },
+            { "type": "text", "text": question },
         ],
     },
 ]
