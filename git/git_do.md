@@ -1,7 +1,7 @@
 ### Git Do
 ---
 
-#### ch01. branches
+#### 1. branches
 1. dev: development phase, X.X.0;
 - dev/alice
 2. test: test phase: X.X.1;
@@ -15,7 +15,7 @@
 8. sit: System Integration Testing
 9. uat: User Acceptance Testing
 
-#### ch02.
+#### 2.
 ```bash
 git diff -- ':!bin/*'
 ```
@@ -26,14 +26,14 @@ git checkout test
 git push --set-upstream origin test
 ```
 
-#### ch03. submodules
+#### 3. submodules
 ```bash
 git submodule add git@github.com:d2jvkpn/swagger-go.git swagger-go
 
 cat .gitmodules
 ```
 
-#### ch04. Creating a new repository
+#### 4. Creating a new repository
 ```bash
 touch README.md
 git init
@@ -44,7 +44,7 @@ git remote add origin git@github.com:d2jvkpn/playground.git
 git push -u origin dev
 ```
 
-#### ch05. Clone a repository
+#### 5. Clone a repository
 ```bash
 git clone git@github.com:d2jvkpn/playground.git
 cd playground
@@ -54,7 +54,7 @@ git commit -m "add README"
 git push -u origin dev
 ```
 
-#### ch06. Pushing an existing repository
+#### 6. Pushing an existing repository
 ```bash
 git remote add github git@github.com:d2jvkpn/playground.git
 git push -u github dev
@@ -62,11 +62,18 @@ git push -u github test
 git push -u github main
 ```
 
-#### ch07. import a repository
+#### 7. import a repository
 ```bash
 git clone --bare https://git.example.com/your/playground.git playground.git
 cd playground.git
 git remote set-url origin git@github.com:d2jvkpn/playground.git
 git push origin --tags
 git push origin --all
+```
+
+#### 8. clone a branch
+```bash
+ # --depth 1
+git clone --branch main --single-branch \
+  git@github.com:d2jvkpn/playground.git data/d2jvkpn--playground.main.git
 ```

@@ -79,18 +79,18 @@ question = " ".join(os.sys.argv[2:])
 image = Image.open(img_path).convert("RGB")
 
 msgs = [
-  {
-    "role": "system",
-    "content": "Answer concisely with only the final answer. No reasoning, no extra words.",
-  },
-  {
-    "role": "user",
-    "content": [
-      {"type": "image"},
-      #{"type": "text", "text": prompt_en.format(question)},
-      {"type": "text", "text": question},
-    ],
-  },
+    {
+        "role": "system",
+        "content": "Answer concisely with only the final answer. No reasoning, no extra words.",
+    },
+    {
+        "role": "user",
+        "content": [
+            {"type": "image"},
+            #{"type": "text", "text": prompt_en.format(question)},
+            {"type": "text", "text": question},
+        ],
+    },
 ]
 
 t0 = time.time()
@@ -106,18 +106,16 @@ answser = processor.decode(output_ids, skip_special_tokens=True)
 elapsed = round(time.time() - t0, 3)
 
 data = {
-  "model": model_id,
-  #"created_at": now(),
-  "created_at": int(time.time()),
-  "elapsed": elapsed,
-  "messages": [
-    {
-      "role": "assistant",
-      "content": [
-        {"type": "text", "text": answser},
-      ],
-    },
-  ],
+    "model": model_id,
+    #"created_at": now(),
+    "created_at": int(time.time()),
+    "elapsed": elapsed,
+    "messages": [
+        {
+            "role": "assistant",
+            "content": [{"type": "text", "text": answser}],
+        },
+    ],
 }
 
 response = json.dumps(data, ensure_ascii=False)

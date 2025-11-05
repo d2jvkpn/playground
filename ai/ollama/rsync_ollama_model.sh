@@ -26,3 +26,7 @@ for f in $model_lib $blobs; do
 done
 
 echo "$(date +%FT%T%:z) <== done"
+
+exit
+
+rsync -arvP -e "ssh -J jump_host -o RemoteCommand=none -o RequestTTY=no"

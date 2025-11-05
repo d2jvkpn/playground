@@ -13,10 +13,12 @@ docker run -d --name vllm \
   -v $HF_HUB_CACHE:/root/.cache/huggingface:ro \
   -e HF_HUB_OFFLINE=true \
   vllm/vllm-openai:v0.11.0 \
-  --dtype=auto --gpu-memory-utilization 0.90 \
+  --dtype=auto --gpu-memory-utilization=0.90 \
   --model=Qwen/Qwen2.5-0.5B --max-model-len=32768 \
   --host=0.0.0.0 --port=8000
 # --quantization awq
+
+# 2<<14 = 32768
 
 exit
 max_model_len=$(jq .max_position_embeddings config.json)

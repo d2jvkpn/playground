@@ -18,21 +18,21 @@ ollama_addr = os.getenv("ollama_addr", "http://localhost:11434")
 model_id = os.getenv("model_id", "qwen3-vl:2b") # "qwen3-vl:4b"
 
 chat_endpoint = f"{ollama_addr}/api/chat"
+system_prompt = "Answer concisely with only the final answer. No reasoning, no extra words."
 
 payload = {
-  "model": model_id,
-  "stream": False,
-  "messages": [
-    {
-      "role": "system",
-      "content": "Answer concisely with only the final answer. No reasoning, no extra words.",
-    },
-    {
-      "role": "user",
-      "content": "What animal is on the candy?",
-      "images": [file_to_b64("data/images/candy.jpeg")],
-    },
-  ],
+    "model": model_id,
+    "stream": False,
+    "temperature": 0.3,
+    "max_tokens": 256,
+    "messages": [
+        { "role": "system", "content": system_prompt },
+        {
+            "role": "user",
+            "content": "What animal is on the candy?",
+            "images": [file_to_b64("data/images/candy.jpeg")],
+        },
+    ],
 }
 
 resp = requests.post(
@@ -53,14 +53,14 @@ print(answer)
 #client = Client(host="http://localhost:11434", headers={'Authorization': 'YOUR_API_KEY'})
 
 #response = client.chat(
-#  model="qwen3-vl:2b", # "qwen3-vl:235b-cloud",
-#  messages=[
-#    {
-#      'role': 'user',
-#      'content': 'Translate the menu in the image to English.',
-#      'images': ['https://example.com/menu.png'],
-#    },
-#  ],
+#    model="qwen3-vl:2b", # "qwen3-vl:235b-cloud",
+#    messages=[
+#        {
+#            "role": "user",
+#            "content": "Translate the menu in the image to English.",
+#            "images": ["https://example.com/menu.png"],
+#        },
+#    ],
 #)
 
 #print(response.message.content)

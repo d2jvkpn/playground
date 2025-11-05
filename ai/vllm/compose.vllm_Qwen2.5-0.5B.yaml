@@ -1,0 +1,38 @@
+services:
+  vllm:
+    container_name: vllm
+    image: vllm/vllm-openai:v0.11.0
+    hostname: vllm
+    deploy:
+      resources:
+        reservations:
+          # cpus: "1"
+          # memory: 4g
+          devices:
+          - driver: nvidia
+            # device_ids: ['0', '3']
+            # count: all
+            count: 1
+            capabilities: [gpu]
+    healthcheck:
+      test: curl http://localhost:8000/health
+      start_period: 60s
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    network_mode: host
+    #network_mode: bridge
+    #networks: [net]
+    #ports: ["8000:8000"]
+    volumes:
+    - ./data/huggingface:/root/.cache/huggingface:ro
+    environment:
+      HF_HUB_OFFLINE: "true"
+    command:
+    - --dtype=auto
+    - --gpu-memory-utilization=0.90
+    - --model=Qwen/Qwen2.5-0.5B
+    - --max-model-len=32768
+    - --host=0.0.0.0
+    - --port=8000
+    # --quantization awq
