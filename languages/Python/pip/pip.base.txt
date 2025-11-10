@@ -5,3 +5,5 @@ python-dotenv
 PyYAML
 pytest
 loguru
+
+nest_asyncio

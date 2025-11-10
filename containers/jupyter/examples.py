@@ -3,8 +3,14 @@
 #### 1. torch, $ pip show torch
 import torch
 
-print(torch.cuda.is_available(), torch.version.cuda)
+print(torch.__version__)
 
+is_available = torch.cuda.is_available()
+if is_available:
+    print(torch.version.cuda)
+    print(torch.cuda.get_device_name(0))  # Should display your GPU model
+else:
+    print("No cuda is available")
 
 #### 2. google colab
 import os

@@ -16,6 +16,7 @@ polars
 matplotlib
 scipy
 scikit-learn
+
 jupyterlab
 ipywidgets
 jupyterlab-execute-time

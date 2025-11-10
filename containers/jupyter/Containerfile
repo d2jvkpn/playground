@@ -1,8 +1,9 @@
-FROM pytorch/pytorch:2.8.0-cuda12.9-cudnn9-runtime
+#FROM pytorch/pytorch:2.8.0-cuda12.9-cudnn9-runtime
+FROM local/pytorch:2.9.0-cuda13.0-cudnn9-runtime
 
 #### 1. installation
 COPY apps /opt/apps
-ADD compose.jupyter.yaml run.sh Containerfile /opt/
+ADD compose.jupyter.yaml Containerfile /opt/
 RUN chmod a+x /opt/apps/*.sh
 
 RUN /opt/apps/apt_install.sh \
@@ -28,7 +29,7 @@ WORKDIR /home/appuser/workspace
 #USER appuser
 EXPOSE 8888
 
-VOLUME ["/home/appuser/workspace", "/home/appuser/.local/lib/python3.11/site-packages"]
+VOLUME ["/home/appuser/workspace", "/home/appuser/.local/lib/python3.12/site-packages"]
 
 ENV TZ=Asia/Shanghai
 

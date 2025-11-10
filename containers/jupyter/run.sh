@@ -3,8 +3,8 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 #### 1. load and init
-image=local/jupyter:pytorch2.8.0-cuda12.9-cudnn9-runtime
-py=python3.11
+image=local/jupyter:pytorch2.9.0-cuda13.0-cudnn9-runtime
+py=python3.12
 
 mkdir -p configs data/pip logs
 

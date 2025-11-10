@@ -1,7 +1,8 @@
 services:
   jupyter:
     container_name: jupyter
-    image: local/jupyter:pytorch2.8.0-cuda12.9-cudnn9-runtime
+    #image: local/jupyter:pytorch2.8.0-cuda12.9-cudnn9-runtime
+    image: local/jupyter:pytorch:2.9.0-cuda13.0-cudnn9-runtime
     restart: always
     shm_size: 2g
     deploy:
@@ -16,8 +17,10 @@ services:
     ports: ['0.0.0.0:8888:8888']
     volumes:
     #- ./configs/pip.conf:/home/appuser/.config/pip/pip.conf
+    - ./data/bin:/home/appuser/.local/bin
     - ./:/home/appuser/workspace
-    - ./data/pip:/home/appuser/.local/lib/python3.11/site-packages
+    #- ./data/pip:/home/appuser/.local/lib/python3.11/site-packages
+    - ./data/pip:/home/appuser/.local/lib/python3.12/site-packages
     env_file: configs/container.env # set JUPYTER_TOKEN=xxxxxxxx
     environment:
       TZ: Asia/Shanghai

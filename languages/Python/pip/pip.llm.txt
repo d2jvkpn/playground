@@ -14,10 +14,10 @@ torch
 #torchvision==0.22.1
 #torchaudio==2.7.1
 transformers
-sentence-transformers
-peft
 bitsandbytes
 accelerate
+sentence-transformers
+peft
 sentencepiece
 trl
 vllm

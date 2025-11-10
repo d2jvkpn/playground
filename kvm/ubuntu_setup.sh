@@ -92,7 +92,7 @@ apt install -y software-properties-common \
   vim tree file pigz jq zip dos2unix \
   curl openvpn net-tools
 # landscape-common
-# yq, docker-compose
+# yq, docker.io, docker-compose-v2, --docker-compose--
 
 # wget -O Apps/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
 # chmod a+x Apps/bin/yq

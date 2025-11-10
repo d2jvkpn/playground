@@ -10,3 +10,13 @@ itsdangerous
 
 uvicorn
 gunicorn
+
+
+beautifulsoup4
+lxml
+parsel
+trafilatura
+selectolax
+
+playwright
+selenium
