@@ -2,18 +2,18 @@ FROM n8nio/n8n:stable
 
 USER root
 
-ADD configs/apt-install.txt configs/pip-install.txt Containerfile /opt/
+COPY install Containerfile /opt/install
 
 RUN apk --no-cache update && \
     apk --no-cache upgrade && \
-    apk --no-cache add python3 py3-pip $(cat /opt/apt-install.txt)
+    apk --no-cache add $(cat /opt/install/apt-install.txt)
 
 USER node
 
 RUN mkdir -p apps && \
     python3 -m venv apps/home.venv && \
     source apps/home.venv/bin/activate && \
-    pip install --no-cache --upgrade -r /opt/pip-install.txt
+    pip install --no-cache --upgrade -r /opt/install/pip-install.txt
 
 ENV PATH=/home/node/apps/home.venv/bin:$PATH
 

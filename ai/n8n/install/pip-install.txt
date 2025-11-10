@@ -1,0 +1,17 @@
+pip
+ipython
+python-dotenv
+PyYAML
+
+requests
+requests[socks]
+httpx
+httpx[socks]
+#httpx-socks
+
+beautifulsoup4
+lxml
+parsel
+trafilatura
+selectolax
+langdetect

@@ -6,6 +6,7 @@ import re, json
 
 from dotenv import load_dotenv
 load_dotenv(Path("configs") / "local.env")
+
 import torch
 torch.manual_seed(3647)
 #torch.set_float32_matmul_precision('high')
@@ -14,13 +15,13 @@ from transformers import set_seed
 set_seed(42)
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
-####
+#### 1. init
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 model_name = "Qwen/Qwen3-8B"
 
 print(f"--> device: {device}, model_name: {model_name}")
 
-####
+#### 2. setup
 # load the tokenizer and the model
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
@@ -53,7 +54,7 @@ tools = [
     },
 ]
 
-####
+#### 3. funcs
 def chat(messages, max_new_tokens=1024, thinking=True, tools=None, temperature=0.2):
     prompt = tokenizer.apply_chat_template(
         messages,
@@ -181,7 +182,7 @@ def parse_tool_calls(text: str) -> List[Dict[str, Any]]:
 
     return results
 
-####
+#### 4. usage
 msgs = [
     {"role": "user", "content": "Give me a short introduction to large language model."},
 ]

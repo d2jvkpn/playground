@@ -1,10 +1,10 @@
 openai
+openai-agents
 litellm
 huggingface_hub
 datasets
 tqdm
 fastmcp
-openai-agents
 langchain
 langchain-community
 crewai
