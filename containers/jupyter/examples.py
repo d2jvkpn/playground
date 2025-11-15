@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-#### 1. torch, $ pip show torch
+#### 1. pytorch, $ pip show torch
 import torch
 
 print(torch.__version__)
@@ -22,14 +22,14 @@ os.environ['HF_USER'] = userdata.get('HF_USER')
 os.environ['HF_TOKEN'] = userdata.get('HF_TOKEN')
 os.environ['WANDB_API_KEY'] = userdata.get('WANDB_API_KEY')
 
-drive.mount("/mnt/google_drive")
-data_dir = Path("/mnt/google_drive/data")
-link_name = "data"
+drive_dir = Path("/mnt/google_drive")
+drive.mount(drive_dir)
+data_dir = drive_dir / "data"
 
 if os.path.exists(link_name):
     print(f"link name already exists: {link_name}")
 else:
-    os.symlink(data_dir, link_name)
+    os.symlink(data_dir, "data")
 
 #$ ln -s /mnt/google_drive/MyDrive/data ./data
 #print(Path("data").glob("*"))

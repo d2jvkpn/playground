@@ -9,7 +9,7 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.bk && \
   sed -i 's#http://\(deb\|security\).debian.org#https://mirrors.aliyun.com#g' \
   /etc/apt/sources.list
 
-RUN  apt -y update && \
+RUN apt -y update && \
   apt -y upgrade && \
   apt install -y musl-tools && \
   apt clean && \

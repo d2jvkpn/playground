@@ -4,19 +4,16 @@ httpx
 httpx[socks]
 fastapi[standard]
 starlette
-pydantic
 python-multipart
 itsdangerous
 
 uvicorn
 gunicorn
 
-
 beautifulsoup4
 lxml
 parsel
 trafilatura
 selectolax
-
-playwright
 selenium
+playwright

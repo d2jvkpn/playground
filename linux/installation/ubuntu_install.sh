@@ -25,11 +25,10 @@ apt install  fcitx5 fcitx5-pinyin ibus-pinyin \
   remmina remmina-plugin-vnc fbreader okular \
   gedit gedit-plugins
 
+exit 0
 apt install smbclient cifs-utils \
-  postgresql-client-common postgresql-client-16
+  postgresql-client-common postgresql-client-16 \
+  ibus ibus-pinyin ibus-libpinyin ibus-setup
 
 # https://extensions.gnome.org/extension/261/kimpanel/
 # Input Method Panel using KDE's kimpanel protocol for Gnome-Shell
-
-apt install ibus ibus-pinyin ibus-libpinyin
-# ibus-setup

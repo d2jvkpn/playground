@@ -6,14 +6,14 @@ COPY install Containerfile /opt/install
 
 RUN apk --no-cache update && \
     apk --no-cache upgrade && \
-    apk --no-cache add $(cat /opt/install/apt-install.txt)
+    apk --no-cache add $(cat /opt/install/apk_install.txt)
 
 USER node
 
 RUN mkdir -p apps && \
     python3 -m venv apps/home.venv && \
     source apps/home.venv/bin/activate && \
-    pip install --no-cache --upgrade -r /opt/install/pip-install.txt
+    pip install --no-cache --upgrade -r /opt/install/pip_install.txt
 
 ENV PATH=/home/node/apps/home.venv/bin:$PATH
 

@@ -8,6 +8,8 @@ fastmcp
 langchain
 langchain-community
 crewai
+tf-keras
+vllm
 
 torch
 #torch==2.7.1+cu126 --index-url https://download.pytorch.org/whl/cu126
@@ -16,12 +18,12 @@ torch
 transformers
 bitsandbytes
 accelerate
-sentence-transformers
 peft
-sentencepiece
 trl
-vllm
+sentence-transformers
+sentencepiece
 flash-attn
+tokenizers
 
 openai-whisper
 faster-whisper

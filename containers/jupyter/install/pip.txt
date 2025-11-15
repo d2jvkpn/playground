@@ -4,6 +4,9 @@ pip
 uv
 python-dotenv
 PyYAML
+pydantic
+
+#### web
 requests
 requests[socks]
 httpx
