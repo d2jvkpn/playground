@@ -10,3 +10,5 @@ version: 0.1.0
 #### ch01. 
 1. docs
 - https://googlechromelabs.github.io/chrome-for-testing/#stable
+- https://chromedriver.chromium.org/downloads
+- https://github.com/mozilla/geckodriver/releases

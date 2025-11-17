@@ -1,8 +1,9 @@
-#! python3
-
+#!/usr/bin/env python3
 import os
 from glob import glob
+
 from IPython.display import Video
+
 
 basename = os.path.basename
 
