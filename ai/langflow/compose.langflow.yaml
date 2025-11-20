@@ -1,0 +1,17 @@
+
+services:
+  langflow:
+    container_name: langflow
+    image: langflowai/langflow:1.6.8
+    restart: unless-stopped
+    network_mode: bridge
+    ports: ["7860:7860"]
+    volumes:
+    - ./data/langflow:/data
+    environment:
+      LANGFLOW_HOST: 0.0.0.0
+      LANGFLOW_PORT: "7860"
+      LANGFLOW_DATABASE_URL: sqlite:////data/langflow.db
+      # LANGFLOW_DATABASE_URL: postgresql+psycopg2://langflow:pass@postgres:5432/langflow
+      # LANGFLOW_SUPERUSER_EMAIL: admin@example.com
+      # LANGFLOW_SUPERUSER_PASSWORD: yourpassword

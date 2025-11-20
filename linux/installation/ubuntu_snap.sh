@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
+
 exit
 
 #### 1. 停止并删除 snapd 服务

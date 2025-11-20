@@ -1,9 +1,7 @@
 #!/bin/bash
-set -eu -o pipefail
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
-docker save sd-webui:$SD_Version -o sd-webui_$SD_Version.tar
-pigz sd-webui_$SD_Version.tar
+docker save sd-webui:$SD_Version | pigz -c > sd-webui_$SD_Version.tar
 
 # mkdir -p outputs
 
