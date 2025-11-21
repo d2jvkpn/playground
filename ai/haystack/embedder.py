@@ -20,7 +20,7 @@ embedder = SentenceTransformersDocumentEmbedder(
 embedder.warm_up()
 
 #embedder = OpenAIDocumentEmbedder(
-#    model="text-embedding-3-small",   # 或其他 embedding 模型
+#    model="text-embedding-3-small",
 #)
 
 docs = [
