@@ -107,17 +107,7 @@ curl -o /tmp/cilium-linux-amd64.tar.gz \
 
 tar -xf /tmp/cilium-linux-amd64.tar.gz -C $output_dir/
 
-#### 8. treafik
-reference=https://raw.githubusercontent.com/traefik/traefik/v3.6/docs/content/reference
-mkdir -p 
-
-# curl -x socks5h://127.0.0.1:1080 -o $output_dir/kubernetes-crd-definition-v1.yml \
-#  $reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
-wget -P $output_dir/traefik/ $reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
-wget -P $output_dir/traefik/ $reference/dynamic-configuration/kubernetes-crd-rbac.yml
-wget -P $output_dir/traefik/ $reference/static-configuration/examples/kubernetes/service-lb.yaml
-
-#### 9. download info
+#### 8. download info
 cat > $output_dir/k8s_downloads.yaml << EOF
 k8s:
   version: $version
