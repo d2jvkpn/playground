@@ -15,7 +15,7 @@ from haystack.components.retrievers.in_memory import InMemoryEmbeddingRetriever
 document_store = InMemoryDocumentStore()
 
 embedder = SentenceTransformersDocumentEmbedder(
-    model="./data/huggingface_models/BAAI/bge-m3",  # n_embed=8194， 或 "moka-ai/m3e-base" 等
+    model="./data/huggingface_models/BAAI/bge-m3",  # n_embed=8194，或 "moka-ai/m3e-base" 等
 )
 embedder.warm_up()
 
