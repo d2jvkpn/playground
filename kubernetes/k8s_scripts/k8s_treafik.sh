@@ -7,7 +7,7 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 ####
 image_tag=v3
 helm_version=37.3.0
-treafik_dir=cache/k8s.download/treafik
+treafik_dir=cache/k8s.downloads/treafik
 mkdir -p $treafik_dir
 
 ####
