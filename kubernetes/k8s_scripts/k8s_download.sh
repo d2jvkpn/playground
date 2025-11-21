@@ -4,7 +4,7 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 # yq_version=${yq_version:-4.35.2}
 # flannel_version=${flannel_version:-0.23.0}
 
-# 1.31.2
+# 1.34.2
 version=$(
   kubeadm version --output json |
   jq -r .clientVersion.gitVersion |
@@ -56,20 +56,7 @@ mkdir -p $output_dir/images
 k8s_images=$(kubeadm config images list)
 
 
-#### 2. ingress-nginx and flannel
-for k in baremetal cloud; do
-    link=https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/$k/deploy.yaml
-
-    wget -O $output_dir/ingress-nginx.$k.yaml $link
-done
-
-# sed -i "1i # link: $link\n" $output_dir/ingress-nginx.yaml
-
-ingress_images=$(
-  awk '$1=="image:"{print $2}' $output_dir/ingress-nginx.*.yaml |
-  sort -u
-)
-
+#### 2. flannel
 # https://raw.githubusercontent.com/flannel-io/flannel/v${flannel_version}/Documentation/kube-flannel.yml
 link=https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 wget -O $output_dir/flannel.yaml $link
@@ -120,16 +107,22 @@ curl -o /tmp/cilium-linux-amd64.tar.gz \
 
 tar -xf /tmp/cilium-linux-amd64.tar.gz -C $output_dir/
 
-#### 8. download info
+#### 8. treafik
+reference=https://raw.githubusercontent.com/traefik/traefik/v3.6/docs/content/reference
+mkdir -p 
+
+# curl -x socks5h://127.0.0.1:1080 -o $output_dir/kubernetes-crd-definition-v1.yml \
+#  $reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
+wget -P $output_dir/traefik/ $reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
+wget -P $output_dir/traefik/ $reference/dynamic-configuration/kubernetes-crd-rbac.yml
+wget -P $output_dir/traefik/ $reference/static-configuration/examples/kubernetes/service-lb.yaml
+
+#### 9. download info
 cat > $output_dir/k8s_downloads.yaml << EOF
 k8s:
   version: $version
   images:
 $(echo "$k8s_images" | sed 's/^/  - image: /')
-
-ingress:
-  images:
-$(echo "$ingress_images" | sed 's/^/  - image: /')
 
 flannel:
   images:

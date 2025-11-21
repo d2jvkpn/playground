@@ -9,7 +9,7 @@ kubectl top nodes
 kubectl top pods -A
 
 #### 2. expose k8s cluster port 5432
-ansible $cp_node -a "bash k8s_scripts/kube_tcp-services.sh postgres 5432"
+ansible $cp_node -a "bash k8s_scripts/kube_nginx_tcp-services.sh postgres 5432"
 
 #### 3. deploy an app
 kubectl apply -f k8s_demos/k8s_web01.yaml
