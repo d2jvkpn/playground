@@ -12,9 +12,10 @@ curl -4 --fail https://ipinfo.io/json > "${prefix}_ipinfo.io.json"
 
 timezone=$(jq -r .timezone "${prefix}_ipinfo.io.json")
 loc=$(jq -r .loc "${prefix}_ipinfo.io.json")
-location=$(echo "$loc" | awk 'BEGIN{FS=","; OFS="&"} {print "latitude="$1, "longitude="$2}')
+latitude=$(echo "$loc" | awk 'BEGIN{FS=","} {print $1}')
+longitude=$(echo "$loc" | awk 'BEGIN{FS=","} {print $2}')
 
-curl --fail "https://api.open-meteo.com/v1/forecast?timezone=$timezone&$location&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max,winddirection_10m_dominant" > "${prefix}_api.open-meteo.com.json"
+curl --fail "https://api.open-meteo.com/v1/forecast?timezone=$timezone&latitude=$latitude&longitude=$longitude&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max,winddirection_10m_dominant" > "${prefix}_api.open-meteo.com.json"
 
 weather=$(
   jq -r '
@@ -35,8 +36,12 @@ weather=$(
 cat > "${prefix}_result.yaml" <<EOF
 datetime: $(echo $tag | awk -F "-" '{print $NF}' | xargs -i date -d @{} --rfc-3339=seconds)
 timezone: $timezone
-loc: $loc
+latitude: $latitude
+longitude: $longitude
 $weather
 EOF
 
 cat "${prefix}_result.yaml"
+
+exit
+jq -n --arg content "..." '{role: "user", content: $content}'
