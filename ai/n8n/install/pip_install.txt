@@ -15,3 +15,5 @@ parsel
 trafilatura
 selectolax
 langdetect
+
+pandas

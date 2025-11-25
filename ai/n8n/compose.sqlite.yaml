@@ -2,7 +2,7 @@
 services:
   n8n-sqlite:
     image: local/n8nio/n8n:stable
-    container_name: n8n-sqlite
+    container_name: n8n
     restart: always
     network_mode: bridge
     ports: ["127.0.0.1:5678:5678"]

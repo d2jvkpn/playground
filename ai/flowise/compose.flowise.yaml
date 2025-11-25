@@ -6,5 +6,5 @@ services:
     network_mode: bridge
     ports: ["3000:3000"]
     volumes:
-    - ./data/faiss:/data/faiss
+    - ./data/faiss:/root/faiss
     - ./data/flowise:/root/.flowise

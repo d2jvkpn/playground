@@ -17,10 +17,9 @@ RUN pip install --no-cache-dir -U -r /opt/install/pip.txt
 # -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 #### 2. config
-RUN mkdir -p /home/appuser/workspace /home/appuser/.jupyter && \
+RUN userdel -r ubuntu || true && \
+  mkdir -p /home/appuser/workspace /home/appuser/.jupyter && \
   cp /opt/install/jupyter_lab_config.py /home/appuser/.jupyter/
-
-RUN userdel -r ubuntu || true
 
 #### 3. define
 # WORKDIR /workspace
@@ -36,6 +35,7 @@ VOLUME ["/home/appuser/workspace", "/home/appuser/.local/lib/python3.12/site-pac
 ENTRYPOINT ["/opt/install/entrypoint.sh"]
 
 ENV TZ=Asia/Shanghai
+
 
 #### 4. run
 # "--NotebookApp.token=''", "--NotebookApp.password=''"

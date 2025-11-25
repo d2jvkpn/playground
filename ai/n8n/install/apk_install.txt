@@ -1,7 +1,11 @@
-python3
-py3-pip
 coreutils
 bash
+gcompat
+
 yq
 jq
-gcompat
+curl
+sqlite
+
+python3
+py3-pip

@@ -6,7 +6,7 @@ COPY install Containerfile /opt/install
 
 RUN apk --no-cache update && \
     apk --no-cache upgrade && \
-    apk --no-cache add $(cat /opt/install/apk_install.txt)
+    apk --no-cache add $(grep -v "^#" /opt/install/apk_install.txt)
 
 USER node
 
