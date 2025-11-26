@@ -7,7 +7,9 @@ services:
     network_mode: bridge
     ports: ["127.0.0.1:5678:5678"]
     volumes:
+    - ./data/bin:/home/node/apps/bin
     - ./data/n8n_data:/home/node/.n8n
     - ./data/n8n_workspace:/home/node/workspace
     environment:
+      GENERIC_TIMEZONE: Asia/Shanghai
       TZ: Asia/Shanghai

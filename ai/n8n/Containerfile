@@ -15,6 +15,9 @@ RUN mkdir -p apps && \
     source apps/home.venv/bin/activate && \
     pip install --no-cache --upgrade -r /opt/install/pip_install.txt
 
-ENV PATH=/home/node/apps/home.venv/bin:$PATH
+VOLUME ["/home/node/.n8n", "/home/node/workspace", "/home/node/apps/bin"]
 
-#WORKDIR /home/node/workspace
+ENV GENERIC_TIMEZONE=America/New_York \
+  PATH=/home/node/apps/home.venv/bin:/home/node/apps/bin:$PATH
+
+WORKDIR /home/node/workspace
