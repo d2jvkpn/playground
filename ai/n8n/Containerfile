@@ -10,6 +10,8 @@ RUN apk --no-cache update && \
 
 USER node
 
+WORKDIR /home/node
+
 RUN mkdir -p apps && \
     python3 -m venv apps/home.venv && \
     source apps/home.venv/bin/activate && \
