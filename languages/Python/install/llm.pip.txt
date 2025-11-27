@@ -26,6 +26,7 @@ sentencepiece
 flash-attn
 tokenizers
 xformers
+deepspeed
 
 openai-whisper
 faster-whisper
