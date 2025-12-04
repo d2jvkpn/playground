@@ -13,6 +13,8 @@ domain=$(yq .domain "$yaml")
 key_id=$(yq .access_key_id "$yaml")
 key_secret=$(yq .access_key_secret "$yaml")
 
+home_dir=~/apps/acme.git
+
 [[ -z "$email" || -z "$domain" ]] && { &>2 echo "email or domain is unset"; exit 1; }
 
 if [[ -z "$key_id" || -z "$key_secret" ]]; then
@@ -24,18 +26,19 @@ fi
 mkdir -p ~/apps/crons
 
 # curl https://get.acme.sh | sh
-[ -s ~/apps/acme/acme.sh ] || git clone https://github.com/acmesh-official/acme.sh ~/apps/acme.git
+[ -s $home_dir/acme.sh ] || \
+  git clone https://github.com/acmesh-official/acme.sh $home_dir
 
-~/apps/acme/acme.sh --register-account --home ~/apps/acme -m $email
+$home_dir/acme.sh --register-account --home $home_dir -m $email
 
 #### 2. setup account
 # account permissions: ["AliyunDNSFullAccess"]
 export Ali_Key="$key_id" Ali_Secret="$key_secret"
 
-~/apps/acme/acme.sh --issue --server letsencrypt --home ~/apps/acme \
+$home_dir/acme.sh --issue --server letsencrypt --home $home_dir \
   --dns dns_ali -d "$domain" -d "*.$domain"
 
-cat ~/apps/acme/account.conf
+cat ~/apps/acme.git/account.conf
 # SAVED_Ali_Key='xxxx'
 # SAVED_Ali_Secret='xxxx'
 

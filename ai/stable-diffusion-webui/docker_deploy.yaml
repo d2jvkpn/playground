@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   sd-webui:
     image: sd-webui:${TAG}

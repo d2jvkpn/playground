@@ -1,6 +1,6 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
 
 HTTP_Port=${1:-3011}; SSH_Port=${2:-3012}
 
@@ -17,14 +17,16 @@ cat > configs/gitea.env <<EOF
 POSTGRES_PASSWORD=$password
 EOF
 
-export HTTP_Port=$HTTP_Port SSH_Port=$SSH_Port
-export USER_UID=$(id -u) USER_GID=$(id -g)
+export HTTP_Port=$HTTP_Port \
+  SSH_Port=$SSH_Port
+  USER_UID=$(id -u) \
+  USER_GID=$(id -g)
 
-envsubst < docker_deploy.yaml > docker-compose.yaml
+envsubst < compose.postgres.yaml > compose.yaml
 
-docker-compose up -d
+docker compose up -d
 sleep 5
-docker-compose logs
+docker compose logs
 
 exit
 

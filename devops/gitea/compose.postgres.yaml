@@ -1,5 +1,3 @@
-version: "3"
-
 networks:
   net: { name: "gitea", driver: bridge, external: false }
 
@@ -13,9 +11,9 @@ services:
     container_name: gitea
     ports: ["${HTTP_Port}:3000", "${SSH_Port}:22"]
     environment:
-    - USER_UID=${USER_UID}
-    - USER_GID=${USER_GID}
-    - GITEA__database__DB_TYPE=postgres
+      USER_UID: ${USER_UID}
+      USER_GID: ${USER_GID}
+      GITEA__database__DB_TYPE: postgres
     volumes:
     - /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro
@@ -27,11 +25,11 @@ services:
     networks: ["net"]
     container_name: postgres
     environment:
-    - TZ=Asia/Shanghai
-    - PGTZ=Asia/Shanghai
-    - POSTGRES_USER=gitea
-    - POSTGRES_DB=gitea
-    # - POSTGRES_PASSWORD=gitea
+      TZ: Asia/Shanghai
+      PGTZ: Asia/Shanghai
+      POSTGRES_USER: gitea
+      POSTGRES_DB: gitea
+    #  POSTGRES_PASSWORD: gitea
     env_file: [./configs/gitea.env]
     volumes:
     - ./data/postgres:/var/lib/postgresql/data
