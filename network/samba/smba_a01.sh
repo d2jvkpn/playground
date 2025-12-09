@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 smb_addr=//192.168.1.42/project
 username=bob
