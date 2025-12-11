@@ -69,3 +69,8 @@ apk --no-cache add coreutils bash yq jq gcompat python3 py3-pip gosu
 curl -i -X POST -H "Content-Type: application/json" \
   http://localhost:5678/webhook-test/d6d72245-7e79-49b1-8e2d-b2b7538e6144 -d '{"key": "AI泡沫"}'
 ```
+
+6. version 2
+```
+docker run -d --name n8n -p 5678:5678 n8nio/n8n:2.0.1
+```

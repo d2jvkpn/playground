@@ -13,14 +13,12 @@ disk_c = Path("C:")
 home_dir = Path(os.environ['USERPROFILE'])
 
 #### 1. get all opened windows
-os.sys.exit(0)
 titles = pg.getAllTitles()
 for i, t in enumerate(titles, 1):
     if t.strip():
         print(f"{i:02d}: {t}")
 
-#### 2.
-os.sys.exit(0)
+#### 2. notepad
 name = "hello.txt"
 file = home_dir / "DESKTOP" / name
 open(file, 'w').close()
@@ -46,11 +44,3 @@ pg.hotkey("ctrl", "v")
 pg.hotkey("ctrl", "s")
 win.close()
 #pg.hotkey("shift", "s")
-
-#### 3. terminal
-os.sys.exit(0)
-pg.write("ls", interval=0.05)
-pg.hotkey("enter")
-
-pg.write("pwd", interval=0.05)
-pg.hotkey("enter")

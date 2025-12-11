@@ -1,11 +1,20 @@
 FROM ubuntu:24.04
 
-ENV DEBIAN_FRONTEND=noninteractive
+RUN mkdir -p /opt/install
+ADD apt_install.sh entrypoint.sh /opt/install/
 
-RUN apt update && \
-  apt -y upgrade && \
-  apt install -y tzdata file python3 supervisor
-
+RUN bash /opt/install/apt_install.sh tzdata file python3 supervisor
 # python3-pip podman
 
-ENV DEBIAN_FRONTEND=""
+RUN userdel -r ubuntu || true
+
+#RUN useradd -m -s /bin/bash -u 1000 -g 1000 appuser
+#USER appuser
+RUN mkdir -p /home/appuser/workspace
+
+VOLUME ["/home/appuser/workspace"]
+ENV TZ=Asia/Shanghai
+WORKDIR /home/appuser/workspace
+
+ENTRYPOINT ["/opt/install/entrypoint.sh"]
+CMD ["echo", "You are already in the container"]

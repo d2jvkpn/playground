@@ -36,11 +36,14 @@ pg.moveTo(1380,  295, duration=0.5) # 今日事件提醒 - 关闭
 pg.click()
 
 time.sleep(2)
+pg.screenshot("screen.png")         # region=(100, 200, 800, 600)
+
+time.sleep(2)
 pg.moveTo(680,  70, duration=0.5)   # 退出系统 - 点击
 pg.click()
 
-pg.screenshot("screen.png")         # region=(100, 200, 800, 600)
-
-os.sys.exit(0)
+time.sleep(2)
 pg.moveTo(900,  600, duration=0.5)  # 退出系统 - 确认
 pg.click()
+
+os.sys.exit(0)

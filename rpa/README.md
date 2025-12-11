@@ -7,7 +7,7 @@ version: 0.1.0
 ```
 
 #### ch01. Apps
-1. pyautogui @ windows
+1. pyautogui@windows
 ```bat
 pip install pyautogui pillow pyperclip
 
