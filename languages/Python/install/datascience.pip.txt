@@ -6,6 +6,7 @@ scipy
 scikit-learn
 seaborn
 plotly
+XlsxWriter
 
 jupyterlab
 ipywidgets

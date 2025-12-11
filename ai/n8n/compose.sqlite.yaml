@@ -11,5 +11,9 @@ services:
     - ./data/n8n_data:/home/node/.n8n
     - ./data/n8n_workspace:/home/node/workspace
     environment:
+      DB_SQLITE_POOL_SIZE: "8"
+      N8N_RUNNERS_ENABLED: "true"
+      N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
+      N8N_GIT_NODE_DISABLE_BARE_REPOS: "true"
       GENERIC_TIMEZONE: Asia/Shanghai
       TZ: Asia/Shanghai

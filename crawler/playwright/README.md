@@ -20,6 +20,7 @@ https://cdn.playwright.dev/dbazure/download/playwright/builds/chromium/1179/chro
 https://cdn.playwright.dev/dbazure/download/playwright/builds/chromium/1179/chromium-headless-shell-linux.zip
 https://playwright.download.prss.microsoft.com/dbazure/download/playwright/builds/firefox/1488/firefox-ubuntu-24.04.zip
 https://playwright.download.prss.microsoft.com/dbazure/download/playwright/builds/webkit/2182/webkit-ubuntu-24.04.zip
+https://cdn.playwright.dev/dbazure/download/playwright/builds/firefox/1488/firefox-ubuntu-24.04.zip
 
 ls ~/.cache/ms-playwright/
 ```

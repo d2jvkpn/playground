@@ -17,3 +17,5 @@ jq '.data.messages[3] |= . + {
 }' input.json
 
 jq -arg content "$(cat data/picture.base64)" ".pictures[0] |= . + $content" data/request.json
+
+jq -r '.[].link' input.json | sort -u

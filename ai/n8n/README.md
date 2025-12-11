@@ -63,3 +63,9 @@ apk --no-cache add coreutils bash yq jq gcompat python3 py3-pip gosu
   # curl tzdata openssl vim iproute2 supervisor nmap logroate openvpn openssh
   
 ```
+
+5. tests
+```
+curl -i -X POST -H "Content-Type: application/json" \
+  http://localhost:5678/webhook-test/d6d72245-7e79-49b1-8e2d-b2b7538e6144 -d '{"key": "AI泡沫"}'
+```

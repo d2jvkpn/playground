@@ -8,3 +8,4 @@ loguru
 pythonjsonlogger
 pydantic
 nest_asyncio
+regex
