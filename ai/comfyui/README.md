@@ -31,3 +31,13 @@ version: 0.1.0
 - ComfyUI_examples https://github.com/comfyanonymous/ComfyUI_examples
 - Wunkolo/ComfyUI-Workflow-Collection https://github.com/Wunkolo/ComfyUI-Workflow-Collection
 - Youtube Olivio Sarikas + KeiwanD + Sebastian Kamph
+
+4. paths
+- models
+- input
+- output
+- user/default/workflows
+
+5. courses
+- Comfyui工作流从零基础到精通（2025新手入门实用版comfyui教程）  https://www.bilibili.com/video/BV1dr3XzsEqP
+- Comfyui最强音色克隆插件CosyVoice2安装  https://www.bilibili.com/video/BV1hvjrztEup

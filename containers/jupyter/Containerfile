@@ -13,7 +13,8 @@ RUN /opt/install/apt_install.sh tzdata gosu build-essential \
 
 RUN conda install cuda-nvcc -c nvidia && pip install --no-cache-dir flash-attn
 
-RUN pip install --no-cache-dir -U -r /opt/install/pip.txt
+RUN pip3 install --no-cache-dir --upgrade pip && \
+  pip3 install --no-cache-dir --upgrade -r /opt/install/pip.txt
 # -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 #### 2. config

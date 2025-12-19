@@ -9,6 +9,8 @@ CUDA_PATH=cu$(echo $CUDA_VERSION | sed 's#\.##')
 docker pull ubuntu:24.04
 
 mkdir -p data
+rm -rf data/pytorch.git
+
 git clone --branch main --depth 1 --single-branch \
   https://github.com/pytorch/pytorch data/pytorch.git
 
@@ -29,6 +31,8 @@ docker build \
   --build-arg=CUDA_PATH=$CUDA_PATH \
   -f Containerfile \
   -t local/pytorch:${PYTORCH_VERSION}-cuda${CUDA_VERSION}-cudnn9-runtime ./
+
+rm -f Containerfile
 
 # rm Containerfile nohup.out
 # git pull

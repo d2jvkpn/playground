@@ -56,7 +56,11 @@ case "${1:-""}" in
     ;;
 esac
 
-if [ $# -lt 2 ]; then
+if [ $# -eq 1 ]; then
+   name=$1
+   yq ".$name" $config
+   exit 0
+elif [ $# -lt 2 ]; then
     >&2 echo '!!! Args are required: name <services...>'
     exit 1
 fi

@@ -1,20 +1,46 @@
-FROM python:3.12-slim
+FROM nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04
 
 COPY ./install /opt/install
 
-RUN bash /opt/install/apt_install.sh git libgl1
+# ENV PYTHONUNBUFFERED=1 PIP_DISABLE_PIP_VERSION_CHECK=1
+RUN bash /opt/install/apt_install.sh \
+  git wget ca-certificates libgl1 libglib2.0-0t64 \
+  python3 python3-pip python3-venv
 
-RUN git clone --branch master --depth 1 --single-branch \
-    https://github.com/comfyanonymous/ComfyUI.git /opt/ComfyUI.git
+RUN mkdir -p /home/appuser/ /home/appuser/defaults && \
+  git clone --depth=1 https://github.com/comfyanonymous/ComfyUI.git /home/appuser/workspace && \
+  cp -r /home/appuser/workspace/models /home/appuser/workspace/custom_nodes \
+    /home/appuser/workspace/custom_nodes /home/appuser/defaults
 
-WORKDIR /opt/ComfyUI.git
+WORKDIR /home/appuser/workspace
 
-RUN pip install --no-cache-dir -r requirements.txt
+# https://pytorch.org/get-started/previous-versions/
+RUN python3 -m venv .venv && \
+  . .venv/bin/activate && \
+  pip3 install --no-cache-dir --upgrade pip && \
+  pip3 install --no-cache-dir torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0 \
+    --index-url https://download.pytorch.org/whl/cu129 && \
+  pip3 install --no-cache-dir xformers --index-url https://download.pytorch.org/whl/cu129 && \
+  awk '$1!="torch" && $1!="torchvision" && $1!="torchaudio"' requirements.txt > pip.txt && \
+  pip install --no-cache-dir -r pip.txt && \
+  rm pip.txt
+# -i https://pypi.tuna.tsinghua.edu.cn/simple
 
-RUN mkdir -p /opt/ComfyUI.git.defaults && \
-    cp -r /opt/ComfyUI.git/models /opt/ComfyUI.git/custom_nodes /opt/ComfyUI.git/custom_nodes \
-    /opt/ComfyUI.git.defaults/
+ENV PATH=/home/appuser/workspace/.venv/bin:$PATH \
+  USER_UID=0 USER_GID=0
 
-VOLUME ["/opt/ComfyUI.git/models", "/opt/ComfyUI.git/custom_nodes", "/opt/ComfyUI.git/output"]
+VOLUME [
+  "/home/appuser/workspace/models",
+  "/home/appuser/workspace/custom_nodes",
+  "/home/appuser/workspace/output",
+]
 
-CMD ["python", "main.py", "--listen=0.0.0.0", "--port=8188"]
+EXPOSE 8188
+
+ENTRYPOINT ["/opt/install/entrypoint.sh"]
+
+CMD [
+  "python3", "main.py",
+  "--enable-cors-header", "--disable-smart-memory",
+  "--listen=0.0.0.0", "--port=8188",
+]
