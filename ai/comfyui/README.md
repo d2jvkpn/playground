@@ -41,3 +41,6 @@ version: 0.1.0
 5. courses
 - Comfyui工作流从零基础到精通（2025新手入门实用版comfyui教程）  https://www.bilibili.com/video/BV1dr3XzsEqP
 - Comfyui最强音色克隆插件CosyVoice2安装  https://www.bilibili.com/video/BV1hvjrztEup
+
+6. nodes
+- https://api.comfy.org/nodes
