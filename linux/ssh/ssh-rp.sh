@@ -5,12 +5,12 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(readlink -f `dirname $0`)
 #### 1. functionss
 function display_usage() {
 >&2 cat <<'EOF'
-Usage of ssh-access.sh
+Usage of ssh-rp.sh
 
 #### 1. Run
-- local_addr=127.0.0.1 ssh-access.sh <name> <services...>
-- ssh-access.sh ali postgres redis
-- ssh-access.sh config
+- local_addr=127.0.0.1 ssh-rp.sh <name> <services...>
+- ssh-rp.sh ali postgres redis
+- ssh-rp.sh config
 
 #### 2. environment variables
 local_addr=localhost
@@ -43,7 +43,7 @@ function on_exit() {
 
 #### 2. configure
 local_addr=${local_addr:-localhost}
-config=${config:-~/apps/configs/ssh-access.yaml}
+config=${config:-~/apps/configs/ssh-rp.yaml}
 
 case "${1:-""}" in
 "" | "help" | "-h" | "--help")
