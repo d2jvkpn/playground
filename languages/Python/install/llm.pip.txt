@@ -2,6 +2,7 @@ openai
 openai-agents
 litellm
 huggingface_hub
+huggingface_hub[cli]
 datasets
 tqdm
 fastmcp

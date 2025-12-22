@@ -1,0 +1,7 @@
+audio-separator
+
+#### cpu
+#onnxruntime
+
+#### gpu
+onnxruntime-gpu
