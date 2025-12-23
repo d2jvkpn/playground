@@ -68,3 +68,13 @@ export JUPYTER_TOKEN=$JUPYTER_TOKEN
 
 jupyter lab --no-browser --allow-root --ip=0.0.0.0 --port=8888
 ```
+
+5. ?? env
+```
+  GRANT_SUDO: yes
+  JUPYTER_ALLOW_ROOT: "1"
+  JUPYTER_ENABLE_LAB: yes
+  NB_UID: ${UID}
+  NB_GID: ${GID}
+  CHOWN_HOME: yes
+```

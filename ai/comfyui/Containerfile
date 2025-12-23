@@ -4,7 +4,7 @@ COPY ./install /opt/install
 
 # ENV PYTHONUNBUFFERED=1 PIP_DISABLE_PIP_VERSION_CHECK=1
 RUN bash /opt/install/apt_install.sh \
-  git wget ca-certificates libgl1 libglib2.0-0t64 \
+  git wget vim ca-certificates libgl1 libglib2.0-0t64 \
   python3 python3-pip python3-venv
 
 RUN mkdir -p /home/appuser/ /home/appuser/defaults && \
@@ -23,7 +23,9 @@ RUN python3 -m venv .venv && \
   pip3 install --no-cache-dir xformers --index-url https://download.pytorch.org/whl/cu129 && \
   awk '$1!="torch" && $1!="torchvision" && $1!="torchaudio"' requirements.txt > pip.txt && \
   pip install --no-cache-dir -r pip.txt && \
-  rm pip.txt
+  rm pip.txt &&
+  pip install --no-cache-dir python-dotenv huggingface_hub[cli]
+
 # -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 ENV PATH=/home/appuser/workspace/.venv/bin:$PATH \

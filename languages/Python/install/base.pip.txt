@@ -9,3 +9,4 @@ pythonjsonlogger
 pydantic
 nest_asyncio
 regex
+uuid-utils

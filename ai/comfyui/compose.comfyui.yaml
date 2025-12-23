@@ -3,10 +3,34 @@ services:
     container_name: comfyui
     image: local/comfyui:latest
     restart: unless-stopped
+    shm_size: '32gb'
+    deploy:
+      resources:
+        limits: { memory: 32G, cpus: '8.0' }
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
     network_mode: bridge
     ports: ["127.0.0.1:8188:8188"]
+    environment:
+      ALL_PROXY: ${PROXY}
+      # CUDA_MPS_ACTIVE_THREAD_PERCENTAGE: "60"
+      # NVIDIA_GPU_MEMORY_LIMIT: 32G
+      # CUDA_HOME: ??
+      # LD_LIBRARY_PATH: $CUDA_HOME/lib:$LD_LIBRARY_PATH 
     volumes:
+    - ./data/cache:/home/appuser/.cache
+    - ./data/pip:/home/appuser/.local/lib/python3.12/site-packages
     - ./data/comfyui_models:/opt/ComfyUI.git/models
     - ./data/comfyui_custom_nodes:/opt/ComfyUI.git/custom_nodes
     - ./data/comfyui_output:/opt/ComfyUI.git/output
-    command: ["python", "main.py", "--listen=0.0.0.0", "--port=8188"]
+    command: [
+      "python",
+      "main.py",
+      "--enable-cors-header",
+      "--disable-smart-memory",
+      "--listen=0.0.0.0",
+      "--port=8188",
+    ]
