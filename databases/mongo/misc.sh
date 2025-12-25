@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 exit
@@ -10,3 +10,7 @@ docker run --name mongo -p 127.0.0.1:27017:27017 \
 
 docker exec -it mongo mongosh --username root --password root --eval \
   'db = db.getSiblingDB("admin"); db.changeUserPassword("root", passwordPrompt())'
+
+exit
+
+monogosh "mongodb://user:password@127.0.0.1:27017/db"

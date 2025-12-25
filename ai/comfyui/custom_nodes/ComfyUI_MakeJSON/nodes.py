@@ -20,8 +20,14 @@ class MakeJSON:
     FUNCTION = "run"
     CATEGORY = "Utils/data"
 
-    def run(self, firstname, lastname, score):
-        obj = {"firstname": firstname, "lastname": lastname, "score": int(score)}
+    def run(self, firstname, lastname, score, description=""):
+        obj = {
+            "firstname": firstname,
+            "lastname": lastname,
+            "score": int(score),
+            "description": description,
+        }
+
         s = json.dumps(obj, indent=2,  ensure_ascii=False)
         return (s,)
 

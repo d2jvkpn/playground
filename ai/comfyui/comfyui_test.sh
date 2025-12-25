@@ -12,6 +12,12 @@ mkdir -p data
 ws_addr=$(echo $addr | sed 's/^http:/ws:/; s/^https:/wss:/')
 # jq '{prompt: .}' data/workflows/exported.api.json > data/workflows/workflow.json
 
+prompt=$(jq .prompt data/workflows/2025-12_歌曲翻唱.v3.api.json)
+if [[ "$prompt" == "null" ]]; then
+    jq '{prompt: .}' $workflow > ${workflow%.json}.fixed.json
+    workflow=${workflow%.json}.fixed.json
+fi
+
 #### 2. 
 prompt=$(curl -X POST "$addr/prompt" -H "Content-Type: application/json" -d "@$workflow")
 # {"prompt_id": "c482ff09-989a-41e8-9e6c-e8b4eb42b9c8", "number": 11, "node_errors": {}}

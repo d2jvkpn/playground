@@ -6,6 +6,9 @@ use home;
 db;
 db.createCollection("contacts");
 show collections;
+db.getCollectionNames();
+
+db.users.find().pretty();
 
 db.contacts.insert({
   "name": "Jon Wexler",
@@ -29,3 +32,11 @@ db.changeUserPassword("root", passwordPrompt());
 
 use products;
 db.changeUserPassword("hello", passwordPrompt());
+
+
+db.tasks.findOne({ status: "success" });
+
+db.tasks.find(
+  { status: "success" },
+  {}, // { title: 1, status: 1, create_time: 1, _id: 0 }
+).sort({ create_time: -1 }).skip(10).limit(2);
