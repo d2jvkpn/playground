@@ -24,3 +24,5 @@ DOCKER_BUILDKIT=1 docker build --no-cache --file ${_dir}/Containerfile \
   --tag $image ./
 
 echo "https://github.com/docker/buildx/releases"
+
+docker image inspect alpine:3 --format '{{.Os}}/{{.Architecture}}'
