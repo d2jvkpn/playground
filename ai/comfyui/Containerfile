@@ -16,11 +16,6 @@ RUN apt-get update && \
     python3 python3-venv python3-pip python3-dev && \
   rm -rf /var/lib/apt/lists/*
 
-#RUN apt-get install -y --no-install-recommends software-properties-common ca-certificates
-#  add-apt-repository ppa:ubuntuhandbook1/ffmpeg8
-#  apt-get update
-#  apt-get install -y ffmpeg
-
 RUN python3 -m venv /opt/venv
 ENV PATH=/opt/venv/bin:$PATH
 
@@ -30,16 +25,16 @@ RUN pip install --no-cache-dir torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.
   --index-url https://download.pytorch.org/whl/cu128
 
 RUN git clone --branch master --depth 1 --single-branch \
-    https://github.com/comfyanonymous/ComfyUI.git /app/ComfyUI && \
-  pip install --no-cache-dir -r /app/ComfyUI/requirements.txt
+    https://github.com/comfyanonymous/ComfyUI.git /app/ComfyUI
 
 WORKDIR /app/ComfyUI
 
-RUN git clone https://github.com/Comfy-Org/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager.disabled
-# pip install --no-cache-dir -r custom_nodes/ComfyUI-Manager/requirements.txt
-# pip install --no-cache-dir xformers
-# pip install --no-cache-dir --no-build-isolation flash-attn
-# python -c "import torch; print(torch.__version__)"
+RUN pip install --no-cache-dir -r requirements.txt && \
+  git clone https://github.com/Comfy-Org/ComfyUI-Manager.git \
+    custom_nodes/ComfyUI-Manager.disabled
+
+ENV http_proxy="" \
+  https_proxy=""
 
 VOLUME [
   "/root/.cache", \
@@ -50,9 +45,6 @@ VOLUME [
 ]
 
 EXPOSE 8188
-
-ENV http_proxy="" \
-  https_proxy=""
 
 # Set a default command
 CMD ["python3", "main.py", "--enable-cors-header", "--listen=0.0.0.0", "--port=8188"]
