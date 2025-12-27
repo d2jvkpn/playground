@@ -3,6 +3,7 @@ services:
     container_name: jupyter
     image: local/jupyter:pytorch2.8.0-cuda12.9-cudnn9-runtime
     restart: always
+    init: true
     shm_size: 2g
     deploy:
       resources:

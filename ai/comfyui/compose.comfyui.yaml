@@ -1,12 +1,14 @@
 services:
   comfyui:
-    container_name: comfyui
-    image: local/comfyui:latest
+    container_name: comfyui-base
+    image: local/comfyui-base:cuda12.8-ubuntu24.04
     restart: unless-stopped
+    init: true
     shm_size: '32gb'
+    #ipc: host
     deploy:
       resources:
-        limits: { memory: 32G, cpus: '8.0' }
+        limits: { cpus: '8.0', memory: 32G }
         reservations:
           devices:
             - driver: nvidia
@@ -21,11 +23,12 @@ services:
       # CUDA_HOME: ??
       # LD_LIBRARY_PATH: $CUDA_HOME/lib:$LD_LIBRARY_PATH 
     volumes:
-    - ./data/cache:/home/appuser/.cache
-    - ./data/pip:/home/appuser/.local/lib/python3.12/site-packages
+    - ./data/cache:/root/.cache
     - ./data/comfyui_models:/opt/ComfyUI.git/models
     - ./data/comfyui_custom_nodes:/opt/ComfyUI.git/custom_nodes
+    - ./data/comfyui_input:/opt/ComfyUI.git/input
     - ./data/comfyui_output:/opt/ComfyUI.git/output
+    #- ./data/pip:/home/appuser/.local/lib/python3.12/site-packages
     command: [
       "python",
       "main.py",

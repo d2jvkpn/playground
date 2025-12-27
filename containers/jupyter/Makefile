@@ -6,7 +6,8 @@ echo:
 	echo user_uid=$(shell id -u), user_gid=$(shell id -g), image=$(image)
 
 build:
-	docker build -f Containerfile --no-cache -t $(image) ./
+	#docker build -f Containerfile --no-cache -t $(image) ./
+	docker build -f Containerfile --no-cache -t local/jupyter:cuda12.9-ubuntu24.04 ./
 
 appuser_gpu:
 	mkdir -p configs data/pip logs

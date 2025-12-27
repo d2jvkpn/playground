@@ -42,3 +42,8 @@ docker run -it -p 8888:8888 continuumio/miniconda3:main /bin/bash -c '
   --notebook-dir=/opt/notebooks --ip="*" --port=8888 \
   --no-browser --allow-root'
 ```
+
+7. cleanup
+```
+conda clean -afy
+```

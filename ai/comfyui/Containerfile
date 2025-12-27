@@ -1,48 +1,54 @@
-FROM nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04
+FROM nvidia/cuda:12.8.1-cudnn-devel-ubuntu24.04 AS base
 
-COPY ./install /opt/install
+# Accept proxy settings as build arguments
+ARG HTTP_PROXY
+ARG HTTPS_PROXY
 
-# ENV PYTHONUNBUFFERED=1 PIP_DISABLE_PIP_VERSION_CHECK=1
-RUN bash /opt/install/apt_install.sh \
-  git wget vim ca-certificates libgl1 libglib2.0-0t64 \
-  python3 python3-pip python3-venv
+# Set proxy environment variables for the build
+ENV http_proxy=$HTTP_PROXY https_proxy=$HTTPS_PROXY DEBIAN_FRONTEND=noninteractive
 
-RUN mkdir -p /home/appuser/ /home/appuser/defaults && \
-  git clone --depth=1 https://github.com/comfyanonymous/ComfyUI.git /home/appuser/workspace && \
-  cp -r /home/appuser/workspace/models /home/appuser/workspace/custom_nodes \
-    /home/appuser/workspace/custom_nodes /home/appuser/defaults
+RUN apt-get update && \
+  apt-get upgrade -y && \
+  apt-get install -y --no-install-recommends tzdata ffmpeg ninja-build wget curl git git-lfs \
+    python3 python3-venv python3-pip python3-dev && \
+  rm -rf /var/lib/apt/lists/*
 
-WORKDIR /home/appuser/workspace
+#RUN apt-get install -y --no-install-recommends software-properties-common ca-certificates && \
+#  add-apt-repository ppa:ubuntuhandbook1/ffmpeg8 && \
+#  apt-get update && \
+#  apt-get install -y ffmpeg
 
-# https://pytorch.org/get-started/previous-versions/
-RUN python3 -m venv .venv && \
-  . .venv/bin/activate && \
-  pip3 install --no-cache-dir --upgrade pip && \
-  pip3 install --no-cache-dir torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0 \
-    --index-url https://download.pytorch.org/whl/cu129 && \
-  pip3 install --no-cache-dir xformers --index-url https://download.pytorch.org/whl/cu129 && \
-  awk '$1!="torch" && $1!="torchvision" && $1!="torchaudio"' requirements.txt > pip.txt && \
-  pip install --no-cache-dir -r pip.txt && \
-  rm pip.txt &&
-  pip install --no-cache-dir python-dotenv huggingface_hub[cli]
+RUN python3 -m venv /opt/venv
+ENV PATH=/opt/venv/bin:$PATH
 
-# -i https://pypi.tuna.tsinghua.edu.cn/simple
+# RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+RUN pip install --no-cache-dir torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0 \
+  --index-url https://download.pytorch.org/whl/cu128
 
-ENV PATH=/home/appuser/workspace/.venv/bin:$PATH \
-  USER_UID=0 USER_GID=0
+RUN pip install --no-cache-dir --upgrade pip wheel setuptools
+
+RUN git clone --branch master --depth 1 --single-branch \
+  https://github.com/comfyanonymous/ComfyUI.git /app/ComfyUI && \
+  pip install --no-cache-dir -r /app/ComfyUI/requirements.txt
+
+WORKDIR /app/ComfyUI
+
+RUN git clone https://github.com/Comfy-Org/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager.disabled
+# pip install --no-cache-dir -r custom_nodes/ComfyUI-Manager/requirements.txt
+# pip install --no-cache-dir xformers
+# pip install --no-cache-dir --no-build-isolation flash-attn
+# python -c "import torch; print(torch.__version__)"
 
 VOLUME [
-  "/home/appuser/workspace/models",
-  "/home/appuser/workspace/custom_nodes",
-  "/home/appuser/workspace/output",
+  "/root/.cache",
+  "/app/ComfyUI/models",
+  "/app/ComfyUI/custom_nodes",
+  "/app/ComfyUI/input",
+  "/app/ComfyUI/output",
 ]
 
 EXPOSE 8188
+ENV http_proxy="" https_proxy=""
 
-ENTRYPOINT ["/opt/install/entrypoint.sh"]
-
-CMD [
-  "python3", "main.py",
-  "--enable-cors-header", "--disable-smart-memory",
-  "--listen=0.0.0.0", "--port=8188",
-]
+# Set a default command
+CMD ["python3", "main.py", "--enable-cors-header", "--listen=0.0.0.0", "--port=8188"]

@@ -1,40 +1,50 @@
-title: Artificial Intelligence
+### Artificial Intelligence Models
 
-companies:
-- name: openai
+#### ch01. Companies
+1. OpenAI
   models: [gpt, o1]
   sites:
   - https://chatgpt.com/
   - https://openai.com/index/chatgpt/
 
-- name: deepseek
+2. Deepseek
   sites:
   - https://www.deepseek.com
 
-- name: authropic
+3. Authropic
   models: [claude]
-- name: google
+
+4. Google
   models: [gemma]
-- name: cohere
+
+5. Cohere
   models: ["command r+"]
-- name: meta
+
+6. Meta
   models: [llama]
-- name: perplexity
+
+7. Perplexity
   models: [perplexity]
-- name: alibaba
+
+8. Alibaba
   models: [qwen]
-- name: mistral
+
+9. Mistral
   models: [mistral]
-- name: microsoft
+
+10. Microsoft
   name: [phi]
 
-links:
+11. Links
 - https://zhuanlan.zhihu.com/p/670437303
 - https://zhuanlan.zhihu.com/p/687501772
 - https://zhuanlan.zhihu.com/p/61898234
 - https://zhuanlan.zhihu.com/p/597645266
 
-items:
-- pytorch
-- ollama
-- llamafile
+#### ch02. Communities
+
+#### ch03. Tools
+1. pytorch
+2. ollama
+3. llamafile
+4. ComfyUI
