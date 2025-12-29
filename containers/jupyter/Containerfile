@@ -15,7 +15,7 @@ RUN chmod a+x /opt/install/*.sh
 
 RUN /opt/install/apt_install.sh \
   apt-utils tzdata locales vim fonts-noto-cjk build-essential gosu \
-  vim dos2unix git jq curl file tree wget &&
+  vim dos2unix git jq curl file tree wget && \
   locale-gen en_US.UTF-8 zh_CN.UTF-8 && \
   update-locale LANG=en_US.UTF-8
 # openssh-client nvidia-cuda-toolkit
