@@ -1,6 +1,6 @@
 services:
   comfyui:
-    container_name: comfyui-base
+    container_name: comfyui
     image: local/comfyui-base:cuda12.8-ubuntu24.04
     restart: unless-stopped
     init: true
@@ -21,13 +21,16 @@ services:
       # CUDA_MPS_ACTIVE_THREAD_PERCENTAGE: "60"
       # NVIDIA_GPU_MEMORY_LIMIT: 32G
       # CUDA_HOME: ??
-      # LD_LIBRARY_PATH: $CUDA_HOME/lib:$LD_LIBRARY_PATH 
+      # LD_LIBRARY_PATH: $CUDA_HOME/lib:$LD_LIBRARY_PATH
+      TORCH_HOME: /app/ComfyUI/models/torch
+      HF_HOME: /app/ComfyUI/models/huggingface
     volumes:
     - ./data/cache:/root/.cache
-    - ./data/comfyui_models:/opt/ComfyUI.git/models
-    - ./data/comfyui_custom_nodes:/opt/ComfyUI.git/custom_nodes
-    - ./data/comfyui_input:/opt/ComfyUI.git/input
-    - ./data/comfyui_output:/opt/ComfyUI.git/output
+    - ./data/models:/app/ComfyUI/models
+    - ./data/custom_nodes:/app/ComfyUI/custom_nodes
+    - ./data/workflows:/app/ComfyUI/user/default/workflows
+    - ./data/input:/app/ComfyUI/input
+    - ./data/output:/app/ComfyUI/output
     #- ./data/pip:/home/appuser/.local/lib/python3.12/site-packages
     command: [
       "python",

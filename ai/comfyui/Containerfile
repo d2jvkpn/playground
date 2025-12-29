@@ -1,50 +1,61 @@
 FROM nvidia/cuda:12.8.1-cudnn-devel-ubuntu24.04 AS base
 
-# Accept proxy settings as build arguments
+# 1. Accept proxy settings as build arguments
 ARG HTTP_PROXY
 ARG HTTPS_PROXY
 
-# Set proxy environment variables for the build
+# 2. Set proxy environment variables for the build
 ENV http_proxy=$HTTP_PROXY \
   https_proxy=$HTTPS_PROXY \
-  DEBIAN_FRONTEND=noninteractive
+  DEBIAN_FRONTEND=noninteractive \
+  LANG=en_US.UTF-8
 
 RUN apt-get update && \
   apt-get upgrade -y && \
   apt-get install -y --no-install-recommends \
-    tzdata ninja-build wget curl git git-lfs vim ffmpeg \
+    tzdata locales vim fonts-noto-cjk \
+    ninja-build jq wget curl git git-lfs vim ffmpeg \
     python3 python3-venv python3-pip python3-dev && \
+  locale-gen en_US.UTF-8 zh_CN.UTF-8 && \
+  update-locale LANG=en_US.UTF-8 && \
   rm -rf /var/lib/apt/lists/*
 
+# 3. Create a venv
 RUN python3 -m venv /opt/venv
 ENV PATH=/opt/venv/bin:$PATH
 
 # RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-RUN pip install --no-cache-dir --upgrade pip wheel setuptools
+RUN pip install --no-cache-dir --upgrade pip wheel setuptools huggingface_hub[cli]
+
+# 4. Install ComfyUI
 RUN pip install --no-cache-dir torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0 \
   --index-url https://download.pytorch.org/whl/cu128
+#pip install --no-cache-dir xformers
+#pip install --no-cache-dir --no-build-isolation flash-attn
 
 RUN git clone --branch master --depth 1 --single-branch \
-    https://github.com/comfyanonymous/ComfyUI.git /app/ComfyUI
+  https://github.com/comfyanonymous/ComfyUI.git /app/ComfyUI
 
 WORKDIR /app/ComfyUI
 
 RUN pip install --no-cache-dir -r requirements.txt && \
   git clone https://github.com/Comfy-Org/ComfyUI-Manager.git \
-    custom_nodes/ComfyUI-Manager.disabled
+    custom_nodes/ComfyUI-Manager.disabled && \
+  pip install --no-cache-dir -r custom_nodes/ComfyUI-Manager.disabled/requirements.txt
 
+# 5. Reset http_proxy and https_proxy
 ENV http_proxy="" \
-  https_proxy=""
+  https_proxy="" \
+  TZ=Asia/Shanghai
 
-VOLUME [
-  "/root/.cache", \
-  "/app/ComfyUI/models", \
-  "/app/ComfyUI/custom_nodes", \
-  "/app/ComfyUI/input", \
-  "/app/ComfyUI/output", \
-]
+# 6. Set VOLUME, EXPOSE and CMD
+VOLUME /root/.cache
+VOLUME /app/ComfyUI/models
+VOLUME /app/ComfyUI/custom_nodes
+VOLUME /app/ComfyUI/user/default/workflows
+VOLUME /app/ComfyUI/input
+VOLUME /app/ComfyUI/output
 
 EXPOSE 8188
 
-# Set a default command
 CMD ["python3", "main.py", "--enable-cors-header", "--listen=0.0.0.0", "--port=8188"]

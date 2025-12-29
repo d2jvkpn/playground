@@ -1,17 +1,23 @@
-FROM nvidia/cuda:12.9.1-cudnn-devel-ubuntu24.04
+#FROM nvidia/cuda:12.9.1-cudnn-devel-ubuntu24.04
+FROM nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04
 
 ARG HTTP_PROXY
 ARG HTTPS_PROXY
 
 ENV http_proxy=$HTTP_PROXY \
   https_proxy=$HTTPS_PROXY \
-  PATH=/opt/conda/bin:$PATH
+  PATH=/opt/conda/bin:$PATH \
+  LANG=en_US.UTF-8
 
 #### 1. init
 COPY install /opt/install
 RUN chmod a+x /opt/install/*.sh
 
-RUN /opt/install/apt_install.sh tzdata gosu build-essential vim dos2unix git jq curl file tree wget
+RUN /opt/install/apt_install.sh \
+  apt-utils tzdata locales vim fonts-noto-cjk build-essential gosu \
+  vim dos2unix git jq curl file tree wget &&
+  locale-gen en_US.UTF-8 zh_CN.UTF-8 && \
+  update-locale LANG=en_US.UTF-8
 # openssh-client nvidia-cuda-toolkit
 
 #### 2. install conda and python
@@ -26,33 +32,41 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh &
 #conda init bash # activate conda base env by default
 #conda create -n myenv python=3.14 -y
 #conda run -n myenv python script.py
+#conda install pip
+#conda env export > environment.yml
 
 #### 3. pip install
-RUN pip3 install --no-cache-dir --upgrade pip && \
+RUN pip3 install --no-cache-dir --upgrade pip wheel setuptools && \
   pip3 install --no-cache-dir --upgrade -r /opt/install/pip.txt
 
-# pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-# pip install pandas -i https://pypi.tuna.tsinghua.edu.cn/simple
-#pip install --no-cache-dir torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0 --index-url https://download.pytorch.org/whl/cu129
+#pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+#pip install pandas -i https://pypi.tuna.tsinghua.edu.cn/simple
+#pip install --no-cache-dir torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0 \
+#  --index-url https://download.pytorch.org/whl/cu129
 #pip install --no-cache-dir xformers
 #pip install --no-cache-dir --no-build-isolation flash-attn
+#conda install cuda-nvcc -c nvidia && pip install --no-cache-dir flash-attn
 
 #### 4. config
 RUN userdel -r ubuntu || true && \
   mkdir -p /home/appuser/workspace /home/appuser/.jupyter && \
   cp /opt/install/jupyter_lab_config.py /home/appuser/.jupyter/
 
+ENV http_proxy="" \
+  https_proxy="" \
+  TZ=Asia/Shanghai
+
 #### 5. setup
 WORKDIR /home/appuser/workspace
-
 #RUN useradd -m -s /bin/bash -u 1000 -g 1000 appuser
 #USER appuser
 
 EXPOSE 8888
-VOLUME ["/home/appuser/workspace", "/home/appuser/.local/lib/python3.12/site-packages"]
-ENTRYPOINT ["/opt/install/entrypoint.sh"]
-ENV TZ=Asia/Shanghai
 
-#### 5. run
+VOLUME /home/appuser/workspace
+VOLUME /home/appuser/.local/lib/python3.12/site-packages
+
+ENTRYPOINT ["/opt/install/entrypoint.sh"]
+
 # "--NotebookApp.token=''", "--NotebookApp.password=''"
 CMD ["jupyter", "lab", "--no-browser", "--allow-root", "--ip=0.0.0.0", "--port=8888"]

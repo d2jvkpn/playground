@@ -1,7 +1,7 @@
 services:
   jupyter:
     container_name: jupyter
-    image: local/jupyter:pytorch2.8.0-cuda12.9-cudnn9-runtime
+    image: local/jupyter:cuda12.9-ubuntu24.04
     restart: always
     init: true
     shm_size: 2g
