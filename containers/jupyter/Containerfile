@@ -5,7 +5,10 @@ ARG HTTP_PROXY
 ARG HTTPS_PROXY
 
 ENV http_proxy=$HTTP_PROXY \
-  https_proxy=$HTTPS_PROXY
+  https_proxy=$HTTPS_PROXY \
+  TZ=Asia/Shanghai \
+  LANG=en_US.UTF-8 \
+  PATH=/opt/conda/bin:/home/appuser/workspace/bin:$PATH
 
 #### 1. init
 COPY install /opt/install
@@ -57,10 +60,7 @@ RUN userdel -r ubuntu || true && \
   cp /opt/install/jupyter_lab_config.py /home/appuser/.jupyter/
 
 ENV http_proxy="" \
-  https_proxy="" \
-  TZ=Asia/Shanghai \
-  LANG=en_US.UTF-8
-  PATH=/opt/conda/bin:/home/appuser/workspace/bin:$PATH
+  https_proxy=""
 
 #### 5. setup
 WORKDIR /home/appuser/workspace
