@@ -7,8 +7,7 @@ ARG HTTPS_PROXY
 # 2. Set proxy environment variables for the build
 ENV http_proxy=$HTTP_PROXY \
   https_proxy=$HTTPS_PROXY \
-  DEBIAN_FRONTEND=noninteractive \
-  LANG=en_US.UTF-8
+  DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
   apt-get upgrade -y && \
@@ -22,7 +21,8 @@ RUN apt-get update && \
 
 # 3. Create a venv
 RUN python3 -m venv /opt/venv
-ENV PATH=/opt/venv/bin:$PATH
+ENV PATH=/opt/venv/bin:$PATH \
+  LANG=en_US.UTF-8
 
 # RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip install --no-cache-dir --upgrade pip wheel setuptools huggingface_hub[cli]
@@ -34,14 +34,14 @@ RUN pip install --no-cache-dir torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.
 #pip install --no-cache-dir --no-build-isolation flash-attn
 
 RUN git clone --branch master --depth 1 --single-branch \
-  https://github.com/comfyanonymous/ComfyUI.git /app/ComfyUI
+  https://github.com/comfyanonymous/ComfyUI.git /app/ComfyUI && \
+  pip install --no-cache-dir -r /app/ComfyUI/requirements.txt
 
 WORKDIR /app/ComfyUI
 
-RUN pip install --no-cache-dir -r requirements.txt && \
-  git clone https://github.com/Comfy-Org/ComfyUI-Manager.git \
-    custom_nodes/ComfyUI-Manager.disabled && \
-  pip install --no-cache-dir -r custom_nodes/ComfyUI-Manager.disabled/requirements.txt
+#git clone https://github.com/Comfy-Org/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager
+#pip install --no-cache-dir -r custom_nodes/ComfyUI-Manager/requirements.txt
+#mv custom_nodes/ComfyUI-Manager custom_nodes/ComfyUI-Manager.disabled # disable ComfyUI-Manager
 
 # 5. Reset http_proxy and https_proxy
 ENV http_proxy="" \
@@ -58,4 +58,5 @@ VOLUME /app/ComfyUI/output
 
 EXPOSE 8188
 
+ENTRYPOINT []
 CMD ["python3", "main.py", "--enable-cors-header", "--listen=0.0.0.0", "--port=8188"]

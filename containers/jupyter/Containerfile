@@ -5,17 +5,17 @@ ARG HTTP_PROXY
 ARG HTTPS_PROXY
 
 ENV http_proxy=$HTTP_PROXY \
-  https_proxy=$HTTPS_PROXY \
-  PATH=/opt/conda/bin:$PATH \
-  LANG=en_US.UTF-8
+  https_proxy=$HTTPS_PROXY
 
 #### 1. init
 COPY install /opt/install
 RUN chmod a+x /opt/install/*.sh
 
 RUN /opt/install/apt_install.sh \
-  apt-utils tzdata locales vim fonts-noto-cjk build-essential gosu \
-  vim dos2unix git jq file tree curl wget && \
+  tzdata software-properties-common pkg-config ca-certificates gnupg \
+  locales fonts-noto-cjk \
+  curl gosu build-essential \
+  vim git jq zip file tree dos2unix curl wget && \
   locale-gen en_US.UTF-8 zh_CN.UTF-8 && \
   update-locale LANG=en_US.UTF-8
 # openssh-client nvidia-cuda-toolkit
@@ -58,7 +58,9 @@ RUN userdel -r ubuntu || true && \
 
 ENV http_proxy="" \
   https_proxy="" \
-  TZ=Asia/Shanghai
+  TZ=Asia/Shanghai \
+  LANG=en_US.UTF-8
+  PATH=/opt/conda/bin:/home/appuser/workspace/bin:$PATH
 
 #### 5. setup
 WORKDIR /home/appuser/workspace
