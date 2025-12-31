@@ -21,7 +21,7 @@ RUN /opt/install/apt_install.sh \
   vim git jq zip file tree dos2unix curl wget && \
   locale-gen en_US.UTF-8 zh_CN.UTF-8 && \
   update-locale LANG=en_US.UTF-8
-# openssh-client nvidia-cuda-toolkit
+# tini openssh-client nvidia-cuda-toolkit
 
 RUN wget -qO /usr/local/bin/yq \
   https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && \

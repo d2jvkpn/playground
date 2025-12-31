@@ -46,10 +46,12 @@ WORKDIR /app/ComfyUI
 # 5. Reset http_proxy and https_proxy
 ENV http_proxy="" \
   https_proxy="" \
-  TZ=Asia/Shanghai
+  TZ=Asia/Shanghai \
+  PYTHONPATH=/app/site-packages
 
-# 6. Set VOLUME, EXPOSE and CMD
+# 6. Set VOLUME, HEALTHCHECK, EXPOSE and CMD
 VOLUME /root/.cache
+VOLUME /app/site-packages
 VOLUME /app/ComfyUI/models
 VOLUME /app/ComfyUI/custom_nodes
 VOLUME /app/ComfyUI/user/default/workflows
@@ -57,6 +59,10 @@ VOLUME /app/ComfyUI/input
 VOLUME /app/ComfyUI/output
 
 EXPOSE 8188
+
+#HEALTHCHECK --interval=20s --start-period=30s --timeout=1s --retries=3 CMD \
+#  curl --fail --silent -I http://localhost:8188/system_stats &> /dev/null
+#  # -w "%{http_code}"
 
 ENTRYPOINT []
 CMD ["python3", "main.py", "--enable-cors-header", "--listen=0.0.0.0", "--port=8188"]

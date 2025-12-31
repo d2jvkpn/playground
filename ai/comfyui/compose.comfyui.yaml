@@ -2,7 +2,8 @@ services:
   comfyui:
     container_name: comfyui
     image: local/comfyui-base:cuda12.8-ubuntu24.04
-    restart: unless-stopped
+    #restart: unless-stopped
+    restart: always
     init: true
     shm_size: '32gb'
     #ipc: host
@@ -16,12 +17,20 @@ services:
               capabilities: [gpu]
     network_mode: bridge
     ports: ["127.0.0.1:8188:8188"]
+    #healthcheck:
+    #  test: ["CMD-SHELL", "curl -sfI http://localhost:8188/system_stats &> /dev/null"]
+    #  test: ["CMD", "/app/healthcheck.sh"] # curl -sfS
+    #  interval: 20s
+    #  timeout: 1s
+    #  retries: 3
+    #  start_period: 30s
     environment:
-      ALL_PROXY: ${PROXY}
-      # CUDA_MPS_ACTIVE_THREAD_PERCENTAGE: "60"
-      # NVIDIA_GPU_MEMORY_LIMIT: 32G
-      # CUDA_HOME: ??
-      # LD_LIBRARY_PATH: $CUDA_HOME/lib:$LD_LIBRARY_PATH
+      HTTPS_PROXY: ${PROXY}
+      #ALL_PROXY: http://192.168.1.1:1090
+      #CUDA_MPS_ACTIVE_THREAD_PERCENTAGE: "60"
+      #NVIDIA_GPU_MEMORY_LIMIT: 32G
+      #CUDA_HOME: ??
+      #LD_LIBRARY_PATH: $CUDA_HOME/lib:$LD_LIBRARY_PATH
       TORCH_HOME: /app/ComfyUI/models/torch
       HF_HOME: /app/ComfyUI/models/huggingface
     volumes:
@@ -31,7 +40,7 @@ services:
     - ./data/workflows:/app/ComfyUI/user/default/workflows
     - ./data/input:/app/ComfyUI/input
     - ./data/output:/app/ComfyUI/output
-    #- ./data/pip:/home/appuser/.local/lib/python3.12/site-packages
+    - ./data/site-packages:/app/site-packages
     command: [
       "python",
       "main.py",
