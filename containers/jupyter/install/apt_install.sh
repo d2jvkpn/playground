@@ -1,12 +1,15 @@
 #!/bin/bash
-set -eu -o pipefail
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 export DEBIAN_FRONTEND=noninteractive
 
 #apt-get -qq update 2>&1 > /dev/null
 apt-get -qq update
-apt-get upgrade -qq -y --no-install-recommends
+#apt-get upgrade -qq -y --no-install-recommends
+apt list --upgradable 2>/dev/null |
+  awk -F "/" 'NF>1{print $1}' |
+  xargs apt upgrade -qq -y --no-install-recommends --allow-change-held-packages
 
 if [ $# -gt 0 ]; then
     apt install -y --no-install-recommends "$@"
