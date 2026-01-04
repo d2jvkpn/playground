@@ -1,8 +1,8 @@
-FROM n8nio/n8n:stable
+FROM n8nio/n8n:1
 
 USER root
 
-COPY install Containerfile /opt/install
+COPY install /opt/install
 
 RUN apk --no-cache update && \
     apk --no-cache upgrade && \

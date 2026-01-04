@@ -10,8 +10,8 @@ export DEBIAN_FRONTEND=noninteractive
 # key_url=https://pkgs.k8s.io/core:/stable:/v1.31/deb
 # version=$(yq .k8s.version cache/k8s.downloads/k8s_downloads.yaml)
 
-version=$1 # 1.34.2
-ver=v${version%.*} # v1.34
+version=$1 # 1.35.0
+ver=v${version%.*} # v1.35
 
 key_url=https://pkgs.k8s.io/core:/stable:/$ver/deb
 key_file=/etc/apt/keyrings/k8s.gpg

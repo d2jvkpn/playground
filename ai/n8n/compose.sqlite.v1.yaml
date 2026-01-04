@@ -2,7 +2,7 @@
 services:
   sqlite.n8n.lan:
     container_name: n8n-sqlite
-    image: local/n8nio/n8n:stable
+    image: local/n8nio/n8n:1
     restart: always
     dns: [1.1.1.1, 8.8.8.8]
     network_mode: bridge
@@ -16,5 +16,7 @@ services:
       N8N_RUNNERS_ENABLED: "true"
       N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
       N8N_GIT_NODE_DISABLE_BARE_REPOS: "true"
+      #NODES_EXCLUDE: "[\"n8n-nodes-base.executeCommand\", \"n8n-nodes-base.readWriteFile\"]"
+      NODES_EXCLUDE: "[]"
       GENERIC_TIMEZONE: Asia/Shanghai
       TZ: Asia/Shanghai

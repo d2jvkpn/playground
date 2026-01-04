@@ -1,0 +1,39 @@
+####
+FROM n8nio/n8n:stable AS runtime
+
+COPY install /opt/install
+
+USER root
+
+RUN mkdir -p apk-tools; \
+  url="https://dl-cdn.alpinelinux.org/alpine/latest-stable/main/x86_64"; \
+  filename=$(wget -qO- "$url/" | grep -o ">apk-tools-static-.*.apk" | sed 's/>//'); \
+  echo "--> downloading $filename" && \
+  wget -O apk-tools/apk-tools-static.apk $url/$filename && \
+  tar -xzf apk-tools/apk-tools-static.apk -C apk-tools && \
+  cp apk-tools/sbin/apk.static /sbin/apk && \
+  apk --no-cache add apk-tools && \
+  rm -r apk-tools
+
+RUN apk --no-cache update && \
+    apk --no-cache upgrade && \
+    apk --no-cache add $(grep -v "^#" /opt/install/apk_install.txt)
+
+USER node
+
+WORKDIR /home/node
+
+RUN mkdir -p apps && \
+    python3 -m venv apps/home.venv && \
+    source apps/home.venv/bin/activate && \
+    pip install --no-cache --upgrade -r /opt/install/pip_install.txt
+
+VOLUME /home/node/.n8n
+VOLUME /home/node/workspace
+VOLUME /home/node/apps/bin
+
+#ENV GENERIC_TIMEZONE=America/New_York
+ENV GENERIC_TIMEZONE=Asia/Shanghai \
+  PATH=/home/node/apps/home.venv/bin:/home/node/apps/bin:$PATH
+
+WORKDIR /home/node/workspace

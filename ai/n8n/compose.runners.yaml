@@ -1,0 +1,34 @@
+networks:
+  net: { name: n8n, driver: bridge, external: false }
+
+services:
+  redis:
+    container_name: n8n-redis
+    image: redis:8-alpine
+    restart: always
+    networks: [net]
+
+  n8n:
+    container_name: n8n-main
+    image: n8nio/n8n:stable
+    depends_on: [redis]
+    networks: [net]
+    ports: ["5678:5678"]
+    environment:
+      EXECUTIONS_MODE: queue
+      N8N_RUNNERS_MODE: external
+      QUEUE_BULL_REDIS_HOST: redis
+      QUEUE_BULL_REDIS_PORT: "6379"
+      N8N_RUNNERS_ENABLED: "true"
+
+  runner:
+    image: n8nio/runners:stable
+    deploy:
+      replicas: 3
+    depends_on: [redis]
+    networks: [net]
+    environment:
+      N8N_RUNNERS_ENABLED: "true"
+      QUEUE_BULL_REDIS_HOST: redis
+      QUEUE_BULL_REDIS_PORT: "6379"
+    command: n8n runner
