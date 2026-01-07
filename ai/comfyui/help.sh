@@ -14,3 +14,22 @@ apt-get install -y --no-install-recommends software-properties-common ca-certifi
 add-apt-repository ppa:ubuntuhandbook1/ffmpeg8
 apt-get update
 apt-get install -y ffmpeg
+
+exit
+apt-get upgrade -y --no-install-recommends
+apt-get install -y --no-install-recommends jq wget curl git-lfs vim
+
+#site: https://pytorch.org/get-started/previous-versions/
+pip index versions torch --index-url https://download.pytorch.org/whl/cu128
+
+pip install --no-cache-dir torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0 \
+  --index-url https://download.pytorch.org/whl/cu128
+
+pip install --no-cache-dir xformers
+pip install --no-cache-dir --no-build-isolation flash-attn
+
+
+ENV HF_HUB_OFFLINE=True \
+  HF_HOME=data/huggingface \
+  HF_HUB_CACHE=data/huggingface/hub \
+  HF_DATASETS_CACHE=data/huggingface/datasets

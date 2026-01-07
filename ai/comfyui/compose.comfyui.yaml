@@ -31,8 +31,6 @@ services:
       #NVIDIA_GPU_MEMORY_LIMIT: 32G
       #CUDA_HOME: ??
       #LD_LIBRARY_PATH: $CUDA_HOME/lib:$LD_LIBRARY_PATH
-      TORCH_HOME: /app/ComfyUI/models/torch
-      HF_HOME: /app/ComfyUI/models/huggingface
     volumes:
     - ./data/cache:/root/.cache
     - ./data/models:/app/ComfyUI/models

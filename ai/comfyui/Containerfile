@@ -4,50 +4,58 @@ FROM nvidia/cuda:12.8.1-cudnn-devel-ubuntu24.04 AS base
 ARG HTTP_PROXY
 ARG HTTPS_PROXY
 
+ADD Containerfile /opt/
+
 # 2. Set proxy environment variables for the build
 ENV http_proxy=$HTTP_PROXY \
   https_proxy=$HTTPS_PROXY \
   DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-  apt-get upgrade -y && \
+  apt list --upgradable 2>/dev/null | \
+    awk -F "/" 'NF>1{print $1}' | \
+    xargs apt upgrade -qq -y --no-install-recommends --allow-change-held-packages && \
   apt-get install -y --no-install-recommends \
     tzdata locales fonts-noto-cjk \
-    ninja-build jq wget curl git git-lfs vim ffmpeg \
+    ninja-build git ffmpeg \
     python3 python3-venv python3-pip python3-dev && \
-  locale-gen en_US.UTF-8 zh_CN.UTF-8 && \
-  update-locale LANG=en_US.UTF-8 && \
   rm -rf /var/lib/apt/lists/*
+# apt-get upgrade -y --no-install-recommends
 
 # 3. Create a venv
-RUN python3 -m venv /opt/venv
-ENV PATH=/opt/venv/bin:$PATH \
+RUN locale-gen en_US.UTF-8 zh_CN.UTF-8 && \
+  update-locale LANG=en_US.UTF-8 && \
+  python3 -m venv /app/venv
+
+ENV PATH=/app/venv/bin:$PATH \
   LANG=en_US.UTF-8
 
 # RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-RUN pip install --no-cache-dir --upgrade pip wheel setuptools huggingface_hub[cli]
+RUN pip install --no-cache-dir --upgrade pip wheel setuptools PySocks huggingface_hub[cli]
 
 # 4. Install ComfyUI
-RUN pip install --no-cache-dir torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0 \
+RUN pip install --no-cache-dir \
+  "torch>=2.9,<3.0" "torchaudio>=2.9,<3.0" "torchvision>=0.24,<0.25" \
   --index-url https://download.pytorch.org/whl/cu128
-#pip install --no-cache-dir xformers
-#pip install --no-cache-dir --no-build-isolation flash-attn
 
 RUN git clone --branch master --depth 1 --single-branch \
-  https://github.com/comfyanonymous/ComfyUI.git /app/ComfyUI && \
-  pip install --no-cache-dir -r /app/ComfyUI/requirements.txt
+    https://github.com/comfyanonymous/ComfyUI.git /app/ComfyUI && \
+    pip install --no-cache-dir -r /app/ComfyUI/requirements.txt
 
 WORKDIR /app/ComfyUI
 
-#git clone https://github.com/Comfy-Org/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager
+#git clone --branch main --depth 1 --single-branch \
+#  https://github.com/Comfy-Org/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager
 #pip install --no-cache-dir -r custom_nodes/ComfyUI-Manager/requirements.txt
-#mv custom_nodes/ComfyUI-Manager custom_nodes/ComfyUI-Manager.disabled # disable ComfyUI-Manager
+#mv custom_nodes/ComfyUI-Manager custom_nodes/ComfyUI-Manager.disabled
 
 # 5. Reset http_proxy and https_proxy
 ENV http_proxy="" \
   https_proxy="" \
   TZ=Asia/Shanghai \
-  PYTHONPATH=/app/site-packages
+  PYTHONPATH=/app/site-packages \
+  TORCH_HOME=/app/ComfyUI/models/torch \
+  HF_HUB_CACHE=/app/ComfyUI/models/huggingface/hub
 
 # 6. Set VOLUME, HEALTHCHECK, EXPOSE and CMD
 VOLUME /root/.cache
