@@ -17,7 +17,6 @@ apt-get install -y ffmpeg
 
 exit
 apt-get upgrade -y --no-install-recommends
-apt-get install -y --no-install-recommends jq wget curl git-lfs vim
 
 #site: https://pytorch.org/get-started/previous-versions/
 pip index versions torch --index-url https://download.pytorch.org/whl/cu128

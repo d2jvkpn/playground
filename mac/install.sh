@@ -16,6 +16,6 @@ brew resintall bash
 eval "$(/opt/homebrew/bin/brew shellenv)"
 bash --version
 
-cat > ~/.bashrc <<'EOF'
+cat >> ~/.bashrc <<'EOF'
 eval "$(/opt/homebrew/bin/brew shellenv)"
 EOF
