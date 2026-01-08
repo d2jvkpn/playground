@@ -11,6 +11,8 @@ sudo systemsetup -getremotelogin
 ps aux | grep sshd
 
 #### upgrade bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
 brew resintall bash
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
