@@ -27,7 +27,7 @@ echo "--> Containerfile: data/Containerfile.temp"
 
 echo "--> Creating container: $container"
 docker create --name $container $image
-# docker run --name $container -it $image /bin/sh
+# docker run --name --entrypoint="" $container -it $image /bin/sh
 # < execute cleanup comandlines
 
 echo "--> Creating image: ${image}-temp"
