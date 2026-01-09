@@ -25,29 +25,30 @@ services:
     #  retries: 3
     #  start_period: 30s
     environment:
-      #ALL_PROXY: ${PROXY_ADDR} # HTTPS_PROXY, HTTP_PROXY
+      HTTPS_PROXY: ${PROXY}
+      #ALL_PROXY: http://192.168.1.1:1090
       #CUDA_MPS_ACTIVE_THREAD_PERCENTAGE: "60"
       #NVIDIA_GPU_MEMORY_LIMIT: 32G
       #CUDA_HOME: ??
       #LD_LIBRARY_PATH: $CUDA_HOME/lib:$LD_LIBRARY_PATH
       #COMFYUI_MANAGER_DISABLE_UPDATE_CHECK: "true"
       #COMFYUI_MANAGER_SKIP_LOAD: "true"
-      USER_UID: "0"
-      USER_GID: "0"
     volumes:
+    - ./data/cache:/root/.cache
     - ./data/models:/app/ComfyUI/models
     - ./data/custom_nodes:/app/ComfyUI/custom_nodes
     - ./data/workflows:/app/ComfyUI/user/default/workflows
     - ./data/input:/app/ComfyUI/input
     - ./data/output:/app/ComfyUI/output
-    - ./data/site-packages:/app/venv/lib/python3.12/site-packages
-    command:
-    - python3
-    - main.py
-    - --enable-cors-header
-    - --disable-smart-memory
-    - --listen=0.0.0.0
-    - --port=8188
+    - ./data/site-packages:/app/site-packages
+    command: [
+      "python",
+      "main.py",
+      "--enable-cors-header",
+      "--disable-smart-memory",
+      "--listen=0.0.0.0",
+      "--port=8188",
+    ]
     # --disable-manager-auto-update
     # --no-manager
     # --lowvram

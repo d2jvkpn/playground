@@ -44,3 +44,16 @@ version: 0.1.0
 
 6. nodes
 - https://api.comfy.org/nodes
+
+7. custom_nodes
+- https://github.com/Comfy-Org/ComfyUI-Manager
+- https://github.com/kijai/ComfyUI-WanVideoWrapper
+- https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite
+- https://github.com/melMass/comfy_mtb
+- https://github.com/ahkimkoo/ComfyUI-OSS-Upload
+- https://github.com/yolain/ComfyUI-Easy-Use
+- https://github.com/aria1th/ComfyUI-LogicUtils
+- https://github.com/pythongosssss/ComfyUI-Custom-Scripts
+- https://github.com/M1kep/Comfy_KepListStuff
+- https://github.com/M1kep/ComfyLiterals
+- https://github.com/tsogzark/ComfyUI-load-image-from-url

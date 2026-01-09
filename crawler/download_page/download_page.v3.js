@@ -31,7 +31,6 @@
 
   // 5) 把网址写入 <head>（推荐）
   const pageUrl = location.href;
-  const exportedAt = new Date().toISOString();
 
   // <base> 让相对链接在本地打开时仍然指向原网站（可选但很有用）
   const base = clone.ownerDocument.createElement("base");
@@ -41,6 +40,7 @@
   metaUrl.name = "source-url";
   metaUrl.content = pageUrl;
 
+  const exportedAt = new Date().toISOString();
   const metaTime = clone.ownerDocument.createElement("meta");
   metaTime.name = "exported-at";
   metaTime.content = exportedAt;

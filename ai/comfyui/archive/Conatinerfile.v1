@@ -1,70 +1,73 @@
-#FROM nvidia/cuda:12.8.1-cudnn-devel-ubuntu24.04
-FROM nvidia/cuda:12.8.1-cudnn-runtime-ubuntu24.04
+FROM nvidia/cuda:12.8.1-cudnn-devel-ubuntu24.04
 
 # 1. Accept proxy settings as build arguments
 ARG HTTP_PROXY
 ARG HTTPS_PROXY
 
-COPY bin /opt/bin
+ADD Containerfile /opt/
 
 # 2. Set proxy environment variables for the build
 ENV http_proxy=$HTTP_PROXY \
   https_proxy=$HTTPS_PROXY \
   DEBIAN_FRONTEND=noninteractive
 
-RUN chmod a+x /opt/bin/*.sh && \
-  /opt/bin/apt_install.sh \
-  tzdata locales fonts-noto-cjk \
-  ninja-build vim ffmpeg git jq git-lfs wget curl \
-  python3 python3-venv python3-pip python3-dev
-
-RUN locale-gen en_US.UTF-8 zh_CN.UTF-8 && \
-  update-locale LANG=en_US.UTF-8 && \
-  mkdir -p /home/appuser && \
-  python3 -m venv /home/appuser/venv
-
-ENV PATH=/home/appuser/venv/bin:$PATH \
-  LANG=en_US.UTF-8
+RUN apt-get update && \
+  apt list --upgradable 2>/dev/null | \
+    awk -F "/" 'NF>1{print $1}' | \
+    xargs apt upgrade -qq -y --no-install-recommends --allow-change-held-packages && \
+  apt-get install -y --no-install-recommends \
+    tzdata locales fonts-noto-cjk \
+    ninja-build vim ffmpeg git jq git-lfs wget curl \
+    python3 python3-venv python3-pip python3-dev && \
+  rm -rf /var/lib/apt/lists/*
+# apt-get upgrade -y --no-install-recommends
 
 # 3. Setup
+RUN locale-gen en_US.UTF-8 zh_CN.UTF-8 && \
+  update-locale LANG=en_US.UTF-8 && \
+  python3 -m venv /app/venv && \
+  date +'created_at  %FT%T%:z' > /opt/log.txt
+
+ENV PATH=/app/venv/bin:$PATH \
+  LANG=en_US.UTF-8
+
 # RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 RUN pip install --no-cache-dir --upgrade pip wheel setuptools PySocks huggingface_hub[cli]
 
 # 4. Install ComfyUI
-RUN pip install --no-cache-dir "torch>=2.9,<3.0" "torchaudio>=2.9,<3.0" "torchvision>=0.24,<0.25" \
-  --index-url https://download.pytorch.org/whl/cu128 && \
-  pip install --no-cache-dir --upgrade xformers
+RUN pip install --no-cache-dir \
+  "torch>=2.9,<3.0" "torchaudio>=2.9,<3.0" "torchvision>=0.24,<0.25" \
+  --index-url https://download.pytorch.org/whl/cu128
 
 RUN git clone --branch master --depth 1 --single-branch \
-  https://github.com/comfyanonymous/ComfyUI.git /home/appuser/ComfyUI && \
-  pip install --no-cache-dir -r /home/appuser/ComfyUI/requirements.txt
+    https://github.com/comfyanonymous/ComfyUI.git /app/ComfyUI && \
+    pip install --no-cache-dir -r /app/ComfyUI/requirements.txt
 
-WORKDIR /home/appuser/ComfyUI
+WORKDIR /app/ComfyUI
 
 #git clone --branch main --depth 1 --single-branch \
 #  https://github.com/Comfy-Org/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager
 #pip install --no-cache-dir -r custom_nodes/ComfyUI-Manager/requirements.txt
 #mv custom_nodes/ComfyUI-Manager custom_nodes/ComfyUI-Manager.disabled
 
-RUN mv /home/appuser/venv/lib/python3.12/site-packages \
-  /home/appuser/venv/lib/python3.12/dist-packages
+#pip install requests -t /app/site-packages
 
 # 5. Reset http_proxy and https_proxy
 ENV http_proxy="" \
   https_proxy="" \
   TZ=Asia/Shanghai \
+  PYTHONPATH=/app/site-packages \
   TORCH_HOME=/app/ComfyUI/models/torch \
-  HF_HUB_CACHE=/app/ComfyUI/models/huggingface/hub \
-  USER_UID=0 \
-  USER_GID=0
+  HF_HUB_CACHE=/app/ComfyUI/models/huggingface/hub
 
 # 6. Set VOLUME, HEALTHCHECK, EXPOSE and CMD
-VOLUME /home/appuser/venv/lib/python3.12/site-packages
-VOLUME /home/appuser/ComfyUI/models
-VOLUME /home/appuser/ComfyUI/custom_nodes
-VOLUME /home/appuser/ComfyUI/user/default/workflows
-VOLUME /home/appuser/ComfyUI/input
-VOLUME /home/appuser/ComfyUI/output
+VOLUME /root/.cache
+VOLUME /app/site-packages
+VOLUME /app/ComfyUI/models
+VOLUME /app/ComfyUI/custom_nodes
+VOLUME /app/ComfyUI/user/default/workflows
+VOLUME /app/ComfyUI/input
+VOLUME /app/ComfyUI/output
 
 EXPOSE 8188
 

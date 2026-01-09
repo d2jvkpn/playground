@@ -24,7 +24,7 @@ pip index versions torch --index-url https://download.pytorch.org/whl/cu128
 pip install --no-cache-dir torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0 \
   --index-url https://download.pytorch.org/whl/cu128
 
-pip install --no-cache-dir xformers
+pip install --no-cache-dir xformers bitsandbytes transformers
 pip install --no-cache-dir --no-build-isolation flash-attn
 
 
