@@ -12,7 +12,6 @@ ENV http_proxy=$HTTP_PROXY \
 
 #### 1. init
 COPY bin /opt/bin
-RUN chmod a+x /opt/bin/*.sh
 
 RUN /opt/bin/apt_install.sh \
   tzdata software-properties-common pkg-config ca-certificates gnupg \
@@ -20,11 +19,11 @@ RUN /opt/bin/apt_install.sh \
   vim git git-lfs jq zip unzip file tree dos2unix curl wget && \
   locale-gen en_US.UTF-8 zh_CN.UTF-8 && \
   update-locale LANG=en_US.UTF-8
-# tini openssh-client nvidia-cuda-toolkit
+# tini nvidia-cuda-toolkit
 
 RUN wget -qO /usr/local/bin/yq \
   https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && \
-  chmod +x /usr/local/bin/yq
+  chmod a+x /usr/local/bin/yq
 
 #### 2. install conda and python
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \

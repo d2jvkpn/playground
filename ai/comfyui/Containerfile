@@ -1,5 +1,5 @@
-#FROM nvidia/cuda:12.8.1-cudnn-devel-ubuntu24.04
-FROM nvidia/cuda:12.8.1-cudnn-runtime-ubuntu24.04
+#FROM nvidia/cuda:12.9.1-cudnn-devel-ubuntu24.04
+FROM nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04
 
 # 1. Accept proxy settings as build arguments
 ARG HTTP_PROXY
@@ -13,28 +13,32 @@ COPY bin /opt/bin
 # 2. Apt install
 RUN /opt/bin/apt_install.sh \
   tzdata locales fonts-noto-cjk \
-  ninja-build vim ffmpeg git jq git-lfs wget curl \
+  gosu ninja-build vim ffmpeg git jq git-lfs wget curl \
   python3 python3-venv python3-pip python3-dev
 
 RUN locale-gen en_US.UTF-8 zh_CN.UTF-8 && \
   update-locale LANG=en_US.UTF-8 && \
-  mkdir -p /home/appuser && \
-  python3 -m venv /home/appuser/venv
+  userdel -r ubuntu || true && \
+  groupadd -g 1000 appuser && \
+  useradd -s /bin/bash -m -u 1000 -g 1000 appuser
 
 ENV PATH=/home/appuser/venv/bin:$PATH \
   LANG=en_US.UTF-8
 
+USER appuser
+
 # 3. Setup
 # RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-RUN pip install --no-cache-dir --upgrade pip wheel setuptools PySocks huggingface_hub[cli]
+RUN python3 -m venv /home/appuser/venv && \
+  pip install --no-cache-dir --upgrade pip wheel setuptools PySocks huggingface_hub[cli]
 
 # 4. Install ComfyUI
 RUN pip install --no-cache-dir "torch>=2.9,<3.0" "torchaudio>=2.9,<3.0" "torchvision>=0.24,<0.25" \
   --index-url https://download.pytorch.org/whl/cu128 && \
-  pip install --no-cache-dir --upgrade xformers
+  pip install --no-cache-dir --upgrade xformers sageattention onnx
 
 RUN git clone --branch master --depth 1 --single-branch \
-  https://github.com/comfyanonymous/ComfyUI.git /home/appuser/ComfyUI && \
+    https://github.com/comfyanonymous/ComfyUI.git /home/appuser/ComfyUI && \
   pip install --no-cache-dir -r /home/appuser/ComfyUI/requirements.txt
 
 WORKDIR /home/appuser/ComfyUI
@@ -52,15 +56,13 @@ ENV http_proxy="" \
   https_proxy="" \
   TZ=Asia/Shanghai \
   TORCH_HOME=/home/appuser/ComfyUI/models/torch \
-  HF_HUB_CACHE=/home/appuser/ComfyUI/models/huggingface/hub \
-  USER_UID=0 \
-  USER_GID=0
+  HF_HUB_CACHE=/home/appuser/ComfyUI/models/huggingface/hub
 
 # 6. Set VOLUME, HEALTHCHECK, EXPOSE and CMD
 VOLUME /home/appuser/venv/lib/python3.12/site-packages
 VOLUME /home/appuser/ComfyUI/models
 VOLUME /home/appuser/ComfyUI/custom_nodes
-VOLUME /home/appuser/ComfyUI/user/default/workflows
+VOLUME /home/appuser/ComfyUI/user
 VOLUME /home/appuser/ComfyUI/input
 VOLUME /home/appuser/ComfyUI/output
 
@@ -70,5 +72,5 @@ EXPOSE 8188
 #  curl --fail --silent -I http://localhost:8188/system_stats &> /dev/null
 #  # -w "%{http_code}"
 
-ENTRYPOINT ["/opt/bin/entrypoint.sh"]
+ENTRYPOINT []
 CMD ["python3", "main.py", "--enable-cors-header", "--listen=0.0.0.0", "--port=8188"]

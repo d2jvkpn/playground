@@ -1,0 +1,7 @@
+FROM local/comfyui-base:cuda12.9-ubuntu24.04
+
+
+ARG USER_UID
+ARG USER_GID
+
+RUN /opt/bin/reset_appuser_uid.sh "$USER_UID" "$USER_GID"

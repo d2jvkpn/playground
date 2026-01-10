@@ -4,7 +4,10 @@ set -eu
 USER_UID=${USER_UID:-"0"}
 USER_GID=${USER_GID:-$USER_UID}
 
+echo "$(date +%FT%T%:z) ==> enrtypoint.sh"
+
 if [[ "$USER_UID" == "0" ]]; then
+    echo "$(date +%FT%T%:z) ==> execute: $@"
     "$@"
     exit 0
 fi
@@ -19,4 +22,5 @@ if ! getent passwd $USER_UID >/dev/null 2>&1; then
     chown -R $USER_UID:$USER_GID /home/appuser
 fi
 
+echo "$(date +%FT%T%:z) ==> execute: $@"
 exec gosu $USER_UID:$USER_GID "$@"

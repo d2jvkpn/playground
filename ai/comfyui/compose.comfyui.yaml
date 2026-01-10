@@ -1,7 +1,7 @@
 services:
   comfyui:
     container_name: comfyui
-    image: local/comfyui-base:cuda12.8-ubuntu24.04
+    image: local/comfyui-base:cuda12.9-ubuntu24.04
     #restart: unless-stopped
     restart: always
     init: true
@@ -19,7 +19,7 @@ services:
     ports: ["127.0.0.1:8188:8188"]
     #healthcheck:
     #  test: ["CMD-SHELL", "curl -sfI http://localhost:8188/system_stats &> /dev/null"]
-    #  test: ["CMD", "/app/healthcheck.sh"] # curl -sfS
+    #  test: ["CMD", "/opt/bin/healthcheck.sh"] # curl -sfS
     #  interval: 20s
     #  timeout: 1s
     #  retries: 3
@@ -32,15 +32,13 @@ services:
       #LD_LIBRARY_PATH: $CUDA_HOME/lib:$LD_LIBRARY_PATH
       #COMFYUI_MANAGER_DISABLE_UPDATE_CHECK: "true"
       #COMFYUI_MANAGER_SKIP_LOAD: "true"
-      USER_UID: "0"
-      USER_GID: "0"
     volumes:
-    - ./data/models:/app/ComfyUI/models
-    - ./data/custom_nodes:/app/ComfyUI/custom_nodes
-    - ./data/workflows:/app/ComfyUI/user/default/workflows
-    - ./data/input:/app/ComfyUI/input
-    - ./data/output:/app/ComfyUI/output
-    - ./data/site-packages:/app/venv/lib/python3.12/site-packages
+    - ./data/models:/home/appuser/ComfyUI/models
+    - ./data/custom_nodes:/home/appuser/ComfyUI/custom_nodes
+    - ./data/user:/home/appuser/ComfyUI/user
+    - ./data/input:/home/appuser/ComfyUI/input
+    - ./data/output:/home/appuser/ComfyUI/output
+    - ./data/site-packages:/home/appuser/venv/lib/python3.12/site-packages
     command:
     - python3
     - main.py
@@ -48,6 +46,6 @@ services:
     - --disable-smart-memory
     - --listen=0.0.0.0
     - --port=8188
-    # --disable-manager-auto-update
-    # --no-manager
-    # --lowvram
+    #- --disable-manager-auto-update
+    #- --no-manager
+    #- --lowvram

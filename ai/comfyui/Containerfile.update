@@ -1,23 +1,21 @@
-FROM local/comfyui-base:cuda12.8-ubuntu24.04
+FROM local/comfyui-base:cuda12.9-ubuntu24.04
 
 ARG HTTP_PROXY
 ARG HTTPS_PROXY
 
 ENV http_proxy=$HTTP_PROXY \
-  https_proxy=$HTTPS_PROXY \
-  DEBIAN_FRONTEND=noninteractive
+  https_proxy=$HTTPS_PROXY
 
-RUN apt-get update && \
-  apt list --upgradable 2>/dev/null | \
-    awk -F "/" 'NF>1{print $1}' | \
-    xargs apt upgrade -qq -y --no-install-recommends --allow-change-held-packages && \
-  rm -rf /var/lib/apt/lists/*
+USER root
+
+RUN /opt/bin/apt_install.sh
+
+USER appuser
 
 RUN  git fetch --depth=1 origin master && \
   git reset --hard origin/master && \
   git clean -fd && \
-  pip install --no-cache-dir -r requirements.txt && \
-  date +'updated_at  %FT%T%:z' >> /opt/log.txt
+  pip install --no-cache-dir -r requirements.txt
 
 ENV http_proxy="" \
   https_proxy=""
