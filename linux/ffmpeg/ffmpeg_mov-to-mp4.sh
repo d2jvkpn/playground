@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
-set -eu -o pipefail
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
 
 # base=IMG_2486
 # [ $# -gt 0 ] && base=$1

@@ -15,7 +15,7 @@ services:
     environment: [TZ=Asia/Shanghai]
 
   database:
-    image: postgres:17-alpine
+    image: postgres:18-alpine
     restart: unless-stopped
     networks: [net]
     container_name: postgres
@@ -26,4 +26,3 @@ services:
     - POSTGRES_USER=nextcloud
     - POSTGRES_DB=nextcloud
     - POSTGRES_PASSWORD=${POSTGRES_Password}
-

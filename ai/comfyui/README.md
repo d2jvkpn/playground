@@ -46,7 +46,9 @@ version: 0.1.0
 - https://api.comfy.org/nodes
 
 7. custom_nodes
+- https://github.com/crystian/ComfyUI-Crystools
 - https://github.com/Comfy-Org/ComfyUI-Manager
+
 - https://github.com/kijai/ComfyUI-WanVideoWrapper
 - https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite
 - https://github.com/melMass/comfy_mtb
