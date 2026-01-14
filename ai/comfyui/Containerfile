@@ -13,7 +13,7 @@ COPY bin /opt/bin
 # 2. Apt install
 RUN /opt/bin/apt_install.sh \
   tzdata locales fonts-noto-cjk \
-  gosu ninja-build vim ffmpeg git jq git-lfs wget curl \
+  gosu ninja-build vim ffmpeg jq git git-lfs wget curl \
   python3 python3-venv python3-pip python3-dev
 
 RUN locale-gen en_US.UTF-8 zh_CN.UTF-8 && \
