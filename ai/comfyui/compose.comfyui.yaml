@@ -38,7 +38,7 @@ services:
     - ./data/user:/home/appuser/ComfyUI/user
     - ./data/input:/home/appuser/ComfyUI/input
     - ./data/output:/home/appuser/ComfyUI/output
-    - ./data/site-packages:/home/appuser/venv/lib/python3.12/site-packages
+    - ./data/site-packages:/home/appuser/site-packages
     command:
     - python3
     - main.py

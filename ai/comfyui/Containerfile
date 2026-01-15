@@ -53,7 +53,9 @@ WORKDIR /home/appuser/ComfyUI
 #mv custom_nodes/ComfyUI-Manager custom_nodes/ComfyUI-Manager.disabled
 
 RUN mv /home/appuser/venv/lib/python3.12/site-packages \
-  /home/appuser/venv/lib/python3.12/dist-packages
+  /home/appuser/venv/lib/python3.12/dist-packages && \
+  mkdir -p /home/appuser/site-packages &&
+  ln -s /home/appuser/site-packages /home/appuser/venv/lib/python3.12/
 
 # 5. Reset http_proxy and https_proxy
 ENV http_proxy="" \
@@ -63,7 +65,7 @@ ENV http_proxy="" \
   HF_HUB_CACHE=/home/appuser/ComfyUI/models/huggingface/hub
 
 # 6. Set VOLUME, HEALTHCHECK, EXPOSE and CMD
-VOLUME /home/appuser/venv/lib/python3.12/site-packages
+VOLUME /home/appuser/site-packages
 VOLUME /home/appuser/ComfyUI/models
 VOLUME /home/appuser/ComfyUI/custom_nodes
 VOLUME /home/appuser/ComfyUI/user

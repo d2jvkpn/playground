@@ -18,9 +18,9 @@ services:
     volumes:
     #- ./configs/pip.conf:/home/appuser/.config/pip/pip.conf
     - ./data/bin:/home/appuser/.local/bin
-    - ./:/home/appuser/workspace
+    - ./data/workspace:/home/appuser/workspace
     #- ./data/pip:/home/appuser/.local/lib/python3.11/site-packages
-    - ./data/pip:/home/appuser/.local/lib/python3.12/site-packages
+    - ./data/site-packages:/home/appuser/site-packages
     env_file: configs/container.env # set JUPYTER_TOKEN=xxxxxxxx
     environment:
       TZ: Asia/Shanghai
