@@ -4,6 +4,8 @@ FROM nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04
 ARG HTTP_PROXY
 ARG HTTPS_PROXY
 
+LABEL maintainer=github.com/d2jvkpn base_image=nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04
+
 ENV http_proxy=$HTTP_PROXY \
   https_proxy=$HTTPS_PROXY \
   TZ=Asia/Shanghai \

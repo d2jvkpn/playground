@@ -4,6 +4,7 @@ set -eu
 USER_UID=${USER_UID:-"0"}
 USER_GID=${USER_GID:-$USER_UID}
 
+
 echo "$(date +%FT%T%:z) ==> enrtypoint.sh"
 
 if [[ "$USER_UID" == "0" ]]; then

@@ -1,4 +1,4 @@
-FROM local/comfyui:cuda12.9-ubuntu24.04-base
+FROM local/comfyui:cuda12.9-base
 
 ARG HTTP_PROXY
 ARG HTTPS_PROXY

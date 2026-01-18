@@ -93,14 +93,19 @@ binds=$(
         local_port=$(yq .$key'.local_port // "'$port'"' $config)
         host=$(yq .$key'.host // "localhost"' $config)
 
+        echo "--> $svc: $local_port -> $host:$port" >&2
         echo "-L $local_addr:$local_port:$host:$port"
     done
 )
 
 #### 4. run
+function on_exit() {
+    echo -e "\n==> $(date +%FT%T%:z) Exit"
+}
+
 trap on_exit SIGINT
-echo "==> $(date +%FT%T%:z) run"
+echo "==> $(date +%FT%T%:z) Starting"
 args="-o TCPKeepAlive=yes -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes $args"
 
-echo "+ $command -N $binds $args"
+#echo "+ $command -N $binds $args"
 $command -N $binds $args

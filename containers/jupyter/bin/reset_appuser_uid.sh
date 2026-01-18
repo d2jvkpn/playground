@@ -5,7 +5,6 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 user_uid=$1
 user_gid=${2:-$user_uid}
 
-
 #id appuser
 #getent passwd appuser
 #getent group appuser
