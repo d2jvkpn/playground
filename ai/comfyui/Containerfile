@@ -2,31 +2,32 @@
 FROM nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04
 
 # 1. Accept proxy settings as build arguments
-ARG HTTP_PROXY
 ARG HTTPS_PROXY
+ARG HTTP_PROXY
 
-LABEL base_image=nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04
+LABEL base_image="nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04"
 
-ENV http_proxy=$HTTP_PROXY \
-  https_proxy=$HTTPS_PROXY
+ENV https_proxy=$HTTPS_PROXY \
+  http_proxy=HTTP_PROXY
 
 ADD Containerfile /opt/
 COPY bin /opt/bin
 
 # 2. Apt install
 RUN /opt/bin/apt_install.sh \
-  tzdata locales fonts-noto-cjk ninja-build \
-  vim ffmpeg jq git git-lfs wget curl \
-  python3 python3-venv python3-pip python3-dev
-# gosu build-essential
+    tzdata locales build-essential ninja-build \
+    python3 python3-venv python3-pip python3-dev && \
+  locale-gen en_US.UTF-8 && \
+  update-locale LANG=en_US.UTF-8
+# /opt/bin/apt_install.sh gosu libgl1 libglib2.0-0t64 fonts-noto-cjk
+# locale-gen zh_CN.UTF-8
 
-RUN wget -qO /usr/local/bin/yq \
-  https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && \
+RUN /opt/bin/apt_install.sh vim ffmpeg jq git git-lfs wget curl && \
+  wget -qO /usr/local/bin/yq \
+    https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && \
   chmod a+x /usr/local/bin/yq
 
-RUN locale-gen en_US.UTF-8 zh_CN.UTF-8 && \
-  update-locale LANG=en_US.UTF-8 && \
-  userdel -r ubuntu || true && \
+RUN userdel -r ubuntu || true && \
   groupadd -g 1000 appuser && \
   useradd -s /bin/bash -m -u 1000 -g 1000 appuser
 
@@ -39,7 +40,7 @@ USER appuser
 # RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 RUN python3 -m venv /home/appuser/venv && \
   pip install --no-cache-dir --upgrade pip wheel setuptools \
-    uv PySocks huggingface_hub[cli] datasets
+    uv PySocks huggingface_hub[cli] numpy pillow opencv-python-headless
 
 # 4. Install ComfyUI
 RUN pip install --no-cache-dir \
@@ -68,8 +69,8 @@ RUN mv /home/appuser/venv/lib/python3.12/site-packages \
   ln -s /home/appuser/site-packages /home/appuser/venv/lib/python3.12/
 
 # 5. Reset http_proxy and https_proxy
-ENV http_proxy="" \
-  https_proxy="" \
+ENV https_proxy="" \
+  http_proxy="" \
   TORCH_HOME=/home/appuser/ComfyUI/models/torch \
   HF_HUB_CACHE=/home/appuser/ComfyUI/models/huggingface/hub
 

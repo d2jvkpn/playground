@@ -1,14 +1,12 @@
 build:
 	#docker build --no-cache -f Containerfile -t local/comfyui:cuda12.9-ubuntu24.04-base:$(shell date +%F) ./
 	docker build -f Containerfile \
-	  --build-arg HTTPS_PROXY="$PROXY_ADDR" \
-	  --build-arg HTTP_PROXY="$PROXY_ADDR" \
+	  --build-arg HTTPS_PROXY="$HTTPS_PROXY" \
 	  -t local/comfyui:cuda12.9-base ./
 
 update:
 	docker build --no-cache -f Containerfile.update \
-	  --build-arg HTTPS_PROXY="$PROXY_ADDR" \
-	  --build-arg HTTP_PROXY="$PROXY_ADDR" \
+	  --build-arg HTTPS_PROXY="$HTTPS_PROXY" \
 	  -t local/comfyui:cuda12.9-base ./
 
 run:
