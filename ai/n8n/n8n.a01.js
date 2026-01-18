@@ -1,3 +1,16 @@
+/*
+let created_at = new Date().toISOString();
+
+let input = $items('FindScript')[0]?.json;
+let input = $input.first()?.json?.scene;
+
+return [{
+  json: {
+    ...input,
+  }
+}];
+*/
+
 function genKey() {
   const date = new Date();
   const year = date.getFullYear();
@@ -18,6 +31,13 @@ function checkArrary(v) {
   return Array.isArray(v) && v.length > 0;
 }
 
+function calcResolution(height, aspect_ratio) {
+  let [w, h] = aspect_ratio.split(":").map(e => Number(e));
+  let width = Math.round(height * w / h / 2) * 2;
+
+  return { width, height };
+}
+
 function parseJson(text) {
   const cleaned = text
     .trim()
@@ -31,14 +51,3 @@ function parseJson(text) {
     throw new Error(`JSON parse failed: ${e.message}`);
   }
 }
-
-let created_at = new Date().toISOString();
-
-let input = $items('FindScript')[0]?.json;
-let input = $input.first()?.json?.scene;
-
-return [{
-  json: {
-    ...input,
-  }
-}];

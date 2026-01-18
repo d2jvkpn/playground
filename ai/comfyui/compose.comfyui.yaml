@@ -1,7 +1,7 @@
 services:
   comfyui:
     container_name: comfyui
-    image: local/comfyui-base:cuda12.9-ubuntu24.04
+    image: local/comfyui:cuda12.9-ubuntu24.04-base
     #restart: unless-stopped
     restart: always
     init: true
@@ -25,7 +25,7 @@ services:
     #  retries: 3
     #  start_period: 30s
     environment:
-      #ALL_PROXY: ${PROXY_ADDR} # HTTPS_PROXY, HTTP_PROXY
+      #all_proxy: ${PROXY_ADDR} # http_proxy, https_proxy
       #CUDA_MPS_ACTIVE_THREAD_PERCENTAGE: "60"
       #NVIDIA_GPU_MEMORY_LIMIT: 32G
       #CUDA_HOME: ??

@@ -1,4 +1,4 @@
-FROM local/comfyui-base:cuda12.9-ubuntu24.04
+FROM local/comfyui:cuda12.9-ubuntu24.04-base
 
 
 ARG USER_UID
