@@ -34,8 +34,10 @@ version: 0.1.0
 
 4. paths
 - models
+- custom_nodes
 - input
 - output
+- user
 - user/default/workflows
 
 5. courses

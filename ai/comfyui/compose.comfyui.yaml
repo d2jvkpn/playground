@@ -44,9 +44,15 @@ services:
     - python3
     - main.py
     - --enable-cors-header
-    - --disable-smart-memory
     - --listen=0.0.0.0
     - --port=8188
+    #- --disable-manager-ui
     #- --disable-manager-auto-update
     #- --no-manager
+    #- --disable-smart-memory
     #- --lowvram
+    #- --base-directory
+    #- --input-directory
+    #- --output-directory
+    #- --user-directory
+    #- --extra-model-paths-config=extra_model_paths.yaml
