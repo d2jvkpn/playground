@@ -31,3 +31,4 @@ version: 0.1.0
 - https://github.com/index-tts/index-tts
 
 - https://github.com/melMass/comfy_mtb
+- https://github.com/ltdrdata/was-node-suite-comfyui

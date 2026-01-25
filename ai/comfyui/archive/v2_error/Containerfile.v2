@@ -1,7 +1,7 @@
 #FROM nvidia/cuda:12.9.1-cudnn-devel-ubuntu24.04
 FROM nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04
 
-# 1. Accept proxy settings as build arguments
+#### 1. Setup
 ARG HTTPS_PROXY
 ARG HTTP_PROXY
 
@@ -13,46 +13,42 @@ ENV https_proxy=$HTTPS_PROXY \
 #ADD Containerfile /opt/
 COPY bin /opt/bin
 
-# 2. Apt install
 RUN /opt/bin/apt_install.sh \
-    tzdata locales build-essential ninja-build \
+    tzdata locales build-essential ninja-build gosu \
     python3 python3-venv python3-pip python3-dev && \
   locale-gen en_US.UTF-8 && \
   update-locale LANG=en_US.UTF-8
 # /opt/bin/apt_install.sh gosu libgl1 libglib2.0-0t64 fonts-noto-cjk
 # locale-gen zh_CN.UTF-8
 
+ENV LANG=en_US.UTF-8
+
 RUN /opt/bin/apt_install.sh vim ffmpeg jq git git-lfs wget curl && \
   wget -qO /usr/local/bin/yq \
     https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && \
   chmod a+x /usr/local/bin/yq
 
-RUN userdel -r ubuntu || true && \
-  groupadd -g 1000 appuser && \
-  useradd -s /bin/bash -m -u 1000 -g 1000 appuser
+RUN userdel -r ubuntu || true
+# groupadd -g 1000 appuser
+# useradd -s /bin/bash -m -u 1000 -g 1000 appuser
 
-ENV PATH=/home/appuser/venv/bin:$PATH \
-  LANG=en_US.UTF-8
+#### 2. python
+RUN python3 -m venv /opt/venv
+ENV PATH=/opt/venv/bin:$PATH
 
-USER appuser
-
-# 3. Setup
 # RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-RUN python3 -m venv /home/appuser/venv && \
-  pip install --no-cache-dir --upgrade pip wheel setuptools uv PySocks
-
-# 4. Install ComfyUI
-RUN pip install --no-cache-dir numpy pillow
+# --break-system-packages
+RUN pip install --no-cache-dir --upgrade pip wheel setuptools uv PySocks \
+    numpy pillow opencv-python-headless huggingface_hub[cli] xformers sageattention onnx
 
 RUN pip install --no-cache-dir \
     "torch>=2.9,<3.0" "torchaudio>=2.9,<3.0" "torchvision>=0.24,<0.25" \
     --index-url https://download.pytorch.org/whl/cu128
 
-RUN pip install --no-cache-dir opencv-python-headless huggingface_hub[cli] sageattention onnx
-
+#### 3. Install ComfyUI
 RUN git clone --branch master --depth 1 --single-branch \
-    https://github.com/comfyanonymous/ComfyUI.git /home/appuser/ComfyUI && \
-  pip install --no-cache-dir -r /home/appuser/ComfyUI/requirements.txt
+    https://github.com/comfyanonymous/ComfyUI.git /opt/ComfyUI && \
+  pip install --no-cache-dir -r /opt/ComfyUI/requirements.txt
 
 #git clone --branch main --depth 1 --single-branch \
 #  https://github.com/crystian/ComfyUI-Crystools.git custom_nodes/ComfyUI-Crystools
@@ -63,21 +59,29 @@ RUN git clone --branch master --depth 1 --single-branch \
 #pip install --no-cache-dir -r custom_nodes/ComfyUI-Manager/requirements.txt
 #mv custom_nodes/ComfyUI-Manager custom_nodes/ComfyUI-Manager.disabled
 
-RUN mv /home/appuser/venv/lib/python3.12/site-packages \
-    /home/appuser/venv/lib/python3.12/dist-packages && \
-  mkdir -p /home/appuser/workspace/site-packages && \
-  ln -s /home/appuser/workspace/site-packages /home/appuser/venv/lib/python3.12/site-packages
+#### 4. configuration
+RUN mv /opt/venv/lib/python3.12/site-packages /opt/dist-packages && \
+  ln -s /opt/dist-packages /opt/venv/lib/python3.12/dist-packages && \
+  mkdir -p /home/workspace/site-packages && \
+  ln -s /home/workspace/site-packages /opt/venv/lib/python3.12/site-packages
 
-# 5. Reset http_proxy and https_proxy
+WORKDIR /home/workspace
+
 ENV https_proxy="" \
   http_proxy="" \
-  TORCH_HOME=/home/appuser/workspace/models/torch \
-  HF_HUB_CACHE=/home/appuser/workspace/models/huggingface/hub
+  TORCH_HOME=/home/workspace/models/torch \
+  HF_HUB_CACHE=/home/workspace/models/huggingface/hub \
+  APPUSER_DIRS=/opt/venv,/opt/ComfyUI \
+  APPUSER_UID=1000 \
+  APPUSER_GID=1000
 
-# 6. Set VOLUME, HEALTHCHECK, EXPOSE and CMD
-WORKDIR /home/appuser/workspace
-VOLUME /home/appuser/workspace
-# site-packages, models, custom_nodes, user, input, output
+#### 5. Set VOLUME, HEALTHCHECK, EXPOSE and CMD
+VOLUME /home/workspace/site-packages
+VOLUME /home/workspace/models
+VOLUME /home/workspace/custom_nodes
+VOLUME /home/workspace/user
+VOLUME /home/workspace/input
+VOLUME /home/workspace/output
 
 EXPOSE 8188
 
@@ -85,8 +89,8 @@ EXPOSE 8188
 #  curl --fail --silent -I http://localhost:8188/system_stats &> /dev/null
 #  # -w "%{http_code}"
 
-ENTRYPOINT []
-CMD ["python3", "/home/appuser/ComfyUI/main.py", "--base-directory=/home/appuser/workspace", "--enable-cors-header", "--listen=0.0.0.0", "--port=8188"]
+ENTRYPOINT ["/opt/bin/entrypoint.sh"]
+CMD ["python3", "/opt/ComfyUI/main.py", "--base-directory=/home/workspace", "--enable-cors-header", "--listen=0.0.0.0", "--port=8188"]
 # --disable-smart-memory
 # --disable-manager-auto-update
 # --no-manager

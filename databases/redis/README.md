@@ -4,8 +4,13 @@
 - https://redis.io/commands/acl-setuser/
 - https://geshan.com.np/blog/2022/01/redis-docker/
 - https://redis.io/docs/management/config-file/
+- session
+- rate limit(incr+ttl)
+- oub/sub
+- sorted set
+- distributed lock(setnx)
 
-#### C01. Setup
+#### ch01. Setup
 ``` bash
 mkdir -p configs data/redis
 
@@ -29,7 +34,7 @@ docker-compose -f docker-compose.yaml up -d
 # docker-compose -f deployment.yaml down
 ```
 
-#### C02. Redis Commands
+#### ch02. Redis Commands
 ```redis
 help getex
 command
@@ -56,7 +61,7 @@ auth hello world
 CONFIG GET *preamble*
 ```
 
-#### C03. ACL
+#### ch03. ACL
 1. create acl file
 ```bash
 touch data/redis/aclfile.acl
@@ -91,7 +96,7 @@ ACL DELUSER bob
 ACL SETUSER bob on
 ```
 
-#### C04. Connect
+#### ch04. Connect
 ```
 docker exec -it redis redis-cli -a "$password"
 ```

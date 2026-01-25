@@ -16,7 +16,7 @@ services:
               count: all
               capabilities: [gpu]
     network_mode: bridge
-    ports: ["8036:8188"]
+    ports: ["127.0.0.1:8188:8188"]
     #healthcheck:
     #  test: ["CMD-SHELL", "curl -sfI http://localhost:8188/system_stats &> /dev/null"]
     #  test: ["CMD", "/opt/bin/healthcheck.sh"] # curl -sfS
@@ -33,13 +33,20 @@ services:
       #LD_LIBRARY_PATH: $CUDA_HOME/lib:$LD_LIBRARY_PATH
       #COMFYUI_MANAGER_DISABLE_UPDATE_CHECK: "true"
       #COMFYUI_MANAGER_SKIP_LOAD: "true"
+      APPUSER_DIRS: /opt/venv,/opt/ComfyUI
+      APPUSER_UID: 1000
+      APPUSER_GID: 1000
     volumes:
-    - ./data:/home/appuser/workspace
-    # site-packages, models, custom_nodes, user, input, output
+    - ./data/site-packages:/home/workspace/site-packages
+    - ./data/models:/home/workspace/models
+    - ./data/custom_nodes:/home/workspace/custom_nodes
+    - ./data/user:/home/workspace/user
+    - ./data/input:/home/workspace/input
+    - ./data/output:/home/workspace/output
     command:
     - python3
-    - /home/appuser/ComfyUI/main.py
-    - --base-directory=/home/appuser/workspace
+    - /opt/ComfyUI/main.py
+    - --base-directory=/home/workspace
     - --enable-cors-header
     - --listen=0.0.0.0
     - --port=8188

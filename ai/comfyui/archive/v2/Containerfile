@@ -10,7 +10,7 @@ LABEL base_image="nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04"
 ENV https_proxy=$HTTPS_PROXY \
   http_proxy=HTTP_PROXY
 
-#ADD Containerfile /opt/
+ADD Containerfile /opt/
 COPY bin /opt/bin
 
 # 2. Apt install
@@ -42,17 +42,17 @@ RUN python3 -m venv /home/appuser/venv && \
   pip install --no-cache-dir --upgrade pip wheel setuptools uv PySocks
 
 # 4. Install ComfyUI
-RUN pip install --no-cache-dir numpy pillow
-
-RUN pip install --no-cache-dir \
+RUN pip install --no-cache-dir huggingface_hub[cli] numpy pillow opencv-python-headless && \
+  pip install --no-cache-dir \
     "torch>=2.9,<3.0" "torchaudio>=2.9,<3.0" "torchvision>=0.24,<0.25" \
-    --index-url https://download.pytorch.org/whl/cu128
-
-RUN pip install --no-cache-dir opencv-python-headless huggingface_hub[cli] sageattention onnx
+    --index-url https://download.pytorch.org/whl/cu128 && \
+  pip install --no-cache-dir --upgrade xformers sageattention onnx
 
 RUN git clone --branch master --depth 1 --single-branch \
     https://github.com/comfyanonymous/ComfyUI.git /home/appuser/ComfyUI && \
   pip install --no-cache-dir -r /home/appuser/ComfyUI/requirements.txt
+
+WORKDIR /home/appuser/ComfyUI
 
 #git clone --branch main --depth 1 --single-branch \
 #  https://github.com/crystian/ComfyUI-Crystools.git custom_nodes/ComfyUI-Crystools
@@ -65,19 +65,22 @@ RUN git clone --branch master --depth 1 --single-branch \
 
 RUN mv /home/appuser/venv/lib/python3.12/site-packages \
     /home/appuser/venv/lib/python3.12/dist-packages && \
-  mkdir -p /home/appuser/workspace/site-packages && \
-  ln -s /home/appuser/workspace/site-packages /home/appuser/venv/lib/python3.12/site-packages
+  mkdir -p /home/appuser/site-packages && \
+  ln -s /home/appuser/site-packages /home/appuser/venv/lib/python3.12/
 
 # 5. Reset http_proxy and https_proxy
 ENV https_proxy="" \
   http_proxy="" \
-  TORCH_HOME=/home/appuser/workspace/models/torch \
-  HF_HUB_CACHE=/home/appuser/workspace/models/huggingface/hub
+  TORCH_HOME=/home/appuser/ComfyUI/models/torch \
+  HF_HUB_CACHE=/home/appuser/ComfyUI/models/huggingface/hub
 
 # 6. Set VOLUME, HEALTHCHECK, EXPOSE and CMD
-WORKDIR /home/appuser/workspace
-VOLUME /home/appuser/workspace
-# site-packages, models, custom_nodes, user, input, output
+VOLUME /home/appuser/site-packages
+VOLUME /home/appuser/ComfyUI/models
+VOLUME /home/appuser/ComfyUI/custom_nodes
+VOLUME /home/appuser/ComfyUI/user
+VOLUME /home/appuser/ComfyUI/input
+VOLUME /home/appuser/ComfyUI/output
 
 EXPOSE 8188
 
@@ -86,7 +89,7 @@ EXPOSE 8188
 #  # -w "%{http_code}"
 
 ENTRYPOINT []
-CMD ["python3", "/home/appuser/ComfyUI/main.py", "--base-directory=/home/appuser/workspace", "--enable-cors-header", "--listen=0.0.0.0", "--port=8188"]
+CMD ["python3", "main.py", "--enable-cors-header", "--listen=0.0.0.0", "--port=8188"]
 # --disable-smart-memory
 # --disable-manager-auto-update
 # --no-manager

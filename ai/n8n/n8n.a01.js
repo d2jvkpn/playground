@@ -38,6 +38,28 @@ function calcResolution(height, aspect_ratio) {
   return { width, height };
 }
 
+function toResolution(aspectRatio, resolutionP, mode = "industry") {
+  const [wR, hR] = aspectRatio.split(":").map(Number);
+  if (!wR || !hR) {
+    throw new Error("Invalid aspectRatio");
+  }
+
+  let width, height;
+
+  if (mode === "industry" && aspectRatio === "9:16") {
+    width = resolutionP;
+    height = Math.round((resolutionP * hR) / wR);
+  } else {
+    height = resolutionP;
+    width = Math.round((height * wR) / hR);
+  }
+
+  width = Math.floor(width / 2) * 2;
+  height = Math.floor(height / 2) * 2;
+
+  return { width, height };
+}
+
 function parseJson(text) {
   const cleaned = text
     .trim()

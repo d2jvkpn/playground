@@ -32,3 +32,15 @@ ENV HF_HUB_OFFLINE=True \
   HF_HOME=data/huggingface \
   HF_HUB_CACHE=data/huggingface/hub \
   HF_DATASETS_CACHE=data/huggingface/datasets
+
+exit
+proxy_addr=http://host.docker.internal:8118
+
+# --no-cache --target base
+docker build \
+  --add-host=host.docker.internal:host-gateway \
+  --network=host \
+  --build-arg HTTP_PROXY="${proxy_addr}" \
+  --build-arg HTTPS_PROXY="${proxy_addr}" \
+  -f Containerfile \
+  -t local/comfyui-base:cuda12.8-ubuntu24.04 ./
