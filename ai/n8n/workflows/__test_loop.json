@@ -1,0 +1,145 @@
+{
+  "name": "__test_loop",
+  "nodes": [
+    {
+      "parameters": {
+        "batchSize": "=1",
+        "options": {
+          "reset": false
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -384,
+        -160
+      ],
+      "id": "ccb52d63-480f-4782-b95b-09d1b8d4dc15",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -656,
+        -160
+      ],
+      "id": "19a8191b-1b1d-49b0-aaeb-6c49105185c0",
+      "name": "Test"
+    },
+    {
+      "parameters": {
+        "jsCode": "let input = $input.context.processedItems;\n\nreturn input;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        -176
+      ],
+      "id": "cf73cf0c-f095-4b65-a835-2c659dd78b29",
+      "name": "Results"
+    },
+    {
+      "parameters": {
+        "jsCode": "let input = $input.item.json;\n\ninput.value += 1;\n\nreturn [{json: input}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        48
+      ],
+      "id": "047701ca-483b-4ad8-badb-eff7c0f50738",
+      "name": "Call"
+    }
+  ],
+  "pinData": {
+    "Test": [
+      {
+        "json": {
+          "id": 1,
+          "value": 1
+        }
+      },
+      {
+        "json": {
+          "id": 2,
+          "value": 2
+        }
+      },
+      {
+        "json": {
+          "id": 3,
+          "value": 3
+        }
+      },
+      {
+        "json": {
+          "id": 4,
+          "value": 4
+        }
+      },
+      {
+        "json": {
+          "id": 5,
+          "value": 5
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Results",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Test": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "a898b810-eaf4-4f96-8cce-75f06fbbb360",
+  "meta": {
+    "instanceId": "aabb9746ecf05e8d0c27ee623c982ea8d982d9ce423272332cbfbffca1325f9a"
+  },
+  "id": "xELP3tkv43lcIhG9",
+  "tags": []
+}

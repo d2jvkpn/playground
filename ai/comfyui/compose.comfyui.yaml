@@ -39,7 +39,7 @@ services:
     command:
     - python3
     - /home/appuser/ComfyUI/main.py
-    - --base-directory=/home/appuser/workspace
+    - --base-directory=./
     - --enable-cors-header
     - --listen=0.0.0.0
     - --port=8188

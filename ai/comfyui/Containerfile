@@ -54,15 +54,6 @@ RUN git clone --branch master --depth 1 --single-branch \
     https://github.com/comfyanonymous/ComfyUI.git /home/appuser/ComfyUI && \
   pip install --no-cache-dir -r /home/appuser/ComfyUI/requirements.txt
 
-#git clone --branch main --depth 1 --single-branch \
-#  https://github.com/crystian/ComfyUI-Crystools.git custom_nodes/ComfyUI-Crystools
-#pip install --no-cache-dir -r custom_nodes/ComfyUI-Crystools/requirements.txt
-
-#git clone --branch main --depth 1 --single-branch \
-#  https://github.com/Comfy-Org/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager
-#pip install --no-cache-dir -r custom_nodes/ComfyUI-Manager/requirements.txt
-#mv custom_nodes/ComfyUI-Manager custom_nodes/ComfyUI-Manager.disabled
-
 RUN mv /home/appuser/venv/lib/python3.12/site-packages \
     /home/appuser/venv/lib/python3.12/dist-packages && \
   mkdir -p /home/appuser/workspace/site-packages && \

@@ -32,3 +32,5 @@ version: 0.1.0
 
 - https://github.com/melMass/comfy_mtb
 - https://github.com/ltdrdata/was-node-suite-comfyui
+- https://github.com/JPS-GER/ComfyUI_JPS-Nodes
+- https://github.com/cubiq/ComfyUI_IPAdapter_plus

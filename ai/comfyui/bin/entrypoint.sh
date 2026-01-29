@@ -4,11 +4,12 @@ set -eu
 APPUSER_UID=${APPUSER_UID:-"0"}
 APPUSER_GID=${APPUSER_GID:-$APPUSER_UID}
 
-
-echo "$(date +%FT%T%:z) ==> enrtypoint.sh"
+# echo "$(date +%FT%T%:z) ==> entrypoint.sh"
+if [ -s "/opt/init.sh" ]; then
+    bash /opt/init.sh
+fi
 
 if [[ "$APPUSER_UID" == "0" ]]; then
-    echo "$(date +%FT%T%:z) ==> execute: $@"
     "$@"
     exit 0
 fi
@@ -27,5 +28,4 @@ for d in $(echo $APPUSER_DIRS | sed 's/,/ /g'); do
     chown -R appuser:appuser $d
 done
 
-echo "$(date +%FT%T%:z) ==> execute: $@"
 exec gosu $APPUSER_UID:$APPUSER_GID "$@"

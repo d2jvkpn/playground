@@ -1,0 +1,133 @@
+{
+  "name": "test_callback.n8n",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "job_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -592,
+        -80
+      ],
+      "id": "7d4aa542-8ad1-4759-bae5-c20ffd018804",
+      "name": "Entry"
+    },
+    {
+      "parameters": {
+        "resume": "webhook",
+        "httpMethod": "POST",
+        "limitWaitTime": true,
+        "resumeAmount": 15,
+        "resumeUnit": "seconds",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -176,
+        -80
+      ],
+      "id": "26c21c19-013d-4a0b-b7db-a96cda36dff5",
+      "name": "Wait",
+      "webhookId": "a4dc0854-f671-4e07-b108-c9a383ddaa71"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://192.168.1.11:8080/submit",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "callback_url",
+              "value": "={{ $execution.resumeUrl }}"
+            },
+            {
+              "name": "job_id",
+              "value": "={{ $json.job_id.toJsonString() }}"
+            },
+            {
+              "name": "simulate_seconds",
+              "value": "={{ 5 }}"
+            },
+            {
+              "name": "payload",
+              "value": "{}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -384,
+        -80
+      ],
+      "id": "2ce57b19-b816-4e74-89ff-20aaf8e46d90",
+      "name": "Submit",
+      "retryOnFail": true
+    }
+  ],
+  "pinData": {
+    "Entry": [
+      {
+        "json": {
+          "job_id": "123456"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Entry": {
+      "main": [
+        [
+          {
+            "node": "Submit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Submit": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "dc2744fe-a3f8-4534-b21d-fa5db0aaae1e",
+  "meta": {
+    "instanceId": "aabb9746ecf05e8d0c27ee623c982ea8d982d9ce423272332cbfbffca1325f9a"
+  },
+  "id": "lbUX9hELEoyp32KN",
+  "tags": []
+}

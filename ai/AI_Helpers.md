@@ -19,3 +19,4 @@ version: 0.1.0
 5. OpenAI Codex CLI
 6. Crush https://github.com/charmbracelet/crush
 7. Opencode https://github.com/opencode-ai/opencode
+8. Lovable

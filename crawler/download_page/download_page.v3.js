@@ -112,6 +112,11 @@
     return out.trim() + "\n";
   };
 
+  const getParam = (name) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+  }
+
   const rawHtml = "<!doctype html>\n" + clone.outerHTML;
   const html = formatHtml(rawHtml);
 
@@ -121,7 +126,10 @@
     .replace(/[\\/:*?"<>|]/g, "_")
     .replace(/\s+/g, " ");
 
-  const filename = `${safeTitle}.html`;
+  let page = getParam("page");
+  page = page ? ".page" + page : "";
+
+  const filename = `${safeTitle}${page}.html`;
 
   // 8) 下载
   const blob = new Blob([html], { type: "text/html;charset=utf-8" });
@@ -137,4 +145,3 @@
 
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 })();
-

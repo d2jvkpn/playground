@@ -26,7 +26,7 @@ echo "$(date +%F:%T%:z) Exporting $image"
 #pigz -f "$name".tar
 
 docker save "$image" | gzip -c > "$name".tar.gz.tmp
-mv "$name".tar.gz.tmp "$name".tar.gz
+mv "$name".tar.gz.tmp "$name".$(date +%F).tar.gz
 echo "$(date +%F:%T%:z) Saved $image to $name.tar.gz"
 
 if [[ "$remove" == "true" ]]; then
