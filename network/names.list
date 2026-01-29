@@ -2,3 +2,6 @@ names:
 - wireguard
 - easytier
 - n2n
+- hysteria
+- frp
+- privoxy
