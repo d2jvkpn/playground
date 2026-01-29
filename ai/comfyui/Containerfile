@@ -35,28 +35,26 @@ ENV PATH=/home/appuser/venv/bin:$PATH \
   LANG=en_US.UTF-8
 
 USER appuser
+WORKDIR /home/appuser
 
 # 3. Setup
 # RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 RUN python3 -m venv /home/appuser/venv && \
-  pip install --no-cache-dir --upgrade pip wheel setuptools uv PySocks
+  pip install --no-cache-dir --upgrade pip wheel setuptools uv PySocks numpy pillow
 
 # 4. Install ComfyUI
-RUN pip install --no-cache-dir numpy pillow
-
 RUN pip install --no-cache-dir \
     "torch>=2.9,<3.0" "torchaudio>=2.9,<3.0" "torchvision>=0.24,<0.25" \
     --index-url https://download.pytorch.org/whl/cu128
 
-RUN pip install --no-cache-dir opencv-python-headless huggingface_hub[cli] sageattention onnx
+RUN pip install --no-cache-dir opencv-python-headless "huggingface_hub[cli]" sageattention onnx
 
 RUN git clone --branch master --depth 1 --single-branch \
-    https://github.com/comfyanonymous/ComfyUI.git /home/appuser/ComfyUI && \
-  pip install --no-cache-dir -r /home/appuser/ComfyUI/requirements.txt
+    https://github.com/comfyanonymous/ComfyUI.git ComfyUI && \
+  pip install --no-cache-dir -r ComfyUI/requirements.txt
 
-RUN mv /home/appuser/venv/lib/python3.12/site-packages \
-    /home/appuser/venv/lib/python3.12/dist-packages && \
-  mkdir -p /home/appuser/workspace/site-packages && \
+RUN mv venv/lib/python3.12/site-packages venv/lib/python3.12/dist-packages && \
+  mkdir -p workspace/site-packages && \
   ln -s /home/appuser/workspace/site-packages /home/appuser/venv/lib/python3.12/site-packages
 
 # 5. Reset http_proxy and https_proxy
@@ -78,7 +76,3 @@ EXPOSE 8188
 
 ENTRYPOINT []
 CMD ["python3", "/home/appuser/ComfyUI/main.py", "--base-directory=/home/appuser/workspace", "--enable-cors-header", "--listen=0.0.0.0", "--port=8188"]
-# --disable-smart-memory
-# --disable-manager-auto-update
-# --no-manager
-# --lowvram

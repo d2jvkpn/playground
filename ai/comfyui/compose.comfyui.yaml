@@ -45,10 +45,8 @@ services:
     - --port=8188
     #- --disable-manager-ui
     #- --disable-manager-auto-update
-    #- --no-manager
     #- --disable-smart-memory
     #- --lowvram
-    #- --base-directory
     #- --input-directory
     #- --output-directory
     #- --user-directory
