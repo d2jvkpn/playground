@@ -12,11 +12,25 @@ netstat -ano | grep 1234
 netstat -tulpn | grep 5432
 netstat -uulpn | grep 5432
 
+####
 net -ano
 
+####
+ss -tlnp | grep 443
+
+####
 iptables -A INPUT -p tcp --dport 80 -j ACCEPT
 iptables -A FORWARD -p tcp --dport 80 -j DROP
 
 iptables -L -v
 
 iptables -t nat -L -n -v | grep 5432
+
+####
+socat -v UDP-RECVFROM:443,fork -
+#nc -u -l 443
+ss -ulnp | grep :443
+
+echo "hello" | nc -u $ip 443
+
+tcpdump -ni any udp port 443

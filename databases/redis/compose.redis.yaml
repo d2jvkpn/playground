@@ -15,8 +15,8 @@ services:
     container_name: redis
     deploy:
       resources:
-        limits: { cpus: "4", memory: 512M }
-        reservations: { cpus: "0.05", memory: 16M }
+        limits: { cpus: "4", memory: 1G }
+        reservations: { cpus: "0.05", memory: 32M }
     environment:
       TZ: Asia/Shanghai
       ALLOW_EMPTY_PASSWORD: yes  # ALLOW_EMPTY_PASSWORD is recommended only for development.

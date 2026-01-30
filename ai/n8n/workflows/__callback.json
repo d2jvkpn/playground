@@ -1,5 +1,5 @@
 {
-  "name": "test_callback.n8n",
+  "name": "__callback",
   "nodes": [
     {
       "parameters": {
@@ -42,7 +42,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://192.168.1.11:8080/submit",
+        "url": "http://192.168.1.6:8080/submit",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -124,7 +124,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "dc2744fe-a3f8-4534-b21d-fa5db0aaae1e",
+  "versionId": "43a2259f-509e-4b19-9d01-339dfbcc8f61",
   "meta": {
     "instanceId": "aabb9746ecf05e8d0c27ee623c982ea8d982d9ce423272332cbfbffca1325f9a"
   },
