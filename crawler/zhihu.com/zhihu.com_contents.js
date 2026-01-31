@@ -249,7 +249,7 @@ function getAnswer() {
 
   if (btn) {
     btn.click();
-    setTimeout(() => parseAnsText(target, downloadAnchor), 1000);
+    setTimeout(() => parseAnsText(target, downloadAnchor), 2000);
   } else {
     parseAnsText(target, downloadAnchor);
   };
