@@ -22,6 +22,8 @@ RUN /opt/bin/apt_install.sh \
 # /opt/bin/apt_install.sh gosu libgl1 libglib2.0-0t64 fonts-noto-cjk
 # locale-gen zh_CN.UTF-8
 
+ENV LANG=en_US.UTF-8
+
 RUN /opt/bin/apt_install.sh vim ffmpeg jq git git-lfs wget curl && \
   wget -qO /usr/local/bin/yq \
     https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && \
@@ -31,31 +33,30 @@ RUN userdel -r ubuntu || true && \
   groupadd -g 1000 appuser && \
   useradd -s /bin/bash -m -u 1000 -g 1000 appuser
 
-ENV PATH=/home/appuser/venv/bin:$PATH \
-  LANG=en_US.UTF-8
-
 USER appuser
 WORKDIR /home/appuser
 
 # 3. Setup
 # RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-RUN python3 -m venv /home/appuser/venv && \
-  pip install --no-cache-dir --upgrade pip wheel setuptools uv PySocks numpy pillow
+RUN python3 -m venv /home/appuser/venv
+ENV PATH=/home/appuser/venv/bin:$PATH
+RUN pip install --no-cache-dir --upgrade pip wheel setuptools uv PySocks numpy pillow
 
 # 4. Install ComfyUI
 RUN pip install --no-cache-dir \
     "torch>=2.9,<3.0" "torchaudio>=2.9,<3.0" "torchvision>=0.24,<0.25" \
     --index-url https://download.pytorch.org/whl/cu128
 
-RUN pip install --no-cache-dir opencv-python-headless "huggingface_hub[cli]" sageattention onnx
+RUN pip install --no-cache-dir "huggingface_hub[cli]" "requests[socks]" "httpx[socks]" \
+  opencv-python-headless sageattention onnx torchao
 
 RUN git clone --branch master --depth 1 --single-branch \
     https://github.com/comfyanonymous/ComfyUI.git ComfyUI && \
   pip install --no-cache-dir -r ComfyUI/requirements.txt
 
 RUN mv venv/lib/python3.12/site-packages venv/lib/python3.12/dist-packages && \
-  mkdir -p workspace/site-packages && \
-  ln -s /home/appuser/workspace/site-packages /home/appuser/venv/lib/python3.12/site-packages
+  mkdir -p workspace && \
+  cp -r ComfyUI/custom_nodes ComfyUI/models workspace/
 
 # 5. Reset http_proxy and https_proxy
 ENV https_proxy="" \
@@ -66,7 +67,8 @@ ENV https_proxy="" \
 # 6. Set VOLUME, HEALTHCHECK, EXPOSE and CMD
 WORKDIR /home/appuser/workspace
 VOLUME /home/appuser/workspace
-# site-packages, models, custom_nodes, user, input, output
+VOLUME /home/appuser/venv/lib/python3.12/site-packages
+# models, custom_nodes, user, input, output, temp
 
 EXPOSE 8188
 

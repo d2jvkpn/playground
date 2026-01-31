@@ -5,16 +5,20 @@ services:
     #restart: unless-stopped
     restart: always
     init: true
-    shm_size: '32gb'
+    shm_size: '32gb' # df -g /dev/shm
     #ipc: host
     deploy:
       resources:
         limits: { cpus: '8.0', memory: 32G }
         reservations:
           devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
+          - driver: nvidia
+            count: all
+            capabilities: [gpu]
+    ulimits: # ulimit -l; ulimit -s; ulimit -a; ulimit -Sn; ulimit -Hn
+      memlock: { soft: -1, hard: -1 }
+      stack: { soft: 67108864, hard: 67108864 }
+      nofile: { soft: 65536, hard: 65536 }
     network_mode: bridge
     ports: ["8036:8188"]
     #healthcheck:
@@ -26,16 +30,16 @@ services:
     #  start_period: 30s
     environment:
       TZ: Asia/Shanghai
-      #all_proxy: ${PROXY_ADDR} # http_proxy, https_proxy
+      PYTORCH_CUDA_ALLOC_CONF: expandable_segments:True,max_split_size_mb:128
+      #COMFYUI_MANAGER_SKIP_UPDATE: "true"
       #CUDA_MPS_ACTIVE_THREAD_PERCENTAGE: "60"
       #NVIDIA_GPU_MEMORY_LIMIT: 32G
-      #CUDA_HOME: ??
-      #LD_LIBRARY_PATH: $CUDA_HOME/lib:$LD_LIBRARY_PATH
       #COMFYUI_MANAGER_DISABLE_UPDATE_CHECK: "true"
       #COMFYUI_MANAGER_SKIP_LOAD: "true"
+      #https_proxy: ${PROXY_ADDR} # http_proxy, all_proxy, no_proxy
     volumes:
-    - ./data:/home/appuser/workspace
-    # site-packages, models, custom_nodes, user, input, output
+    - ./data:/home/appuser/workspace # models, custom_nodes, user, input, output
+    - ./data/site-packages:/home/appuser/venv/lib/python3.12/site-packages
     command:
     - python3
     - /home/appuser/ComfyUI/main.py
@@ -44,10 +48,6 @@ services:
     - --listen=0.0.0.0
     - --port=8188
     #- --disable-manager-ui
-    #- --disable-manager-auto-update
     #- --disable-smart-memory
     #- --lowvram
-    #- --input-directory
-    #- --output-directory
-    #- --user-directory
     #- --extra-model-paths-config=extra_model_paths.yaml
