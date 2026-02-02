@@ -12,7 +12,8 @@ RUN /opt/bin/apt_install.sh
 
 USER appuser
 
-RUN git fetch --depth=1 origin master && \
+RUN cd /home/appuser/ComfyUI && \
+  git fetch --depth=1 origin master && \
   git reset --hard origin/master && \
   git clean -fd && \
   pip install --no-cache-dir -r requirements.txt

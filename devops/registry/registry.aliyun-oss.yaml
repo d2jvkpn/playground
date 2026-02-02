@@ -1,0 +1,45 @@
+version: 0.1
+
+log:
+  fields:
+    service: registry
+
+storage:
+  s3:
+    accesskey: xxxxxxxx
+    secretkey: yyyyyyyy
+    region: cn-shanghai
+    regionendpoint: https://s3.oss-cn-shanghai-interanl.aliyuncs.com
+    bucket: bucket
+    rootdirectory: /registry
+    secure: true
+    v4auth: true
+    chunksize: 5242880
+    multipartcopychunksize: 5242880
+    multipartcopymaxconcurrency: 10
+  cache:
+    blobdescriptor: inmemory
+  maintenance:
+    uploadpurging:
+      enabled: true
+      age: 168h
+      interval: 24h
+      dryrun: false
+  tag:
+    concurrencylimit: 8
+
+http:
+  addr: :6000
+  headers:
+    X-Content-Type-Options: [nosniff]
+
+auth:
+  htpasswd:
+    realm: basic-realm
+    path: /etc/registry
+
+health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3
