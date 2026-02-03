@@ -50,4 +50,4 @@ services:
     #- --disable-manager-ui
     #- --disable-smart-memory
     #- --lowvram
-    #- --extra-model-paths-config=extra_model_paths.yaml
+    #- --extra-model-paths-config=./extra_model_paths.yaml

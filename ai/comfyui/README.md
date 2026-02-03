@@ -17,6 +17,8 @@ version: 0.1.0
 - Stable Diffusion https://huggingface.co/stabilityai
 - ControlNet https://huggingface.co/lllyasviel
 
+- https://github.com/Comfy-Org/ComfyUI/blob/master/extra_model_paths.yaml.example
+
 2. paths
 - Checkpoint model models/checkpoints/, sdxl_base_1.0.safetensors, realisticVision.safetensors, .ckpt
 - VAE model models/vae/, sdxl_vae.safetensors
