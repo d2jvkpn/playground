@@ -62,8 +62,8 @@ WORKDIR /home/appuser/workspace
 ENV http_proxy="" \
   https_proxy="" \
   TZ=Asia/Shanghai \
-  USER_UID=1000 \
-  USER_GID=1000
+  APPUSER_UID=1000 \
+  APPUSER_GID=1000
 
 #### 5. setup
 EXPOSE 8888

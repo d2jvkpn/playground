@@ -16,7 +16,7 @@ appuser_gpu:
 	  -v $(shell pwd):/home/appuser/workspace \
 	  -v $(shell pwd)/data/pip:/home/appuser/.local/lib/$(py)/site-packages \
 	  --env-file=configs/container.env \
-	  -e USER_UID=$(shell id -u) -e USER_GID=$(shell id -g) \
+	  -e APPUSER_UID=$(shell id -u) -e APPUSER_GID=$(shell id -g) \
 	  -w /home/appuser/workspace \
 	  $(image)
 
@@ -27,6 +27,6 @@ appuser_cpu:
 	  -v $(shell pwd):/home/appuser/workspace \
 	  -v $(shell pwd)/data/pip:/home/appuser/.local/lib/$(py)/site-packages \
 	  --env-file=configs/container.env \
-	  -e USER_UID=$(shell id -u) -e USER_GID=$(shell id -g) \
+	  -e APPUSER_UID=$(shell id -u) -e APPUSER_GID=$(shell id -g) \
 	  -w /home/appuser/workspace \
 	  $(image)

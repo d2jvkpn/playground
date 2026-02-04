@@ -24,8 +24,8 @@ services:
     env_file: configs/container.env # set JUPYTER_TOKEN=xxxxxxxx
     environment:
       TZ: Asia/Shanghai
-      USER_UID: 1000
-      USER_GID: 1000
+      APPUSER_UID: 1000
+      APPUSER_GID: 1000
       #NVIDIA_VISIBLE_DEVICES: "all"
       #NVIDIA_DRIVER_CAPABILITIES: "compute,utility"
     working_dir: /home/appuser/workspace

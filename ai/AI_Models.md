@@ -33,18 +33,26 @@
   models: [mistral]
 
 10. Microsoft
-  name: [phi]
+  models: [phi]
 
-11. Links
+11. ZHIPU
+  models: [glm-4.7]
+
+#### ch02. Links
 - https://zhuanlan.zhihu.com/p/670437303
 - https://zhuanlan.zhihu.com/p/687501772
 - https://zhuanlan.zhihu.com/p/61898234
 - https://zhuanlan.zhihu.com/p/597645266
 
-#### ch02. Communities
+#### ch03. Communities
 
-#### ch03. Tools
+#### ch04. Tools
 1. pytorch
 2. ollama
 3. llamafile
 4. ComfyUI
+
+#### ch05. Wan
+- https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/vae/wan2.2_vae.safetensors
+- https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors
+- https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors

@@ -1,29 +1,31 @@
 #!/bin/bash
 set -eu
 
-USER_UID=${USER_UID:-"0"}
-USER_GID=${USER_GID:-$USER_UID}
+APPUSER_UID=${APPUSER_UID:-"0"}
+APPUSER_GID=${APPUSER_GID:-$APPUSER_UID}
 
+# echo "$(date +%FT%T%:z) ==> entrypoint.sh"
+if [ -s "/opt/init.sh" ]; then
+    bash /opt/init.sh
+fi
 
-echo "$(date +%FT%T%:z) ==> enrtypoint.sh"
-
-if [[ "$USER_UID" == "0" ]]; then
-    echo "$(date +%FT%T%:z) ==> execute: $@"
-    "$@"
+if [[ "$APPUSER_UID" == "0" ]]; then
+    exec "$@"
     exit 0
 fi
 
-if ! getent group $USER_GID >/dev/null 2>&1; then
-    groupadd -g $USER_GID appuser
+if ! getent group $APPUSER_GID >/dev/null 2>&1; then
+    groupadd -g $APPUSER_GID appuser
 fi
 
 #if ! id -u appuser >/dev/null >/dev/null 2>&1; then
-if ! getent passwd $USER_UID >/dev/null 2>&1; then
-    useradd -s /bin/bash -m -u $USER_UID -g $USER_GID appuser
-    #chown -R $USER_UID:$USER_GID /home/appuser
-    chown "$USER_UID:$USER_GID" /home/appuser
-    find /home/appuser -xdev -mindepth 1 -maxdepth 1 -exec chown -R "$USER_UID:$USER_GID" {} +
-fi
+#if ! getent passwd $APPUSER_UID >/dev/null 2>&1; then ... fi
+useradd -s /bin/bash -m -u $APPUSER_UID -g $APPUSER_GID appuser
+#chown -R $APPUSER_UID:$APPUSER_GID /home/appuser
+#chown "$APPUSER_UID:$APPUSER_GID" /home/appuser
+#find /home/appuser -xdev -mindepth 1 -maxdepth 1 -exec chown -R "$APPUSER_UID:$APPUSER_GID" {} +
+for d in $(echo $APPUSER_DIRS | sed 's/,/ /g'); do
+    chown -R appuser:appuser $d
+done
 
-echo "$(date +%FT%T%:z) ==> execute: $@"
-exec gosu $USER_UID:$USER_GID "$@"
+exec gosu $APPUSER_UID:$APPUSER_GID "$@"
