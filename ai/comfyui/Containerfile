@@ -64,14 +64,14 @@ RUN mv venv/lib/python3.12/site-packages venv/lib/python3.12/dist-packages && \
 # 5. Reset http_proxy and https_proxy
 ENV https_proxy="" \
   http_proxy="" \
-  INIT_COMMAND="" \
+  CONTAINER_INIT_COMMAND="" \
   TORCH_HOME=/home/appuser/workspace/models/torch \
   HF_HUB_CACHE=/home/appuser/workspace/models/huggingface/hub
 
 # 6. Set VOLUME, HEALTHCHECK, EXPOSE and CMD
 WORKDIR /home/appuser/workspace
 
-VOLUME /opt/init.sh
+VOLUME /opt/container_init.sh
 VOLUME /home/appuser/workspace
 VOLUME /home/appuser/venv/lib/python3.12/site-packages
 # models, custom_nodes, user, input, output, temp

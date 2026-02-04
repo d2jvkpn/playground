@@ -36,9 +36,11 @@ services:
       #NVIDIA_GPU_MEMORY_LIMIT: 32G
       #COMFYUI_MANAGER_DISABLE_UPDATE_CHECK: "true"
       #COMFYUI_MANAGER_SKIP_LOAD: "true"
-      #https_proxy: ${PROXY_ADDR} # http_proxy, all_proxy, no_proxy
+      #https_proxy: socks5h://127.0.0.1:1080  # http_proxy, https_proxy, no_proxy
+      #CONTAINER_INIT_COMMAND: "mv custom_nodes/ComfyUI-Manager custom_nodes/ComfyUI-Manager.disabled"
     volumes:
-    - ./data:/home/appuser/workspace # models, custom_nodes, user, input, output
+    #- ./data/container_init.sh:/opt/container_init.sh
+    - ./data:/home/appuser/workspace  # models, custom_nodes, user, input, output, temp
     - ./data/site-packages:/home/appuser/venv/lib/python3.12/site-packages
     command:
     - python3
