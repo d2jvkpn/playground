@@ -20,3 +20,9 @@ version: 0.1.0
 6. Crush https://github.com/charmbracelet/crush
 7. Opencode https://github.com/opencode-ai/opencode
 8. Lovable
+9. z.ai
+10. vibe-kanban: https://www.vibekanban.com, https://github.com/BloopAI/vibe-kanban
+11. Gemini CLI
+12. Comate
+13. Qoder
+14. Antigravity
