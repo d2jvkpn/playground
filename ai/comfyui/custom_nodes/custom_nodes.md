@@ -14,11 +14,13 @@ version: 0.1.0
 2. items
 - https://github.com/crystian/ComfyUI-Crystools
 - https://github.com/Comfy-Org/ComfyUI-Manager
+- https://github.com/kijai/ComfyUI-KJNodes
+- https://github.com/theUpsider/ComfyUI-Styles_CSV_Loader
+- https://github.com/yolain/ComfyUI-Easy-Use
 
 - https://github.com/kijai/ComfyUI-WanVideoWrapper
 - https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite
 - https://github.com/ahkimkoo/ComfyUI-OSS-Upload
-- https://github.com/yolain/ComfyUI-Easy-Use
 - https://github.com/aria1th/ComfyUI-LogicUtils
 - https://github.com/pythongosssss/ComfyUI-Custom-Scripts
 - https://github.com/M1kep/Comfy_KepListStuff
@@ -27,7 +29,6 @@ version: 0.1.0
 - https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler
 - https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes
 - https://github.com/chflame163/ComfyUI_LayerStyle
-- https://github.com/kijai/ComfyUI-KJNodes
 - https://github.com/index-tts/index-tts
 
 - https://github.com/melMass/comfy_mtb

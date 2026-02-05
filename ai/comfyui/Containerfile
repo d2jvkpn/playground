@@ -71,7 +71,6 @@ ENV https_proxy="" \
 # 6. Set VOLUME, HEALTHCHECK, EXPOSE and CMD
 WORKDIR /home/appuser/workspace
 
-VOLUME /opt/container_init.sh
 VOLUME /home/appuser/workspace
 VOLUME /home/appuser/venv/lib/python3.12/site-packages
 # models, custom_nodes, user, input, output, temp
