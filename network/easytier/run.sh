@@ -41,4 +41,3 @@ sudo iptables -L -n
 sudo nft list ruleset
 
 ip link set et0 mtu 1400
-
