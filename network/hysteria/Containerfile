@@ -11,6 +11,8 @@ ENV http_proxy=$http_proxy \
 ARG TARGET_OS=linux
 ARG TARGET_ARCH=amd64
 
+ADD entrypoint.sh _hysteria.sh /opt/
+
 RUN apk --no-cache update && \
     apk --no-cache upgrade && \
     apk add --no-cache tzdata supervisor gosu ca-certificates curl bash && \
@@ -49,4 +51,5 @@ EXPOSE 443/udp
 EXPOSE 1080/tcp
 EXPOSE 1081/tcp
 
+ENTRYPOINT ["/opt/entrypoint.sh"]
 CMD ["supervisord", "-c", "configs/supervisord.conf"]
