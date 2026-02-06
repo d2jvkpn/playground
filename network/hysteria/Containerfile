@@ -1,0 +1,51 @@
+FROM alpine:3
+
+ARG HTTP_PROXY
+ARG HTTPS_PROXY
+ARG NO_PROXY
+
+ENV http_proxy=$HTTP_PROXY \
+  https_proxy=$HTTPS_PROXY \
+  no_proxy=$NO_PROXY
+
+ARG TARGET_OS=linux
+ARG TARGET_ARCH
+
+RUN apk add --no-cache tzdata supervisor gosu ca-certificates curl && \
+  update-ca-certificates
+
+RUN set -eux; \
+    arch="${TARGET_ARCH}"; \
+    case "$arch" in \
+      amd64) bin="hysteria-linux-amd64" ;; \
+      arm64) bin="hysteria-linux-arm64" ;; \
+      *) echo "Unsupported arch: ${TARGET_ARCH}" && exit 1 ;; \
+    esac; \
+    url="https://github.com/apernet/hysteria/releases/latest/download/hysteria-linux-amd64/${bin}"; \
+    echo "Downloading: $url"; \
+    mkdir -p /opt/bin; \
+    curl -fsSL "$url" -o /opt/bin/hysteria; \
+    chmod a+x /opt/bin/hysteria; \
+    /opt/bin/hysteria version || true
+
+# url="https://github.com/apernet/hysteria/releases/download/${HYSTERIA_VERSION}/${bin}"; \
+
+ADD entrypoint.sh _hysteria.sh /opt/entrypoint.sh
+
+VOLUME /home/workspace/configs
+VOLUME /home/workspace/logs
+ADD supervisord.conf /home/workspace/configs/
+
+WORKDIR /home/workspace
+
+ENV PATH=/opt/bin:$PATH \
+    http_proxy="" \
+    https_proxy="" \
+    no_proxy="" \
+    APPUSER_UID=0 \
+    APPUSER_GID=0
+
+EXPOSE 443/udp
+ENTRYPOINT ["/opt/entrypoint.sh"]
+
+CMD ["supervisord", "-c=configs/supervisord.conf"]

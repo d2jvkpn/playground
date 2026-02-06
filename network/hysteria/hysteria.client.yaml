@@ -1,0 +1,20 @@
+server: your.server.ip:443
+
+auth: $password
+
+tls:
+  insecure: true
+
+bandwidth:
+  up: 100 mbps
+  down: 100 mbps
+
+socks5:
+  listen: 127.0.0.1:1080
+
+#http:
+#  listen: 127.0.0.1:8080
+
+transport:
+  udp:
+    hopInterval: 30s
