@@ -2,6 +2,7 @@ services:
   hysteria:
     image: local/hysteria:latest
     container_name: hysteria
+    restart: always
     network_mode: bridge
     ports: [443:443/udp, 127.0.0.1:1080:1080/tcp, 127.0.0.1:1081:1081/tcp]
     volumes:
