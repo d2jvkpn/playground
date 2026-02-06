@@ -9,7 +9,7 @@ ENV http_proxy=$HTTP_PROXY \
   no_proxy=$NO_PROXY
 
 ARG TARGET_OS=linux
-ARG TARGET_ARCH
+ARG TARGET_ARCH=amd64
 
 RUN apk add --no-cache tzdata supervisor gosu ca-certificates curl && \
   update-ca-certificates
