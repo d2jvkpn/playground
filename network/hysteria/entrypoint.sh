@@ -20,4 +20,5 @@ fi
 adduser -u $APPUSER_UID -S -G appuser -h /home/appuser appuser #-H
 chown $APPUSER_UID:$APPUSER_GID /home/workspace /home/workspace/*
 
-exec gosu $APPUSER_UID:$APPUSER_GID "$@"
+#exec gosu $APPUSER_UID:$APPUSER_GID "$@"
+exec "$@"

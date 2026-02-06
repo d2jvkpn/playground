@@ -13,7 +13,7 @@ socks5:
   listen: 127.0.0.1:1080
 
 http:
-  listen: 127.0.0.1:8081
+  listen: 127.0.0.1:1081
 
 transport:
   udp:
