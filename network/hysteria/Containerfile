@@ -1,18 +1,20 @@
 FROM alpine:3
 
-ARG HTTP_PROXY
-ARG HTTPS_PROXY
-ARG NO_PROXY
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
 
-ENV http_proxy=$HTTP_PROXY \
-  https_proxy=$HTTPS_PROXY \
-  no_proxy=$NO_PROXY
+ENV http_proxy=$http_proxy \
+    https_proxy=$https_proxy \
+    no_proxy=$no_proxy
 
 ARG TARGET_OS=linux
 ARG TARGET_ARCH=amd64
 
-RUN apk add --no-cache tzdata supervisor gosu ca-certificates curl && \
-  update-ca-certificates
+RUN apk --no-cache update && \
+    apk --no-cache upgrade && \
+    apk add --no-cache tzdata supervisor gosu ca-certificates curl bash && \
+    update-ca-certificates
 
 RUN set -eux; \
     arch="${TARGET_ARCH}"; \
