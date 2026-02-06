@@ -21,7 +21,7 @@ RUN set -eux; \
       arm64) bin="hysteria-linux-arm64" ;; \
       *) echo "Unsupported arch: ${TARGET_ARCH}" && exit 1 ;; \
     esac; \
-    url="https://github.com/apernet/hysteria/releases/latest/download/hysteria-linux-amd64/${bin}"; \
+    url="https://github.com/apernet/hysteria/releases/latest/download/${bin}"; \
     echo "Downloading: $url"; \
     mkdir -p /opt/bin; \
     curl -fsSL "$url" -o /opt/bin/hysteria; \
