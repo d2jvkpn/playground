@@ -44,8 +44,8 @@ ENV PATH=/opt/bin:$PATH \
     http_proxy="" \
     https_proxy="" \
     no_proxy="" \
-    APPUSER_UID=0 \
-    APPUSER_GID=0
+    APPUSER_UID="0" \
+    APPUSER_GID="0"
 
 EXPOSE 443/udp
 EXPOSE 1080/tcp
