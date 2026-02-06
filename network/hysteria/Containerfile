@@ -32,8 +32,6 @@ RUN set -eux; \
 
 # url="https://github.com/apernet/hysteria/releases/download/${HYSTERIA_VERSION}/${bin}"; \
 
-ADD entrypoint.sh _hysteria.sh /opt/
-
 VOLUME /home/workspace/configs
 VOLUME /home/workspace/logs
 ADD supervisord.conf /home/workspace/configs/
@@ -51,5 +49,4 @@ EXPOSE 443/udp
 EXPOSE 1080/tcp
 EXPOSE 1081/tcp
 
-ENTRYPOINT ["/opt/entrypoint.sh"]
 CMD ["supervisord", "-c", "configs/supervisord.conf"]
