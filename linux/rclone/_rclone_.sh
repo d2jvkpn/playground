@@ -3,30 +3,6 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 exit
 
-#### rclone for aliyun oss
-# https://help.aliyun.com/zh/oss/developer-reference/mount-oss-buckets-to-local-file-systems-by-using-amazon-s3-protocols
-
-cat > ~/.config/rclone/rclone.conf <<EOF
-[oss_bucket]
-type = s3
-provider = Alibaba
-access_key_id = xxxxxxxx
-secret_access_key = yyyyyyyy
-endpoint = oss-cn-shanghai-internal.aliyuncs.com
-acl = private
-
-[sftp]
-type = sftp
-host = 192.168.1.1
-port = 22
-user = root
-pass = xxxxxxx
-#key_file = ~/.ssh/id_rsa
-shell_type = unix
-md5sum_command = md5sum
-sha1sum_command = sha1sum
-EOF
-
 rclone mount \
   oss_bucket:/ \
   /path/to/local_dir \

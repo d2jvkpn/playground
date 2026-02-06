@@ -26,7 +26,7 @@ RUN /opt/bin/apt_install.sh \
 
 ENV LANG=en_US.UTF-8
 
-RUN /opt/bin/apt_install.sh vim ffmpeg jq git git-lfs wget curl && \
+RUN /opt/bin/apt_install.sh zip unzip vim ffmpeg jq git git-lfs wget curl && \
   wget -qO /usr/local/bin/yq \
     https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && \
   chmod a+x /usr/local/bin/yq
