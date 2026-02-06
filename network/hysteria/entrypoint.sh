@@ -14,10 +14,9 @@ if [[ "$APPUSER_UID" == "0" ]]; then
 fi
 
 if ! getent group $APPUSER_GID >/dev/null 2>&1; then
-    groupadd -g $APPUSER_GID appuser
+    addgroup -g $APPUSER_GID -S appuser
 fi
 
-addgroup -g $APPUSER_GID -S appuser
 adduser -u $APPUSER_UID -S -G appuser -h /home/appuser appuser #-H
 chown $APPUSER_UID:$APPUSER_GID /home/workspace /home/workspace/*
 

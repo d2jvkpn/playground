@@ -50,4 +50,4 @@ ENV PATH=/opt/bin:$PATH \
 EXPOSE 443/udp
 ENTRYPOINT ["/opt/entrypoint.sh"]
 
-CMD ["supervisord", "-c=configs/supervisord.conf"]
+CMD ["supervisord", "-c", "configs/supervisord.conf"]
