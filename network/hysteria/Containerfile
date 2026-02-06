@@ -48,6 +48,8 @@ ENV PATH=/opt/bin:$PATH \
     APPUSER_GID=0
 
 EXPOSE 443/udp
-ENTRYPOINT ["/opt/entrypoint.sh"]
+EXPOSE 1080/tcp
+EXPOSE 1081/tcp
 
+ENTRYPOINT ["/opt/entrypoint.sh"]
 CMD ["supervisord", "-c", "configs/supervisord.conf"]
