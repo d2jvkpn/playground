@@ -36,7 +36,10 @@ RUN set -eux; \
 
 VOLUME /home/workspace/configs
 VOLUME /home/workspace/logs
-ADD supervisord.conf /home/workspace/configs/
+
+ADD examples/supervisord.conf /home/workspace/configs/
+ADD examples/hysteria.client.yaml /home/workspace/configs/
+ADD examples/hysteria.server.yaml /home/workspace/configs/
 
 WORKDIR /home/workspace
 

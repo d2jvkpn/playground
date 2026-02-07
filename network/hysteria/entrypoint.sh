@@ -17,7 +17,10 @@ if ! getent group $APPUSER_GID >/dev/null 2>&1; then
     addgroup -g $APPUSER_GID -S appuser
 fi
 
-adduser -u $APPUSER_UID -S -G appuser -h /home/appuser appuser #-H
+if ! getent passwd $APPUSER_UID >/dev/null 2>&1; then
+    adduser -u $APPUSER_UID -S -G appuser -h /home/appuser appuser #-H
+fi
+
 chown $APPUSER_UID:$APPUSER_GID /home/workspace /home/workspace/*
 
 #exec gosu $APPUSER_UID:$APPUSER_GID "$@"
