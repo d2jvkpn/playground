@@ -8,7 +8,12 @@ services:
     restart: unless-stopped
     #restart: always
     user: 1000:1000
+    extra_hosts:
+    - host.docker.internal:host-gateway
     networks: ["lcoal"]
     # ports: ["8081:8081"]
+    environment:
+      https_proxy: socks5h://host.docker.internal:1080
+      http_proxy: socks5h://host.docker.internal:1080
     volumes:
     - ./data/metube:/downloads
