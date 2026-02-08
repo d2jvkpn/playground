@@ -41,7 +41,7 @@ WORKDIR /home/appuser
 # 3. Setup
 # RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 RUN python3 -m venv /home/appuser/venv
-ENV PATH=/home/appuser/venv/bin:$PATH
+ENV PATH=/home/appuser/venv/bin:/home/appuser/workspace/bin:$PATH
 RUN pip install --no-cache-dir --upgrade pip wheel setuptools uv
 
 # 4. Install ComfyUI
