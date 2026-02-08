@@ -1,10 +1,13 @@
+networks:
+   net: { name: local, driver: bridge, external: true }
+
 services:
   hysteria:
     image: local/hysteria:latest
     container_name: hysteria
     restart: always
-    network_mode: bridge
-    ports: [443:443/udp, 127.0.0.1:1080:1080/tcp, 127.0.0.1:1081:1081/tcp]
+    networks: ["net"]
+    ports: [127.0.0.1:1080:1080/tcp, 127.0.0.1:1081:1081/tcp]
     volumes:
     - ./configs:/home/workspace/configs
     - ./logs:/home/workspace/logs
@@ -12,4 +15,4 @@ services:
       TZ: Asia/Shanghai
       APPUSER_UID: "1000"
       APPUSER_GID: "1000"
-    command: ["supervisord", "-c", "configs/supervisord.conf"]
+    command: ["supervisord", "-c", "configs/supervisord.client.conf"]

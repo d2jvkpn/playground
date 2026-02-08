@@ -1,0 +1,15 @@
+services:
+  hysteria:
+    image: local/hysteria:latest
+    container_name: hysteria
+    restart: always
+    network_mode: bridge
+    ports: [443:443/udp]
+    volumes:
+    - ./configs:/home/workspace/configs
+    - ./logs:/home/workspace/logs
+    environment:
+      TZ: Asia/Shanghai
+      APPUSER_UID: "1000"
+      APPUSER_GID: "1000"
+    command: ["supervisord", "-c", "configs/supervisord.server.conf"]

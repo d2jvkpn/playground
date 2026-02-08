@@ -20,10 +20,9 @@ version: 0.1.0
 - https://github.com/ltdrdata/was-node-suite-comfyui
 - https://github.com/theUpsider/ComfyUI-Styles_CSV_Loader
 - https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite
-
 - https://github.com/pythongosssss/ComfyUI-Custom-Scripts
-https://github.com/pydn/ComfyUI-to-Python-Extension
 
+- https://github.com/pydn/ComfyUI-to-Python-Extension
 - https://github.com/kijai/ComfyUI-WanVideoWrapper
 - https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite
 - https://github.com/ahkimkoo/ComfyUI-OSS-Upload

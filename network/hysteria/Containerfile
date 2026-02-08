@@ -37,9 +37,8 @@ RUN set -eux; \
 VOLUME /home/workspace/configs
 VOLUME /home/workspace/logs
 
-ADD examples/supervisord.conf /home/workspace/configs/
-ADD examples/hysteria.client.yaml /home/workspace/configs/
-ADD examples/hysteria.server.yaml /home/workspace/configs/
+ADD examples/supervisord.client.conf examples/supervisord.server.conf /home/workspace/configs/
+ADD examples/hysteria.client.yaml examples/hysteria.server.yaml /home/workspace/configs/
 
 WORKDIR /home/workspace
 
@@ -55,4 +54,5 @@ EXPOSE 1080/tcp
 EXPOSE 1081/tcp
 
 ENTRYPOINT ["/opt/entrypoint.sh"]
-CMD ["supervisord", "-c", "configs/supervisord.conf"]
+CMD ["supervisord", "-c", "configs/supervisord.server.conf"]
+#CMD ["supervisord", "-c", "configs/supervisord.client.conf"]
