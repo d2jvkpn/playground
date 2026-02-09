@@ -2,3 +2,18 @@ comfyui:
   base_path: /home/appuser/workspace/
   is_default: false
   checkpoints: extra_models/checkpoints/
+  text_encoders: |
+    extra_models/text_encoders/
+    extra_models/clip/
+  clip_vision: extra_models/clip_vision/
+  configs: extra_models/configs/
+  controlnet: extra_models/controlnet/
+  diffusion_models: |
+    extra_models/diffusion_models/
+    extra_models/unet/
+  embeddings: extra_models/embeddings/
+  loras: extra_models/loras/
+  upscale_models: extra_models/upscale_models/
+  vae: extra_models/vae/
+  audio_encoders: extra_models/audio_encoders/
+  model_patches: extra_models/model_patches/
