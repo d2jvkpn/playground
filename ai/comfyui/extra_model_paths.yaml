@@ -5,6 +5,7 @@ comfyui:
   text_encoders: |
     extra_models/text_encoders/
     extra_models/clip/
+  ipadapter: extra_models/ipadapter
   clip_vision: extra_models/clip_vision/
   configs: extra_models/configs/
   controlnet: extra_models/controlnet/
