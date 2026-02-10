@@ -9,4 +9,8 @@ elif [ ! -z "$CONTAINER_INIT_COMMAND" ]; then
     bash -c "$CONTAINER_INIT_COMMAND"
 fi
 
-exec "$@"
+if [[ $# -eq 0 ]]; then
+    exec "/bin/bash"
+else
+    exec "$@"
+fi

@@ -10,7 +10,12 @@ if [ -s "/opt/init.sh" ]; then
 fi
 
 if [[ "$APPUSER_UID" == "0" ]]; then
-    exec "$@"
+    if [[ $# -eq 0 ]]; then
+        exec "/bin/bash"
+    else
+        exec "$@"
+    fi
+
     exit 0
 fi
 
@@ -27,4 +32,9 @@ fi
 #chown "$APPUSER_UID:$APPUSER_GID" /home/appuser
 #find /home/appuser -xdev -mindepth 1 -maxdepth 1 -exec chown -R "$APPUSER_UID:$APPUSER_GID" {} +
 
-exec gosu $APPUSER_UID:$APPUSER_GID "$@"
+
+if [[ $# -eq 0 ]]; then
+    exec gosu $APPUSER_UID:$APPUSER_GID "/bin/bash"
+else
+    exec gosu $APPUSER_UID:$APPUSER_GID "$@"
+fi
