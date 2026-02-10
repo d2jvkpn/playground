@@ -1,20 +1,35 @@
+# https://github.com/Comfy-Org/ComfyUI/blob/master/extra_model_paths.yaml.example
+#Rename this to extra_model_paths.yaml and ComfyUI will load it
+
 comfyui:
   base_path: /home/appuser/workspace/
-  is_default: false
-  checkpoints: extra_models/checkpoints/
-  text_encoders: |
-    extra_models/text_encoders/
-    extra_models/clip/
-  ipadapter: extra_models/ipadapter
+  is_default: true
+
+  audio_encoders: extra_models/audio_encoders/
+  clip: extra_models/clip/
   clip_vision: extra_models/clip_vision/
+  checkpoints: extra_models/checkpoints/
   configs: extra_models/configs/
   controlnet: extra_models/controlnet/
+  diffusers: extra_models/diffusers/
   diffusion_models: |
     extra_models/diffusion_models/
     extra_models/unet/
   embeddings: extra_models/embeddings/
+  gligen: extra_models/gligen/
+  hypernetworks: extra_models/hypernetworks/
+  latent_upscale_models: extra_models/latent_upscale_models/
   loras: extra_models/loras/
+  model_patches: extra_models/model_patches/
+  photomaker: extra_models/photomaker/
+  style_models: extra_models/style_models/
+  text_encoders: |
+    extra_models/text_encoders/
+    extra_models/clip/
+  unet: extra_models/unet/
   upscale_models: extra_models/upscale_models/
   vae: extra_models/vae/
+  vae_approx: extra_models/vae_approx/
+
+  ipadapter: extra_models/ipadapter/
   audio_encoders: extra_models/audio_encoders/
-  model_patches: extra_models/model_patches/
