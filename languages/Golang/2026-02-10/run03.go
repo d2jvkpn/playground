@@ -12,15 +12,15 @@ func main() {
 		wg sync.WaitGroup
 	)
 
-	ch = make(chan struct{}, 1)
+	ch = make(chan struct{}, 0)
 	wg.Add(2)
 
 	go func() {
 		for i := 0; i < 5; i++ {
-			select {
-			case <-ch:
-				n += 1
-				fmt.Printf("--> %d\n", n)
+			<-ch
+			n += 1
+			fmt.Printf("--> %d\n", n)
+			if n < 10 {
 				ch <- struct{}{}
 			}
 		}
@@ -33,7 +33,9 @@ func main() {
 			<-ch
 			n += 1
 			fmt.Printf("<-- %d\n", n)
-			ch <- struct{}{}
+			if n < 10 {
+				ch <- struct{}{}
+			}
 		}
 
 		wg.Done()
@@ -45,17 +47,6 @@ func main() {
 
 /*
 <-- 1
-<-- 2
-<-- 3
-<-- 4
-<-- 5
---> 6
---> 7
---> 8
---> 9
---> 10
-
-<-- 1
 --> 2
 <-- 3
 --> 4
@@ -64,16 +55,5 @@ func main() {
 <-- 7
 --> 8
 <-- 9
---> 10
-
-<-- 1
-<-- 2
-<-- 3
-<-- 4
---> 5
-<-- 6
---> 7
---> 8
---> 9
 --> 10
 */
