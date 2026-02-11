@@ -9,7 +9,12 @@ if [ -s "/opt/init.sh" ]; then
 fi
 
 if [[ "$APPUSER_UID" == "0" ]]; then
-    exec "$@"
+    if [[ $# -eq 0 ]]; then
+        exec "/bin/bash"
+    else
+        exec "$@"
+    fi
+
     exit 0
 fi
 
@@ -24,4 +29,8 @@ fi
 chown $APPUSER_UID:$APPUSER_GID /home/workspace /home/workspace/*
 
 #exec gosu $APPUSER_UID:$APPUSER_GID "$@"
-exec "$@"
+if [[ $# -eq 0 ]]; then
+    exec "/bin/bash"
+else
+    exec "$@"
+fi

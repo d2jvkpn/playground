@@ -1,0 +1,16 @@
+services:
+  easytier:
+    image: ghcr.io/easytier/easytier:latest
+    container_name: easytier
+    restart: unless-stopped
+    cap_add: [NET_ADMIN]
+    devices: [/dev/net/tun:/dev/net/tun]
+    network_mode: host
+    user: "1000:1000"
+    volumes:
+    - ./configs/easytier.yaml:/etc/easytier/config.yaml:ro
+    - ./data/easytier:/var/lib/easytier
+    command:
+    - run
+    - --config
+    - /etc/easytier/config.yaml

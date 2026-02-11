@@ -1,0 +1,24 @@
+network:
+  name: mesh-net001
+  cidr: 10.126.0.0/24
+
+node:
+  name: node-a
+  mode: peer
+
+security:
+  enable_encryption: true
+  shared_key: "CHANGE_ME_32_BYTES_KEY"
+
+discovery:
+  enable: true
+  servers:
+  - "udp://1.2.3.4:11010"
+  - "udp://5.6.7.8:11010"
+
+transport:
+  udp:
+    enable: true
+
+log:
+  level: info

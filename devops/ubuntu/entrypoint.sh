@@ -6,7 +6,12 @@ APPUSER_GID=${APPUSER_GID:-$APPUSER_UID}
 
 
 if [[ "$APPUSER_UID" == "0" ]]; then
-    exec "$@"
+    if [[ $# -eq 0 ]]; then
+        exec "/bin/bash"
+    else
+        exec "$@"
+    fi
+
     exit 0
 fi
 
@@ -22,4 +27,8 @@ if ! getent passwd $APPUSER_UID >/dev/null 2>&1; then
     find /home/appuser -xdev -mindepth 1 -maxdepth 1 -exec chown -R "$APPUSER_UID:$APPUSER_GID" {} +
 fi
 
-exec gosu $APPUSER_UID:$APPUSER_GID "$@"
+if [[ $# -eq 0 ]]; then
+    exec gosu $APPUSER_UID:$APPUSER_GID "/bin/bash"
+else
+    exec gosu $APPUSER_UID:$APPUSER_GID "$@"
+fi
