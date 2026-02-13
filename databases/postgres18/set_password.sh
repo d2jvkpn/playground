@@ -2,6 +2,7 @@
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
+exit
 mkdir -p configs
 
 [ -s configs/postgres.pass ] || \
@@ -11,11 +12,14 @@ docker exec postgres psql postgres://postgres@localhost:5432/postgres \
     -c "ALTER ROLE postgres WITH PASSWORD '$(cat configs/postgres.pass)'"
 
 exit
-# connect from host
-psql postgres://postgres@localhost:5432/postgres
+psql postgres://username:password@localhost:5432/postgres
 
-docker exec -it postgres createuser --username=postgres hello --createdb --login
-# \password hello
+createuser --username=postgres hello --createdb --login
 
-# create user hello with password 'world';
-# create database $db owner=$username;
+cat <<EOF
+create user hello with password 'world';
+
+\password hello
+
+create database hello owner=hello;
+EOF

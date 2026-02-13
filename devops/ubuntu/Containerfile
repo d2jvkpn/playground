@@ -1,10 +1,11 @@
 FROM ubuntu:24.04
 
-RUN mkdir -p /opt/install
-ADD apt_install.sh entrypoint.sh /opt/install/
+COPY bin /opt/bin
 
-RUN bash /opt/install/apt_install.sh tzdata file python3 supervisor
-# python3-pip podman
+ENV TZ=Asia/Shanghai
+
+RUN bash /opt/bin/apt_install.sh tzdata file
+# python3 python3-pip supervisor podman
 
 RUN userdel -r ubuntu || true
 
@@ -13,8 +14,7 @@ RUN userdel -r ubuntu || true
 RUN mkdir -p /home/appuser/workspace
 
 VOLUME ["/home/appuser/workspace"]
-ENV TZ=Asia/Shanghai
 WORKDIR /home/appuser/workspace
 
-ENTRYPOINT ["/opt/install/entrypoint.sh"]
+ENTRYPOINT ["/opt/bin/entrypoint.sh"]
 CMD ["echo", "You are already in the container"]
