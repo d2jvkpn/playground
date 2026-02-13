@@ -9,7 +9,7 @@ mkdir -p configs
   tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 32 | head -n1 > configs/postgres.pass || true
 
 docker exec postgres psql postgres://postgres@localhost:5432/postgres \
-    -c "ALTER ROLE postgres WITH PASSWORD '$(cat configs/postgres.pass)'"
+  -c "ALTER ROLE postgres WITH PASSWORD '$(cat configs/postgres.pass)'"
 
 exit
 psql postgres://username:password@localhost:5432/postgres
@@ -17,7 +17,11 @@ psql postgres://username:password@localhost:5432/postgres
 createuser --username=postgres hello --createdb --login
 
 cat <<EOF
-create user hello with password 'world';
+create user hello with login password 'world';
+
+ALTER ROLE hello CREATEDB;
+ALTER ROLE hello LOGIN;
+ALTER ROLE hello SUPERUSER;
 
 \password hello
 
