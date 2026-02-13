@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -eu -o pipefail
 
 APPUSER_UID=${APPUSER_UID:-"0"}
 APPUSER_GID=${APPUSER_GID:-$APPUSER_UID}

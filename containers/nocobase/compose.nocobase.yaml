@@ -1,0 +1,19 @@
+services:
+  nocobase:
+    image: nocobase/nocobase:2.0.0-beta.22-full
+    #image: nocobase/nocobase:1.9.47-full
+    container_name: nocobase
+    init: true
+    restart: always
+    network_mode: bridge
+    ports: ["13000:80"]
+    volumes:
+    - ./data/nocobase:/app/nocobase/storage
+    environment:
+      APP_KEY: your-secret-key              # Replace it with your own app key
+      ENCRYPTION_FIELD_KEY: your-secret-key # Replace it with your own app key
+      DB_DIALECT: postgres
+      DB_HOST: postgres
+      DB_DATABASE: nocobase
+      DB_USER: nocobase
+      DB_PASSWORD: nocobase

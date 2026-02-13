@@ -3,15 +3,18 @@ services:
     image: "nocodb/nocodb:latest"
     container_name: nocodb
     restart: always
-    #depends_on: 
-    #  postgres: 
+    #depends_on:
+    #  root_db:
     #    condition: service_healthy
     network_mode: bridge
-    ports: ["3000:8080"]
+    ports: ["8080:8080"]
     volumes:
     - "./data/nocodb:/usr/app/data"
-    environment: 
+    environment:
+      TZ: Asia/Shanghai
       NC_DB: "pg://root_db:5432?u=p0stgres&p=passw0rd&d=root_db"
       NC_ALLOW_LOCAL_HOOKS: "true"
       NC_ATTACHMENT_FIELD_SIZE: "629145600"
       NC_MAX_ATTACHMENTS_ALLOWED: "50"
+      NODE_ENV: production
+      PORT: 8080
