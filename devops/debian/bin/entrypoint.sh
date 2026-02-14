@@ -1,0 +1,36 @@
+#!/bin/bash
+set -eu -o pipefail
+
+APPUSER_UID=${APPUSER_UID:-"0"}
+APPUSER_GID=${APPUSER_GID:-$APPUSER_UID}
+
+
+if [[ "$APPUSER_UID" == "0" ]]; then
+    if [[ $# -eq 0 ]]; then
+        exec "/bin/bash"
+    else
+        exec "$@"
+    fi
+
+    exit 0
+fi
+
+if ! getent group $APPUSER_GID >/dev/null 2>&1; then
+    groupadd -g $APPUSER_GID appuser
+fi
+
+#if ! id -u appuser >/dev/null >/dev/null 2>&1; then
+if ! getent passwd $APPUSER_UID >/dev/null 2>&1; then
+    #useradd -s /bin/bash -m -u $APPUSER_UID -g $APPUSER_GID appuser
+
+    useradd -s /bin/bash -M -u $APPUSER_UID -g $APPUSER_GID appuser
+    cp -a /etc/skel/. /home/appuser/
+    chown -R $APPUSER_UID:$APPUSER_GID /home/appuser
+    find /home/appuser -xdev -mindepth 1 -maxdepth 1 -exec chown -R "$APPUSER_UID:$APPUSER_GID" {} +
+fi
+
+if [[ $# -eq 0 ]]; then
+    exec gosu $APPUSER_UID:$APPUSER_GID "/bin/bash"
+else
+    exec gosu $APPUSER_UID:$APPUSER_GID "$@"
+fi

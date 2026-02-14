@@ -22,8 +22,8 @@ RUN /opt/bin/apt_install.sh \
   tzdata software-properties-common pkg-config ca-certificates gnupg \
   locales fonts-noto-cjk gosu build-essential \
   vim git git-lfs jq zip unzip file tree dos2unix curl wget && \
-  locale-gen en_US.UTF-8 zh_CN.UTF-8 && \
-  update-locale LANG=en_US.UTF-8
+    locale-gen en_US.UTF-8 zh_CN.UTF-8 && \
+    update-locale LANG=en_US.UTF-8
 # tini nvidia-cuda-toolkit
 
 RUN wget -qO /usr/local/bin/yq \
@@ -32,8 +32,8 @@ RUN wget -qO /usr/local/bin/yq \
 
 #### 2. install conda and python
 RUN /opt/bin/install_miniconda.sh 3.12 && 
-  mkdir -p /home/appuser/site-packages /home/appuser/.local/lib/python3.12 && \
-  ln -s /home/appuser/site-packages /home/appuser/.local/lib/python3.12/
+    mkdir -p /home/appuser/site-packages /home/appuser/.local/lib/python3.12 && \
+    ln -s /home/appuser/site-packages /home/appuser/.local/lib/python3.12/
 #mv /home/appuser/.local/lib/python3.12/site-packages /home/appuser/.local/lib/python3.12/dist-packages
 
 #### 3. pip install
@@ -60,10 +60,10 @@ RUN userdel -r ubuntu || true && \
 WORKDIR /home/appuser/workspace
 
 ENV http_proxy="" \
-  https_proxy="" \
-  TZ=Asia/Shanghai \
-  APPUSER_UID=1000 \
-  APPUSER_GID=1000
+    https_proxy="" \
+    no_proxy="" \
+    APPUSER_UID=1000 \
+    APPUSER_GID=1000
 
 #### 5. setup
 EXPOSE 8888
