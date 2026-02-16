@@ -1,0 +1,11 @@
+services:
+  xray-reality:
+    image: ghcr.io/xtls/xray-core:latest
+    container_name: xray-reality
+    restart: always
+    network_mode: host
+    #network_mode: bridge
+    #ports: [1082:1082, 1083:1083]
+    volumes:
+    - ./configs:/opt/configs
+    command: ["-c", "/opt/configs/reality.client.json"]
