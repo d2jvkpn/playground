@@ -10,6 +10,6 @@ services:
     #- "8443:8443/udp"
     network_mode: host
     volumes:
-    - ./configs/single-box.json:/etc/sing-box/config.json:ro
+    - ./configs/sing-box.json:/etc/sing-box/config.json:ro
     #- /etc/ssl:/etc/ssl:ro # 如果你用真实证书（可选）
     command: ["run", "-c", "/etc/sing-box/config.json"]

@@ -54,7 +54,6 @@ ENV PATH=/opt/bin:$PATH \
     APPUSER_GID="0"
 
 EXPOSE 443/udp
-EXPOSE 443/tcp
 EXPOSE 1080/tcp
 EXPOSE 1081/tcp
 
