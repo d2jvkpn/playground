@@ -18,27 +18,31 @@ RUN apk --no-cache update && \
     apk add --no-cache tzdata supervisor gosu ca-certificates curl bash && \
     update-ca-certificates
 
-RUN set -eux; \
-    arch="${TARGET_ARCH}"; \
-    case "$arch" in \
-      amd64) bin="hysteria-linux-amd64" ;; \
-      arm64) bin="hysteria-linux-arm64" ;; \
-      *) echo "Unsupported arch: ${TARGET_ARCH}" && exit 1 ;; \
-    esac; \
-    url="https://github.com/apernet/hysteria/releases/latest/download/${bin}"; \
-    echo "Downloading: $url"; \
-    mkdir -p /opt/bin; \
-    curl -fsSL "$url" -o /opt/bin/hysteria; \
-    chmod a+x /opt/bin/hysteria; \
-    /opt/bin/hysteria version || true
+#    arch="${TARGET_ARCH}";
+#    case "$arch" in
+#      amd64) bin="hysteria-linux-amd64" ;;
+#      arm64) bin="hysteria-linux-arm64" ;;
+#      *) echo "Unsupported arch: ${TARGET_ARCH}" && exit 1 ;;
+#    esac;
 
-# url="https://github.com/apernet/hysteria/releases/download/${HYSTERIA_VERSION}/${bin}"; \
+# url="https://github.com/apernet/hysteria/releases/download/${HYSTERIA_VERSION}/${bin}";
+
+
+RUN url="https://github.com/apernet/hysteria/releases/latest/download/hysteria-linux-amd64"; \
+    echo "Downloading: $url"; \
+    mkdir -p /opt/bin && \
+    curl -fsSL "$url" -o /opt/bin/hysteria && \
+    chmod a+x /opt/bin/hysteria && \
+    /opt/bin/hysteria version
 
 VOLUME /home/workspace/configs
 VOLUME /home/workspace/logs
 
-ADD examples/supervisord.client.conf examples/supervisord.server.conf /home/workspace/configs/
-ADD examples/hysteria.client.yaml examples/hysteria.server.yaml /home/workspace/configs/
+ADD examples/supervisord.client.conf \
+    examples/supervisord.server.conf \
+    examples/hysteria.client.yaml \
+    examples/hysteria.server.yaml \
+    /home/workspace/configs/
 
 WORKDIR /home/workspace
 
@@ -50,6 +54,7 @@ ENV PATH=/opt/bin:$PATH \
     APPUSER_GID="0"
 
 EXPOSE 443/udp
+EXPOSE 443/tcp
 EXPOSE 1080/tcp
 EXPOSE 1081/tcp
 

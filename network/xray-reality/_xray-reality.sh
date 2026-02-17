@@ -3,6 +3,15 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 exit
+url="https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip"
+echo "Downloading: $url"
+mkdir -p /opt/xray
+curl -fL --retry 5 --retry-delay 1 -o /opt/Xray-linux-64.zip "$url"
+unzip /opt/Xray-linux-64.zip -d /opt/xray
+chmod a+x /opt/xray/xray && \
+rm -rf /opt/Xray-linux-64.zip
+
+exit
 mkdir -p configs
 
 #docker pull ghcr.io/xtls/xray-core:26.2.6
