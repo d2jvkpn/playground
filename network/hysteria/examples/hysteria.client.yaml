@@ -1,6 +1,6 @@
-server: your.server.ip:443
+server: ____SERVER_IP____:____SERVER_PORT____
 
-auth: $password
+auth: ____PASSWORD____
 
 tls:
   insecure: true

@@ -1,0 +1,19 @@
+listen: :8443
+
+tls:
+  cert: configs/server.crt
+  key: configs/server.key
+
+auth:
+  type: password
+  password: ____PASSWORD____
+
+bandwidth:
+  up: 200 mbps
+  down: 200 mbps
+
+masquerade:
+  type: proxy
+  proxy:
+    url: https://www.cloudflare.com
+    rewriteHost: true

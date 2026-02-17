@@ -20,7 +20,7 @@
   "outbounds": [
     {
       "type": "hysteria2",
-      "tag": "hysteria-443",
+      "tag": "hysteria-0443",
       "server": "____SERVER_IP____",
       "server_port": 443,
       "password": "____SERVER_PASSWORD____",
@@ -32,7 +32,7 @@
     },
     {
       "type": "vless",
-      "tag": "reality-443",
+      "tag": "reality-0443",
       "server": "____SERVER_IP____",
       "server_port": 443,
       "uuid": "____SERVER_UUID____",
@@ -54,7 +54,7 @@
     {
       "type": "urltest",
       "tag": "auto",
-      "outbounds": ["hysteria-443", "reality-443"],
+      "outbounds": ["hysteria-0443", "reality-0443"],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "30s",
       "tolerance": 50

@@ -6,7 +6,7 @@ tls:
 
 auth:
   type: password
-  password: $password
+  password: ____PASSWORD____
 
 bandwidth:
   up: 200 mbps

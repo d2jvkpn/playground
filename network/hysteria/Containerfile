@@ -41,7 +41,8 @@ VOLUME /home/workspace/logs
 ADD examples/supervisord.client.conf \
     examples/supervisord.server.conf \
     examples/hysteria.client.yaml \
-    examples/hysteria.server.yaml \
+    examples/hysteria.server-0443.yaml \
+    examples/hysteria.server-8443.yaml \
     /home/workspace/configs/
 
 WORKDIR /home/workspace
