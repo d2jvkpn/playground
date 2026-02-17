@@ -1,0 +1,69 @@
+{
+  "log": {
+    "level": "info",
+    "timestamp": true
+  },
+  "dns": {
+    "servers": [
+      { "type": "udp", "server": "1.1.1.1" },
+      { "type": "udp", "server": "8.8.8.8" }
+    ]
+  },
+  "inbounds": [
+    {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "127.0.0.1",
+      "listen_port": 1086
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "hysteria2",
+      "tag": "hysteria-443",
+      "server": "____SERVER_IP____",
+      "server_port": 443,
+      "password": "____SERVER_PASSWORD____",
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "www.cloudflare.com"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "reality-443",
+      "server": "____SERVER_IP____",
+      "server_port": 443,
+      "uuid": "____SERVER_UUID____",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.microsoft.com",
+        "utls": {
+            "enabled": true,
+            "fingerprint": "chrome"
+        },
+        "reality": {
+          "enabled": true,
+          "public_key": "____SERVER_PUBLIC_KEY____",
+          "short_id": "____CLIENT_ID_b1____"
+        }
+      }
+    },
+    {
+      "type": "urltest",
+      "tag": "auto",
+      "outbounds": ["hysteria-443", "reality-443"],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "30s",
+      "tolerance": 50
+    },
+
+    { "type": "direct", "tag": "direct" },
+    { "type": "block", "tag": "block" }
+  ],
+  "route": {
+    "final": "auto"
+  }
+}

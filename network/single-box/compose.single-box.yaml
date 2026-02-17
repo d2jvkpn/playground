@@ -1,0 +1,15 @@
+services:
+  sing-box:
+    image: ghcr.io/sagernet/sing-box:latest
+    container_name: sing-box
+    restart: always # unless-stopped
+    #network_mode: bridge
+    #ports:
+    #- "443:443/tcp"
+    #- "443:443/udp"
+    #- "8443:8443/udp"
+    network_mode: host
+    volumes:
+    - ./configs/single-box.json:/etc/sing-box/config.json:ro
+    #- /etc/ssl:/etc/ssl:ro # 如果你用真实证书（可选）
+    command: ["run", "-c", "/etc/sing-box/config.json"]
