@@ -3,7 +3,6 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 exit
-
 mkdir configs
 
 secret=$(tr -dc "0-9A-Za0z" < /dev/urandom | fold -w 32 | head -n 1 || true)

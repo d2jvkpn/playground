@@ -1,6 +1,6 @@
 network:
-  name: mesh-net001
-  cidr: 10.126.0.0/24
+  name: mesh-001
+  cidr: 10.1.0.0/24
 
 node:
   name: node-a
@@ -8,7 +8,8 @@ node:
 
 security:
   enable_encryption: true
-  shared_key: "CHANGE_ME_32_BYTES_KEY"
+  # 32 bytes key
+  shared_key: $secret
 
 discovery:
   enable: true

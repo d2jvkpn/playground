@@ -5,3 +5,6 @@ names:
 - hysteria
 - frp
 - privoxy
+
+- headscale: https://headscale.net/stable
+- netbird: https://github.com/netbirdio/netbird

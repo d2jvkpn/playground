@@ -2,7 +2,7 @@ services:
   easytier:
     image: ghcr.io/easytier/easytier:latest
     container_name: easytier
-    restart: unless-stopped
+    restart: always # unless-stopped
     cap_add: [NET_ADMIN]
     devices: [/dev/net/tun:/dev/net/tun]
     network_mode: host
