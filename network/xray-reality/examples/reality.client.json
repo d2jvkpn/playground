@@ -1,117 +1,91 @@
 {
-    "log": {
-        "loglevel": "warning"
+  "log": {
+    "loglevel": "warning"
+  },
+  "routing": {
+  "domainStrategy": "IPIfNonMatch",
+  "rules": [
+    {
+      "type": "field",
+      "domain": [ "geosite:category-ads-all" ],
+      "outboundTag": "block"
     },
-    "routing": {
-        "domainStrategy": "IPIfNonMatch",
-        "rules": [
-            {
-                "type": "field",
-                "domain": [
-                    "geosite:category-ads-all"
-                ],
-                "outboundTag": "block"
-            },
-            {
-                "type": "field",
-                "domain": [
-                    "geosite:category-games@cn"
-                ],
-                "outboundTag": "direct"
-            },
-            {
-                "type": "field",
-                "domain": [
-                    "geosite:geolocation-!cn"
-                ],
-                "outboundTag": "proxy"
-            },
-            {
-                "type": "field",
-                "domain": [
-                    "geosite:cn",
-                    "geosite:private"
-                ],
-                "outboundTag": "direct"
-            },
-            {
-                "type": "field",
-                "ip": [
-                    "geoip:cn",
-                    "geoip:private"
-                ],
-                "outboundTag": "direct"
-            }
-        ]
+    {
+      "type": "field",
+      "domain": [ "geosite:category-games@cn" ],
+      "outboundTag": "direct"
     },
-    "inbounds": [
+    {
+      "type": "field",
+      "domain": [ "geosite:geolocation-!cn" ],
+      "outboundTag": "proxy"
+    },
+    {
+      "type": "field",
+      "domain": [  "geosite:cn", "geosite:private" ],
+      "outboundTag": "direct"
+    },
+    {
+      "type": "field",
+      "ip": [ "geoip:cn", "geoip:private" ],
+      "outboundTag": "direct"
+    }
+  ]
+  },
+  "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": 1082,
+      "protocol": "socks",
+      "settings": { "udp": true },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [ "http", "tls" ]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": 1083,
+      "protocol": "http",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [ "http", "tls" ]
+      }
+  }
+  ],
+  "outbounds": [
+    {
+      "protocol": "vless",
+      "settings": {
+      "vnext": [
         {
-            "listen": "127.0.0.1",
-            "port": 1082,
-            "protocol": "socks",
-            "settings": {
-                "udp": true
-            },
-            "sniffing": {
-                "enabled": true,
-                "destOverride": [
-                    "http",
-                    "tls"
-                ]
+          "address": "167.99.243.148",
+          "port": 443,
+          "users": [
+            {
+              "id": "9f2b4b10-6818-492e-a157-d5131d450c7b",
+              "flow": "xtls-rprx-vision",
+              "encryption": "none"
             }
-        },
-        {
-            "listen": "127.0.0.1",
-            "port": 1083,
-            "protocol": "http",
-            "sniffing": {
-                "enabled": true,
-                "destOverride": [
-                    "http",
-                    "tls"
-                ]
-            }
+          ]
         }
-    ],
-    "outbounds": [
-        {
-            "protocol": "vless",
-            "settings": {
-                "vnext": [
-                    {
-                        "address": "167.99.243.148",
-                        "port": 443,
-                        "users": [
-                            {
-                                "id": "9f2b4b10-6818-492e-a157-d5131d450c7b",
-                                "flow": "xtls-rprx-vision",
-                                "encryption": "none"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "streamSettings": {
-                "network": "tcp",
-                "security": "reality",
-                "realitySettings": {
-                    "show": false,
-                    "fingerprint": "chrome",
-                    "serverName": "www.microsoft.com",
-                    "publicKey": "ioE61VC3V30U7IdRmQ3bjhOq2ij9tPhVIgAD4JZ4YRY",
-                    "shortId": "b1",
-                    "spiderX": "/"
-                }
-            },
-            "tag": "proxy"
-        },
-        {
-            "protocol": "freedom",
-            "tag": "direct"
-        },
-        {
-            "protocol": "blackhole",
-            "tag": "block"
+      ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "show": false,
+          "fingerprint": "chrome",
+          "serverName": "www.microsoft.com",
+          "publicKey": "ioE61VC3V30U7IdRmQ3bjhOq2ij9tPhVIgAD4JZ4YRY",
+          "shortId": "b1",
+          "spiderX": "/"
         }
-    ]
+      },
+      "tag": "proxy"
+    },
+    { "protocol": "freedom", "tag": "direct" },
+    { "protocol": "blackhole", "tag": "block" }
+  ]
 }
