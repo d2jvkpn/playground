@@ -1,0 +1,33 @@
+networks:
+  net:
+    name: dnsmasq
+    driver: bridge
+    external: false
+    ipam:
+      driver: default
+      config:
+      - { subnet: 172.24.0.0/24, gateway: 172.24.0.1 } # ip_range: 172.24.0.128/25
+
+services:
+  dnsmasq:
+    image: 4km3/dnsmasq:latest
+    container_name: dnsmasq
+    #cap_add: [NET_ADMIN]
+    dns: [172.24.0.100]
+    networks:
+      net:
+        ipv4_address: 172.24.0.100
+    #ports: ["5353:53/udp", "5353:53/tcp"]
+    command:
+    - --no-resolv # don't use /etc/resolv.conf
+    - --no-hosts  # don't use /etc/hosts
+    - --port=53
+    - --address=/.local/172.24.0.1
+    - --address=/adservice.google.com/0.0.0.0
+    - --server=8.8.8.8
+    - --server=100.100.2.138
+    #- --conf-dir=/etc/dnsmasq.d
+
+  #apk add bind-tools
+  #dig @172.24.0.100 adservice.google.com
+  #dig +short @172.24.0.100 adservice.google.com
