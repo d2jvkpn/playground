@@ -35,7 +35,7 @@
   "inbounds": [
     {
       "listen": "127.0.0.1",
-      "port": 1082,
+      "port": 1083,
       "protocol": "socks",
       "settings": { "udp": true },
       "sniffing": {
@@ -45,7 +45,7 @@
     },
     {
       "listen": "127.0.0.1",
-      "port": 1083,
+      "port": 1084,
       "protocol": "http",
       "sniffing": {
         "enabled": true,
@@ -63,7 +63,7 @@
           "port": 443,
           "users": [
             {
-              "id": "9f2b4b10-6818-492e-a157-d5131d450c7b",
+              "id": "____SERVER_UUID____",
               "flow": "xtls-rprx-vision",
               "encryption": "none"
             }
@@ -78,8 +78,8 @@
           "show": false,
           "fingerprint": "chrome",
           "serverName": "www.microsoft.com",
-          "publicKey": "ioE61VC3V30U7IdRmQ3bjhOq2ij9tPhVIgAD4JZ4YRY",
-          "shortId": "b1",
+          "publicKey": "____SERVER_PUBLIC_KEY____",
+          "shortId": "____CLIENT_ID____: b1",
           "spiderX": "/"
         }
       },

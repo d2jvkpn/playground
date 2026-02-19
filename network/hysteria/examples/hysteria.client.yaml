@@ -10,10 +10,10 @@ bandwidth:
   down: 100 mbps
 
 socks5:
-  listen: 127.0.0.1:1080
+  listen: 127.0.0.1:1081
 
 http:
-  listen: 127.0.0.1:1081
+  listen: 127.0.0.1:1082
 
 transport:
   udp:

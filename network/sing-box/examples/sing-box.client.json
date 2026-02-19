@@ -14,7 +14,7 @@
       "type": "mixed",
       "tag": "mixed-in",
       "listen": "127.0.0.1",
-      "listen_port": 1086
+      "listen_port": 1080
     }
   ],
   "outbounds": [
@@ -47,7 +47,7 @@
         "reality": {
           "enabled": true,
           "public_key": "____SERVER_PUBLIC_KEY____",
-          "short_id": "____CLIENT_ID_b1____"
+          "short_id": "____CLIENT_ID____: b1"
         }
       }
     },
