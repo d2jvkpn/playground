@@ -20,3 +20,6 @@ password=$(tr -dc 'a-zA-Z0-9' < /dev/random  | fold -w 32 | head -n 1 || true)
 exit
 ./hysteria server -c configs/hysteria.server.yaml
 ./hysteria client -c configs/hysteria.client.yaml
+
+exit
+tcpdump -i eth0 udp port 443
