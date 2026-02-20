@@ -9,12 +9,31 @@ bandwidth:
   up: 100 mbps
   down: 100 mbps
 
-socks5:
-  listen: 127.0.0.1:1081
-
-http:
-  listen: 127.0.0.1:1082
-
 transport:
   udp:
     hopInterval: 30s
+
+socks5:
+  listen: 127.0.0.1:1081
+  #username: user
+  #password: pass
+  #disableUDP: false
+
+http:
+  listen: 127.0.0.1:1082
+  #username: king 
+  #password: kong 
+  #realm: martian 
+
+tcpForwarding:
+- listen: 127.0.0.1:6600 
+  remote: 127.0.0.1:6600 
+- listen: 127.0.0.1:6601 
+  remote: other.machine.internal:6601
+
+tcpTProxy:
+  listen: :2500
+
+udpTProxy:
+  listen: :2500
+  timeout: 20s

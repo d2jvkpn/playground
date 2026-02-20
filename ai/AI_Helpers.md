@@ -14,7 +14,7 @@ version: 0.1.0
 #### ch02. VideCoding
 1. Winsurf
 2. Cursor
-3. Kiro
+3. Kiro: /usr/share/applications/kiro.desktop
 4. Claude Code
 5. OpenAI Codex CLI
 6. Crush https://github.com/charmbracelet/crush
@@ -26,3 +26,4 @@ version: 0.1.0
 12. Comate
 13. Qoder
 14. Antigravity
+15. Aider

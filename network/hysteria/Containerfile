@@ -15,7 +15,8 @@ ADD entrypoint.sh _hysteria.sh /opt/
 
 RUN apk --no-cache update && \
     apk --no-cache upgrade && \
-    apk add --no-cache tzdata supervisor gosu ca-certificates curl bash && \
+    apk add --no-cache tzdata supervisor gosu ca-certificates curl bash \
+      bind-tools tcpdump nmap iproute2-ss && \
     update-ca-certificates
 
 #    arch="${TARGET_ARCH}";
