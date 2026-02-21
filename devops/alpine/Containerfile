@@ -1,39 +1,48 @@
 FROM alpine:3
 
-ARG ALL_PROXY
 ARG BUILD_REGION
-ARG APK_INSTALL
+ARG APK_PACKAGES
 ARG SHELL
 
-MAINTAINER github.com/d2jvkpn <d2jvkpn@noreply.local>
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
+
+ENV http_proxy=$http_proxy \
+    https_proxy=$https_proxy \
+    no_proxy=$no_proxy
+
+LABEL maintainer="github.com/d2jvkpn <d2jvkpn@noreply.local>"
 LABEL address=https://github.com/d2jvkpn
 
-ENV http_proxy=ALL_PROXY \
-  https_proxy=ALL_PROXY
-
 RUN if [ "$BUILD_REGION" = "cn" ]; then \
-    echo "==> BUILD_REGION: $BUILD_REGION"; \
-    mv /etc/apk/repositories /etc/apk/repositories.bk; \
-    cp /etc/apk/repositories.bk /etc/apk/repositories; \
-    sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
-  fi
+        echo "==> BUILD_REGION: $BUILD_REGION"; \
+        mv /etc/apk/repositories /etc/apk/repositories.bk; \
+        cp /etc/apk/repositories.bk /etc/apk/repositories; \
+        sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
+    fi
 
 RUN apk --no-cache update && \
-  apk --no-cache upgrade && \
-  apk --no-cache add tzdata coreutils $APK_INSTALL
-  # gosu gcompat supervisor logroate bash
-  # curl yq jq openssl iproute2 nmap vim openvpn openssh
+    apk --no-cache upgrade && \
+    apk --no-cache add tzdata coreutils gosu ca-certificates $APK_PACKAGES && \
+    update-ca-certificates
+    # gcompat supervisor logroate bash yq jq vim
+    # curl nmap iproute2 bind-tools tcpdump
+    # openssl openssh openvpn
 
 ENV http_proxy="" \
-  https_proxy=""
+    https_proxy="" \
+    no_proxy=""
 
 RUN addgroup -g 1000 appuser && \
-  adduser -D -G appuser -h /home/appuser -s ${SHELL:-/bin/sh} -u 1000 appuser
+    adduser -D -G appuser -h /home/appuser -s ${SHELL:-/bin/sh} -u 1000 appuser
 
 USER appuser
+
+#EXPOSE 8080
+
 RUN mkdir -p /home/appuser/workspace
 WORKDIR /home/appuser/workspace
-
 VOLUME /home/appuser/workspace
 
 CMD ["sleep", "infinity"]
