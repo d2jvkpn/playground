@@ -1,7 +1,7 @@
 services:
-  xray-reality:
+  xray-reality-client:
     image: ghcr.io/xtls/xray-core:latest
-    container_name: xray-reality
+    container_name: xray-reality-client
     restart: always
     network_mode: host
     #network_mode: bridge

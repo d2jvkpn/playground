@@ -1,7 +1,7 @@
 services:
-  hysteria:
+  hysteria-server:
     image: local/hysteria:latest
-    container_name: hysteria
+    container_name: hysteria-server
     restart: always
     network_mode: bridge
     ports: [443:443/udp] # alternatives: 8443, 2053, 2083, 2087, 2096

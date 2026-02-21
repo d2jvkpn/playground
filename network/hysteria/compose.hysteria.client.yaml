@@ -2,9 +2,9 @@ networks:
    net: { name: local, driver: bridge, external: true }
 
 services:
-  hysteria:
+  hysteria-client:
     image: local/hysteria:latest
-    container_name: hysteria
+    container_name: hysteria-client
     restart: always
     networks: ["net"]
     ports: [127.0.0.1:1080:1080/tcp, 127.0.0.1:1081:1081/tcp]

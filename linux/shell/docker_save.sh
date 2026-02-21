@@ -8,6 +8,11 @@ remove=${remove:-false}
 
 image=$1
 name=$(echo "$image" | sed 's#/#--#g; s#:#--#')
+tag=$(echo "$image" | awk -F ":" '{print $2}')
+if [[ "$tag" == *"latest" ]]; then
+    name="$name.$(date +%F)"
+fi
+echo "name: $name"
 
 ####
 if [[ "$image" != *":"* ]]; then
@@ -25,9 +30,9 @@ echo "$(date +%F:%T%:z) Exporting $image"
 #docker save "$image" -o "$name".tar
 #pigz -f "$name".tar
 
-docker save "$image" | gzip -c > "$name".tar.gz.tmp
-mv "$name".tar.gz.tmp "$name".$(date +%F).tar.gz
-echo "$(date +%F:%T%:z) Saved $image to $name.tar.gz"
+docker save "$image" | gzip -c > "$name".tgz.tmp
+mv "$name".tgz.tmp "$name".tgz
+echo "$(date +%F:%T%:z) Saved $image to $name.tgz"
 
 if [[ "$remove" == "true" ]]; then
     echo "$(date +%F:%T%:z) Removing image $image"
