@@ -5,6 +5,9 @@ log:
     service: registry
 
 storage:
+  redirect:
+    # Redirect must be disabled when s3.regionendpoint uses an internal (VPC) address.
+    disable: true
   s3:
     accesskey: xxxxxxxx
     secretkey: yyyyyyyy

@@ -1,0 +1,17 @@
+services:
+  openclaw:
+    image: local/openclaw:latest
+    restart: always
+    container_name: openclaw
+    hostname: openclaw
+    network_mode: bridge
+    #networks: [net]
+    user: appuser:appuser
+    volumes:
+    - ./data/xdg:/home/appuser/xdg
+    - ./data/workspace:/home/appuser/workspace
+    environment:
+      TZ: Asia/Shanghai
+      # https_proxy: http://127.0.0.1:1080
+      # http_proxy: http://127.0.0.1:1080
+    command: ["sleep", "infinity"]

@@ -40,7 +40,16 @@ proxy_addr=http://host.docker.internal:8118
 docker build \
   --add-host=host.docker.internal:host-gateway \
   --network=host \
-  --build-arg HTTP_PROXY="${proxy_addr}" \
-  --build-arg HTTPS_PROXY="${proxy_addr}" \
+  --build-arg http_proxy="${proxy_addr}" \
+  --build-arg https_proxy="${proxy_addr}" \
   -f Containerfile \
   -t local/comfyui-base:cuda12.8-ubuntu24.04 ./
+
+exit
+python -c "import torch; print('torch', torch.__version__); print('cuda', torch.version.cuda); print('is_cuda', torch.cuda.is_available())"
+python -c "import torchaudio; print('torchaudio', torchaudio.__version__)"
+
+exit
+for f in $(ls custom_nodes/*/requirements.txt); do
+    pip install -r $f --upgrade-strategy only-if-needed
+done

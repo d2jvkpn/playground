@@ -7,33 +7,33 @@ ARG https_proxy
 ARG no_proxy
 
 ENV http_proxy=$http_proxy \
-  https_proxy=$https_proxy \
-  no_proxy=$no_proxy
+    https_proxy=$https_proxy \
+    no_proxy=$no_proxy
 
 LABEL base_image="nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04"
 
-#ADD Containerfile /opt/
-COPY bin /opt/bin
+ADD Containerfile /opt/
+COPY copy_files/bin /opt/bin
 
 # 2. Apt install
 RUN /opt/bin/apt_install.sh \
-    tzdata locales build-essential ninja-build \
-    python3 python3-venv python3-pip python3-dev && \
-  locale-gen en_US.UTF-8 && \
-  update-locale LANG=en_US.UTF-8
+      tzdata locales build-essential ninja-build \
+      python3 python3-venv python3-pip python3-dev && \
+    locale-gen en_US.UTF-8 && \
+    update-locale LANG=en_US.UTF-8
 # /opt/bin/apt_install.sh gosu libgl1 libglib2.0-0t64 fonts-noto-cjk
 # locale-gen zh_CN.UTF-8
 
 ENV LANG=en_US.UTF-8
 
-RUN /opt/bin/apt_install.sh zip unzip vim ffmpeg jq git git-lfs wget curl && \
-  wget -qO /usr/local/bin/yq \
-    https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && \
-  chmod a+x /usr/local/bin/yq
+RUN /opt/bin/apt_install.sh zip unzip vim ffmpeg jq git git-lfs wget curl
+
+RUN wget -qO /opt/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && \
+    chmod a+x /opt/bin/yq
 
 RUN userdel -r ubuntu || true && \
-  groupadd -g 1000 appuser && \
-  useradd -s /bin/bash -m -u 1000 -g 1000 appuser
+    groupadd -g 1000 appuser && \
+    useradd -s /bin/bash -m -u 1000 -g 1000 appuser
 
 USER appuser
 WORKDIR /home/appuser
@@ -46,31 +46,34 @@ RUN pip install --no-cache-dir --upgrade pip wheel setuptools uv
 
 # 4. Install ComfyUI
 RUN pip install --no-cache-dir \
-    "torch>=2.9,<3.0" "torchaudio>=2.9,<3.0" "torchvision>=0.24,<0.25" \
-    --index-url https://download.pytorch.org/whl/cu128
+      "torch>=2.9,<3.0" "torchaudio>=2.9,<3.0" "torchvision>=0.24,<0.25" \
+      --index-url https://download.pytorch.org/whl/cu129 && \
+    python3 /opt/bin/pip_constraints.py > /home/appuser/venv/pip_constraints.txt
+
+ADD --chown=appuser:appuser copy_files/pip.conf /home/appuser/venv/
 
 RUN pip install --no-cache-dir \
-  PySocks "requests[socks]" "httpx[socks]" "huggingface_hub[cli]" \
-  numpy pillow numba opencv-python-headless sageattention onnx torchao
+    PySocks "requests[socks]" "httpx[socks]" "huggingface_hub[cli]" \
+    numba numpy pillow matplotlib opencv-python-headless sageattention onnx torchao
 
 RUN git clone --branch master --depth 1 --single-branch \
-    https://github.com/comfyanonymous/ComfyUI.git ComfyUI && \
-  pip install --no-cache-dir -r ComfyUI/requirements.txt
+      https://github.com/comfyanonymous/ComfyUI.git ComfyUI && \
+    pip install --no-cache-dir -r ComfyUI/requirements.txt
 
 RUN mv venv/lib/python3.12/site-packages venv/lib/python3.12/dist-packages && \
-  mkdir -p workspace && \
-  cp -r ComfyUI/custom_nodes ComfyUI/models workspace/
+    mkdir -p workspace && \
+    cp -r ComfyUI/custom_nodes ComfyUI/models workspace/
 
-# 5. Reset http_proxy and https_proxy
+# 6. Image
 ENV https_proxy="" \
-  http_proxy="" \
-  CONTAINER_INIT_COMMAND="" \
-  TORCH_HOME=/home/appuser/workspace/models/torch \
-  HF_HUB_CACHE=/home/appuser/workspace/models/huggingface/hub
+    http_proxy="" \
+    no_proxy=""
 
-# 6. Set VOLUME, HEALTHCHECK, EXPOSE and CMD
+ENV CONTAINER_INIT_COMMAND="" \
+    TORCH_HOME=/home/appuser/workspace/models/torch \
+    HF_HUB_CACHE=/home/appuser/workspace/models/huggingface/hub
+
 WORKDIR /home/appuser/workspace
-
 VOLUME /home/appuser/workspace
 VOLUME /home/appuser/venv/lib/python3.12/site-packages
 # models, custom_nodes, user, input, output, temp

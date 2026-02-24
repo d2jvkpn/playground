@@ -1,16 +1,22 @@
 FROM local/comfyui:cuda12.9-base
 
-ARG HTTP_PROXY
-ARG HTTPS_PROXY
+####
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
 
-ENV http_proxy=$HTTP_PROXY \
-  https_proxy=$HTTPS_PROXY
+ENV http_proxy=$http_proxy \
+    https_proxy=$https_proxy \
+    no_proxy=$no_proxy
 
+####
 USER root
 
-RUN /opt/bin/apt_install.sh
+RUN echo "TODO"
 
+####
 USER appuser
+WORKDIR /home/appuser
 
 RUN cd /home/appuser/ComfyUI && \
   git fetch --depth=1 origin master && \
@@ -18,9 +24,13 @@ RUN cd /home/appuser/ComfyUI && \
   git clean -fd && \
   pip install --no-cache-dir -r requirements.txt
 
-ENV http_proxy="" \
-  https_proxy=""
+####
+ENV https_proxy="" \
+    http_proxy="" \
+    no_proxy=""
 
 #git fetch --all --prune
 #git reset --hard origin/main
 #git clean -fd
+
+WORKDIR /home/appuser/workspace

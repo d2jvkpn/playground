@@ -1,0 +1,45 @@
+FROM local/node:24-trixie
+
+####
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
+
+ENV http_proxy=$http_proxy \
+    https_proxy=$https_proxy \
+    no_proxy=$no_proxy
+
+ARG build_region
+
+####
+ENV OPENCODE_SERVER_PASSWORD=""
+# default: OPENCODE_CONFIG_DIR=~/.config/opencode
+
+USER appuser
+WORKDIR /home/appuser
+
+RUN if [ "$build_region" == "cn" ]; then \
+        npm config set registry https://registry.npmmirror.com; \
+        pip3 config set global.index-url 'https://pypi.tuna.tsinghua.edu.cn/simple'; \
+        pip3 config set install.trusted-host 'pypi.tuna.tsinghua.edu.cn'; \
+    fi
+
+RUN npm install -g opencode-ai@latest && \
+    rm -rf .npm .cache
+
+####
+ENV https_proxy="" \
+    http_proxy="" \
+    no_proxy=""
+
+WORKDIR /home/appuser/workspace
+EXPOSE 4096
+
+# opencode webui
+CMD ["opencode", "web", "--hostname=0.0.0.0", "--port=4096"]
+
+# opencode tui
+#CMD ["opencode"]
+
+# sleep
+#CMD ["sleep", "infinity"]

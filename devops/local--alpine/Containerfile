@@ -1,8 +1,9 @@
 FROM alpine:3
 
-ARG BUILD_REGION
-ARG APK_PACKAGES
-ARG SHELL
+#### 1. passing args
+ARG build_region
+ARG apk_packages
+ARG shell
 
 ARG http_proxy
 ARG https_proxy
@@ -15,8 +16,9 @@ ENV http_proxy=$http_proxy \
 LABEL maintainer="github.com/d2jvkpn <d2jvkpn@noreply.local>"
 LABEL address=https://github.com/d2jvkpn
 
-RUN if [ "$BUILD_REGION" = "cn" ]; then \
-        echo "==> BUILD_REGION: $BUILD_REGION"; \
+#### 2. installation
+RUN if [ "$build_region" = "cn" ]; then \
+        echo "==> build_region: $build_region"; \
         mv /etc/apk/repositories /etc/apk/repositories.bk; \
         cp /etc/apk/repositories.bk /etc/apk/repositories; \
         sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories; \
@@ -24,25 +26,25 @@ RUN if [ "$BUILD_REGION" = "cn" ]; then \
 
 RUN apk --no-cache update && \
     apk --no-cache upgrade && \
-    apk --no-cache add tzdata coreutils gosu ca-certificates $APK_PACKAGES && \
+    apk --no-cache add tzdata coreutils gosu ca-certificates $apk_packages && \
     update-ca-certificates
     # gcompat supervisor logroate bash yq jq vim
     # curl nmap iproute2 bind-tools tcpdump
     # openssl openssh openvpn
 
+RUN addgroup -g 1000 appuser && \
+    adduser -D -G appuser -h /home/appuser -s ${shell:-/bin/sh} -u 1000 appuser
+
+USER appuser
+RUN mkdir -p /home/appuser/workspace
+
+#### 3. container
 ENV http_proxy="" \
     https_proxy="" \
     no_proxy=""
 
-RUN addgroup -g 1000 appuser && \
-    adduser -D -G appuser -h /home/appuser -s ${SHELL:-/bin/sh} -u 1000 appuser
-
-USER appuser
-
 #EXPOSE 8080
-
-RUN mkdir -p /home/appuser/workspace
-WORKDIR /home/appuser/workspace
 VOLUME /home/appuser/workspace
+WORKDIR /home/appuser/workspace
 
 CMD ["sleep", "infinity"]

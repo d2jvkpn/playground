@@ -1,0 +1,42 @@
+FROM local/node:24-trixie
+
+####
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
+
+ENV http_proxy=$http_proxy \
+    https_proxy=$https_proxy \
+    no_proxy=$no_proxy
+
+ARG build_region
+
+####
+ENV OPENCLAW_HOME=/home/appuser/xdg/share/openclaw
+# OPENCLAW_HOME=~/.openclaw
+
+USER appuser
+WORKDIR /home/appuser
+
+RUN if [ "$build_region" == "cn" ]; then \
+        npm config set registry https://registry.npmmirror.com; \
+        pip3 config set global.index-url 'https://pypi.tuna.tsinghua.edu.cn/simple'; \
+        pip3 config set install.trusted-host 'pypi.tuna.tsinghua.edu.cn'; \
+    fi
+
+COPY --chown=appuser:appuser config_files/bash_profile /home/appuser/bash_profile
+RUN cat bash_profile >> .bash_profile && \
+    rm -rf bash_profile
+
+RUN npm install -g openclaw@latest && \
+    rm -rf .npm .cache
+
+####
+ENV https_proxy="" \
+    http_proxy="" \
+    no_proxy=""
+
+WORKDIR /home/appuser/workspace
+
+CMD ["sleep", "infinity"]
+#CMD ["openclaw", "onboard", "--install-daemon"]

@@ -1,11 +1,11 @@
 networks:
   net:
-    name: demo
+    name: app
     driver: bridge
     external: false
     #ipam:
     #  config:
-    #  - { subnet: 172.24.0.0/24, gateway: 172.24.0.1 }
+    #  - { subnet: 172.24.0.0/24, gateway: 172.24.0.1, ip_range: 172.24.0.128/25 }
 
 volumes:
   logs: { driver: local }
@@ -13,14 +13,13 @@ volumes:
 x-env: &x-env
   key1: value1
 
-# $ mkdir -p configs/ data/
 services:
-  demo:
+  app:
     image: alpine:3
     restart: always
-    container_name: demo
-    hostname: demo
-    user: 1000:1000
+    container_name: app
+    init: true
+    hostname: app
     #depends_on: ["db"]
     #labels: { k1: v1 }
     expose: ["5000"]
@@ -33,6 +32,7 @@ services:
     #  interval: 30s
     #  timeout: 10s
     #  retries: 3
+    user: 1000:1000
     volumes:
     - ./configs:/opt/configs:ro
     - ./data:/opt/data

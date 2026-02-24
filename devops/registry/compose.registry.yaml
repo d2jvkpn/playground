@@ -8,9 +8,10 @@ services:
     restart: always
     network_mode: bridge
     # networks: ["net"]
-    ports: ["127.0.0.1:${HTTP_Port}:5000"]
+    ports: ["127.0.0.1:5000:5000"]
     environment:
       REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /var/lib/registry
+      OTEL_TRACES_EXPORTER: none
     volumes:
     - ./configs/registry.yaml:/etc/distribution/config.yml:ro
     - ./configs/registry.htpasswd:/etc/registry

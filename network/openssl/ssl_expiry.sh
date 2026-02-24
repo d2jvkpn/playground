@@ -40,3 +40,16 @@ date1=$(echo $output | cut -d= -f2 | xargs -i date -u -d "{}" +"%Y-%m-%dT%H:%M:%
 date2=$(echo $output | cut -d= -f2 | xargs -i date -d "{}" +"%Y-%m-%dT%H:%M:%S%:z")
 
 echo $host, $date1, $date2
+
+exit
+
+# Check if the cer will be expired in 30 days
+openssl x509 -checkend 2592000 -noout -in domain.cer
+# exit 0: Certificate will not expire
+# exit 1: Certificate will expire
+
+if openssl x509 -checkend 2592000 -noout -in domain.cer; then
+    echo "OK: cert valid for at least 30 days"
+else
+    echo "ALERT: cert expires within 30 days (or already expired)"
+fi

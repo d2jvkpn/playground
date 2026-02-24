@@ -1,0 +1,75 @@
+FROM node:24-trixie
+
+#### 1. passing args
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
+
+ENV http_proxy=$http_proxy \
+    https_proxy=$https_proxy \
+    no_proxy=$no_proxy
+
+ARG build_region
+
+#### 2. installation
+RUN mkdir -p /opt/bin
+ADD apt_install.sh /opt/bin/
+
+ENV LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    TZ=Asia/Shanghai \
+    PATH=/opt/bin:$PATH
+
+RUN apt_install.sh tzdata locales \
+      python3 python3-venv python3-pip python3-dev \
+      zip unzip vim jq git wget curl ca-certificates && \
+    update-ca-certificates
+
+RUN wget -qO /opt/bin/yq \
+      https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && \
+    chmod a+x /opt/bin/yq
+
+#### 3. appuser
+RUN userdel -r node || true && \
+    groupadd -g 1000 appuser && \
+    useradd -s /bin/bash -m -u 1000 -g 1000 appuser
+
+ENV PATH=/home/appuser/xdg/bin:/home/appuser/.local/venv/bin:/home/appuser/.local/npm/bin:$PATH \
+    XDG_CONFIG_HOME=/home/appuser/xdg/config \
+    XDG_CACHE_HOME=/home/appuser/xdg/cache \
+    XDG_DATA_HOME=/home/appuser/xdg/share \
+    XDG_STATE_HOME=/home/appuser/xdg/state
+
+USER appuser
+WORKDIR /home/appuser
+
+COPY --chown=appuser:appuser copy_files/bash_profile /home/appuser/.bash_profile
+COPY --chown=appuser:appuser copy_files/npmrc /home/appuser/.npmrc
+#RUN npm config set prefix ~/.local/npm
+
+RUN if [ "$build_region" == "cn" ]; then \
+        npm config set registry https://registry.npmmirror.com; \
+        pip3 config set global.index-url 'https://pypi.tuna.tsinghua.edu.cn/simple'; \
+        pip3 config set install.trusted-host 'pypi.tuna.tsinghua.edu.cn'; \
+    fi
+
+RUN python3 -m venv .local/venv
+RUN ./.local/venv/bin/pip install --no-cache-dir --upgrade \
+      pip wheel setuptools uv \
+      PySocks "requests[socks]" "httpx[socks]" \
+      PyYAML pydantic
+
+RUN npm install -g ts-node zx vitest execa pnpm yarn && \
+    rm -rf .npm .cache
+
+#### 4. image
+ENV https_proxy="" \
+    http_proxy="" \
+    no_proxy=""
+
+VOLUME /home/appuser/xdg
+VOLUME /home/appuser/workspace
+WORKDIR /home/appuser/workspace
+
+ENTRYPOINT []
+CMD ["sleep", "infinity"]

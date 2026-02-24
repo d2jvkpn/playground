@@ -10,11 +10,17 @@ ENV http_proxy=$http_proxy \
 
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
-    TZ=Asia/Shanghai
+    TZ=Asia/Shanghai \
+    PATH=/home/appuser/workspace/local/bin:/opt/bin:$PATH \
+    XDG_CONFIG_HOME=/home/appuser/workspace/config \
+    XDG_CACHE_HOME=/home/appuser/workspace/cache \
+    XDG_DATA_HOME=/home/appuser/workspace/local/share \
+    XDG_STATE_HOME=/home/appuser/workspace/local/state
 
-COPY bin /opt/bin
+COPY copy_files/bin /opt/bin
 
-RUN bash /opt/bin/apt_install.sh tzdata locales gosu file
+RUN bash /opt/bin/apt_install.sh tzdata ca-certificates locales gosu file zip unzip && \
+    update-ca-certificates
 # python3 python3-venv python3-pip python3-dev
 # supervisor podman
 
