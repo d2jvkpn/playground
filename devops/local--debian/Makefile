@@ -1,2 +1,14 @@
-build-image:
+docker_build:
+	mkdir -p data/apt-cache data/apt-lists
 	docker build -f Containerfile --no-cache -t local/debian:trixie-slim ./
+
+# --no-cache
+docker_build_proxy:
+	docker build -f Containerfile \
+	  --network=host \
+	  --build-arg https_proxy=http://127.0.0.1:1080 \
+	  --build-arg http_proxy=http://127.0.0.1:1080 \
+	  -t local/debian:trixie-slim ./
+
+# docker buildx du
+# docker buildx prune

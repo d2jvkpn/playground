@@ -1,5 +1,7 @@
 FROM debian:trixie-slim
 
+# syntax=docker/dockerfile:1.6
+
 ARG http_proxy
 ARG https_proxy
 ARG no_proxy
@@ -11,24 +13,33 @@ ENV http_proxy=$http_proxy \
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
     TZ=Asia/Shanghai \
-    PATH=/home/appuser/workspace/local/bin:/opt/bin:$PATH \
-    XDG_CONFIG_HOME=/home/appuser/workspace/config \
-    XDG_CACHE_HOME=/home/appuser/workspace/cache \
-    XDG_DATA_HOME=/home/appuser/workspace/local/share \
-    XDG_STATE_HOME=/home/appuser/workspace/local/state
+    XDG_CONFIG_HOME=/home/appuser/xdg/config \
+    XDG_CACHE_HOME=/home/appuser/xdg/cache \
+    XDG_DATA_HOME=/home/appuser/xdg/share \
+    XDG_STATE_HOME=/home/appuser/xdg/state \
+    PATH=/home/appuser/workspace/xdg/bin:/opt/bin:$PATH
+
+# XDG_CONFIG_HOME=~/.config
+# XDG_DATA_HOME=~/.local/share
+# XDG_STATE_HOME=~/.local/share
+# XDG_CACHE_HOME=~/.cache
+# XDG_CACHE_HOME=~/.cache
+# XDG_RUNTIME_DIR=/run/user/$UID
 
 COPY copy_files/bin /opt/bin
 
-RUN bash /opt/bin/apt_install.sh tzdata ca-certificates locales gosu file zip unzip && \
+RUN apt_install.sh tzdata ca-certificates locales gosu file zip unzip && \
     update-ca-certificates
 # python3 python3-venv python3-pip python3-dev
 # supervisor podman
 
 #RUN useradd -m -s /bin/bash -u 1000 -g 1000 appuser
 #USER appuser
-RUN mkdir -p /home/appuser/workspace
+#WORKDIR /home/appuser
+RUN mkdir -p /home/appuser/workspace /home/appuser/xdg
 
-VOLUME ["/home/appuser/workspace"]
+VOLUME /home/appuser/workspace
+VOLUME /home/appuser/xdg
 WORKDIR /home/appuser/workspace
 
 ENV http_proxy="" \
@@ -39,4 +50,4 @@ ENV APPUSER_UID=1000 \
     APPUSER_GID=1000
 
 ENTRYPOINT ["/opt/bin/entrypoint.sh"]
-#CMD ["echo", "You are already in the container"]
+CMD ["echo", "You are already in the container"]

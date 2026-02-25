@@ -15,3 +15,4 @@ services:
       # https_proxy: http://127.0.0.1:1080
       # http_proxy: http://127.0.0.1:1080
     command: ["sleep", "infinity"]
+    #command: ["openclaw", "onboard", "--install-daemon"]

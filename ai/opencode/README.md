@@ -12,10 +12,15 @@ version: 0.1.0
 - https://opencode.ai
 - https://opencode.ai/docs/tui
 - https://github.com/anomalyco/opencode
-- https://github.com/code-yeongyu/oh-my-opencode
 - https://github.com/opencode-ai/opencode
 - https://opencode.ai/docs/config
 - https://opencode.ai/docs/cli/#environment-variables
 
 2. official image
 - ghcr.io/anomalyco/opencode
+
+3. oh-my-opencode
+- link: https://github.com/code-yeongyu/oh-my-opencode
+- install_prompt: Install and configure oh-my-opencode by following the instructions here:
+https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads/master/docs/guide/installation.md
+- install_command: npx oh-my-opencode install
