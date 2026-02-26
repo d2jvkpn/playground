@@ -1,0 +1,15 @@
+storage:
+  commands:
+  - lsblk
+  - mount
+  - df/duf
+  - parted
+  - fdisk
+  - blkid
+  - mkfs
+  - e2fsck
+  - mount*/umount
+  - resize2fs
+  - xfs*
+  - cryptsetup
+  - iostat

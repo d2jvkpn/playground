@@ -33,7 +33,10 @@ ENV https_proxy="" \
     no_proxy=""
 
 WORKDIR /home/appuser/workspace
+# webui
 EXPOSE 4096
+# auth callback
+EXPOSE 1455
 
 # opencode webui
 CMD ["opencode", "web", "--hostname=0.0.0.0", "--port=4096"]

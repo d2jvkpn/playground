@@ -6,7 +6,7 @@ services:
     hostname: opencode
     network_mode: bridge
     #networks: [net]
-    ports: ["127.0.0.1:4096:4096"]
+    ports: ["127.0.0.1:4096:4096", "127.0.0.1:1455:1455"]
     user: appuser:appuser
     volumes:
     - ./data/xdg:/home/appuser/xdg

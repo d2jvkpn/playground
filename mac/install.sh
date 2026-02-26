@@ -43,3 +43,13 @@ pmset -g
 
 #### avoid os asleep temporary
 caffeinate -dimsu
+
+#### wireguard
+brew install wireguard-tools
+brew uninstall wireguard-tools
+brew autoremove
+
+/usr/local/etc/wireguard/ /opt/homebrew/etc/wireguard/
+
+#### app data
+ls "~/Library/Application Support/"
