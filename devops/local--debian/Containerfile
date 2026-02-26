@@ -33,13 +33,14 @@ RUN apt_install.sh tzdata ca-certificates locales gosu file zip unzip && \
 # python3 python3-venv python3-pip python3-dev
 # supervisor podman
 
-#RUN useradd -m -s /bin/bash -u 1000 -g 1000 appuser
+#RUN groupadd -g 1000 appuser && \
+#    useradd -m -s /bin/bash -u 1000 -g 1000 appuser
 #USER appuser
 #WORKDIR /home/appuser
 RUN mkdir -p /home/appuser/workspace /home/appuser/xdg
 
-VOLUME /home/appuser/workspace
 VOLUME /home/appuser/xdg
+VOLUME /home/appuser/workspace
 WORKDIR /home/appuser/workspace
 
 ENV http_proxy="" \

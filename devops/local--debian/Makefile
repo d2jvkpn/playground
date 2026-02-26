@@ -1,5 +1,4 @@
 docker_build:
-	mkdir -p data/apt-cache data/apt-lists
 	docker build -f Containerfile --no-cache -t local/debian:trixie-slim ./
 
 # --no-cache
