@@ -33,3 +33,6 @@ ffmpeg -i main.mp4 \
   -c:a copy \
   -movflags "+faststart" \
   overlay.mp4
+
+#### merge audio mp4 and video.mp4
+ffmpeg -i "$basename.f617.mp4" -i "$basename.f234.mp4"  -c:v copy -map 0:v:0 -map 1:a:0 "$basename.mp4"

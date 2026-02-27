@@ -5,6 +5,7 @@ names:
 - hysteria
 - frp
 - privoxy
-
+- iroh
+- ZeroTierOne: https://github.com/zerotier/ZeroTierOne
 - headscale: https://headscale.net/stable
 - netbird: https://github.com/netbirdio/netbird

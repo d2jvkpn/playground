@@ -43,7 +43,6 @@ cat <<EOF
 apps:
 - firefox, addons=[Orbit, Privacy Badger]
 - librewolf
-- codium, url=https://github.com/VSCodium/vscodium/releases
 - LocalSend, urls=[https://localsend.org/, https://github.com/localsend/localsend/releases]
 EOF
 

@@ -6,6 +6,7 @@ services:
     image: registry:3
     container_name: registry
     restart: always
+    init: true
     network_mode: bridge
     # networks: ["net"]
     ports: ["127.0.0.1:5000:5000"]

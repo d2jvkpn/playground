@@ -10,6 +10,8 @@ ENV http_proxy=$http_proxy \
     no_proxy=$no_proxy
 
 ARG build_region
+ARG user_uid=1000
+ARG user_gid=1000
 
 #### 2. installation
 RUN mkdir -p /opt/bin
@@ -20,9 +22,9 @@ ENV LANG=C.UTF-8 \
     TZ=Asia/Shanghai \
     PATH=/opt/bin:$PATH
 
-RUN apt_install.sh tzdata locales \
+RUN apt_install.sh tzdata locales ca-certificates \
       python3 python3-venv python3-pip python3-dev \
-      zip unzip vim jq git wget curl ca-certificates && \
+      zip unzip vim jq git wget curl && \
     update-ca-certificates
 
 RUN wget -qO /opt/bin/yq \
@@ -31,17 +33,18 @@ RUN wget -qO /opt/bin/yq \
 
 #### 3. appuser
 RUN userdel -r node || true && \
-    groupadd -g 1000 appuser && \
-    useradd -s /bin/bash -m -u 1000 -g 1000 appuser
+    groupadd -g $user_gid appuser && \
+    useradd -s /bin/bash -m -u $user_uid -g $user_gid appuser
 
-ENV PATH=/home/appuser/xdg/bin:/home/appuser/.local/venv/bin:/home/appuser/.local/npm/bin:$PATH \
-    XDG_CONFIG_HOME=/home/appuser/xdg/config \
+ENV XDG_CONFIG_HOME=/home/appuser/xdg/config \
     XDG_CACHE_HOME=/home/appuser/xdg/cache \
     XDG_DATA_HOME=/home/appuser/xdg/share \
-    XDG_STATE_HOME=/home/appuser/xdg/state
+    XDG_STATE_HOME=/home/appuser/xdg/state \
+    PATH=/home/appuser/.local/venv/bin:/home/appuser/.local/npm/bin:/home/appuser/xdg/bin:$PATH
 
 USER appuser
 WORKDIR /home/appuser
+RUN mkdir -p xdg workspace
 
 COPY --chown=appuser:appuser copy_files/bash_profile /home/appuser/.bash_profile
 COPY --chown=appuser:appuser copy_files/npmrc /home/appuser/.npmrc
@@ -54,12 +57,12 @@ RUN if [ "$build_region" == "cn" ]; then \
     fi
 
 RUN python3 -m venv .local/venv
-RUN ./.local/venv/bin/pip install --no-cache-dir --upgrade \
+RUN pip install --no-cache-dir --upgrade \
       pip wheel setuptools uv \
       PySocks "requests[socks]" "httpx[socks]" \
       PyYAML pydantic
 
-RUN npm install -g ts-node zx vitest execa pnpm yarn && \
+RUN npm install -g typescript ts-node @types/node zx vitest execa pnpm yarn bun && \
     rm -rf .npm .cache
 
 #### 4. image

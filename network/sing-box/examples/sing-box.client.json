@@ -1,7 +1,9 @@
 {
   "log": {
+    "disabled": false,
     "level": "info",
-    "timestamp": true
+    "timestamp": true,
+    "output": "/opt/logs/sing-box.log"
   },
   "dns": {
     "servers": [

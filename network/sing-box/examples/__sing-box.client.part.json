@@ -57,5 +57,40 @@
       "listen_port": 1053,
       "network": "udp"
     }
+  ],
+
+  #### default
+  "route": { "final": "hy2-out" },
+
+  "route": { "final": "reality-out" },
+
+  #### geo rules
+  "route": {
+    "rules": [
+      { "geoip": "cn", "outbound": "reality-out" },
+      { "outbound": "hy2-out" }
+    ]
+  }
+
+  #### protocol
+  "route": {
+    "rules": [
+      { "network": "udp", "outbound": "hy2-out" },
+      { "network": "tcp", "outbound": "reality-out" }
+    ]
+  }
+
+  #### auto
+  "outbounds": [
+    {
+      "type": "selector",
+      "tag": "auto",
+      "outbounds": ["hy2-out", "reality-out"],
+      "default": "hy2-out"
+    }
   ]
+
+  "route": {
+    "final": "auto"
+  }
 }

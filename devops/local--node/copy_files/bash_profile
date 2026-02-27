@@ -2,7 +2,7 @@ cd /home/appuser/workspace
 
 export PATH=/home/appuser/.local/venv/bin:/home/appuser/.local/npm/bin:$PATH
 
-export XDG_CONFIG_HOME=/home/appuser/workspace/config
-export XDG_CACHE_HOME=/home/appuser/workspace/cache
-export XDG_DATA_HOME=/home/appuser/workspace/local/share
-export XDG_STATE_HOME=/home/appuser/workspace/local/state
+export XDG_CONFIG_HOME=/home/appuser/xdg/config
+export XDG_CACHE_HOME=/home/appuser/xdg/cache
+export XDG_DATA_HOME=/home/appuser/xdg/local/share
+export XDG_STATE_HOME=/home/appuser/xdg/local/state
