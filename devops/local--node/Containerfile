@@ -22,9 +22,9 @@ ENV LANG=C.UTF-8 \
     TZ=Asia/Shanghai \
     PATH=/opt/bin:$PATH
 
-RUN apt_install.sh tzdata locales ca-certificates \
+RUN apt_install.sh tzdata locales ca-certificates file zip unzip mtr \
       python3 python3-venv python3-pip python3-dev \
-      zip unzip vim jq git wget curl && \
+      vim jq git wget curl && \
     update-ca-certificates
 
 RUN wget -qO /opt/bin/yq \
@@ -62,7 +62,7 @@ RUN pip install --no-cache-dir --upgrade \
       PySocks "requests[socks]" "httpx[socks]" \
       PyYAML pydantic
 
-RUN npm install -g typescript ts-node @types/node zx vitest execa pnpm yarn bun && \
+RUN npm install -g typescript ts-node @types/node zx vitest execa pnpm yarn && \
     rm -rf .npm .cache
 
 #### 4. image

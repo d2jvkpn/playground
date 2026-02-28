@@ -90,6 +90,13 @@
     }
   ]
 
+  #### fallback
+  {
+    "type": "fallback",
+    "tag": "auto",
+    "outbounds": ["proxy1", "proxy2", "direct"]
+  }
+
   "route": {
     "final": "auto"
   }

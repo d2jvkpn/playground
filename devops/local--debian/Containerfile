@@ -31,7 +31,7 @@ ENV LANG=C.UTF-8 \
 
 COPY copy_files/bin /opt/bin
 
-RUN apt_install.sh tzdata ca-certificates locales gosu file zip unzip && \
+RUN apt_install.sh tzdata locales ca-certificates gosu file zip unzip mtr && \
     update-ca-certificates
 # python3 python3-venv python3-pip python3-dev
 # supervisor podman

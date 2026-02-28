@@ -26,7 +26,16 @@ RUN if [ "$build_region" == "cn" ]; then \
     fi
 
 RUN npm install -g opencode-ai@latest && \
+    npm install -g oh-my-opencode@latest && \
     rm -rf .npm .cache
+
+# curl -fsSL https://opencode.ai/install | bash
+# npx -y oh-my-opencode install
+# npm list -g --depth=0
+
+#curl -fsSL https://bun.com/install | bash
+#bun add -g opencode-ai
+#bunx oh-my-opencode install
 
 ####
 ENV https_proxy="" \
