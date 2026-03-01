@@ -40,16 +40,18 @@ USER appuser
 WORKDIR /home/appuser
 RUN mkdir -p xdg workspace .local/bin
 
-ENV XDG_CONFIG_HOME=/home/appuser/xdg/config \
+ENV XDG_HOME=/home/appuser/xdg \
+    XDG_CONFIG_HOME=/home/appuser/xdg/config \
     XDG_CACHE_HOME=/home/appuser/xdg/cache \
     XDG_DATA_HOME=/home/appuser/xdg/share \
     XDG_STATE_HOME=/home/appuser/xdg/state \
     PATH=/home/appuser/xdg/bin:/home/appuser/.local/bin:$PATH \
-    VENV_INSTALL=/home/appuser/.local/venv \
-    NPM_INSTALL=/home/appuser/.local/npm \
+    VENV_PATH=/home/appuser/.local/venv \
+    NPM_PATH=/home/appuser/.local/npm \
+    BUN_PATH=/home/appuser/.local/bun \
     BUN_INSTALL=/home/appuser/.local/bun
 
-ENV PATH=$VENV_INSTALL/bin:$NPM_INSTALL/bin:$BUN_INSTALL/bin:$PATH
+ENV PATH=$VENV_PATH/bin:$NPM_PATH/bin:$BUN_PATH/bin:$PATH
 
 COPY --chown=appuser:appuser copy_files/bash_profile /home/appuser/.bash_profile
 COPY --chown=appuser:appuser copy_files/npmrc /home/appuser/.npmrc
@@ -74,13 +76,18 @@ RUN cp .bashrc .bashrc.bk && \
     curl -fsSL https://bun.sh/install | bash && \
     mv .bashrc.bk .bashrc
 
+
 #### 4. image
 ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
 
+RUN mv .local/venv/lib/python3.13/site-packages .local/venv/lib/python3.13/dist-packages
+
+VOLUME /home/appuser/.local/venv/lib/python3.13/site-packages
 VOLUME /home/appuser/xdg
 VOLUME /home/appuser/workspace
+
 WORKDIR /home/appuser/workspace
 
 ENTRYPOINT []

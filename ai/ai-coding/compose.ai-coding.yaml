@@ -1,9 +1,9 @@
 services:
-  opencode:
-    image: local/opencode:latest
+  ai-coding:
+    image: local/ai-coding:latest
     restart: always
-    container_name: opencode
-    hostname: opencode
+    container_name: ai-coding
+    hostname: ai-coding
     network_mode: bridge
     #networks: [net]
     ports: ["127.0.0.1:4096:4096", "127.0.0.1:1455:1455"]

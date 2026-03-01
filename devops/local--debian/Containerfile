@@ -16,6 +16,7 @@ ENV http_proxy=$http_proxy \
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
     TZ=Asia/Shanghai \
+    XDG_HOME=/home/appuser/xdg \
     XDG_CONFIG_HOME=/home/appuser/xdg/config \
     XDG_CACHE_HOME=/home/appuser/xdg/cache \
     XDG_DATA_HOME=/home/appuser/xdg/share \

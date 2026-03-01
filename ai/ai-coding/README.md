@@ -8,7 +8,7 @@ version: 0.1.0
 
 
 #### ch01. 
-1. Opencode
+1. Opencode, OpenSpec, Codex, ??gemini-cli
 - https://opencode.ai
 - https://opencode.ai/docs/tui
 - https://github.com/anomalyco/opencode
@@ -16,6 +16,15 @@ version: 0.1.0
 - https://opencode.ai/docs/config
 - https://opencode.ai/docs/cli/#environment-variables
 - https://opencode.ai/docs/skills/
+
+- https://openspec.dev
+- https://github.com/Fission-AI/OpenSpec
+
+- https://openai.com/codex/
+- https://github.com/openai/codex
+- https://developers.openai.com/codex/guides/agents-md/
+
+- https://github.com/google-gemini/gemini-cli
 
 2. misc
 - official image: ghcr.io/anomalyco/opencode

@@ -8,8 +8,7 @@
   "dns": {
     "servers": [
       { "tag": "cloudflare", "type": "udp", "server": "1.1.1.1" },
-      { "tag": "google", "type": "udp", "server": "8.8.8.8" },
-      { "tag": "ali", "type": "https", "server": "223.5.5.5" }
+      { "tag": "google", "type": "udp", "server": "8.8.8.8" }
     ],
     "strategy": "prefer_ipv4",
     "disable_cache": false
@@ -61,7 +60,7 @@
     },
     {
       "type": "urltest",
-      "tag": "auto",
+      "tag": "urltest",
       "outbounds": ["hysteria-0443", "reality-0443"],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "30s",
@@ -70,21 +69,6 @@
   ],
   "route": {
     "default_domain_resolver": "cloudflare",
-    "rule_set": [
-      {
-        "type": "remote",
-        "tag": "geosite-cn",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs"
-      }
-    ],
-    "rules": [
-      {
-        "rule_set": ["geosite-cn"],
-        "outbound": "direct"
-      }
-    ],
-
-    "final": "auto"
+    "final": "urltest"
   }
 }

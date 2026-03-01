@@ -1,8 +1,8 @@
 user_gid ?= 1000
 user_uid ?= 1000
 
+# --no-cache --build-arg build_region=cn
 docker_build:
-	# --no-cache --build-arg build_region=cn
 	docker build -f Containerfile \
 	  --network=host \
 	  --build-arg user_gid=$(user_gid) \

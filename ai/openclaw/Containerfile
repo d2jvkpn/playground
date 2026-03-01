@@ -12,7 +12,7 @@ ENV http_proxy=$http_proxy \
 ARG build_region
 
 ####
-ENV OPENCLAW_HOME=/home/appuser/xdg/share/openclaw
+ENV OPENCLAW_HOME=/home/appuser/xdg/openclaw
 # OPENCLAW_HOME=~/.openclaw
 
 USER appuser
