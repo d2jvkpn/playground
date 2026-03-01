@@ -36,19 +36,25 @@ RUN userdel -r node || true && \
     groupadd -g $user_gid appuser && \
     useradd -s /bin/bash -m -u $user_uid -g $user_gid appuser
 
+USER appuser
+WORKDIR /home/appuser
+RUN mkdir -p xdg workspace .local/bin
+
 ENV XDG_CONFIG_HOME=/home/appuser/xdg/config \
     XDG_CACHE_HOME=/home/appuser/xdg/cache \
     XDG_DATA_HOME=/home/appuser/xdg/share \
     XDG_STATE_HOME=/home/appuser/xdg/state \
-    PATH=/home/appuser/.local/venv/bin:/home/appuser/.local/npm/bin:/home/appuser/xdg/bin:$PATH
+    PATH=/home/appuser/xdg/bin:/home/appuser/.local/bin:$PATH \
+    VENV_INSTALL=/home/appuser/.local/venv \
+    NPM_INSTALL=/home/appuser/.local/npm \
+    BUN_INSTALL=/home/appuser/.local/bun
 
-USER appuser
-WORKDIR /home/appuser
-RUN mkdir -p xdg workspace
+ENV PATH=$VENV_INSTALL/bin:$NPM_INSTALL/bin:$BUN_INSTALL/bin:$PATH
 
 COPY --chown=appuser:appuser copy_files/bash_profile /home/appuser/.bash_profile
 COPY --chown=appuser:appuser copy_files/npmrc /home/appuser/.npmrc
-#RUN npm config set prefix ~/.local/npm
+# npm config set prefix ~/.local/npm
+# npm config list -l
 
 RUN if [ "$build_region" == "cn" ]; then \
         npm config set registry https://registry.npmmirror.com; \
@@ -59,11 +65,14 @@ RUN if [ "$build_region" == "cn" ]; then \
 RUN python3 -m venv .local/venv
 RUN pip install --no-cache-dir --upgrade \
       pip wheel setuptools uv \
-      PySocks "requests[socks]" "httpx[socks]" \
-      PyYAML pydantic
+      PySocks "requests[socks]" "httpx[socks]" PyYAML pydantic
 
 RUN npm install -g typescript ts-node @types/node zx vitest execa pnpm yarn && \
     rm -rf .npm .cache
+
+RUN cp .bashrc .bashrc.bk && \
+    curl -fsSL https://bun.sh/install | bash && \
+    mv .bashrc.bk .bashrc
 
 #### 4. image
 ENV https_proxy="" \
