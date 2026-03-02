@@ -1,5 +1,3 @@
-cd /home/appuser/workspace
-
 export PATH=/home/appuser/.local/venv/bin:/home/appuser/.local/npm/bin:/opt/bin:$PATH
 
 export XDG_HOME=/home/appuser/xdg

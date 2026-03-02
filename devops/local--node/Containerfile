@@ -55,6 +55,9 @@ COPY --chown=appuser:appuser copy_files/npmrc /home/appuser/.npmrc
 # npm config set prefix ~/.local/npm
 # npm config list -l
 
+RUN echo "if [ -f ~/.bash_x ]; then . ~/.bash_x; fi" >> /home/appuser/.bash_profile && \
+    echo "if [ -f ~/.bash_x ]; then . ~/.bash_x; fi" >> /home/appuser/.bashrc
+
 RUN if [ "$build_region" == "cn" ]; then \
         npm config set registry https://registry.npmmirror.com; \
         pip3 config set global.index-url 'https://pypi.tuna.tsinghua.edu.cn/simple'; \

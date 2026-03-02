@@ -16,6 +16,7 @@ version: 0.1.0
 - https://opencode.ai/docs/config
 - https://opencode.ai/docs/cli/#environment-variables
 - https://opencode.ai/docs/skills/
+- opencode -m <provider_id>/<model_id>
 
 - https://openspec.dev
 - https://github.com/Fission-AI/OpenSpec
@@ -32,11 +33,16 @@ version: 0.1.0
 - data dir: data/xdg/share/opencode
 - auth file: data/xdg/share/opencode/auth.json
 
-3. oh-my-opencode
+3. plugins
 - link: https://github.com/code-yeongyu/oh-my-opencode
 - install_prompt: Install and configure oh-my-opencode by following the instructions here:
 https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads/master/docs/guide/installation.md
 - install_command: npx oh-my-opencode install
+
+- superpowers: https://github.com/obra/superpowers
+- playwright-mcp: https://github.com/microsoft/playwright-mcp
+- agent-browser: https://github.com/vercel-labs/agent-browser
+- chrome-devtools-mcp: https://github.com/ChromeDevTools/chrome-devtools-mcp
 
 4. skills
 - location: .opencode/skills/<name>/SKILL.md, ~/.config/opencode/skills/<name>/SKILL.md

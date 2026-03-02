@@ -1,0 +1,9 @@
+if [ -d ~/workspace/apps/bin ]; then
+    export PATH=~/workspace/apps/bin:$PATH
+fi
+
+for d in $(ls -d ~/workspace/apps/*/ 2> /dev/null); do
+    if [ -d ${d}bin ]; then
+        export PATH=$d/bin:$PATH
+    fi
+done

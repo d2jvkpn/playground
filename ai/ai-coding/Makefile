@@ -1,3 +1,6 @@
+create_dirs:
+	mkdir -p data/workspace data/xdg/gemini
+
 docker_build:
 	docker build --no-cache -f Containerfile \
 	  --network=host \
