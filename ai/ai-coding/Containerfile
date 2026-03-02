@@ -12,6 +12,7 @@ ENV http_proxy=$http_proxy \
 ARG build_region
 
 USER root
+COPY ./copy_files/bin/. /opt/bin/
 RUN apt_install.sh iproute2
 
 ####
@@ -30,26 +31,15 @@ RUN if [ "$build_region" == "cn" ]; then \
     fi
 
 ####
-#RUN npm install -g opencode-ai@latest && \
-#    npm install -g oh-my-opencode@latest && \
-#    rm -rf .npm .cache
-
-RUN npm install -g @fission-ai/openspec@latest && \
-    npm install -g @openai/codex && \
+RUN npm install -g opencode-ai@latest oh-my-opencode@latest \
+      @fission-ai/openspec@latest @openai/codex && \
     rm -rf .npm .cache
+
 # npm install -g @google/gemini-cli
 
 # curl -fsSL https://opencode.ai/install | bash
 # npx -y oh-my-opencode install
 # npm list -g --depth=0
-
-RUN bun add -g opencode-ai oh-my-opencode && \
-    rm -rf ~/.local/bun/install/cache
-
-#curl -fsSL https://bun.com/install | bash
-#bun add -g opencode-ai
-#bunx oh-my-opencode install
-#bun add -g @fission-ai/openspec@latest
 
 ####
 ENV https_proxy="" \

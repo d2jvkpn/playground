@@ -14,8 +14,7 @@ ARG user_uid=1000
 ARG user_gid=1000
 
 #### 2. installation
-RUN mkdir -p /opt/bin
-ADD apt_install.sh /opt/bin/
+COPY ./copy_files/bin /opt/bin
 
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
@@ -46,12 +45,10 @@ ENV XDG_HOME=/home/appuser/xdg \
     XDG_DATA_HOME=/home/appuser/xdg/share \
     XDG_STATE_HOME=/home/appuser/xdg/state \
     PATH=/home/appuser/xdg/bin:/home/appuser/.local/bin:$PATH \
-    VENV_PATH=/home/appuser/.local/venv \
-    NPM_PATH=/home/appuser/.local/npm \
-    BUN_PATH=/home/appuser/.local/bun \
-    BUN_INSTALL=/home/appuser/.local/bun
+    VENV_HOME=/home/appuser/.local/venv \
+    NPM_HOME=/home/appuser/.local/npm
 
-ENV PATH=$VENV_PATH/bin:$NPM_PATH/bin:$BUN_PATH/bin:$PATH
+ENV PATH=$VENV_HOME/bin:$NPM_HOME/bin:$PATH
 
 COPY --chown=appuser:appuser copy_files/bash_profile /home/appuser/.bash_profile
 COPY --chown=appuser:appuser copy_files/npmrc /home/appuser/.npmrc
@@ -64,6 +61,7 @@ RUN if [ "$build_region" == "cn" ]; then \
         pip3 config set install.trusted-host 'pypi.tuna.tsinghua.edu.cn'; \
     fi
 
+#### 4. installation
 RUN python3 -m venv .local/venv
 RUN pip install --no-cache-dir --upgrade \
       pip wheel setuptools uv \
@@ -72,12 +70,7 @@ RUN pip install --no-cache-dir --upgrade \
 RUN npm install -g typescript ts-node @types/node zx vitest execa pnpm yarn && \
     rm -rf .npm .cache
 
-RUN cp .bashrc .bashrc.bk && \
-    curl -fsSL https://bun.sh/install | bash && \
-    mv .bashrc.bk .bashrc
-
-
-#### 4. image
+#### 5. config image
 ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""

@@ -1,0 +1,13 @@
+ENV BUN_HOME=/home/appuser/.local/bun \
+    BUN_INSTALL=/home/appuser/.local/bun
+
+ENV PATH=$BUN_HOME/bin:$PATH
+
+RUN cp .bashrc .bashrc.bk && \
+    curl -fsSL https://bun.sh/install | bash && \
+    mv .bashrc.bk .bashrc
+
+RUN bun add -g opencode-ai oh-my-opencode @fission-ai/openspec@latest @openai/codex && \
+    rm -rf ~/.local/bun/install/cache
+
+#bun add -g @fission-ai/openspec@latest
