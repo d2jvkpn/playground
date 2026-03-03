@@ -1,7 +1,7 @@
 services:
   nocobase:
-    image: nocobase/nocobase:2.0.0-full
-    #image: nocobase/nocobase:1.9.47-full
+    image: nocobase/nocobase:latest-full
+    #image: nocobase/nocobase:2.0.2-full
     container_name: nocobase
     init: true
     restart: always

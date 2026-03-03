@@ -1,4 +1,4 @@
-# Title
+# Next Coding
 ---
 ```meta
 date: 1970-01-01
@@ -32,6 +32,12 @@ version: 0.1.0
 - config file: data/xdg/config/opencode/opencode.json
 - data dir: data/xdg/share/opencode
 - auth file: data/xdg/share/opencode/auth.json
+- commands:
+  - oh-my-opencode install
+  - opencode auth login
+- paths:
+  - config: ~/.config/opencpde/opencode.json
+  - models of agents: ~/.config/opencpde/oh-my-opencode.json
 
 3. plugins
 - link: https://github.com/code-yeongyu/oh-my-opencode

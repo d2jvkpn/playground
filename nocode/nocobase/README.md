@@ -11,6 +11,7 @@ version: 0.1.0
 1. docs
 - https://github.com/nocobase/nocobase
 - https://github.com/nocobase/nocobase/blob/main/docker/app-postgres/docker-compose.yml
+- https://www.youtube.com/playlist?list=PLYazx7O6V_fSFkw_e2PY1vzcevaltlNAp
 
 2. default account
 - account: admin@nocobase.com
