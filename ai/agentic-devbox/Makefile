@@ -6,4 +6,4 @@ docker_build:
 	  --network=host \
 	  --build-arg https_proxy="http://127.0.0.1:1080" \
 	  --build-arg http_proxy="http://127.0.0.1:1080" \
-	  -t local/next-coding:latest ./
+	  -t local/agentic-devbox:latest ./

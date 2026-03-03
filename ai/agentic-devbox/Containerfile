@@ -13,7 +13,7 @@ ARG build_region
 
 USER root
 COPY ./copy_files/bin/. /opt/bin/
-RUN apt_install.sh iproute2
+RUN apt_install.sh iproute2 netcat-openbsd
 
 ####
 ENV OPENCODE_SERVER_USERNAME="opencode" \

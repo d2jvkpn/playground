@@ -1,9 +1,9 @@
 services:
-  next-coding:
-    image: local/next-coding:latest
+  agentic-devbox:
+    image: local/agentic-devbox:latest
     restart: always
-    container_name: next-coding
-    hostname: next-coding
+    container_name: agentic-devbox
+    hostname: agentic-devbox
     network_mode: bridge
     #networks: [net]
     ports: ["127.0.0.1:4096:4096", "127.0.0.1:1455:1455"]
