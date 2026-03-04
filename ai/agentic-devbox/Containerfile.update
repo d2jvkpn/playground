@@ -1,0 +1,10 @@
+FROM local/agentic-devbox:latest
+
+WORKDIR /home/appuser
+
+ADD --chown=appuser:appuser ./copy_files/bash_aliases bash_aliases
+
+RUN cat bash_aliases >> .bash_aliases && \
+    rm -f bash_aliases
+
+WORKDIR /home/appuser/workspace

@@ -1,0 +1,24 @@
+####
+export XDG_CONFIG_HOME=$HOME/xdg/config
+export XDG_CACHE_HOME=$HOME/xdg/cache
+export XDG_DATA_HOME=$HOME/xdg/local/share
+export XDG_STATE_HOME=$HOME/xdg/local/state
+
+for p in "/opt/bin" "$HOME/.local/npm/bin" "$HOME/.local/venv/bin"; do
+    case ":${PATH}:" in
+    *:"$p":*)
+        ;;
+    *)
+        export PATH="$p:$PATH"
+        ;;
+    esac
+done
+
+####
+if [ -d "$HOME/apps/bin" ]; then
+    export PATH="$HOME/apps/bin:$PATH"
+fi
+
+for d in $(ls -d $HOME/apps/*/bin/ 2>/dev/null); do
+    export PATH="${d%/}:$PATH"
+done

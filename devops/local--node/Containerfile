@@ -39,24 +39,18 @@ USER appuser
 WORKDIR /home/appuser
 RUN mkdir -p xdg workspace .local/bin
 
-ENV XDG_HOME=/home/appuser/xdg \
-    XDG_CONFIG_HOME=/home/appuser/xdg/config \
+ENV XDG_CONFIG_HOME=/home/appuser/xdg/config \
     XDG_CACHE_HOME=/home/appuser/xdg/cache \
     XDG_DATA_HOME=/home/appuser/xdg/share \
-    XDG_STATE_HOME=/home/appuser/xdg/state \
-    PATH=/home/appuser/xdg/bin:/home/appuser/.local/bin:$PATH \
-    VENV_HOME=/home/appuser/.local/venv \
-    NPM_HOME=/home/appuser/.local/npm
+    XDG_STATE_HOME=/home/appuser/xdg/state
 
-ENV PATH=$VENV_HOME/bin:$NPM_HOME/bin:$PATH
+ENV PATH=/home/appuser/.local/venv/bin:/home/appuser/.local/npm/bin:$PATH
 
-COPY --chown=appuser:appuser copy_files/bash_profile /home/appuser/.bash_profile
+COPY --chown=appuser:appuser copy_files/bash_aliases /home/appuser/.bash_aliases
 COPY --chown=appuser:appuser copy_files/npmrc /home/appuser/.npmrc
 # npm config set prefix ~/.local/npm
 # npm config list -l
-
-RUN echo "if [ -f ~/.bash_x ]; then . ~/.bash_x; fi" >> /home/appuser/.bash_profile && \
-    echo "if [ -f ~/.bash_x ]; then . ~/.bash_x; fi" >> /home/appuser/.bashrc
+RUN echo "if [ -f ~/.bash_aliases ]; then . ~/.bash_aliases; fi" >> /home/appuser/.bash_profile
 
 RUN if [ "$build_region" == "cn" ]; then \
         npm config set registry https://registry.npmmirror.com; \
@@ -80,7 +74,7 @@ ENV https_proxy="" \
 
 RUN mv .local/venv/lib/python3.13/site-packages .local/venv/lib/python3.13/dist-packages
 
-VOLUME /home/appuser/.local/venv/lib/python3.13/site-packages
+#VOLUME /home/appuser/.local/venv/lib/python3.13/site-packages
 VOLUME /home/appuser/xdg
 VOLUME /home/appuser/workspace
 

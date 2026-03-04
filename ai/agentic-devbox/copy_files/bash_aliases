@@ -1,0 +1,4 @@
+export CODEX_HOME=$HOME/xdg/codex
+
+export CARGO_HOME=$HOME/apps/cargo
+export RUSTUP_HOME=$HOME/apps/rustup

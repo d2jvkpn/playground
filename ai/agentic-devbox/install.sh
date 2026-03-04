@@ -29,3 +29,8 @@ export CARGO_HOME=/home/appuser/apps/rust/cargo
 export RUSTUP_HOME=/home/appuser/apps/rust/rustup
 
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+exit
+ls AGENTS.md
+ls docs/PROJECT_CONTEXT.md
+ls docs/DECISIONS.md
