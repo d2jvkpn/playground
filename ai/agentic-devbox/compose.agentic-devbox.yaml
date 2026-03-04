@@ -10,8 +10,8 @@ services:
     user: appuser:appuser
     volumes:
     - ./data/xdg:/home/appuser/xdg
-    - ./data/xdg/gemini:/home/appuser/.gemini
     - ./data/apps:/home/appuser/apps
+    #- ./data/xdg/gemini:/home/appuser/.gemini
     - ./data/workspace:/home/appuser/workspace
     environment:
       TZ: Asia/Shanghai

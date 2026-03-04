@@ -24,7 +24,7 @@ ENV OPENCODE_SERVER_USERNAME="opencode" \
 USER appuser
 WORKDIR /home/appuser
 
-ADD ./copy_files/bash_x .bash_x
+ADD --chown=appuser:appuser ./copy_files/bash_x .bash_x
 
 RUN if [ "$build_region" == "cn" ]; then \
         npm config set registry https://registry.npmmirror.com; \

@@ -8,7 +8,7 @@ version: 0.1.0
 
 
 #### ch01. 
-1. Opencode, OpenSpec, Codex, ??gemini-cli
+1. opencode, openspec, codex, gemini-cli
 - https://opencode.ai
 - https://opencode.ai/docs/tui
 - https://github.com/anomalyco/opencode
