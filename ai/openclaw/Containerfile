@@ -28,8 +28,9 @@ COPY --chown=appuser:appuser config_files/bash_profile /home/appuser/bash_profil
 RUN cat bash_profile >> .bash_profile && \
     rm -rf bash_profile
 
-RUN npm install -g openclaw@latest && \
-    rm -rf .npm .cache
+#RUN npm install -g openclaw@latest && rm -rf .npm .cache
+
+RUN curl -fsSL https://openclaw.ai/install.sh | bash
 
 ####
 ENV https_proxy="" \
@@ -38,5 +39,6 @@ ENV https_proxy="" \
 
 WORKDIR /home/appuser/workspace
 
-CMD ["sleep", "infinity"]
+#CMD ["sleep", "infinity"]
 #CMD ["openclaw", "onboard", "--install-daemon"]
+CMD ["openclaw", "gateway", "--port=18789"]

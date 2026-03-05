@@ -5,7 +5,7 @@ services:
     #restart: unless-stopped
     restart: always
     init: true
-    shm_size: '32gb' # df -g /dev/shm
+    shm_size: '16gb' # df -g /dev/shm
     #ipc: host
     deploy:
       resources:
@@ -20,7 +20,7 @@ services:
       stack: { soft: 67108864, hard: 67108864 }
       nofile: { soft: 65536, hard: 65536 }
     network_mode: bridge
-    ports: ["8036:8188"]
+    ports: ["8188:8188"]
     #healthcheck:
     #  test: ["CMD-SHELL", "curl -sfI http://localhost:8188/system_stats &> /dev/null"]
     #  test: ["CMD", "/opt/bin/healthcheck.sh"] # curl -sfS
@@ -33,7 +33,7 @@ services:
       PYTORCH_CUDA_ALLOC_CONF: expandable_segments:True,max_split_size_mb:128
       #COMFYUI_MANAGER_SKIP_UPDATE: "true"
       #CUDA_MPS_ACTIVE_THREAD_PERCENTAGE: "60"
-      #NVIDIA_GPU_MEMORY_LIMIT: 32G
+      #NVIDIA_GPU_MEMORY_LIMIT: 16G
       #COMFYUI_MANAGER_DISABLE_UPDATE_CHECK: "true"
       #COMFYUI_MANAGER_SKIP_LOAD: "true"
       #https_proxy: socks5h://127.0.0.1:1080  # http_proxy, https_proxy, no_proxy
@@ -41,7 +41,7 @@ services:
       LD_LIBRARY_PATH: ""
     volumes:
     #- ./data/container_init.sh:/opt/container_init.sh
-    - ./data:/home/appuser/workspace  # models, custom_nodes, user, input, output, temp
+    - ./data/workspace:/home/appuser/workspace  # models, custom_nodes, user, input, output, temp
     - ./data/site-packages:/home/appuser/venv/lib/python3.12/site-packages
     command:
     - python3

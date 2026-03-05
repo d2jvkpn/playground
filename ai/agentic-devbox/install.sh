@@ -17,6 +17,7 @@ oh-my-opencode install --no-tui \
   --zai-coding-plan=yes/no
 
 opencode auth login
+opencode -m <provider_id>/<model_id>
 
 # opencode config
 cat ~/.config/opencpde/opencode.json
@@ -34,3 +35,8 @@ exit
 ls AGENTS.md
 ls docs/PROJECT_CONTEXT.md
 ls docs/DECISIONS.md
+
+exit
+prompt: ulw Add a fully functional REST API for User management
+command: /start-work
+command: /undo
