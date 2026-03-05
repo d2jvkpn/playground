@@ -6,6 +6,9 @@ services:
     container_name: ollama-cpu
     image: ollama/ollama:0.12.7
     hostname: ollama-cpu
+    extra_hosts:
+      host.docker.internal: host-gateway
+    # --add-host=host.docker.internal:host-gateway
     user: ubuntu:ubuntu
     network_mode: bridge
     #networks: [net]

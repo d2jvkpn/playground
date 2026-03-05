@@ -39,6 +39,9 @@ ENV https_proxy="" \
 
 WORKDIR /home/appuser/workspace
 
+EXPOSE 18789
+
 #CMD ["sleep", "infinity"]
-#CMD ["openclaw", "onboard", "--install-daemon"]
+#$ openclaw onboard --install-daemon
+#$ openclaw onboard", "--install-daemon"]
 CMD ["openclaw", "gateway", "--port=18789"]

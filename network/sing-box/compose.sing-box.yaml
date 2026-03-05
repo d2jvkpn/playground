@@ -4,10 +4,10 @@ services:
     container_name: sing-box
     restart: always # unless-stopped
     #network_mode: bridge
+    #networks: [net]
     #ports:
-    #- "443:443/tcp"
-    #- "443:443/udp"
-    #- "8443:8443/udp"
+    #- 127.0.0.1:1080:1080/tcp
+    #- 172.17.0.1:1080:1080/tcp
     network_mode: host
     volumes:
     #- ./configs/sing-box.json:/etc/sing-box/config.json:ro
