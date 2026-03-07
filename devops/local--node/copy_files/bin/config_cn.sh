@@ -2,8 +2,6 @@
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
-
-
 if command -v go &>/dev/null; then
     echo "--> debian_cn: go config"
     go env -w GOPROXY=https://goproxy.cn,direct

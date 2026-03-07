@@ -19,3 +19,4 @@ version: 0.1.0
 - copaw init --defaults
 - copaw models config'
 - copaw app
+- ls ~/.copaw

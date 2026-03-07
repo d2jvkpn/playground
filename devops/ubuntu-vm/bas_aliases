@@ -1,9 +1,3 @@
-####
-export XDG_CONFIG_HOME=$HOME/xdg/config
-export XDG_CACHE_HOME=$HOME/xdg/cache
-export XDG_DATA_HOME=$HOME/xdg/local/share
-export XDG_STATE_HOME=$HOME/xdg/local/state
-
 for d in "/opt/bin" "$HOME/apps/bin" "$HOME/.local/bin"; do
     if [ ! -d "$d" ]; then
         continue

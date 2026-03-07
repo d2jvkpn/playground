@@ -21,7 +21,6 @@ version: 0.1.0
 - https://opencode.ai/docs/agents/
 - https://opencode.ai/docs/models/
 - https://opencode.ai/docs/commands/
-- https://opencode.ai/docs/skills/
 
 - https://openspec.dev
 - https://github.com/Fission-AI/OpenSpec
@@ -29,7 +28,6 @@ version: 0.1.0
 - https://openai.com/codex/
 - https://github.com/openai/codex
 - https://developers.openai.com/codex/guides/agents-md/
-
 - https://github.com/google-gemini/gemini-cli
 
 2. misc
@@ -48,15 +46,3 @@ https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads/master/
 - playwright-mcp: https://github.com/microsoft/playwright-mcp
 - agent-browser: https://github.com/vercel-labs/agent-browser
 - chrome-devtools-mcp: https://github.com/ChromeDevTools/chrome-devtools-mcp
-
-4. skills
-- location: .opencode/skills/<name>/SKILL.md, ~/.config/opencode/skills/<name>/SKILL.md
-- format
-```
-name (required)
-description (required)
-license (optional)
-compatibility (optional)
-metadata (optional, string-to-string map)
-Unknown frontmatter fields are ignored.
-```

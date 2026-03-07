@@ -13,7 +13,6 @@ version: 0.1.0
 - https://docs.openclaw.ai/gateway/configuration
 - https://docs.openclaw.ai/help/environment
 - https://www.youtube.com/watch?v=2ZZCyHzo9as
-- https://github.com/vercel-labs/agent-skills
 - https://www.youtube.com/watch?v=O9b8tLXCTYU
 
 2. commands
