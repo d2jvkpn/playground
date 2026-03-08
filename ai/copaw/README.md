@@ -20,3 +20,8 @@ version: 0.1.0
 - copaw models config'
 - copaw app
 - ls ~/.copaw
+
+3. tools
+- himalaya
+  - https://github.com/pimalaya/himalaya
+  - curl -sSL https://raw.githubusercontent.com/pimalaya/himalaya/master/install.sh | PREFIX=~/.local sh
