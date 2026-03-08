@@ -22,3 +22,7 @@ version: 0.1.0
 - openclaw gateway status
 - openclaw security audit --deep
 - openclaw security audit --fix
+
+3. linux
+- xdotool
+- pyautogui

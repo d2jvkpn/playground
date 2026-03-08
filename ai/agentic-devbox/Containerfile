@@ -28,6 +28,8 @@ ADD --chown=appuser:appuser ./copy_files/bash_aliases bash_aliases
 RUN cat bash_aliases >> .bash_aliases && \
     rm -f bash_aliases
 
+ADD --chown=appuser:appuser ./copy_files/vimrc .vimrc
+
 RUN if [ "$build_region" == "cn" ]; then \
         npm config set registry https://registry.npmmirror.com; \
         pip3 config set global.index-url 'https://pypi.tuna.tsinghua.edu.cn/simple'; \

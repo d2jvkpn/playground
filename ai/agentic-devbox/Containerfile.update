@@ -1,10 +1,10 @@
 FROM local/agentic-devbox:latest
 
+USER root
+RUN apt_install.sh
+
+UEER appuser
 WORKDIR /home/appuser
 
-ADD --chown=appuser:appuser ./copy_files/bash_aliases bash_aliases
-
-RUN cat bash_aliases >> .bash_aliases && \
-    rm -f bash_aliases
-
+RUN npm install -g opencode-ai@latest
 WORKDIR /home/appuser/workspace
