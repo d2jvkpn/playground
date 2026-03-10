@@ -6,7 +6,6 @@ authors: []
 version: 0.1.0
 ```
 
-
 #### ch01. 
 1. docs
 - https://docs.openclaw.ai
@@ -33,14 +32,14 @@ version: 0.1.0
 3. linux
 - xdotool
 - pyautogui
+- gnome-screenshot
 
-4. files
-- /home/ubuntu/.config/systemd/user/openclaw-gateway.service
-
-5. skills
+4. locations
+- service: ~/.config/systemd/user/openclaw-gateway.service
 - location: ~/.openclaw/skills/
+- workspace: ~/.openclaw/workspace/
 
-6. feishu
+5. feishu
 ```
 {
   "channels": {
