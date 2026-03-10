@@ -18,9 +18,9 @@ user=$(yq ".choices.$choice.user" "$config")          # PGUSER
 export PGPASSFILE=$config_dir/$choice.pgpass
 
 if [ ! -f "$PGPASSFILE" ]; then
-    password=$(yq ".choices.$choice.password" configs/postgres.yaml)
+    password=$(yq ".choices.$choice.password" $config)
     mkdir -p "$config_dir"
-    echo "$PGHOST:$PGPORT:$PGDATABASE:$PGUSER:$password" > "$PGPASSFILE"
+    echo "$host:$port:$database:$user:$password" > "$PGPASSFILE"
     chmod 600 "$PGPASSFILE"
 fi
 
