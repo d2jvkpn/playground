@@ -5,7 +5,7 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 # docker pull rabbitmq:4-management-alpine
 # docker pull rabbitmq:4-alpine
 
-image=$(yq .services.rabbitmq.image compose.rabbitmq.yaml)
+image=$(yq .services.rabbitmq.image compose.yaml)
 
 mkdir -p data/rabbitmq configs/rabbitmq
 
@@ -22,7 +22,7 @@ docker run --rm -v $PWD/configs/rabbitmq:/tmp/rabbitmq $image \
 
 envsubst < compose.rabbitmq.yaml > compose.yaml
 
-docker-compose -f compose.yaml up -d
+docker compose -f compose.yaml up -d
 
 # docker run -d --name rabbitmq --publish=5672:5672 --publish=15672:15672 \
 #  rabbitmq:4-management-alpine
@@ -31,3 +31,6 @@ docker-compose -f compose.yaml up -d
 # - url: http://localhost:15672
 # - username: guest
 # - password: guest
+
+# - username: rabbitmq
+# - password: $(cat configs/rabbitmq.pass)

@@ -2,10 +2,10 @@
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
-config=${config:-configs/feishu.yaml}
+config=${config:-configs/local.yaml}
 key=${key:-feishu}
 
-id=$(yq ".$key.id" $config)
+id=$(yq ".$key.trigger_id" $config)
 
 if [ $# -eq 0 ]; then
     vars=$(yq -o=json ".$key.vars" $config)
@@ -39,3 +39,11 @@ feishu:
   vars:
     id: event01
     target: Tom
+
+####
+exit
+bot_id=$(yq .bot01.id configs/feishu.yaml)
+
+timestamp=$(date +%FT%T%:z)
+event_id=$(uuid)
+curl --fail "https://www.feishu.cn/flow/api/trigger-webhook/${bot_id}?timestamp=${timestamp}&event_id=${event_id}&content=Hello_world!"

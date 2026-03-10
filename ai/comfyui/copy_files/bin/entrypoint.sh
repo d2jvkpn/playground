@@ -1,16 +1,26 @@
 #!/bin/bash
 set -eu
 
-if [ -f "/opt/container_init.sh" ]; then
-    echo "$(date +%FT%T%:z) ==> bash run: /opt/container_init.sh"
-    bash /opt/container_init.sh
-elif [ ! -z "$CONTAINER_INIT_COMMAND" ]; then
-    echo "$(date +%FT%T%:z) ==> bash execute: $CONTAINER_INIT_COMMAND"
-    bash -c "$CONTAINER_INIT_COMMAND"
+
+#if [ -f "/opt/container_init.sh" ]; then
+#    echo "$(date +%FT%T%:z) ==> bash /opt/container_init.sh"
+#    bash /opt/container_init.sh
+#fi
+
+if [ ! -z "$CONTAINER_INIT_COMMAND" ]; then
+    echo "$(date +%FT%T%:z) ==> CONTAINER_INIT_COMMAND: $CONTAINER_INIT_COMMAND"
+    $CONTAINER_INIT_COMMAND
 fi
+
 
 if [[ $# -eq 0 ]]; then
     exec "/bin/bash"
 else
+    for d in custom_nodes input models output; do
+        if [ ! -d "$d" ]; then
+            cp -r ~/ComfyUI/$d ./
+        fi
+    fi
+
     exec "$@"
 fi

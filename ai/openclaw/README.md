@@ -19,10 +19,43 @@ version: 0.1.0
 - npm install -g openclaw@latest
 - openclaw onboard --install-daemon
 - openclaw onboard
-- openclaw gateway status
 - openclaw security audit --deep
 - openclaw security audit --fix
+
+- openclaw gateway status
+- openclaw channels add
+- openclaw configure
+- openclaw config set agents.defaults.model.primary '"openai-codex/gpt-5.2"' --strict-json
+
+- systemctl --user daemon-reload
+- systemctl --user status openclaw-gateway.service
 
 3. linux
 - xdotool
 - pyautogui
+
+4. files
+- /home/ubuntu/.config/systemd/user/openclaw-gateway.service
+
+5. skills
+- location: ~/.openclaw/skills/
+
+6. feishu
+```
+{
+  "channels": {
+    "feishu": {
+      "enabled": true,
+      "connectionMode": "websocket",
+      "dmPolicy": "pairing",
+      "accounts": {
+        "main": {
+          "appId": "cli_xxx",
+          "appSecret": "your_app_secret",
+          "botName": "OpenClaw"
+        }
+      }
+    }
+  }
+}
+```

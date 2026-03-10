@@ -24,7 +24,7 @@ RUN if [ "$build_region" == "cn" ]; then \
         pip3 config set install.trusted-host 'pypi.tuna.tsinghua.edu.cn'; \
     fi
 
-COPY --chown=appuser:appuser config_files/bash_profile /home/appuser/bash_profile
+COPY --chown=appuser:appuser copy_files/bash_profile /home/appuser/bash_profile
 RUN cat bash_profile >> .bash_profile && \
     rm -rf bash_profile
 

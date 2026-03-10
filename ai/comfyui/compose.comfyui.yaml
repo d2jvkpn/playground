@@ -40,7 +40,6 @@ services:
       #CONTAINER_INIT_COMMAND: "mv custom_nodes/ComfyUI-Manager custom_nodes/ComfyUI-Manager.disabled"
       LD_LIBRARY_PATH: ""
     volumes:
-    #- ./data/container_init.sh:/opt/container_init.sh
     - ./data/workspace:/home/appuser/workspace  # models, custom_nodes, user, input, output, temp
     - ./data/site-packages:/home/appuser/venv/lib/python3.12/site-packages
     command:

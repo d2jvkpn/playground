@@ -18,4 +18,5 @@ docker_update:
 	  -t local/comfyui:cuda12.9-base ./
 
 run:
+	mkdir -p data/site-packages data/workspace/custom_nodes
 	docker run -d --name=comfyui --gpus=all -p 8188:8188 local/comfyui:cuda12.9-base

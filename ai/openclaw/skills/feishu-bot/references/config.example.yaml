@@ -1,0 +1,8 @@
+# Example config for feishu-bot
+# Copy to your own location, e.g.:
+#   ~/.config/openclaw/skills/configs/feishu.yaml
+
+feishu:
+  app_id: "cli_xxx"
+  app_secret: "sec_xxx"
+  target_open_id: "ou_xxx"

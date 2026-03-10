@@ -1,0 +1,6 @@
+# Example config for feishu-hook
+# Copy to your own location, e.g.:
+#   ~/.config/openclaw/skills/configs/feishu.yaml
+
+feishu:
+  hook_id: "xxxx"
