@@ -1,17 +1,16 @@
 ---
 name: take-a-screenshot
 description: Take a screenshot on Ubuntu GNOME using gnome-screenshot. Use this skill when the user asks to take a screenshot, capture the screen, capture the current window, or capture a specific area by coordinates such as x, y, width, and height. Also use for Chinese requests like 截图, 截屏, 全屏截图, 截取当前窗口, 截取窗口, 截取区域, or 按坐标截图.
-metadata:
-  {
-    "openclaw": {
-      "requires": ["gnome-screenshot","imagemagick"],
-      "install": {
-        "ubuntu":{"apt":["gnome-screenshot","imagemagick"]}
-      },
-      "entrypoint":"scripts/run.sh",
-      "output":"json"
-    }
-  }
+tools:
+- gnome-screenshot
+- imagemagick
+
+install:
+  ubuntu:
+    apt: [gnome-screenshot, imagemagick]
+
+script:
+  entrypoint: scripts/run.sh
 
 modes:
 - fullscreen
@@ -26,6 +25,7 @@ area_parameters:
 ---
 
 # Take a Screenshot
+
 Take a screenshot on Ubuntu GNOME using `gnome-screenshot`.
 
 This skill supports:
@@ -34,6 +34,7 @@ This skill supports:
 - non-interactive area capture by coordinates
 
 ## When to use
+
 Use this skill when the user wants to:
 - take a screenshot
 - capture the screen
@@ -49,6 +50,7 @@ Use this skill when the user wants to:
 - 按坐标截图
 
 ## When not to use
+
 Do not use this skill when the user wants to:
 - record the screen
 - edit an image beyond simple area cropping
@@ -57,6 +59,7 @@ Do not use this skill when the user wants to:
 - take a screenshot in a headless environment without GNOME access
 
 ## Backend
+
 This skill uses:
 - `gnome-screenshot` for full screen and current window capture
 - ImageMagick (`magick` or `convert`) for coordinate-based area cropping after a full-screen capture
@@ -66,6 +69,7 @@ Do not use `grim`, `slurp`, `scrot`, or other screenshot backends.
 ## Modes
 
 ### 1. Full screen
+
 Use when the user asks for:
 - screenshot
 - take a screenshot
@@ -80,6 +84,7 @@ scripts/run.sh fullscreen
 ````
 
 ### 2. Current window
+
 Use when the user asks for:
 
 * current window
@@ -97,6 +102,7 @@ scripts/run.sh window
 ```
 
 ### 3. Area by coordinates
+
 Use when the user provides a rectangular region using:
 
 * x
@@ -119,6 +125,7 @@ scripts/run.sh area <x> <y> <width> <height>
 This mode is non-interactive. Do not use `gnome-screenshot -a`.
 
 ## Output behavior
+
 Unless the user specifies otherwise:
 
 * save the screenshot under `~/Pictures/`
@@ -131,6 +138,7 @@ Example:
 ```
 
 ## Script entrypoint
+
 Recommended script path:
 
 ```text
@@ -146,6 +154,7 @@ scripts/run.sh area <x> <y> <width> <height>
 ```
 
 ## Chat behavior
+
 When this skill is used:
 
 1. infer the mode from the user's request
@@ -155,6 +164,7 @@ When this skill is used:
 5. return the saved file path after success
 
 ## Inference guidance
+
 Map user requests like this:
 
 * "take a screenshot" -> `fullscreen`
@@ -169,6 +179,7 @@ Map user requests like this:
 * "截取区域 x=100 y=200 宽800 高600" -> `area 100 200 800 600`
 
 ## Examples of user requests
+
 These should trigger this skill:
 
 * take a screenshot
@@ -186,6 +197,7 @@ These should trigger this skill:
 * 按坐标截图
 
 ## Guardrails
+
 * Do not claim success unless the screenshot file was actually created
 * If `gnome-screenshot` is not installed or not available, report that clearly
 * If area mode is requested without valid coordinates, report that clearly
@@ -194,25 +206,27 @@ These should trigger this skill:
 * Do not pretend screenshots work in a headless session with no graphical environment
 * Do not switch to another screenshot backend
 
-## Output contract
-The script returns JSON with these fields:
-- `code`
-- `msg`
-- `name`
-- `path`
+## Failure handling
 
-The final assistant response MUST be valid raw JSON only.
-Do not add explanation.
-Do not add markdown code fences.
-Do not add any text before or after the JSON.
+If the command fails:
 
-If the script succeeds, return the script JSON as-is.
-If the script fails, return the script JSON as-is.
+* report the exact failure briefly
+* explain whether it failed because of missing GNOME session, missing command, invalid parameters, or missing ImageMagick
+
+## Success response format
+
+On success, respond with:
+
+* what was captured
+* which mode was used
+* where the file was saved
 
 Example:
-{"code":0,"msg":"Captured area screenshot successfully","name":"screenshot","path":"Pictures/screenshot.2026-03-10-153000.png"}
+
+* Captured the current window using `gnome-screenshot`. Saved to `~/Pictures/screenshot.2026-03-10-1773135849.png`.
 
 ## Directory layout
+
 ```text
 take-a-screenshot/
 ├── SKILL.md
@@ -221,6 +235,7 @@ take-a-screenshot/
 ```
 
 ## Notes
+
 * This skill is only for screenshots
 * Full screen and window capture use `gnome-screenshot`
 * Area capture is implemented by taking a full-screen screenshot and cropping it with ImageMagick
