@@ -33,6 +33,8 @@ else
     psql "host=$host port=$port dbname=$database user=$user" "$@"
 fi
 
+echo "[$(date +%FT%T%:z)] pg_conn.sh: exit" >&2
+
 exit
 
 ## Config file
