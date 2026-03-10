@@ -11,10 +11,11 @@ export PGUSER=$(yq ".choices.$choice.user" configs/postgres.yaml)
 
 export PGPASSFILE=configs/pgpass_files/$choice.pgpass
 
-if [ -f "$PGPASSFILE" ]; then
+if [ ! -f "$PGPASSFILE" ]; then
     password=$(yq ".choices.$choice.password" configs/postgres.yaml)
     mkdir -p configs/pgpass_files
     echo "$PGHOST:$PGPORT:$PGDATABASE:$PGUSER:$password" > $PGPASSFILE
+    chmod 600 $PGPASSFILE
 fi
 
 echo "==> Connecting to: host=$PGHOST port=$PGPORT dbname=$PGDATABASE user=$PGUSER"
