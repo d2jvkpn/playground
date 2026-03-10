@@ -6,7 +6,7 @@ choice=${1:-postgres}
 
 config=${config:-./configs/postgres.yaml}
 if [ ! -f $config ]; then
-    config=$HOME/.config/postgres.yaml
+    config=$HOME/.config/postgres/postgres.yaml
 fi
 config_dir=$(dirname $config)
 
@@ -15,7 +15,7 @@ port=$(yq .port "$config")                            # PGPORT
 database=$(yq ".choices.$choice.database" "$config")  # PGDATABASE
 user=$(yq ".choices.$choice.user" "$config")          # PGUSER
 
-export PGPASSFILE=$config_dir/pgpass_files/$choice.pgpass
+export PGPASSFILE=$config_dir/$choice.pgpass
 
 if [ ! -f "$PGPASSFILE" ]; then
     password=$(yq ".choices.$choice.password" configs/postgres.yaml)
