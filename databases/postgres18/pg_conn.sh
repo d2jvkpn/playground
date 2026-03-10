@@ -4,7 +4,7 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 choice=${1:-postgres}
 
-config=./configs/postgres.yaml
+config=${config:-./configs/postgres.yaml}
 if [ ! -f $config ]; then
     config=$HOME/.config/postgres.yaml
 fi
@@ -24,15 +24,27 @@ if [ ! -f "$PGPASSFILE" ]; then
     chmod 600 "$PGPASSFILE"
 fi
 
-echo "==> Connecting to: host=$host port=$port dbname=$database user=$user"
-psql "host=$host port=$port dbname=$database user=$user"
+echo "[$(date +%FT%T%:z)] pg_conn.sh: host=$host port=$port dbname=$database user=$user" >&2
+
+if [[ $# -eq 0 ]]; then
+    psql "host=$host port=$port dbname=$database user=$user"
+else
+    shift
+    psql "host=$host port=$port dbname=$database user=$user" "$@"
+fi
 
 exit
 
-config_file: configs/postgres.yaml or ~/.config/postgres.yaml
+## Config file
+- path: configs/postgres.yaml, ~/.config/postgres.yaml
+- example:
 ```yaml
 host: 10.1.1.2
 port: 5432
 choices:
   postgres: { user: postgres, database: postgres, password: xxxxxxxx }
 ```
+
+## Usage
+- psql shell: pg_conn.sh postgres
+- psql execute: pg_conn.sh postgres -t -A -c "select current_database();"
