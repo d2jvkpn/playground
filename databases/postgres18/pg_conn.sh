@@ -4,26 +4,32 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 choice=${1:-postgres}
 
-export PGHOST=$(yq .host configs/postgres.yaml)
-export PGPORT=$(yq .port configs/postgres.yaml)
-export PGDATABASE=$(yq ".choices.$choice.database" configs/postgres.yaml)
-export PGUSER=$(yq ".choices.$choice.user" configs/postgres.yaml)
+config=./configs/postgres.yaml
+if [ ! -f $config ]; then
+    config=$HOME/.config/postgres.yaml
+fi
+config_dir=$(dirname $config)
 
-export PGPASSFILE=configs/pgpass_files/$choice.pgpass
+host=$(yq .host "$config")                            # PGHOST
+port=$(yq .port "$config")                            # PGPORT
+database=$(yq ".choices.$choice.database" "$config")  # PGDATABASE
+user=$(yq ".choices.$choice.user" "$config")          # PGUSER
+
+export PGPASSFILE=$config_dir/pgpass_files/$choice.pgpass
 
 if [ ! -f "$PGPASSFILE" ]; then
     password=$(yq ".choices.$choice.password" configs/postgres.yaml)
-    mkdir -p configs/pgpass_files
-    echo "$PGHOST:$PGPORT:$PGDATABASE:$PGUSER:$password" > $PGPASSFILE
-    chmod 600 $PGPASSFILE
+    mkdir -p "$config_dir"
+    echo "$PGHOST:$PGPORT:$PGDATABASE:$PGUSER:$password" > "$PGPASSFILE"
+    chmod 600 "$PGPASSFILE"
 fi
 
-echo "==> Connecting to: host=$PGHOST port=$PGPORT dbname=$PGDATABASE user=$PGUSER"
-psql
+echo "==> Connecting to: host=$host port=$port dbname=$database user=$user"
+psql "host=$host port=$port dbname=$database user=$user"
 
 exit
-configs/postgres.yaml
 
+config_file: configs/postgres.yaml or ~/.config/postgres.yaml
 ```yaml
 host: 10.1.1.2
 port: 5432
