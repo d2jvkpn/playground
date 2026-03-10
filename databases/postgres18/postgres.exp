@@ -1,0 +1,20 @@
+#!/usr/bin/expect
+set prompt "#"
+set timeout 60
+
+# set password "DontUseThisPassword"
+# set username [lindex $argv 0];
+# set password [lindex $argv 1];
+
+set fh [open "./configs/postgres.pass" r]
+set password [read -nonewline $fh]
+close $fh
+
+spawn psql postgres://postgres@10.1.1.2:5432/postgres --password
+
+# expect "Password for user postgres:"
+expect "Password:"
+
+send "$password\r"
+interact
+# expect eof

@@ -27,3 +27,23 @@ ALTER ROLE hello SUPERUSER;
 
 create database hello owner=hello;
 EOF
+
+exit
+select uuidv7();
+
+select * from pg_available_extensions;
+
+create extension if not exists pg_stat_statements;
+
+select query, calls, total_exec_time
+from pg_stat_statements
+order by total_exec_time desc
+limit 10;
+
+CREATE EXTENSION IF NOT EXISTS vector;
+
+create extension postgis;
+select ST_Distance(
+  ST_Point(0,0),
+  ST_Point(1,1)
+);
