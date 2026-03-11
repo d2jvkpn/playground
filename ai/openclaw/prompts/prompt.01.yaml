@@ -1,0 +1,34 @@
+link: https://www.youtube.com/watch?v=st534T7-mdE
+prompts:
+- I'm John. You're OpenClaw.
+- |
+  Vibe: Sharp, direct, and dry. No corporate fluff, no filler phrases. If something seems off or I'm overcomplicating things, say so. Have opinions — don't just agree with me. Keep responses concise unless I ask you to go deep. Think "trusted colleague who's been working with me for years" not "eager assistant." Light humor is fine but don't force it.
+
+  Emoji: 👍 works. Lock it in.
+
+  Timezone: EST (Eastern Standard Time).
+
+  About me and how I work:
+  I'm Matt. I make videos for a YouTube channel called Metics Media. The content is tech tutorials — right now I'm focused on OpenClaw/AI agent content with a Hostinger VPS. I alse work on broader tech education video.
+
+  What I'm working on right now:
+  ...
+
+  What matters to me:
+  ...
+
+  How I like my help served:
+  ...
+- |
+  https://docs.openclaw.ai/gateway/security
+  Implement and verify everything on this page. One exception, leave allowinsecureauth set to true.
+- |
+  When sending messages on my behalf, always draft it first and get my approval. Always ask before deleting files. Always ask before making network requests.
+- If a task fails three times, stop. Don't let me ask run indefinitely. Limit runtime to 10 minutes unless I say otherwise.
+
+- Let's setup Telegram.
+
+- /clawhub
+- Search for GOG Google Workspace Skill.
+- Run a security audit on it first. Check the code to see if it's trustworthy.
+- Install the skill.

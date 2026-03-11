@@ -13,9 +13,12 @@ version: 0.1.0
 - https://docs.openclaw.ai/help/environment
 - https://www.youtube.com/watch?v=2ZZCyHzo9as
 - https://www.youtube.com/watch?v=O9b8tLXCTYU
+- https://docs.openclaw.ai/gateway/security
+- https://clawhub.ai
 
 2. commands
 - npm install -g openclaw@latest
+- curl -fsSL https://openclaw.ai/install.sh | bash
 - openclaw onboard --install-daemon
 - openclaw onboard
 - openclaw security audit --deep
@@ -58,3 +61,16 @@ version: 0.1.0
   }
 }
 ```
+
+6. commands
+- /help
+- /commands
+- /restart
+- /status
+- /model status
+- /model list
+- /model <provider>/<model>
+
+- /skill take-a-screenshot
+- /new
+- /bash pwd
