@@ -11,10 +11,13 @@ version: 0.1.0
 - https://docs.openclaw.ai
 - https://docs.openclaw.ai/gateway/configuration
 - https://docs.openclaw.ai/help/environment
+- https://docs.openclaw.ai/gateway/security
+
 - https://www.youtube.com/watch?v=2ZZCyHzo9as
 - https://www.youtube.com/watch?v=O9b8tLXCTYU
-- https://docs.openclaw.ai/gateway/security
+
 - https://clawhub.ai
+- https://github.com/HKUDS/CLI-Anything
 
 2. commands
 - npm install -g openclaw@latest

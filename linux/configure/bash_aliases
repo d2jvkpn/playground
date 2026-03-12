@@ -51,5 +51,28 @@ alias git_search='git grep -n'
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 # [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# go path
-[ -d ~/.go/bin ] && export PATH=~/.go/bin:$PATH
+export CARGO_HOME=$HOME/apps/cargo
+export RUSTUP_HOME=$HOME/apps/rustup
+
+
+for d in "/opt/bin" "$HOME/apps/bin" "$HOME/.local/bin"; do
+    if [ ! -d "$d" ]; then
+        continue
+    fi
+
+    case ":${PATH}:" in
+    *:"$d":*)
+        ;;
+    *)
+        export PATH="$d:$PATH"
+        ;;
+    esac
+done
+
+for d in $(ls -d $HOME/.local/*/bin/ $HOME/apps/*/bin/ 2>/dev/null); do
+    d=${d%/}
+
+    if [[ ":$PATH:" != *":$d:"* ]]; then
+        export PATH="$d:$PATH"
+    fi
+done

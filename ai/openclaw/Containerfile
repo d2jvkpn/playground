@@ -12,8 +12,8 @@ ENV http_proxy=$http_proxy \
 ARG build_region
 
 ####
-ENV OPENCLAW_HOME=/home/appuser/xdg/openclaw
-# OPENCLAW_HOME=~/.openclaw
+USER root
+RUN /opt/bin/apt_install.sh ripgrep uuid
 
 USER appuser
 WORKDIR /home/appuser
@@ -24,24 +24,26 @@ RUN if [ "$build_region" == "cn" ]; then \
         pip3 config set install.trusted-host 'pypi.tuna.tsinghua.edu.cn'; \
     fi
 
-COPY --chown=appuser:appuser copy_files/bash_profile /home/appuser/bash_profile
-RUN cat bash_profile >> .bash_profile && \
-    rm -rf bash_profile
+# ENV OPENCLAW_HOME=/home/appuser/.openclaw
 
-#RUN npm install -g openclaw@latest && rm -rf .npm .cache
+ADD --chown=appuser:appuser copy_files/entrypoint.sh /home/appuser/.local/bin/
+ADD --chown=appuser:appuser copy_files/openclaw_setup.sh /home/appuser/.local/bin/
 
-RUN curl -fsSL https://openclaw.ai/install.sh | bash
+RUN npm install -g openclaw@latest && rm -rf .npm .cache
+#RUN curl -fsSL https://openclaw.ai/install.sh | bash
 
 ####
 ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
 
-WORKDIR /home/appuser/workspace
+VOLUME /home/appuser/.openclaw
 
-EXPOSE 18789
+#WORKDIR /home/appuser/workspace
+WORKDIR /home/appuser/.openclaw
 
-#CMD ["sleep", "infinity"]
-#$ openclaw onboard --install-daemon
-#$ openclaw onboard", "--install-daemon"]
+EXPOSE 18789 1455
+
+ENTRYPOINT ["/home/appuser/.local/bin/entrypoint.sh"]
 CMD ["openclaw", "gateway", "--port=18789"]
+#CMD ["sleep", "infinity"]

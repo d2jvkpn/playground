@@ -16,16 +16,12 @@ for d in "/opt/bin" "$HOME/apps/bin" "$HOME/.local/bin"; do
         export PATH="$d:$PATH"
         ;;
     esac
-fi
+done
 
 for d in $(ls -d $HOME/.local/*/bin/ $HOME/apps/*/bin/ 2>/dev/null); do
     d=${d%/}
 
-    case ":${PATH}:" in
-    *:"$d":*)
-        ;;
-    *)
+    if [[ ":$PATH:" != *":$d:"* ]]; then
         export PATH="$d:$PATH"
-        ;;
-    esac
+    fi
 done
