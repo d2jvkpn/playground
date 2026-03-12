@@ -1,15 +1,22 @@
+networks:
+  net: { name: openclaw, driver: bridge, external: false }
+
 services:
   openclaw:
     image: local/openclaw:latest
     restart: always
     container_name: openclaw
     hostname: openclaw
-    network_mode: bridge
-    #networks: [net]
+    #network_mode: bridge
+    networks: [net]
     ports: [18789:18789]
     user: appuser:appuser
     volumes:
     - ./data/xdg:/home/appuser/xdg
+    - ./data/xdg/config:/home/appuser/.config
+    - ./data/xdg/cache:/home/appuser/.cache
+    - ./data/xdg/share:/home/appuser/.local/share
+    - ./data/xdg/state:/home/appuser/.local/state
     - ./data/openclaw:/home/appuser/.openclaw
     environment:
       TZ: Asia/Shanghai
@@ -19,4 +26,4 @@ services:
       # TOKEN: xxxxxx
       # ALLOWED_ORIGINS: '["http://localhost:18789","http://127.0.0.1:18789"]'
     command: ["openclaw", "gateway", "--port=18789"]
-    #$ openclaw onboard --install-daemon
+    #$ openclaw onboard

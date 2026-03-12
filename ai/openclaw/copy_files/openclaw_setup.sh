@@ -2,7 +2,7 @@
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
-TOKEN=${TOKEN:-$(uuid)}
+TOKEN=${TOKEN:-$(openssl rand -hex 32)}
 ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-'["http://localhost:18789","http://127.0.0.1:18789"]'}
 
 openclaw setup

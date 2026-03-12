@@ -22,12 +22,14 @@ version: 0.1.0
 2. commands
 - npm install -g openclaw@latest
 - curl -fsSL https://openclaw.ai/install.sh | bash
-- openclaw onboard --install-daemon
+
 - openclaw onboard
+- openclaw onboard --install-daemon
 - openclaw security audit --deep
 - openclaw security audit --fix
 
 - openclaw gateway status
+- openclaw gateway restart
 - openclaw channels add
 - openclaw configure
 - openclaw config set agents.defaults.model.primary '"openai-codex/gpt-5.2"' --strict-json
