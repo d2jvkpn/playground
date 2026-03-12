@@ -12,6 +12,7 @@ version: 0.1.0
 - https://docs.openclaw.ai/gateway/configuration
 - https://docs.openclaw.ai/help/environment
 - https://docs.openclaw.ai/gateway/security
+- https://docs.openclaw.ai/gateway/trusted-proxy-auth
 
 - https://www.youtube.com/watch?v=2ZZCyHzo9as
 - https://www.youtube.com/watch?v=O9b8tLXCTYU
