@@ -10,9 +10,13 @@ services:
     user: appuser:appuser
     volumes:
     - ./data/xdg:/home/appuser/xdg
+    - ./data/xdg/config:/home/appuser/.config
+    - ./data/xdg/cache:/home/appuser/.cache
+    - ./data/xdg/share:/home/appuser/.local/share
+    - ./data/xdg/state:/home/appuser/.local/state
     - ./data/apps:/home/appuser/apps
-    #- ./data/xdg/gemini:/home/appuser/.gemini
     - ./data/workspace:/home/appuser/workspace
+    #- ./data/xdg/gemini:/home/appuser/.gemini
     environment:
       TZ: Asia/Shanghai
       # https_proxy: http://127.0.0.1:1080
