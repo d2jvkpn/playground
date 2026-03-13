@@ -17,6 +17,7 @@ sudo systemctl restart systemd-resolved
 
 #### 2. config dnsmasq
 cat > /etc/dnsmasq.d/wildcard.conf <<EOF
+no-resolv
 server=1.1.1.1
 server=8.8.8.8
 
