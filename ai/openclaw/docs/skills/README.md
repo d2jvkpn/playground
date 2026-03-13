@@ -32,4 +32,6 @@ version: 0.1.0
   link: https://github.com/HKUDS/CLI-Anything
 - name: himalaya
   link: https://github.com/pimalaya/himalaya
+- name: OpenViking
+  link: https://github.com/volcengine/OpenViking
 ```

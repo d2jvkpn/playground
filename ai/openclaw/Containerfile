@@ -51,5 +51,5 @@ WORKDIR /home/appuser/.openclaw
 EXPOSE 18789 1455
 
 ENTRYPOINT ["/home/appuser/.local/bin/entrypoint.sh"]
-CMD ["openclaw", "gateway", "--port=18789"]
+CMD ["openclaw", "gateway", "run", "--port=18789"]
 #CMD ["sleep", "infinity"]
