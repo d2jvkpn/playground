@@ -17,8 +17,9 @@ services:
     - ./data/xdg/cache:/home/appuser/.cache
     - ./data/xdg/share:/home/appuser/.local/share
     - ./data/xdg/state:/home/appuser/.local/state
-    - ./data/openclaw:/home/appuser/.openclaw
     - ./data/apps:/home/appuser/apps
+    - ./data/openclaw:/home/appuser/.openclaw
+    - ./logs:/tmp/openclaw
     environment:
       TZ: Asia/Shanghai
       # https_proxy: http://172.17.0.1:1080
@@ -26,5 +27,5 @@ services:
       # no_proxy: ""
       # TOKEN: xxxxxx
       # ALLOWED_ORIGINS: '["http://localhost:18789","http://127.0.0.1:18789"]'
-    command: ["openclaw", "gateway", "--port=18789"]
+    command: ["openclaw", "gateway", "run", "--port=18789"]
     #$ openclaw onboard
