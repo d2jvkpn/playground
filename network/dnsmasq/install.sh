@@ -1,0 +1,30 @@
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
+
+sudo apt install -y dnsmasq
+
+exit
+cat > /etc/dnsmasq.d/wildcard.conf <<EOF
+server=1.1.1.1
+server=8.8.8.8
+
+# home.arpa, www.home.arpa, api.home.arpa, x.y.home.arpa -> 192.168.1.10
+address=/home.arpa/192.168.1.10
+
+# openclaw.home.arpa -> 192.168.1.10
+host-record=openclaw.home.arpa,192.168.1.10
+
+# extra hosts
+addn-hosts=/etc/dnsmasq.d/hosts
+
+# chat.home.arpa -> openclaw.home.arpa
+cname=chat.home.arpa,openclaw.home.arpa
+EOF
+
+exit
+sudo dnsmasq --test
+sudo systemctl restart dnsmasq
+
+dig @127.0.0.1 openclaw.home.arpa
+dig @127.0.0.1 grafana.home.arpa
