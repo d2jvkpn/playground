@@ -26,8 +26,7 @@ RUN if [ "$build_region" == "cn" ]; then \
 
 # ENV OPENCLAW_HOME=/home/appuser/.openclaw
 
-ADD --chown=appuser:appuser copy_files/entrypoint.sh /home/appuser/.local/bin/
-ADD --chown=appuser:appuser copy_files/openclaw_setup.sh /home/appuser/.local/bin/
+COPY --chown=appuser:appuser copy_files/bin/. /home/appuser/.local/bin/
 
 RUN npm install -g openclaw@latest && \
     npm install -g clawhub @tobilu/qmd && \

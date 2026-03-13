@@ -10,3 +10,4 @@ version: 0.1.0
 1. OpenAI
 2. DeepSeek
 3. Gemini
+4. 质谱 https://www.zhipuai.cn/zh

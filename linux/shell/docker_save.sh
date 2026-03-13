@@ -3,6 +3,7 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 ####
+out_dir=${out_dir:-./}
 pull=${pull:-false}
 remove=${remove:-false}
 
@@ -36,9 +37,10 @@ if command -v pigz >/dev/null 2>&1; then
     zipper="pigz -p 4"
 fi
 
-docker save "$image" | $zipper -c > "$basename".tgz.tmp
-mv "$basename".tgz.tmp "$basename".tgz
-echo "$(date +%F:%T%:z) Saved $image to $basename.tgz"
+mkdir -p "$out_dir"
+docker save "$image" | $zipper -c > "$out_dir/$basename".tgz.tmp
+mv "$out_dir/$basename".tgz.tmp "$out_dir/$basename".tgz
+echo "$(date +%F:%T%:z) Saved $image to $out_dir/$basename.tgz"
 
 if [[ "$remove" == "true" ]]; then
     echo "$(date +%F:%T%:z) Removing image $image"

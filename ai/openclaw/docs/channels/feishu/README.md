@@ -8,10 +8,20 @@ version: 0.1.0
 
 
 #### ch01. 
-1. 开发者后台
+1. docs
 - https://open.feishu.cn
 - https://open.feishu.cn/document/server-docs/event-subscription-guide/event-subscription-configure-/request-url-configuration-case
 - https://www.feishu.cn/content/article/7602519239445974205
+- Openclaw多Agent实践
+  https://leochens.feishu.cn/wiki/TWyZwzJwAimqcMkpL7sce6zwneh
+- 7分钟上手OpenClaw接入飞书
+  https://www.bilibili.com/video/BV1puFLzaEGT
+-【保姆级】OpenClaw 全网最细教学：安装→Skills实战→多Agent协作，1 小时全精通！
+   https://www.youtube.com/watch?v=2ZZCyHzo9as
+- 【闪客】名词诈骗！一口气拆穿Skill/MCP/RAG/Agent/OpenClaw底层逻辑
+  https://www.youtube.com/watch?v=O9b8tLXCTYU
+- 【保姆级】OpenClaw进阶全攻略：高级玩法+飞书+Skills+安全防护，1 小时变身“养虾高手”！
+   https://www.bilibili.com/video/BV1uxcfzeEEu
 
 2. openclaw permissions: https://docs.openclaw.ai/channels/feishu
 ```

@@ -13,15 +13,15 @@ version: 0.1.0
 - https://docs.openclaw.ai/help/environment
 - https://docs.openclaw.ai/gateway/security
 - https://docs.openclaw.ai/gateway/trusted-proxy-auth
-
-- https://www.youtube.com/watch?v=2ZZCyHzo9as
-- https://www.youtube.com/watch?v=O9b8tLXCTYU
-
-- https://clawhub.ai
-- https://github.com/HKUDS/CLI-Anything
-
-- https://www.bilibili.com/video/BV1puFLzaEGT
-- https://www.bilibili.com/video/BV1uxcfzeEEu
+- https://docs.openclaw.ai/tools/slash-commands
+- https://docs.openclaw.ai/tools/skills
+- https://docs.openclaw.ai/concepts/models
+- OpenClaw安装+3大超实用玩法，炒股，搞情报，盘收藏夹...
+  https://www.bilibili.com/video/BV1oNPCzkEqg
+- OpenClaw（原Clawdbot）集成企业微信
+  https://www.ctyun.cn/document/11057595/11091018
+- How I Use Obsidian + Claude Code to Run My Life
+  https://www.youtube.com/watch?v=6MBq1paspVU
 
 2. commands
 - npm install -g openclaw@latest
@@ -29,26 +29,32 @@ version: 0.1.0
 
 - openclaw onboard
 - openclaw onboard --install-daemon
+
 - openclaw security audit --deep
 - openclaw security audit --fix
 
 - openclaw gateway status
 - openclaw gateway restart
-- openclaw channels add
+- systemctl --user daemon-reload
+- systemctl --user status openclaw-gateway.service
+- ls ~/.config/systemd/user/openclaw-gateway.service
+
 - openclaw skill list
-- openclaw models auth login --provider qwen-portal
+- openclaw config
 - openclaw configure
 - openclaw config set agents.defaults.model.primary '"openai-codex/gpt-5.2"' --strict-json
 
-- systemctl --user daemon-reload
-- systemctl --user status openclaw-gateway.service
+- openclaw models auth login --provider qwen-portal
 
+- openclaw channels add
+- openclaw pairing approve feishu <code>
 - openclaw config unset channels.feishu
 - openclaw config set channels.feishu.enabled true
 - openclaw config set channels.feishu.appId "AppID"
 - openclaw config set channels.feishu.appSecret "AppSecret"
-- openclaw gateway restart
+
 - openclaw logs --follow
+
 
 3. linux
 - xdotool
@@ -56,31 +62,11 @@ version: 0.1.0
 - gnome-screenshot
 
 4. locations
-- service: ~/.config/systemd/user/openclaw-gateway.service
+- config: ~/.openclaw/openclaw.json
 - location: ~/.openclaw/skills/
 - workspace: ~/.openclaw/workspace/
 
-5. feishu
-```
-{
-  "channels": {
-    "feishu": {
-      "enabled": true,
-      "connectionMode": "websocket",
-      "dmPolicy": "pairing",
-      "accounts": {
-        "main": {
-          "appId": "cli_xxx",
-          "appSecret": "your_app_secret",
-          "botName": "OpenClaw"
-        }
-      }
-    }
-  }
-}
-```
-
-6. commands
+5. commands
 - /help
 - /commands
 - /restart
@@ -92,3 +78,8 @@ version: 0.1.0
 - /skill take-a-screenshot
 - /new
 - /bash pwd
+
+6. related repositories
+- ironclaw https://github.com/nearai/ironclaw
+- nanoclaw https://github.com/qwibitai/nanoclaw
+- CoPaw https://github.com/agentscope-ai/CoPaw
