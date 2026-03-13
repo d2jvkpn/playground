@@ -6,4 +6,4 @@ docker_build:
 	  -t local/openclaw:latest ./
 
 create_dirs:
-	mkdir -p data/openclaw data/xdg/config data/xdg/cache data/xdg/share data/xdg/state
+	mkdir -p data/openclaw data/apps data/xdg/config data/xdg/cache data/xdg/share data/xdg/state

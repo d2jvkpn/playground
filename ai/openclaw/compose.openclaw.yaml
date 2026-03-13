@@ -18,6 +18,7 @@ services:
     - ./data/xdg/share:/home/appuser/.local/share
     - ./data/xdg/state:/home/appuser/.local/state
     - ./data/openclaw:/home/appuser/.openclaw
+    - ./data/apps:/home/appuser/apps
     environment:
       TZ: Asia/Shanghai
       # https_proxy: http://172.17.0.1:1080

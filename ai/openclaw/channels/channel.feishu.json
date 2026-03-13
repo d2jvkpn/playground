@@ -1,0 +1,19 @@
+{
+  "channels": {
+    "feishu": {
+      "enabled": true,
+      "appId": "<APP_ID> cli_xxxxxxx, https://open.feishu.cn",
+      "appSecret": "<APP_SECRET>",
+      "connectionMode": "websocket",
+      "domain": "feishu",
+      "groupPolicy": "allowlist",
+      "groupAllowFrom": [
+        "<GROUP_ID> oc_xxxx, https://open.feishu.cn"
+      ],
+      "dmPolicy": "allowlist",
+      "allowFrom": [
+        "<USER_ID_IN_APP> ou_xxxx, https://open.feishu.cn"
+      ]
+    }
+  }
+}

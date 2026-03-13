@@ -20,6 +20,9 @@ version: 0.1.0
 - https://clawhub.ai
 - https://github.com/HKUDS/CLI-Anything
 
+- https://www.bilibili.com/video/BV1puFLzaEGT
+- https://www.bilibili.com/video/BV1uxcfzeEEu
+
 2. commands
 - npm install -g openclaw@latest
 - curl -fsSL https://openclaw.ai/install.sh | bash
@@ -32,11 +35,20 @@ version: 0.1.0
 - openclaw gateway status
 - openclaw gateway restart
 - openclaw channels add
+- openclaw skill list
+- openclaw models auth login --provider qwen-portal
 - openclaw configure
 - openclaw config set agents.defaults.model.primary '"openai-codex/gpt-5.2"' --strict-json
 
 - systemctl --user daemon-reload
 - systemctl --user status openclaw-gateway.service
+
+- openclaw config unset channels.feishu
+- openclaw config set channels.feishu.enabled true
+- openclaw config set channels.feishu.appId "AppID"
+- openclaw config set channels.feishu.appSecret "AppSecret"
+- openclaw gateway restart
+- openclaw logs --follow
 
 3. linux
 - xdotool

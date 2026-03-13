@@ -11,4 +11,3 @@ version: 0.1.0
 1. docs
 - https://botbuilder.feishu.cn/home/my-app
 - ./My Commands
-

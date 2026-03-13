@@ -29,7 +29,14 @@ RUN if [ "$build_region" == "cn" ]; then \
 ADD --chown=appuser:appuser copy_files/entrypoint.sh /home/appuser/.local/bin/
 ADD --chown=appuser:appuser copy_files/openclaw_setup.sh /home/appuser/.local/bin/
 
-RUN npm install -g openclaw@latest && rm -rf .npm .cache
+RUN npm install -g openclaw@latest && \
+    npm install -g clawhub @tobilu/qmd && \
+    rm -rf .npm .cache
+
+# clawhub install agent-browser
+# npm install -g agent-browser
+# agent-browser install
+
 #RUN curl -fsSL https://openclaw.ai/install.sh | bash
 
 ####
