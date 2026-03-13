@@ -6,5 +6,7 @@ RUN apt_install.sh
 UEER appuser
 WORKDIR /home/appuser
 
-RUN npm install -g opencode-ai@latest
+#RUN npm install -g opencode-ai@latest
+RUN npm update -g opencode-ai@latest
+
 WORKDIR /home/appuser/workspace

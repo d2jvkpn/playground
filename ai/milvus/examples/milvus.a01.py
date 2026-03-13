@@ -2,7 +2,12 @@
 
 from pymilvus import MilvusClient, DataType
 
-client = MilvusClient(uri="http://localhost:19530")
+client = MilvusClient(
+    uri="http://localhost:19530",
+    #user="root",
+    #password="Milvus",
+    #token="root:Milvus",
+)
 
 collection_name = "demo_docs"
 
@@ -17,6 +22,7 @@ schema.add_field(field_name="source", datatype=DataType.VARCHAR, max_length=256)
 schema.add_field(field_name="vector", datatype=DataType.FLOAT_VECTOR, dim=4)
 
 index_params = client.prepare_index_params()
+
 index_params.add_index(
     field_name="vector",
     index_type="AUTOINDEX",
@@ -41,7 +47,7 @@ results = client.search(
     collection_name=collection_name,
     data=[[0.10, 0.30, 0.42, 0.90]],
     limit=2,
-    output_fields=["text", "source"]
+    output_fields=["text", "source"],
 )
 
 for hit in results[0]:
