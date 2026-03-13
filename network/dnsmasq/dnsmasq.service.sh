@@ -16,10 +16,14 @@ EOF
 sudo systemctl restart systemd-resolved
 
 #### 2. config dnsmasq
-cat > /etc/dnsmasq.d/wildcard.conf <<EOF
+cat > /etc/dnsmasq.d/dnsmasq-1000.conf <<EOF
 no-resolv
+# cloudflare
 server=1.1.1.1
+# google
 server=8.8.8.8
+# ali
+server=223.5.5.5
 
 # home.arpa, www.home.arpa, api.home.arpa, x.y.home.arpa -> 192.168.1.10
 address=/home.arpa/192.168.1.10

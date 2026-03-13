@@ -9,6 +9,11 @@ services:
     image: redis:8-alpine
     restart: always
     user: ${USER_UID}:${USER_GID}
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     network_mode: host
     #networks: ["net"]
     #ports: ["127.0.0.1:${REDIS_Port}:6379"]

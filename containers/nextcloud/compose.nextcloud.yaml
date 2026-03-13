@@ -2,6 +2,19 @@ networks:
   net: { name: "nextcloud", driver: "bridge", external: false }
 
 services:
+  database:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    networks: [net]
+    container_name: postgres
+    volumes: ["./data/postgres:/var/lib/postgresql/data"]
+    environment:
+      TZ: Asia/Shanghai
+      PGTZ: Asia/Shanghai
+      POSTGRES_USER: nextcloud
+      POSTGRES_DB: nextcloud
+      POSTGRES_PASSWORD: ${POSTGRES_Password}
+
   nextcloud:
     image: nextcloud:31-apache
     container_name: nextcloud
@@ -12,17 +25,5 @@ services:
     ports: ["${HTTP_Port}:80"]
     volumes:
     - ./data/nextcloud:/var/www/html
-    environment: [TZ=Asia/Shanghai]
-
-  database:
-    image: postgres:18-alpine
-    restart: unless-stopped
-    networks: [net]
-    container_name: postgres
-    volumes: ["./data/postgres:/var/lib/postgresql/data"]
     environment:
-    - TZ=Asia/Shanghai
-    - PGTZ=Asia/Shanghai
-    - POSTGRES_USER=nextcloud
-    - POSTGRES_DB=nextcloud
-    - POSTGRES_PASSWORD=${POSTGRES_Password}
+      TZ: Asia/Shanghai

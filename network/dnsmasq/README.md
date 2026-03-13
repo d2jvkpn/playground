@@ -17,7 +17,7 @@ version: 0.1.0
 docker run --rm --dns=172.24.0.100 --network=dnsmasq -it alpine:3 sh
 
 apk update
-apk add bind-toools
+apk add bind-tools
 
 dig +short a.local
 ```
