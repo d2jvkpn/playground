@@ -1,0 +1,6 @@
+FROM local/openclaw:latest
+
+####
+RUN npm install -g openclaw@latest && \
+    npm install -g clawhub @tobilu/qmd && \
+    rm -rf .npm .cache
