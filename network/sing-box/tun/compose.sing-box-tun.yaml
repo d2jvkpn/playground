@@ -1,0 +1,20 @@
+networks:
+  net: { name: sing-box, driver: bridge, external: false }
+
+services:
+  sing-box-tun:
+    image: local/sing-box:latest
+    container_name: sing-box-tun
+    restart: always # unless-stopped
+    cap_add: [NET_ADMIN]
+    devices:
+    - /dev/net/tun:/dev/net/tun
+    #network_mode: bridge
+    networks: [net]
+    ports:
+    - 127.0.0.1:1042:1042/tcp
+    volumes:
+    - ./configs:/home/appuser/configs:ro
+    - ./logs:/home/appuser/logs
+    - ./data/workspace:/home/appuser/workspace
+    command: ["supervisord", "-c", "/home/appuser/configs/supervisord.conf"]

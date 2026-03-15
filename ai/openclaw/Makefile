@@ -15,5 +15,5 @@ docker_upgrade:
 
 create_dirs:
 	mkdir -p data/apps data/xdg/config data/xdg/cache data/xdg/share data/xdg/state \
-	  data/openclaw \
+	  data/workspace \
 	  logs

@@ -1,7 +1,7 @@
 services:
-  sing-box:
+  sing-box-proxy:
     image: ghcr.io/sagernet/sing-box:latest
-    container_name: sing-box
+    container_name: sing-box-proxy
     restart: always # unless-stopped
     #network_mode: bridge
     #networks: [net]
@@ -11,7 +11,7 @@ services:
     network_mode: host
     volumes:
     #- ./configs/sing-box.json:/etc/sing-box/config.json:ro
-    - ./configs/sing-box.json:/opt/configs/sing-box.json:ro
+    - ./configs/sing-box.client.json:/opt/configs/sing-box.client.json:ro
     - ./logs:/opt/logs
     #- /etc/ssl:/etc/ssl:ro # 如果你用真实证书（可选）
-    command: ["run", "-c", "/opt/configs/sing-box.json"]
+    command: ["run", "-c", "/opt/configs/sing-box.client.json"]

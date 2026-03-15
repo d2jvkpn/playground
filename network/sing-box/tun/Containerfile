@@ -1,0 +1,38 @@
+FROM local/node:24-trixie
+
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
+
+ENV http_proxy=$http_proxy \
+    https_proxy=$https_proxy \
+    no_proxy=$no_proxy
+
+ARG sing_box_version=1.13.3
+
+USER root
+
+RUN apt_install.sh supervisor
+
+RUN mkdir -p /home/appuser/configs /home/appuser/logs && \
+    chown appuser:appuser /home/appuser/configs /home/appuser/logs
+
+ADD --chown=appuser:appuser examples/sing-box.tun.json /home/appuser/configs/
+ADD --chown=appuser:appuser examples/supervisord.conf /home/appuser/configs/
+
+RUN wget https://github.com/SagerNet/sing-box/releases/download/v${sing_box_version}/sing-box-${sing_box_version}-linux-amd64.tar.gz && \
+    tar -xf sing-box-${sing_box_version}-linux-amd64.tar.gz -C /opt/ && \
+    rm -f sing-box-${sing_box_version}-linux-amd64.tar.gz && \
+    ln -s /opt/sing-box-*-linux-amd64/sing-box /opt/bin/
+
+VOLUME /home/appuser/configs
+VOLUME /home/appuser/logs
+
+WORKDIR /home/appuser/workspace
+
+ENV http_proxy="" \
+    https_proxy="" \
+    no_proxy=""
+
+ENTRYPOINT []
+CMD ["supervisord", "-c", "/home/appuser/configs/supervisord.conf"]

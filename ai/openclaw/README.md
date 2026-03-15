@@ -44,7 +44,9 @@ version: 0.1.0
 - openclaw configure
 - openclaw config set agents.defaults.model.primary '"openai-codex/gpt-5.2"' --strict-json
 
+- openclaw models auth add
 - openclaw models auth login --provider qwen-portal
+- openclaw models auth login --provider openai-codex
 
 - openclaw channels add
 - openclaw pairing approve feishu <code>
@@ -55,6 +57,16 @@ version: 0.1.0
 
 - openclaw logs --follow
 
+- openclaw agents list
+- openclaw agents add bot01 \
+  --workspace ~/.openclaw/bot01 \
+  --agent-dir ~/.openclaw/agents/bot01 \
+  --model qwen3.5-plus
+  # --bind [feishu | feishu:account]
+- openclaw agents set-identity --agent bot01 --name "bot01" --emoji 🤖
+- openclaw agents bindings
+- openclaw tui --agent bot01
+- openclaw agent --agent bot01 --message "测试" --deliver
 
 3. linux
 - xdotool

@@ -27,7 +27,6 @@ ENV LANG=C.UTF-8 \
 # XDG_DATA_HOME=~/.local/share
 # XDG_STATE_HOME=~/.local/share
 # XDG_CACHE_HOME=~/.cache
-# XDG_CACHE_HOME=~/.cache
 # XDG_RUNTIME_DIR=/run/user/$UID
 
 COPY copy_files/bin /opt/bin

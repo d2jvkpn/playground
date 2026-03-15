@@ -13,7 +13,7 @@ ARG build_region
 
 ####
 USER root
-RUN /opt/bin/apt_install.sh ripgrep uuid
+RUN /opt/bin/apt_install.sh ripgrep uuid netcat-openbsd
 
 USER appuser
 WORKDIR /home/appuser
