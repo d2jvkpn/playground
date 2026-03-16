@@ -24,7 +24,7 @@ ENV LANG=C.UTF-8 \
 RUN apt_install.sh tzdata locales ca-certificates \
       python3 python3-venv python3-pip python3-dev \
       file uuid vim jq git ripgrep zip unzip \
-      mtr wget curl netcat-openbsd iproute2 && \
+      mtr wget curl netcat-openbsd iproute2 lsof bind9-dnsutils && \
     update-ca-certificates
 
 RUN wget -qO /opt/bin/yq \

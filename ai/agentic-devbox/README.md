@@ -1,11 +1,10 @@
-# Next Coding
+# Agentic Devbox
 ---
 ```meta
 date: 1970-01-01
 authors: []
 version: 0.1.0
 ```
-
 
 #### ch01. 
 1. opencode, openspec, codex, gemini-cli
@@ -46,3 +45,10 @@ https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads/master/
 - playwright-mcp: https://github.com/microsoft/playwright-mcp
 - agent-browser: https://github.com/vercel-labs/agent-browser
 - chrome-devtools-mcp: https://github.com/ChromeDevTools/chrome-devtools-mcp
+
+
+#### ch02.
+1. commands
+```
+opencode auth login
+```

@@ -84,6 +84,8 @@ version: 0.1.0
 - openclaw config set channels.feishu.appId "AppID"
 - openclaw config set channels.feishu.appSecret "AppSecret"
 
+- openclaw-cli channels add --channel discord --token "<token>"
+
 4. commands
 - /help
 - /commands

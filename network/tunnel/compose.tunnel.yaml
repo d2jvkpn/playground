@@ -1,10 +1,10 @@
 networks:
-  net: { name: sing-box, driver: bridge, external: false }
+  net: { name: tunnel, driver: bridge, external: false }
 
 services:
-  sing-box-tun:
-    image: local/sing-box:latest
-    container_name: sing-box-tun
+  tunnel:
+    image: local/tunnel:latest
+    container_name: tunnel
     restart: always # unless-stopped
     cap_add: [NET_ADMIN]
     devices: [/dev/net/tun:/dev/net/tun]
@@ -24,4 +24,4 @@ services:
 
     - ./configs:/home/appuser/workspace/configs:ro
     - ./logs:/home/appuser/workspace/logs
-    command: ["supervisord", "-c", "configs/supervisord.conf"]
+    command: ["supervisord", "-l", "logs/supervisord.log", "-c", "configs/supervisord.conf"]

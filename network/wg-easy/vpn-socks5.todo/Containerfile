@@ -2,8 +2,6 @@ FROM alpine:3
 
 ARG region
 
-MAINTAINER github.com/d2jvkpn <d2jvkpn@noreply.local>
-
 RUN if [ "$region" = "cn" ]; then \
     echo "==> region: $region"; \
     cp /etc/apk/repositories /etc/apk/repositories.bk; \

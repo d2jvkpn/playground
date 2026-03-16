@@ -1,0 +1,29 @@
+{
+  "agents": {
+    "defaults": {
+      "memorySearch": {
+        "enabled": true,
+        "provider": "local | openai | gemini",
+        "local": {
+          "modelPath": "hf:ggml-org/embeddinggemma-300M-GGUF/embeddinggemma-300M-Q8_0.gguf"
+        },
+        "remote": {
+          "baseUrl": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+          "apiKey": "DASHSCOPE_API_KEY",
+          "batch": { "enabled": true, "concurrency": 2 }
+        },
+        "model": "text-embedding-v4",
+        "extraPaths": ["memory-search.docs"],
+        "fallback": "none",
+        "query": {
+          "hybrid": {
+             "enabled": true,
+             "vectorWeight": 0.7,
+             "textWeight": 0.3,
+             "candidateMultiplier": 4
+           }
+         }
+      }
+    }
+  }
+}

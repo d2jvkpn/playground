@@ -6,7 +6,7 @@ services:
     hostname: agentic-devbox
     network_mode: bridge
     #networks: [net]
-    ports: ["127.0.0.1:4096:4096", "127.0.0.1:1455:1455"]
+    ports: ["127.0.0.1:4096:4096"] # "127.0.0.1:1455:1455"
     user: appuser:appuser
     volumes:
     - ./data/xdg:/home/appuser/xdg
@@ -16,6 +16,7 @@ services:
     - ./data/xdg/state:/home/appuser/.local/state
     - ./data/apps:/home/appuser/apps
     - ./data/workspace:/home/appuser/workspace
+
     #- ./data/xdg/gemini:/home/appuser/.gemini
     environment:
       TZ: Asia/Shanghai

@@ -11,7 +11,7 @@ ENV http_proxy=$http_proxy \
 ARG sing_box_version=1.13.3
 
 USER root
-RUN apt_install.sh supervisor
+RUN apt_install.sh supervisor iptables openvpn
 
 RUN wget https://github.com/SagerNet/sing-box/releases/download/v${sing_box_version}/sing-box-${sing_box_version}-linux-amd64.tar.gz && \
     tar -xf sing-box-${sing_box_version}-linux-amd64.tar.gz -C /opt/ && \
@@ -29,4 +29,4 @@ ENV http_proxy="" \
     no_proxy=""
 
 ENTRYPOINT []
-CMD ["supervisord", "-c", "configs/supervisord.conf"]
+CMD ["supervisord",  "-c", "configs/supervisord.conf"]

@@ -34,4 +34,6 @@ version: 0.1.0
   link: https://github.com/pimalaya/himalaya
 - name: OpenViking
   link: https://github.com/volcengine/OpenViking
+- name: lightpanda
+  link: https://github.com/lightpanda-io/browser
 ```

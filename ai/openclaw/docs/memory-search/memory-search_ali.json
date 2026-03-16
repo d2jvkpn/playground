@@ -1,0 +1,22 @@
+{
+  "memorySearch": {
+    "enabled": true,
+    "provider": "openai",
+    "model": "text-embedding-v4",
+    "remote": {
+      "baseUrl": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+      "apiKey": "DASHSCOPE_API_KEY",
+      "batch": { "enabled": true, "concurrency": 2 }
+    },
+    "extraPaths": ["memory-search.docs"],
+    "fallback": "none",
+    "query": {
+      "hybrid": {
+        "enabled": true,
+        "vectorWeight": 0.7,
+        "textWeight": 0.3,
+        "candidateMultiplier": 4
+      }
+    }
+  }
+}

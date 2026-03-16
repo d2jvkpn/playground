@@ -8,6 +8,10 @@ docker_build:
 	  --build-arg http_proxy="http://127.0.0.1:1080" \
 	  -t local/agentic-devbox:latest ./
 
+docker_tag:
+	version=$(shell docker run --rm -it local/agentic-devbox:latest opencode --version) && \
+	docker tag local/agentic-devbox:latest local/agentic-devbox:$$version
+
 docker_build_update:
 	docker build --no-cache -f data/Containerfile.update \
 	  --network=host \

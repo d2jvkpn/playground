@@ -1,0 +1,14 @@
+{
+  "memorySearch": {
+    "enabled": true,
+    "provider": "openai",
+    "model": "text-embedding-3-small",
+    "remote": {
+      "baseUrl": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "headers": { "X-Whatever": "value" }
+    },
+    "extraPaths": ["memory-search.docs"],
+    "fallback": "none",
+  }
+}
