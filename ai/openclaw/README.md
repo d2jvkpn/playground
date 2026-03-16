@@ -6,7 +6,7 @@ authors: []
 version: 0.1.0
 ```
 
-#### ch01. 
+#### ch01. Setup
 1. docs
 - https://docs.openclaw.ai
 - https://docs.openclaw.ai/gateway/configuration
@@ -42,21 +42,29 @@ version: 0.1.0
 - openclaw skill list
 - openclaw config
 - openclaw configure
-- openclaw config set agents.defaults.model.primary '"openai-codex/gpt-5.2"' --strict-json
 
+- openclaw logs --follow
+
+#### ch02. Configuration
+1. set models
 - openclaw models auth add
 - openclaw models auth login --provider qwen-portal
 - openclaw models auth login --provider openai-codex
 
-- openclaw channels add
-- openclaw pairing approve feishu <code>
-- openclaw config unset channels.feishu
-- openclaw config set channels.feishu.enabled true
-- openclaw config set channels.feishu.appId "AppID"
-- openclaw config set channels.feishu.appSecret "AppSecret"
+- openclaw models set openai-codex/gpt-5.4
+- openclaw config set agents.defaults.model.primary '"openai-codex/gpt-5.4"' --strict-json
 
-- openclaw logs --follow
+- openclaw config set models.providers.ollama.baseUrl "http://127.0.0.1:11434"
+- openclaw config set models.providers.ollama.api "ollama"
 
+- openclaw config set agents.defaults.models '["openai/gpt-5","google/gemini-2.5-flash","openrouter/auto"]' --strict-json
+- openclaw config set agents.defaults.model.fallbacks '["google/gemini-2.5-flash","openrouter/auto"]'
+
+- openclaw config get agents.defaults.model
+- openclaw models list
+- openclaw status
+
+2. set agents
 - openclaw agents list
 - openclaw agents add bot01 \
   --workspace ~/.openclaw/bot01 \
@@ -68,17 +76,15 @@ version: 0.1.0
 - openclaw tui --agent bot01
 - openclaw agent --agent bot01 --message "测试" --deliver
 
-3. linux
-- xdotool
-- pyautogui
-- gnome-screenshot
+3. set channels
+- openclaw channels add
+- openclaw pairing approve feishu <code>
+- openclaw config unset channels.feishu
+- openclaw config set channels.feishu.enabled true
+- openclaw config set channels.feishu.appId "AppID"
+- openclaw config set channels.feishu.appSecret "AppSecret"
 
-4. locations
-- config: ~/.openclaw/openclaw.json
-- location: ~/.openclaw/skills/
-- workspace: ~/.openclaw/workspace/
-
-5. commands
+4. commands
 - /help
 - /commands
 - /restart
@@ -91,7 +97,18 @@ version: 0.1.0
 - /new
 - /bash pwd
 
-6. related repositories
+#### ch03. Related
+1. linux
+- xdotool
+- pyautogui
+- gnome-screenshot
+
+2. locations
+- config: ~/.openclaw/openclaw.json
+- location: ~/.openclaw/skills/
+- workspace: ~/.openclaw/workspace/
+
+3. related repositories
 - ironclaw https://github.com/nearai/ironclaw
 - nanoclaw https://github.com/qwibitai/nanoclaw
 - CoPaw https://github.com/agentscope-ai/CoPaw

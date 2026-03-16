@@ -18,11 +18,11 @@
       "type": "tun",
       "tag": "tun",
       "interface_name": "sing-box-tun",
-      "address": [
-        "10.250.0.1/30"
-      ],
+      "address": ["10.250.0.1/30"],
       "auto_route": true,
       "strict_route": true,
+      "exclude_interface": [],
+      "route_exclude_address": [ "172.16.0.0/12" ],
       "stack": "system",
       "mtu": 1500
     }
@@ -85,8 +85,8 @@
         "action": "route", "outbound": "direct"
       },
       {
-        "ip_cidr": [ "192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12", "1.1.1.1/32" ],
-        "action": "route", "outbound": "direct"
+        "ip_cidr": [ "192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12" ],
+        "action": "route", "outbound": "direct", "ip_is_private": true
       }
     ],
     "final": "urltest"

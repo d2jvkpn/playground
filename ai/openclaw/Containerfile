@@ -47,7 +47,8 @@ VOLUME /home/appuser/.openclaw
 
 WORKDIR /home/appuser/workspace
 
-EXPOSE 18789 1455
+# 1455
+EXPOSE 18789
 
 ENTRYPOINT ["/home/appuser/.local/bin/entrypoint.sh"]
 CMD ["openclaw", "gateway", "run", "--port=18789"]
