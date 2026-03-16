@@ -38,7 +38,7 @@ RUN userdel -r node || true && \
 
 USER appuser
 WORKDIR /home/appuser
-RUN mkdir -p xdg workspace .local/bin
+RUN mkdir -p xdg workspace/configs workspace/logs .local/bin
 
 ENV XDG_CONFIG_HOME=/home/appuser/xdg/config \
     XDG_CACHE_HOME=/home/appuser/xdg/cache \

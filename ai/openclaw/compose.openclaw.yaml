@@ -18,7 +18,9 @@ services:
     - ./data/xdg/share:/home/appuser/.local/share
     - ./data/xdg/state:/home/appuser/.local/state
     - ./data/apps:/home/appuser/apps
-    - ./data/workspace:/home/appuser/.openclaw
+    - ./data/workspace:/home/appuser/workspace
+
+    - ./data/openclaw:/home/appuser/.openclaw
     - ./logs:/tmp/openclaw
     environment:
       TZ: Asia/Shanghai

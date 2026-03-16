@@ -19,6 +19,9 @@ services:
     - ./data/xdg/state:/home/appuser/.local/state
     - ./data/apps:/home/appuser/apps
     - ./data/workspace:/home/appuser/workspace
+
+    #- ./configs:/home/appuser/workspace/configs
+    #- ./logs:/home/appuser/workspace/logs
     environment:
       TZ: Asia/Shanghai
       # https_proxy: http://172.17.0.1:1080

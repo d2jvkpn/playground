@@ -3,7 +3,7 @@
     "disabled": false,
     "level": "info",
     "timestamp": true,
-    "output": "/home/appuser/logs/sing-box.log"
+    "output": "/home/appuser/workspace/logs/sing-box.log"
   },
   "dns": {
     "servers": [

@@ -7,14 +7,21 @@ services:
     container_name: sing-box-tun
     restart: always # unless-stopped
     cap_add: [NET_ADMIN]
-    devices:
-    - /dev/net/tun:/dev/net/tun
+    devices: [/dev/net/tun:/dev/net/tun]
     #network_mode: bridge
     networks: [net]
     ports:
     - 127.0.0.1:1042:1042/tcp
+    user: root:root
     volumes:
-    - ./configs:/home/appuser/configs:ro
-    - ./logs:/home/appuser/logs
+    - ./data/xdg:/home/appuser/xdg
+    - ./data/xdg/config:/home/appuser/.config
+    - ./data/xdg/cache:/home/appuser/.cache
+    - ./data/xdg/share:/home/appuser/.local/share
+    - ./data/xdg/state:/home/appuser/.local/state
+    - ./data/apps:/home/appuser/apps
     - ./data/workspace:/home/appuser/workspace
-    command: ["supervisord", "-c", "/home/appuser/configs/supervisord.conf"]
+
+    - ./configs:/home/appuser/workspace/configs:ro
+    - ./logs:/home/appuser/workspace/logs
+    command: ["supervisord", "-c", "configs/supervisord.conf"]

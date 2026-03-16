@@ -12,8 +12,8 @@ ENV http_proxy=$http_proxy \
 ARG build_region
 
 ####
-USER root
-RUN /opt/bin/apt_install.sh ripgrep uuid netcat-openbsd
+#USER root
+#RUN /opt/bin/apt_install.sh ripgrep uuid netcat-openbsd
 
 USER appuser
 WORKDIR /home/appuser
@@ -45,8 +45,7 @@ ENV https_proxy="" \
 
 VOLUME /home/appuser/.openclaw
 
-#WORKDIR /home/appuser/workspace
-WORKDIR /home/appuser/.openclaw
+WORKDIR /home/appuser/workspace
 
 EXPOSE 18789 1455
 

@@ -1,7 +1,7 @@
 services:
-  sing-box-proxy:
+  sing-box:
     image: ghcr.io/sagernet/sing-box:latest
-    container_name: sing-box-proxy
+    container_name: sing-box
     restart: always # unless-stopped
     #network_mode: bridge
     #networks: [net]
