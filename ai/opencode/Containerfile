@@ -41,11 +41,12 @@ RUN pip install --no-cache pyright
 
 RUN npm install -g \
       opencode-ai@latest oh-my-opencode@latest \
-      @fission-ai/openspec@latest @openai/codex @google/gemini-cli &&\
-    npm install -g playwright @playwright/mcp@latest chrome-devtools-mcp@latest && \
-    npx playwright install chromium && \
-    npm install -g agent-browser && agent-browser install --with-deps && \
+      @fission-ai/openspec@latest @openai/codex @google/gemini-cli && \
     rm -rf .npm .cache
+
+# npm install -g playwright @playwright/mcp@latest chrome-devtools-mcp@latest
+# npx playwright install chromium
+# npm install -g agent-browser && agent-browser install --with-deps
 
 RUN { \
       opencode --version | awk '{print "opencode: "$1}'; \
@@ -72,7 +73,7 @@ WORKDIR /home/appuser/workspace
 EXPOSE 4096
 
 # opencode webui
-CMD ["opencode", "web", "--cwd=/home/appuser/workspace", "--hostname=0.0.0.0", "--port=4096"]
+CMD ["opencode", "web", "--hostname=0.0.0.0", "--port=4096"]
 # --cors http://localhost:4096 --cors https://app.example.com
 # Works exclusively on the host network model: --mdns fase --mdns-domain opencode.local
 

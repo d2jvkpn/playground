@@ -1,0 +1,94 @@
+{
+  "log": {
+    "disabled": false,
+    "level": "info",
+    "timestamp": true,
+    "output": "/home/appuser/workspace/logs/sing-box.log"
+  },
+  "dns": {
+    "servers": [
+      { "tag": "cloudflare", "type": "udp", "server": "1.1.1.1" },
+      { "tag": "google", "type": "udp", "server": "8.8.8.8" }
+    ],
+    "strategy": "prefer_ipv4",
+    "disable_cache": false
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "tag": "tun",
+      "interface_name": "sing-box-tun",
+      "address": ["10.250.0.1/30"],
+      "auto_route": true,
+      "strict_route": true,
+      "exclude_interface": [],
+      "route_exclude_address": [ "172.16.0.0/12" ],
+      "stack": "system",
+      "mtu": 1500
+    }
+  ],
+  "outbounds": [
+    { "type": "direct", "tag": "direct" },
+    { "type": "block", "tag": "block" },
+    {
+      "type": "hysteria2",
+      "tag": "hysteria-0443",
+      "server": "____SERVER_IP____",
+      "server_port": 443,
+      "password": "____SERVER_PASSWORD____",
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "www.cloudflare.com"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "reality-0443",
+      "server": "____SERVER_IP____",
+      "server_port": 443,
+      "uuid": "____SERVER_UUID____",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.microsoft.com",
+        "utls": { "enabled": true, "fingerprint": "chrome" },
+        "reality": {
+          "enabled": true,
+          "public_key": "____SERVER_PUBLIC_KEY____",
+          "short_id": "____CLIENT_ID____"
+        }
+      }
+    },
+    {
+      "type": "urltest",
+      "tag": "urltest",
+      "outbounds": [
+        "hysteria-0443",
+        "reality-0443"
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "30s",
+      "tolerance": 50
+    }
+  ],
+  "route": {
+    "default_domain_resolver": "cloudflare",
+    "auto_detect_interface": true,
+    "rules": [
+      {
+        "domain": [ "example.com" ],
+        "action": "route", "outbound": "direct"
+      },
+      {
+        "domain_suffix": [ ".corp.local", ".lan", ".local" ],
+        "action": "route", "outbound": "direct"
+      },
+      {
+        "ip_cidr": [ "192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12" ],
+        "action": "route", "outbound": "direct", "ip_is_private": true
+      }
+    ],
+    "final": "urltest"
+  }
+}

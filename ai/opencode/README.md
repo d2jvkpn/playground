@@ -52,3 +52,16 @@ https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads/master/
 ```
 opencode auth login
 ```
+
+2. Language Server Protocol(LSP)
+```
+Python → pyright
+Go → gopls
+Rust → rust-analyzer
+TypeScript / JavaScript → typescript
+Java → jdtls
+C / C++ → clangd
+Vue → vue
+Bash → bash-language-server
+YAML → yaml-language-server
+```

@@ -1,4 +1,4 @@
-FROM local/agentic-devbox:latest
+FROM local/opencode:latest
 
 USER root
 RUN apt_install.sh

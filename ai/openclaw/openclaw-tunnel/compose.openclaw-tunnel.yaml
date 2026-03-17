@@ -1,23 +1,26 @@
-networks:
-  net: { name: openclaw, driver: bridge, external: false }
+#networks:
+#  net: { name: openclaw-tunnel, driver: bridge, external: false }
 
 services:
-  openclaw:
-    image: local/openclaw:latest
-    restart: always
-    container_name: openclaw
-    hostname: openclaw
+  openclaw-tunnel:
+    image: local/openclaw-tunnel:latest
+    restart: always # unless-stopped
+    container_name: openclaw-tunnel
+    hostname: openclaw-tunnel
+    cap_add: [NET_ADMIN]
+    devices: [/dev/net/tun:/dev/net/tun]
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:18789/healthz || exit 1"]
       # test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:18789/readyz || exit 1"]
-      start_period: 20s
+      start_period: 30s
       interval: 15s
       timeout: 3s
       retries: 5
-    #network_mode: bridge
-    networks: [net]
+    network_mode: bridge
+    #networks: [net]
     ports: [127.0.0.1:18789:18789]
-    user: appuser:appuser
+    user: root:root
+    #user: appuser:appuser
     volumes:
     - ./data/xdg:/home/appuser/xdg
     - ./data/xdg/config:/home/appuser/.config
@@ -27,6 +30,8 @@ services:
     - ./data/apps:/home/appuser/apps
     - ./data/workspace:/home/appuser/workspace
 
+    - ./configs:/home/appuser/workspace/configs:ro
+    - ./logs:/home/appuser/workspace/logs
     - ./data/openclaw:/home/appuser/.openclaw
     - ./logs:/tmp/openclaw
     environment:
@@ -36,5 +41,7 @@ services:
       # no_proxy: localhost,127.0.0.1,::1,host.docker.internal
       # OPENCLAW_TOKEN: xxxxxx
       # OPENCLAW_ALLOWED_ORIGINS: '["http://localhost:18789","http://127.0.0.1:18789"]'
-    command: ["openclaw", "gateway", "run", "--port=18789"]
-    #$ openclaw onboard
+      OPENCLAW_LOAD_SHELL_ENV: "1"
+      OPENCLAW_SHELL_ENV_TIMEOUT_MS: "30000"
+    command: ["supervisord", "-l", "logs/supervisord.log", "-c", "configs/supervisord.conf"]
+    #command: ["openclaw", "gateway", "run", "--port=18789"]

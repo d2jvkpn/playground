@@ -21,19 +21,30 @@ version: 0.1.0
 2. skills:
 ```
 - name: serpapi
-  link: https://www.skillsdirectory.com/skills/openclaw-serpapi-search
+  links
+  - https://www.skillsdirectory.com/skills/openclaw-serpapi-search
 - name: QMD
-  link: https://clawhub.ai/steipete/qmd
+  links:
+  - https://clawhub.ai/steipete/qmd
 - name: Agent Browser
-  link: https://clawhub.ai/TheSethRose/agent-browser
+  links:
+  - https://clawhub.ai/TheSethRose/agent-browser
 - name: GOG
-  link: https://clawhub.ai/steipete/gog
+  links:
+  - https://clawhub.ai/steipete/gog
 - name: CLI-Anything
-  link: https://github.com/HKUDS/CLI-Anything
+  links:
+  - https://github.com/HKUDS/CLI-Anything
 - name: himalaya
-  link: https://github.com/pimalaya/himalaya
+  links:
+  - https://github.com/pimalaya/himalaya
 - name: OpenViking
-  link: https://github.com/volcengine/OpenViking
+  links:
+  - https://github.com/volcengine/OpenViking
 - name: lightpanda
-  link: https://github.com/lightpanda-io/browser
+  links:
+  - https://github.com/lightpanda-io/browser
+- name: autoresearch
+  links:
+  - https://github.com/karpathy/autoresearch
 ```

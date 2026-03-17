@@ -42,7 +42,7 @@ version: 0.1.0
 - openclaw skill list
 - openclaw config
 - openclaw configure
-
+- ?? openclaw config set env '{"shellEnv":{"enabled":true,"timeoutMs":15000}}' --strict-json
 - openclaw logs --follow
 
 #### ch02. Configuration
@@ -50,19 +50,18 @@ version: 0.1.0
 - openclaw models auth add
 - openclaw models auth login --provider qwen-portal
 - openclaw models auth login --provider openai-codex
-
 - openclaw models set openai-codex/gpt-5.4
 - openclaw config set agents.defaults.model.primary '"openai-codex/gpt-5.4"' --strict-json
+- openclaw config get agents.defaults.model
+- openclaw models list
 
 - openclaw config set models.providers.ollama.baseUrl "http://127.0.0.1:11434"
 - openclaw config set models.providers.ollama.api "ollama"
 
 - openclaw config set agents.defaults.models '["openai/gpt-5","google/gemini-2.5-flash","openrouter/auto"]' --strict-json
 - openclaw config set agents.defaults.model.fallbacks '["google/gemini-2.5-flash","openrouter/auto"]'
-
-- openclaw config get agents.defaults.model
-- openclaw models list
-- openclaw status
+- openclaw config get agents.defaults.models
+- openclaw config unset 'agents.defaults.models.custom-dashscope-aliyuncs-com/qwen-plus'
 
 2. set agents
 - openclaw agents list
@@ -91,6 +90,7 @@ version: 0.1.0
 - /commands
 - /restart
 - /status
+- /model
 - /model status
 - /model list
 - /model <provider>/<model>

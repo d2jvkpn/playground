@@ -1,0 +1,42 @@
+#networks:
+#  net: { name: openclaw-local, driver: bridge, external: false }
+
+services:
+  openclaw-local:
+    image: local/openclaw-local:latest
+    restart: always
+    container_name: openclaw-local
+    hostname: openclaw-local
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:18789/healthz || exit 1"]
+      # test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:18789/readyz || exit 1"]
+      start_period: 20s
+      interval: 15s
+      timeout: 3s
+      retries: 5
+    network_mode: bridge
+    #networks: [net]
+    ports: [127.0.0.1:18789:18789]
+    user: appuser:appuser
+    volumes:
+    - ./data/xdg:/home/appuser/xdg
+    - ./data/xdg/config:/home/appuser/.config
+    - ./data/xdg/cache:/home/appuser/.cache
+    - ./data/xdg/share:/home/appuser/.local/share
+    - ./data/xdg/state:/home/appuser/.local/state
+    - ./data/apps:/home/appuser/apps
+    - ./data/workspace:/home/appuser/workspace
+
+    - ./data/openclaw:/home/appuser/.openclaw
+    - ./logs:/tmp/openclaw
+    environment:
+      TZ: Asia/Shanghai
+      # https_proxy: http://172.17.0.1:1080
+      # http_proxy: http://172.17.0.1:1080
+      # no_proxy: localhost,127.0.0.1,::1,host.docker.internal
+      # OPENCLAW_TOKEN: xxxxxx
+      # OPENCLAW_ALLOWED_ORIGINS: '["http://localhost:18789","http://127.0.0.1:18789"]'
+      OPENCLAW_LOAD_SHELL_ENV: "1"
+      OPENCLAW_SHELL_ENV_TIMEOUT_MS: "30000"
+    command: ["openclaw", "gateway", "run", "--port=18789"]
+    #$ openclaw onboard

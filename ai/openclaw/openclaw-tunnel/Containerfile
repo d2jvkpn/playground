@@ -1,0 +1,56 @@
+FROM local/tunnel:latest
+
+####
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
+
+ENV http_proxy=$http_proxy \
+    https_proxy=$https_proxy \
+    no_proxy=$no_proxy
+
+ARG build_region
+
+####
+USER appuser
+WORKDIR /home/appuser
+
+RUN if [ "$build_region" == "cn" ]; then \
+        npm config set registry https://registry.npmmirror.com; \
+        pip3 config set global.index-url 'https://pypi.tuna.tsinghua.edu.cn/simple'; \
+        pip3 config set install.trusted-host 'pypi.tuna.tsinghua.edu.cn'; \
+    fi
+
+# ENV OPENCLAW_HOME=/home/appuser/.openclaw
+
+COPY --chown=appuser:appuser copy_files/bin/. /home/appuser/.local/bin/
+
+RUN npm install -g openclaw@latest && \
+    npm install -g clawhub @tobilu/qmd && \
+    rm -rf .npm .cache
+
+#RUN curl -fsSL https://openclaw.ai/install.sh | bash
+
+# clawhub install agent-browser
+# npm install -g agent-browser
+# agent-browser install
+
+ADD --chown=appuser:appuser examples/sing-box.tun.json workspace/configs/
+ADD --chown=appuser:appuser examples/supervisord.conf workspace/configs/
+
+####
+USER root
+
+ENV https_proxy="" \
+    http_proxy="" \
+    no_proxy=""
+
+VOLUME /home/appuser/.openclaw
+WORKDIR /home/appuser/workspace
+
+# callback: 1455
+EXPOSE 18789
+
+ENTRYPOINT []
+#CMD ["openclaw", "gateway", "run", "--port=18789"]
+CMD ["supervisord", "-l", "logs/supervisord.log", "-c", "configs/supervisord.conf"]

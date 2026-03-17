@@ -1,23 +1,23 @@
 services:
-  agentic-devbox:
-    image: local/agentic-devbox:latest
+  opencode:
+    image: local/opencode:latest
     restart: always
-    container_name: agentic-devbox
-    hostname: agentic-devbox
+    container_name: opencode
+    hostname: opencode
     network_mode: bridge
     #networks: [net]
     ports: ["127.0.0.1:4096:4096"] # "127.0.0.1:1455:1455"
     user: appuser:appuser
     volumes:
+    - ./data/apps:/home/appuser/apps
+    - ./data/workspace:/home/appuser/workspace
     - ./data/xdg:/home/appuser/xdg
     - ./data/xdg/config:/home/appuser/.config
     - ./data/xdg/cache:/home/appuser/.cache
     - ./data/xdg/share:/home/appuser/.local/share
     - ./data/xdg/state:/home/appuser/.local/state
-    - ./data/apps:/home/appuser/apps
-    - ./data/workspace:/home/appuser/workspace
 
-    #- ./data/xdg/gemini:/home/appuser/.gemini
+    - ./data/gemini:/home/appuser/.gemini
     environment:
       TZ: Asia/Shanghai
       # https_proxy: http://127.0.0.1:1080
@@ -25,6 +25,6 @@ services:
       # no_proxy: ""
       # OPENCODE_SERVER_USERNAME: opencode
       # OPENCODE_SERVER_PASSWORD: ""
-    command: ["opencode", "web", "--cwd=/home/appuser/workspace", "--hostname=0.0.0.0", "--port=4096"]
+    command: ["opencode", "web", "--hostname=0.0.0.0", "--port=4096"]
     #command: ["opencode", "/path/to/project/with_tui"]
     #command: [sleep, infinity]
