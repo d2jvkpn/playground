@@ -35,11 +35,13 @@ services:
     - ./data/minio:/minio_data
     command: minio server /minio_data
 
-  milvus:
+  milvus.svc:
     container_name: milvus-standalone
     image: milvusdb/milvus:v2.6.12
     depends_on: [etcd, minio]
-    networks: [net]
+    networks:
+      net:
+        aliases: [milvus.local]
     ports: ["19530:19530", "9091:9091"]
     volumes:
     - ./data/milvus:/var/lib/milvus
