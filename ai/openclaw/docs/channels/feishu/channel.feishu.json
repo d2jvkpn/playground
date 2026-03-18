@@ -1,27 +1,32 @@
 {
+  "bindings": [
+    {
+      "agentId": "main",
+      "match": { "channel": "feishu", "accountId": "default" }
+    }
+  ],
+
   "channels": {
     "feishu": {
       "enabled": true,
-      "appId": "<APP_ID> example=cli_xxxxxxx, url=https://open.feishu.cn",
+      "appId": "<APP_ID> example=cli_xxxxxxx, url=https://open.feishu.cn/app/<APP_ID>",
       "appSecret": "<APP_SECRET>",
       "connectionMode": "websocket",
       "domain": "feishu",
       "groupPolicy": "allowlist | disabled",
       "groupAllowFrom": [
-        "<GROUP_ID> example=oc_xxxx, url=https://open.feishu.cn"
+        "<GROUP_ID> example=oc_xxxx, url=https://open.feishu.cn/api-explorer/<APP_ID>"
       ],
       "dmPolicy": "allowlist | dmPolicy",
       "allowFrom": [
-        "<USER_ID_IN_APP> example=ou_xxxx, url=https://open.feishu.cn"
+        "<USER_ID_IN_APP> example=ou_xxxx, url=https://open.feishu.cn/api-explorer/<APP_ID>"
       ]
     }
   },
 
   "plugins": {
     "entries": {
-      "feishu": {
-        "enabled": true
-      }
+      "feishu": { "enabled": true }
     }
   }
 }

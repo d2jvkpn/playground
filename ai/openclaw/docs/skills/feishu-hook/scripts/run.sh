@@ -8,7 +8,7 @@ if [[ -z "$msg" ]]; then
 fi
 # echo $msg
 
-config=${config:-$HOME/.openclaw/skills/configs/feishu.yaml}
+config=${config:-$HOME/.config/feishu/feishu.yaml}
 
 hook_id=$(yq -r '.feishu.hook_id // ""' "$config")
 

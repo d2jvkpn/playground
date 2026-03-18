@@ -42,11 +42,10 @@ RUN pip install --no-cache pyright
 RUN npm install -g \
       opencode-ai@latest oh-my-opencode@latest \
       @fission-ai/openspec@latest @openai/codex @google/gemini-cli && \
-    rm -rf .npm .cache
+    npm install -g bash-language-server yaml-language-server markdownlint-cli && \
+    rm -rf ~/.npm ~/.cache
 
-# npm install -g playwright @playwright/mcp@latest chrome-devtools-mcp@latest
-# npx playwright install chromium
-# npm install -g agent-browser && agent-browser install --with-deps
+RUN 
 
 RUN { \
       opencode --version | awk '{print "opencode: "$1}'; \

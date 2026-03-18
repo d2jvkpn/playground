@@ -44,6 +44,7 @@ services:
     volumes:
     - ./data/milvus:/var/lib/milvus
     #- ./configs/milvus.yaml:/milvus/configs/milvus.yaml
+    #- ./configs/milvus:/milvus/configs
     environment:
       ETCD_ENDPOINTS: milvus-etcd:2379
       MINIO_ADDRESS: milvus-minio:9000

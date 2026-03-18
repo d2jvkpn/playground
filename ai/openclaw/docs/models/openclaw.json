@@ -1,0 +1,141 @@
+{
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "custom-dashscope-aliyuncs-com": {
+        "baseUrl": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "apiKey": "sk-xxxxxxxx",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "qwen-plus",
+            "name": "qwen-plus (Custom Provider)",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 256000,
+            "maxTokens": 8192
+          }
+        ]
+      },
+      "custom-api-deepseek-com": {
+        "baseUrl": "https://api.deepseek.com",
+        "apiKey": "sk-xxxxxxxx",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "deepseek-chat",
+            "name": "deepseek-chat (Custom Provider)",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 256000,
+            "maxTokens": 8192
+          }
+        ]
+      },
+      "moonshot": {
+        "baseUrl": "https://api.moonshot.cn/v1",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "kimi-k2.5",
+            "name": "Kimi K2.5",
+            "reasoning": false,
+            "input": [
+              "text",
+              "image"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 256000,
+            "maxTokens": 8192
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "custom-api-deepseek-com/deepseek-chat",
+        "fallbacks": [
+          "custom-dashscope-aliyuncs-com/qwen-plus",
+          "moonshot/kimi-k2.5"
+        ]
+      },
+      "models": {
+        "custom-dashscope-aliyuncs-com/qwen-plus": {
+          "params": {
+            "thinking": false
+          }
+        },
+        "custom-api-deepseek-com/deepseek-chat": {
+          "params": {
+            "thinking": false
+          }
+        },
+        "moonshot/kimi-k2.5": {
+          "alias": "Kimi"
+        }
+      },
+      "workspace": "/home/appuser/.openclaw/workspace",
+      "memorySearch": {
+        "enabled": false,
+        "extraPaths": [
+          "memory-search.docs"
+        ],
+        "provider": "openai",
+        "remote": {
+          "baseUrl": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+          "apiKey": "sk-xxxxxxxx"
+        },
+        "fallback": "none",
+        "model": "text-embedding-v4",
+        "query": {
+          "hybrid": {
+            "enabled": true,
+            "vectorWeight": 0.7,
+            "textWeight": 0.3,
+            "candidateMultiplier": 4
+          }
+        }
+      }
+    },
+    "list": [
+      {
+        "id": "main",
+        "model": "custom-api-deepseek-com/deepseek-chat"
+      },
+      {
+        "id": "bot01",
+        "name": "bot01",
+        "workspace": "/home/appuser/.openclaw/bot01",
+        "agentDir": "/home/appuser/.openclaw/agents/bot01",
+        "model": "custom-dashscope-aliyuncs-com/qwen-plus",
+        "identity": {
+          "name": "bot01",
+          "emoji": "🤖"
+        }
+      }
+    ]
+  }
+}

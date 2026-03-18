@@ -12,6 +12,8 @@ version: 0.1.0
 - https://open.feishu.cn
 - https://open.feishu.cn/document/server-docs/event-subscription-guide/event-subscription-configure-/request-url-configuration-case
 - https://www.feishu.cn/content/article/7602519239445974205
+- 开发者后台 - 权限管理: https://open.feishu.cn/app/<APP_ID>/baseinfo: 权限管理、事件回调、
+- 开发者后台 - API 调试: https://open.feishu.cn/api-explorer/<APP_ID>
 - Openclaw多Agent实践
   https://leochens.feishu.cn/wiki/TWyZwzJwAimqcMkpL7sce6zwneh
 - 7分钟上手OpenClaw接入飞书

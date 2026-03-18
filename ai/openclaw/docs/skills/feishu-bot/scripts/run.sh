@@ -9,7 +9,7 @@ if [[ -z "$msg" ]]; then
 fi
 # echo $msg
 
-config=${config:-$HOME/.openclaw/skills/configs/feishu.yaml}
+config=${config:-$HOME/.config/feishu/feishu.yaml}
 
 app_id=$(yq -r '.feishu.app_id // ""' "$config")
 app_secret=$(yq -r '.feishu.app_secret // ""' "$config")

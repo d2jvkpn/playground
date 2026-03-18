@@ -54,14 +54,16 @@ opencode auth login
 ```
 
 2. Language Server Protocol(LSP)
-```
-Python → pyright
-Go → gopls
-Rust → rust-analyzer
-TypeScript / JavaScript → typescript
-Java → jdtls
-C / C++ → clangd
-Vue → vue
-Bash → bash-language-server
-YAML → yaml-language-server
+- https://opencode.ai/docs/lsp/
+- Bash → bash-language-server
+- YAML → yaml-language-server
+- Python → pyright: pip install --no-cache pyright
+- TypeScript / JavaScript → typescript
+
+- Go → gopls
+  - go install golang.org/x/tools/gopls
+  - go install golang.org/x/tools/cmd/goimports@latest && \
+  - go install honnef.co/go/tools/cmd/staticcheck@latest
+- Rust → rust-analyzer, https://github.com/rust-lang/rust-analyzer/releases
+- Vue → vue
 ```
