@@ -39,7 +39,7 @@ services:
       TZ: Asia/Shanghai
       # https_proxy: http://172.17.0.1:1080
       # http_proxy: http://172.17.0.1:1080
-      # no_proxy: localhost,127.0.0.1,::1,host.docker.internal
+      # no_proxy: no_proxy: localhost,127.0.0.1,::1,172.16.0.1/12,.local,host.docker.internal
       # OPENCLAW_TOKEN: xxxxxx
       # OPENCLAW_ALLOWED_ORIGINS: '["http://localhost:18789","http://127.0.0.1:18789"]'
     command: ["supervisord", "-l", "logs/supervisord.log", "-c", "configs/supervisord.conf"]

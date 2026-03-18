@@ -11,9 +11,10 @@ version: 0.1.0
 1. docs
 - Docling
   - pip install docling
-  - docling convert input.pdf -o output/ # output/: input.md, input.json, assets/
-  - docling convert ./docs -o ./parsed_docs
-  - docling convert input.pdf --format json -o output/
+  - docling-tools models download --all -o ./docling_models
+  - docling input.pdf --output output/ # output/: input.md, input.json, assets/
+  - docling ./docs --output ./parsed_docs
+  - docling input.pdf --format json --output output/
 
 - MinerU
 - Unstructured
