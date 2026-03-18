@@ -18,7 +18,22 @@ version: 0.1.0
 - OpenClaw 你装错了！9个必备Skills + 正确模型搭配，一次搞定浏览器自动化！ | 零度解说
   https://www.youtube.com/watch?v=Sdf8fc9b0mI
 
-2. skills:
+2. structure
+- ~/.openclaw/skills/my_skill
+- ~/.openclaw/<workspace>/skills/my_skill
+- 
+```
+.agents/
+  skills/
+    my-skill/
+      SKILL.md
+      scripts/
+      examples/
+    another-skill/
+      SKILL.md
+```
+
+3. skills:
 ```
 - name: serpapi
   links
