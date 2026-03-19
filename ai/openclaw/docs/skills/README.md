@@ -17,6 +17,8 @@ version: 0.1.0
   https://www.youtube.com/watch?v=uPTkxwwy-4I
 - OpenClaw 你装错了！9个必备Skills + 正确模型搭配，一次搞定浏览器自动化！ | 零度解说
   https://www.youtube.com/watch?v=Sdf8fc9b0mI
+- https://github.com/openclaw/openclaw
+- https://github.com/openclaw/clawhub
 
 2. structure
 - ~/.openclaw/skills/my_skill
@@ -63,3 +65,10 @@ version: 0.1.0
   links:
   - https://github.com/karpathy/autoresearch
 ```
+
+4. crawhub skills
+- https://clawhub.ai/pskoett/self-improving-agent
+- https://clawhub.ai/JimLiuxinghai/find-skills
+- https://clawhub.ai/oswalpalash/ontology
+- gog
+- crawhub --workdir ~/.openclaw install self-improving-agent

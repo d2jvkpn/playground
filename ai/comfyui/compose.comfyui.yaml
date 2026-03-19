@@ -40,7 +40,12 @@ services:
       #CONTAINER_INIT_COMMAND: "mv custom_nodes/ComfyUI-Manager custom_nodes/ComfyUI-Manager.disabled"
       LD_LIBRARY_PATH: ""
     volumes:
+    - ./data/xdg/config:/home/appuser/.config
+    - ./data/xdg/cache:/home/appuser/.cache
+    - ./data/xdg/share:/home/appuser/.local/share
+    - ./data/xdg/state:/home/appuser/.local/state
     - ./data/workspace:/home/appuser/workspace  # models, custom_nodes, user, input, output, temp
+
     - ./data/site-packages:/home/appuser/venv/lib/python3.12/site-packages
     command:
     - python3

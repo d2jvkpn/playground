@@ -69,7 +69,7 @@ ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
 
-ENV CONTAINER_INIT_COMMAND="" \
+ENV DISABLE_COMFYUI_MANAGER="false" \
     TORCH_HOME=/home/appuser/workspace/models/torch \
     HF_HUB_CACHE=/home/appuser/workspace/models/huggingface/hub
 

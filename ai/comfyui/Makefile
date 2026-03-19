@@ -17,6 +17,9 @@ docker_update:
 	  --build-arg http_proxy="$proxy_addr" \
 	  -t local/comfyui:cuda12.9-base ./
 
+create_dirs:
+	mkdir -p data/site-packages data/xdg/{config,cache,share,state} \
+	  data/workspace/{custom_nodes,input,models,output,tmp}
+
 run:
-	mkdir -p data/site-packages data/workspace/custom_nodes
 	docker run -d --name=comfyui --gpus=all -p 8188:8188 local/comfyui:cuda12.9-base

@@ -10,6 +10,8 @@ version: 0.1.0
 #### ch01. 
 1. docs
 - https://github.com/langflow-ai/langflow
+- https://www.langflow.org
+- https://github.com/langflow-ai/openrag
 
 2. run
 ```
