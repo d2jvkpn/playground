@@ -44,8 +44,7 @@ RUN npm install -g \
       @fission-ai/openspec@latest @openai/codex @google/gemini-cli && \
     npm install -g bash-language-server yaml-language-server markdownlint-cli && \
     rm -rf ~/.npm ~/.cache
-
-RUN 
+# curl -fsSL https://claude.ai/install.sh | bash
 
 RUN { \
       opencode --version | awk '{print "opencode: "$1}'; \

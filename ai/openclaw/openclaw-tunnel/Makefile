@@ -11,4 +11,4 @@ create_dirs:
 	  data/openclaw configs logs
 
 conn_appuser:
-	docker exec -it -u appuser openclaw-tunnel bash
+	docker exec -it -u appuser -w /home/appuser/.openclaw openclaw-tunnel bash

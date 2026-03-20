@@ -28,9 +28,12 @@ RUN if [ "$build_region" == "cn" ]; then \
 
 COPY --chown=appuser:appuser copy_files/bin/. /home/appuser/.local/bin/
 
-RUN npm install -g openclaw@latest && \
-    npm install -g clawhub @tobilu/qmd && \
-    rm -rf .npm .cache
+RUN npm install -g openclaw@latest clawhub && \
+    npm install -g @tobilu/qmd && \
+    rm -rf ~/.npm ~/.cache
+
+# npm install -g @google/gemini-cli # gemini oauth
+# curl -fsSL https://claude.ai/install.sh | bash
 
 # clawhub install agent-browser
 # npm install -g agent-browser

@@ -65,7 +65,7 @@ RUN pip install --no-cache-dir --upgrade \
       pip wheel setuptools uv \
       PySocks "requests[socks]" "httpx[socks]" PyYAML pydantic
 
-RUN npm install -g typescript ts-node @types/node zx vitest execa pnpm yarn && \
+RUN npm install -g npm@latest typescript ts-node @types/node zx vitest execa pnpm yarn && \
     rm -rf .npm .cache
 
 #### 5. config image

@@ -19,6 +19,7 @@ version: 0.1.0
   https://www.youtube.com/watch?v=Sdf8fc9b0mI
 - https://github.com/openclaw/openclaw
 - https://github.com/openclaw/clawhub
+- https://github.com/openclaw/skills
 
 2. structure
 - ~/.openclaw/skills/my_skill
@@ -68,7 +69,8 @@ version: 0.1.0
 
 4. crawhub skills
 - https://clawhub.ai/pskoett/self-improving-agent
-- https://clawhub.ai/JimLiuxinghai/find-skills
 - https://clawhub.ai/oswalpalash/ontology
+- https://clawhub.ai/steipete/summarize
+- https://clawhub.ai/JimLiuxinghai/find-skills
 - gog
 - crawhub --workdir ~/.openclaw install self-improving-agent
