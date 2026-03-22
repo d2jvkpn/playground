@@ -2,9 +2,8 @@ user_gid ?= 1000
 user_uid ?= 1000
 
 create_dirs:
-	mkdir -p data/apps data/workspace/configs data/workspace/logs \
-	  data/xdg/config data/xdg/cache data/xdg/share data/xdg/state \
-	  data/site-packages configs logs
+	mkdir -p configs logs data/apps data/workspace data/site-packages \
+	  data/xdg/config data/xdg/cache data/xdg/share data/xdg/state
 
 # docker build args: --build-arg build_region=cn
 docker_build:
