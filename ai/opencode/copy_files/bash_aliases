@@ -3,6 +3,7 @@ export CODEX_HOME=$HOME/xdg/codex
 export CARGO_HOME=$HOME/apps/cargo
 export RUSTUP_HOME=$HOME/apps/rustup
 
-export GOPATH=$HOME/xdg/go
-#export GOCACHE=$XDG_CACHE_HOME/go-build
-export GOCACHE=$HOME/xdg/cache/go-build
+GOPATH=${HOME}/.local/share/go
+#GOBIN=$GOPATH/bin
+GOBIN=${HOME}/apps/bin
+GOCACHE=${HOME}/.cache/go-build

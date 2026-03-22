@@ -16,25 +16,23 @@ ARG user_gid=1000
 # DEBIAN_FRONTEND=noninteractive
 
 #### 2. installation
-COPY ./copy_files/bin /opt/bin
+COPY ./copy_files/scripts /opt/scripts
 
 ENV LANG=C.UTF-8 \
-    LC_ALL=C.UTF-8 \
-    TZ=Asia/Shanghai \
-    PATH=/opt/bin:$PATH
+    LC_ALL=C.UTF-8
 
-RUN apt_install.sh tzdata locales ca-certificates gnupg gosu \
+RUN /opt/scripts/apt_install.sh tzdata locales ca-certificates gnupg gosu \
       python3 python3-venv python3-pip python3-dev \
       file tree less zip unzip uuid jq ripgrep vim git wget curl \
       mtr netcat-openbsd iproute2 lsof iptables bind9-dnsutils \
       supervisor openvpn wireguard-tools && \
     update-ca-certificates && \
-    bash /opt/bin/install_nodejs.debian.sh && \
+    bash /opt/scripts/install_nodejs.debian.sh && \
     rm -rf /var/lib/apt/lists/*
 
 RUN tag_name=$(curl -fsSL https://api.github.com/repos/mikefarah/yq/releases/latest | jq -r .tag_name) && \
-    curl -fL https://github.com/mikefarah/yq/releases/download/$tag_name/yq_linux_amd64 -o /opt/bin/yq && \
-    chmod a+x /opt/bin/yq
+    curl -fL https://github.com/mikefarah/yq/releases/download/$tag_name/yq_linux_amd64 -o /usr/local/bin/yq && \
+    chmod a+x /usr/local/bin/yq
 
 RUN pip install --no-cache-dir --upgrade \
     pip wheel setuptools uv \

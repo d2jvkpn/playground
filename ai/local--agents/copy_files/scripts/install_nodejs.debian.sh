@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eu -o pipefail
 
+
 apt-get update
 apt-get install -y ca-certificates gnupg curl jq
 

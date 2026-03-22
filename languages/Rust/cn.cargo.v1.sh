@@ -9,6 +9,7 @@ replace-with = "ustc"
 
 [source.ustc]
 registry = "git://mirrors.ustc.edu.cn/crates.io-index"
+
 [source.tuna]
 registry = "https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git"
 

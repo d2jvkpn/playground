@@ -1,10 +1,17 @@
-####
+# $HOME/.config
 export XDG_CONFIG_HOME=$HOME/xdg/config
+
+# $HOME/.cache
 export XDG_CACHE_HOME=$HOME/xdg/cache
+
+# $HOME/.local/share
 export XDG_DATA_HOME=$HOME/xdg/share
+
+# $HOME/.local/state
 export XDG_STATE_HOME=$HOME/xdg/state
 
-for d in "/opt/bin" "$HOME/apps/bin" "$HOME/.local/bin"; do
+
+for d in "$HOME/.local/bin" "$HOME/apps/bin"; do
     if [ ! -d "$d" ]; then
         continue
     fi
@@ -18,10 +25,16 @@ for d in "/opt/bin" "$HOME/apps/bin" "$HOME/.local/bin"; do
     esac
 done
 
-for d in $(ls -d $HOME/.local/*/bin/ $HOME/apps/*/bin/ 2>/dev/null); do
+
+for d in $(ls -d $HOME/.local/*/bin/ $HOME/.local/share/*/bin/ $HOME/apps/*/bin/ 2>/dev/null); do
     d=${d%/}
 
     if [[ ":$PATH:" != *":$d:"* ]]; then
         export PATH="$d:$PATH"
     fi
 done
+
+
+if [ -f ~/xdg/config/bash.env ]; then
+    . ~/xdg/config/bash.env
+fi
