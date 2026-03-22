@@ -1,0 +1,11 @@
+FROM local/agents:24-trixie
+
+USER appuser
+
+WORKDIR /home/appuser
+
+RUN mkdir -p apps/bin workspace/configs workspace/logs \
+    xdg/config xdg/cache xdg/share xdg/state \
+    .local/lib/python3.14/site-packages
+
+WORKDIR /home/appuser/workspace

@@ -51,7 +51,8 @@ COPY --chown=appuser:appuser copy_files/bash_aliases /home/appuser/.bash_aliases
 COPY --chown=appuser:appuser copy_files/npmrc /home/appuser/.npmrc
 # npm config set prefix ~/.local/npm
 # npm config list -l
-RUN echo "if [ -f ~/.bash_aliases ]; then . ~/.bash_aliases; fi" >> /home/appuser/.bash_profile
+
+RUN echo -e "\nif [ -f ~/.bash_aliases ]; then . ~/.bash_aliases; fi" >> /home/appuser/.bash_profile
 
 RUN if [ "$build_region" == "cn" ]; then \
         npm config set registry https://registry.npmmirror.com; \
@@ -63,7 +64,7 @@ RUN if [ "$build_region" == "cn" ]; then \
 RUN python3 -m venv .local/venv
 RUN pip install --no-cache-dir --upgrade \
       pip wheel setuptools uv \
-      PySocks "requests[socks]" "httpx[socks]" PyYAML pydantic
+      pysocks "requests[socks]" "httpx[socks]" pyyaml pydantic
 
 RUN npm install -g npm@latest typescript ts-node @types/node zx vitest execa pnpm yarn && \
     rm -rf .npm .cache

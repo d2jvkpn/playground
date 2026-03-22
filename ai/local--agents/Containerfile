@@ -1,0 +1,76 @@
+FROM python:3.14-trixie
+
+#### 1. passing args
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
+
+ENV http_proxy=$http_proxy \
+    https_proxy=$https_proxy \
+    no_proxy=$no_proxy
+
+ARG build_region
+ARG user_uid=1000
+ARG user_gid=1000
+
+# DEBIAN_FRONTEND=noninteractive
+
+#### 2. installation
+COPY ./copy_files/bin /opt/bin
+
+ENV LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    TZ=Asia/Shanghai \
+    PATH=/opt/bin:$PATH
+
+RUN apt_install.sh tzdata locales ca-certificates gnupg gosu \
+      python3 python3-venv python3-pip python3-dev \
+      file tree less zip unzip uuid jq ripgrep vim git \
+      mtr wget curl netcat-openbsd iproute2 lsof iptables bind9-dnsutils \
+      supervisor openvpn wireguard-tools && \
+    update-ca-certificates && \
+    bash /opt/bin/install_nodejs.debian.sh && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN tag_name=$(curl -fsSL https://api.github.com/repos/mikefarah/yq/releases/latest | jq -r .tag_name) && \
+    curl -fL https://github.com/mikefarah/yq/releases/download/$tag_name/yq_linux_amd64 -o /opt/bin/yq && \
+    chmod a+x /opt/bin/yq
+
+RUN pip install --no-cache-dir --upgrade \
+    pip wheel setuptools uv \
+    pysocks "requests[socks]" "httpx[socks]" pyyaml pydantic
+
+RUN npm install -g npm@latest typescript ts-node @types/node zx vitest execa pnpm yarn && \
+    rm -rf ~/.npm ~/.cache
+
+#### 3. build
+# userdel -r ubuntu || true
+RUN groupadd -g $user_gid appuser && \
+    useradd -s /bin/bash -m -u $user_uid -g $user_gid appuser
+
+USER appuser
+WORKDIR /home/appuser
+RUN mkdir -p apps/bin workspace/configs workspace/logs \
+    xdg/config xdg/cache xdg/share xdg/state \
+    .local/lib/python3.14/site-packages
+
+COPY --chown=appuser:appuser copy_files/bash_aliases /home/appuser/.bash_aliases
+RUN echo -e "\nif [ -f ~/.bash_aliases ]; then . ~/.bash_aliases; fi" >> /home/appuser/.bash_profile
+
+RUN npm config set prefix ~/apps/npm
+# npm config set prefix ~/.local/npm
+# npm config list -l
+
+#### 4. container
+ENV https_proxy="" \
+    http_proxy="" \
+    no_proxy=""
+
+VOLUME /home/appuser/.local/lib/python3.14/site-packages
+VOLUME /home/appuser/xdg
+VOLUME /home/appuser/workspace
+
+WORKDIR /home/appuser/workspace
+
+#ENTRYPOINT []
+CMD ["sleep", "infinity"]

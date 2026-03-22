@@ -1,0 +1,31 @@
+networks:
+  net: { name: local, driver: bridge, external: false }
+
+services:
+  node:
+    image: local/agents:latest
+    restart: always
+    container_name: node
+    hostname: node
+    #network_mode: bridge
+    networks: [net]
+    ports: [127.0.0.1:8080:8080]
+    user: appuser:appuser
+    volumes:
+    - ./data/xdg:/home/appuser/xdg
+    - ./data/xdg/config:/home/appuser/.config
+    - ./data/xdg/cache:/home/appuser/.cache
+    - ./data/xdg/share:/home/appuser/.local/share
+    - ./data/xdg/state:/home/appuser/.local/state
+    - ./data/apps:/home/appuser/apps
+    - ./data/workspace:/home/appuser/workspace
+
+    - ./data/site-packages:/home/appuser/.local/lib/python3.14/site-packages
+    #- ./configs:/home/appuser/workspace/configs
+    #- ./logs:/home/appuser/workspace/logs
+    environment:
+      TZ: Asia/Shanghai
+      # https_proxy: http://172.17.0.1:1080
+      # http_proxy: http://172.17.0.1:1080
+      # no_proxy: ""
+    command: ["sleep", "infinity"]

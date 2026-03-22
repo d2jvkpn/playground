@@ -1,0 +1,27 @@
+####
+export XDG_CONFIG_HOME=$HOME/xdg/config
+export XDG_CACHE_HOME=$HOME/xdg/cache
+export XDG_DATA_HOME=$HOME/xdg/share
+export XDG_STATE_HOME=$HOME/xdg/state
+
+for d in "/opt/bin" "$HOME/apps/bin" "$HOME/.local/bin"; do
+    if [ ! -d "$d" ]; then
+        continue
+    fi
+
+    case ":${PATH}:" in
+    *:"$d":*)
+        ;;
+    *)
+        export PATH="$d:$PATH"
+        ;;
+    esac
+done
+
+for d in $(ls -d $HOME/.local/*/bin/ $HOME/apps/*/bin/ 2>/dev/null); do
+    d=${d%/}
+
+    if [[ ":$PATH:" != *":$d:"* ]]; then
+        export PATH="$d:$PATH"
+    fi
+done
