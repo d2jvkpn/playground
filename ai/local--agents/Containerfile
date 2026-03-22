@@ -25,8 +25,8 @@ ENV LANG=C.UTF-8 \
 
 RUN apt_install.sh tzdata locales ca-certificates gnupg gosu \
       python3 python3-venv python3-pip python3-dev \
-      file tree less zip unzip uuid jq ripgrep vim git \
-      mtr wget curl netcat-openbsd iproute2 lsof iptables bind9-dnsutils \
+      file tree less zip unzip uuid jq ripgrep vim git wget curl \
+      mtr netcat-openbsd iproute2 lsof iptables bind9-dnsutils \
       supervisor openvpn wireguard-tools && \
     update-ca-certificates && \
     bash /opt/bin/install_nodejs.debian.sh && \

@@ -50,6 +50,7 @@ version: 0.1.0
 - openclaw models auth add
 - openclaw models auth login --provider qwen-portal
 - openclaw models auth login --provider openai-codex
+- openclaw configure --section web
 - openclaw models set openai-codex/gpt-5.4
 - openclaw config set agents.defaults.model.primary '"openai-codex/gpt-5.4"' --strict-json
 - openclaw config get agents.defaults.model
