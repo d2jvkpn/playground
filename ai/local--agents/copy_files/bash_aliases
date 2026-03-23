@@ -1,3 +1,5 @@
+# path: ~/.bash_aliases
+
 # $HOME/.config
 export XDG_CONFIG_HOME=$HOME/xdg/config
 
@@ -35,6 +37,6 @@ for d in $(ls -d $HOME/.local/*/bin/ $HOME/.local/share/*/bin/ $HOME/apps/*/bin/
 done
 
 
-if [ -f ~/xdg/config/bash.env ]; then
-    . ~/xdg/config/bash.env
+if [ -f $HOME/apps/bash.env ]; then
+    . $HOME/apps/bash.env
 fi

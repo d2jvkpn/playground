@@ -1,61 +1,19 @@
-# path: ~/apps/bash_aliases.sh
-# $ ln -sr ~/apps/bash_aliases.sh ~/.bash_aliases
-# $ mkdir -p ~/apps/bin
+# path: ~/.bash_aliases
 
-#### 1.
-# export HISTTIMEFORMAT="%Y-%m-%dT%H:%M:%S%z "
-# %Y-%m-%dT%H:%M:%S%:z doesn't work as expected
-# export HISTTIMEFORMAT="%Y%m%d-%H%M-%s "
-export HISTTIMEFORMAT="%Y-%m-%d %H:%M %s  "
-export PROMPT_DIRTRIM=2
+# $HOME/.config
+export XDG_CONFIG_HOME=$HOME/xdg/config
 
-export PATH=~/apps/bin:$PATH # PATH=~/.local/bin:$PATH
+# $HOME/.cache
+export XDG_CACHE_HOME=$HOME/xdg/cache
 
-# mkdir -p apps/exports
-# tar -xf downloads/go1.23.4.linux-amd64.tar.gz -C apps/
-# ln -rs apps/go apps/exports
+# $HOME/.local/share
+export XDG_DATA_HOME=$HOME/xdg/share
 
-for d in $(ls -d ~/apps/exports/*/ 2> /dev/null); do
-    d=${d%/}
-    b=$(basename $d)
-    #[ "${b:0:1}" == "_" ] && continue
-    [ -d $d/bin ] && d=$d/bin
-    [ -r $d ] || continue
-    export PATH=$d:$PATH
-done
-
-#### 2.
-alias tree2='tree -L 2'; alias tree3='tree -L 3'
-alias ..='cd ../'; alias ...='cd ../../'; alias ....='cd ../../../'
-
-alias x-nmap='nmap -vv --max-retries=5 -sV -T4 -p-'
-alias x-rsync='rsync -arvP  -e "ssh -o RemoteCommand=none -o RequestTTY=no"'
-alias export_porxy='export https_proxy=socks5h://127.0.0.1:1080'
-
-#### 3.
-# sudo apt -y install xclip
-alias setclip='xclip -selection c'
-alias clearclip='echo "" | xclip -selection c'
-alias getclip='xclip -selection c -o'
-
-alias top_cpu='ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head -n 20'
-alias top_mem='ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head -n 20'
-alias pid_info='ps -eo ppid,cmd,vsz,rss,%mem,%cpu -p'
-
-alias git_search='git grep -n'
-
-# export HISTSIZE=2000
-# export PYSPARK_PYTHON=$(which ipython3)
-# export SBT_OPTS="-Dsbt.override.build.repos=true"
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-export CARGO_HOME=$HOME/apps/cargo
-export RUSTUP_HOME=$HOME/apps/rustup
+# $HOME/.local/state
+export XDG_STATE_HOME=$HOME/xdg/state
 
 
-for d in "/opt/bin" "$HOME/apps/bin" "$HOME/.local/bin"; do
+for d in "$HOME/.local/bin" "$HOME/apps/bin"; do
     if [ ! -d "$d" ]; then
         continue
     fi
@@ -69,10 +27,16 @@ for d in "/opt/bin" "$HOME/apps/bin" "$HOME/.local/bin"; do
     esac
 done
 
-for d in $(ls -d $HOME/.local/*/bin/ $HOME/apps/*/bin/ 2>/dev/null); do
+
+for d in $(ls -d $HOME/.local/*/bin/ $HOME/.local/share/*/bin/ $HOME/apps/*/bin/ 2>/dev/null); do
     d=${d%/}
 
     if [[ ":$PATH:" != *":$d:"* ]]; then
         export PATH="$d:$PATH"
     fi
 done
+
+
+if [ -f $HOME/apps/bash.env ]; then
+    . $HOME/apps/bash.env
+fi
