@@ -70,5 +70,5 @@ VOLUME /home/appuser/workspace
 
 WORKDIR /home/appuser/workspace
 
-#ENTRYPOINT []
+ENTRYPOINT [/opt/scripts/entrypoint.sh]
 CMD ["sleep", "infinity"]

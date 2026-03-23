@@ -75,18 +75,10 @@ version: 0.1.0
 - openclaw agents bindings
 - openclaw tui --agent bot01
 - openclaw agent --agent bot01 --message "测试" --deliver
+- openclaw agents bind --agent bot01 --bind telegram:supportbot
+- openclaw agents delete bot01
 
-3. set channels
-- openclaw channels add
-- openclaw pairing approve feishu <code>
-- openclaw config unset channels.feishu
-- openclaw config set channels.feishu.enabled true
-- openclaw config set channels.feishu.appId "AppID"
-- openclaw config set channels.feishu.appSecret "AppSecret"
-
-- openclaw-cli channels add --channel discord --token "<token>"
-
-4. commands
+3. commands
 - /help
 - /commands
 - /restart

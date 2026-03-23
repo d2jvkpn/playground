@@ -11,6 +11,8 @@ version: 0.1.0
 1. docs
 - https://opencode.ai/docs/skills
 - https://github.com/vercel-labs/agent-skills
+- https://github.com/MiniMax-AI/skills
+- https://github.com/kepano/obsidian-skills
 
 2. skills
 - location: .opencode/skills/<name>/SKILL.md, ~/.config/opencode/skills/<name>/SKILL.md

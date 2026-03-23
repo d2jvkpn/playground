@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -eu; _dir=$(readlink -f `dirname "$0"`)
 
 
 if [[ $# -eq 0 ]]; then
@@ -12,7 +12,7 @@ elif [[ "$1" == "bash" || "$1" == "sh" ]]; then
     exec "$@"
 else
     if [ ! -f "$HOME/.openclaw/openclaw.json" ]; then
-        bash "$HOME/.local/bin/openclaw_setup_lan.sh"
+        bash "${_dir}/openclaw_container.sh"
     fi
 
     exec "$@"
