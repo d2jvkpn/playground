@@ -21,8 +21,15 @@ version: 0.1.0
 - https://github.com/openclaw/clawhub
 - https://github.com/openclaw/skills
 
+2. installation
+- path: ~/.openclaw/skills, ~/.openclaw/<workspace>/skills
+- openclaw skills list
+  openclaw skills search find-skills
+  openclaw skills install find-skills
+- clawhub list
+  clawhub install find-skills
 
-2. structure
+3. structure
 - ~/.openclaw/skills/my_skill
 - ~/.openclaw/<workspace>/skills/my_skill
 - 
@@ -37,8 +44,8 @@ version: 0.1.0
       SKILL.md
 ```
 
-3. crawhub skills
-install: crawhub --workdir ~/.openclaw install self-improving-agent
+4. clawhub skills
+install: clawhub --workdir ~/.openclaw install self-improving-agent
 
 items
 ```
