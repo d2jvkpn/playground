@@ -15,7 +15,7 @@ version: 0.1.0
 2. quick install
 ```
 npx -y @tencent-weixin/openclaw-weixin@latest install
-ls ~/.openclaw/openclaw-weixin ~/.openclaw/extensions/openclaw-weixin
+ls ~/.openclaw/extensions/openclaw-weixin ~/.openclaw/openclaw-weixin
 ```
 
 3. manual installation

@@ -1,0 +1,52 @@
+FROM local/agents:24-trixie
+
+####
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
+
+ENV http_proxy=$http_proxy \
+    https_proxy=$https_proxy \
+    no_proxy=$no_proxy
+
+ARG build_region
+
+####
+USER appuser
+WORKDIR /home/appuser
+
+RUN if [ "$build_region" == "cn" ]; then \
+        bash /opt/scripts/config_cn.sh pip; \
+        bash /opt/scripts/config_cn.sh npm; \
+    fi
+
+# ENV OPENCLAW_HOME=/home/appuser/.openclaw
+
+COPY --chown=appuser:appuser copy_files/scripts/. /opt/scripts/
+
+RUN npm install -g openclaw@latest clawhub && \
+    mkdir -p ~/.openclaw && \
+    rm -rf ~/.npm ~/.cache
+
+# npm install -g @tobilu/qmd
+# npm install -g @google/gemini-cli # gemini oauth
+# curl -fsSL https://claude.ai/install.sh | bash
+# curl -fsSL https://openclaw.ai/install.sh | bash
+
+# clawhub install agent-browser
+# npm install -g agent-browser
+# agent-browser install
+
+####
+ENV https_proxy="" \
+    http_proxy="" \
+    no_proxy=""
+
+VOLUME /home/appuser/.openclaw
+WORKDIR /home/appuser/workspace
+
+# webui: 18789, callback: 1455
+EXPOSE 18789
+
+ENTRYPOINT []
+CMD ["openclaw", "gateway", "run", "--port=18789"]

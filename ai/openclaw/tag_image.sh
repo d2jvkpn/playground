@@ -3,7 +3,7 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 dry_run=${dry_run:-"false"}
 
-name=$1 # local/openclaw-tunnel, local/openclaw-local
+name=local/openclaw # local/openclaw-tunnel, local/openclaw-local
 
 mkdir -p data
 
