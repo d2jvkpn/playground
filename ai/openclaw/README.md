@@ -92,6 +92,12 @@ version: 0.1.0
 - /new
 - /bash pwd
 
+4. plugins
+- https://www.npmjs.com/package/@tencent-weixin/openclaw-weixin
+- https://www.npmjs.com/package/@wecom/wecom-openclaw-plugin
+- https://github.com/BytePioneer-AI/openclaw-china
+- https://github.com/yanhaidao/wecom
+
 #### ch03. Related
 1. linux
 - xdotool

@@ -65,4 +65,7 @@ items
 - name: GOG
   links:
   - https://clawhub.ai/steipete/gog
+- name: Vetter
+  links:
+  - https://clawhub.ai/spclaudehome/skill-vetter
 ```

@@ -22,12 +22,13 @@ ls ~/.openclaw/extensions/openclaw-weixin ~/.openclaw/openclaw-weixin
 ```
 openclaw plugins install "@tencent-weixin/openclaw-weixin"
 
-# openclaw config set plugins.entries.openclaw-weixin.enabled true
-# openclaw channels login --channel openclaw-weixin
-# openclaw channels remove --channel openclaw-weixin
+openclaw config set plugins.entries.openclaw-weixin.enabled true
 
 openclaw channels login --channel openclaw-weixin
-openclaw config set plugins.allow '["openclaw-weixin"]' --strict-json
+
+# ln -s /home/appuser/.local/npm/lib/node_modules/openclaw ~/.openclaw/extensions/openclaw-weixin/node_modules/
+# openclaw channels remove --channel openclaw-weixin
+# openclaw config set plugins.allow '["openclaw-weixin"]' --strict-json
 ```
 
 4. this don't work
