@@ -1,9 +1,0 @@
-export CODEX_HOME=$HOME/xdg/codex
-
-export CARGO_HOME=$HOME/apps/cargo
-export RUSTUP_HOME=$HOME/apps/rustup
-
-GOPATH=${HOME}/.local/share/go
-#GOBIN=$GOPATH/bin
-GOBIN=${HOME}/apps/bin
-GOCACHE=${HOME}/.cache/go-build

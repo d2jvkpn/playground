@@ -5,7 +5,6 @@ create_dirs:
 	mkdir -p configs logs data/apps data/workspace data/site-packages \
 	  data/xdg/config data/xdg/cache data/xdg/share data/xdg/state
 
-# docker build args: --build-arg build_region=cn
 docker_build:
 	docker build --no-cache -f Containerfile \
 	  --network=host \

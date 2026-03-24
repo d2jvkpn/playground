@@ -1,4 +1,4 @@
-FROM local/node:24-trixie
+FROM local/agents:24-trixie
 
 ####
 ARG http_proxy
@@ -12,28 +12,22 @@ ENV http_proxy=$http_proxy \
 ARG build_region
 
 USER root
-COPY ./copy_files/bin/. /opt/bin/
-#RUN apt_install.sh iproute2 netcat-openbsd bind9-dnsutils lsof ripgrep
+COPY ./copy_files/scripts/. /opt/scripts
 
 ####
-ENV OPENCODE_SERVER_USERNAME="opencode" \
-    OPENCODE_SERVER_PASSWORD="" \
-    CODEX_HOME=/home/appuser/xdg/codex
-# default: OPENCODE_CONFIG_DIR=~/.config/opencode
+ENV OPENCODE_SERVER_USERNAME="opencode"
+# CODEX_HOME=~/.codex
+# OPENCODE_CONFIG_DIR=~/.config/opencode
+# OPENCODE_SERVER_PASSWORD=""
 
 USER appuser
 WORKDIR /home/appuser
 
-ADD --chown=appuser:appuser ./copy_files/bash_aliases bash_aliases
-RUN cat bash_aliases >> .bash_aliases && \
-    rm -f bash_aliases
-
 ADD --chown=appuser:appuser ./copy_files/vimrc .vimrc
 
 RUN if [ "$build_region" == "cn" ]; then \
-        npm config set registry https://registry.npmmirror.com; \
-        pip3 config set global.index-url 'https://pypi.tuna.tsinghua.edu.cn/simple'; \
-        pip3 config set install.trusted-host 'pypi.tuna.tsinghua.edu.cn'; \
+        bash /opt/scripts/config_cn.sh pip; \
+        bash /opt/scripts/config_cn.sh npm; \
     fi
 
 ####
@@ -46,12 +40,10 @@ RUN npm install -g \
     rm -rf ~/.npm ~/.cache
 # curl -fsSL https://claude.ai/install.sh | bash
 
-RUN { \
-      opencode --version | awk '{print "opencode: "$1}'; \
-      openspec --version | awk '{print "openspec: "$1}'; \
-      codex --version | awk '{print "codex: "$2}'; \
-      gemini --version | awk '{print "gemini-cli: "$1}'; \
-    } > .local/versions.yaml
+# opencode --version | awk '{print "opencode: "$1}'
+# openspec --version | awk '{print "openspec: "$1}'
+# codex --version | awk '{print "codex: "$2}'
+# gemini --version | awk '{print "gemini-cli: "$1}'
 
 # curl -fsSL https://opencode.ai/install | bash
 # npx -y oh-my-opencode install
@@ -63,13 +55,12 @@ ENV https_proxy="" \
     no_proxy=""
 
 VOLUME /home/appuser/apps
-
 WORKDIR /home/appuser/workspace
 
-# webui: 4096
-# auth_callback: 1455
+# webui: 4096, auth_callback: 1455
 EXPOSE 4096
 
+ENTRYPOINT []
 # opencode webui
 CMD ["opencode", "web", "--hostname=0.0.0.0", "--port=4096"]
 # --cors http://localhost:4096 --cors https://app.example.com
@@ -77,6 +68,3 @@ CMD ["opencode", "web", "--hostname=0.0.0.0", "--port=4096"]
 
 # opencode tui
 #CMD ["opencode"]
-
-# sleep
-#CMD ["sleep", "infinity"]

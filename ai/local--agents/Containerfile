@@ -9,7 +9,6 @@ ENV http_proxy=$http_proxy \
     https_proxy=$https_proxy \
     no_proxy=$no_proxy
 
-ARG build_region
 ARG user_uid=1000
 ARG user_gid=1000
 
@@ -36,7 +35,7 @@ RUN tag_name=$(curl -fsSL https://api.github.com/repos/mikefarah/yq/releases/lat
 
 RUN pip install --no-cache-dir --upgrade \
     pip wheel setuptools uv \
-    pysocks "requests[socks]" "httpx[socks]" pyyaml pydantic
+    pysocks "requests[socks]" "httpx[socks]" pyyaml pydantic pydotenv
 
 RUN npm install -g npm@latest typescript ts-node @types/node zx vitest execa pnpm yarn && \
     rm -rf ~/.npm ~/.cache
@@ -48,16 +47,22 @@ RUN groupadd -g $user_gid appuser && \
 
 USER appuser
 WORKDIR /home/appuser
-RUN mkdir -p apps/bin workspace/configs workspace/logs \
+RUN mkdir -p apps workspace/configs workspace/logs \
     xdg/config xdg/cache xdg/share xdg/state \
     .local/lib/python3.14/site-packages
 
 COPY --chown=appuser:appuser copy_files/bash_aliases /home/appuser/.bash_aliases
-RUN echo -e "\nif [ -f ~/.bash_aliases ]; then . ~/.bash_aliases; fi" >> /home/appuser/.bash_profile
 
-RUN npm config set prefix ~/apps/npm
-# npm config set prefix ~/.local/npm
+RUN cat >> /home/appuser/.bash_profile <<'EOF'
+if [ -f "$HOME/.bash_aliases" ]; then
+    . "$HOME/.bash_aliases"
+fi
+EOF
+
+RUN npm config set prefix ~/.local/npm
 # npm config list -l
+
+ENV PATH=/home/appuser/.local/bin:/home/appuser/.local/npm/bin:$PATH
 
 #### 4. container
 ENV https_proxy="" \
@@ -70,5 +75,6 @@ VOLUME /home/appuser/workspace
 
 WORKDIR /home/appuser/workspace
 
-ENTRYPOINT [/opt/scripts/entrypoint.sh]
+#ENTRYPOINT ["/opt/scripts/entrypoint.sh"]
+ENTRYPOINT []
 CMD ["sleep", "infinity"]

@@ -1,7 +1,7 @@
 create_dirs:
 	mkdir -p data/apps data/workspace \
 	  data/xdg/config data/xdg/cache data/xdg/share data/xdg/state \
-	  data/gemini 
+	  data/gemini data/codex
 
 docker_build:
 	docker build --no-cache -f Containerfile \

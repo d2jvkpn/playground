@@ -21,6 +21,7 @@ version: 0.1.0
 - https://github.com/openclaw/clawhub
 - https://github.com/openclaw/skills
 
+
 2. structure
 - ~/.openclaw/skills/my_skill
 - ~/.openclaw/<workspace>/skills/my_skill
@@ -36,11 +37,25 @@ version: 0.1.0
       SKILL.md
 ```
 
-3. skills:
+3. crawhub skills
+install: crawhub --workdir ~/.openclaw install self-improving-agent
+
+items
 ```
-- name: serpapi
-  links
-  - https://www.skillsdirectory.com/skills/openclaw-serpapi-search
+- name: self-improving-agent
+  links:
+  - https://clawhub.ai/pskoett/self-improving-agent
+- name: ontology
+  links:
+  - https://clawhub.ai/oswalpalash/ontology
+- name: summarize
+  links:
+  - https://clawhub.ai/steipete/summarize
+- name: find-skills
+  links:
+  - https://clawhub.ai/JimLiuxinghai/find-skills
+- gog
+
 - name: QMD
   links:
   - https://clawhub.ai/steipete/qmd
@@ -50,27 +65,4 @@ version: 0.1.0
 - name: GOG
   links:
   - https://clawhub.ai/steipete/gog
-- name: CLI-Anything
-  links:
-  - https://github.com/HKUDS/CLI-Anything
-- name: himalaya
-  links:
-  - https://github.com/pimalaya/himalaya
-- name: OpenViking
-  links:
-  - https://github.com/volcengine/OpenViking
-- name: lightpanda
-  links:
-  - https://github.com/lightpanda-io/browser
-- name: autoresearch
-  links:
-  - https://github.com/karpathy/autoresearch
 ```
-
-4. crawhub skills
-- https://clawhub.ai/pskoett/self-improving-agent
-- https://clawhub.ai/oswalpalash/ontology
-- https://clawhub.ai/steipete/summarize
-- https://clawhub.ai/JimLiuxinghai/find-skills
-- gog
-- crawhub --workdir ~/.openclaw install self-improving-agent
