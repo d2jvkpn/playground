@@ -99,17 +99,7 @@ version: 0.1.0
 - https://github.com/yanhaidao/wecom
 
 #### ch03. Related
-1. linux
-- xdotool
-- pyautogui
-- gnome-screenshot
-
-2. locations
+1. locations
 - config: ~/.openclaw/openclaw.json
 - location: ~/.openclaw/skills/
 - workspace: ~/.openclaw/workspace/
-
-3. related repositories
-- ironclaw https://github.com/nearai/ironclaw
-- nanoclaw https://github.com/qwibitai/nanoclaw
-- CoPaw https://github.com/agentscope-ai/CoPaw

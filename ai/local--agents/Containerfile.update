@@ -4,8 +4,6 @@ USER appuser
 
 WORKDIR /home/appuser
 
-RUN mkdir -p apps/bin workspace/configs workspace/logs \
-    xdg/config xdg/cache xdg/share xdg/state \
-    .local/lib/python3.14/site-packages
+COPY --chown=appuser:appuser copy_files/bash_aliases /home/appuser/.bash_aliases
 
 WORKDIR /home/appuser/workspace
