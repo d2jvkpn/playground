@@ -5,71 +5,54 @@ ARG http_proxy
 ARG https_proxy
 ARG no_proxy
 
-ARG build_region
 ARG user_uid=1000
 ARG user_gid=1000
-
-ARG git_branch
-ARG git_commit_id
-ARG git_commit_time
+ARG build_region
 
 ENV http_proxy=$http_proxy \
     https_proxy=$https_proxy \
-    no_proxy=$no_proxy \
-    DEBIAN_FRONTEND=noninteractive
+    no_proxy=$no_proxy
 
-LABEL git_branch="$git_branch"
-LABEL git_commit_id="$git_commit_id"
-LABEL git_commit_time="$git_commit_time"
 LABEL maintainer="d2jvkpn"
 
 #### 2. installation
-#ADD copy_files/bin /opt/bin
-
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
     TZ=Asia/Shanghai \
-    XDG_CONFIG_HOME=/home/appuser/xdg/config \
-    XDG_CACHE_HOME=/home/appuser/xdg/cache \
-    XDG_DATA_HOME=/home/appuser/xdg/share \
-    XDG_STATE_HOME=/home/appuser/xdg/state \
-    PATH=/home/appuser/workspace/xdg/bin:/home/appuser/.local/venv/bin:/opt/bin:$PATH
+    DEBIAN_FRONTEND=noninteractive
 
 RUN apt update -y && \
     apt upgrade -y --no-install-recommends && \
-    apt install -y --no-install-recommends tzdata ca-certificates locales gosu file zip unzip && \
+    apt install -y --no-install-recommends tzdata locales ca-certificates gnupg gosu && \
     update-ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
 #### 3. build
 RUN groupadd -g $user_gid appuser && \
     useradd -m -s /bin/bash -u $user_uid -g $user_gid appuser
+
 USER appuser
-WORKDIR /home/appuser
-RUN mkdir -p xdg workspace
-RUN python3 -m venv .local/venv
+ENV PATH=/home/appuser/.local/bin:$PATH
 
 RUN if [ "$build_region" == "cn" ]; then \
         pip3 config set global.index-url 'https://pypi.tuna.tsinghua.edu.cn/simple'; \
         pip3 config set install.trusted-host 'pypi.tuna.tsinghua.edu.cn'; \
     fi
 
-RUN pip install --no-cache-dir --upgrade pip wheel setuptools
+RUN mkdir /home/appuser/app
+WORKDIR /home/appuser/app
 
-#RUN pip install --no-cache-dir gunicorn && \
-#    pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip wheel setuptools uv
 
 #### 4. container
 ENV http_proxy="" \
     https_proxy="" \
-    no_proxy="" \
-    DEBIAN_FRONTEND=""
+    no_proxy=""
 
-VOLUME /home/appuser/xdg
-VOLUME /home/appuser/workspace
-WORKDIR /home/appuser/workspace
-EXPOSE 8000
+VOLUME /home/appuser/app/configs
+VOLUME /home/appuser/app/data
+VOLUME /home/appuser/app/logs
+# EXPOSE 8000
 
-#ENTRYPOINT ["/opt/bin/entrypoint.sh"]
-#CMD ["gunicorn", "-w=4", "-b=0.0.0.0:5000", "main:app"]
+ENTRYPOINT []
 CMD ["sleep", "infinity"]

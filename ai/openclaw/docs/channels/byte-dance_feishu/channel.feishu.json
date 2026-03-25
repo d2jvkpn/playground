@@ -13,14 +13,20 @@
       "appSecret": "<APP_SECRET>",
       "connectionMode": "websocket",
       "domain": "feishu",
+      "dmPolicy": "allowlist | dmPolicy",
+      "allowFrom": [
+        "<USER_ID_IN_APP> example=ou_xxxx, url=https://open.feishu.cn/api-explorer/<APP_ID>"
+      ],
       "groupPolicy": "allowlist | disabled",
       "groupAllowFrom": [
         "<GROUP_ID> example=oc_xxxx, url=https://open.feishu.cn/api-explorer/<APP_ID>"
       ],
-      "dmPolicy": "allowlist | dmPolicy",
-      "allowFrom": [
-        "<USER_ID_IN_APP> example=ou_xxxx, url=https://open.feishu.cn/api-explorer/<APP_ID>"
-      ]
+      "groups": { // optional
+        "oc_xxxx": {
+          "requireMention": "false",
+          "allowFrom": ["ou_xxxx"], // optional, default: all
+        }
+      }
     }
   },
 

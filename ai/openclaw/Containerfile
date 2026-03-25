@@ -25,6 +25,7 @@ RUN if [ "$build_region" == "cn" ]; then \
 COPY --chown=appuser:appuser copy_files/scripts/. /opt/scripts/
 
 RUN npm install -g openclaw@latest clawhub && \
+    npm install -g wscat && \
     mkdir -p ~/.openclaw && \
     rm -rf ~/.npm ~/.cache
 

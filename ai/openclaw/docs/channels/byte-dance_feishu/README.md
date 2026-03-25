@@ -68,6 +68,7 @@ version: 0.1.0
 开通权限
 - contact:contact.base:readonly
 - im:message.group_msg
+- im:message.group_msg:get_as_user
 
 4. open.feishu.cn 事件与回调 https://open.feishu.cn/app/<APP_SECRET>/event
 - 配置事件/订阅方式: 使用长连接接收事件

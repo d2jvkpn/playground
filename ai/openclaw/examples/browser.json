@@ -1,0 +1,48 @@
+{
+  "browser": {
+    "enabled": true,
+    "defaultProfile": "openclaw",
+    "headless": true,
+    "noSandbox": true,
+    "profiles": {
+      "openclaw": {
+        "color": "#FF4500"
+      }
+    }
+  }
+}
+
+{
+  "browser": {
+    "enabled": true,
+    "defaultProfile": "remote-chromium",
+    "remoteCdpTimeoutMs": 3000,
+    "remoteCdpHandshakeTimeoutMs": 5000,
+    "ssrfPolicy": {
+      "dangerouslyAllowPrivateNetwork": true
+    },
+    "profiles": {
+      "remote-chromium": {
+        "attachOnly": true,
+        "cdpUrl": "http://172.17.0.1:9222",
+        "color": "#F97316"
+      }
+    }
+  }
+}
+
+
+{
+  "browser": {
+    "enabled": true,
+    "defaultProfile": "browserbase",
+    "remoteCdpTimeoutMs": 3000,
+    "remoteCdpHandshakeTimeoutMs": 5000,
+    "profiles": {
+      "browserbase": {
+        "cdpUrl": "wss://connect.browserbase.com?apiKey=<BROWSERBASE_API_KEY>",
+        "color": "#F97316"
+      }
+    }
+  }
+}

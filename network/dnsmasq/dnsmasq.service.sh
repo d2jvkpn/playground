@@ -39,6 +39,8 @@ EOF
 sudo dnsmasq --test
 sudo systemctl restart dnsmasq
 
+sudo journalctl -xeu dnsmasq.service
+
 ### 3. test
 dig @127.0.0.1 openclaw.home.arpa
 dig @8.8.8.8 openclaw.home.arpa
