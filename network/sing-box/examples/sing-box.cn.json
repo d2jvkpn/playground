@@ -80,6 +80,18 @@
     ],
     "rules": [
       {
+        "domain": [ "example.com" ],
+        "action": "route", "outbound": "direct"
+      },
+      {
+        "domain_suffix": [ ".lan", ".local", ".svc" ],
+        "action": "route", "outbound": "direct"
+      },
+      {
+        "ip_cidr": [ "192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12" ],
+        "action": "route", "outbound": "direct", "ip_is_private": true
+      },
+      {
         "rule_set": ["geosite-cn"],
         "outbound": "direct"
       }

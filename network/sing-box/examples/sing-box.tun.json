@@ -81,7 +81,7 @@
         "action": "route", "outbound": "direct"
       },
       {
-        "domain_suffix": [ ".corp.local", ".lan", ".local" ],
+        "domain_suffix": [ ".lan", ".local", ".svc" ],
         "action": "route", "outbound": "direct"
       },
       {
