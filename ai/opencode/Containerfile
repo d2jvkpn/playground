@@ -15,7 +15,7 @@ USER root
 COPY ./copy_files/scripts/. /opt/scripts
 
 ####
-ENV OPENCODE_SERVER_USERNAME="opencode"
+# ENV OPENCODE_SERVER_USERNAME="opencode"
 # CODEX_HOME=~/.codex
 # OPENCODE_CONFIG_DIR=~/.config/opencode
 # OPENCODE_SERVER_PASSWORD=""
@@ -35,8 +35,7 @@ RUN pip install --no-cache pyright
 
 ENV CLAUDE_CONFIG_DIR=/home/appuser/apps/claude
 
-RUN npm install -g \
-      opencode-ai@latest oh-my-opencode@latest \
+RUN npm install -g opencode-ai@latest oh-my-opencode@latest \
       @fission-ai/openspec@latest @openai/codex @google/gemini-cli && \
     npm install -g bash-language-server yaml-language-server markdownlint-cli && \
     rm -rf ~/.npm ~/.cache
@@ -49,6 +48,10 @@ RUN npm install -g \
 # curl -fsSL https://opencode.ai/install | bash
 # npx -y oh-my-opencode install
 # npm list -g --depth=0
+
+RUN npm config set prefix ~/apps/npm
+# npm config list -l
+# python3 -m venv ~/apps/venv
 
 ####
 ENV https_proxy="" \

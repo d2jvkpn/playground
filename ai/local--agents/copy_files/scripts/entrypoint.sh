@@ -1,16 +1,20 @@
-#!/bin/sh
-set -eu
+#!/usr/bin/env bash
+set -eu; _wd=$(pwd); _dir="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+_self="$(basename -- "$0")"
 
 
 if [[ $# -eq 0 ]]; then
-    if command -v bash >/dev/null 2>&1; then
-        exec bash
-    else
-        exec sh
-    fi
+    exec bash
 elif [[ "$1" == "bash" || "$1" == "sh" ]]; then
     exec "$@"
 else
-    # echo init....
+    for script in "${_dir}"/[0-9][0-9][0-9][0-9].*.sh; do
+        [ -e "$script" ] || continue
+        [ "$(basename -- "$script")" = "$_self" ] && continue
+
+        printf '==> running: %s\n' "$script"
+        "$script"
+    done
+
     exec "$@"
 fi

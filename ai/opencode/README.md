@@ -36,21 +36,16 @@ version: 0.1.0
 - auth file: data/xdg/share/opencode/auth.json
 
 3. plugins
-- link: https://github.com/code-yeongyu/oh-my-opencode
-- install_prompt: Install and configure oh-my-opencode by following the instructions here:
-https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads/master/docs/guide/installation.md
-- install_command: npx oh-my-opencode install
-
-- superpowers: https://github.com/obra/superpowers
-- playwright-mcp: https://github.com/microsoft/playwright-mcp
-- agent-browser: https://github.com/vercel-labs/agent-browser
-- chrome-devtools-mcp: https://github.com/ChromeDevTools/chrome-devtools-mcp
-
+- oh-my-opencode
+  - link: https://github.com/code-yeongyu/oh-my-opencode
+  - prompt: Install and configure oh-my-opencode by following the instructions here: https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads/master/docs/guide/installation.md
+  - install: npx -y oh-my-opencode@latest install
 
 #### ch02.
 1. commands
 ```
 opencode auth login
+opencode mcp list
 ```
 
 2. Language Server Protocol(LSP)

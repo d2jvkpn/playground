@@ -16,6 +16,7 @@ version: 0.1.0
 - https://www.skillsdirectory.com/
 - https://github.com/MiniMax-AI/skills
 - https://clawhub.ai
+- https://github.com/obra/superpowers
 
 2. skills
 - location: .opencode/skills/<name>/SKILL.md, ~/.config/opencode/skills/<name>/SKILL.md

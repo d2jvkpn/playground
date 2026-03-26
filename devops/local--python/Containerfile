@@ -1,4 +1,4 @@
-FROM python:3.14-trixie
+FROM python:3.14-slim-trixie
 
 #### 1. passing args
 ARG http_proxy
@@ -39,7 +39,7 @@ RUN if [ "$build_region" == "cn" ]; then \
         pip3 config set install.trusted-host 'pypi.tuna.tsinghua.edu.cn'; \
     fi
 
-RUN mkdir /home/appuser/app
+RUN mkdir -p /home/appuser/app/configs /home/appuser/app/data /home/appuser/app/logs
 WORKDIR /home/appuser/app
 
 RUN pip install --no-cache-dir --upgrade pip wheel setuptools uv
