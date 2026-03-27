@@ -1,6 +1,6 @@
 create_dirs:
 	mkdir -p data/apps data/workspace \
-	  data/xdg/config data/xdg/cache data/xdg/share data/xdg/state \
+	  data/config data/cache data/share data/state \
 	  data/gemini data/codex
 
 docker_build:

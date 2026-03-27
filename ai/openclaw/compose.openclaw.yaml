@@ -30,16 +30,13 @@ services:
     ports: [127.0.0.1:18789:18789]
     user: appuser:appuser
     volumes:
-    - ./data/xdg:/home/appuser/xdg
-    - ./data/xdg/config:/home/appuser/.config
-    - ./data/xdg/cache:/home/appuser/.cache
-    - ./data/xdg/share:/home/appuser/.local/share
-    - ./data/xdg/state:/home/appuser/.local/state
+    - ./data/config:/home/appuser/.config
+    - ./data/cache:/home/appuser/.cache
+    - ./data/share:/home/appuser/.local/share
+    - ./data/state:/home/appuser/.local/state
     - ./data/apps:/home/appuser/apps
     - ./data/workspace:/home/appuser/workspace
 
-    - ./configs:/home/appuser/workspace/configs:ro
-    - ./logs:/home/appuser/workspace/logs
     - ./data/openclaw:/home/appuser/.openclaw
     - ./logs:/tmp/openclaw
     - ./data/site-packages:/home/appuser/.local/lib/python3.14/site-packages

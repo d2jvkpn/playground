@@ -38,7 +38,7 @@ RUN npm install -g openclaw@latest clawhub && \
 # npm install -g agent-browser
 # agent-browser install
 
-RUN npm config set prefix ~/apps/npm
+# npm config set prefix ~/apps/npm
 # npm config list -l
 # python3 -m venv ~/apps/venv
 

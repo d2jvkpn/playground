@@ -33,12 +33,12 @@ RUN if [ "$build_region" == "cn" ]; then \
 ####
 RUN pip install --no-cache pyright
 
-ENV CLAUDE_CONFIG_DIR=/home/appuser/apps/claude
-
 RUN npm install -g opencode-ai@latest oh-my-opencode@latest \
       @fission-ai/openspec@latest @openai/codex @google/gemini-cli && \
     npm install -g bash-language-server yaml-language-server markdownlint-cli && \
     rm -rf ~/.npm ~/.cache
+
+RUN mkdir -p .gemini .codex
 
 # opencode --version | awk '{print "opencode: "$1}'
 # openspec --version | awk '{print "openspec: "$1}'
@@ -47,24 +47,22 @@ RUN npm install -g opencode-ai@latest oh-my-opencode@latest \
 
 # curl -fsSL https://opencode.ai/install | bash
 # npx -y oh-my-opencode install
-# npm list -g --depth=0
-
-RUN npm config set prefix ~/apps/npm
-# npm config list -l
-# python3 -m venv ~/apps/venv
 
 ####
 ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
 
-VOLUME /home/appuser/apps
+VOLUME /home/appuser/.gemini
+VOLUME /home/appuser/.codex
+
 WORKDIR /home/appuser/workspace
 
 # webui: 4096, auth_callback: 1455
 EXPOSE 4096
 
 ENTRYPOINT []
+
 # opencode webui
 CMD ["opencode", "web", "--hostname=0.0.0.0", "--port=4096"]
 # --cors http://localhost:4096 --cors https://app.example.com

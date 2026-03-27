@@ -1,18 +1,5 @@
 # path: ~/.bash_aliases
 
-# $HOME/.config
-export XDG_CONFIG_HOME=$HOME/xdg/config
-
-# $HOME/.cache
-export XDG_CACHE_HOME=$HOME/xdg/cache
-
-# $HOME/.local/share
-export XDG_DATA_HOME=$HOME/xdg/share
-
-# $HOME/.local/state
-export XDG_STATE_HOME=$HOME/xdg/state
-
-
 for d in "$HOME/.local/bin" "$HOME/apps/bin"; do
     if [ ! -d "$d" ]; then
         continue

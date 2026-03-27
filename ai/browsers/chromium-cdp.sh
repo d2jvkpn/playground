@@ -106,7 +106,6 @@ curl http://172.17.0.1:9222/json/version
 
 curl -X PUT "http://127.0.0.1:9222/json/new?https://www.baidu.com"
 
-
 #### docker
 exit
 docker run -d \
