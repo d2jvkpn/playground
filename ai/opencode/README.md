@@ -34,18 +34,28 @@ version: 0.1.0
 - config file: data/xdg/config/opencode/opencode.json
 - data dir: data/xdg/share/opencode
 - auth file: data/xdg/share/opencode/auth.json
+- global skills: ~/.config/opencode/skills/<name>/SKILL.md
+- project skills: .agents/skills/<name>/SKILL.md or .opencode/skills/<name>/SKILL.md
+  
 
 3. plugins
 - oh-my-opencode
   - link: https://github.com/code-yeongyu/oh-my-opencode
   - prompt: Install and configure oh-my-opencode by following the instructions here: https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads/master/docs/guide/installation.md
   - install: npx -y oh-my-opencode@latest install
+- superpowers
+  - link: https://github.com/obra/superpowers/blob/main/docs/README.opencode.md
+- supermemory
+  - link: https://github.com/supermemoryai/opencode-supermemory
 
 #### ch02.
 1. commands
 ```
 opencode auth login
 opencode mcp list
+opencode mcp auth <server-name>
+opencode mcp logout <server-name>
+opencode mcp debug <server-name>
 ```
 
 2. Language Server Protocol(LSP)
