@@ -10,16 +10,15 @@ services:
     user: "${USER_UID}:${USER_GID}"
     container_name: filebrowser
     ports: ["${HTTP_Port}:${HTTP_Port}"]
-    environment: [TZ=Asia/Shanghai]
+    environment:
+      TZ: Asia/Shanghai
+      USERNAME: filebrowser
+      PASSWORD: filebrowser
     volumes:
     - /etc/timezone:/etc/timezone:ro
     - /etc/localtime:/etc/localtime:ro
-    - ./configs/:/app/configs:ro
-    - ./logs/:/app/logs/
-    - ./data/:/app/data/
+    - ./configs:/app/configs:ro
+    - ./logs:/app/logs/
     - ./data/filebrowser:/app/data/filebrowser
     command:
     - --config=/app/configs/filebrowser.json
-
-# networks:
-#   net: { name: "filebrowser", driver: "bridge", external: false }

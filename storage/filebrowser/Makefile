@@ -1,5 +1,5 @@
 up:
-	bash docker_deploy.sh
+	bash compose.sh
 
 update:
 	docker-compose pull

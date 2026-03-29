@@ -41,7 +41,7 @@ services:
     - ./data/workspace:/home/appuser/workspace
 
     - ./data/openclaw:/home/appuser/.openclaw
-    - ./logs:/tmp/openclaw
+    - ./data/workspace/logs:/tmp/openclaw
     - ./data/site-packages:/home/appuser/.local/lib/python3.14/site-packages
     environment:
       TZ: Asia/Shanghai

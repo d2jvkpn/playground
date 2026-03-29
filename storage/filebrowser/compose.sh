@@ -1,11 +1,10 @@
 #!/bin/bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 HTTP_Port=${1:-3020}
 
 #### 1.
-mkdir -p configs logs data/filebrowser
+mkdir -p configs logs data/filebrowser/storage
 
 [ -s configs/filebrowser.json ] || \
 cat > configs/filebrowser.json <<EOF
@@ -14,19 +13,19 @@ cat > configs/filebrowser.json <<EOF
   "baseURL": "",
   "address": "",
   "log": "/app/logs/filebrowser.log",
-  "database": "/app/data/filebrowser.db",
-  "root": "/app/data/filebrowser"
+  "database": "/app/data/filebrowser/filebrowser.db",
+  "root": "/app/data/filebrowser/storage"
 }
 EOF
 
 #### 2.
 export HTTP_Port=$HTTP_Port USER_UID=$(id -u) USER_GID=$(id -g)
 
-envsubst < compose.template.yaml > compose.yaml
+envsubst < compose.filebrowser.yaml > compose.yaml
 
 #### 3.
-docker-compose pull
-docker-compose up -d
+docker compose pull
+docker compose up -d
 
 exit
 

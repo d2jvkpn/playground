@@ -2,6 +2,12 @@
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
+OPENCLAW_HOME=${OPENCLAW_HOEM:-$HOME/.openclaw}
+
+if [ -f  "$OPENCLAW_HOME/openclaw.json" ]; then
+    exit 0
+fi
+
 openclaw setup
 openclaw config set gateway.mode local
 openclaw config set gateway.bind lan
