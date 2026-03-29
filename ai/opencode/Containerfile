@@ -31,10 +31,16 @@ RUN if [ "$build_region" == "cn" ]; then \
     fi
 
 ####
-# RUN pip install --no-cache pyright
+#RUN pip install --no-cache pyright
 
-RUN npm install -g opencode-ai@latest oh-my-opencode@latest \
-      @fission-ai/openspec@latest @openai/codex @google/gemini-cli && \
+#RUN npm install -g opencode-ai@latest
+RUN mkdir -p ~/.local/bin && \
+    curl -fsSL https://opencode.ai/install | bash && \
+    mv ~/.opencode/bin/opencode ~/.local/bin/ && \
+    rm -r ~/.opencode
+
+RUN npm install -g oh-my-opencode@latest && \
+    npm install -g @fission-ai/openspec@latest @openai/codex @google/gemini-cli && \
     npm install -g markdownlint-cli bash-language-server yaml-language-server \
       pyright vscode-langservers-extracted typescript typescript-language-server && \
     rm -rf ~/.npm ~/.cache
@@ -45,9 +51,8 @@ RUN mkdir -p .cache .gemini .codex
 # openspec --version | awk '{print "openspec: "$1}'
 # codex --version | awk '{print "codex: "$2}'
 # gemini --version | awk '{print "gemini-cli: "$1}'
-
 # curl -fsSL https://opencode.ai/install | bash
-# npx -y oh-my-opencode install
+# npx -y oh-my-opencode install --no-tui --claude=no --openai=no --gemini=no --copilot=no
 
 ####
 ENV https_proxy="" \
