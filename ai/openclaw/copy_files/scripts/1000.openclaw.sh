@@ -8,6 +8,8 @@ if [ -f  "$OPENCLAW_HOME/openclaw.json" ]; then
     exit 0
 fi
 
+printf '[%s] running: %s\n' "$(date +%FT%T%:z)" "$0"
+
 openclaw setup
 openclaw config set gateway.mode local
 openclaw config set gateway.bind lan

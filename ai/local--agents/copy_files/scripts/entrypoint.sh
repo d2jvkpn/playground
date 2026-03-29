@@ -12,7 +12,7 @@ else
         [ -e "$script" ] || continue
         [ "$(basename -- "$script")" = "$_self" ] && continue
 
-        printf '==> running: %s\n' "$script"
+        # printf '==> running: %s\n' "$script"
         "$script"
     done
 
