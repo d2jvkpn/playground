@@ -22,7 +22,7 @@ ENV LANG=C.UTF-8 \
 
 RUN /opt/scripts/apt_install.sh tzdata locales ca-certificates gnupg gosu \
       python3 python3-venv python3-pip python3-dev \
-      file tree less zip unzip uuid jq ripgrep vim git wget curl \
+      file tree less zip unzip uuid jq ripgrep vim git wget curl xxd \
       mtr netcat-openbsd iproute2 lsof iptables bind9-dnsutils \
       supervisor openvpn wireguard-tools && \
     update-ca-certificates && \
@@ -33,9 +33,8 @@ RUN tag_name=$(curl -fsSL https://api.github.com/repos/mikefarah/yq/releases/lat
     curl -fL https://github.com/mikefarah/yq/releases/download/$tag_name/yq_linux_amd64 -o /usr/local/bin/yq && \
     chmod a+x /usr/local/bin/yq
 
-RUN pip install --no-cache-dir --upgrade pip wheel setuptools uv
-
-RUN pip install --no-cache-dir --upgrade \
+RUN pip install --no-cache-dir --upgrade pip wheel setuptools uv && \
+    pip install --no-cache-dir --upgrade \
       pysocks "requests[socks]" "httpx[socks]" pyyaml pydantic pydotenv
 
 RUN npm install -g npm@latest && \
@@ -53,24 +52,24 @@ WORKDIR /home/appuser
 COPY --chown=appuser:appuser copy_files/bash_aliases /home/appuser/.bash_aliases
 COPY --chown=appuser:appuser copy_files/bash_profile /home/appuser/.bash_profile
 
-ENV PATH=/home/appuser/.local/bin:/home/appuser/.local/npm/bin:$PATH
-
-RUN mkdir -p apps workspace .config .cache .local/share .local/state
-RUN npm config set prefix ~/.local/npm
-# npm config list -l
-# python3 -m venv ~/apps/venv
-# npm config list -l
-
 #### 4. container
 ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
 
-VOLUME /home/appuser/.cache
-VOLUME /home/appuser/.config
-VOLUME /home/appuser/.local/share
-VOLUME /home/appuser/.local/state
+RUN npm config set prefix ~/.local/npm
+ENV PATH=/home/appuser/.local/bin:/home/appuser/.local/npm/bin:$PATH
 
+#RUN mkdir -p .config .cache .local/share .local/state
+# npm config list -l
+# python3 -m venv ~/apps/venv
+
+#VOLUME /home/appuser/.cache
+#VOLUME /home/appuser/.config
+#VOLUME /home/appuser/.local/share
+#VOLUME /home/appuser/.local/state
+
+RUN mkdir -p apps workspace
 VOLUME /home/appuser/apps
 VOLUME /home/appuser/workspace
 

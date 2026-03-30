@@ -29,31 +29,54 @@ version: 0.1.0
 - Master OpenCode in 28 minutes
   https://www.youtube.com/watch?v=WOOzCHaQipU
 
-### ch02.
-items:
-- name: Winsurf
-  tags: [ide]
-- name: Cursor
-  links:
-  - https://cursor.com
-- name: Kiro
-  tags: [vide]
-  app: /usr/share/applications/kiro.desktop
-- name: Claude Code
-- name: OpenAI Codex CLI
-- name: Crush
-  links:
-  - https://github.com/charmbracelet/crush
+#### ch02.
+1. Vibe-Coding
+2. Prompt-driven Development
+3. Spec-driven development (SDD)
+4. Test-driven AI Development
+5. Scaffold-driven Development
+6. Agent-driven Development
+7. Model-driven Development
+8. Contract + Agent Hybrid
+
+9. Planning
+10. Generate Spec docs
+11. Writing codes
+12. Check
+13. Test
+
+#### ch03. cli
+1. Claude Code
+2. OpenAI Codex CLI
+3. Crush
+- https://github.com/charmbracelet/crush
+4. Gemini CLI
+5. OpenSpec
+- https://github.com/Fission-AI/OpenSpec
+
+#### ch04. IDE
+1. Winsurf
+2. Cursor
+- https://cursor.com
+3. Zed
+- https://zed.dev
+- https://github.com/zed-industries/zed
+4. Kiro
+- app: /usr/share/applications/kiro.desktop
+5. cline
+- https://github.com/cline/cline/releases
+6. continue
+- https://github.com/continuedev/continue/releases
+
+#### ch05. web
+1. vibe-kanban
+- https://www.vibekanban.com
+- https://github.com/BloopAI/vibe-kanban
+- https://zhuanlan.zhihu.com/p/2000309101670987769
+- https://vibekanban.com/docs/agents/opencode
+
+#### ch06.
 - name: Lovable
-- name: z.ai
-- name: vibe-kanban
-  tags: [webui]
-  links:
-  - https://www.vibekanban.com
-  - https://github.com/BloopAI/vibe-kanban
-  - https://zhuanlan.zhihu.com/p/2000309101670987769
-  - https://vibekanban.com/docs/agents/opencode
-- name: Gemini CLI
 - name: Comate
 - name: Qoder
 - name: Antigravity
@@ -65,11 +88,6 @@ items:
 - name: CodeKanban
   links:
   - https://github.com/fy0/CodeKanban
-- name: cline
-- name: OpenSpec
-  links:
-  - https://github.com/Fission-AI/OpenSpec
-- name: Windsurf
 - name: OpenHands
   links:
   - https://github.com/OpenHands/OpenHands
@@ -79,24 +97,3 @@ items:
 - name: SWE-agent
   links:
   - https://github.com/SWE-agent/SWE-agent
-
-- https://github.com/BloopAI/vibe-kanban
-
-
-
-#### ch03.
-1. Vibe-Coding
-2. Prompt-driven Development
-3. Spec-driven development (SDD)
-4. Test-driven AI Development
-5. Scaffold-driven Development
-6. Agent-driven Development
-7. Model-driven Development
-8. Contract + Agent Hybrid
-
-#### ch04.
-1. Planning
-2. Generate Spec docs
-3. Writing codes
-4. Check
-5. Test

@@ -39,8 +39,8 @@ version: 0.1.0
   
 
 3. plugins
-- oh-my-opencode
-  - link: https://github.com/code-yeongyu/oh-my-opencode
+- oh-my-opencode, oh-my-openagent
+  - link: https://github.com/code-yeongyu/oh-my-opencode, https://github.com/code-yeongyu/oh-my-openagent
   - prompt: Install and configure oh-my-opencode by following the instructions here: https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads/master/docs/guide/installation.md
   - install: npx -y oh-my-opencode@latest install
 - superpowers

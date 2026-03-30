@@ -12,7 +12,7 @@ docker_build:
 	  --build-arg user_uid=$(user_uid) \
 	  --build-arg https_proxy="http://127.0.0.1:1080" \
 	  --build-arg http_proxy="http://127.0.0.1:1080" \
-	  -t local/agents:24-trixie ./
+	  -t local/pyjs:trixie ./
 
 docker_update:
 	docker build --no-cache -f data/Containerfile.update \
@@ -21,4 +21,4 @@ docker_update:
 	  --build-arg user_uid=$(user_uid) \
 	  --build-arg https_proxy="http://127.0.0.1:1080" \
 	  --build-arg http_proxy="http://127.0.0.1:1080" \
-	  -t local/agents:24-trixie ./
+	  -t local/pyjs:trixie ./

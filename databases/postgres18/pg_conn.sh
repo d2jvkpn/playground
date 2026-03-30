@@ -50,3 +50,10 @@ choices:
 ## Usage
 - psql shell: pg_conn.sh postgres
 - psql execute: pg_conn.sh postgres -t -A -c "select current_database();"
+
+##
+```
+create role hello with encrypted password 'world';
+alter role hello with login;
+create database hello with owner = hello;
+```

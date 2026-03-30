@@ -1,4 +1,4 @@
-FROM local/agents:24-trixie
+FROM local/pyjs:trixie
 
 ####
 ARG http_proxy
@@ -20,6 +20,11 @@ COPY ./copy_files/scripts/. /opt/scripts
 # OPENCODE_CONFIG_DIR=~/.config/opencode
 # OPENCODE_SERVER_PASSWORD=""
 
+RUN /opt/scripts/apt_install.sh dos2unix bash-completion
+
+RUN pip install --no-cache-dir --upgrade python-docx openpyxl python-pptx pandas && \
+    pip install --no-cache-dir --upgrade pypdf pdfplumber pymupdf
+
 USER appuser
 WORKDIR /home/appuser
 
@@ -32,20 +37,23 @@ RUN if [ "$build_region" == "cn" ]; then \
 
 ####
 #RUN pip install --no-cache pyright
+#RUN npm install -g opencode-ai@latest oh-my-opencode@latest
 
-#RUN npm install -g opencode-ai@latest
 RUN mkdir -p ~/.local/bin && \
     curl -fsSL https://opencode.ai/install | bash && \
     mv ~/.opencode/bin/opencode ~/.local/bin/ && \
     rm -r ~/.opencode
 
-RUN npm install -g oh-my-opencode@latest && \
+RUN npm install -g npm i oh-my-openagent  && \
     npm install -g @fission-ai/openspec@latest @openai/codex @google/gemini-cli && \
-    npm install -g markdownlint-cli bash-language-server yaml-language-server \
-      pyright vscode-langservers-extracted typescript typescript-language-server && \
     rm -rf ~/.npm ~/.cache
 
-RUN mkdir -p .cache .gemini .codex
+RUN npm install -g markdownlint-cli bash-language-server yaml-language-server \
+      pyright vscode-langservers-extracted typescript typescript-language-server \
+      @vue/language-server eslint prettier prettier-plugin-tailwindcss && \
+    rm -rf ~/.npm ~/.cache
+
+RUN mkdir -p .gemini .codex
 
 # opencode --version | awk '{print "opencode: "$1}'
 # openspec --version | awk '{print "openspec: "$1}'
@@ -59,8 +67,8 @@ ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
 
-VOLUME /home/appuser/.gemini
-VOLUME /home/appuser/.codex
+#VOLUME /home/appuser/.gemini
+#VOLUME /home/appuser/.codex
 
 WORKDIR /home/appuser/workspace
 

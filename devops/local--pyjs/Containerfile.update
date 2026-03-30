@@ -1,4 +1,4 @@
-FROM local/agents:24-trixie
+FROM local/pyjs:trixie
 
 USER appuser
 

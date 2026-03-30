@@ -1,4 +1,4 @@
-FROM local/agents:24-trixie
+FROM local/pyjs:trixie
 
 ####
 ARG http_proxy
@@ -47,7 +47,7 @@ ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
 
-VOLUME /home/appuser/.openclaw
+#VOLUME /home/appuser/.openclaw
 WORKDIR /home/appuser/workspace
 
 # webui: 18789, callback: 1455

@@ -25,3 +25,4 @@ version: 0.1.0
 - docs: pypdf, odfpy, ebooklib, beautifulsoup4
 - langchain, langchain-text-splitters, langchain-community
 - format: "Markdown + metadata JSON"
+- https://github.com/opendataloader-project/opendataloader-pdf

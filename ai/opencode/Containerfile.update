@@ -1,5 +1,15 @@
 FROM local/opencode:latest
 
+####
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
+
+ENV http_proxy=$http_proxy \
+    https_proxy=$https_proxy \
+    no_proxy=$no_proxy
+
+####
 USER root
 RUN apt_install.sh
 
@@ -10,3 +20,8 @@ WORKDIR /home/appuser
 RUN npm update -g opencode-ai@latest
 
 WORKDIR /home/appuser/workspace
+
+####
+ENV https_proxy="" \
+    http_proxy="" \
+    no_proxy=""
