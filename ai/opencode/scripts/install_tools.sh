@@ -12,5 +12,7 @@ pip install python-docx openpyxl python-pptx pandas
 # read pdf
 pip install pypdf pdfplumber pymupdf
 
-# crush
-npm install -g @charmland/crush
+# tools: CODEX_HOME=~/.codex
+npm install -g @charmland/crush @fission-ai/openspec@latest
+
+npm install -g @openai/codex @google/gemini-cli

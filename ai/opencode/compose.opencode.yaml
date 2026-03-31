@@ -16,8 +16,6 @@ services:
 
     - ./data/apps:/home/appuser/apps
     - ./data/workspace:/home/appuser/workspace
-    - ./data/gemini:/home/appuser/.gemini
-    - ./data/codex:/home/appuser/.codex
     environment:
       TZ: Asia/Shanghai
       # https_proxy: http://127.0.0.1:1080

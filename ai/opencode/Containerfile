@@ -15,8 +15,7 @@ USER root
 COPY ./copy_files/scripts/. /opt/scripts
 
 ####
-# ENV OPENCODE_SERVER_USERNAME="opencode"
-# CODEX_HOME=~/.codex
+# OPENCODE_SERVER_USERNAME="opencode"
 # OPENCODE_CONFIG_DIR=~/.config/opencode
 # OPENCODE_SERVER_PASSWORD=""
 
@@ -44,16 +43,13 @@ RUN mkdir -p ~/.local/bin && \
     mv ~/.opencode/bin/opencode ~/.local/bin/ && \
     rm -r ~/.opencode
 
-RUN npm install -g npm i oh-my-openagent  && \
-    npm install -g @fission-ai/openspec@latest @openai/codex @google/gemini-cli && \
+RUN npm install -g oh-my-opencode-linux-x64@latest && \
     rm -rf ~/.npm ~/.cache
 
 RUN npm install -g markdownlint-cli bash-language-server yaml-language-server \
       pyright vscode-langservers-extracted typescript typescript-language-server \
       @vue/language-server eslint prettier prettier-plugin-tailwindcss && \
     rm -rf ~/.npm ~/.cache
-
-RUN mkdir -p .gemini .codex
 
 # opencode --version | awk '{print "opencode: "$1}'
 # openspec --version | awk '{print "openspec: "$1}'
@@ -66,9 +62,6 @@ RUN mkdir -p .gemini .codex
 ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
-
-#VOLUME /home/appuser/.gemini
-#VOLUME /home/appuser/.codex
 
 WORKDIR /home/appuser/workspace
 
