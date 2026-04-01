@@ -22,3 +22,9 @@ docker_update:
 
 shell:
 	docker exec -it -u appuser -w /home/appuser/.openclaw openclaw bash
+
+up:
+	docker compose up -d
+
+down:
+	docker compose down

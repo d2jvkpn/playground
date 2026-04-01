@@ -2,8 +2,8 @@ user_gid ?= 1000
 user_uid ?= 1000
 
 create_dirs:
-	mkdir -p configs logs data/apps data/workspace data/site-packages \
-	  data/xdg/config data/xdg/cache data/xdg/share data/xdg/state
+	mkdir -p data/apps data/workspace data/site-packages \
+	  data/config datacache data/share data/state
 
 docker_build:
 	docker build --no-cache -f Containerfile \

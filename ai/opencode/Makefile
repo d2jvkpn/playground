@@ -23,3 +23,9 @@ docker_update:
 
 shell:
 	docker exec --it opencode bash
+
+up:
+	docker compose up -d
+
+down:
+	docker compose down

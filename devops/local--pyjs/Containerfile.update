@@ -1,9 +1,9 @@
 FROM local/pyjs:trixie
 
+USER root
+
+RUN /opt/scripts/apt_install.sh
+
 USER appuser
-
-WORKDIR /home/appuser
-
-COPY --chown=appuser:appuser copy_files/bash_aliases /home/appuser/.bash_aliases
 
 WORKDIR /home/appuser/workspace
