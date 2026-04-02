@@ -56,4 +56,10 @@ choices:
 create role hello with encrypted password 'world';
 alter role hello with login;
 create database hello with owner = hello;
+
+ALTER ROLE postgres WITH PASSWORD 'example_new_password';
+```
+
+```
+psql -U <username> -d <databasename> -h <ip> -f data/import.sql
 ```

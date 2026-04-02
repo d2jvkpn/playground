@@ -7,7 +7,7 @@ networks:
 services:
   postgres:
     image: local/postgres:18-trixie
-    container_name: postgres
+    container_name: postgres-18
     restart: always
     shm_size: 512m # df -h | grep shm
     healthcheck:
@@ -17,7 +17,9 @@ services:
       timeout: 3s
       retries: 3
     # network_mode: bridge
-    networks: ["net"]
+    networks:
+      net:
+        aliases: [postgres-18.svc]
     ports: ["127.0.0.1:5432:5432"]
     volumes:
     - ./data/postgres:/var/lib/postgresql/18/docker

@@ -19,10 +19,27 @@ COPY ./copy_files/scripts/. /opt/scripts
 # OPENCODE_CONFIG_DIR=~/.config/opencode
 # OPENCODE_SERVER_PASSWORD=""
 
-RUN /opt/scripts/apt_install.sh dos2unix bash-completion
+RUN /opt/scripts/apt_install.sh dos2unix bash-completion \
+      sqlite3 postgresql-client \
+      ripgrep fd-find bat sd && \
+      ln -s /usr/bin/batcat /usr/bin/bat
 
-RUN pip install --no-cache-dir --upgrade python-docx openpyxl python-pptx pandas && \
-    pip install --no-cache-dir --upgrade pypdf pdfplumber pymupdf
+RUN tag_name=$(curl -fsSL https://api.github.com/repos/Wilfred/difftastic/releases/latest | jq -r .tag_name) && \
+    curl -fL -o difft.tar.gz \
+      "https://github.com/Wilfred/difftastic/releases/download/$tag_name/difft-x86_64-unknown-linux-gnu.tar.gz" && \
+    tar -xf difft.tar.gz -C /usr/local/bin/ && \
+    rm -rf difft.tar.gz
+
+# https://github.com/eza-community/eza/releases/download/v0.23.4/eza_x86_64-unknown-linux-gnu.tar.gz
+RUN curl -fL -o eza.tar.gz "https://github.com/eza-community/eza/releases/latest/download/eza_x86_64-unknown-linux-gnu.tar.gz" && \
+    tar -xf eza.tar.gz -C /usr/local/bin/ && \
+    chmod a+x /usr/local/bin/eza && \
+    rm -f eza.tar.gz
+
+RUN pip install --no-cache-dir --upgrade \
+      python-docx python-pptx openpyxl pandas \
+      pypdf pdfplumber pymupdf \
+      ast-grep-cli
 
 USER appuser
 WORKDIR /home/appuser
