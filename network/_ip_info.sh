@@ -14,3 +14,4 @@ curl 4.ipw.cn
 curl 6.ipw.cn
 curl test.ipw.cn
 curl http://myip.ipip.net
+curl cip.cc

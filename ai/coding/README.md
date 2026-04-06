@@ -7,19 +7,7 @@ version: 0.1.0
 ```
 
 #### ch01. 
-1. OpenClaw
-- 🚀OpenClaw高级进阶技巧分享！模型精选策略+记忆系统优化经验+深度搜索集成+Gateway崩溃自动修复！Claude Code自动读日志修Bug重启验证
-  https://www.bilibili.com/video/BV1pefHB1ENJ
-- OpenClaw 史诗级升级！这波表现简直太逆天了！
-  https://www.bilibili.com/video/BV1PffVB4EKo
-- 实测Clawdbot彻底改变我的工作方式
-  https://www.youtube.com/watch?v=daXOXSSyudM
-- OpenClaw Tutorial for Beginners - Crash Course
-  https://www.youtube.com/watch?v=u4ydH-QvPeg
-- How To Use Clawdbot as a Beginner
-  https://www.youtube.com/watch?v=NhJxxv3f7lI
-
-2. OpenCode
+1. OpenCode
 - Opencode Is Probably The Best Coding Agent I've Ever Used
   https://www.youtube.com/watch?v=e9j2iEwJru0
 - OpenCode Tutorial for Beginners
@@ -45,7 +33,7 @@ version: 0.1.0
 12. Check
 13. Test
 
-#### ch03. cli
+#### ch03. Cli-Tools
 1. Claude Code
 2. OpenAI Codex CLI
 3. Crush
@@ -68,14 +56,14 @@ version: 0.1.0
 6. continue
 - https://github.com/continuedev/continue/releases
 
-#### ch05. web
+#### ch05. Web
 1. vibe-kanban
 - https://www.vibekanban.com
 - https://github.com/BloopAI/vibe-kanban
 - https://zhuanlan.zhihu.com/p/2000309101670987769
 - https://vibekanban.com/docs/agents/opencode
 
-#### ch06.
+#### ch06. Alternatives
 - name: Lovable
 - name: Comate
 - name: Qoder
@@ -97,3 +85,11 @@ version: 0.1.0
 - name: SWE-agent
   links:
   - https://github.com/SWE-agent/SWE-agent
+
+#### ch07. IDEs
+- vscodium
+  - https://vscodium.com/
+  - https://github.com/VSCodium/vscodium
+- code-server
+  - https://github.com/coder/code-server
+  - https://coder.com/

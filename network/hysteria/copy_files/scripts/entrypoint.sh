@@ -1,12 +1,9 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
+
 APPUSER_UID=${APPUSER_UID:-"0"}
 APPUSER_GID=${APPUSER_GID:-$APPUSER_UID}
-
-if [ -s "/opt/init.sh" ]; then
-    bash /opt/init.sh
-fi
 
 if [[ "$APPUSER_UID" == "0" ]]; then
     if [[ $# -eq 0 ]]; then
@@ -23,10 +20,10 @@ if ! getent group $APPUSER_GID >/dev/null 2>&1; then
 fi
 
 if ! getent passwd $APPUSER_UID >/dev/null 2>&1; then
-    adduser -u $APPUSER_UID -S -G appuser -h /home/appuser appuser #-H
+    adduser -u $APPUSER_UID -S -G appuser -H # -h /home/appuser appuser
 fi
 
-chown $APPUSER_UID:$APPUSER_GID /home/workspace /home/workspace/*
+chown $APPUSER_UID:$APPUSER_GID /app /app/*
 
 #exec gosu $APPUSER_UID:$APPUSER_GID "$@"
 if [[ $# -eq 0 ]]; then

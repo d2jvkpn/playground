@@ -1,0 +1,20 @@
+services:
+  sing-box-tun:
+    image: ghcr.io/sagernet/sing-box:latest
+    restart: always # unless-stopped
+    container_name: sing-box-tun
+    hostname: sing-box-tun
+    extra_hosts:
+      host.docker.internal: host-gateway
+    cap_add: [NET_ADMIN]
+    devices: [/dev/net/tun:/dev/net/tun]
+    #network_mode: bridge
+    network_mode: host
+    user: root:root
+    volumes:
+    - ./configs:/app/configs:ro
+    - ./logs:/app/logs
+    working_dir: /app
+    environment:
+      TZ: Asia/Shanghai
+    command: ["run", "-c=/app/configs/sing-box.tun.json"]

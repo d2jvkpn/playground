@@ -2,9 +2,9 @@
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `$dirname "$0"`)
 
 export DB_Port=${1:-3306} CONTAINER_Name=${2:-mysql}
-user=${user:-d2jvkpn}
+user=${user:-root}
 
-mkdir -p configs data/mysql data/temp
+mkdir -p configs data/mysql
 
 [ -s configs/mysql_root.password ] || \
   tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 32 | head -n1 > configs/mysql_root.password || true

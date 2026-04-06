@@ -1,4 +1,4 @@
-# Title
+# # OpenClaw: Skills
 ---
 ```meta
 date: 1970-01-01
@@ -22,7 +22,11 @@ version: 0.1.0
 - https://github.com/openclaw/skills
 
 2. installation
-- path: ~/.openclaw/skills, ~/.openclaw/<workspace>/skills
+- shared skills: ~/.openclaw/skills
+- workspace skills: ~/.openclaw/<workspace>/skills
+- user agent skills: ~/.agents/skills
+- workspace agent skills: ~/.openclaw/<workspace>/.agents/skills
+
 - openclaw skills list
   openclaw skills search find-skills
   openclaw skills install find-skills

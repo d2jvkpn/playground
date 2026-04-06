@@ -23,6 +23,17 @@ version: 0.1.0
 - How I Use Obsidian + Claude Code to Run My Life
   https://www.youtube.com/watch?v=6MBq1paspVU
 
+- 🚀OpenClaw高级进阶技巧分享！模型精选策略+记忆系统优化经验+深度搜索集成+Gateway崩溃自动修复！Claude Code自动读日志修Bug重启验证
+  https://www.bilibili.com/video/BV1pefHB1ENJ
+- OpenClaw 史诗级升级！这波表现简直太逆天了！
+  https://www.bilibili.com/video/BV1PffVB4EKo
+- 实测Clawdbot彻底改变我的工作方式
+  https://www.youtube.com/watch?v=daXOXSSyudM
+- OpenClaw Tutorial for Beginners - Crash Course
+  https://www.youtube.com/watch?v=u4ydH-QvPeg
+- How To Use Clawdbot as a Beginner
+  https://www.youtube.com/watch?v=NhJxxv3f7lI
+
 2. commands
 - npm install -g openclaw@latest
 - curl -fsSL https://openclaw.ai/install.sh | bash
@@ -64,21 +75,7 @@ version: 0.1.0
 - openclaw config get agents.defaults.models
 - openclaw config unset 'agents.defaults.models.custom-dashscope-aliyuncs-com/qwen-plus'
 
-2. set agents
-- openclaw agents list
-- openclaw agents add bot01 \
-  --workspace ~/.openclaw/bot01 \
-  --agent-dir ~/.openclaw/agents/bot01 \
-  --model qwen3.5-plus
-  # --bind [feishu | feishu:account]
-- openclaw agents set-identity --agent bot01 --name "bot01" --emoji 🤖
-- openclaw agents bindings
-- openclaw tui --agent bot01
-- openclaw agent --agent bot01 --message "测试" --deliver
-- openclaw agents bind --agent bot01 --bind telegram:supportbot
-- openclaw agents delete bot01
-
-3. commands
+2. commands
 - /help
 - /commands
 - /restart

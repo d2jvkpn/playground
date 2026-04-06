@@ -3,11 +3,16 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 OPENCLAW_HOME=${OPENCLAW_HOEM:-$HOME/.openclaw}
+NODE_COMPILE_CACHE=${NODE_COMPILE_CACHE:-$HOME/.openclaw/compile-cache}
+
+####
+mkdir -p $NODE_COMPILE_CACHE
 
 if [ -f  "$OPENCLAW_HOME/openclaw.json" ]; then
     exit 0
 fi
 
+####
 printf '[%s] running: %s\n' "$(date +%FT%T%:z)" "$0"
 
 openclaw setup

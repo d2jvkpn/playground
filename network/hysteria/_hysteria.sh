@@ -3,6 +3,7 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 exit
+# https://github.com/apernet/hysteria/releases/download/app%2Fv2.8.1/hysteria-linux-amd64
 wget -O hysteria https://github.com/apernet/hysteria/releases/latest/download/hysteria-linux-amd64
 chmod a+x hysteria
 

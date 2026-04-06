@@ -72,10 +72,12 @@
     "default_domain_resolver": "cloudflare",
     "rule_set": [
       {
-        "type": "remote",
-        "tag": "geosite-cn",
-        "format": "binary",
+        "type": "remote", "tag": "geosite-cn", "format": "binary",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs"
+      },
+      {
+        "type": "remote", "tag": "geoip-cn", "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs"
       }
     ],
     "rules": [
@@ -84,17 +86,15 @@
         "action": "route", "outbound": "direct"
       },
       {
-        "domain_suffix": [ ".lan", ".local", ".svc" ],
+        "domain_suffix": [ ".svc", ".lan", ".local", ".test", ".internal" ],
         "action": "route", "outbound": "direct"
       },
       {
         "ip_cidr": [ "192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12" ],
         "action": "route", "outbound": "direct", "ip_is_private": true
       },
-      {
-        "rule_set": ["geosite-cn"],
-        "outbound": "direct"
-      }
+      { "rule_set": ["geosite-cn"], "action": "route", "outbound": "direct" },
+      { "rule_set": ["geoip-cn"], "action": "route", "outbound": "direct" }
     ],
 
     "final": "urltest"

@@ -12,6 +12,7 @@ version: 0.1.0
 - https://github.com/SagerNet/sing-box
 - https://sekai.icu
 - https://sing-box.sagernet.org
+- https://sing-box.sagernet.org/configuration/dns/rule
 
 2. download
 ```

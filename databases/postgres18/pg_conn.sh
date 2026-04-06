@@ -53,13 +53,17 @@ choices:
 
 ##
 ```
-create role hello with encrypted password 'world';
-alter role hello with login;
-create database hello with owner = hello;
+create role <role> with encrypted password '<password>';
+alter role <role> with login;
+create database <db> with owner = <role>;
 
-ALTER ROLE postgres WITH PASSWORD 'example_new_password';
+ALTER ROLE <role> WITH PASSWORD '<password>';
 ```
 
 ```
-psql -U <username> -d <databasename> -h <ip> -f data/import.sql
+# pgpass format: ip:port:db:user:password
+# chmod 600 <pgpass_file>
+PGPASSFILE=<pgpass_file> psql -U <username> -d <db> -h <ip> -f data/import.sql
+
+PGPASSWORD='<password>' psql -U <username> -d <db> -h <ip> -f data/import.sql
 ```

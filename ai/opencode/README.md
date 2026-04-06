@@ -36,7 +36,7 @@ version: 0.1.0
 - auth file: data/xdg/share/opencode/auth.json
 - global skills: ~/.config/opencode/skills/<name>/SKILL.md
 - project skills: .agents/skills/<name>/SKILL.md or .opencode/skills/<name>/SKILL.md
-  
+- agents: ~/.config/opencode/agents, ./opencode/agents
 
 3. plugins
 - oh-my-opencode, oh-my-openagent

@@ -16,6 +16,7 @@ bash step03_cluster_up.sh
 
 2. k8s_tools
 - k9s: https://github.com/derailed/k9s
+- stern: https://github.com/stern/stern
 
 #### ch02. Explore
 ```bash

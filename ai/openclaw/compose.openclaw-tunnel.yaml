@@ -41,6 +41,7 @@ services:
     - ./data/workspace:/home/appuser/workspace
 
     - ./data/openclaw:/home/appuser/.openclaw
+    - ./data/agents:/home/appuser/.agents
     - ./data/workspace/logs:/tmp/openclaw
     - ./data/site-packages:/home/appuser/.local/lib/python3.14/site-packages
     environment:

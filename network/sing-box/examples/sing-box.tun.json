@@ -3,7 +3,7 @@
     "disabled": false,
     "level": "info",
     "timestamp": true,
-    "output": "/home/appuser/workspace/logs/sing-box.log"
+    "output": "/app/logs/sing-box.log"
   },
   "dns": {
     "servers": [
@@ -17,7 +17,7 @@
     {
       "type": "tun",
       "tag": "tun",
-      "interface_name": "sing-box-tun",
+      "interface_name": "sing-box",
       "address": ["10.250.0.1/30"],
       "auto_route": true,
       "strict_route": true,
@@ -75,19 +75,31 @@
   "route": {
     "default_domain_resolver": "cloudflare",
     "auto_detect_interface": true,
+    "rule_set": [
+      {
+        "type": "remote", "tag": "geosite-cn", "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs"
+      },
+      {
+        "type": "remote", "tag": "geoip-cn", "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs"
+      }
+    ],
     "rules": [
       {
-        "domain": [ "example.com" ],
+        "domain": [ "example.com", "localhost" ],
         "action": "route", "outbound": "direct"
       },
       {
-        "domain_suffix": [ ".lan", ".local", ".svc" ],
+        "domain_suffix": [ ".svc", ".lan", ".local", ".test", ".internal" ],
         "action": "route", "outbound": "direct"
       },
       {
-        "ip_cidr": [ "192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12" ],
+        "ip_cidr": [ "127.0.0.1", "192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12" ],
         "action": "route", "outbound": "direct", "ip_is_private": true
-      }
+      },
+      { "rule_set": ["geosite-cn"], "action": "route", "outbound": "direct" },
+      { "rule_set": ["geoip-cn"], "action": "route", "outbound": "direct" }
     ],
     "final": "urltest"
   }

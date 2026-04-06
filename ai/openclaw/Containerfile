@@ -10,6 +10,13 @@ ENV http_proxy=$http_proxy \
     no_proxy=$no_proxy
 
 ARG build_region
+ARG openclaw_version=latest
+
+####
+USER root
+
+COPY copy_files/scripts/. /opt/scripts/
+RUN bash /opt/scripts/install_tools.sh
 
 ####
 USER appuser
@@ -21,12 +28,12 @@ RUN if [ "$build_region" == "cn" ]; then \
     fi
 
 # ENV OPENCLAW_HOME=/home/appuser/.openclaw
+# ENV NODE_COMPILE_CACHE=/var/tmp/openclaw-compile-cache
+ENV NODE_COMPILE_CACHE=/home/appuser/.cache/openclaw/compile-cache \
+    OPENCLAW_NO_RESPAWN=1
 
-COPY --chown=appuser:appuser copy_files/scripts/. /opt/scripts/
-
-RUN npm install -g openclaw@latest clawhub && \
-    npm install -g wscat && \
-    mkdir -p ~/.openclaw && \
+RUN npm install -g "openclaw@$openclaw_version" clawhub wscat && \
+    mkdir -p ~/.openclaw ~/.agents && \
     rm -rf ~/.npm ~/.cache
 
 # npm install -g @tobilu/qmd
@@ -38,16 +45,13 @@ RUN npm install -g openclaw@latest clawhub && \
 # npm install -g agent-browser
 # agent-browser install
 
-# npm config set prefix ~/apps/npm
-# npm config list -l
-# python3 -m venv ~/apps/venv
-
 ####
 ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
 
 #VOLUME /home/appuser/.openclaw
+#VOLUME /home/appuser/.agents
 WORKDIR /home/appuser/workspace
 
 # webui: 18789, callback: 1455

@@ -6,8 +6,8 @@ services:
     network_mode: bridge
     ports: [443:443/udp] # alternatives: 8443, 2053, 2083, 2087, 2096
     volumes:
-    - ./configs:/home/workspace/configs
-    - ./logs:/home/workspace/logs
+    - ./configs:/app/configs
+    - ./logs:/app/logs
     environment:
       TZ: Asia/Shanghai
       APPUSER_UID: "1000"

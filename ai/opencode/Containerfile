@@ -1,6 +1,6 @@
 FROM local/pyjs:trixie
 
-####
+#### 1. parsing args
 ARG http_proxy
 ARG https_proxy
 ARG no_proxy
@@ -11,35 +11,16 @@ ENV http_proxy=$http_proxy \
 
 ARG build_region
 
+#### 2. root
 USER root
 COPY ./copy_files/scripts/. /opt/scripts
 
-####
+RUN bash /opt/scripts/apt_install.sh gh tmux
+
+#### 3. appuser
 # OPENCODE_SERVER_USERNAME="opencode"
 # OPENCODE_CONFIG_DIR=~/.config/opencode
 # OPENCODE_SERVER_PASSWORD=""
-
-RUN /opt/scripts/apt_install.sh dos2unix bash-completion \
-      sqlite3 postgresql-client \
-      ripgrep fd-find bat sd && \
-      ln -s /usr/bin/batcat /usr/bin/bat
-
-RUN tag_name=$(curl -fsSL https://api.github.com/repos/Wilfred/difftastic/releases/latest | jq -r .tag_name) && \
-    curl -fL -o difft.tar.gz \
-      "https://github.com/Wilfred/difftastic/releases/download/$tag_name/difft-x86_64-unknown-linux-gnu.tar.gz" && \
-    tar -xf difft.tar.gz -C /usr/local/bin/ && \
-    rm -rf difft.tar.gz
-
-# https://github.com/eza-community/eza/releases/download/v0.23.4/eza_x86_64-unknown-linux-gnu.tar.gz
-RUN curl -fL -o eza.tar.gz "https://github.com/eza-community/eza/releases/latest/download/eza_x86_64-unknown-linux-gnu.tar.gz" && \
-    tar -xf eza.tar.gz -C /usr/local/bin/ && \
-    chmod a+x /usr/local/bin/eza && \
-    rm -f eza.tar.gz
-
-RUN pip install --no-cache-dir --upgrade \
-      python-docx python-pptx openpyxl pandas \
-      pypdf pdfplumber pymupdf \
-      ast-grep-cli
 
 USER appuser
 WORKDIR /home/appuser
@@ -51,7 +32,7 @@ RUN if [ "$build_region" == "cn" ]; then \
         bash /opt/scripts/config_cn.sh npm; \
     fi
 
-####
+#### 3. installation
 #RUN pip install --no-cache pyright
 #RUN npm install -g opencode-ai@latest oh-my-opencode@latest
 
@@ -75,7 +56,7 @@ RUN npm install -g markdownlint-cli bash-language-server yaml-language-server \
 # curl -fsSL https://opencode.ai/install | bash
 # npx -y oh-my-opencode install --no-tui --claude=no --openai=no --gemini=no --copilot=no
 
-####
+#### 3. container
 ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""

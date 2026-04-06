@@ -11,7 +11,7 @@ ENV http_proxy=$http_proxy \
 ARG TARGET_OS=linux
 ARG TARGET_ARCH=amd64
 
-ADD entrypoint.sh _hysteria.sh /opt/
+COPY copy_files/scripts /opt/scripts
 
 RUN apk --no-cache update && \
     apk --no-cache upgrade && \
@@ -28,28 +28,19 @@ RUN apk --no-cache update && \
 
 # url="https://github.com/apernet/hysteria/releases/download/${HYSTERIA_VERSION}/${bin}";
 
-
 RUN url="https://github.com/apernet/hysteria/releases/latest/download/hysteria-linux-amd64"; \
     echo "Downloading: $url"; \
     mkdir -p /opt/bin && \
-    curl -fsSL "$url" -o /opt/bin/hysteria && \
-    chmod a+x /opt/bin/hysteria && \
-    /opt/bin/hysteria version
+    curl -fsSL "$url" -o /usr/local/bin/hysteria && \
+    chmod a+x /usr/local/bin/hysteria && \
+    hysteria version
 
-VOLUME /home/workspace/configs
-VOLUME /home/workspace/logs
+RUN mkdir -p /app/examples
+ADD examples/. /app/examples/
 
-ADD examples/supervisord.client.conf \
-    examples/supervisord.server.conf \
-    examples/hysteria.client.yaml \
-    examples/hysteria.server-0443.yaml \
-    examples/hysteria.server-8443.yaml \
-    /home/workspace/configs/
+WORKDIR /app
 
-WORKDIR /home/workspace
-
-ENV PATH=/opt/bin:$PATH \
-    http_proxy="" \
+ENV http_proxy="" \
     https_proxy="" \
     no_proxy="" \
     APPUSER_UID="0" \
@@ -59,6 +50,6 @@ EXPOSE 443/udp
 EXPOSE 1080/tcp
 EXPOSE 1081/tcp
 
-ENTRYPOINT ["/opt/entrypoint.sh"]
+ENTRYPOINT ["/opt/scripts/entrypoint.sh"]
 CMD ["supervisord", "-c", "configs/supervisord.server.conf"]
 #CMD ["supervisord", "-c", "configs/supervisord.client.conf"]
