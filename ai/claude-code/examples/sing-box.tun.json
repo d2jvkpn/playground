@@ -1,0 +1,110 @@
+{
+  "log": {
+    "disabled": false,
+    "level": "info",
+    "timestamp": true,
+    "output": "/home/appuser/workspace/logs/sing-box.log"
+  },
+  "dns": {
+    "servers": [
+      { "tag": "cloudflare", "type": "udp", "server": "1.1.1.1" },
+      { "tag": "google", "type": "udp", "server": "8.8.8.8" }
+    ],
+    "strategy": "prefer_ipv4",
+    "disable_cache": false,
+    "reverse_mapping": true
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "tag": "tun",
+      "interface_name": "sing-box",
+      "address": ["10.250.0.1/30", "fdfe:dcba:9876::1/126"],
+      "auto_route": true,
+      "auto_redirect": false,
+      "strict_route": true,
+      "exclude_interface": [],
+      "route_exclude_address": [ "172.16.0.0/12" ],
+      "stack": "system",
+      "mtu": 1500
+    }
+  ],
+  "outbounds": [
+    { "type": "direct", "tag": "direct" },
+    { "type": "block", "tag": "block" },
+    {
+      "type": "hysteria2",
+      "tag": "hysteria-0443",
+      "server": "____SERVER_IP____",
+      "server_port": 443,
+      "password": "____SERVER_PASSWORD____",
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "www.cloudflare.com"
+      }
+    },
+    {
+      "type": "hysteria2",
+      "tag": "hysteria-8443",
+      "server": "____SERVER_IP____",
+      "server_port": 8443,
+      "password": "____SERVER_PASSWORD____",
+      "tls": {
+        "enabled": true,
+        "insecure": true,
+        "server_name": "www.cloudflare.com"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "reality-0443",
+      "server": "____SERVER_IP____",
+      "server_port": 443,
+      "uuid": "____SERVER_UUID____",
+      "flow": "xtls-rprx-vision",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.microsoft.com",
+        "utls": { "enabled": true, "fingerprint": "chrome" },
+        "reality": {
+          "enabled": true,
+          "public_key": "____SERVER_PUBLIC_KEY____",
+          "short_id": "____CLIENT_ID____"
+        }
+      }
+    },
+    {
+      "type": "urltest",
+      "tag": "urltest",
+      "outbounds": [
+        "hysteria-0443",
+        "hysteria-8443",
+        "reality-0443"
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "30s",
+      "tolerance": 50
+    }
+  ],
+  "route": {
+    "default_domain_resolver": "cloudflare",
+    "auto_detect_interface": true,
+    "rules": [
+      { "protocol": "dns", "action": "hijack-dns" },
+      {
+        "domain": [ "example.com" ],
+        "action": "route", "outbound": "direct"
+      },
+      {
+        "domain_suffix": [ ".svc", ".lan", ".local", ".test", ".internal" ],
+        "action": "route", "outbound": "direct"
+      },
+      {
+        "ip_cidr": [ "127.0.0.1", "10.1.0.0/8" ],
+        "action": "route", "outbound": "direct", "ip_is_private": true
+      }
+    ],
+    "final": "urltest"
+  }
+}

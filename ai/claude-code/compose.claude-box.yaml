@@ -1,0 +1,37 @@
+services:
+  claude-code:
+    image: local/claude-code:latest
+    restart: always # unless-stopped
+    container_name: claude-code
+    hostname: claude-code
+    cap_add: [NET_ADMIN]
+    devices: [/dev/net/tun:/dev/net/tun]
+    extra_hosts:
+      host.docker.internal: host-gateway
+    network_mode: bridge
+    user: root:root
+    volumes:
+    - ./data/config:/home/appuser/.config
+    - ./data/cache:/home/appuser/.cache
+    - ./data/share:/home/appuser/.local/share
+    - ./data/state:/home/appuser/.local/state
+
+    - ./data/apps:/home/appuser/apps
+    - ./data/workspace:/home/appuser/workspace
+    working_dir: /home/appuser/workspace
+    environment:
+      TZ: Asia/Shanghai
+      CLAUDE_CODE_NO_FLICKER: "1"
+      DISABLE_AUTOUPDATER: "1"
+      DISABLE_INSTALLATION_CHECKS: "1"
+      DISABLE_LOGIN_COMMAND: "1"
+      DISABLE_LOGOUT_COMMAND: "1"
+      DISABLE_UPGRADE_COMMAND: "1"
+      # ANTHROPIC_BASE_URL: ""
+      https_proxy: http://127.0.0.1:1080
+      http_proxy: http://127.0.0.1:1080
+      no_proxy: ""
+      HTTPS_PROXY: http://127.0.0.1:1080
+      HTTP_PROXY: http://127.0.0.1:1080
+      NO_PROXY: ""
+    command: ["sing-box", "run", "-c=configs/sing-box.tun.json"]

@@ -1,0 +1,50 @@
+FROM local/pyjs:trixie
+
+####
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
+
+ENV http_proxy=$http_proxy \
+    https_proxy=$https_proxy \
+    no_proxy=$no_proxy
+
+####
+USER root
+
+COPY ./copy_files/scripts/. /opt/scripts
+RUN bash /opt/scripts/_install_tools.sh
+
+####
+USER appuser
+WORKDIR /home/appuser
+
+ADD --chown=appuser:appuser ./copy_files/vimrc .vimrc
+
+ENV CLAUDE_CONFIG_DIR=/home/appuser/.config/claude \
+    OTEL_EXPORTER_OTLP_ENDPOINT="" \
+    OTEL_METRICS_EXPORTER="" \
+    OTEL_LOGS_EXPORTER="" \
+    DISABLE_TELEMETRY=1 \
+    DISABLE_ERROR_REPORTING=1 \
+    DISABLE_FEEDBACK_COMMAND=1 \
+    CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=1 \
+    CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
+# default: ~/.claude.json, ~/.claude/{backups,cache,downloads}
+
+RUN curl -fsSL https://claude.ai/install.sh | bash && \
+    version=$(~/.local/bin/claude --version | awk '{print $1}') && \
+    mv ~/.local/share/claude/versions/$version ~/.local/bin/claude && \
+    rm -r ~/.local/share/claude
+
+####
+ENV https_proxy="" \
+    http_proxy="" \
+    no_proxy=""
+
+USER root
+
+WORKDIR /home/appuser/workspace
+
+ENTRYPOINT []
+CMD ["sing-box", "run", "-c=configs/sing-box.tun.json"]
