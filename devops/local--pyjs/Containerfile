@@ -20,14 +20,14 @@ COPY ./copy_files/scripts /opt/scripts
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8
 
-RUN /opt/scripts/apt_install.sh tzdata locales ca-certificates gnupg gosu \
+RUN bash /opt/scripts/install_nodejs.debian.sh && \
+    /opt/scripts/apt_install.sh tzdata locales ca-certificates gnupg \
       python3 python3-venv python3-pip python3-dev \
-      file tree less zip unzip uuid jq ripgrep vim git wget curl xxd \
+      zip unzip jq ripgrep vim git wget curl \
       mtr netcat-openbsd iproute2 lsof iptables bind9-dnsutils \
-      supervisor openvpn wireguard-tools && \
-    update-ca-certificates && \
-    bash /opt/scripts/install_nodejs.debian.sh && \
-    rm -rf /var/lib/apt/lists/*
+      supervisor gosu file tree less uuid xxd tmux gh && \
+    update-ca-certificates
+# openvpn wireguard-tools
 
 RUN tag_name=$(curl -fsSL https://api.github.com/repos/mikefarah/yq/releases/latest | jq -r .tag_name) && \
     curl -fL https://github.com/mikefarah/yq/releases/download/$tag_name/yq_linux_amd64 -o /usr/local/bin/yq && \
@@ -59,17 +59,16 @@ ENV https_proxy="" \
 
 RUN npm config set prefix ~/.local/npm
 ENV PATH=/home/appuser/.local/bin:/home/appuser/.local/npm/bin:$PATH
-
-#RUN mkdir -p .config .cache .local/share .local/state
 # npm config list -l
 # python3 -m venv ~/apps/venv
 
-#VOLUME /home/appuser/.cache
-#VOLUME /home/appuser/.config
-#VOLUME /home/appuser/.local/share
-#VOLUME /home/appuser/.local/state
+RUN mkdir -p .config .cache .local/share .local/state apps workspace
 
-RUN mkdir -p apps workspace
+VOLUME /home/appuser/.cache
+VOLUME /home/appuser/.config
+VOLUME /home/appuser/.local/share
+VOLUME /home/appuser/.local/state
+
 VOLUME /home/appuser/apps
 VOLUME /home/appuser/workspace
 

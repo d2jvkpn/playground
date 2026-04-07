@@ -16,7 +16,7 @@ ARG openclaw_version=latest
 USER root
 
 COPY copy_files/scripts/. /opt/scripts/
-RUN bash /opt/scripts/install_tools.sh
+RUN bash /opt/scripts/_install_tools.sh
 
 ####
 USER appuser
@@ -50,8 +50,11 @@ ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
 
-#VOLUME /home/appuser/.openclaw
-#VOLUME /home/appuser/.agents
+RUN mkdir -p .openclaw .agents
+
+VOLUME /home/appuser/.openclaw
+VOLUME /home/appuser/.agents
+
 WORKDIR /home/appuser/workspace
 
 # webui: 18789, callback: 1455
