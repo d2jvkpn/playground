@@ -40,7 +40,7 @@ tag_name=$(curl -fsSL https://api.github.com/repos/TomWright/dasel/releases/late
 curl -fL -o /usr/local/bin/dasel "https://github.com/TomWright/dasel/releases/download/$tag_name/dasel_linux_amd64"
 chmod a+x /usr/local/bin/dasel
 
-#?? gh, gitleaks, lazygit
+#?? gitleaks, lazygit
 
 ####
 pip install --no-cache-dir --upgrade \

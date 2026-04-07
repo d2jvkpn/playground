@@ -32,10 +32,7 @@ ENV CLAUDE_CONFIG_DIR=/home/appuser/.config/claude \
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
 # default: ~/.claude.json, ~/.claude/{backups,cache,downloads}
 
-RUN curl -fsSL https://claude.ai/install.sh | bash && \
-    version=$(~/.local/bin/claude --version | awk '{print $1}') && \
-    mv ~/.local/share/claude/versions/$version ~/.local/bin/claude && \
-    rm -r ~/.local/share/claude
+RUN bash /opt/scripts/_install_claude-code.sh
 
 ####
 ENV https_proxy="" \

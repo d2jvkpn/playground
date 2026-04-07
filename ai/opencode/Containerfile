@@ -15,8 +15,8 @@ ARG build_region
 USER root
 COPY ./copy_files/scripts/. /opt/scripts
 
-RUN bash /opt/scripts/apt_install.sh
-# gh tmux
+RUN bash /opt/scripts/apt_install.sh && \
+    bash /opt/scripts/_install_tools.sh
 
 #### 3. appuser
 # OPENCODE_SERVER_USERNAME="opencode"

@@ -20,18 +20,14 @@ COPY ./copy_files/scripts /opt/scripts
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8
 
-RUN bash /opt/scripts/install_nodejs.debian.sh && \
+RUN bash /opt/scripts/install_nodejs.sh && \
     /opt/scripts/apt_install.sh tzdata locales ca-certificates gnupg \
       python3 python3-venv python3-pip python3-dev \
       zip unzip jq ripgrep vim git wget curl \
       mtr netcat-openbsd iproute2 lsof iptables bind9-dnsutils \
       supervisor gosu file tree less uuid xxd tmux gh && \
-    update-ca-certificates
-# openvpn wireguard-tools
-
-RUN tag_name=$(curl -fsSL https://api.github.com/repos/mikefarah/yq/releases/latest | jq -r .tag_name) && \
-    curl -fL https://github.com/mikefarah/yq/releases/download/$tag_name/yq_linux_amd64 -o /usr/local/bin/yq && \
-    chmod a+x /usr/local/bin/yq
+    update-ca-certificates && \
+    bash /opt/scripts/install_tools.sh
 
 RUN pip install --no-cache-dir --upgrade pip wheel setuptools uv && \
     pip install --no-cache-dir --upgrade \
