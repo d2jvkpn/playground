@@ -8,10 +8,5 @@ export CLAUDE_CONFIG_DIR=~/.config/claude
 # default: ~/.claude.json ~/.claude/{backups,cache,downloads}
 
 curl -fsSL https://claude.ai/install.sh | bash
-version=$(claude --version | awk '{print $2}')
-
-rm ~/.local/bin/claude
-XDG_DATA_HOME=${XDG_DATA_HOME:-~/.local/share}
-
-mv $XDG_DATA_HOME/claude ~/.local/
-ln -s ~/.local/$version ~/.local/bin/claude
+version=$(~/.local/bin/claude --version | awk '{print $1}')
+mv ~/.local/share/claude/versions/$version ~/.local/bin/claude

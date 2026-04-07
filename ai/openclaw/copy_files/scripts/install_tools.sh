@@ -3,7 +3,7 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 ####
-bash /opt/scripts/apt_install.sh gh sqlite3 postgresql-client mysql-client
+bash /opt/scripts/apt_install.sh at gh sqlite3 postgresql-client mariadb-client-compat
 
 ####
 tag_name=$(curl -fsSL https://api.github.com/repos/steipete/gogcli/releases/latest | jq -r .tag_name)

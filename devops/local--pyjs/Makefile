@@ -3,7 +3,7 @@ user_uid ?= 1000
 
 create_dirs:
 	mkdir -p data/apps data/workspace data/site-packages \
-	  data/config datacache data/share data/state
+	  data/config data/cache data/share data/state
 
 docker_build:
 	docker build --no-cache -f Containerfile \
