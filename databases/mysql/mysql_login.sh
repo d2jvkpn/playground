@@ -10,3 +10,7 @@ mysql_config_editor set --login-path=<name> \
 
 MYSQL_TEST_LOGIN_FILE=~/.mylogin.cnf
 mysql --login-path=<name>
+
+mysql --login-path=<name> <dbname>
+
+mysql --login-path=<name> <dbname> < import.sql

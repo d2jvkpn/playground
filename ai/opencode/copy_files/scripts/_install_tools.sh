@@ -15,6 +15,7 @@ echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *
   ripgrep fd-find bat sd \
   fzf glow gum gh
 # $ rg, bat, fdfind, sd
+# go install github.com/charmbracelet/glow/v2@latest
 
 ln -s /usr/bin/batcat /usr/bin/bat
 

@@ -19,8 +19,6 @@ RUN bash /opt/scripts/_install_tools.sh
 USER appuser
 WORKDIR /home/appuser
 
-ADD --chown=appuser:appuser ./copy_files/vimrc .vimrc
-
 ENV CLAUDE_CONFIG_DIR=/home/appuser/.config/claude \
     OTEL_EXPORTER_OTLP_ENDPOINT="" \
     OTEL_METRICS_EXPORTER="" \

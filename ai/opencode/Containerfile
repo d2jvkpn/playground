@@ -25,8 +25,6 @@ RUN bash /opt/scripts/_install_tools.sh
 USER appuser
 WORKDIR /home/appuser
 
-ADD --chown=appuser:appuser ./copy_files/vimrc .vimrc
-
 RUN if [ "$build_region" == "cn" ]; then \
         bash /opt/scripts/config_cn.sh pip; \
         bash /opt/scripts/config_cn.sh npm; \

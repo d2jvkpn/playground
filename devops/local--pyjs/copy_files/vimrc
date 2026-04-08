@@ -30,3 +30,7 @@ filetype plugin indent on
 
 set list
 set listchars=tab:>-,trail:.,extends:>,precedes:<
+
+call plug#begin('~/.vim/plugged')
+Plug 'sheerun/vim-polyglot'
+call plug#end()

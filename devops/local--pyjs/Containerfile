@@ -47,6 +47,7 @@ WORKDIR /home/appuser
 
 COPY --chown=appuser:appuser copy_files/bash_aliases /home/appuser/.bash_aliases
 COPY --chown=appuser:appuser copy_files/bash_profile /home/appuser/.bash_profile
+ADD --chown=appuser:appuser ./copy_files/vimrc .vimrc
 
 #### 4. container
 ENV https_proxy="" \
