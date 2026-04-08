@@ -15,8 +15,7 @@ ARG build_region
 USER root
 COPY ./copy_files/scripts/. /opt/scripts
 
-RUN bash /opt/scripts/apt_install.sh && \
-    bash /opt/scripts/_install_tools.sh
+RUN bash /opt/scripts/_install_tools.sh
 
 #### 3. appuser
 # OPENCODE_SERVER_USERNAME="opencode"
@@ -34,28 +33,17 @@ RUN if [ "$build_region" == "cn" ]; then \
     fi
 
 #### 3. installation
-#RUN pip install --no-cache pyright
-#RUN npm install -g opencode-ai@latest oh-my-opencode@latest
-
 RUN mkdir -p ~/.local/bin && \
     curl -fsSL https://opencode.ai/install | bash && \
     mv ~/.opencode/bin/opencode ~/.local/bin/ && \
     rm -r ~/.opencode
-
-RUN npm install -g oh-my-opencode-linux-x64@latest && \
-    rm -rf ~/.npm ~/.cache
 
 RUN npm install -g markdownlint-cli bash-language-server yaml-language-server \
       pyright vscode-langservers-extracted typescript typescript-language-server \
       @vue/language-server eslint prettier prettier-plugin-tailwindcss && \
     rm -rf ~/.npm ~/.cache
 
-# opencode --version | awk '{print "opencode: "$1}'
-# openspec --version | awk '{print "openspec: "$1}'
-# codex --version | awk '{print "codex: "$2}'
-# gemini --version | awk '{print "gemini-cli: "$1}'
-# curl -fsSL https://opencode.ai/install | bash
-# npx -y oh-my-opencode install --no-tui --claude=no --openai=no --gemini=no --copilot=no
+RUN mkdir -p ~/.cache
 
 #### 3. container
 ENV https_proxy="" \

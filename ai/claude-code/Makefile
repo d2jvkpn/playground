@@ -9,6 +9,9 @@ docker_build:
 	  --build-arg http_proxy="http://127.0.0.1:1080" \
 	  -t local/claude-code:latest ./
 
+docker_tag:
+	bash scripts/tag_image.sh
+
 shell:
 	docker exec -it -u appuser claude-code bash
 

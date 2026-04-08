@@ -12,7 +12,7 @@ docker_build:
 
 docker_tag:
 	version=$(shell docker run --rm -it local/opencode:latest opencode --version) && \
-	docker tag local/opencode:latest local/opencode:$$version
+	docker tag local/opencode:latest local/opencode:v$$version
 
 docker_update:
 	docker build --no-cache -f data/Containerfile.update \

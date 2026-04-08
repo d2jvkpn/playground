@@ -14,6 +14,8 @@ version: 0.1.0
 - https://github.com/opencode-ai/opencode
 - https://opencode.ai/docs/config
 - https://opencode.ai/docs/cli/#environment-variables
+- https://github.com/awesome-opencode/awesome-opencode
+- https://www.opencode.cafe/
 
 - https://opencode.ai/docs/tools/
 - https://opencode.ai/docs/rules/
@@ -47,6 +49,8 @@ version: 0.1.0
   - link: https://github.com/obra/superpowers/blob/main/docs/README.opencode.md
 - supermemory
   - link: https://github.com/supermemoryai/opencode-supermemory
+- graphify
+  - link: https://github.com/safishamsi/graphify
 
 #### ch02.
 1. commands

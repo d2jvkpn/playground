@@ -21,6 +21,12 @@ services:
     working_dir: /home/appuser/workspace
     environment:
       TZ: Asia/Shanghai
+      https_proxy: http://127.0.0.1:1080
+      http_proxy: http://127.0.0.1:1080
+      no_proxy: ""
+      HTTPS_PROXY: http://127.0.0.1:1080
+      HTTP_PROXY: http://127.0.0.1:1080
+      NO_PROXY: ""
       CLAUDE_CODE_NO_FLICKER: "1"
       DISABLE_AUTOUPDATER: "1"
       DISABLE_INSTALLATION_CHECKS: "1"
@@ -28,10 +34,6 @@ services:
       DISABLE_LOGOUT_COMMAND: "1"
       DISABLE_UPGRADE_COMMAND: "1"
       # ANTHROPIC_BASE_URL: ""
-      https_proxy: http://127.0.0.1:1080
-      http_proxy: http://127.0.0.1:1080
-      no_proxy: ""
-      HTTPS_PROXY: http://127.0.0.1:1080
-      HTTP_PROXY: http://127.0.0.1:1080
-      NO_PROXY: ""
+      # ANTHROPIC_API_KEY: ""
+      # ANTHROPIC_MODEL: ""
     command: ["sing-box", "run", "-c=configs/sing-box.tun.json"]
