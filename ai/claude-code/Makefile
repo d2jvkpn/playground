@@ -10,7 +10,7 @@ docker_build:
 	  -t local/claude-code:latest ./
 
 docker_tag:
-	bash scripts/tag_image.sh
+	bash tag_image.sh
 
 shell:
 	docker exec -it -u appuser claude-code bash
