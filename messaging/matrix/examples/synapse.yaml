@@ -1,0 +1,4 @@
+synapse:
+  server_name: my.matrix.host
+  user: Alice
+  password: xxxxxxxx

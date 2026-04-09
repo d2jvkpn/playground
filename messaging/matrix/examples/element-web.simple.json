@@ -1,0 +1,11 @@
+{
+  "default_server_config": {
+    "m.homeserver": {
+      "base_url": "http://127.0.0.1:8008",
+      "server_name": "____SERVER_NAME____"
+    }
+  },
+  "disable_custom_urls": true,
+  "brand": "Selfhost Matrix IM",
+  "default_theme": "light"
+}

@@ -1,0 +1,31 @@
+services:
+  synapse:
+    image: matrixdotorg/synapse:latest
+    container_name: synapse
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fSs", "http://localhost:8008/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    network_mode: bridge
+    ports: ["127.0.0.1:8008:8008"]
+    volumes:
+    - ./data/synapse:/data
+    environment:
+      TZ: Asia/Shanghai
+      SYNAPSE_REPORT_STATS: yes
+      SYNAPSE_CONFIG_DIR: /data
+      SYNAPSE_CONFIG_PATH: /data/homeserver.yaml
+      UID: "1000"
+      GID: "1000"
+
+  element-web:
+    image: vectorim/element-web:latest
+    container_name: element-web
+    restart: unless-stopped
+    network_mode: bridge
+    ports: ["127.0.0.1:8007:80"]
+    volumes:
+    - ./configs/element-web.json:/app/config.json
