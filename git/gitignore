@@ -14,23 +14,22 @@ target
 dist
 build
 
-#### running and deployment files
+#### custom
+.*
+target/
+data/
+configs/
+logs/
+
+node_modules
+dist
+build
+.env*
+vendor/
+__pycache__
+
 docker-compose.yaml
 docker-compose.yml
 compose.yaml
 compose.yml
 nohup.out
-
-#### node.js
-node_modules
-dist
-build
-.env*
-
-# python
-__pycache__
-
-# golang
-vendor
-
-# rust

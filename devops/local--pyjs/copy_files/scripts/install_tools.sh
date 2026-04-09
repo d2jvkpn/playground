@@ -13,9 +13,4 @@ curl -fL https://github.com/mikefarah/yq/releases/download/$tag_name/yq_linux_am
 
 chmod a+x /usr/local/bin/yq
 
-
-####
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
 # apt install -y openvpn wireguard-tools

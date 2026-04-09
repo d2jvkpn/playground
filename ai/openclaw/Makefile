@@ -1,7 +1,7 @@
 create_dirs:
-	mkdir -p data/apps data/workspace/logs \
+	mkdir -p data/apps data/site-packages data/workspace/configs data/workspace/logs \
 	  data/config data/cache data/share data/state \
-	  data/openclaw data/agents
+	  data/agents data/openclaw
 
 docker_build:
 	docker build --no-cache -f Containerfile \

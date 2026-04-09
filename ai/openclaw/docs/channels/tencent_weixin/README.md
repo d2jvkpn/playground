@@ -15,6 +15,7 @@ version: 0.1.0
 2. quick install
 ```
 npx -y @tencent-weixin/openclaw-weixin@latest install
+
 ls ~/.openclaw/extensions/openclaw-weixin ~/.openclaw/openclaw-weixin
 ```
 
@@ -29,9 +30,16 @@ openclaw channels login --channel openclaw-weixin
 # ln -s /home/appuser/.local/npm/lib/node_modules/openclaw ~/.openclaw/extensions/openclaw-weixin/node_modules/
 # openclaw channels remove --channel openclaw-weixin
 # openclaw config set plugins.allow '["openclaw-weixin"]' --strict-json
+
+openclaw gateway restart
 ```
 
 4. this don't work
 - openclaw agents bind --agent weixin-bot --bind openclaw-weixin:default
 - openclaw channels list --json
 - openclaw agents bindings --json
+
+5. 2026-04-09
+```
+npx -y @tencent-weixin/openclaw-weixin-cli install
+```

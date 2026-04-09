@@ -6,6 +6,7 @@ exit
 mysql_config_editor set --login-path=<name> \
   --user=<user> \
   --host=<ip> \
+  --port=3306 \
   --password
 
 MYSQL_TEST_LOGIN_FILE=~/.mylogin.cnf

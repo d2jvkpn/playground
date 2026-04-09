@@ -26,8 +26,9 @@ RUN bash /opt/scripts/install_nodejs.sh && \
       zip unzip jq ripgrep vim git wget curl \
       mtr netcat-openbsd iproute2 lsof iptables bind9-dnsutils \
       supervisor gosu file tree less uuid xxd tmux gh && \
-    update-ca-certificates && \
-    bash /opt/scripts/install_tools.sh
+    update-ca-certificates
+
+RUN bash /opt/scripts/install_tools.sh
 
 RUN pip install --no-cache-dir --upgrade pip wheel setuptools uv && \
     pip install --no-cache-dir --upgrade \
@@ -48,6 +49,9 @@ WORKDIR /home/appuser
 COPY --chown=appuser:appuser copy_files/bash_aliases /home/appuser/.bash_aliases
 COPY --chown=appuser:appuser copy_files/bash_profile /home/appuser/.bash_profile
 ADD --chown=appuser:appuser ./copy_files/vimrc .vimrc
+
+RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 #### 4. container
 ENV https_proxy="" \
