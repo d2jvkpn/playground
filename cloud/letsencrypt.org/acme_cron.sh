@@ -16,16 +16,17 @@ changed="false";
     for certs_dir in $(ls -d $acme/*_ecc/ | sed 's#/$##'); do
         domain=$(basename $certs_dir | sed 's/_ecc$//')
 
-        s1=$(md5sum $certs_dir/$domain.cer $certs_dir/$domain.key | awk '{print $1}')
+        s1=$(md5sum $certs_dir/fullchain.cer $certs_dir/$domain.key | awk '{print $1}')
         s2=""
         if [ -f $target_dir/$domain.cer ]; then
-            s2=$(md5sum $target_dir/$domain.cer $target_dir/$domain.key | awk '{print $1}')
+            s2=$(md5sum $target_dir/fullchain.cer $target_dir/$domain.key | awk '{print $1}')
         fi
         [[ "$s1" == "$s2" ]] && continue
 
         changed="true"
         date +"--> %FT%T%:z renew ${domain}"
-        rsync ${certs_dir}/$domain.{key,cer} $target_dir/
+        rsync ${certs_dir}/$domain.key $target_dir/
+        rsync ${certs_dir}/fullchain.cer $target_dir/$domain.fullchain.cer
     done
 
     if [[ "$changed" == "true" ]]; then
@@ -40,5 +41,5 @@ changed="false";
 exit
 
 kubectl -n dev create secret tls $domain --dry-run=client \
-  --key ${certs_dir}/$domain.key --cert ${certs_dir}/$domain.cer -o yaml |
+  --key ${certs_dir}/$domain.key --cert ${certs_dir}/fullchain.cer -o yaml |
   kubectl apply -f -
