@@ -1,8 +1,8 @@
 {
   "default_server_config": {
     "m.homeserver": {
-      "base_url": "http://127.0.0.1:8008",
-      "server_name": "____SERVER_NAME____"
+      "base_url": "http://matrix.example.com",
+      "server_name": "matrix.example.com"
     }
   },
   "disable_custom_urls": true,

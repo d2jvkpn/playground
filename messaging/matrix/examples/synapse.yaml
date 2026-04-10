@@ -1,4 +1,4 @@
 synapse:
-  server_name: my.matrix.host
+  server_name: matrix.example.com
   user: Alice
   password: xxxxxxxx

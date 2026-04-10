@@ -37,7 +37,15 @@ docker run -it --rm \
   matrixdotorg/synapse:latest generate
 ```
 
-4. database in data/synapse/homeserver.yaml
+4. create database
+```
+CREATE ROLE synapse WITH LOGIN PASSWORD 'xxxxxxxx';
+
+CREATE DATABASE synapse with owner = synapse
+  ENCODING 'UTF8' LC_COLLATE 'C' LC_CTYPE 'C' TEMPLATE template0;
+```
+
+5. config database in data/synapse/homeserver.yaml
 ```
 database:
   name: sqlite3
@@ -58,12 +66,6 @@ database:
     cp_max: 10
 ````
 
-5. create database
-```
-CREATE DATABASE synapse with owner = synapse
-  ENCODING 'UTF8' LC_COLLATE 'C' LC_CTYPE 'C' TEMPLATE template0;
-```
-
 6. create accounts
 ```
 docker exec -it synapse register_new_matrix_user http://localhost:8008 -c /data/homeserver.yaml --help
@@ -76,7 +78,21 @@ docker exec -it synapse register_new_matrix_user http://localhost:8008 \
   --user "$user" --password "$password"
 ``
 
-7. misc
+7. desktop
+- https://element.io/en/download#linux
+```
+sudo apt install -y wget apt-transport-https
+‍
+sudo wget -O /usr/share/keyrings/element-io-archive-keyring.gpg https://packages.element.io/debian/element-io-archive-keyring.gpg
+‍
+echo "deb [signed-by=/usr/share/keyrings/element-io-archive-keyring.gpg] https://packages.element.io/debian/ default main" | sudo tee /etc/apt/sources.list.d/element-io.list
+
+sudo apt update
+
+sudo apt install element-desktop
+```
+
+8. misc
 ```
 docker run --name synapse -v $PWD/data/synapse:/data -p 8008:8008 matrixdotorg/synapse:latest
 

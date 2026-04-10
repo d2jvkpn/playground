@@ -10,7 +10,7 @@ services:
       retries: 3
       start_period: 5s
     network_mode: bridge
-    ports: ["127.0.0.1:8008:8008"]
+    ports: ["8008:8008"]
     volumes:
     - ./data/synapse:/data
     environment:
@@ -26,6 +26,6 @@ services:
     container_name: element-web
     restart: unless-stopped
     network_mode: bridge
-    ports: ["127.0.0.1:8007:80"]
+    ports: ["8007:80"]
     volumes:
     - ./configs/element-web.json:/app/config.json
