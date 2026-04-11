@@ -37,6 +37,7 @@ ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
 
+EXPOSE 7681
 USER root
 
 WORKDIR /home/appuser/workspace

@@ -22,7 +22,7 @@
       "auto_route": true,
       "strict_route": true,
       "exclude_interface": [],
-      "route_exclude_address": [ "172.16.0.0/12" ],
+      "route_exclude_address": [],
       "stack": "system",
       "mtu": 1500
     }
@@ -85,7 +85,7 @@
         "action": "route", "outbound": "direct"
       },
       {
-        "ip_cidr": [ "127.0.0.1", "10.0.0.0/8" ],
+        "ip_cidr": [ "127.0.0.1", "172.16.0.0/12", "10.1.0.0/8", "192.168.1.0/16" ],
         "action": "route", "outbound": "direct", "ip_is_private": true
       }
     ],

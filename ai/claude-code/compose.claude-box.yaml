@@ -9,6 +9,7 @@ services:
     extra_hosts:
       host.docker.internal: host-gateway
     network_mode: bridge
+    ports: [127.0.0.1:7681:7681]
     user: root:root
     volumes:
     - ./data/config:/home/appuser/.config
@@ -36,4 +37,6 @@ services:
       # ANTHROPIC_BASE_URL: ""
       # ANTHROPIC_API_KEY: ""
       # ANTHROPIC_MODEL: ""
-    command: ["sing-box", "run", "-c=configs/sing-box.tun.json"]
+    #command: ["sing-box", "run", "-c=configs/sing-box.tun.json"]
+    #command: [["ttyd", "-W", "-t", "fontSize=32", "-p", "7681", "bash", "--rcfile", "~/.bashrc"]]
+    command: ["supervisord", "-l", "logs/supervisord.log", "-c", "configs/supervisord.conf"]
