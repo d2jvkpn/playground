@@ -22,6 +22,9 @@ docker_tag:
 shell:
 	docker exec -it -u appuser claude-code bash
 
+root:
+	docker exec -it -u root claude-code bash
+
 claude:
 	docker exec -it -u appuser claude-code claude
 

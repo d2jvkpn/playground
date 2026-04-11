@@ -10,7 +10,7 @@
       { "tag": "cloudflare", "type": "udp", "server": "1.1.1.1" },
       { "tag": "google", "type": "udp", "server": "8.8.8.8" }
     ],
-    "strategy": "prefer_ipv4",
+    "strategy": "ipv4_only",
     "disable_cache": false
   },
   "inbounds": [
@@ -20,6 +20,7 @@
       "interface_name": "sing-box",
       "address": ["10.250.0.1/30", "fdfe:dcba:9876::1/126"],
       "auto_route": true,
+      "auto_redirect": false,
       "strict_route": true,
       "exclude_interface": [],
       "route_exclude_address": [],
