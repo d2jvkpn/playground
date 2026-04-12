@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+set -eu -o pipefail
 
 
 ####
@@ -8,7 +8,7 @@ tag_name=$(
   jq -r .tag_name
 )
 
-curl -fL https://github.com/mikefarah/yq/releases/download/$tag_name/yq_linux_amd64 \
+curl -fL "https://github.com/mikefarah/yq/releases/download/${tag_name}/yq_linux_amd64" \
   -o /usr/local/bin/yq
 
 chmod a+x /usr/local/bin/yq

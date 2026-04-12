@@ -33,7 +33,7 @@ session
 3. pane shortcuts: Ctrl + b
 - create a new pane: %/"
 - rename current session: $
-- switch panes: ←/↑/→/↓
+- switch panes: ←/↑/→/↓, select-pan + L/U/R/D
 - detach a session: d
 - resize a pane: alt + ←/↑/→/↓
 - resize a pane command: resize-pane -L/-R/-U/-D 10

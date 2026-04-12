@@ -18,7 +18,7 @@ NODE_MAJOR=$(
   cut -d. -f1
 )
 
-echo "deb [signed-by=/etc/apt/keyrings/nodejs.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" \
+echo "deb [signed-by=/etc/apt/keyrings/nodejs.gpg] https://deb.nodesource.com/node_${NODE_MAJOR}.x nodistro main" \
   | tee /etc/apt/sources.list.d/nodejs.list
 
 apt-get update

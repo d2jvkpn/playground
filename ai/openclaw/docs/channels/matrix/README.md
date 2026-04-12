@@ -24,9 +24,9 @@ version: 0.1.0
   "channels": {
     "matrix": {
       "enabled": true,
-      "homeserver": "https://matrix.matrix.example.com",
-      "userId": "@openclaw:matrix.matrix.example.com",
-      "password": "Pxbf5HKRToho86hu",
+      "homeserver": "https://matrix.example.com",
+      "userId": "@<user_id>:matrix.example.com",
+      "password": "<password>",
       "deviceName": "OpenClaw Gateway",
       "encryption": true,
       "groupPolicy": "allowlist",
@@ -45,6 +45,20 @@ version: 0.1.0
 ```
 
 3. pairing
+- matrix chat: send a message to the bot account
+- matrix message
 ```
-openclaw pairing approve matrix <ParingCode>
+OpenClaw: access not configured.
+
+Your Matrix user id: <user_id>
+Pairing code:
+>>> <Pairing_Code>
+
+Ask the bot owner to approve with:
+>>> openclaw pairing approve matrix <paring_code>
+```
+
+- openclaw command
+```
+openclaw pairing approve matrix <paring_code>
 ```
