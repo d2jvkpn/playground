@@ -59,6 +59,7 @@ ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
 
+# ENV NPM_CONFIG_PREFIX=$HOME/.local/npm
 RUN npm config set prefix ~/.local/npm
 ENV PATH=/home/appuser/.local/bin:/home/appuser/.local/npm/bin:$PATH
 # npm config list -l
