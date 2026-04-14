@@ -29,7 +29,7 @@ RUN if [ "$build_region" == "cn" ]; then \
 
 # ENV OPENCLAW_HOME=/home/appuser/.openclaw
 # ENV NODE_COMPILE_CACHE=/var/tmp/openclaw-compile-cache
-ENV NODE_COMPILE_CACHE=/home/appuser/.cache/openclaw/compile-cache \
+ENV NODE_COMPILE_CACHE=/home/appuser/.cache/node-compile-cache \
     OPENCLAW_NO_RESPAWN=1
 
 RUN npm install -g "openclaw@$openclaw_version" clawhub wscat && \
@@ -50,7 +50,7 @@ ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
 
-RUN mkdir -p .openclaw .agents
+RUN mkdir -p .openclaw .agents ~/.cache
 
 VOLUME /home/appuser/.openclaw
 VOLUME /home/appuser/.agents

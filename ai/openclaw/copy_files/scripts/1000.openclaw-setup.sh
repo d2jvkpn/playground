@@ -3,7 +3,7 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 OPENCLAW_HOME=${OPENCLAW_HOEM:-$HOME/.openclaw}
-NODE_COMPILE_CACHE=${NODE_COMPILE_CACHE:-$HOME/.openclaw/compile-cache}
+NODE_COMPILE_CACHE=${NODE_COMPILE_CACHE:-$HOME/.cache/node-compile-cache}
 
 ####
 mkdir -p $NODE_COMPILE_CACHE
@@ -21,6 +21,8 @@ openclaw config set gateway.bind lan
 
 # options: main | per-peer | per-account-channel-peer
 openclaw config set session.dmScope per-channel-peer
+
+openclaw config set update.auto.enabled false
 
 auth=$(jq -n --arg token "$(openssl rand -hex 32)" '{mode:"token", token:$token}')
 openclaw config set gateway.auth "$auth" --strict-json

@@ -20,11 +20,14 @@ docker_update:
 	  --build-arg http_proxy="http://127.0.0.1:1080" \
 	  -t local/opencode:latest ./
 
-shell:
-	docker exec --it opencode bash
-
 up:
 	docker compose up -d
 
 down:
 	docker compose down
+
+shell:
+	docker exec --it opencode bash
+
+tmux:
+	docker exec -it opencode tmux

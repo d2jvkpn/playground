@@ -14,6 +14,7 @@ USER root
 
 COPY ./copy_files/scripts/. /opt/scripts
 RUN bash /opt/scripts/_install_tools.sh
+RUN mkdir -p /app/configs /app/logs
 
 ####
 USER appuser
