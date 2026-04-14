@@ -1,0 +1,4 @@
+apps:
+- https://github.com/astral-sh/ruff
+- https://github.com/astral-sh/ty
+- https://github.com/astral-sh/ruff-pre-commit

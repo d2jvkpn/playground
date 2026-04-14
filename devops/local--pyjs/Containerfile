@@ -32,7 +32,7 @@ RUN bash /opt/scripts/install_nodejs.sh && \
 RUN bash /opt/scripts/install_tools.sh
 
 RUN pip install --no-cache-dir --upgrade pip wheel setuptools uv && \
-    pip install --no-cache-dir --upgrade \
+    pip install --no-cache-dir --upgrade flake8 pytest \
       pysocks "requests[socks]" "httpx[socks]" pyyaml pydantic pydotenv
 
 RUN npm install -g npm@latest && \
