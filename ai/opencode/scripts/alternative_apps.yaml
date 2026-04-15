@@ -2,3 +2,5 @@ apps:
 - https://github.com/astral-sh/ruff
 - https://github.com/astral-sh/ty
 - https://github.com/astral-sh/ruff-pre-commit
+- https://github.com/rtk-ai/rtk
+- https://github.com/safishamsi/graphify

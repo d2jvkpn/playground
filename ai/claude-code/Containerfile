@@ -29,9 +29,12 @@ ENV CLAUDE_CONFIG_DIR=/home/appuser/.config/claude \
     DISABLE_FEEDBACK_COMMAND=1 \
     CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=1 \
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
-# default: ~/.claude.json, ~/.claude/{backups,cache,downloads}
+# CLAUDE_CONFIG_DIR default: ~/.claude.json, ~/.claude/{backups,cache,downloads}
 
-RUN bash /opt/scripts/_install_claude-code.sh
+RUN bash /opt/scripts/_install_claude-code.sh && \
+    mkdir -p $CLAUDE_CONFIG_DIR && \
+    rm -rf ~/.claude && \
+    ln -s $CLAUDE_CONFIG_DIR ~/.claude
 
 ####
 ENV https_proxy="" \
