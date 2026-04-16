@@ -1,16 +1,22 @@
+ARG base_image=nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04
+ARG python=python3.12
+
 #FROM nvidia/cuda:12.9.1-cudnn-devel-ubuntu24.04
-FROM nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04
+FROM ${base_image}
 
 # 1. Accept proxy settings as build arguments
 ARG http_proxy
 ARG https_proxy
 ARG no_proxy
 
+ARG user_uid=1000
+ARG user_gid=1000
+
 ENV http_proxy=$http_proxy \
     https_proxy=$https_proxy \
     no_proxy=$no_proxy
 
-LABEL base_image="nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04"
+LABEL base_image="${base_image}"
 
 ADD Containerfile /opt/
 COPY copy_files/bin /opt/bin
@@ -24,7 +30,8 @@ RUN /opt/bin/apt_install.sh \
 # /opt/bin/apt_install.sh gosu libgl1 libglib2.0-0t64 fonts-noto-cjk
 # locale-gen zh_CN.UTF-8
 
-ENV LANG=en_US.UTF-8
+ENV LANG=en_US.UTF-8 \
+    PATH=/home/appuser/workspace/bin:/home/appuser/.local/venv/bin:$PATH
 
 RUN /opt/bin/apt_install.sh zip unzip vim ffmpeg jq git git-lfs wget curl
 
@@ -32,25 +39,27 @@ RUN wget -qO /opt/bin/yq https://github.com/mikefarah/yq/releases/latest/downloa
     chmod a+x /opt/bin/yq
 
 RUN userdel -r ubuntu || true && \
-    groupadd -g 1000 appuser && \
-    useradd -s /bin/bash -m -u 1000 -g 1000 appuser
+    groupadd -g ${user_gid} appuser && \
+    useradd -s /bin/bash -m -u ${user_uid} -g ${user_gid} appuser
 
 USER appuser
 WORKDIR /home/appuser
 
 # 3. Setup
 # RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-RUN python3 -m venv /home/appuser/venv
-ENV PATH=/home/appuser/venv/bin:/home/appuser/workspace/bin:$PATH
+RUN python3 -m venv /home/appuser/.local/venv
 RUN pip install --no-cache-dir --upgrade pip wheel setuptools uv
 
 # 4. Install ComfyUI
 RUN pip install --no-cache-dir \
       "torch>=2.9,<3.0" "torchaudio>=2.9,<3.0" "torchvision>=0.24,<0.25" \
       --index-url https://download.pytorch.org/whl/cu129 && \
-    python3 /opt/bin/pip_constraints.py > /home/appuser/venv/pip_constraints.txt
+    python3 /opt/bin/pip_constraints.py > /home/appuser/.local/venv/pip_constraints.txt
 
-ADD --chown=appuser:appuser copy_files/pip.conf /home/appuser/venv/
+# pip install --upgrade-strategy only-if-needed -c ~/.local/venv/pip_constraints.txt \
+    -r requirements.txt
+
+ADD --chown=appuser:appuser copy_files/pip.conf /home/appuser/.local/venv/
 
 RUN pip install --no-cache-dir \
     PySocks "requests[socks]" "httpx[socks]" "huggingface_hub[cli]" \
@@ -60,7 +69,8 @@ RUN git clone --branch master --depth 1 --single-branch \
       https://github.com/comfyanonymous/ComfyUI.git ComfyUI && \
     pip install --no-cache-dir -r ComfyUI/requirements.txt
 
-RUN mv venv/lib/python3.12/site-packages venv/lib/python3.12/dist-packages && \
+RUN mv .local/venv/lib/${python}/site-packages \
+      .local/venv/lib/${python}/dist-packages && \
     mkdir -p workspace && \
     cp -r ComfyUI/custom_nodes ComfyUI/models workspace/
 
@@ -69,13 +79,13 @@ ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
 
-ENV DISABLE_COMFYUI_MANAGER="false" \
+ENV COMFYUI_DISABLE_MANAGER="false" \
     TORCH_HOME=/home/appuser/workspace/models/torch \
     HF_HUB_CACHE=/home/appuser/workspace/models/huggingface/hub
 
 WORKDIR /home/appuser/workspace
 VOLUME /home/appuser/workspace
-VOLUME /home/appuser/venv/lib/python3.12/site-packages
+VOLUME /home/appuser/.local/venv/lib/${python}/site-packages
 # models, custom_nodes, user, input, output, temp
 
 EXPOSE 8188
@@ -86,4 +96,4 @@ EXPOSE 8188
 
 ENTRYPOINT ["/opt/bin/entrypoint.sh"]
 
-CMD ["python3", "/home/appuser/ComfyUI/main.py", "--base-directory=/home/appuser/workspace", "--enable-cors-header", "--listen=0.0.0.0", "--port=8188"]
+CMD ["python3", "/home/appuser/ComfyUI/main.py", "--base-directory=./", "--enable-cors-header", "--listen=0.0.0.0", "--port=8188"]

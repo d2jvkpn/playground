@@ -7,15 +7,8 @@ version: 0.1.0
 ```
 
 #### ch01. 
-1. OpenCode
-- Opencode Is Probably The Best Coding Agent I've Ever Used
-  https://www.youtube.com/watch?v=e9j2iEwJru0
-- OpenCode Tutorial for Beginners
-  https://www.youtube.com/watch?v=QzqaZshQcJI
-- OpenCode最新版本，IDE太猛了，完全免费还更强？
-  https://www.bilibili.com/video/BV1VYZqBBEko
-- Master OpenCode in 28 minutes
-  https://www.youtube.com/watch?v=WOOzCHaQipU
+docs:
+- https://docs.kernel.org/process/coding-assistants.html
 
 #### ch02.
 1. Vibe-Coding

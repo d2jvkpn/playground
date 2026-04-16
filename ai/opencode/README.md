@@ -7,7 +7,17 @@ version: 0.1.0
 ```
 
 #### ch01. 
-1. opencode, openspec, codex, gemini-cli
+1. courses
+- Opencode Is Probably The Best Coding Agent I've Ever Used
+  https://www.youtube.com/watch?v=e9j2iEwJru0
+- OpenCode Tutorial for Beginners
+  https://www.youtube.com/watch?v=QzqaZshQcJI
+- OpenCode最新版本，IDE太猛了，完全免费还更强？
+  https://www.bilibili.com/video/BV1VYZqBBEko
+- Master OpenCode in 28 minutes
+  https://www.youtube.com/watch?v=WOOzCHaQipU
+
+2. opencode, openspec, codex, gemini-cli
 - https://opencode.ai
 - https://opencode.ai/docs/tui
 - https://github.com/anomalyco/opencode
@@ -31,7 +41,7 @@ version: 0.1.0
 - https://developers.openai.com/codex/guides/agents-md/
 - https://github.com/google-gemini/gemini-cli
 
-2. misc
+3. misc
 - official image: ghcr.io/anomalyco/opencode
 - config file: data/xdg/config/opencode/opencode.json
 - data dir: data/xdg/share/opencode
@@ -40,7 +50,7 @@ version: 0.1.0
 - project skills: .agents/skills/<name>/SKILL.md or .opencode/skills/<name>/SKILL.md
 - agents: ~/.config/opencode/agents, ./opencode/agents
 
-3. plugins
+4. plugins
 - oh-my-opencode, oh-my-openagent
   - link: https://github.com/code-yeongyu/oh-my-opencode, https://github.com/code-yeongyu/oh-my-openagent
   - prompt: Install and configure oh-my-opencode by following the instructions here: https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads/master/docs/guide/installation.md

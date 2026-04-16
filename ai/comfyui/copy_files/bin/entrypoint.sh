@@ -7,14 +7,11 @@ set -eu
 #    bash /opt/container_init.sh
 #fi
 
-DISABLE_COMFYUI_MANAGER=${DISABLE_COMFYUI_MANAGER:-"false"}
+COMFYUI_DISABLE_MANAGER=${COMFYUI_DISABLE_MANAGER:-"false"}
 
+# if command -v bash >/dev/null 2>&1; then
 if [[ $# -eq 0 ]]; then
-    if command -v bash >/dev/null 2>&1; then
-        exec bash
-    else
-        exec sh
-    fi
+    exec bash
 elif [[ "$1" == "bash" || "$1" == "sh" ]]; then
     exec "$@"
 else
@@ -24,7 +21,7 @@ else
         fi
     fi
 
-    if [[ "$DISABLE_COMFYUI_MANAGER" == "true" && -d custom_nodes/ComfyUI-Manager ]]; then
+    if [[ "$COMFYUI_DISABLE_MANAGER" == "true" && -d custom_nodes/ComfyUI-Manager ]]; then
         mv custom_nodes/ComfyUI-Manager custom_nodes/ComfyUI-Manager.disabled
     elif [[ -d "custom_nodes/ComfyUI-Manager.disabled" ]]; then
         mv custom_nodes/ComfyUI-Manager.disabled custom_nodes/ComfyUI-Manager
