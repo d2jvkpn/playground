@@ -3,7 +3,7 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 ####
-bash /opt/scripts/apt_install.sh
+bash /opt/scripts/apt_install.sh bash-completion
 
 ####
 tag_name=$(

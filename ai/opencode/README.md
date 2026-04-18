@@ -59,8 +59,6 @@ version: 0.1.0
   - link: https://github.com/obra/superpowers/blob/main/docs/README.opencode.md
 - supermemory
   - link: https://github.com/supermemoryai/opencode-supermemory
-- graphify
-  - link: https://github.com/safishamsi/graphify
 
 #### ch02.
 1. commands

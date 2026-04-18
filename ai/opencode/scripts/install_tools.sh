@@ -30,16 +30,7 @@ pip install python-docx openpyxl python-pptx pandas
 # read pdf
 pip install pypdf pdfplumber pymupdf
 
-# tools: CODEX_HOME=~/.codex
-npm install -g @charmland/crush @fission-ai/openspec@latest
-
-npm install -g @openai/codex @google/gemini-cli
-
 exit
 rm -rf ~/.npm ~/.cache
 
-exit
 opencode --version | awk '{print "opencode: "$1}'
-openspec --version | awk '{print "openspec: "$1}'
-codex --version | awk '{print "codex: "$2}'
-gemini --version | awk '{print "gemini-cli: "$1}'

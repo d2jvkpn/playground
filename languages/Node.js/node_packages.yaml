@@ -1,0 +1,14 @@
+node_packages:
+- lodash
+- uuid
+- qs
+- cheerio
+- xml2js
+- luxon
+- pinia
+- moment
+- date-fns
+- dayjs
+- axios
+- form-data
+- js-yaml

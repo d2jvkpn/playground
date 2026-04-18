@@ -1,9 +1,9 @@
 services:
-  claude-code:
-    image: local/claude-code:latest
+  codebox:
+    image: q.local/codebox:latest
     restart: always # unless-stopped
-    container_name: claude-code
-    hostname: claude-code
+    container_name: codebox
+    hostname: codebox
     cap_add: [NET_ADMIN]
     devices: [/dev/net/tun:/dev/net/tun]
     sysctls:
@@ -22,6 +22,11 @@ services:
 
     - ./data/apps:/home/appuser/apps
     - ./data/workspace:/home/appuser/workspace
+
+    #- ./configs/:/app/configs
+    #- ./logs:/app/logs
+    #- ./configs/sshd_config.d:/etc/ssh/sshd_config.d
+    #- ./configs/ssh:/home/appuser/.ssh
     working_dir: /home/appuser/workspace
     environment:
       TZ: Asia/Shanghai

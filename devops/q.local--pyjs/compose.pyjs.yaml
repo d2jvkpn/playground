@@ -3,7 +3,7 @@ networks:
 
 services:
   node:
-    image: local/agents:latest
+    image: q.local/agents:latest
     restart: always
     container_name: node
     hostname: node

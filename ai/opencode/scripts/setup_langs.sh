@@ -2,19 +2,6 @@
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
-exit
-####
-if [ ! -d "$HOME/apps/venv" ]; then
-    python3 -m venv "$HOME/apps/venv"
-fi
-
-####
-mkdir -p "$HOME/apps/npm"
-# npm config set prefix "$HOME/apps/npm"
-# npm install -g http-server
-# npm config get prefix
-export NPM_CONFIG_PREFIX=$HOME/.local/npm
-
 ####
 go env -w GOPATH="${HOME}/.local/share/go" GOBIN=${HOME}/apps/bin GOPROXY="https://goproxy.cn,direct"
 cat ~/.config/go/env

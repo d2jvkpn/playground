@@ -1,4 +1,4 @@
-FROM local/pyjs:trixie
+FROM q.local/pyjs:trixie
 
 ####
 ARG http_proxy
@@ -31,10 +31,9 @@ ENV CLAUDE_CONFIG_DIR=/home/appuser/.config/claude \
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
 # CLAUDE_CONFIG_DIR default: ~/.claude.json, ~/.claude/{backups,cache,downloads}
 
-RUN bash /opt/scripts/_install_claude-code.sh && \
-    mkdir -p $CLAUDE_CONFIG_DIR && \
-    rm -rf ~/.claude && \
-    ln -s $CLAUDE_CONFIG_DIR ~/.claude
+ENV CODEX_HOME=/home/appuser/.local/share/codex
+
+RUN bash /opt/scripts/_install_codebox.sh
 
 ####
 ENV https_proxy="" \
