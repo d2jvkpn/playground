@@ -3,7 +3,7 @@ networks:
 
 services:
   openclaw:
-    image: local/openclaw:latest
+    image: q.local/openclaw:latest
     restart: always # unless-stopped
     container_name: openclaw
     hostname: openclaw

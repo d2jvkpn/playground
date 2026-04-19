@@ -1,4 +1,4 @@
-FROM local/pyjs:trixie
+FROM q.local/pyjs:trixie
 
 ####
 ARG http_proxy
@@ -34,23 +34,22 @@ ENV NODE_COMPILE_CACHE=/home/appuser/.cache/node-compile-cache \
 
 RUN npm install -g "openclaw@$openclaw_version" clawhub wscat && \
     mkdir -p ~/.openclaw ~/.agents && \
-    rm -rf ~/.npm ~/.cache
+    rm -rf ~/.npm ~/.cache && \
+    mkdir -p ~/.openclaw ~/.agents
 
 # npm install -g @tobilu/qmd
-# npm install -g @google/gemini-cli # gemini oauth
-# curl -fsSL https://claude.ai/install.sh | bash
 # curl -fsSL https://openclaw.ai/install.sh | bash
 
 # clawhub install agent-browser
 # npm install -g agent-browser
 # agent-browser install
 
+RUN mkdir -p ~/.cache
+
 ####
 ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
-
-RUN mkdir -p .openclaw .agents ~/.cache
 
 VOLUME /home/appuser/.openclaw
 VOLUME /home/appuser/.agents

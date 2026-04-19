@@ -33,7 +33,10 @@ ENV CLAUDE_CONFIG_DIR=/home/appuser/.config/claude \
 
 ENV CODEX_HOME=/home/appuser/.local/share/codex
 
-RUN bash /opt/scripts/_install_codebox.sh
+RUN bash /opt/scripts/_install_codebox.sh && \
+    rm -rf ~/.cache ~/.npm
+
+RUN mkdir -p ~/.cache
 
 ####
 ENV https_proxy="" \

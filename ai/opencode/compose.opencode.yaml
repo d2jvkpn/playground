@@ -1,6 +1,6 @@
 services:
   opencode:
-    image: local/opencode:latest
+    image: q.local/opencode:latest
     restart: always
     container_name: opencode
     hostname: opencode

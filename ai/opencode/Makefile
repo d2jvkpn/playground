@@ -8,17 +8,17 @@ docker_build:
 	  --no-cache --network=host \
 	  --build-arg https_proxy="http://127.0.0.1:1080" \
 	  --build-arg http_proxy="http://127.0.0.1:1080" \
-	  -t local/opencode:latest ./
+	  -t q.local/opencode:latest ./
 
 docker_tag:
-	bash scripts/tag_image.sh
+	bash ./tag_image.sh
 
 docker_update:
 	docker build --no-cache -f data/Containerfile.update \
 	  --network=host \
 	  --build-arg https_proxy="http://127.0.0.1:1080" \
 	  --build-arg http_proxy="http://127.0.0.1:1080" \
-	  -t local/opencode:latest ./
+	  -t q.local/opencode:latest ./
 
 up:
 	docker compose up -d

@@ -19,7 +19,6 @@ services:
     - ./data/cache:/home/appuser/.cache
     - ./data/share:/home/appuser/.local/share
     - ./data/state:/home/appuser/.local/state
-
     - ./data/apps:/home/appuser/apps
     - ./data/workspace:/home/appuser/workspace
 

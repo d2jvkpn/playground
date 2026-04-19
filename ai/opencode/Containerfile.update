@@ -1,4 +1,4 @@
-FROM local/opencode:latest
+FROM q.local/opencode:latest
 
 ####
 ARG http_proxy

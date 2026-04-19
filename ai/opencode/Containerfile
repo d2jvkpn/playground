@@ -1,4 +1,4 @@
-FROM local/pyjs:trixie
+FROM q.local/pyjs:trixie
 
 #### 1. parsing args
 ARG http_proxy
