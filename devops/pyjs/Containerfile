@@ -61,7 +61,9 @@ ENV https_proxy="" \
 
 RUN npm config set prefix ~/.local/npm
 # npm config list -l
-ENV PATH=/home/appuser/.local/bin:/home/appuser/.local/npm/bin:$PATH
+
+ENV PATH=/home/appuser/.local/bin:/home/appuser/.local/npm/bin:$PATH \
+    BASH_ENV=""
 
 RUN mkdir -p .config .cache .local/share .local/state apps workspace
 

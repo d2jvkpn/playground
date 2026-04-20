@@ -20,6 +20,7 @@ services:
     - ./data/workspace:/home/appuser/workspace
     environment:
       TZ: Asia/Shanghai
+      # BASHE_ENV: /home/appuser/.bash_aliases
       # https_proxy: http://172.17.0.1:1080
       # http_proxy: http://172.17.0.1:1080
       # no_proxy: ""

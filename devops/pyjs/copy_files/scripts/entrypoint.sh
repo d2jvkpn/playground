@@ -16,5 +16,7 @@ else
         "$script"
     done
 
+    #if [ -n "$BASH_ENV" ]; then . "$BASH_ENV"; fi
     exec "$@"
+    #exec bash -lc 'exec "$@"' bash "$@" # using login shell
 fi

@@ -41,6 +41,7 @@ RUN npm install -g markdownlint-cli bash-language-server yaml-language-server \
       @vue/language-server eslint prettier prettier-plugin-tailwindcss && \
     rm -rf ~/.npm ~/.cache
 
+ENV BASH_ENV=/home/appuser/.bash_aliases
 RUN mkdir -p ~/.cache
 
 #### 3. container
@@ -50,10 +51,10 @@ ENV https_proxy="" \
 
 WORKDIR /home/appuser/workspace
 
+#ENTRYPOINT []
+
 # webui: 4096, auth_callback: 1455
 EXPOSE 4096
-
-ENTRYPOINT []
 
 # opencode webui
 CMD ["opencode", "web", "--hostname=0.0.0.0", "--port=4096"]
