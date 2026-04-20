@@ -1,0 +1,9 @@
+FROM q.local/openclaw:latest
+
+USER appuser
+
+RUN npm install -g "openclaw@$latest" && \
+    mkdir -p ~/.openclaw ~/.agents && \
+    rm -rf ~/.npm ~/.cache
+
+RUN mkdir -p ~/.cache

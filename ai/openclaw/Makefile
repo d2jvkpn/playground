@@ -11,15 +11,15 @@ docker_build:
 	  --build-arg http_proxy="http://127.0.0.1:1080" \
 	  -t q.local/openclaw:latest ./
 
-docker_tag:
-	bash tag_image.sh
-
 docker_update:
 	docker build --no-cache -f data/Containerfile.update \
 	  --network=host \
 	  --build-arg https_proxy="http://127.0.0.1:1080" \
 	  --build-arg http_proxy="http://127.0.0.1:1080" \
 	  -t q.local/openclaw:latest ./
+
+docker_tag:
+	bash tag_image.sh
 
 shell:
 	docker exec -it -u appuser -w /home/appuser/.openclaw openclaw bash

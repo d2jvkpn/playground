@@ -8,10 +8,8 @@ curl -fsSL https://claude.ai/install.sh | bash
 version=$(~/.local/bin/claude --version | awk '{print $1}')
 
 mv ~/.local/share/claude/versions/$version ~/.local/bin/claude
-rm -r ~/.local/share/claude
-mkdir -p ~/.config/claude
 rm -rf ~/.claude && \
-ln -s ~/.config/claude ~/.claude
+ln -s ~/.local/share/claude ~/.claude
 
 #### codex
 # CODEX_HOME=~/.codex ===> ~/.local/share/codex
