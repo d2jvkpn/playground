@@ -7,6 +7,7 @@ if [ ! -d "$HOME/apps/venv" ]; then
 fi
 
 mkdir -p "$HOME/apps/npm"
+
 # npm config set prefix "$HOME/apps/npm"
 # npm install -g http-server
 # npm config get prefix

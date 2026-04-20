@@ -12,7 +12,7 @@ services:
     extra_hosts:
       host.docker.internal: host-gateway
     network_mode: bridge
-    #ports: [127.0.0.1:4222:22, 127.0.0.1:7681:7681]
+    #ports: [127.0.0.1:4222:4222, 127.0.0.1:7681:7681]
     user: root:root
     volumes:
     - ./data/config:/home/appuser/.config

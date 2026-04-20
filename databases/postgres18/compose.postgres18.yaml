@@ -6,7 +6,7 @@ networks:
 
 services:
   postgres:
-    image: local/postgres:18-trixie
+    image: q.local/postgres:18-trixie
     container_name: postgres-18
     restart: always
     shm_size: 512m # df -h | grep shm

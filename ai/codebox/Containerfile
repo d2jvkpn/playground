@@ -43,10 +43,13 @@ ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
 
-EXPOSE 7681
+# tyyd, ssh
+EXPOSE 7681 4222
 USER root
 
 WORKDIR /home/appuser/workspace
 
 ENTRYPOINT []
-CMD ["sing-box", "run", "-c=configs/sing-box.tun.json"]
+
+#CMD ["sing-box", "run", "-c=/app/configs/sing-box.tun.json"]
+CMD ["supervisord", "-l", "/app/logs/supervisord.log", "-c", "/app/configs/supervisord.conf"]
