@@ -26,15 +26,19 @@ class AppConfig(BaseModel):
     """
     openclaw: OpenClawConfig
 
-def from_yaml_file(p: str | Path) -> AppConfig:
-    with open(p, "r", encoding="utf-8") as f:
-        data = yaml.safe_load(f)
+    @classmethod
+    def from_yaml_file(cls, p: str | Path) -> "AppConfig":
+        """
+        Load application config from a YAML file.
+        """
 
-    config = AppConfig.model_validate(data)
-    return config
+        with open(p, "r", encoding="utf-8") as f:
+            data = yaml.safe_load(f)
+
+        return cls.model_validate(data)
 
 if __name__ == "__main__":
-    config = from_yaml_file("configs/local.yaml")
+    config = AppConfig.from_yaml_file("configs/local.yaml")
 
     print(config)
     print(config.openclaw.url)

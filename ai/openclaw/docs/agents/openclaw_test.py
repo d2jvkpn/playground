@@ -6,7 +6,7 @@ import argparse
 
 import requests
 
-from load_config import from_yaml_file, AppConfig
+from load_config import AppConfig
 
 
 def print_response(resp: requests.Response):
@@ -33,8 +33,7 @@ def request(config: AppConfig, _input: str | list, agent: str = "", user: str = 
         "model": f"openclaw/{agent}",
         "input": _input,
     }
-
-    print(f"--> payload: {payload}")
+    #print(f"--> payload: {payload}")
 
     resp = requests.post(
         config.openclaw.url + "/v1/responses",
@@ -45,12 +44,12 @@ def request(config: AppConfig, _input: str | list, agent: str = "", user: str = 
 
     return resp
 
-def build_file_content(file_path: str) -> dict:
-    mime_type, _ = mimetypes.guess_type(file_path)
+def build_file_content(fp: str) -> dict:
+    mime_type, _ = mimetypes.guess_type(fp)
     if not mime_type:
         mime_type = "application/octet-stream"
 
-    with open(file_path, "rb") as f:
+    with open(fp, "rb") as f:
         b64 = base64.b64encode(f.read()).decode("utf-8")
 
     _type, source = "", {}
@@ -58,20 +57,20 @@ def build_file_content(file_path: str) -> dict:
         _type = "input_image"
         source = {"type": "base64", "media_type": mime_type, "data": b64}
     else:
-        filename = os.path.basename(file_path)
+        filename = os.path.basename(fp)
         _type = "input_file",
         source = {"type": "base64", "media_type": mime_type, "data": b64, "filename": filename}
 
     return { "type": _type, "source": source }
 
-def generate_input(image_url: str, file_path: str, prompt: str):
+def generate_input(image_url: str, fp: str, prompt: str):
     content = []
 
     if image_url:
         content.append({"type": "input_image", "source": {"type": "url", "url": image_url}})
 
-    if file_path:
-        content.append(build_file_content(file_path))
+    if fp:
+        content.append(build_file_content(fp))
 
     if prompt:
         content.append({"type": "input_text", "text": prompt})
@@ -84,13 +83,13 @@ if __name__ == "__main__":
     parser.add_argument("--config", default="configs/local.yaml", help="Path to YAML config file")
     parser.add_argument("--prompt", required=True, help="Text prompt")
     parser.add_argument("--image_url", default="", help="Image URL")
-    parser.add_argument("--file_path", default="", help="Local file path (image or other)")
+    parser.add_argument("--filepath", default="", help="Local file path (image or other)")
     args = parser.parse_args()
 
-    config = from_yaml_file(args.config)
+    config = AppConfig.from_yaml_file(args.config)
 
-    if args.image_url or args.file_path:
-        _input = generate_input(args.image_url, args.file_path, args.prompt)
+    if args.image_url or args.filepath:
+        _input = generate_input(args.image_url, args.filepath, args.prompt)
         response = request(config, _input)
     else:
         response = request(config, args.prompt)
