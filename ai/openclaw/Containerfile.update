@@ -2,6 +2,8 @@ FROM q.local/openclaw:latest
 
 USER appuser
 
+RUN /opt/scripts/apt_install.sh
+
 RUN npm install -g "openclaw@$latest" && \
     mkdir -p ~/.openclaw ~/.agents && \
     rm -rf ~/.npm ~/.cache

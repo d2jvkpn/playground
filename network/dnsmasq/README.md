@@ -27,7 +27,7 @@ dig +short a.local
 - tencent: 119.29.29.29, 1.12.12.12, 120.53.53.53
 - bytedance: 180.184.1.1, 180.184.2.2
 
-4. internaional
+4. international
 NextDNS: 45.90.28.0, 45.90.30.0
 
 5. tests

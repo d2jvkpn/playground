@@ -9,12 +9,16 @@ description:
 
 
 #### ch01. 
-1. Tools
+1. Official
+- https://mp.weixin.qq.com
+- https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html
+- https://developers.weixin.qq.com/miniprogram/dev/devtools/page.html
+
+2. Tools
 - https://github.com/msojocs/wechat-web-devtools-linux
 - https://uniapp.dcloud.net.cn/quickstart-hx.html
 - https://github.com/dcloudio/uni-app
 - https://github.com/nervjs/taro
 - https://taro.aotu.io/
 
-2. Weixin
-- https://developers.weixin.qq.com/miniprogram/dev/devtools/page.html
+

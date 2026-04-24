@@ -1,6 +1,6 @@
 services:
   hysteria-server:
-    image: local/hysteria:latest
+    image: q.local/hysteria:latest
     container_name: hysteria-server
     restart: always
     network_mode: bridge

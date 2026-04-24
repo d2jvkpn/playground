@@ -3,7 +3,7 @@ networks:
 
 services:
   hysteria-client:
-    image: local/hysteria:latest
+    image: q.local/hysteria:latest
     container_name: hysteria-client
     restart: always
     networks: ["net"]

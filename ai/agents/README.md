@@ -19,3 +19,5 @@ version: 0.1.0
 
 4. MetaClaw
 - https://github.com/aiming-lab/MetaClaw
+
+5. zeroclaw

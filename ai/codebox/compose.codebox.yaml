@@ -28,7 +28,7 @@ services:
     #- ./configs/ssh:/home/appuser/.ssh
     working_dir: /home/appuser/workspace
     environment:
-      TZ: Asia/Shanghai
+      TZ: UTC
       https_proxy: http://127.0.0.1:1080
       http_proxy: http://127.0.0.1:1080
       no_proxy: ""

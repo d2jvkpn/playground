@@ -43,10 +43,11 @@ ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
 
+ENV TZ=UTC
+
 # tyyd, ssh
 EXPOSE 7681 4222
 USER root
-
 WORKDIR /home/appuser/workspace
 
 ENTRYPOINT []
