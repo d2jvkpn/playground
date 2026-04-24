@@ -33,7 +33,6 @@ def request(config: AppConfig, _input: str | list, agent: str = "", user: str = 
         "model": f"openclaw/{agent}",
         "input": _input,
     }
-    #print(f"--> payload: {payload}")
 
     resp = requests.post(
         config.openclaw.url + "/v1/responses",
@@ -41,6 +40,11 @@ def request(config: AppConfig, _input: str | list, agent: str = "", user: str = 
         json=payload,
         timeout=config.openclaw.timeout,
     )
+
+    source = payload["input"][0]["content"][0].get("source")
+    if source and source.get("data"):
+        source["data"] = "____BASE64____"
+    print(f"--> payload: ${json.dumps(payload, ensure_ascii=False)}")
 
     return resp
 

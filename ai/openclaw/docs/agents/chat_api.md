@@ -62,13 +62,14 @@ time curl -i -X POST $addr/v1/responses \
     "input": "你是谁？"
   }'
 
-time curl -i -X POST $addr/v1/responses \
+curl -i -X POST $addr/v1/responses \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $token" \
   -d '{
     "user": "user01",
     "model": "openclaw/agent01",
     "stream": false,
+    "instructions": "",
     "input": [
       {
         "type": "input_text",
