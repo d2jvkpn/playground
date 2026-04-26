@@ -14,9 +14,13 @@ version: 0.1.0
 
 2. quick install
 ```
-npx -y @tencent-weixin/openclaw-weixin@latest install
+~~npx -y @tencent-weixin/openclaw-weixin@latest install~~
+
+
+npx -y @tencent-weixin/openclaw-weixin-cli install
 
 ls ~/.openclaw/extensions/openclaw-weixin ~/.openclaw/openclaw-weixin
+```
 ```
 
 3. manual installation
