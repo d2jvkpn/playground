@@ -1,32 +1,25 @@
 package main
 
 import (
-	"crypto/ecdsa"
-	"crypto/elliptic"
-	"crypto/rand"
 	"crypto/tls"
-	"crypto/x509"
-	"crypto/x509/pkix"
 	"encoding/json"
-	"encoding/pem"
 	"flag"
 	"fmt"
 	"log"
-	"math/big"
+	"net"
 	"net/http"
 	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/quic-go/quic-go/http3"
 )
 
 // ---- Main ----
-
 func main() {
 	var (
 		domain   string
 		addr     string
+		port     string
 		certPath string
 		keyPath  string
 		err      error
@@ -45,10 +38,15 @@ func main() {
 	flag.StringVar(&keyPath, "key", "configs/key.pem", "TLS private key file")
 	flag.Parse()
 
+	_, port, err = net.SplitHostPort(addr)
+	if err != nil {
+		log.Fatal("Error:", err)
+	}
+
 	if _, err = os.Stat(certPath); os.IsNotExist(err) {
 		log.Printf("Generating self-signed TLS certificate → %s / %s", certPath, keyPath)
 		log.Printf("Note: browsers often keep localhost on HTTP/2 when HTTP/3 uses an untrusted self-signed cert; use `make mkcert` for a locally trusted cert")
-		if err = generateCert(certPath, keyPath); err != nil {
+		if err = generateCert(certPath, keyPath, domain); err != nil {
 			log.Fatalf("Cert generation failed: %v", err)
 		}
 	}
@@ -85,12 +83,12 @@ func main() {
 	errChan = make(chan error, 2)
 	log.Printf("Note: a quic-go UDP receive buffer warning is non-fatal for this local demo; it mainly affects HTTP/3 performance under load")
 	go func() {
-		log.Printf("HTTP/3   listening on https://%s%s", domain, addr)
+		log.Printf("HTTP/3   listening on https://%s:%s", domain, port)
 		errChan <- h3srv.ListenAndServe()
 	}()
 
 	go func() {
-		log.Printf("HTTP/1+2 listening on https://%s%s", domain, addr)
+		log.Printf("HTTP/1+2 listening on https://%s:%s", domain, port)
 		errChan <- h12srv.ListenAndServeTLS(certPath, keyPath)
 	}()
 
@@ -124,7 +122,6 @@ func writeJSON(w http.ResponseWriter, status int, v Response) {
 }
 
 // ---- API handlers ----
-
 func handleHello(w http.ResponseWriter, r *http.Request) {
 	name := r.URL.Query().Get("name")
 	if name == "" {
@@ -170,7 +167,6 @@ func handleEcho(w http.ResponseWriter, r *http.Request) {
 }
 
 // ---- Middleware ----
-
 func altSvc(addr string, next http.Handler) http.Handler {
 	hdr := fmt.Sprintf(`h3="%s"; ma=86400`, addr)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -184,57 +180,4 @@ func logger(next http.Handler) http.Handler {
 		log.Printf("%s  %s %s", r.Proto, r.Method, r.URL.Path)
 		next.ServeHTTP(w, r)
 	})
-}
-
-// ---- TLS cert (self-signed) ----
-
-func generateCert(certPath, keyPath string) error {
-	var (
-		err               error
-		bts               []byte
-		priv              *ecdsa.PrivateKey
-		certFile, keyFile *os.File
-	)
-
-	if err = os.MkdirAll(filepath.Dir(certPath), 0o755); err != nil {
-		return err
-	}
-
-	if priv, err = ecdsa.GenerateKey(elliptic.P256(), rand.Reader); err != nil {
-		return err
-	}
-
-	tmpl := &x509.Certificate{
-		SerialNumber: big.NewInt(1),
-		Subject:      pkix.Name{CommonName: "localhost"},
-		DNSNames:     []string{"localhost"},
-		NotBefore:    time.Now().Add(-time.Minute),
-		NotAfter:     time.Now().Add(365 * 24 * time.Hour),
-		KeyUsage:     x509.KeyUsageDigitalSignature,
-		ExtKeyUsage:  []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
-	}
-
-	bts, err = x509.CreateCertificate(rand.Reader, tmpl, tmpl, &priv.PublicKey, priv)
-	if err != nil {
-		return err
-	}
-
-	if certFile, err = os.Create(certPath); err != nil {
-		return err
-	}
-	defer certFile.Close()
-
-	if err = pem.Encode(certFile, &pem.Block{Type: "CERTIFICATE", Bytes: bts}); err != nil {
-		return err
-	}
-
-	if keyFile, err = os.Create(keyPath); err != nil {
-		return err
-	}
-	defer keyFile.Close()
-
-	if bts, err = x509.MarshalECPrivateKey(priv); err != nil {
-		return err
-	}
-	return pem.Encode(keyFile, &pem.Block{Type: "EC PRIVATE KEY", Bytes: bts})
 }
