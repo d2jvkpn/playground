@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTTP/3 Demo</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -.5px; }
+    header h1 span { color: #38bdf8; }
+    header p  { margin-top: .4rem; color: #94a3b8; font-size: .9rem; }
+
+    .hero-note {
+      margin-top: .9rem;
+      max-width: 760px;
+      color: #94a3b8;
+      font-size: .84rem;
+      line-height: 1.55;
+    }
+
+    #proto-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      margin-top: .8rem;
+      padding: .25rem .75rem;
+      border-radius: 999px;
+      font-size: .75rem;
+      font-weight: 600;
+      background: #1e293b;
+      color: #64748b;
+      border: 1px solid #334155;
+    }
+    #proto-badge.h3  { background: #0c4a6e; color: #38bdf8; border-color: #0369a1; }
+    #proto-badge.h2  { background: #134e4a; color: #2dd4bf; border-color: #0f766e; }
+    #proto-badge.h11 { background: #3b1f0a; color: #fb923c; border-color: #9a3412; }
+    .badge-label { opacity: .8; }
+    .badge-value { font-weight: 700; color: inherit; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: .75rem;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+    }
+    .card h2 { font-size: 1rem; font-weight: 600; color: #cbd5e1; }
+    .card p  { font-size: .82rem; color: #64748b; }
+
+    .row { display: flex; gap: .5rem; align-items: center; }
+
+    input[type="text"], textarea {
+      flex: 1;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: .4rem;
+      color: #e2e8f0;
+      padding: .45rem .7rem;
+      font-size: .85rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    input[type="text"]:focus, textarea:focus { border-color: #38bdf8; }
+    textarea { resize: vertical; min-height: 80px; font-family: monospace; }
+
+    button {
+      background: #0369a1;
+      color: #fff;
+      border: none;
+      border-radius: .4rem;
+      padding: .45rem 1rem;
+      cursor: pointer;
+      font-size: .85rem;
+      font-weight: 500;
+      transition: background .2s;
+      white-space: nowrap;
+    }
+    button:hover  { background: #0284c7; }
+    button:active { background: #075985; }
+
+    .result {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: .4rem;
+      padding: .6rem .8rem;
+      font-family: monospace;
+      font-size: .78rem;
+      color: #7dd3fc;
+      min-height: 2.4rem;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .result.err { color: #f87171; }
+
+    footer {
+      margin-top: 3rem;
+      font-size: .75rem;
+      color: #334155;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>HTTP/<span>3</span> Demo</h1>
+  <p>Go · quic-go · Self-signed TLS · Vanilla Frontend</p>
+  <div id="proto-badge">
+    <span class="badge-label">Current request:</span>
+    <span class="badge-value">Detecting…</span>
+  </div>
+  <p class="hero-note">
+    This server supports HTTP/3, but browsers often load the first page over HTTP/2, learn the
+    <code>Alt-Svc</code> advertisement, and only then try HTTP/3 on a later connection. If you see
+    <code>HTTP/2.0</code> here, it means this specific browser request used HTTP/2, not that the backend lacks HTTP/3.
+  </p>
+</header>
+
+<div class="cards">
+
+  <!-- /api/hello -->
+  <div class="card">
+    <h2>GET /api/hello</h2>
+    <p>Pass a <code>name</code> query param; the response shows which protocol this request actually used.</p>
+    <div class="row">
+      <input type="text" id="hello-name" placeholder="name (default: World)" />
+      <button onclick="callHello()">Send</button>
+    </div>
+    <div class="result" id="hello-result">—</div>
+  </div>
+
+  <!-- /api/time -->
+  <div class="card">
+    <h2>GET /api/time</h2>
+    <p>Returns server UTC time and the protocol negotiated for this request.</p>
+    <div class="row">
+      <button onclick="callTime()">Get Time</button>
+    </div>
+    <div class="result" id="time-result">—</div>
+  </div>
+
+  <!-- /api/echo -->
+  <div class="card" style="grid-column: 1 / -1;">
+    <h2>POST /api/echo</h2>
+    <p>Send any JSON body; the server echoes it back and appends per-request protocol metadata.</p>
+    <textarea id="echo-body">{"message": "Hello, HTTP/3!", "value": 42}</textarea>
+    <div class="row">
+      <button onclick="callEcho()">Send Echo</button>
+    </div>
+    <div class="result" id="echo-result">—</div>
+  </div>
+
+</div>
+
+<footer>Open https://localhost:8443 — accept the self-signed certificate warning on first visit</footer>
+
+<script>
+  const badge = document.getElementById('proto-badge');
+  const badgeValue = badge.querySelector('.badge-value');
+
+  function setProto(proto) {
+    badgeValue.textContent = proto || 'unknown';
+    badge.className = '';
+    if (proto?.includes('3'))  badge.classList.add('h3');
+    else if (proto?.includes('2')) badge.classList.add('h2');
+    else badge.classList.add('h11');
+  }
+
+  function fmt(obj) { return JSON.stringify(obj, null, 2); }
+
+  async function callHello() {
+    const name  = document.getElementById('hello-name').value.trim();
+    const el    = document.getElementById('hello-result');
+    el.className = 'result';
+    try {
+      const url  = name ? `/api/hello?name=${encodeURIComponent(name)}` : '/api/hello';
+      const resp = await fetch(url);
+      const json = await resp.json();
+      el.textContent = fmt(json);
+      if (json.data?.protocol) setProto(json.data.protocol);
+    } catch (e) {
+      el.className = 'result err';
+      el.textContent = e.message;
+    }
+  }
+
+  async function callTime() {
+    const el = document.getElementById('time-result');
+    el.className = 'result';
+    try {
+      const resp = await fetch('/api/time');
+      const json = await resp.json();
+      el.textContent = fmt(json);
+      if (json.data?.protocol) setProto(json.data.protocol);
+    } catch (e) {
+      el.className = 'result err';
+      el.textContent = e.message;
+    }
+  }
+
+  async function callEcho() {
+    const el   = document.getElementById('echo-result');
+    el.className = 'result';
+    let body;
+    try {
+      body = JSON.parse(document.getElementById('echo-body').value);
+    } catch {
+      el.className = 'result err';
+      el.textContent = 'Invalid JSON';
+      return;
+    }
+    try {
+      const resp = await fetch('/api/echo', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(body),
+      });
+      const json = await resp.json();
+      el.textContent = fmt(json);
+      if (json.data?.echo?._protocol) setProto(json.data.echo._protocol);
+    } catch (e) {
+      el.className = 'result err';
+      el.textContent = e.message;
+    }
+  }
+
+  // Auto-detect protocol on load
+  (async () => {
+    try {
+      const r = await fetch('/api/time');
+      const j = await r.json();
+      if (j.data?.protocol) setProto(j.data.protocol);
+    } catch { badgeValue.textContent = 'unreachable'; }
+  })();
+</script>
+</body>
+</html>
