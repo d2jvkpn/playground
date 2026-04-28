@@ -5,15 +5,15 @@ set -eu -o pipefail; _wd=$(pwd); _path=$(dirname $0)
 # cron: 10 0 * * * bash ${HOME}/apps/crons/acme_cron.sh
 # help: https://crontab.guru
 
-acme=~/apps/acme.git # directory
+acme_dir=${acme_dir:-~/apps/acme}
 target_dir=${target_dir:-~/apps/nginx/certs}
 changed="false";
 
 {
     date +"==> %FT%T%:z run acme_cron.sh"
-    $acme/acme.sh --cron --server letsencrypt --home $acme
+    $acme_dir/acme.sh --cron --server letsencrypt --home $acme_dir
 
-    for certs_dir in $(ls -d $acme/*_ecc/ | sed 's#/$##'); do
+    for certs_dir in $(ls -d $acme_dir/*_ecc/ | sed 's#/$##'); do
         domain=$(basename $certs_dir | sed 's/_ecc$//')
 
         s1=$(md5sum $certs_dir/fullchain.cer $certs_dir/$domain.key | awk '{print $1}')

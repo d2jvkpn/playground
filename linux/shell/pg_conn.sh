@@ -2,13 +2,19 @@
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
-choice=${1:-postgres}
-
 config=${config:-./configs/postgres.yaml}
 if [ ! -f $config ]; then
     config=$HOME/.config/postgres/postgres.yaml
 fi
 config_dir=$(dirname $config)
+
+# choice=${1:-postgres}
+if [ "$#" -eq 0 ]; then
+    choices=$(yq '.choices | keys' $config)
+    echo -e "choices:\n$choices"
+    exit 1
+fi
+choice=$1
 
 host=$(yq .host "$config")                            # PGHOST
 port=$(yq .port "$config")                            # PGPORT
@@ -53,17 +59,16 @@ choices:
 
 ##
 ```
-create role <role> with encrypted password '<password>';
-alter role <role> with login;
-create database <db> with owner = <role>;
+create role hello with encrypted password 'world';
+alter role hello with login;
+create database hello with owner = hello;
 
-ALTER ROLE <role> WITH PASSWORD '<password>';
+ALTER ROLE postgres WITH PASSWORD 'example_new_password';
 ```
 
 ```
 # pgpass format: ip:port:db:user:password
-# chmod 600 <pgpass_file>
-PGPASSFILE=<pgpass_file> psql -U <username> -d <db> -h <ip> -f data/import.sql
+PGPASSFILE=configs/postgres.pgpass psql -U <username> -d <db> -h <ip> -f data/import.sql
 
-PGPASSWORD='<password>' psql -U <username> -d <db> -h <ip> -f data/import.sql
+PGPASSWORD='example_password' psql -U <username> -d <db> -h <ip> -f data/import.sql
 ```

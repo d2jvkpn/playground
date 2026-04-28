@@ -41,6 +41,7 @@ def request(config: AppConfig, _input: str | list, agent: str = "", user: str = 
         timeout=config.openclaw.timeout,
     )
 
+    # print("~~~", payload)
     source = payload["input"][0]["content"][0].get("source")
     if source and source.get("data"):
         source["data"] = "____BASE64____"
@@ -96,6 +97,8 @@ if __name__ == "__main__":
         _input = generate_input(args.image_url, args.filepath, args.prompt)
         response = request(config, _input)
     else:
-        response = request(config, args.prompt)
+        #response = request(config, args.prompt)
+        _input = generate_input(args.image_url, args.filepath, args.prompt)
+        response = request(config, _input)
 
     print_response(response)

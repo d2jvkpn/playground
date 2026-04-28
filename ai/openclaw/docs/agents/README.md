@@ -8,18 +8,17 @@
 
 #### ch01. commands
 - openclaw agents list
-- openclaw agents add bot01 \
-  --workspace ~/.openclaw/bot01 \
-  --agent-dir ~/.openclaw/agents/bot01 \
+- openclaw agents add agent01 \
+  --workspace ~/.openclaw/agent01 \
+  --agent-dir ~/.openclaw/agents/agent01 \
   --model qwen3.5-plus
   # --bind [feishu | feishu:account]
-- openclaw agents set-identity --agent bot01 --name "bot01" --emoji 🤖
+- openclaw agents set-identity --agent agent01 --name "agent01" --emoji 🤖
 - openclaw agents bindings
-- openclaw tui --agent bot01
-- openclaw agent --agent bot01 --message "测试" --deliver
-- openclaw agents bind --agent bot01 --bind telegram:supportbot
-- openclaw agents delete bot01
-
+- openclaw tui --agent agent01
+- openclaw agent --agent agent01 --message "测试" --deliver
+- openclaw agents bind --agent agent01 --bind telegram:supportbot
+- openclaw agents delete agent01
 
 #### ch02. Agent to Agent
 1. settings
