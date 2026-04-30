@@ -1,0 +1,15 @@
+# path: configs/dufs.yaml
+
+serve-path: ./data/dufs
+bind: 0.0.0.0
+port: 5000
+
+allow-upload: true
+#allow-delete: true
+#allow-search: true
+render-index: true
+
+auth:
+#- admin:plain_password@/public:rw
+- 'acocunt:$6$xxxxxx$yyyyyyyyyyyyyyyyyyyy@/public:rw'
+- '@/public'

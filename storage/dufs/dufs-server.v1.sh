@@ -20,13 +20,22 @@ dufs --port $port \
   --auth $username:$password@$subpath:rw
 
 exit
-
 mkdir -p alice bob
 echo "Hello, I'm Alice!" > alice/hello.txt
 echo "Hello, I'm Bob!" > bob/hello.txt
 
 dufs --bind 127.0.0.1 --port 3000 \
-  --allow-upload --allow-search --allow-archive \
+  --allow-upload \
+  --allow-search \
+  --allow-archive \
   --auth admin:admin@/:r \
   --auth alice:alice@/alice:r \
   --auth bob:bob@/bob:r
+
+dufs ./data \
+  --allow-upload \
+  --render-index \
+  -a 'admin:your_password@/public:rw' \
+  -a '@/public'
+  -b 0.0.0.0 \
+  -p 5000

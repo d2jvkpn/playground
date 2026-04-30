@@ -1,0 +1,18 @@
+networks:
+  net: { name: local, driver: bridge, external: true }
+
+services:
+  dufs:
+    image: sigoden/dufs:latest
+    container_name: dufs
+    restart: always # unless-stopped
+    user: 1000:1000
+    expose: ["5000"]
+    networks: ["net"]
+    ports: ["127.0.0.1:5000:5000"]
+    volumes:
+    - ./data/dufs:/app/data/dufs
+    - ./configs/dufs.yaml:/app/configs/dufs.yaml:ro
+    working_dir: /app
+    entrypoint: []
+    command: ["dufs", "--config", "configs/dufs.yaml"]
