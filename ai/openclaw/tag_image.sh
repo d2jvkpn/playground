@@ -11,7 +11,7 @@ cid=$(docker create $name:latest)
 docker cp "$cid:/home/appuser/.local/npm/lib/node_modules/openclaw/package.json" data/openclaw.package.json
 docker rm "$cid"
 
-version=$(jq -r .version data/openclaw.package.json)
+version=$(jq -r .version data/openclaw.package.json | awk -F '-' '{print $1}')
 if [[ "$dry_run" == "true" ]]; then
     echo "version: $version"
     exit 0

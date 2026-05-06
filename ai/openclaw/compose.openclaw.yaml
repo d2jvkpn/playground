@@ -44,6 +44,7 @@ services:
     environment:
       TZ: Asia/Shanghai
       OPENCLAW_NO_RESPAWN: "1"
+      # OPENCLAW_ALLOW_ORIGINS: "https://example.com,https://example.com"
       # https_proxy: http://172.17.0.1:1080
       # http_proxy: http://172.17.0.1:1080
       # no_proxy: localhost,127.0.0.1,::1,192.168.0.0/16,10.0.0.0/8,172.16.0.1/12,.svc,.lan,.local,.test,.internal

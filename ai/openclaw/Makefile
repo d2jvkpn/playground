@@ -29,3 +29,6 @@ up:
 
 down:
 	docker compose down
+
+get_token:
+	jq -r '.gateway.auth.token' data/openclaw/openclaw.json

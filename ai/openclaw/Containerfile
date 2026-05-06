@@ -51,6 +51,8 @@ ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
 
+ENV ALLOW_ORIGINS=""
+
 VOLUME /home/appuser/.openclaw
 VOLUME /home/appuser/.agents
 

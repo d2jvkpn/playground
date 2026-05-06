@@ -21,3 +21,12 @@ version: 0.1.0
 - https://github.com/aiming-lab/MetaClaw
 
 5. zeroclaw
+
+6. goclaw
+- https://github.com/nextlevelbuilder/goclaw
+
+7. nanobot
+- https://github.com/HKUDS/nanobot
+
+8. picoclaw
+- https://github.com/sipeed/picoclaw
