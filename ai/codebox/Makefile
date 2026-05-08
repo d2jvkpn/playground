@@ -23,8 +23,8 @@ docker_update:
 root:
 	docker exec -it -u root codebox bash
 
-shell:
+codebox:
 	docker exec -it -u appuser codebox bash
 
-tmux:
-	docker exec -it -u appuser codebox tmux
+opencode:
+	docker exec -it -u appuser opencode bash
