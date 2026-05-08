@@ -5,6 +5,8 @@ ARG http_proxy
 ARG https_proxy
 ARG no_proxy
 
+ARG build_region
+
 ENV http_proxy=$http_proxy \
     https_proxy=$https_proxy \
     no_proxy=$no_proxy
@@ -13,12 +15,24 @@ ENV http_proxy=$http_proxy \
 USER root
 
 COPY ./copy_files/scripts/. /opt/scripts
+
+RUN bash /opt/scripts/_install_services.sh
 RUN bash /opt/scripts/_install_tools.sh
+
 RUN mkdir -p /app/configs /app/logs
 
 ####
 USER appuser
 WORKDIR /home/appuser
+
+RUN if [ "$build_region" == "cn" ]; then \
+        bash /opt/scripts/config_cn.sh pip; \
+        bash /opt/scripts/config_cn.sh npm; \
+    fi
+
+# OPENCODE_SERVER_USERNAME="opencode"
+# OPENCODE_CONFIG_DIR=~/.config/opencode
+# OPENCODE_SERVER_PASSWORD=""
 
 ENV CLAUDE_CONFIG_DIR=/home/appuser/.local/share/claude \
     OTEL_EXPORTER_OTLP_ENDPOINT="" \
@@ -36,6 +50,7 @@ ENV CODEX_HOME=/home/appuser/.local/share/codex
 RUN bash /opt/scripts/_install_codebox.sh && \
     rm -rf ~/.cache ~/.npm
 
+ENV BASH_ENV=/home/appuser/.bash_aliases
 RUN mkdir -p ~/.cache
 
 ####
@@ -43,14 +58,23 @@ ENV https_proxy="" \
     http_proxy="" \
     no_proxy=""
 
-ENV TZ=UTC
+ENV TZ=Asia/Shanghai
 
-# tyyd, ssh
-EXPOSE 7681 4222
-USER root
+# webui: 4096, auth_callback: 1455, tyyd: 7681, ssh: 4222
+EXPOSE 4096
+EXPOSE 7681
+EXPOSE 4222
+
 WORKDIR /home/appuser/workspace
 
-ENTRYPOINT []
+# opencode webui
+CMD ["opencode", "web", "--hostname=127.0.0.1", "--port=4096"]
+# --cors http://localhost:4096 --cors https://app.example.com
+# Works exclusively on the host network model: --mdns fase --mdns-domain opencode.local
 
+# opencode tui
+#CMD ["opencode"]
+
+# claude code
 #CMD ["sing-box", "run", "-c=/app/configs/sing-box.tun.json"]
-CMD ["supervisord", "-l", "/app/logs/supervisord.log", "-c", "/app/configs/supervisord.conf"]
+#CMD ["supervisord", "-l", "/app/logs/supervisord.log", "-c", "/app/configs/supervisord.conf"]

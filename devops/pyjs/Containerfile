@@ -23,11 +23,11 @@ ENV LANG=C.UTF-8 \
 RUN bash /opt/scripts/install_nodejs.sh && \
     /opt/scripts/apt_install.sh tzdata locales ca-certificates gnupg \
       python3 python3-venv python3-pip python3-dev \
-      zip unzip jq ripgrep vim git wget curl \
+      zip unzip jq ripgrep vim git wget curl bash-completion \
       mtr netcat-openbsd iproute2 lsof nftables bind9-dnsutils \
       supervisor gosu file tree less uuid xxd tmux gh openssh-server && \
     update-ca-certificates
-# iptables
+# sudo, iptables
 
 RUN bash /opt/scripts/install_tools.sh
 
@@ -77,5 +77,5 @@ VOLUME /home/appuser/workspace
 
 WORKDIR /home/appuser/workspace
 
-ENTRYPOINT ["/opt/scripts/entrypoint.sh"]
+#ENTRYPOINT ["/opt/scripts/entrypoint.sh"]
 CMD ["sleep", "infinity"]

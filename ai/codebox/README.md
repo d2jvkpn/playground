@@ -35,6 +35,8 @@ docs:
 4. Gemini CLI
 5. OpenSpec
 - https://github.com/Fission-AI/OpenSpec
+6. Deepseek-TUI
+- https://github.com/Hmbown/DeepSeek-TUI
 
 #### ch04. IDE
 1. Winsurf

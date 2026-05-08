@@ -34,3 +34,12 @@ exit
 rm -rf ~/.npm ~/.cache
 
 opencode --version | awk '{print "opencode: "$1}'
+
+exit
+####
+npm install -g @charmland/crush
+
+openspec --version | awk '{print "openspec: "$1}'
+codex --version | awk '{print "codex: "$2}'
+gemini --version | awk '{print "gemini-cli: "$1}'
+claude --version | awk '{print $1}'

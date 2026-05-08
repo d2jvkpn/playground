@@ -10,8 +10,9 @@ apt-get -qq update 2>&1 > /dev/null
 
 apt list --upgradable 2>/dev/null |
   awk -F "/" 'NF>1{print $1}' |
-  xargs apt upgrade -qq -y --no-install-recommends --allow-change-held-packages
-# apt-get upgrade -qq -y --no-install-recommends
+  xargs -r apt install -y -qq --only-upgrade \
+    --no-install-recommends --allow-change-held-packages
+# xargs apt upgrade -qq -y --no-install-recommends --allow-change-held-packages
 
 #### 3. install packages
 if [ $# -gt 0 ]; then

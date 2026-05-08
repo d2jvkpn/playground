@@ -41,5 +41,6 @@ services:
       # ANTHROPIC_BASE_URL: ""
       # ANTHROPIC_API_KEY: ""
       # ANTHROPIC_MODEL: ""
+    entrypoint: []
     command: ["sing-box", "run", "-c=/app/configs/sing-box.tun.json"]
     #command: ["supervisord", "-l", "/app/logs/supervisord.log", "-c", "/app/configs/supervisord.conf"]
