@@ -7,6 +7,12 @@ npm install -g markdownlint-cli bash-language-server yaml-language-server \
     pyright vscode-langservers-extracted typescript typescript-language-server \
     @vue/language-server eslint prettier prettier-plugin-tailwindcss
 
+pip install --no-cache-dir --upgrade \
+    python-docx python-pptx openpyxl pandas \
+    pypdf pdfplumber pymupdf \
+    ast-grep-cli
+# $ ast-grep
+
 ####
 mkdir -p /etc/apt/keyrings
 
@@ -47,10 +53,3 @@ curl -fL -o /usr/local/bin/dasel "https://github.com/TomWright/dasel/releases/do
 chmod a+x /usr/local/bin/dasel
 
 #?? gitleaks, lazygit
-
-####
-pip install --no-cache-dir --upgrade \
-  python-docx python-pptx openpyxl pandas \
-  pypdf pdfplumber pymupdf \
-  ast-grep-cli
-# $ ast-grep

@@ -21,6 +21,7 @@ version: 0.1.0
 - https://github.com/aiming-lab/MetaClaw
 
 5. zeroclaw
+- 
 
 6. goclaw
 - https://github.com/nextlevelbuilder/goclaw
@@ -30,3 +31,6 @@ version: 0.1.0
 
 8. picoclaw
 - https://github.com/sipeed/picoclaw
+
+9. hermes-agent
+- https://github.com/nousresearch/hermes-agent

@@ -1,0 +1,51 @@
+theme: light
+
+server:
+  address: tcp://0.0.0.0:9091
+
+log:
+  level: debug
+
+totp:
+  issuer: local.test
+
+identity_validation:
+  reset_password:
+    jwt_secret: "change-this-reset-password-secret"
+
+authentication_backend:
+  file:
+    path: /config/users_database.yml
+
+access_control:
+  default_policy: deny
+  rules:
+    - domain:
+        - "app.local.test"
+      policy: one_factor
+
+session:
+  secret: "change-this-session-secret-change-to-long-random-string"
+  cookies:
+    - domain: "local.test"
+      authelia_url: "https://auth.local.test"
+      default_redirection_url: "https://app.local.test"
+      name: "authelia_session"
+      same_site: lax
+      inactivity: 5m
+      expiration: 1h
+      remember_me: 1M
+
+regulation:
+  max_retries: 3
+  find_time: 2m
+  ban_time: 5m
+
+storage:
+  encryption_key: "change-this-storage-encryption-key-32chars"
+  local:
+    path: /config/db.sqlite3
+
+notifier:
+  filesystem:
+    filename: /config/notification.txt

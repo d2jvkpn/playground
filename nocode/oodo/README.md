@@ -1,4 +1,4 @@
-# Hermes Agent
+# Oodo
 ---
 ```meta
 date: 1970-01-01
@@ -10,4 +10,5 @@ description:
 
 #### ch01. 
 1. docs
-- https://github.com/nousresearch/hermes-agent
+- https://www.odoo.com/
+- https://hub.docker.com/_/odoo/

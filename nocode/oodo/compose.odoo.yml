@@ -1,0 +1,34 @@
+volumes:
+  odoo-web:
+
+secrets:
+  postgresql_password:
+    file: ./configs/odoo_pg.pass
+
+services:
+  web:
+    image: odoo:19
+    container_name: odoo-web
+    restart: always
+    depends_on: ["db"]
+    ports: ["8069:8069"]
+    secrets: ["postgresql_password"]
+    volumes:
+    - ./configs/oddo:/etc/odoo
+    - ./data/addons:/mnt/extra-addons
+    - odoo-web:/var/lib/odoo
+    environment:
+      PASSWORD_FILE: /run/secrets/postgresql_password
+
+  db:
+    image: postgres:18-trixie
+    container_name: odoo-postgres
+    restart: always
+    secrets: ["postgresql_password"]
+    volumes:
+    - ./data/postgres:/var/lib/postgresql/18/docker
+    environment:
+      POSTGRES_USER: odoo
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgresql_password
+      PGDATA: /var/lib/postgresql/data/pgdata

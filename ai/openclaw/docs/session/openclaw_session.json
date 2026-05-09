@@ -1,0 +1,10 @@
+{
+  "session": {
+    "maintenance": {
+      "mode": "enforce",
+      "pruneAfter": "7d",
+      "maxEntries": 100,
+      "rotateBytes": "10mb"
+    }
+  }
+}
