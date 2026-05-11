@@ -15,5 +15,8 @@ description:
 
 2. commands
 ```
+docker run --rm authelia/authelia:latest \
+  authelia crypto hash generate argon2 --password 'your_password'
+
 docker run --rm -v $PWD/configs/authelia:/config authelia/authelia:latest authelia config validate --config /config/configuration.yml
 ```

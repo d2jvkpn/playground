@@ -3,6 +3,9 @@ create_dirs:
 	  data/config data/cache data/share data/state \
 	  logs configs configs/sshd_config.d configs/ssh
 
+create_share:
+	mkdir -p data/share/claude data/share/codex data/share/deepseek data/share/gemini
+
 docker_build:
 	docker build --no-cache -f Containerfile \
 	  --network=host \
