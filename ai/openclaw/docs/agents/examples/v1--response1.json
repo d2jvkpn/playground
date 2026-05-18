@@ -1,0 +1,26 @@
+{
+  "id": "resp_afec7fad-d3a4-44e7-bf58-bda016132ea3",
+  "object": "response",
+  "created_at": 1778483912,
+  "status": "completed",
+  "model": "openclaw/main",
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_a08eea49-9e12-46a1-84eb-c87abc65c598",
+      "role": "assistant","content": [
+        {
+          "type": "output_text",
+          "text": "这块里只有一小片棕色背景/地面过渡区域，看不出独立主体。  \n如果你是想让我指出整张图的这个位置对应什么，大概率是在角色下方的背景边角。"
+        }
+      ],
+      "phase": "final_answer",
+      "status": "completed"
+    }
+  ],
+  "usage": {
+    "input_tokens": 20439,
+    "output_tokens": 54,
+    "total_tokens": 20493
+  }
+}

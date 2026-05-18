@@ -1,0 +1,18 @@
+{
+  "user": "user01",
+  "model": "openclaw/main",
+  "stream": false,
+  "instructions": "",
+  "input": [
+    {
+      "type": "message",
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "生成一个图——卡通兔子\n\n提示词：\n一只可爱的卡通兔子，圆润造型，大眼睛，软萌表情，白色绒毛，粉色耳朵，短短的尾巴，站在草地上，清新明亮配色，儿童绘本风格，高质量插画，干净背景，细节精致"
+        }
+      ]
+    }
+  ]
+}

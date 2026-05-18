@@ -27,6 +27,18 @@ alias find='fd'
 
 5. dufs
 
+6. lsd
+```
+sudo apt install lsd
+```
+
+7. xh
+```
+curl -sfL https://raw.githubusercontent.com/ducaale/xh/master/install.sh | sh
+```
+
+8. dua, dysk, procs, bottom
+
 #### 2. Golang
 1. yq
 2. plow

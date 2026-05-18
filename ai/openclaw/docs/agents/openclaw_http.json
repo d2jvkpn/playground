@@ -2,6 +2,9 @@
   "gateway": {
     "http": {
       "endpoints": {
+        "chatCompletions": {
+          "enabled": true
+        },
         "responses": {
           "enabled": true,
           "maxBodyBytes": 20000000,

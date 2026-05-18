@@ -1,0 +1,26 @@
+{
+  "user": "user01",
+  "model": "openclaw/main",
+  "stream": false,
+  "instructions": "",
+  "input": [
+    {
+      "type": "message",
+      "role": "user",
+      "content": [
+        {
+          "type": "input_image",
+          "source": {
+            "type": "base64",
+            "media_type": "image/jpeg",
+            "data": "/9j/4AAQSkZJRgABAQAAAAAAAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCAAUABsDAREAAhEBAxEB/8QAGgAAAgIDAAAAAAAAAAAAAAAABwgABQEGCf/EACwQAAEDAwIFAQkBAAAAAAAAAAECAwQABREGEgchMUFhcQgTIjJCQ1GhseH/xAAbAQACAgMBAAAAAAAAAAAAAAAEBQABAgMHBv/EAB8RAAICAwACAwAAAAAAAAAAAAABAgMEESEFMRJhkf/aAAwDAQACEQMRAD8AMHDXjZpniAyiM4puBdgkFyG84CCe5Qr6h+x3FcfvxZUv6OhVXRs9BIadaVywEpxn0oQ3aZHC2SAAcDx0qSRabM+8UPtZ85qE0jn7Ity4UhEq1SHNrZ3pAWQ42R+COefSvUrU1qQj24PaC7w49oO66fU3bdaLVMt5IDU1IytvwsZ5jyKW5Hj99r/A6rMT5MY+xaitWoIbUy1TmJLDmSlxpQIP+0slXKHGGKafos9zR5gpwfNY6RfRILshuRckSA2GjIZU6tLXwp3J7gdvNP6ZP4iq6KUuFJPCWXC6hIysncCOR69qMQMzY9J6vv2kbgwuxzVMtvKSFsqJU2R0+U9OVCZFUZroTTNpjTWrUU6Xb2JLrbO9aMnAOP7SdwSehgm2f//Z"
+          }
+        },
+        {
+          "type": "input_text",
+          "text": "图里有什么？"
+        }
+      ]
+    }
+  ]
+}

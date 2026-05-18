@@ -1,0 +1,7 @@
+{
+  "user": "user01",
+  "model": "openclaw/main",
+  "stream": false,
+  "instructions": "",
+  "input": "你是谁？"
+}

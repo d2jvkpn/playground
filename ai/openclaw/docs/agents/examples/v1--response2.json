@@ -1,0 +1,27 @@
+{
+  "id": "resp_33e8aa7f-2309-4c09-a9f6-19c0f973ffcf",
+  "object": "response",
+  "created_at": 1778484296,
+  "status": "completed",
+  "model": "openclaw/main",
+  "output": [
+    {
+      "type": "message",
+      "id": "msg_f72fd53d-f7c5-4a0a-8536-4f3b129b7714",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "图里是一朵**向日葵**。  \n特征很明显：黄色花瓣、深色花盘中心，背景是虚化的绿色田野。"
+        }
+      ],
+      "phase": "final_answer",
+      "status": "completed"
+    }
+  ],
+  "usage": {
+    "input_tokens": 21540,
+    "output_tokens": 41,
+    "total_tokens": 21581
+  }
+}

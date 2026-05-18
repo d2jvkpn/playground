@@ -1,0 +1,26 @@
+{
+  "user": "user01",
+  "model": "openclaw/main",
+  "stream": false,
+  "instructions": "",
+  "store": false,
+  "input": [
+    {
+      "type": "message",
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "图里有什么？"
+        },
+        {
+          "type": "input_image",
+          "source": {
+            "type": "url",
+            "url": "https://pixnio.com/free-images/2024/09/12/2024-09-12-09-12-03-1152x768.jpg"
+          }
+        }
+      ]
+    }
+  ]
+}

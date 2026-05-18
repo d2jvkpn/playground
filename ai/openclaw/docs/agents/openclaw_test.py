@@ -35,7 +35,7 @@ def request(config: AppConfig, _input: str | list, agent: str = "", user: str = 
     }
 
     resp = requests.post(
-        config.openclaw.url + "/v1/responses",
+        config.openclaw.base_url + "/v1/responses",
         headers=headers,
         json=payload,
         timeout=config.openclaw.timeout,
