@@ -1,0 +1,18 @@
+FROM caddy:2-builder AS builder
+
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
+
+ENV http_proxy=$http_proxy \
+    https_proxy=$https_proxy \
+    no_proxy=$no_proxy
+
+#ENV GOPROXY=https://goproxy.cn,direct
+#ENV GOSUMDB=sum.golang.google.cn
+
+RUN xcaddy build --with github.com/caddy-dns/alidns
+
+FROM caddy:2
+
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy

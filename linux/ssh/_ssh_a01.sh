@@ -47,3 +47,9 @@ curl --connect-timeout 2 -x socks5h://127.0.0.1:1081 https://www.google.com # lo
 
 # 4. rsync
 rsync -e 'ssh -F ssh.conf -o RemoteCommand=none -o RequestTTY=no"' -arvP $source_path $target_path
+
+ssh -vvv \
+  -o KexAlgorithms=curve25519-sha256 \
+  -o HostKeyAlgorithms=ssh-ed25519 \
+  -o Ciphers=aes128-ctr \
+  user@remote-host

@@ -1,0 +1,38 @@
+theme: auto
+
+server:
+  address: tcp://0.0.0.0:9091/
+
+log:
+  level: info
+
+totp:
+  issuer: local-dev
+
+authentication_backend:
+  file:
+    path: /config/users_database.yml
+
+access_control:
+  default_policy: deny
+  rules:
+  - domain:
+    - "ttyd.localhost"
+    policy: two_factor
+
+session:
+  name: authelia_session
+  secret: "replace_this_with_a_long_random_string"
+  cookies:
+  - domain: localhost
+    authelia_url: http://auth.localhost
+    default_redirection_url: http://whoami.localhost
+
+storage:
+  encryption_key: "replace_this_with_another_long_random_string"
+  local:
+    path: /config/db.sqlite3
+
+notifier:
+  filesystem:
+    filename: /config/notification.txt

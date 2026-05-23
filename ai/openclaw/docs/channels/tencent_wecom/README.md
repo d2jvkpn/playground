@@ -101,7 +101,7 @@ version: 0.1.0
   }
 }
 ```
-  - defailt: dmPolicy=open
+  - default: dmPolicy=open
   - Pairing list: openclaw pairing list wecom
   - Approve Pairing: openclaw pairing approve wecom <CODE>
 - bindings

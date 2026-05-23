@@ -13,8 +13,6 @@ df -h
 
 sudo du -xh / --max-depth=1 2>/dev/null | sort -h
 
-sudo journalctl --vacuum-time=7d
-
 docker system df
 docker system prune
 

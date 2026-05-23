@@ -9,7 +9,7 @@
 #### ch01. commands
 - openclaw agents list
 - openclaw agents add agent01 \
-  --workspace ~/.openclaw/agent01 \
+  --workspace ~/.openclaw/agents/agent01/workspace \
   --agent-dir ~/.openclaw/agents/agent01 \
   --model qwen3.5-plus
   # --bind [feishu | feishu:account]

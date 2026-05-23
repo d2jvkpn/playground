@@ -2,7 +2,7 @@
 #  redis: { name: redis, driver: local }
 
 #networks:
-#  net: { name: "redis", driver: bridge, external: false }
+#  net: { name: "local", driver: bridge, external: false }
 
 services:
   redis:
@@ -10,7 +10,7 @@ services:
     restart: always
     user: ${USER_UID}:${USER_GID}
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      test: ["CMD-SHELL", "REDISCLI_AUTH=$$(cat /run/secrets/redis.pass) redis-cli ping | grep PONG"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -20,14 +20,16 @@ services:
     container_name: redis
     deploy:
       resources:
-        limits: { cpus: "4", memory: 1G }
-        reservations: { cpus: "0.05", memory: 32M }
+        limits: { cpus: "2", memory: 2G }
+        reservations: { cpus: "0.05", memory: 128M }
     environment:
       TZ: Asia/Shanghai
-      ALLOW_EMPTY_PASSWORD: yes  # ALLOW_EMPTY_PASSWORD is recommended only for development.
       REDIS_DISABLE_COMMANDS: FLUSHDB,FLUSHALL
-    #working_dir: /apps
+      #ALLOW_EMPTY_PASSWORD: yes  # ALLOW_EMPTY_PASSWORD is recommended only for development.
+    working_dir: /data
     volumes:
+    - ./configs/redis.pass:/run/secrets/redis.pass
     - ./data/redis:/data:rw
-    #command: redis-server /etc/redis.conf --loglevel warning --save 30 10 --requirepass d2jvkpn
-    command: redis-server /data/redis.conf --loglevel warning --save 30 10
+    #command: redis-server /etc/redis.conf --loglevel warning --save 300 10 --requirepass d2jvkpn
+    #command: redis-server /etc/redis.conf --loglevel warning --appendonly yes --appendfsync everysec --requirepass d2jvkpn
+    command: redis-server /data/redis.conf

@@ -1,0 +1,84 @@
+{
+  auto_https prefer_wildcard
+
+  http_port 80
+  https_port 443
+
+  acme_dns alidns {
+    access_key_id {env.ALIYUN_ACCESS_KEY_ID}
+    access_key_secret {env.ALIYUN_ACCESS_KEY_SECRET}
+  }
+}
+
+app1.example.com {
+  reverse_proxy localhost:3000
+}
+
+app2.example.com {
+  tls {
+    dns alidns {
+      access_key_id {env.ALIYUN_ACCESS_KEY_ID}
+      access_key_secret {env.ALIYUN_ACCESS_KEY_SECRET}
+    }
+  }
+
+  reverse_proxy localhost:3001
+
+  log {
+    output file /var/log/caddy/app2.example.com.log
+    format json
+  }
+}
+
+site.example.com {
+  root * /data/site.example.com
+  file_server
+
+  @hidden {
+    path /.*
+  }
+  respond @hidden 404
+
+  @static {
+    path *.js *.css *.png *.jpg *.jpeg *.gif *.svg *.ico *.webp *.woff *.woff2
+  }
+
+  header @static Cache-Control "public, max-age=31536000, immutable"
+
+  header {
+    X-Content-Type-Options "nosniff"
+    X-Frame-Options "SAMEORIGIN"
+    Referrer-Policy "strict-origin-when-cross-origin"
+    Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    #X-Frame-Options "DENY"
+  }
+
+  try_files {path} /index.html # spa
+}
+
+example.com, *.example.com {
+  @app host app.example.com
+  handle @app {
+    reverse_proxy app:3000
+  }
+
+  @api host api.example.com
+  handle @api {
+      reverse_proxy api:8080
+  }
+
+  handle {
+    root * /srv
+    file_server
+  }
+
+  log {
+    output file /logs/example.com.log {
+      roll_size 512MiB
+      roll_keep 10
+      roll_keep_for 720h
+    }
+
+    format json
+  }
+}

@@ -1,0 +1,20 @@
+networks:
+  net: { name: local, driver: bridge, external: true }
+
+services:
+  caddy:
+    image: q.local/caddy:latest
+    container_name: caddy
+    restart: always # unless-stopped
+    cap_add: ["NET_BIND_SERVICE"]
+    networks: ["net"]
+    ports: ["80:80", "443:443"]
+    user: "1000:1000"
+    volumes:
+    - ./configs/Caddyfile:/etc/caddy/Caddyfile
+    - ./data/config:/config
+    - ./data/share:/data
+    - ./logs:/logs
+    environment:
+      ALIYUN_ACCESS_KEY_ID: ${ALIYUN_ACCESS_KEY_ID}
+      ALIYUN_ACCESS_KEY_SECRET: ${ALIYUN_ACCESS_KEY_SECRET}

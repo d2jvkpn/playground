@@ -1,0 +1,8 @@
+http://whoami.localhost {
+    reverse_proxy whoami.svc:80
+    #reverse_proxy 127.0.0.1:8001
+}
+
+http://excalidraw.localhost {
+    reverse_proxy excalidraw.svc:80
+}
