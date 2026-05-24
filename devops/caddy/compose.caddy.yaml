@@ -12,6 +12,7 @@ services:
     user: "1000:1000"
     volumes:
     - ./configs/Caddyfile:/etc/caddy/Caddyfile
+    - ./configs/certs:/data/certs
     - ./data/config:/config
     - ./data/share:/data
     - ./logs:/logs

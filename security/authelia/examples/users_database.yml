@@ -1,0 +1,17 @@
+---
+###############################################################
+#                         Users Database                      #
+###############################################################
+
+# This file can be used if you do not have an LDAP set up.
+
+# List of users
+users:
+  jone:
+    disabled: false
+    displayname: Jone
+    email: jone@local.test
+    password: '$argon2id$v=19$m=65536,t=3,p=4$TEnwGSbwJHuykXu7mIESKg$0Ykolpp9jWrmi54oUDexKSI3os3rs9fdDlqVsRqs1c4'
+    groups:
+    - 'admins'
+    - 'dev'

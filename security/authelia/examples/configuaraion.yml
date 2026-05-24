@@ -1,0 +1,101 @@
+####
+theme: light
+
+server:
+  address: tcp://0.0.0.0:9091
+
+log:
+  level: debug           # trace, debug, info, warn, error
+  format: json           # json or text
+  file_path: /config/authelia.log
+  keep_stdout: true
+
+totp:
+  issuer: authelia.example.com
+  period: 30
+  skew: 1
+  digits: 6
+
+notifier:
+  filesystem:
+    filename: /config/notification.txt
+
+#notification:
+#  # 生产环境必须使用 SMTP（文件方式功能受限，不支持高可用）[reference:11]
+#  smtp:
+#    host: smtp.gmail.com
+#    port: 587
+#    timeout: 5s
+#    username: notifications@example.com
+#    password: ...
+#    sender: "Authelia <noreply@example.com>"
+#    subject: "[Authelia] {title}"
+#    disable_require_tls: false
+#    disable_html_emails: false
+#    # tls:  # 可选 TLS 配置
+#    #   server_name: smtp.gmail.com
+
+#ntp:
+#  #address: 'udp://time.cloudflare.com:123'
+#  address: 'udp://ntp.aliyun.com:123'
+#  version: 4
+#  max_desync: '3s'
+#  disable_startup_check: false
+#  disable_failure: false
+
+regulation:
+  max_retries: 3
+  find_time: 2m
+  ban_time: 5m
+
+####
+authentication_backend:
+  file:
+    path: /config/users_database.yml
+
+storage:
+  encryption_key: "change-this-storage-encryption-key-32chars"
+  local:
+    path: /config/db.sqlite3
+
+  #postgres:
+  #  host: postgres.svc
+  #  port: 5432
+  #  database: authelia
+  #  username: authelia
+  #  password: "xxxxxxxx"
+
+identity_validation:
+  reset_password:
+    jwt_secret: "change-this-reset-password-secret"
+
+####
+access_control:
+  default_policy: deny
+  rules:
+  - domain: ["whoami.example.com"]
+    policy: two_factor
+
+session:
+  name: authelia_session
+  secret: "change-this-session-secret-change-to-long-random-string"
+  expiration: 1h
+  inactivity: 5m
+  remember_me: 1M
+  cookies:
+  - domain: "example.com"
+    authelia_url: "https://authelia.example.com"
+    default_redirection_url: "https://whoami.example.com"
+    #name: "authelia_session"
+    #same_site: lax
+    #inactivity: 5m
+    #expiration: 1h
+    #remember_me: 1M
+  - domain: openwebui.example.com
+    policy: two_factor
+
+  #redis:
+  #  host: redis
+  #  port: 6379
+  #  password: "xxxxxxxx"
+  #  database_index: 0
