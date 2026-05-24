@@ -36,3 +36,10 @@ version: 0.1.0
 5. markdown
 - html2text
 - turndown
+
+6. 2026-05-24
+- https://github.com/infiniflow/ragflow
+- https://github.com/run-llama/llama_index
+- https://github.com/activepieces/activepieces
+- https://github.com/langflow-ai/langflow
+- https://github.com/FlowiseAI/Flowise

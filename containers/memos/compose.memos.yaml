@@ -1,0 +1,18 @@
+networks:
+  net: { name: local, driver: bridge, external: true }
+
+services:
+  memos:
+    image: neosmemo/memos:stable
+    container_name: memos
+    restart: always
+    networks:
+      net:
+        aliases: ["memos.svc"]
+    ports: ["5230:5230"]
+    volumes:
+    - ./data/memos:/var/opt/memos
+    environments:
+      #MEMOS_DRIVER: postgres
+      #MEMOS_DSN: postgres://<user>:<passowrd>@127.0.0.1:5432/memos?sslmode=disable
+      #MEMOS_INSTANCE_URL: https://memos.example.com
