@@ -27,10 +27,48 @@ example.com, *.example.com {
     reverse_proxy memos:5230
   }
 
-  @flowise host flowise.example.com
-  handle @flowise {
-    import authelia_forward_auth
-    reverse_proxy flowise:3000
+  @app host app.example.com
+  handle @app {
+    handle_path /v1/* {
+      reverse_proxy app:2048
+    }
+
+    handle {
+      import authelia_forward_auth
+      reverse_proxy app:2048
+    }
+  }
+
+  @dufs host dufs.example.com
+  handle @dufs {
+    reverse_proxy dufs:5000 {
+      transport http {
+        read_timeout 3600s
+        write_timeout 3600s
+      }
+    }
+
+    request_body {
+      max_size 100MB
+    }
+
+    encode {
+      gzip 5
+      minimum_length 1024
+
+      match {
+        header Content-Type text/plain*
+        header Content-Type text/css*
+        header Content-Type text/xml*
+        header Content-Type text/javascript*
+        header Content-Type text/markdown*
+        header Content-Type application/json*
+        header Content-Type application/javascript*
+        header Content-Type application/xml*
+        header Content-Type application/xml+rss*
+        header Content-Type image/svg+xml*
+      }
+    }
   }
 
   handle {

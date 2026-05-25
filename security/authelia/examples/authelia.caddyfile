@@ -1,0 +1,70 @@
+authelia.example.com {
+  tls /path/to/fullchain.cer /path/to/domain.key
+
+  reverse_proxy authelia:9091
+}
+
+memos.example.com {
+  tls /path/to/fullchain.cer /path/to/domain.key
+
+  forward_auth authelia:9091 {
+    uri /api/authz/forward-auth
+    copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
+  }
+
+  reverse_proxy memos:5230
+}
+
+
+app1.example.com {
+  tls /path/to/fullchain.cer /path/to/domain.key
+
+  # 1. 公共路由：不经过 Authelia
+  @public path /public/* /api/public/* /healthz
+  handle @public {
+    reverse_proxy app1:2048
+  }
+
+  # 2. API 路由：不走 Authelia，由后端自己验证 API Key
+  @api path /api/*
+  handle @api {
+    reverse_proxy app1:2048
+  }
+
+  # 3. 只放行带 API Key 的请求
+  @api_key {
+    path /api/*
+    header X-API-Key *
+  }
+
+  handle @api_key {
+    reverse_proxy app1:5230
+  }
+
+  # 4. 其他所有路由：需要 Authelia
+  forward_auth authelia:9091 {
+    uri /api/authz/forward-auth
+    copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
+  }
+
+  reverse_proxy app1:2048
+}
+
+app2.example.com {
+  @web {
+    not path /api/* /public/* /healthz
+  }
+
+  handle @web {
+    forward_auth authelia:9091 {
+      uri /api/authz/forward-auth?rd=https://auth.example.com/
+      copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
+    }
+
+    reverse_proxy app2:2048
+  }
+
+  handle {
+    reverse_proxy app2:2048
+  }
+}
