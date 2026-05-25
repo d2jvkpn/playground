@@ -7,7 +7,7 @@ server:
 log:
   level: debug           # trace, debug, info, warn, error
   format: json           # json or text
-  file_path: /config/authelia.log
+  file_path: /logs/authelia.log
   keep_stdout: true
 
 totp:
@@ -85,7 +85,7 @@ session:
   cookies:
   - domain: "example.com"
     authelia_url: "https://authelia.example.com"
-    default_redirection_url: "https://whoami.example.com"
+    #default_redirection_url: "https://whoami.example.com"
     #name: "authelia_session"
     #same_site: lax
     #inactivity: 5m

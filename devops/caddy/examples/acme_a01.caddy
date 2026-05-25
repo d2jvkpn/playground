@@ -55,30 +55,3 @@ site.example.com {
 
   try_files {path} /index.html # spa
 }
-
-example.com, *.example.com {
-  @app host app.example.com
-  handle @app {
-    reverse_proxy app:3000
-  }
-
-  @api host api.example.com
-  handle @api {
-      reverse_proxy api:8080
-  }
-
-  handle {
-    root * /srv
-    file_server
-  }
-
-  log {
-    output file /logs/example.com.log {
-      roll_size 512MiB
-      roll_keep 10
-      roll_keep_for 720h
-    }
-
-    format json
-  }
-}

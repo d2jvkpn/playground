@@ -1,0 +1,48 @@
+{
+  http_port 80
+  https_port 443
+
+  acme_dns alidns {
+    access_key_id {env.ALIYUN_ACCESS_KEY_ID}
+    access_key_secret {env.ALIYUN_ACCESS_KEY_SECRET}
+  }
+}
+
+(authelia_forward_auth) {
+  forward_auth authelia:9091 {
+    uri /api/authz/forward-auth?rd=https://authelia.example.com/
+    copy_headers Remote-User Remote-Groups Remote-Email Remote-Name
+  }
+}
+
+example.com, *.example.com {
+  @auth host authelia.example.com
+  handle @auth {
+    reverse_proxy authelia:9091
+  }
+
+  @memos host memos.example.com
+  handle @memos {
+    import authelia_forward_auth
+    reverse_proxy memos:5230
+  }
+
+  @flowise host flowise.example.com
+  handle @flowise {
+    import authelia_forward_auth
+    reverse_proxy flowise:3000
+  }
+
+  handle {
+    respond "Unknown service" 404
+  }
+
+  log {
+    output file /logs/example.com.log {
+      roll_size 512MiB
+      roll_keep 10
+      roll_keep_for 720h
+    }
+    format json
+  }
+}

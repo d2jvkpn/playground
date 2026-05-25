@@ -17,8 +17,14 @@ description:
 ```
 openssl rand -hex 64
 
-docker run --rm authelia/authelia:latest \
+docker run --rm authelia/authelia:4 \
   authelia crypto hash generate argon2 --password 'your_password'
+
+docker run --rm authelia/authelia:4 \
+  authelia crypto hash generate argon2 --random
+
+docker run --rm authelia/authelia:4 \
+  authelia crypto hash generate argon2 --random.length 16
 
 docker run --rm -v $PWD/configs/authelia:/config authelia/authelia:latest authelia config validate --config /config/configuration.yml
 

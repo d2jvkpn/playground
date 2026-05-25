@@ -9,3 +9,7 @@ systemctl start app
 systemctl stop app
 
 systemctl daemon-reload
+
+exit
+journalctl -efxu app
+sudo journalctl --vacuum-time=7d

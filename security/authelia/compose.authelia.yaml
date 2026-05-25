@@ -1,0 +1,32 @@
+networks:
+  net: { name: local, driver: bridge, external: true }
+
+services:
+  authelia:
+    container_name: authelia
+    image: authelia/authelia:4
+    restart: always # unless-stopped
+    networks:
+      net:
+        aliases: ["authelia.svc"]
+    ports: ["127.0.0.1:9091:9091"]
+    user: "1000:1000"
+    volumes:
+    - ./configs/authelia:/config
+    - ./logs:/logs
+    environment:
+      TZ: 'Asia/Shanghai'
+      PUID: '1000'
+      PGID: '1000'
+    command: ["authelia", "--config=/config/configuration.yml"]
+
+  whoami:
+    container_name: whoami
+    image: docker.io/traefik/whoami
+    restart: unless-stopped
+    networks:
+      net:
+        aliases: ["whoami.svc"]
+    ports: ["8080:80"]
+    environment:
+      TZ: Asia/Shanghai
