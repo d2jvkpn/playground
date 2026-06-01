@@ -47,6 +47,8 @@ ENV CLAUDE_CONFIG_DIR=/home/appuser/.local/share/claude \
 
 ENV CODEX_HOME=/home/appuser/.local/share/codex
 
+ENV CC_SWITCH_CONFIG_DIR=/home/appuser/.local/share/cc-switch
+
 RUN bash /opt/scripts/_install_codebox.sh && \
     rm -rf ~/.cache ~/.npm
 

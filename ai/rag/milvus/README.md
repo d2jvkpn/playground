@@ -64,3 +64,6 @@ bge_rf = BGERerankFunction(
 - creator: [Jane]
 - tags: []
 ```
+
+5. ui
+- Milvus WebUI http://localhost:9091/webui

@@ -6,3 +6,15 @@ http://whoami.localhost {
 http://excalidraw.localhost {
     reverse_proxy excalidraw.svc:80
 }
+
+http://milvus.localhost {
+  @milvus_admin path /healthz /metrics /webui/*
+
+  handle @milvus_admin {
+    reverse_proxy 127.0.0.1:9091
+  }
+
+  handle {
+    reverse_proxy 127.0.0.1:19530
+  }
+}

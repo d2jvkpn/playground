@@ -89,3 +89,18 @@ docs:
 - code-server
   - https://github.com/coder/code-server
   - https://coder.com/
+
+#### ch08. Claude
+- https://github.com/AbsolutelySkilled/AbsolutelySkilled/blob/main/skills/contract-drafting/SKILL.md
+```
+path: ~/.claude/skills/contract-drafting, ./.claude/skills/contract-drafting
+```
+- https://github.com/anthropics/claude-for-legal
+```
+/plugin marketplace add <path-to-this-repo>
+
+# Install a plugin — pick the ones that match your practice
+/plugin install commercial-legal@claude-for-legal
+/plugin install privacy-legal@claude-for-legal
+/plugin install corporate-legal@claude-for-legal
+```

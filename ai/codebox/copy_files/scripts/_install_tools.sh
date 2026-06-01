@@ -5,13 +5,14 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 ####
 npm install -g markdownlint-cli bash-language-server yaml-language-server \
     pyright vscode-langservers-extracted typescript typescript-language-server \
-    @vue/language-server eslint prettier prettier-plugin-tailwindcss
+    @vue/language-server eslint prettier prettier-plugin-tailwindcss npm-check-updates
 
 pip install --no-cache-dir --upgrade \
-    python-docx python-pptx openpyxl pandas \
-    pypdf pdfplumber pymupdf \
+    python-docx python-pptx openpyxl pandas markdownify pillow \
+    pypdf pdfplumber pymupdf poppler-utils \
     ast-grep-cli
 # $ ast-grep
+# tesseract-ocr
 
 ####
 mkdir -p /etc/apt/keyrings
@@ -22,9 +23,10 @@ echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *
   tee /etc/apt/sources.list.d/charm.list
 
 /opt/scripts/apt_install.sh dos2unix bash-completion \
-  sqlite3 postgresql-client \
+  sqlite3 postgresql-client redis-tools \
   ripgrep fd-find bat sd \
-  fzf glow gum gh bubblewrap
+  fzf glow gum gh htop
+# bubblewrap, htop, pandoc, imagemagick
 # $ rg, bat, fdfind, sd
 # go install github.com/charmbracelet/glow/v2@latest
 
@@ -53,3 +55,5 @@ curl -fL -o /usr/local/bin/dasel "https://github.com/TomWright/dasel/releases/do
 chmod a+x /usr/local/bin/dasel
 
 #?? gitleaks, lazygit
+#go install github.com/air-verse/air@latest
+#go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest

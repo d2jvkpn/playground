@@ -6,7 +6,7 @@ services:
     container_name: milvus-minio
     image: minio/minio:RELEASE.2025-09-07T16-13-09Z
     networks: ["net"]
-    ports: ["9000:9000", "9090:9090"]
+    #ports: ["9000:9000", "9090:9090"]
     environment:
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
@@ -19,7 +19,7 @@ services:
     image: quay.io/coreos/etcd:v3.6.11
     expose: [2379, 2380]
     networks: ["net"]
-    ports: ["127.0.0.1:2379:2379"]
+    #ports: ["127.0.0.1:2379:2379"]
     volumes:
     - ./data/etcd:/app/data/etcd
     environment:

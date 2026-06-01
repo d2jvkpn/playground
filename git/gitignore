@@ -10,9 +10,6 @@ docker-compose.yaml
 docker-compose.yml
 compose.yaml
 compose.yml
-docs.go
-swagger.json
-swagger.yaml
 
 #### directories
 configs/
@@ -20,10 +17,10 @@ data/
 logs/
 target/
 
+####
+bin/
 dist/
 build/
 node_modules/
-
 vendor/
-
 __pycache__/

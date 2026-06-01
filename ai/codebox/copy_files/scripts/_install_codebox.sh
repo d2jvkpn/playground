@@ -20,6 +20,12 @@ mv ~/.local/share/claude/versions/$version ~/.local/bin/claude
 rm -rf ~/.claude && \
 ln -s ~/.local/share/claude ~/.claude
 
+# claude shell:
+#/plugin marketplace add openai/codex-plugin-cc
+#/plugin install codex@openai-codex
+#/reload-plugins
+#/codex:setup
+
 #### codex
 echo "===> install codex"
 # CODEX_HOME=~/.codex ===> ~/.local/share/codex
@@ -54,3 +60,7 @@ chmod a+x ~/.local/bin/deepseek ~/.local/bin/deepseek-tui
 
 mkdir -p ~/.local/share/deepseek
 ln -s ~/.local/share/deepseek ~/.deepseek
+
+#### cc-switch
+curl -fsSL https://github.com/SaladDay/cc-switch-cli/releases/latest/download/install.sh | bash
+#CC_SWITCH_CONFIG_DIR=~/.cc-switch
