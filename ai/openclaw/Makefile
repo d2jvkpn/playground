@@ -1,3 +1,5 @@
+container := $(shell yq .services.openclaw.container_name compose.yaml)
+
 create_dirs:
 	mkdir -p data/apps data/site-packages data/workspace/configs data/workspace/logs \
 	  data/config data/cache data/share data/state \
@@ -22,7 +24,7 @@ docker_tag:
 	bash tag_image.sh
 
 shell:
-	docker exec -it -u appuser -w /home/appuser/.openclaw openclaw bash
+	docker exec -it -u appuser -w /home/appuser/.openclaw $(container) bash
 
 up:
 	docker compose up -d

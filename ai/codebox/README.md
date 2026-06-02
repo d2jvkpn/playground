@@ -30,13 +30,21 @@ docs:
 1. Claude Code
 - https://code.claude.com/docs/en/env-vars
 2. OpenAI Codex CLI
+- https://github.com/openai/codex
+- https://github.com/Yeachan-Heo/oh-my-codex
 3. Crush
 - https://github.com/charmbracelet/crush
-4. Gemini CLI
+4. antigravity-cli
+- https://github.com/google-antigravity/antigravity-cli
 5. OpenSpec
 - https://github.com/Fission-AI/OpenSpec
 6. Deepseek-TUI
 - https://github.com/Hmbown/DeepSeek-TUI
+7. OpenCode
+- https://github.com/anomalyco/opencode
+- https://github.com/code-yeongyu/oh-my-openagent
+8. oh-my-pi
+- https://github.com/can1357/oh-my-pi
 
 #### ch04. IDE
 1. Winsurf
@@ -58,6 +66,7 @@ docs:
 - https://github.com/BloopAI/vibe-kanban
 - https://zhuanlan.zhihu.com/p/2000309101670987769
 - https://vibekanban.com/docs/agents/opencode
+2. opencode
 
 #### ch06. Alternatives
 - name: Lovable

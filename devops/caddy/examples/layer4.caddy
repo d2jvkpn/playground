@@ -1,0 +1,11 @@
+{
+  layer4 {
+    :2222 {
+      route {
+        proxy {
+          upstream 10.1.1.3:22
+        }
+      }
+    }
+  }
+}
