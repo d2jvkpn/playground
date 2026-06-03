@@ -13,8 +13,10 @@ else
     image=docker.io/$name
 fi
 
+echo "==> image: $image"
+#docker-archive:/dev/stdout:$image
+skopeo copy docker://$image docker-archive:$prefix.tar:$image
+pigz $prefix.tar
 
-skopeo copy docker://$image docker-archive:/dev/stdout:$image |
-  pigz -c > $prefix.tgz.tmp
-
-mv $prefix.tgz.tmp $prefix.tgz
+mv $prefix.tar.gz $prefix.tgz
+echo "<== saved: $prefix.tgz"
