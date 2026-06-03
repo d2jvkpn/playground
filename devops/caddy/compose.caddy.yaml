@@ -12,9 +12,8 @@ services:
     user: "1000:1000"
     volumes:
     - ./configs/Caddyfile:/etc/caddy/Caddyfile
-    - ./configs/certs:/data/certs
-    - ./data/config:/config
-    - ./data/share:/data
+    - ./data/config:/config # XDG_CONFIG_HOME
+    - ./data/caddy:/data    # XDG_DATA_HOME
     - ./logs:/logs
     environment:
       ALIYUN_ACCESS_KEY_ID: ${ALIYUN_ACCESS_KEY_ID}

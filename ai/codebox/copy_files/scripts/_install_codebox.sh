@@ -37,12 +37,15 @@ rm -rf ~/.codex
 ln -s ~/.local/share/codex ~/.codex
 
 #### gemini
-echo "===> install gemini-cli"
-npm install -g @google/gemini-cli
-mkdir -p ~/.local/share/gemini
-rm -rf ~/.gemini
-ln -s ~/.local/share/gemini ~/.gemini
+#echo "===> install gemini-cli"
+#npm install -g @google/gemini-cli
+#mkdir -p ~/.local/share/gemini
+#rm -rf ~/.gemini
+#ln -s ~/.local/share/gemini ~/.gemini
 # gemini oauth
+
+#### antigravity
+curl -fsSL https://antigravity.google/cli/install.sh | bash
 
 #### openspec
 echo "===> install openspec"
