@@ -11,3 +11,31 @@ hello:
   world: 42
   containers: *containers
 EOF
+
+
+exit
+cat > a.json <<EOF
+{
+  "name": "openclaw",
+  "version": "1.0",
+  "author": {
+    "name": "Hello"
+  }
+}
+EOF
+
+cat > b.json <<EOF
+{
+  "service": "rag",
+  "config": {}
+}
+EOF
+
+yq -o=json '.config.name = load("a.json").name' b.json
+
+{
+  "service": "rag",
+  "config": {
+    "name": "openclaw"
+  }
+}

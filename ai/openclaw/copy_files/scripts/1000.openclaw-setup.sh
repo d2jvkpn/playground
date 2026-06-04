@@ -31,7 +31,7 @@ openclaw config set gateway.auth "$auth" --strict-json
 OPENCLAW_ALLOW_ORIGINS=${OPENCLAW_ALLOW_ORIGINS:-""}
 IFS=',' read -ra origin_array <<< "$OPENCLAW_ALLOW_ORIGINS"
 
-allowed_origins='["http://localhost:18789","http://127.0.0.1:18789","http://127.0.0.1:18790"]'
+allowed_origins='["http://localhost:18789","http://127.0.0.1:18789","http://127.0.0.1:18790","http://localhost:18790"]'
 
 for origin in "${origin_array[@]}"; do
   allowed_origins=$(echo "$allowed_origins" | jq -c --arg origin "$origin" '

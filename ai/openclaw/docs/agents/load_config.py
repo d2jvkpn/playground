@@ -6,7 +6,7 @@ import yaml
 
 
 class OpenClawConfig(BaseModel):
-    url: str = Field(alias="url")
+    base_url: str = Field(alias="base_url")
     token: str = Field(alias="token", default="")
     timeout: int = Field(alias="timeout", default=120)
     agent: str = Field(alias="agent", default="main")
@@ -18,7 +18,7 @@ class AppConfig(BaseModel):
     .. code-block:: yaml
 
         openclaw:
-          url: http://127.0.0.1:18789
+          base_url: http://127.0.0.1:18789
           token: your-token-here
           timeout: 120
           agent: main
