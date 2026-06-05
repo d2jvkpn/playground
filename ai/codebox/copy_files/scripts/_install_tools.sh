@@ -34,7 +34,8 @@ ln -s /usr/bin/batcat /usr/bin/bat
 
 ####
 tag_name=$(curl -fsSL https://api.github.com/repos/Wilfred/difftastic/releases/latest | jq -r .tag_name)
-curl -fL -o difft.tar.gz "https://github.com/Wilfred/difftastic/releases/download/$tag_name/difft-x86_64-unknown-linux-gnu.tar.gz"
+curl -fL -o difft.tar.gz \
+  "https://github.com/Wilfred/difftastic/releases/download/$tag_name/difft-x86_64-unknown-linux-gnu.tar.gz"
 tar -xf difft.tar.gz -C /usr/local/bin/
 chmod a+x /usr/local/bin/difft
 rm -rf difft.tar.gz
@@ -43,7 +44,8 @@ rm -rf difft.tar.gz
 # https://github.com/eza-community/eza/releases/download/v0.23.4/eza_x86_64-unknown-linux-gnu.tar.gz
 # https://github.com/eza-community/eza/releases/latest/download/eza_x86_64-unknown-linux-gnu.tar.gz
 tag_name=$(curl -fsSL https://api.github.com/repos/eza-community/eza/releases/latest | jq -r .tag_name)
-curl -fL -o eza.tar.gz "https://github.com/eza-community/eza/releases/download/$tag_name/eza_x86_64-unknown-linux-gnu.tar.gz"
+curl -fL -o eza.tar.gz \
+  "https://github.com/eza-community/eza/releases/download/$tag_name/eza_x86_64-unknown-linux-gnu.tar.gz"
 tar -xf eza.tar.gz -C /usr/local/bin/ && \
 chmod a+x /usr/local/bin/eza && \
 rm -f eza.tar.gz
@@ -51,7 +53,8 @@ rm -f eza.tar.gz
 
 # https://github.com/TomWright/dasel/releases/download/v3.4.1/dasel_linux_amd64
 tag_name=$(curl -fsSL https://api.github.com/repos/TomWright/dasel/releases/latest | jq -r .tag_name)
-curl -fL -o /usr/local/bin/dasel "https://github.com/TomWright/dasel/releases/download/$tag_name/dasel_linux_amd64"
+curl -fL -o /usr/local/bin/dasel \
+  "https://github.com/TomWright/dasel/releases/download/$tag_name/dasel_linux_amd64"
 chmod a+x /usr/local/bin/dasel
 
 #?? gitleaks, lazygit
