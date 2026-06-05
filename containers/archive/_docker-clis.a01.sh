@@ -2,14 +2,6 @@
 set -eu -o pipefail # -x
 _wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
 
-#### prune images and containers
-docker ps -f status=exited -q | xargs -i docker rm {}
-docker images -f dangling=true -q | xargs -i docker rmi {}
-
-for img in $(docker images --filter "dangling=true" --quiet $image); do
-    docker rmi $img || true
-done &> /dev/null
-
 #### get ip address of container
 docker ps -q |
   xargs docker inspect --format "{{.Name}}  {{.NetworkSettings.IPAddress}}" |
