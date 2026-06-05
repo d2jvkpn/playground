@@ -1,0 +1,10 @@
+{
+  "channels": {
+    "mattermost": {
+      "enabled": true,
+      "botToken": "mm-token",
+      "baseUrl": "https://chat.example.com",
+      "dmPolicy": "pairing"
+    }
+  }
+}

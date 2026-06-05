@@ -17,7 +17,7 @@ description:
 2. config
 - openclaw agents add support \
   --workspace ~/.openclaw/agents/support/worksapce \
-  --model deepseek/deepseek-chat\
+  --model deepseek/deepseek-chat \
   --non-interactive
 - openclaw config get 'agents.list[1]'
 - openclaw config set 'agents.list[1].skills' '["faq-search","ticket-helper"]' --strict-json

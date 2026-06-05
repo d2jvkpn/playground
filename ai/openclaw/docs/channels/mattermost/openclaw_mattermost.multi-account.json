@@ -1,0 +1,31 @@
+{
+  "channels": {
+    "mattermost": {
+      "enabled": true,
+      "chatmode": "oncall",
+      "dmPolicy": "pairing",
+      "accounts": {
+        "default": {
+          "name": "Default Bot",
+          "botToken": "第一个-bot-token",
+          "baseUrl": "https://mattermost.example.com"
+        },
+        "coding": {
+          "name": "Coding Bot",
+          "botToken": "第二个-bot-token",
+          "baseUrl": "https://mattermost.example.com"
+        }
+      }
+    }
+  },
+  "bindings": [
+    {
+      "match": { "channel": "mattermost", "accountId": "default" },
+      "agentId": "main"
+    },
+    {
+      "match": { "channel": "mattermost", "accountId": "coding" },
+      "agentId": "coding"
+    }
+  ]
+}

@@ -7,6 +7,8 @@ services:
     restart: always # unless-stopped
     container_name: openclaw
     hostname: openclaw
+    #cap_add: [NET_ADMIN]
+    #devices: [/dev/net/tun:/dev/net/tun]
     extra_hosts:
       host.docker.internal: host-gateway
     deploy:
@@ -20,10 +22,9 @@ services:
       interval: 15s
       timeout: 3s
       retries: 5
-
     #network_mode: bridge
     networks: [net]
-    ports: [127.0.0.1:18789:18789]
+    ports: [127.0.0.1:18789:18789] # "127.0.0.1:7681:7681"
     user: appuser:appuser
     volumes:
     - ./data/config:/home/appuser/.config
@@ -32,7 +33,6 @@ services:
     - ./data/state:/home/appuser/.local/state
     - ./data/apps:/home/appuser/apps
     - ./data/workspace:/home/appuser/workspace
-
     - ./data/openclaw:/home/appuser/.openclaw
     - ./data/agents:/home/appuser/.agents
     - ./data/workspace/logs:/tmp/openclaw

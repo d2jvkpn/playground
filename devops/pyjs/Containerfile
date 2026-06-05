@@ -44,6 +44,9 @@ RUN npm install -g npm@latest && \
 RUN groupadd -g $user_gid appuser && \
     useradd -s /bin/bash -m -u $user_uid -g $user_gid appuser
 
+RUN mkdir -p /app/configs /app/data /app/logs && \
+    chown -R appuser:appuser /app
+
 USER appuser
 WORKDIR /home/appuser
 
