@@ -43,6 +43,7 @@ RUN npm install -g npm@latest && \
 # userdel -r ubuntu || true
 RUN groupadd -g $user_gid appuser && \
     useradd -s /bin/bash -m -u $user_uid -g $user_gid appuser
+# -D -H -h /app -s /sbin/nologin
 
 RUN mkdir -p /app/configs /app/data /app/logs && \
     chown -R appuser:appuser /app

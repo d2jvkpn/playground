@@ -14,7 +14,8 @@ docker_build:
 	  -t q.local/codebox:latest ./
 
 docker_tag:
-	docker tag q.local/codebox:latest q.local/codebox:$$(date +%Y.%-m.%-d)
+	#docker tag q.local/codebox:latest q.local/codebox:$$(date +%Y.%-m.%-d)
+	docker tag q.local/codebox:latest q.local/codebox:$$(date +%Y-%m-%d)
 
 docker_update:
 	docker build --no-cache -f data/Containerfile.update \
@@ -27,7 +28,7 @@ root:
 	docker exec -it -u root codebox bash
 
 codebox:
-	docker exec -it -u appuser codebox bash
+	docker exec -it -u appuser -w /home/appuser/workspace codebox bash
 
 opencode:
-	docker exec -it -u appuser opencode bash
+	docker exec -it -u appuser -w /home/appuser/workspace opencode bash
