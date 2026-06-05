@@ -55,6 +55,11 @@ curl -fL -o ~/.local/bin/codewhale-tui \
 chmod a+x ~/.local/bin/codewhale ~/.local/bin/codewhale-tui
 mkdir -p ~/.local/share/codewhale
 ln -s ~/.local/share/codewhale ~/.codewhale
+# codewhale auth set --provider openrouter --api-key "YOUR_OPENROUTER_API_KEY"
+# codewhale --provider openrouter --model deepseek/deepseek-v4-pro
+#codewhale auth set --provider openai --api-key "YOUR_OPENAI_COMPATIBLE_API_KEY"
+#OPENAI_BASE_URL="https://openai-compatible.example/v4" \
+#codewhale --provider openai --model glm-5
 
 #### cc-switch
 curl -fsSL https://github.com/SaladDay/cc-switch-cli/releases/latest/download/install.sh | bash
