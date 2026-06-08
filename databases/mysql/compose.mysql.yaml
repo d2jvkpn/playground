@@ -1,28 +1,30 @@
-# networks:
-#   net: { name: "mysql", driver: "bridge", external: false }
+networks:
+  net: { name: "local", driver: "bridge", external: true }
 
 services:
   mysql:
     image: mysql:8.4
     restart: always
-    # networks: ["net"]
-    network_mode: bridge
-    ports: ["127.0.0.1:${DB_Port}:3306"]
-    container_name: ${CONTAINER_Name}
+    #network_mode: bridge
+    networks:
+      net:
+        aliases: ["mysql.svc"]
+    ports: ["127.0.0.1:3306:3306"]
+    container_name: mysql
     environment:
       TZ: Asia/Shanghai
       LANG: C.UTF-8
-    #  MYSQL_USER: $user
-    #  MYSQL_DATABASE: $user
-    #  MYSQL_PASSWORD: $db_user_password
-    #  MYSQL_ROOT_PASSWORD: xxxx
-      MYSQL_ROOT_PASSWORD_FILE: /app/configs/mysql_root.password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql.pass
+      #MYSQL_USER: $user
+      #MYSQL_DATABASE: $user
+      #MYSQL_PASSWORD: $db_user_password
+      #MYSQL_ROOT_PASSWORD: xxxx
     env_file: [./configs/mysql.env]
     # -- SHOW VARIABLES LIKE 'character%';
     # make sure character_set_client, character_set_connection, character_set_results is utf8mb4 rather than latin1
     volumes:
     # - ./configs/mysql.cnf:/etc/mysql/my.cnf
-    - ./configs/mysql_root.password:/app/configs/mysql_root.password
+    - ./configs/mysql.pass:/run/secrets/mysql.pass
     - ./data/mysql:/var/lib/mysql
     command:
     - "--character-set-server=utf8mb4"

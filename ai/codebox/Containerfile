@@ -63,7 +63,7 @@ ENV https_proxy="" \
 
 ENV TZ=Asia/Shanghai
 
-# webui: 4096, auth_callback: 1455, tyyd: 7681, ssh: 4222
+# webui: 4096, auth_callback: 1455, ttyd: 7681, ssh: 4222
 EXPOSE 4096
 EXPOSE 7681
 EXPOSE 4222

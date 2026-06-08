@@ -113,3 +113,15 @@ path: ~/.claude/skills/contract-drafting, ./.claude/skills/contract-drafting
 /plugin install privacy-legal@claude-for-legal
 /plugin install corporate-legal@claude-for-legal
 ```
+
+```claude
+/plugin marketplace add obra/superpowers-marketplace
+/plugin install superpowers@superpowers-marketplace
+
+/reload plugins
+```
+
+```
+/plugin marketplace add anthropics/claude-plugins-official
+/plugin install claude-md-management@claude-plugins-official
+```
