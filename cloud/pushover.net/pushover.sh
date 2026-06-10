@@ -25,3 +25,18 @@ curl -fsS -m 10 --retry 5 \
 exit
 -F "attachment=@data/image.jpg"
 --form-string device="droid4"
+
+curl -s \
+  --form-string "token=${app_token}" \
+  --form-string "user=${user_key}" \
+  --form-string "device=${device}" \
+  --form-string "title=✅ my-agent Pushover Ready" \
+  --form-string "message=Test passed! Time: $(date '+%Y-%m-%d %H:%M')" \
+  --form-string "priority=0" \
+  https://api.pushover.net/1/messages.json
+
+curl -s \
+  --form-string "token=${app_token}" \
+  --form-string "user=${user_key}" \
+  --form-string "device=${device}" \
+  https://api.pushover.net/1/users/validate.json

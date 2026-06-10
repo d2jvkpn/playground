@@ -2,11 +2,18 @@ networks:
   net: { name: local, driver: bridge, external: false }
 
 services:
-  node:
-    image: q.local/agents:latest
+  pyjs:
+    image: q.local/pyjs:trixie
     restart: always
-    container_name: node
-    hostname: node
+    container_name: pyjs
+    #cap_add: ["NET_ADMIN"]
+    #devices: ["/dev/net/tun:/dev/net/tun"]
+    #sysctls:
+    #  net.ipv6.conf.all.disable_ipv6: "1"
+    #  net.ipv6.conf.default.disable_ipv6: "1"
+    extra_hosts:
+      host.docker.internal: host-gateway
+    hostname: pyjs
     #network_mode: bridge
     networks: [net]
     ports: [127.0.0.1:8080:8080]
@@ -20,8 +27,8 @@ services:
     - ./data/workspace:/home/appuser/workspace
     environment:
       TZ: Asia/Shanghai
-      # BASHE_ENV: /home/appuser/.bash_aliases
+      BASH_ENV: /home/appuser/.bash_aliases
       # https_proxy: http://172.17.0.1:1080
       # http_proxy: http://172.17.0.1:1080
-      # no_proxy: ""
+      # no_proxy: localhost,127.0.0.1,::1,192.168.0.0/16,10.0.0.0/8,172.16.0.1/12,.svc,.lan,.local,.localhost,.test,.internal
     command: ["sleep", "infinity"]
