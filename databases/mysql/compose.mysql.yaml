@@ -23,6 +23,7 @@ services:
     # -- SHOW VARIABLES LIKE 'character%';
     # make sure character_set_client, character_set_connection, character_set_results is utf8mb4 rather than latin1
     volumes:
+    - ./data/share:/mnt/share
     # - ./configs/mysql.cnf:/etc/mysql/my.cnf
     - ./configs/mysql.pass:/run/secrets/mysql.pass
     - ./data/mysql:/var/lib/mysql

@@ -1,2 +1,12 @@
+----
 PURGE BINARY LOGS TO 'mysql-bin.010';
 PURGE BINARY LOGS BEFORE '2024-05-01 00:00:00';
+
+----
+CREATE DATABASE <dbname> DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CREATE USER '<user>'@'%' IDENTIFIED BY '<password>';
+
+GRANT ALL PRIVILEGES ON <dbname>.* TO '<user>'@'%';
+
+FLUSH PRIVILEGES;
