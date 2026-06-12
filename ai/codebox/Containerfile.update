@@ -1,4 +1,4 @@
-FROM q.local/opencode:latest
+FROM q.local/codebox:latest
 
 ####
 ARG http_proxy
@@ -11,13 +11,13 @@ ENV http_proxy=$http_proxy \
 
 ####
 USER root
-RUN apt_install.sh
+ADD copy_files/scripts/_install_playwright.sh /opt/scripts/_install_playwright.sh
 
-UEER appuser
+RUN /opt/scripts/_install_playwright.sh
+ENV PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
+
+USER appuser
 WORKDIR /home/appuser
-
-#RUN npm install -g opencode-ai@latest
-RUN npm update -g opencode-ai@latest
 
 WORKDIR /home/appuser/workspace
 

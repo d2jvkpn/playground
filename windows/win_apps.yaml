@@ -1,2 +1,10 @@
 win_apps:
 - name: autoruns
+- name: ventoy
+- name: msys2
+
+- name: localsend
+- name: free file sync
+- name: Notepad Plus Plus(npp)
+- name: qbittorrent
+- name: vlc

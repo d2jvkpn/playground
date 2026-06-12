@@ -26,7 +26,7 @@ echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *
   sqlite3 postgresql-client redis-tools \
   ripgrep fd-find bat sd \
   fzf glow gum gh htop
-# bubblewrap, htop, pandoc, imagemagick
+# bubblewrap, htop, pandoc
 # $ rg, bat, fdfind, sd
 # go install github.com/charmbracelet/glow/v2@latest
 
@@ -68,3 +68,7 @@ rm -f lazygit.tgz
 #?? gitleaks, lazygit
 #go install github.com/air-verse/air@latest
 #go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+
+####
+rm -rf ~/.cache ~/.npm
+mkdir -p ~/.cache

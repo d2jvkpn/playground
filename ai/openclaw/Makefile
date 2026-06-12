@@ -5,8 +5,10 @@ create_dirs:
 	  data/config data/cache data/share data/state \
 	  data/agents data/openclaw
 
+# make docker_build NO_CACHE=
+NO_CACHE := --no-cache
 docker_build:
-	docker build --no-cache -f Containerfile \
+	docker build $(NO_CACHE) -f Containerfile \
 	  --network=host \
 	  --build-arg openclaw_version=latest \
 	  --build-arg https_proxy="http://127.0.0.1:1080" \
