@@ -8,8 +8,7 @@ exit
 sudo apt update
 sudo apt install -y wireguard wireguard-tools
 
-[ -f /usr/local/bin/resolvconf ] &&
-  ln -s /usr/bin/resolvectl /usr/local/bin/resolvconf
+#[ -f /usr/local/bin/resolvconf ] && ln -s /usr/bin/resolvectl /usr/local/bin/resolvconf
 
 umask 077
 # wg genkey | tee /etc/wireguard/wg0.key | wg pubkey > /etc/wireguard/wg0.pub
