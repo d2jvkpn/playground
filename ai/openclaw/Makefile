@@ -25,6 +25,9 @@ docker_update:
 docker_tag:
 	bash tag_image.sh
 
+root:
+	docker exec -it -u root -w /home/appuser/workspace $(container) bash
+
 shell:
 	docker exec -it -u appuser -w /home/appuser/.openclaw $(container) bash
 

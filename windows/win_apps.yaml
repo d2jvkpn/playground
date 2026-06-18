@@ -1,10 +1,16 @@
 win_apps:
-- name: autoruns
-- name: ventoy
-- name: msys2
-
-- name: localsend
-- name: free file sync
-- name: Notepad Plus Plus(npp)
-- name: qbittorrent
-- name: vlc
+  system:
+  - name: autoruns
+  - name: ventoy
+  - name: msys2
+  tools:
+  - name: localsend
+  - name: free file sync
+  - name: qbittorrent
+  - name: vlc
+  - name: dufs
+  editors:
+  - name: Notepad Plus Plus(npp)
+  - name: Sublime Text
+  - name: gVim
+  - name: VSCodium

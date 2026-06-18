@@ -1,5 +1,7 @@
 # path: ~/.bash_aliases
 
+alias sh='bash'
+
 for d in "$HOME/.local/bin" "$HOME/apps/bin"; do
     if [ ! -d "$d" ]; then
         continue

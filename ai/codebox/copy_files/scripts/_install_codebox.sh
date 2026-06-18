@@ -64,8 +64,3 @@ ln -s ~/.local/share/codewhale ~/.codewhale
 #### cc-switch
 curl -fsSL https://github.com/SaladDay/cc-switch-cli/releases/latest/download/install.sh | bash
 #CC_SWITCH_CONFIG_DIR=~/.cc-switch
-
-####
-npm install -g playwright chrome-devtools-mcp@latest
-rm -rf ~/.cache ~/.npm
-mkdir -p ~/.cache

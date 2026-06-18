@@ -1,0 +1,33 @@
+FROM q.local/pyjs:trixie
+
+####
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
+
+ARG build_region
+
+ENV http_proxy="$http_proxy" https_proxy="$https_proxy" no_proxy="$no_proxy"
+
+####
+USER root
+
+COPY ./copy_files/scripts/. /opt/scripts
+RUN bash /opt/scripts/_install_tools.sh
+RUN bash /opt/scripts/_install_services.sh
+
+RUN bash /opt/scripts/_install_playwright.sh
+ENV PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
+
+####
+USER appuser
+WORKDIR /home/appuser
+
+RUN if [ "$build_region" == "cn" ]; then \
+        bash /opt/scripts/config_cn.sh pip; \
+        bash /opt/scripts/config_cn.sh npm; \
+    fi
+
+RUN npm install -g playwright chrome-devtools-mcp@latest && \
+    rm -rf ~/.cache ~/.npm && \
+    mkdir -p ~/.cache

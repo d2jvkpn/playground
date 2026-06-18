@@ -30,36 +30,17 @@
 10. hermes-agent
 - https://github.com/nousresearch/hermes-agent
 
-11. openfang
-- https://openfang.sh/
-- https://github.com/RightNow-AI/openfang
-- https://www.rightnowai.co/
-```
-export OPENFANG_HOME=home/appuser/.local/share/openfang
-export OPENFANG_API_KEY=change-me
-export OPENFANG_LISTEN=0.0.0.0:4200
-openfang start --config ~/.openfang/config.toml
-```
+11. LobsterAI
 
-12. librefang
-- https://github.com/librefang/librefang
+12. TinyClaw
 
+13. Moltis
 
-13. flowise: AI Agents, workflows
+14. QwenPaw
 
-14. LobsterAI
+15. ZeptoClaw
 
-15. TinyClaw
-
-16. Moltis
-
-17. QwenPaw
-
-18. ZeptoClaw
-
-19. librefang
-
-20. AstrBot
+16. AstrBot
 
 #### ch02. 
 - https://github.com/ivanweng2077/big_model_radar/issues/97
