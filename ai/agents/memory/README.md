@@ -11,3 +11,4 @@ version: 0.1.0
 - name: OpenViking
   links:
   - https://github.com/volcengine/OpenViking
+- name: mem0

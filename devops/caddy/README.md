@@ -2,13 +2,6 @@
 ---
 
 
-#### C01. chapter1
-1. Apps
-- metube
-- excalidraw
-
-2. world
-
-#### C02. chapter2
-
-#### C03. chapter3
+#### 1. images
+- caddy:2
+- ghcr.io/windmill-labs/caddy-l4
