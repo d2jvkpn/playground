@@ -13,7 +13,11 @@ ENV http_proxy="$http_proxy" https_proxy="$https_proxy" no_proxy="$no_proxy"
 USER appuser
 WORKDIR /home/appuser
 
-RUN bash /opt/scripts/_install_codebox.sh
+RUN cp .bashrc .bashrc.bk && \
+    cp .bash_profile .bash_profile.bk && \
+    bash /opt/scripts/_install_codebox.sh && \
+    mv .bashrc.bk .bashrc && \
+    mv .bash_profile.bk .bash_profile
 # OPENCODE_SERVER_USERNAME="opencode"
 # OPENCODE_CONFIG_DIR=~/.config/opencode
 # OPENCODE_SERVER_PASSWORD=""

@@ -26,12 +26,14 @@ ln -s ~/.local/share/claude ~/.claude
 #/reload-plugins
 #/codex:setup
 
+curl -fsSL https://github.com/SaladDay/cc-switch-cli/releases/latest/download/install.sh | bash
+#CC_SWITCH_CONFIG_DIR=~/.cc-switch
+
 #### codex
 echo "==> install codex"
 # CODEX_HOME=~/.codex ===> ~/.local/share/codex
 npm install -g @openai/codex
 
-rm -rf ~/.local/share/codex
 mkdir -p ~/.local/share/codex
 rm -rf ~/.codex
 ln -s ~/.local/share/codex ~/.codex
@@ -60,7 +62,3 @@ ln -s ~/.local/share/codewhale ~/.codewhale
 #codewhale auth set --provider openai --api-key "YOUR_OPENAI_COMPATIBLE_API_KEY"
 #OPENAI_BASE_URL="https://openai-compatible.example/v4" \
 #codewhale --provider openai --model glm-5
-
-#### cc-switch
-curl -fsSL https://github.com/SaladDay/cc-switch-cli/releases/latest/download/install.sh | bash
-#CC_SWITCH_CONFIG_DIR=~/.cc-switch

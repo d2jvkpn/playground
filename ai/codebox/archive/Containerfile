@@ -1,6 +1,6 @@
 FROM q.local/pyjs:trixie
 
-####
+#### 1. setup
 ARG http_proxy
 ARG https_proxy
 ARG no_proxy
@@ -9,7 +9,7 @@ ARG build_region
 
 ENV http_proxy="$http_proxy" https_proxy="$https_proxy" no_proxy="$no_proxy"
 
-####
+#### 2. installation
 USER root
 
 COPY ./copy_files/scripts/. /opt/scripts
@@ -19,7 +19,7 @@ RUN bash /opt/scripts/_install_services.sh
 RUN bash /opt/scripts/_install_playwright.sh
 ENV PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
 
-####
+#### 3. appuser
 USER appuser
 WORKDIR /home/appuser
 
@@ -32,7 +32,7 @@ RUN npm install -g playwright chrome-devtools-mcp@latest && \
     rm -rf ~/.cache ~/.npm && \
     mkdir -p ~/.cache
 
-####
+#### 4. codebox
 RUN bash /opt/scripts/_install_codebox.sh
 # OPENCODE_SERVER_USERNAME="opencode"
 # OPENCODE_CONFIG_DIR=~/.config/opencode
@@ -55,11 +55,16 @@ ENV CC_SWITCH_CONFIG_DIR=/home/appuser/.local/share/cc-switch
 #ADD --chown=appuser:appuser target/claw/* ./.local/bin/
 #ADD --chown=appuser:appuser copy_files/scripts/claw.sh ./.local/bin/
 
-ENV BASH_ENV=/home/appuser/.bash_aliases
+#### 5. venv and npm
+RUN python3 -m venv /home/appuser/apps/venv && \
+    mkdir -p /home/appuser/apps/npm && \
+    npm config set prefix /home/appuser/apps/npm
+# npm config list -l
+# export NPM_CONFIG_PREFIX=$HOME/apps/npm
 
-####
+#### 6. post
 ENV https_proxy="" http_proxy="" no_proxy=""
-
+ENV BASH_ENV=/home/appuser/.bash_aliases
 ENV TZ=Asia/Shanghai
 
 # webui: 4096, ttyd: 7681, ssh: 4222, auth_callback: 1455
