@@ -3,7 +3,7 @@ networks:
 
 services:
   openvpn:
-    image: local/kylemanna/openvpn:latest
+    image: q.local/openvpn:latest
     restart: always
     cap_add: [NET_ADMIN]
     #logging:
@@ -22,6 +22,6 @@ services:
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
     - ./data/openvpn/:/etc/openvpn
-    - ./logs:/apps/logs
-    working_dir: /apps
-    command: ["supervisord", "-l", "/apps/logs/supervisord.log", "-c", "/etc/supervisord.conf"]
+    - ./logs:/app/logs
+    working_dir: /app
+    command: ["supervisord", "-l", "/app/logs/supervisord.log", "-c", "/etc/supervisord.conf"]

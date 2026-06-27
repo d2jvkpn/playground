@@ -1,5 +1,5 @@
 # path: /etc/logrotate.d/nginx
-/var/log/nginx/*.log /apps/logs/*.nginx.log {
+/var/log/nginx/*.log /app/logs/*.nginx.log {
 	#daily
 	monthly
 	missingok

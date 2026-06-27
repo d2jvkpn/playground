@@ -1,17 +1,17 @@
 services:
   openvpn:
-    image: local/kylemanna/openvpn:latest
+    image: q.local/openvpn:latest
     restart: always
-    cap_add: [NET_ADMIN]
+    cap_add: ["NET_ADMIN"]
     devices:
     - /dev/net/tun:/dev/net/tun
     network_mode: host
     container_name: openvpn-client
-    working_dir: /apps
-    volumes:
-    - ./configs/:/apps/configs:ro
+    working_dir: /app
+    #volumes:
     # ./configs/nginx.stream.conf:/etc/nginx/default.conf
-    environment: ["TZ=Asia/Shanghai"]
+    environment:
+      TZ: Asia/Shanghai
     command: [openvpn, --auth-nocache, --config, configs/client.ovpn, --askpass, configs/client.ovpn.pass]
     # command: [openvpn, --auth-nocache, --config, configs/client.ovpn, --auth-user-pass, configs/client.ovpn.auth]
-    # command: [supervisord, -l, /apps/logs/supervisord.log, -c, /apps/configs/supervisord.nginx.conf]
+    # command: [supervisord, -l, /app/logs/supervisord.log, -c, /etc/supervisord.conf]

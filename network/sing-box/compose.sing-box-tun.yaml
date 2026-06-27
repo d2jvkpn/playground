@@ -6,8 +6,8 @@ services:
     hostname: sing-box-tun
     extra_hosts:
       host.docker.internal: host-gateway
-    cap_add: [NET_ADMIN]
-    devices: [/dev/net/tun:/dev/net/tun]
+    cap_add: ["NET_ADMIN"]
+    devices: ["/dev/net/tun:/dev/net/tun"]
     #network_mode: bridge
     network_mode: host
     user: root:root

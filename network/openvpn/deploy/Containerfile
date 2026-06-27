@@ -4,7 +4,7 @@ ARG region
 
 ENV TZ=${TZ:-Asia/Shanghai}
 
-WORKDIR /apps
+WORKDIR /app
 
 RUN mkdir -p target logs
 ADD deploy/openvpn_logrotate.sh target/
@@ -12,7 +12,7 @@ RUN chmod a+x target/*.sh
 
 # https://crontab.guru/#0_0_*_1_*
 RUN crontab -l > /etc/crontab.bk && \
-  echo "0 0 1 * * bash /apps/target/openvpn_logrotate.sh yesterday" > /tmp/crontab && \
+  echo "0 0 1 * * bash /app/target/openvpn_logrotate.sh yesterday" > /tmp/crontab && \
   crontab /tmp/crontab
 
 RUN if [ "$region" = "cn" ]; then \
@@ -35,8 +35,8 @@ ADD deploy/supervisord.conf /etc/supervisord.conf
 ADD deploy/supervisor.ini /etc/supervisor.d/
 ADD deploy/nginx.logrotate /etc/logrotate.d/nginx
 
-CMD [supervisord, -l, /apps/logs/supervisord.log, -c, /etc/supervisord.conf]
-# CMD: [supervisord, -l, /apps/logs/supervisord.log, -c, /apps/configs/supervisord.nginx.conf]
+CMD [supervisord, -l, /app/logs/supervisord.log, -c, /etc/supervisord.conf]
+# CMD: [supervisord, -l, /app/logs/supervisord.log, -c, /etc/supervisord.nginx.conf]
 
 # CMD: [openvpn, --auth-nocache, --config, configs/client.ovpn, --askpass, configs/client.ovpn.pass]
 # CMD: [openvpn, --auth-nocache, --config, configs/client.ovpn, --auth-user-pass, configs/client.ovpn.auth]
