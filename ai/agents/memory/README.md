@@ -11,4 +11,13 @@ version: 0.1.0
 - name: OpenViking
   links:
   - https://github.com/volcengine/OpenViking
+
 - name: mem0
+
+- name: graphiti
+  links:
+  - https://github.com/getzep/graphiti
+
+- name: mempalace
+  links:
+  - https://mempalaceofficial.com/

@@ -1,0 +1,21 @@
+[skill]
+name = "hello-demo"
+version = "0.1.0"
+description = "A minimal OpenFang demo skill with greeting and addition tools"
+author = "local"
+license = "MIT"
+tags = ["demo", "hello", "math"]
+
+[runtime]
+type = "python"
+entry = "src/main.py"
+
+[[tools.provided]]
+name = "hello_user"
+description = "Say hello to a user in Chinese or English"
+input_schema = { type = "object", properties = { name = { type = "string", description = "User name" }, language = { type = "string", description = "Response language: zh or en", enum = ["zh", "en"] } }, required = ["name"] }
+
+[[tools.provided]]
+name = "add_numbers"
+description = "Add two numbers and return the result"
+input_schema = { type = "object", properties = { a = { type = "number", description = "First number" }, b = { type = "number", description = "Second number" } }, required = ["a", "b"] }
