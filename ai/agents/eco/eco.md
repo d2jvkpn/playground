@@ -15,3 +15,6 @@ description:
 - adk-rust: https://github.com/zavora-ai/adk-rust
 - agent-zero: https://github.com/agent0ai/agent-zero
 - warp: https://github.com/warpdotdev/warp
+
+2. tools
+- LangBot: https://github.com/langbot-app/LangBot

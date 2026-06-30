@@ -15,8 +15,11 @@ fi
 
 echo "==> image: $image"
 #docker-archive:/dev/stdout:$image
-skopeo copy docker://$image docker-archive:$prefix.tar:$image
-pigz $prefix.tar
+#skopeo copy docker://$image docker-archive:$prefix.tar:$image
+#pigz $prefix.tar
+#mv $prefix.tar.gz $prefix.tgz
 
-mv $prefix.tar.gz $prefix.tgz
+skopeo copy --quiet docker://$image docker-archive:/dev/stdout:$image |
+  pigz -c > $prefix.tgz
+
 echo "<== saved: $prefix.tgz"
