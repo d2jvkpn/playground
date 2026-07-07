@@ -31,3 +31,5 @@ RUN if [ "$build_region" == "cn" ]; then \
 RUN npm install -g playwright chrome-devtools-mcp@latest && \
     rm -rf ~/.cache ~/.npm && \
     mkdir -p ~/.cache
+
+ENV http_proxy="" https_proxy="" no_proxy=""

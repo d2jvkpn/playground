@@ -1,0 +1,54 @@
+networks:
+  net: { name: local, driver: bridge, external: true }
+
+services:
+  mem0-server:
+    image: q.local/mem0-server:latest
+    container_name: mem0-server
+    restart: always
+    networks: ["net"]
+    ports: ["8888:8000"]
+    user: 1000:1000
+    volumes:
+    - ./data/mem0-history:/app/history
+    - ./configs/mem0.yaml:/app/config/mem0.yaml:ro
+    env_file: [".env"]
+    environment:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
+      PYTHONPATH: ""
+      DASHBOARD_URL: http://localhost:3000
+      APP_DB_NAME: mem0
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_API_KEY: ""
+      AUTH_DISABLED: ${AUTH_DISABLED:-false}
+      MEM0_TELEMETRY: ${MEM0_TELEMETRY:-true}
+      OPENAI_BASE_URL: ""
+      OPENAI_API_KEY: ""
+      MEM0_DEFAULT_LLM_MODEL: ""
+      MEM0_DEFAULT_EMBEDDER_MODEL: text-embedding-3-small
+      POSTGRES_HOST: "127.0.0.1"
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: "mem0"
+      POSTGRES_USER: "<user>"
+      POSTGRES_PASSWORD: "<password>"
+      POSTGRES_COLLECTION_NAME: "memories"
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+  mem0-dashboard:
+    image: q.local/mem0-dashboard:latest
+    container_name: mem0-dashboard
+    restart: always
+    depends_on:
+      mem0: { condition: service_started }
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks: ["net"]
+    ports: ["3000:3000"]
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8888
+      API_INTERNAL_URL: http://mem0:8000
+      NEXT_PUBLIC_INSTANCE_NAME: Mem0

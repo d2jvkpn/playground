@@ -1,0 +1,18 @@
+llm:
+  provider: ollama
+  config:
+    model: qwen2.5:7b-instruct
+    ollama_base_url: http://ollama:11434
+
+embedder:
+  provider: ollama
+  config:
+    model: nomic-embed-text
+    ollama_base_url: http://ollama:11434
+
+vector_store:
+  provider: qdrant
+  config:
+    host: qdrant
+    port: 6333
+    collection_name: memories

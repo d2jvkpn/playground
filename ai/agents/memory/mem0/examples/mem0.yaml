@@ -1,0 +1,27 @@
+---
+mem0:
+  llm:
+    provider: ollama
+    model: qwen2.5:7b-instruct
+
+  embedder:
+    provider: ollama
+    model: nomic-embed-text
+
+  vector_store:
+    provider: qdrant
+    host: localhost
+    port: 6333
+
+
+---
+memory:
+  provider: mem0
+
+  mem0:
+    endpoint: http://mem0-server:8888
+
+  model_policy:
+    extraction_llm: local_light
+    embedding: local
+    fallback_llm: cloud_strong

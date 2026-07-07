@@ -104,6 +104,7 @@ docs:
 ```
 path: ~/.claude/skills/contract-drafting, ./.claude/skills/contract-drafting
 ```
+
 - https://github.com/anthropics/claude-for-legal
 ```
 /plugin marketplace add <path-to-this-repo>
@@ -125,3 +126,5 @@ path: ~/.claude/skills/contract-drafting, ./.claude/skills/contract-drafting
 /plugin marketplace add anthropics/claude-plugins-official
 /plugin install claude-md-management@claude-plugins-official
 ```
+
+- https://github.com/Gitlawb/openclaude
