@@ -1,0 +1,5 @@
+port: 3020
+address: 0.0.0.0
+log: /app/logs/filebrowser.log
+database: /app/data/filebrowser/filebrowser.db
+root: /app/data/filebrowser/storage

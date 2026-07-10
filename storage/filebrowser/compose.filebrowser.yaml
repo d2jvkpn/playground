@@ -1,15 +1,15 @@
-# networks:
-#   net: { name: "filebrowser", driver: bridge, external: false }
+networks:
+  net: { name: "local", driver: bridge, external: false }
 
 services:
   filebrowser:
     image: filebrowser/filebrowser:v2
-    # networks: ["net"]
-    network_mode: bridge
     restart: always
-    user: "${USER_UID}:${USER_GID}"
     container_name: filebrowser
-    ports: ["${HTTP_Port}:${HTTP_Port}"]
+    #network_mode: bridge
+    networks: ["net"]
+    ports: ["3020:3020"]
+    user: 1000:1000
     environment:
       TZ: Asia/Shanghai
       USERNAME: filebrowser
@@ -21,4 +21,4 @@ services:
     - ./logs:/app/logs/
     - ./data/filebrowser:/app/data/filebrowser
     command:
-    - --config=/app/configs/filebrowser.json
+    - --config=/app/configs/filebrowser.yaml
