@@ -1,0 +1,10 @@
+# path: ~/.codex/config.toml
+
+model = "your-model-name"
+model_provider = "thirdparty"
+
+[model_providers.thirdparty]
+name = "Third-party LLM"
+base_url = "https://api.example.com/v1"
+env_key = "THIRDPARTY_API_KEY"
+wire_api = "responses"
