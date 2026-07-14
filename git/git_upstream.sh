@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
-set -eu -o pipefail # -x
-_wd=$(pwd); _path=$(dirname $0 | xargs -i readlink -f {})
+#!/bin/bash
+set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
+
 
 #### 1. add upstream repository
 git remote add upstream https://github.com/go-shiori/shiori.git
@@ -18,3 +18,6 @@ git commit -m "Resolved merge conflicts..."
 
 #### 5. push to your repository
 git push origin main
+
+exit
+git config --global init.defaultBranch dev

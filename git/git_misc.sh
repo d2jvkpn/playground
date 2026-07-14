@@ -14,3 +14,5 @@ git reset --hard HEAD~1
 
 # 撤销 commit 并生成新的反向 commit
 git revert <commit>
+
+

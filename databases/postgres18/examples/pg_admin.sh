@@ -9,7 +9,7 @@ mkdir -p configs
   tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 32 | head -n1 > configs/postgres.pass || true
 
 docker exec postgres psql postgres://postgres@localhost:5432/postgres \
-  -c "ALTER ROLE postgres WITH PASSWORD '$(cat configs/postgres.pass)'"
+  -c "ALTER ROLE postgres WITH LOGIN WITH PASSWORD '$(cat configs/postgres.pass)'"
 
 exit
 psql postgres://username:password@localhost:5432/postgres

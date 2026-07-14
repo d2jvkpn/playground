@@ -4,6 +4,7 @@ services:
     restart: always # unless-stopped
     container_name: codebox
     hostname: codebox
+    init: true
     cap_add: ["NET_ADMIN"]
     devices: ["/dev/net/tun:/dev/net/tun"]
     sysctls:

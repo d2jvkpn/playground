@@ -17,3 +17,6 @@
 - codex plugin remove superpowers@openai-curated
 - codex plugin add superpowers@openai-curated
 - codex plugin marketplace add https://github.com/example/plugins.git --sparse .agents/plugins
+
+#### 3.
+- npm install -g @openai/codex

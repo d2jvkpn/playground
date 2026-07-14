@@ -10,6 +10,10 @@ ARG build_region
 ENV http_proxy="$http_proxy" https_proxy="$https_proxy" no_proxy="$no_proxy"
 
 ####
+USER root
+RUN /opt/scripts/apt_install.sh
+
+####
 USER appuser
 WORKDIR /home/appuser
 
