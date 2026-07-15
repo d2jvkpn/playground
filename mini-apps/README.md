@@ -21,4 +21,9 @@ description:
 - https://github.com/nervjs/taro
 - https://taro.aotu.io/
 
+3. Taro
+- npm install -g @tarojs/cli
+- npm info @tarojs/cli
+- npx @tarojs/cli init myApp
+
 

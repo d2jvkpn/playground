@@ -18,6 +18,7 @@ version: 0.1.0
 - https://clawhub.ai
 - https://github.com/obra/superpowers
 - https://skills.sh
+- https://github.com/mattpocock/skills
 
 2. skills
 - location: .opencode/skills/<name>/SKILL.md, ~/.config/opencode/skills/<name>/SKILL.md
