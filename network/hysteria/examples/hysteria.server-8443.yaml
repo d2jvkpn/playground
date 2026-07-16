@@ -1,8 +1,8 @@
 listen: :8443
 
 tls:
-  cert: configs/server.crt
-  key: configs/server.key
+  cert: /app/configs/server.crt
+  key: /app/configs/server.key
 
 auth:
   type: password
