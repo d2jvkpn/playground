@@ -5,9 +5,7 @@ ARG http_proxy
 ARG https_proxy
 ARG no_proxy
 
-ENV http_proxy=$http_proxy \
-    https_proxy=$https_proxy \
-    no_proxy=$no_proxy
+ENV http_proxy="$http_proxy" https_proxy="$https_proxy" no_proxy="$no_proxy"
 
 ####
 USER root
@@ -22,6 +20,4 @@ WORKDIR /home/appuser
 WORKDIR /home/appuser/workspace
 
 ####
-ENV https_proxy="" \
-    http_proxy="" \
-    no_proxy=""
+ENV https_proxy="" http_proxy="" no_proxy=""

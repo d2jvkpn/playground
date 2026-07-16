@@ -6,7 +6,8 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
   imagemagick ffmpeg net-tools xvfb fonts-noto-cjk
 
 npm install -g playwright
-playwright install --with-deps chromium
+#playwright install --with-deps chromium
+playwright install --with-deps chrome
 
 mv /root/.cache/ms-playwright /opt/ms-playwright
 rm -rf ~/.cache ~/.npm

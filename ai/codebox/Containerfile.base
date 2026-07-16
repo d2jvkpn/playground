@@ -23,13 +23,14 @@ ENV PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
 USER appuser
 WORKDIR /home/appuser
 
-RUN if [ "$build_region" == "cn" ]; then \
+RUN if [ "$build_region" = "cn" ]; then \
         bash /opt/scripts/config_cn.sh pip; \
         bash /opt/scripts/config_cn.sh npm; \
     fi
 
-RUN npm install -g playwright chrome-devtools-mcp@latest && \
-    rm -rf ~/.cache ~/.npm && \
+RUN npm install -g npm playwright chrome-devtools-mcp@latest && \
+    find "$HOME/.cache" -mindepth 1 -delete && \
+    rm -rf "$HOME/.npm" && \
     mkdir -p ~/.cache
 
 ENV http_proxy="" https_proxy="" no_proxy=""

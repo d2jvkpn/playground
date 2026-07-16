@@ -30,4 +30,23 @@
 #### 3. workflow
 - spec
 - writting-plans
-- 
+
+#### 4. Permissions
+- claude --permission-mode bypassPermissions
+```
+{
+  "permissions": {
+    "defaultMode": "bypassPermissions",
+    "skipDangerousModePermissionPrompt": true
+  }
+}
+```
+- claude --permission-mode auto
+```
+{
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "askUserQuestionTimeout": "60s"
+}
+```

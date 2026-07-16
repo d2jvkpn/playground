@@ -26,11 +26,11 @@ build_latest:
 	  --build-arg http_proxy="http://127.0.0.1:1080" \
 	  -t q.local/codebox:latest ./
 
-image_tag:
+tag_image:
 	#docker tag q.local/codebox:latest q.local/codebox:$$(date +%Y.%-m.%-d)
 	docker tag q.local/codebox:latest q.local/codebox:$$(date +%Y-%m-%d)
 
-image_update:
+update_image:
 	docker build -f data/Containerfile.update \
 	  --network=host \
 	  --build-arg https_proxy="http://127.0.0.1:1080" \
