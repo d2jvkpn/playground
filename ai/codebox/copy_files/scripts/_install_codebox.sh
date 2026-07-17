@@ -75,3 +75,12 @@ npm install -g @gitlawb/openclaude@latest
 mkdir -p ~/.local/share/openclaude
 rm -rf ~/.openclaude
 ln -s ~/.local/share/openclaude ~/.openclaude
+
+#### opendev
+echo "==> install opendev"
+curl -fL -o opendev-cli-x86_64-unknown-linux-gnu.tar.xz \
+  https://github.com/opendev-to/opendev/releases/latest/download/opendev-cli-x86_64-unknown-linux-gnu.tar.xz
+
+tar -xf opendev-cli-x86_64-unknown-linux-gnu.tar.xz
+mv opendev-cli-x86_64-unknown-linux-gnu/opendev ~/.local/bin
+rm -rf opendev-cli-x86_64-unknown-linux-gnu opendev-cli-x86_64-unknown-linux-gnu.tar.xz
