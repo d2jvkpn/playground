@@ -17,3 +17,6 @@ version: 0.1.0
 - https://feishu-cli.com
 - https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli
 - https://open.dingtalk.com/document/download/dingtalk-design-introduction
+
+3. mermaid
+npm install -g @mermaid-js/mermaid-cli@11.16.0

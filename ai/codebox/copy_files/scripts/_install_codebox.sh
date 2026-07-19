@@ -19,6 +19,8 @@ version=$(~/.local/bin/claude --version | awk '{print $1}')
 mv ~/.local/share/claude/versions/$version ~/.local/bin/claude
 rm -rf ~/.claude && \
 ln -s ~/.local/share/claude ~/.claude
+mv ~/.claude.json ~/.local/share/claude/claude.json
+ln -s ~/.local/share/claude/claude.json ~/.claude.json
 
 # claude shell:
 #/plugin marketplace add openai/codex-plugin-cc

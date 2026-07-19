@@ -5,7 +5,7 @@
 -- ============================================================
 -- psql -U postgres -d postgres
 
-CREATE USER <user> WITH LOGIN WITH PASSWORD '<password>';
+CREATE USER <user> WITH LOGIN PASSWORD '<password>';
 
 CREATE DATABASE <dbname> WITH ENCODING = 'UTF8' TEMPLATE = template0 owner = <user>;
 

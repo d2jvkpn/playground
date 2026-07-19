@@ -28,8 +28,8 @@ services:
       #ALLOW_EMPTY_PASSWORD: yes  # ALLOW_EMPTY_PASSWORD is recommended only for development.
     working_dir: /data
     volumes:
-    - ./configs/redis.pass:/run/secrets/redis.pass
+    #- ./configs/redis.pass:/run/secrets/redis.pass
     - ./data/redis:/data:rw
     #command: redis-server /etc/redis.conf --loglevel warning --save 300 10 --requirepass d2jvkpn
     #command: redis-server /etc/redis.conf --loglevel warning --appendonly yes --appendfsync everysec --requirepass d2jvkpn
-    command: redis-server /data/redis.conf
+    command: redis-server /app/configs/redis.conf

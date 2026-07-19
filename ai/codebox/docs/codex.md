@@ -8,6 +8,8 @@
 - /plugins
 - codex auth login
 - codex login --device-auth
+- /pemissions
+- codex --sandbox workspace-write --ask-for-approval on-request
 
 #### 2. plugins
 - codex plugin list --json

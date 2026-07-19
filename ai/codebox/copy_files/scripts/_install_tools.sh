@@ -69,6 +69,8 @@ rm -f lazygit.tgz
 #go install github.com/air-verse/air@latest
 #go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 
+npm install -g @mermaid-js/mermaid-cli@11.16.0
+
 ####
 rm -rf ~/.cache ~/.npm
 mkdir -p ~/.cache

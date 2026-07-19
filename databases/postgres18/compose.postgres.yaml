@@ -17,7 +17,8 @@ services:
       interval: 15s
       timeout: 3s
       retries: 3
-    # network_mode: bridge
+    #user: postgres:postgres
+    #network_mode: bridge
     networks:
       net:
         aliases: [postgres.svc]
