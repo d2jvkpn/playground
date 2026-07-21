@@ -7,7 +7,7 @@ function codebox() {
     docker exec -it -u appuser -w "/home/appuser/$wd" codebox "$cmd" $@
 }
 
-function codebox-wd() {
+function codebox_wd() {
     if [ $# -lt 1 ]; then
         echo "Usage: codebox-wd <project> [command...]" >&2
         return 1
