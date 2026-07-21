@@ -1,0 +1,29 @@
+#alias codebox='docker exec -it -u appuser -w /home/appuser/workspace codebox'
+
+function codebox() {
+    local wd=${wd:-workspace}
+    local cmd=${1:-bash}
+    shift
+    docker exec -it -u appuser -w "/home/appuser/$wd" codebox "$cmd" $@
+}
+
+function codebox-wd() {
+    if [ $# -lt 1 ]; then
+        echo "Usage: codebox-wd <project> [command...]" >&2
+        return 1
+    fi
+
+    local project="$1"
+    shift
+
+    if [ $# -eq 0 ]; then
+        set -- bash
+    fi
+
+    #if ! docker ps --format '{{.Names}}' | grep -q '^codebox$'; then
+    #    echo "Error: container 'codebox' isn't running" >&2
+    #    return 1
+    #fi
+
+    docker exec -it -u appuser -w "/home/appuser/workspace/$project" codebox "$@"
+}

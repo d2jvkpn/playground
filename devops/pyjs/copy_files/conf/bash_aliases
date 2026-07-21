@@ -1,6 +1,9 @@
 # path: ~/.bash_aliases
 
 alias sh='bash'
+alias ll='ls -al'
+alias tree1='tree -L 1'; alias tree2='tree -L 2'; alias tree3='tree -L 3'
+alias ..='cd ../'; alias ...='cd ../../'; alias ....='cd ../../../'
 
 for d in "$HOME/.local/bin" "$HOME/apps/bin"; do
     if [ ! -d "$d" ]; then

@@ -25,7 +25,7 @@ echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *
 /opt/scripts/apt_install.sh dos2unix bash-completion \
   sqlite3 postgresql-client redis-tools \
   ripgrep fd-find bat sd \
-  fzf glow gum gh htop
+  fzf glow gum gh htop rsync
 # bubblewrap, htop, pandoc
 # $ rg, bat, fdfind, sd
 # go install github.com/charmbracelet/glow/v2@latest

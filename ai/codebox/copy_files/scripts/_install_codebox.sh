@@ -32,7 +32,7 @@ curl -fsSL https://github.com/SaladDay/cc-switch-cli/releases/latest/download/in
 #CC_SWITCH_CONFIG_DIR=~/.cc-switch
 
 #### codex
-echo "==> install codex"
+echo "==> Installing codex"
 # CODEX_HOME=~/.codex ===> ~/.local/share/codex
 npm install -g @openai/codex
 
@@ -41,18 +41,18 @@ rm -rf ~/.codex
 ln -s ~/.local/share/codex ~/.codex
 
 #### antigravity
-echo "==> install antigravity"
+echo "==> Installing antigravity"
 curl -fsSL https://antigravity.google/cli/install.sh | bash
 mkdir -p ~/.local/share/gemini
 rm -rf ~/.gemini
 ln -s ~/.local/share/gemini ~/.gemini
 
 #### openspec
-echo "==> install openspec"
+echo "==> Installing openspec"
 npm install -g @fission-ai/openspec@latest
 
 #### codewhale
-echo "==> install codewhale"
+echo "==> Installing codewhale"
 # npm install -g codewhale
 curl -fL -o ~/.local/bin/codewhale \
   https://github.com/Hmbown/CodeWhale/releases/latest/download/codewhale-linux-x64
@@ -71,7 +71,7 @@ ln -s ~/.local/share/codewhale ~/.codewhale
 #codewhale --provider openai --model glm-5
 
 #### openclaude
-echo "==> install openclaude"
+echo "==> Installing openclaude"
 npm install -g @gitlawb/openclaude@latest
 # CLAUDE_CONFIG_DIR=~/.openclaude
 mkdir -p ~/.local/share/openclaude
@@ -79,10 +79,18 @@ rm -rf ~/.openclaude
 ln -s ~/.local/share/openclaude ~/.openclaude
 
 #### opendev
-echo "==> install opendev"
+echo "==> Installing opendev"
 curl -fL -o opendev-cli-x86_64-unknown-linux-gnu.tar.xz \
   https://github.com/opendev-to/opendev/releases/latest/download/opendev-cli-x86_64-unknown-linux-gnu.tar.xz
 
 tar -xf opendev-cli-x86_64-unknown-linux-gnu.tar.xz
 mv opendev-cli-x86_64-unknown-linux-gnu/opendev ~/.local/bin
 rm -rf opendev-cli-x86_64-unknown-linux-gnu opendev-cli-x86_64-unknown-linux-gnu.tar.xz
+
+#### Pi
+echo "==> Installing pi"
+curl -fsSL https://pi.dev/install.sh | sh
+# PI_CODING_AGENT_DIR=~/.pi/agent
+mkdir -p ~/.local/share/pi
+rm -rf ~/.pi
+ln -s ~/.local/share/pi ~/.pi

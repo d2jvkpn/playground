@@ -43,8 +43,11 @@ docs:
 7. OpenCode
 - https://github.com/anomalyco/opencode
 - https://github.com/code-yeongyu/oh-my-openagent
-8. oh-my-pi
+8. pi
+- https://pi.dev/
 - https://github.com/can1357/oh-my-pi
+- curl -fsSL https://pi.dev/install.sh | sh
+- npm install -g --ignore-scripts @earendil-works/pi-coding-agent
 
 #### ch04. IDE
 1. Winsurf
@@ -59,6 +62,8 @@ docs:
 - https://github.com/cline/cline/releases
 6. continue
 - https://github.com/continuedev/continue/releases
+7. orca: About Orca is the ADE for working with a fleet of parallel agents. Run any coding agent with your own subscription. Available on desktop and mobile.
+- https://github.com/stablyai/orca
 
 #### ch05. Web
 1. vibe-kanban

@@ -10,6 +10,7 @@ docker-compose.yaml
 docker-compose.yml
 compose.yaml
 compose.yml
+app.dev.json
 
 #### directories
 configs/
@@ -19,8 +20,9 @@ target/
 
 ####
 bin/
+vendor/
+__pycache__/
+
 dist/
 build/
 node_modules/
-vendor/
-__pycache__/
