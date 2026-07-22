@@ -15,4 +15,10 @@ git reset --hard HEAD~1
 # 撤销 commit 并生成新的反向 commit
 git revert <commit>
 
+git checkout <commit-hash>
+git switch --detach <commit-hash>
+git switch -c temp-branch <commit-hash>
 
+git show <commit-hash>:<filepath>
+
+git switch -
