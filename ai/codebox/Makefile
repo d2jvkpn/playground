@@ -1,4 +1,4 @@
-container := $(shell yq .services.openclaw.container_name compose.yaml)
+container := $(shell yq .services.openclaw.container_name compose.yaml || true)
 
 create_dirs:
 	mkdir -p data/apps data/workspace/configs data/workspace/logs \

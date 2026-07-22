@@ -5,12 +5,13 @@
 !.gitignore
 .env*
 *.log
+.DS_Store
+*.dev.json
 nohup.out
 docker-compose.yaml
 docker-compose.yml
 compose.yaml
 compose.yml
-*.dev.json
 
 #### directories
 configs/

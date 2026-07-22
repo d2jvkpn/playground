@@ -16,8 +16,8 @@ COPY ./copy_files/scripts/. /opt/scripts
 RUN bash /opt/scripts/_install_tools.sh
 RUN bash /opt/scripts/_install_services.sh
 
-RUN bash /opt/scripts/_install_playwright.sh
 ENV PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
+RUN bash /opt/scripts/_install_playwright.sh
 
 ####
 USER appuser
@@ -27,10 +27,5 @@ RUN if [ "$build_region" = "cn" ]; then \
         bash /opt/scripts/config_cn.sh pip; \
         bash /opt/scripts/config_cn.sh npm; \
     fi
-
-RUN npm install -g npm playwright chrome-devtools-mcp@latest && \
-    find "$HOME/.cache" -mindepth 1 -delete && \
-    rm -rf "$HOME/.npm" && \
-    mkdir -p ~/.cache
 
 ENV http_proxy="" https_proxy="" no_proxy=""

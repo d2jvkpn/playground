@@ -90,6 +90,7 @@ rm -rf opendev-cli-x86_64-unknown-linux-gnu opendev-cli-x86_64-unknown-linux-gnu
 #### Pi
 echo "==> Installing pi"
 curl -fsSL https://pi.dev/install.sh | sh
+pi update
 # PI_CODING_AGENT_DIR=~/.pi/agent
 mkdir -p ~/.local/share/pi
 rm -rf ~/.pi

@@ -5,12 +5,25 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 /opt/scripts/apt_install.sh \
   imagemagick ffmpeg net-tools xvfb fonts-noto-cjk
 
-npm install -g playwright
-playwright install --with-deps chromium
-playwright install --with-deps chrome
+export PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
 
-mv /root/.cache/ms-playwright /opt/ms-playwright
-rm -rf ~/.cache ~/.npm
+npm install -g playwright@latest "@playwright/cli@latest" \
+  "@playwright/mcp@latest" chrome-devtools-mcp@latest
+
+mkdir -p "${PLAYWRIGHT_BROWSERS_PATH}"
+playwright install --with-deps chromium
+chmod -R a+rX "${PLAYWRIGHT_BROWSERS_PATH}"
+
+playwright install --with-deps chromium
+#playwright install --with-deps chrome
+#mv /root/.cache/ms-playwright /opt/ms-playwright
+
+rm -rf ~/.cache ~/.npm /var/lib/apt/lists/*
+npm cache clean --force
 mkdir -p ~/.cache
 
-export PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
+playwright --version
+playwright install --list
+
+#@appuser
+#playwright-cli install --skills
