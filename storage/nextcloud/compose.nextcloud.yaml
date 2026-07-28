@@ -1,5 +1,10 @@
 networks:
-  net: { name: "nextcloud", driver: "bridge", external: false }
+  net:
+    name: nextcloud
+    driver: "bridge"
+    external: false
+    ipam:
+      config: [{ subnet: 172.20.0.0/16 }]
 
 services:
   database:
@@ -16,7 +21,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_Password}
 
   nextcloud:
-    image: nextcloud:31-apache
+    image: nextcloud:32-apache
     container_name: nextcloud
     restart: unless-stopped
     user: "${USER_UID}:${USER_GID}"
@@ -27,3 +32,10 @@ services:
     - ./data/nextcloud:/var/www/html
     environment:
       TZ: Asia/Shanghai
+
+      NEXTCLOUD_TRUSTED_DOMAINS: example.com
+      TRUSTED_PROXIES: 172.20.0.0/16
+      APACHE_DISABLE_REWRITE_IP: "1"
+      OVERWRITEPROTOCOL: https
+      OVERWRITEWEBROOT: /nextcloud
+      OVERWRITECLIURL: https://example.com/nextcloud

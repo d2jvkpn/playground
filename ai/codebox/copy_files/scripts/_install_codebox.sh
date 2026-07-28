@@ -5,13 +5,13 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 mkdir -p ~/.local/bin
 
 #### opencode
-echo "==> install opencode"
+echo "==> Installing opencode"
 curl -fsSL https://opencode.ai/install | bash
 mv ~/.opencode/bin/opencode ~/.local/bin/
 rm -r ~/.opencode
 
 #### claude code
-echo "==> install claude code"
+echo "==> Installing claude code"
 # CLAUDE_CONFIG_DIR=~/.claude ===> ~/.config/claude
 curl -fsSL https://claude.ai/install.sh | bash
 version=$(~/.local/bin/claude --version | awk '{print $1}')
@@ -28,9 +28,6 @@ ln -s ~/.local/share/claude/claude.json ~/.claude.json
 #/reload-plugins
 #/codex:setup
 
-curl -fsSL https://github.com/SaladDay/cc-switch-cli/releases/latest/download/install.sh | bash
-#CC_SWITCH_CONFIG_DIR=~/.cc-switch
-
 #### codex
 echo "==> Installing codex"
 # CODEX_HOME=~/.codex ===> ~/.local/share/codex
@@ -46,10 +43,6 @@ curl -fsSL https://antigravity.google/cli/install.sh | bash
 mkdir -p ~/.local/share/gemini
 rm -rf ~/.gemini
 ln -s ~/.local/share/gemini ~/.gemini
-
-#### openspec
-echo "==> Installing openspec"
-npm install -g @fission-ai/openspec@latest
 
 #### codewhale
 echo "==> Installing codewhale"
@@ -77,6 +70,7 @@ npm install -g @gitlawb/openclaude@latest
 mkdir -p ~/.local/share/openclaude
 rm -rf ~/.openclaude
 ln -s ~/.local/share/openclaude ~/.openclaude
+ln -s ~/.local/share/openclaude/openclaude.json ~/.openclaude.json
 
 #### opendev
 echo "==> Installing opendev"
@@ -95,3 +89,9 @@ pi update
 mkdir -p ~/.local/share/pi
 rm -rf ~/.pi
 ln -s ~/.local/share/pi ~/.pi
+
+#### omp
+echo "==> Installing omp"
+curl -fsSL https://omp.sh/install | sh
+rm -rf ~/.omp
+ln -s ~/.local/share/omp ~/.omp

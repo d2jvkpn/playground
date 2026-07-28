@@ -14,7 +14,6 @@ exit
 journalctl -efx -u app
 sudo journalctl --vacuum-time=7d
 
-
 journalctl -fxe -u kubelet
 journalctl -fxe -u containerd
 

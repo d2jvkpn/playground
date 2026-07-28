@@ -17,7 +17,7 @@
   - Autocompact buffer: 33k tokens (3.4%)
 - /new, /clear
 - /memory
-- shortcuts: Shift+Tab
+- shortcuts: Shift+Tab, Esc, <-, ->
 
 #### 2. Manage plugins
 - /plugin marketplace add anthropics/claude-plugins-official

@@ -7,12 +7,10 @@ npm install -g markdownlint-cli bash-language-server yaml-language-server \
     pyright vscode-langservers-extracted typescript typescript-language-server \
     @vue/language-server eslint prettier prettier-plugin-tailwindcss npm-check-updates
 
-pip install --no-cache-dir --upgrade \
-    python-docx python-pptx openpyxl pandas markdownify pillow \
-    pypdf pdfplumber pymupdf poppler-utils \
-    ast-grep-cli
-# $ ast-grep
-# tesseract-ocr
+pip install --no-cache-dir --upgrade markdownify ast-grep-cli \
+    odfpy pandas pillow polars lxml beautifulsoup4 \
+    python-docx python-pptx openpyxl \
+    pypdf pdfplumber pymupdf poppler-utils
 
 ####
 mkdir -p /etc/apt/keyrings
@@ -31,6 +29,13 @@ echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *
 # go install github.com/charmbracelet/glow/v2@latest
 
 ln -s /usr/bin/batcat /usr/bin/bat
+
+#### cc-switch
+curl -fsSL https://github.com/SaladDay/cc-switch-cli/releases/latest/download/install.sh | bash
+#CC_SWITCH_CONFIG_DIR=~/.cc-switch
+
+#### openspec
+npm install -g @fission-ai/openspec@latest
 
 ####
 tag_name=$(curl -fsSL https://api.github.com/repos/Wilfred/difftastic/releases/latest | jq -r .tag_name)

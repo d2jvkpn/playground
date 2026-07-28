@@ -40,4 +40,6 @@ Unknown frontmatter fields are ignored.
 - name: autoresearch
   links:
   - https://github.com/karpathy/autoresearch
+- name: https://github.com/mvanhorn/last30days-skill
+- name: https://github.com/lfnovo/open-notebook
 ```

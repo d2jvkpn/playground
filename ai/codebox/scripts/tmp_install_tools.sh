@@ -24,12 +24,6 @@ exit
 apt install -y bash-completion
 # ls /usr/share/bash-completion/completions/
 
-# read ms office
-pip install python-docx openpyxl python-pptx pandas
-
-# read pdf
-pip install pypdf pdfplumber pymupdf
-
 exit
 rm -rf ~/.npm ~/.cache
 
