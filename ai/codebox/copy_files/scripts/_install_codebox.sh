@@ -4,12 +4,6 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 mkdir -p ~/.local/bin
 
-#### opencode
-echo "==> Installing opencode"
-curl -fsSL https://opencode.ai/install | bash
-mv ~/.opencode/bin/opencode ~/.local/bin/
-rm -r ~/.opencode
-
 #### claude code
 echo "==> Installing claude code"
 # CLAUDE_CONFIG_DIR=~/.claude ===> ~/.config/claude
@@ -19,6 +13,7 @@ version=$(~/.local/bin/claude --version | awk '{print $1}')
 mv ~/.local/share/claude/versions/$version ~/.local/bin/claude
 rm -rf ~/.claude && \
 ln -s ~/.local/share/claude ~/.claude
+touch ~/.claude.json
 mv ~/.claude.json ~/.local/share/claude/claude.json
 ln -s ~/.local/share/claude/claude.json ~/.claude.json
 
@@ -27,6 +22,12 @@ ln -s ~/.local/share/claude/claude.json ~/.claude.json
 #/plugin install codex@openai-codex
 #/reload-plugins
 #/codex:setup
+
+#### opencode
+echo "==> Installing opencode"
+curl -fsSL https://opencode.ai/install | bash
+mv ~/.opencode/bin/opencode ~/.local/bin/
+rm -r ~/.opencode
 
 #### codex
 echo "==> Installing codex"
@@ -70,6 +71,8 @@ npm install -g @gitlawb/openclaude@latest
 mkdir -p ~/.local/share/openclaude
 rm -rf ~/.openclaude
 ln -s ~/.local/share/openclaude ~/.openclaude
+touch ~/.openclaude.json
+mv ~/.openclaude.json ~/.local/share/openclaude/
 ln -s ~/.local/share/openclaude/openclaude.json ~/.openclaude.json
 
 #### opendev
@@ -81,17 +84,21 @@ tar -xf opendev-cli-x86_64-unknown-linux-gnu.tar.xz
 mv opendev-cli-x86_64-unknown-linux-gnu/opendev ~/.local/bin
 rm -rf opendev-cli-x86_64-unknown-linux-gnu opendev-cli-x86_64-unknown-linux-gnu.tar.xz
 
-#### Pi
+#### omp
+echo "==> Installing omp"
+#curl -fsSL https://omp.sh/install | sh
+curl -fL -o ~/.local/bin/omp \
+  https://github.com/can1357/oh-my-pi/releases/latest/download/omp-linux-x64
+chmod a+x ~/.local/bin/omp
+mkdir -p ~/.omp
+mv ~/.omp ~/.local/share/omp
+ln -s ~/.local/share/omp ~/.omp
+
+#### pi
 echo "==> Installing pi"
 curl -fsSL https://pi.dev/install.sh | sh
-pi update
+#pi update
 # PI_CODING_AGENT_DIR=~/.pi/agent
 mkdir -p ~/.local/share/pi
 rm -rf ~/.pi
 ln -s ~/.local/share/pi ~/.pi
-
-#### omp
-echo "==> Installing omp"
-curl -fsSL https://omp.sh/install | sh
-rm -rf ~/.omp
-ln -s ~/.local/share/omp ~/.omp

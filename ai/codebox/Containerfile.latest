@@ -11,6 +11,8 @@ ENV http_proxy="$http_proxy" https_proxy="$https_proxy" no_proxy="$no_proxy"
 
 ####
 USER root
+
+COPY ./copy_files/scripts/. /opt/scripts
 RUN /opt/scripts/apt_install.sh
 
 ####
