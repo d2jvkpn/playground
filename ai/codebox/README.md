@@ -48,6 +48,9 @@ docs:
 - https://github.com/can1357/oh-my-pi
 - curl -fsSL https://pi.dev/install.sh | sh
 - npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+9. omp
+- https://omp.sh/
+- https://github.com/can1357/oh-my-pi
 
 #### ch04. IDE
 1. Winsurf

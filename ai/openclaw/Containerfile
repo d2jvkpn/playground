@@ -36,7 +36,7 @@ ENV NODE_COMPILE_CACHE=/home/appuser/.cache/node-compile-cache \
 
 RUN npm install -g "openclaw@$openclaw_version" clawhub wscat && \
     mkdir -p ~/.openclaw ~/.agents && \
-    rm -rf ~/.npm ~/.cache
+    rm -rf ~/.npm ~/.cache/*
 
 # npm install -g @tobilu/qmd
 # curl -fsSL https://openclaw.ai/install.sh | bash
@@ -45,7 +45,6 @@ RUN npm install -g "openclaw@$openclaw_version" clawhub wscat && \
 # npm install -g agent-browser
 # agent-browser install
 
-RUN mkdir -p ~/.cache
 ENV BASH_ENV=/home/appuser/.bash_aliases
 
 ####

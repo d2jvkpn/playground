@@ -4,6 +4,9 @@ networks:
 # volumes:
 #   data: { name: postgres, driver: local }
 
+secrets:
+  pg.pass: { file: configs/pg.pass }
+
 services:
   postgres:
     #image: q.local/postgres:18-trixie
@@ -18,6 +21,7 @@ services:
       timeout: 3s
       retries: 3
     #user: postgres:postgres
+    secrets: ["pg.pass"]
     #network_mode: bridge
     networks:
       net:
@@ -29,7 +33,8 @@ services:
     environment:
       TZ: Asia/Shanghai
       PGTZ: Asia/Shanghai
-      POSTGRES_PASSWORD: postgres
+      #POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/pg.pass
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
     command:

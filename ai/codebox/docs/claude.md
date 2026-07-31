@@ -34,6 +34,7 @@
 
 #### 4. Permissions
 - claude --permission-mode bypassPermissions
+- - ~/.claude/settings.json
 ```
 {
   "permissions": {
@@ -49,5 +50,31 @@
     "defaultMode": "auto"
   },
   "askUserQuestionTimeout": "60s"
+}
+```
+
+#### 5. openrouter api key
+- ~/.claude/settings.json
+```
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://openrouter.ai/api",
+    "ANTHROPIC_AUTH_TOKEN": "sk-xxxxxxxx",
+
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "~anthropic/claude-sonnet-latest[1m]",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "~anthropic/claude-opus-latest[1m]",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "~anthropic/claude-haiku-latest",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "anthropic/claude-sonnet-latest[1m]"
+  }
+}
+```
+
+#### 5. comapaction
+```
+{
+  "env": {
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "180000",
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "90"
+  }
 }
 ```

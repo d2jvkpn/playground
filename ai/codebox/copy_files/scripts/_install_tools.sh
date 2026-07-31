@@ -77,5 +77,4 @@ rm -f lazygit.tgz
 npm install -g @mermaid-js/mermaid-cli@11.16.0
 
 ####
-rm -rf ~/.cache ~/.npm
-mkdir -p ~/.cache
+rm -rf ~/.cache/* ~/.npm

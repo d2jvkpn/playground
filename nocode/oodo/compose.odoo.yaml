@@ -1,0 +1,43 @@
+networks:
+  net: {name: odoo, driver: bridge, external: false}
+
+volumes:
+  odoo-web:
+
+secrets:
+  pg.pass: { file: configs/pg.pass }
+
+services:
+  postgres:
+    image: postgres:18-trixie
+    container_name: odoo-postgres
+    restart: unless-stopped
+    networks:
+      net:
+        aliases: ["odoo-postgres.svc"]
+    secrets: ["pg.pass"]
+    volumes:
+    - ./date/postgres:/var/lib/postgresql/18/docker
+    environment:
+      POSTGRES_USER: odoo
+      #POSTGRES_PASSWORD: odoo
+      POSTGRES_PASSWORD_FILE: /run/secrets/pg.pass
+      POSTGRES_DB: odoo
+
+  odoo:
+    image: odoo:19
+    container_name: odoo-web
+    depends_on: ["postgres"]
+    restart: unless-stopped
+    networks: ["net"]
+    ports: ["8069:8069"]
+    secrets: ["pg.pass"]
+    volumes:
+    - odoo-web:/var/lib/odoo
+    - ./data/odoo-addons:/mnt/extra-addons
+    - ./data/odoo-config:/etc/odoo
+    environment:
+      HOST: odoo-postgres.svc
+      USER: odoo
+      #PASSWORD: odoo
+      PASSWORD_FILE: /run/secrets/pg.pass

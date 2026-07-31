@@ -7,8 +7,10 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 export PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
 
-npm install -g playwright@latest "@playwright/cli@latest" \
-  "@playwright/mcp@latest" chrome-devtools-mcp@latest
+npm install -g playwright@latest @playwright/cli@latest \
+  @playwright/mcp@latest chrome-devtools-mcp@latest
+
+# @appuser $ npx -y @playwright/mcp@latest
 
 mkdir -p "${PLAYWRIGHT_BROWSERS_PATH}"
 playwright install --with-deps chromium
@@ -18,9 +20,8 @@ playwright install --with-deps chromium
 #playwright install --with-deps chrome
 #mv /root/.cache/ms-playwright /opt/ms-playwright
 
-rm -rf ~/.cache ~/.npm /var/lib/apt/lists/*
+rm -rf ~/.cache/* ~/.npm /var/lib/apt/lists/*
 npm cache clean --force
-mkdir -p ~/.cache
 
 playwright --version
 playwright install --list
