@@ -1,0 +1,16 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  "permission": {
+    "skill": {
+      "go-change-review": "deny"
+    }
+  },
+
+  "command": {
+    "go-change-review": {
+      "description": "Manually run the shared Go change review workflow",
+      "template": "The user explicitly invoked the manual Go change review workflow.\n\nRead and follow the complete workflow in:\n\n@.agents/skills/go-change-review/SKILL.md\n\nAlso read the detailed checklist in:\n\n@.agents/skills/go-change-review/references/review-checklist.md\n\nUser-supplied scope and instructions:\n\n$ARGUMENTS"
+    }
+  }
+}

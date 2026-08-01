@@ -1,0 +1,5 @@
+{
+  "skillOverrides": {
+    "go-change-review": "user-invocable-only"
+  }
+}

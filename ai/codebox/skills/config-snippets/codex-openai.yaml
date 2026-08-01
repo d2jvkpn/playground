@@ -1,0 +1,7 @@
+interface:
+  display_name: "Go Change Review"
+  short_description: "Manually review and verify current Go changes"
+  default_prompt: "Review the current Go changes using the packaged workflow."
+
+policy:
+  allow_implicit_invocation: false
