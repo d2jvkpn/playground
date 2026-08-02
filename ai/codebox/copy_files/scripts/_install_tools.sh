@@ -76,5 +76,7 @@ rm -f lazygit.tgz
 
 npm install -g @mermaid-js/mermaid-cli@11.16.0
 
+curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+
 ####
 rm -rf ~/.cache/* ~/.npm
