@@ -31,8 +31,11 @@ echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *
 ln -s /usr/bin/batcat /usr/bin/bat
 
 #### cc-switch
-curl -fsSL https://github.com/SaladDay/cc-switch-cli/releases/latest/download/install.sh | bash
 #CC_SWITCH_CONFIG_DIR=~/.cc-switch
+curl -fsSL https://github.com/SaladDay/cc-switch-cli/releases/latest/download/install.sh | bash
+mkdir -p ~/.cc-switch
+mv ~/.cc-switch ~/.local/share/cc-switch
+ln -s ~/.local/share/cc-switch ~/.cc-switch
 
 #### openspec
 npm install -g @fission-ai/openspec@latest

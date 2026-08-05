@@ -1,0 +1,20 @@
+endpointes:
+- company: deepseek
+  endpoints:
+  - { name: openai, url: https://api.deepseek.com }
+  - { name: anthropic, url: https://api.deepseek.com/anthropic }
+- company: ali
+  endpoints:
+  - { name: qwen, url: dashscope.aliyuncs.com }
+- company: 智谱
+  endpoints:
+  - { url: api.z.ai }
+  - { url: open.bigmodel.cn }
+- company: moonshot
+  endpoints:
+  - { url: https://api.moonshot.cn/v1 }
+  - { name: kimi-coding-plan, url: https://api.kimi.com/coding/v1 }
+- company: openrouter
+  endpoints:
+  - { name: openai, url: https://openrouter.ai/api/v1 }
+  - { name: anthropic, url: "https://openrouter.ai/api }

@@ -3,6 +3,8 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 mkdir -p ~/.local/bin
+mkdir -p ~/.local/share/agents
+ln -s ~/.local/share/agents ~/.agents
 
 #### claude code
 echo "==> Installing claude code"
@@ -12,6 +14,7 @@ version=$(~/.local/bin/claude --version | awk '{print $1}')
 
 mv ~/.local/share/claude/versions/$version ~/.local/bin/claude
 rm -rf ~/.claude && \
+mkdir -p ~/.local/share/claude
 ln -s ~/.local/share/claude ~/.claude
 touch ~/.claude.json
 mv ~/.claude.json ~/.local/share/claude/claude.json

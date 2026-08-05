@@ -40,3 +40,24 @@ providers:
 #### 2. commands
 - /login
 - /logout
+- /compact
+
+#### 3. config
+```
+omp config get compaction.enabled
+omp config get compaction.strategy
+omp config get compaction.thresholdPercent
+omp config get compaction.thresholdTokens
+omp config get compaction.reserveTokens
+omp config get compaction.keepRecentTokens
+omp config list
+
+omp config set compaction.enabled true
+omp config set compaction.strategy context-full
+omp config set compaction.thresholdPercent 80
+omp config set compaction.thresholdTokens -1
+omp config set compaction.reserveTokens 32768
+omp config set compaction.keepRecentTokens 30000
+omp config set compaction.midTurnEnabled true
+omp config set compaction.autoContinue true
+``

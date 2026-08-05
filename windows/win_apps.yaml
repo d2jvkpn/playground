@@ -1,4 +1,4 @@
-win_apps:
+apps:
   system:
   - name: autoruns
   - name: ventoy
@@ -14,3 +14,6 @@ win_apps:
   - name: Sublime Text
   - name: gVim
   - name: VSCodium
+commands
+- name: Task Scheduler
+  command: taskschd.msc
