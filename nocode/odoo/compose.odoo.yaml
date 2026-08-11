@@ -5,7 +5,7 @@ volumes:
   odoo-web:
 
 secrets:
-  pg.pass: { file: configs/pg.pass }
+  odoo_pg.pass: { file: configs/odoo_pg.pass }
 
 services:
   postgres:
@@ -15,7 +15,7 @@ services:
     networks:
       net:
         aliases: ["odoo-postgres.svc"]
-    secrets: ["pg.pass"]
+    secrets: ["odoo_pg.pass"]
     volumes:
     - ./date/postgres:/var/lib/postgresql/18/docker
     environment:
@@ -30,8 +30,8 @@ services:
     depends_on: ["postgres"]
     restart: unless-stopped
     networks: ["net"]
-    ports: ["8069:8069"]
-    secrets: ["pg.pass"]
+    ports: ["127.0.0.1:8069:8069"]
+    secrets: ["odoo_pg.pass"]
     volumes:
     - odoo-web:/var/lib/odoo
     - ./data/odoo-addons:/mnt/extra-addons

@@ -24,7 +24,9 @@
   models: ["command r+"]
 
 6. Meta
-  models: [llama]
+  models:
+  - name: llama
+  - name: muse glimmer, date: 2026-08-10
 
 7. Perplexity
   models: [perplexity]

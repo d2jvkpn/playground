@@ -49,3 +49,9 @@ or
 sandbox_mode = "danger-full-access"
 approval_policy = "on-request"
 ```
+
+#### 5. configuration
+- global skills: ~/.agents/skills/
+- repository skills: <repo>/.agents/skills/
+- global instructions: ~/.codex/AGENTS.md
+- repository instructions: <repo>/AGENTS.md

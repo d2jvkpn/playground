@@ -4,6 +4,7 @@ networks:
 services:
   dufs:
     image: sigoden/dufs:latest
+    #image: sigoden/dufs:v0.45.0
     container_name: dufs
     restart: always # unless-stopped
     user: 1000:1000

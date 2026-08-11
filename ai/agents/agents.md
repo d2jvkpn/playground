@@ -42,5 +42,8 @@
 
 16. AstrBot
 
+17. qm
+- https://github.com/yc-software/qm
+
 #### ch02. 
 - https://github.com/ivanweng2077/big_model_radar/issues/97
