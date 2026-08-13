@@ -105,3 +105,18 @@ curl -fsSL https://pi.dev/install.sh | sh
 mkdir -p ~/.local/share/pi
 rm -rf ~/.pi
 ln -s ~/.local/share/pi ~/.pi
+
+####
+#CC_SWITCH_CONFIG_DIR=~/.cc-switch
+curl -fsSL https://github.com/SaladDay/cc-switch-cli/releases/latest/download/install.sh | bash
+mkdir -p ~/.cc-switch
+mv ~/.cc-switch ~/.local/share/cc-switch
+ln -s ~/.local/share/cc-switch ~/.cc-switch
+
+npm install -g @fission-ai/openspec@latest
+
+npm install -g @mermaid-js/mermaid-cli@11.16.0
+
+curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+
+rm -rf ~/.cache/* ~/.npm

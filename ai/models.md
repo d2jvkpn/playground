@@ -16,7 +16,8 @@
   models: [claude]
 
 4. Google
-  models: [gemma]
+  models:
+  - name: gemma4
   sites:
   - Gemini https://gemini.google.com/
 
@@ -26,15 +27,17 @@
 6. Meta
   models:
   - name: llama
-  - name: muse glimmer, date: 2026-08-10
+  - { name: muse glimmer, date: 2026-08-10 }
+  - { name: muse spark, date: 2026-08-10 }
 
 7. Perplexity
   models: [perplexity]
 
 8. Alibaba
-  models: [qwen]
   sites:
   - https://bailian.console.aliyun.com
+  models:
+  - name: qwen-3.8, date: 2026
 
 9. Mistral
   models: [mistral]

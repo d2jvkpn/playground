@@ -2,6 +2,7 @@ user_gid ?= 1000
 user_uid ?= 1000
 
 container := $(shell yq .services.pyjs.container_name compose.yaml)
+proxy ?= http://127.0.0.1:1080
 
 create_dirs:
 	mkdir -p data/apps data/workspace data/site-packages \
@@ -14,8 +15,8 @@ build_image:
 	  --network=host \
 	  --build-arg user_gid=$(user_gid) \
 	  --build-arg user_uid=$(user_uid) \
-	  --build-arg https_proxy="http://127.0.0.1:1080" \
-	  --build-arg http_proxy="http://127.0.0.1:1080" \
+	  --build-arg https_proxy=$(proxy) \
+	  --build-arg http_proxy=$(proxy) \
 	  -t q.local/pyjs:trixie ./
 
 update_image:
@@ -23,8 +24,8 @@ update_image:
 	  --network=host \
 	  --build-arg user_gid=$(user_gid) \
 	  --build-arg user_uid=$(user_uid) \
-	  --build-arg https_proxy="http://127.0.0.1:1080" \
-	  --build-arg http_proxy="http://127.0.0.1:1080" \
+	  --build-arg https_proxy=$(proxy) \
+	  --build-arg http_proxy=$(proxy) \
 	  -t q.local/pyjs:trixie ./
 
 root:

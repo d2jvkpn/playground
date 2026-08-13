@@ -55,3 +55,7 @@ approval_policy = "on-request"
 - repository skills: <repo>/.agents/skills/
 - global instructions: ~/.codex/AGENTS.md
 - repository instructions: <repo>/AGENTS.md
+
+#### 6. using deepseek
+- config: ~/.codex/deepseek.config.toml
+- models: ~/.local/share/codex/deepseek-models.json

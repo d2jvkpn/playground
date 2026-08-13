@@ -30,16 +30,6 @@ echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *
 
 ln -s /usr/bin/batcat /usr/bin/bat
 
-#### cc-switch
-#CC_SWITCH_CONFIG_DIR=~/.cc-switch
-curl -fsSL https://github.com/SaladDay/cc-switch-cli/releases/latest/download/install.sh | bash
-mkdir -p ~/.cc-switch
-mv ~/.cc-switch ~/.local/share/cc-switch
-ln -s ~/.local/share/cc-switch ~/.cc-switch
-
-#### openspec
-npm install -g @fission-ai/openspec@latest
-
 ####
 tag_name=$(curl -fsSL https://api.github.com/repos/Wilfred/difftastic/releases/latest | jq -r .tag_name)
 curl -fL -o difft.tgz \
@@ -76,10 +66,6 @@ rm -f lazygit.tgz
 #?? gitleaks, lazygit
 #go install github.com/air-verse/air@latest
 #go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-
-npm install -g @mermaid-js/mermaid-cli@11.16.0
-
-curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
 
 ####
 rm -rf ~/.cache/* ~/.npm

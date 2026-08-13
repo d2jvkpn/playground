@@ -5,8 +5,9 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 #### install gog
 tag_name=$(curl -fsSL https://api.github.com/repos/steipete/gogcli/releases/latest | jq -r .tag_name)
 curl -fL -o gogcli.tar.gz "https://github.com/steipete/gogcli/releases/download/$tag_name/gogcli_${tag_name#v}_linux_amd64.tar.gz"
-tar -xf gogcli.tar.gz -C /usr/local/bin/ gog
-chmod a+x /usr/local/bin/gog
+tar -xf gogcli.tar.gz
+chmod a+x gog
+mv gog /usr/local/bin/gog
 rm -rf gogcli.tar.gz
 
 #### install himalaya

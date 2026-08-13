@@ -13,7 +13,7 @@ filename=sing-box-${tag_name#v}-linux-amd64.tar.gz
 
 curl -fL https://github.com/SagerNet/sing-box/releases/download/$tag_name/$filename -o $filename
 tar -xf $filename -C /opt/
-ln -s /opt/${filename%.tar.gz}/sing-box /usr/local/bin/
+ln -sf /opt/${filename%.tar.gz}/sing-box /usr/local/bin/
 
 rm -f $filename
 

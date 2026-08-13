@@ -16,15 +16,15 @@ ARG openclaw_version=latest
 USER root
 
 COPY copy_files/scripts/. /opt/scripts/
-RUN bash /opt/scripts/_install_tools.sh && \
-    bash /opt/scripts/_install_services.sh && \
+# RUN bash /opt/scripts/_install_tools.sh
+RUN bash /opt/scripts/_install_services.sh && \
     bash /opt/scripts/_install_clients.sh
 
 ####
 USER appuser
 WORKDIR /home/appuser
 
-RUN if [ "$build_region" == "cn" ]; then \
+RUN if [ "$build_region" = "cn" ]; then \
         bash /opt/scripts/config_cn.sh pip; \
         bash /opt/scripts/config_cn.sh npm; \
     fi
