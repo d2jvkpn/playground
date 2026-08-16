@@ -117,6 +117,8 @@ npm install -g @fission-ai/openspec@latest
 
 npm install -g @mermaid-js/mermaid-cli@11.16.0
 
+npm install -g @firecrawl/anydoc
+
 curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
 
 rm -rf ~/.cache/* ~/.npm

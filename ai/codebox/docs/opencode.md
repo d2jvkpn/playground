@@ -84,3 +84,5 @@ opencode mcp debug <server-name>
 - Rust → rust-analyzer, https://github.com/rust-lang/rust-analyzer/releases
 - Vue → vue
 ```
+
+#### ch03. multi-agents
