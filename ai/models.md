@@ -37,7 +37,7 @@
   sites:
   - https://bailian.console.aliyun.com
   models:
-  - name: qwen-3.8, date: 2026
+  - name: qwen3.8, date: 2026-08
 
 9. Mistral
   models: [mistral]

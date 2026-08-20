@@ -1,5 +1,7 @@
 #alias codebox='docker exec -it -u appuser -w /home/appuser/workspace codebox'
 
+alias codebox_root='docker exec -it -u root -w "/app" codebox bash'
+
 function codebox() {
     local wd=${wd:-workspace}
     local cmd=${1:-bash}

@@ -59,3 +59,10 @@ approval_policy = "on-request"
 #### 6. using deepseek
 - config: ~/.codex/deepseek.config.toml
 - models: ~/.local/share/codex/deepseek-models.json
+
+#### 7. disable a skill
+```toml path=~/.codex/config.toml
+[[skills.config]]
+path = "/path/to/skill/SKILL.md"
+enabled = false
+```
