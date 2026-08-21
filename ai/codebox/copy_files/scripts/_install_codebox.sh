@@ -79,13 +79,13 @@ mv ~/.openclaude.json ~/.local/share/openclaude/
 ln -s ~/.local/share/openclaude/openclaude.json ~/.openclaude.json
 
 #### opendev
-echo "==> Installing opendev"
-curl -fL -o opendev-cli-x86_64-unknown-linux-gnu.tar.xz \
-  https://github.com/opendev-to/opendev/releases/latest/download/opendev-cli-x86_64-unknown-linux-gnu.tar.xz
+#echo "==> Installing opendev"
+#curl -fL -o opendev-cli-x86_64-unknown-linux-gnu.tar.xz \
+#  https://github.com/opendev-to/opendev/releases/latest/download/opendev-cli-x86_64-unknown-linux-gnu.tar.xz
 
-tar -xf opendev-cli-x86_64-unknown-linux-gnu.tar.xz
-mv opendev-cli-x86_64-unknown-linux-gnu/opendev ~/.local/bin
-rm -rf opendev-cli-x86_64-unknown-linux-gnu opendev-cli-x86_64-unknown-linux-gnu.tar.xz
+#tar -xf opendev-cli-x86_64-unknown-linux-gnu.tar.xz
+#mv opendev-cli-x86_64-unknown-linux-gnu/opendev ~/.local/bin
+#rm -rf opendev-cli-x86_64-unknown-linux-gnu opendev-cli-x86_64-unknown-linux-gnu.tar.xz
 
 #### omp
 echo "==> Installing omp"
@@ -106,7 +106,19 @@ mkdir -p ~/.local/share/pi
 rm -rf ~/.pi
 ln -s ~/.local/share/pi ~/.pi
 
+#### goose
+echo "==> Installing goose"
+curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh | bash
+
+#### jcode
+echo "==> Installing jcode"
+curl -fsSL https://jcode.sh/install | bash
+mkdir -p ~/.jcode
+mv ~/.jcode ~/.local/share/jcode
+ln -s ~/.local/share/jcode ~/.jcode
+
 ####
+echo "==> Installing codebox tools"
 #CC_SWITCH_CONFIG_DIR=~/.cc-switch
 curl -fsSL https://github.com/SaladDay/cc-switch-cli/releases/latest/download/install.sh | bash
 mkdir -p ~/.cc-switch
@@ -124,5 +136,9 @@ npm install -g @firecrawl/anydoc
 # npx skills ls -a claude-code
 
 curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+
+curl -sSL https://mqlang.org/install.sh | bash
+
+# https://github.com/1jehuang/mermaid-rs-renderer/releases/download/v0.3.1/mmdr-x86_64-unknown-linux-gnu.tar.gz
 
 rm -rf ~/.cache/* ~/.npm
