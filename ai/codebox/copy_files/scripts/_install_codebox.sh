@@ -108,12 +108,15 @@ ln -s ~/.local/share/pi ~/.pi
 
 #### goose
 echo "==> Installing goose"
-curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh | bash
+curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh |
+  CONFIGURE=false bash
 
 #### jcode
 echo "==> Installing jcode"
 curl -fsSL https://jcode.sh/install | bash
-mkdir -p ~/.jcode
+rm ~/.local/bin/jcode
+mv ~/.jcode/builds/versions/*/jcode* ~/.local/bin/
+rm -rf ~/.jcode/builds/
 mv ~/.jcode ~/.local/share/jcode
 ln -s ~/.local/share/jcode ~/.jcode
 
