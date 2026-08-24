@@ -35,11 +35,9 @@ echo "==> Installing difft"
 tag_name=$(curl -fsSL https://api.github.com/repos/Wilfred/difftastic/releases/latest | jq -r .tag_name)
 prefix=difft-x86_64-unknown-linux-gnu
 curl -fL -o $prefix.tar.gz \
-  "https://github.com/Wilfred/difftastic/releases/download/$tag_name/$prefix.tar.gz"
-tar -xf $prefix.tar.gz -C /usr/local/bin/
-chmod a+x /usr/local/bin/difft
-rm -rf $prefix.tar.gz
-# $ difft
+  https://github.com/Wilfred/difftastic/releases/download/${tag_name}/$prefix.tar.gz
+tar -xvf $prefix.tar.gz -C /usr/local/bin/
+rm -f $prefix.tar.gz
 
 echo "==> Installing eza"
 # https://github.com/eza-community/eza/releases/download/v0.23.4/eza_x86_64-unknown-linux-gnu.tar.gz
@@ -56,8 +54,9 @@ rm -f $prefix.tar.gz
 echo "==> Installing dasel"
 # https://github.com/TomWright/dasel/releases/download/v3.4.1/dasel_linux_amd64
 tag_name=$(curl -fsSL https://api.github.com/repos/TomWright/dasel/releases/latest | jq -r .tag_name)
+prefix=dasel_linux_amd64
 curl -fL -o /usr/local/bin/dasel \
-  "https://github.com/TomWright/dasel/releases/download/$tag_name/dasel_linux_amd64"
+  "https://github.com/TomWright/dasel/releases/download/$tag_name/$prefix"
 chmod a+x /usr/local/bin/dasel
 
 echo "==> Installing lazygit"
@@ -77,14 +76,6 @@ curl -fL -o $prefix.tar.gz \
 tar -xf $prefix.tar.gz
 mv $prefix/delta /usr/local/bin/
 rm -r $prefix $prefix.tar.gz
-
-echo "==> Installing difft"
-tag_name=$(curl -fsSL https://api.github.com/repos/Wilfred/difftastic/releases/latest | jq -r .tag_name)
-prefix=difft-x86_64-unknown-linux-gnu
-curl -fL -o $prefix.tar.gz \
-  https://github.com/Wilfred/difftastic/releases/download/${tag_name}/$prefix.tar.gz
-tar -xvf $prefix.tar.gz -C /usr/local/bin/
-rm -f $prefix.tar.gz
 
 echo "==> Installing golangci-lint"
 tag_name=$(curl -fsSL https://api.github.com/repos/golangci/golangci-lint/releases/latest | jq -r .tag_name)
