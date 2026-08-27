@@ -9,11 +9,11 @@ function codebox() {
     docker exec -it -u appuser -w "/home/appuser/$wd" codebox "$cmd" $@
 }
 
-function opencode() {
+function omp() {
     local wd=${wd:-workspace}
     local cmd=${1:-bash}
     shift
-    docker exec -it -u appuser -w "/home/appuser/$wd" opencode "$cmd" $@
+    docker exec -it -u appuser -w "/home/appuser/$wd" omp "$cmd" $@
 }
 
 function codebox_wd() {
