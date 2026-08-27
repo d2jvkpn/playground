@@ -13,6 +13,10 @@ version: 0.1.0
 
 2. lightpanda
 - https://github.com/lightpanda-io/browser
+```
+curl -L -o ~/.local/bin/lightpanda https://github.com/lightpanda-io/browser/releases/download/nightly/lightpanda-x86_64-linux
+chmod a+x ~/.local/bin/lightpanda
+```
 
 3. playwright-mcp
 - https://github.com/microsoft/playwright-mcp
@@ -52,3 +56,7 @@ npx chrome-devtools-mcp@latest --browser-url=http://host_ip:9222
   }
 }
 ```
+
+6. Rod
+
+7. Steel
