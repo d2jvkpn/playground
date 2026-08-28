@@ -1,0 +1,16 @@
+{
+  "rule_set": [
+    {
+      "type": "local",
+      "tag": "geosite-cn",
+      "format": "binary",
+      "path": "./configs/geosite-cn.srs"
+    },
+    {
+      "type": "local",
+      "tag": "geoip-cn",
+      "format": "binary",
+      "path": "./configs/geoip-cn.srs"
+    }
+  ]
+}
