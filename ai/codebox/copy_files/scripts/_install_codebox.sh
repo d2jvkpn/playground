@@ -29,6 +29,7 @@ ln -s ~/.local/share/claude/claude.json ~/.claude.json
 #### opencode
 echo "==> Installing opencode"
 curl -fsSL https://opencode.ai/install | bash
+curl -fsSL https://opencode.ai/v2/install | bash
 mv ~/.opencode/bin/opencode ~/.local/bin/
 rm -r ~/.opencode
 
@@ -77,15 +78,6 @@ ln -s ~/.local/share/openclaude ~/.openclaude
 touch ~/.openclaude.json
 mv ~/.openclaude.json ~/.local/share/openclaude/
 ln -s ~/.local/share/openclaude/openclaude.json ~/.openclaude.json
-
-#### opendev
-#echo "==> Installing opendev"
-#curl -fL -o opendev-cli-x86_64-unknown-linux-gnu.tar.xz \
-#  https://github.com/opendev-to/opendev/releases/latest/download/opendev-cli-x86_64-unknown-linux-gnu.tar.xz
-
-#tar -xf opendev-cli-x86_64-unknown-linux-gnu.tar.xz
-#mv opendev-cli-x86_64-unknown-linux-gnu/opendev ~/.local/bin
-#rm -rf opendev-cli-x86_64-unknown-linux-gnu opendev-cli-x86_64-unknown-linux-gnu.tar.xz
 
 #### omp
 echo "==> Installing omp"

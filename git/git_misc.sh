@@ -22,3 +22,9 @@ git switch -c temp-branch <commit-hash>
 git show <commit-hash>:<filepath>
 
 git switch -
+
+# 撤销 merge 合并为一条 commit
+git reset --soft ORIG_HEAD
+git commit -m "feat: merge dev changes"
+
+git switch -c main --track origin/main

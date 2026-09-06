@@ -1,0 +1,23 @@
+services:
+  headscale:
+    image: headscale/headscale:0.29.3
+    container_name: headscale
+    restart: unless-stopped
+    expose: ["8080"]
+    volumes:
+    - ./configs:/etc/headscale:ro
+    - ./lib:/var/lib/headscale
+    tmpfs:
+    - /var/run/headscale
+    command: serve
+
+  caddy:
+    image: caddy:2
+    container_name: headscale-caddy
+    restart: unless-stopped
+    depends_on: ["headscale"]
+    ports: ["80:80", "443:443"]
+    volumes:
+    - ./configs/Caddyfile:/etc/caddy/Caddyfile:ro
+    - ./configs/caddy:/config
+    - ./data/caddy:/data

@@ -98,6 +98,15 @@ docs:
 - name: SWE-agent
   links:
   - https://github.com/SWE-agent/SWE-agent
+- name: opendev
+```
+curl -fL -o opendev-cli-x86_64-unknown-linux-gnu.tar.xz \
+  https://github.com/opendev-to/opendev/releases/latest/download/opendev-cli-x86_64-unknown-linux-gnu.tar.xz
+
+tar -xf opendev-cli-x86_64-unknown-linux-gnu.tar.xz
+mv opendev-cli-x86_64-unknown-linux-gnu/opendev ~/.local/bin
+rm -rf opendev-cli-x86_64-unknown-linux-gnu opendev-cli-x86_64-unknown-linux-gnu.tar.xz
+```
 
 #### ch07. IDEs
 - vscodium

@@ -5,12 +5,16 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 ####
 npm install -g markdownlint-cli bash-language-server yaml-language-server \
     pyright vscode-langservers-extracted typescript typescript-language-server \
-    @vue/language-server eslint prettier prettier-plugin-tailwindcss npm-check-updates
+    @vue/language-server eslint prettier prettier-plugin-tailwindcss npm-check-updates \
+    npm i -g @firecrawl/pdf-inspector
+# pdf-inspector annual-report.pdf
 
 pip install --no-cache-dir --upgrade markdownify ast-grep-cli \
-    odfpy pandas pillow polars lxml beautifulsoup4 \
+    odfpy pandas pillow polars lxml beautifulsoup4 fonttools \
     python-docx python-pptx openpyxl \
     pypdf pdfplumber pymupdf poppler-utils
+
+# pip install pdf-inspector
 
 ####
 mkdir -p /etc/apt/keyrings
