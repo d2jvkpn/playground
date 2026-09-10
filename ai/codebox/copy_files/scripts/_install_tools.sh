@@ -24,13 +24,18 @@ curl -fsSL https://repo.charm.sh/apt/gpg.key | gpg --dearmor -o /etc/apt/keyring
 echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" |
   tee /etc/apt/sources.list.d/charm.list
 
-/opt/scripts/apt_install.sh dos2unix bash-completion \
+/opt/scripts/apt.sh update
+
+/opt/scripts/apt.sh install dos2unix \
   sqlite3 postgresql-client redis-tools \
   ripgrep fd-find bat sd \
-  fzf glow gum gh htop rsync bubblewrap
+  fzf glow gum htop
 # htop, pandoc
 # $ rg, bat, fdfind, sd
 # go install github.com/charmbracelet/glow/v2@latest
+
+/opt/scripts/apt.sh clean
+
 
 ln -s /usr/bin/batcat /usr/bin/bat
 

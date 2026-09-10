@@ -13,7 +13,10 @@ ENV http_proxy="$http_proxy" https_proxy="$https_proxy" no_proxy="$no_proxy"
 USER root
 
 COPY ./copy_files/scripts/. /opt/scripts
-RUN /opt/scripts/apt_install.sh
+
+RUN /opt/scripts/apt.sh update && \
+    /opt/scripts/apt.sh upgrade && \
+    /opt/scripts/apt.sh clean
 
 ####
 USER appuser

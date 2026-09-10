@@ -2,7 +2,7 @@ FROM q.local/pyjs:trixie
 
 USER root
 
-RUN /opt/scripts/apt_install.sh
+RUN /opt/scripts/apt.sh update
 
 USER appuser
 

@@ -2,8 +2,9 @@
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
-/opt/scripts/apt_install.sh \
-  imagemagick ffmpeg net-tools xvfb fonts-noto-cjk
+/opt/scripts/apt.sh update
+/opt/scripts/apt.sh install imagemagick ffmpeg net-tools xvfb fonts-noto-cjk
+/opt/scripts/apt.sh clean
 
 export PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
 
