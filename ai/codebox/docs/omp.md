@@ -10,31 +10,20 @@ providers:
     api: openai-completions
     apiKey: KIMI_CODE_API_KEY
     authHeader: true
-
     models:
-    - id: k3-256k
-      name: Kimi K3 256K
-      reasoning: true
-      contextWindow: 262144
-      maxTokens: 32768
+    - { id: k3-256k, name: "Kimi K3 256K", reasoning: true, contextWindow: 262144, maxTokens: 32768 }
+    - { id: k3, name: "Kimi K3", reasoning: true, contextWindow: 1048576, maxTokens: 32768 }
+    - { id: kimi-coding, name: "Kimi K2.7 Code", reasoning: true, contextWindow: 262144, maxTokens: 32768 }
+    - { id: kimi-for-coding-highspeed, name: "Kimi K2.7 Code HighSpeed", reasoning: true, contextWindow: 262144, maxTokens: 32768 }
 
-    - id: k3
-      name: Kimi K3
-      reasoning: true
-      contextWindow: 1048576
-      maxTokens: 32768
-
-    - id: kimi-for-coding
-      name: Kimi K2.7 Code
-      reasoning: true
-      contextWindow: 262144
-      maxTokens: 32768
-
-    - id: kimi-for-coding-highspeed
-      name: Kimi K2.7 Code HighSpeed
-      reasoning: true
-      contextWindow: 262144
-      maxTokens: 32768
+  anthropic-proxy:
+    baseUrl: https://proxy.example.com/anthropic
+    apiKey: ANTHROPIC_API_KEY
+    api: anthropic-messages
+    authHeader: true
+    disableStrictTools: true
+    models:
+    - { id: claude-sonnet-4-6, name: "Claude Sonnet 4.6", reasoning: true, input: [text, image] }
 ```
 
 #### 2. commands
@@ -63,3 +52,8 @@ omp config set compaction.autoContinue true
 
 omp models refresh
 ``
+
+#### 4. usage
+```
+omp --tools read,grep,find,bash
+```

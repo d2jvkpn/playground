@@ -54,6 +54,26 @@
 ```
 
 #### 5. openrouter api key
+- disbale tracing
+```
+{
+  "env": {
+    "OTEL_EXPORTER_OTLP_ENDPOINT": "",
+    "OTEL_METRICS_EXPORTER": "",
+    "OTEL_LOGS_EXPORTER": "",
+    "DISABLE_TELEMETRY": "1",
+    "DO_NOT_TRACK": "1",
+    "DISABLE_ERROR_REPORTING": "1",
+    "DISABLE_FEEDBACK_COMMAND": "1",
+    "DISABLE_AUTOUPDATER": "1",
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "DISABLE_GROWTHBOOK": "1",
+    "CLAUDE_CODE_HIDE_CWD": "1",
+    }
+  }
+}
+```
 - ~/.claude/settings.json
 ```
 {
@@ -68,6 +88,7 @@
   }
 }
 ```
+
 - using deepseek
 ```
 {
@@ -77,22 +98,23 @@
     "ANTHROPIC_AUTH_TOKEN": "<DeepSeek API Key>",
     "ANTHROPIC_MODEL": "deepseek-v4-pro[1m]",
 
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "deepseek-v4-pro[1m]",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "deepseek-v4-pro[1m]",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "deepseek-v4-pro",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "deepseek-v4-pro",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-v4-flash",
     "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-v4-flash",
     "CLAUDE_CODE_EFFORT_LEVEL": "max"
-  }
+  },
+  "model": "sonnet[1m]",
 }
 ```
 
-
-#### 5. comapaction
+- comapaction
 ```
 {
   "env": {
     "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "180000",
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "90"
-  }
+  },
+  "autoCompactEnabled": true
 }
 ```

@@ -13,8 +13,15 @@ else
     fi
 
     shift
-    claude --settings "$settings" "$@"
+    claude \
+      --settings "$settings" \
+      --tools "Bash,Read,Edit,Write,Glob,Grep,Monitor,Agent,Skill" \
+      --disallowedTools "mcp__*"
+      "$@"
 fi
 
 exit
-claude --permission-mode auto
+CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT=1 \
+  claude \
+  --permission-mode auto
+  --bare
