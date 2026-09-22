@@ -23,3 +23,30 @@ docker compose stop odoo
 docker compose run --rm odoo odoo -d odoo -i base --without-demo=all --stop-after-init
 docker compose up -d odoo
 ```
+
+3. mount local dir to container's odoo-web (/var/lib/odoo)
+```
+mkdir -p data/odoo-web
+sudo chown -R 100:101 data/odoo-web
+```
+
+4. backup odoo-web volume
+```
+voulme=odoo-web
+
+tar -czf /mnt/extra-addons/odoo-web.tar.gz -C /var/lib/odoo .
+
+# backup
+docker run --rm \
+  -v $voulme:/data/$voulme:ro \
+  -v "$PWD/data":/backup \
+  odoo:19 \
+  tar -czf /backup/$voulme.tar.gz -C /data/$voulme .
+
+# restore
+docker run --rm \
+  -v $voulme:/data/$voulme \
+  -v "$PWD/data":/backup \
+  odoo:19 \
+  tar -xzf /backup/$voulme.tar.gz -C /data/$voulme
+```

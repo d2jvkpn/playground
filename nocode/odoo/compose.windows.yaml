@@ -1,6 +1,9 @@
 networks:
   net: {name: odoo, driver: bridge, external: false}
 
+volumes:
+  odoo-web:
+
 secrets:
   odoo_pg.pass: { file: configs/odoo_pg.pass }
 
@@ -30,7 +33,8 @@ services:
     ports: ["127.0.0.1:8069:8069"]
     secrets: ["odoo_pg.pass"]
     volumes:
-    - ./data/odoo-web:/var/lib/odoo # chmod -R 100:101 ./data/odoo-web
+    - odoo-web:/var/lib/odoo
+    #- ./data/odoo-web:/var/lib/odoo
     - ./data/odoo-addons:/mnt/extra-addons
     - ./data/odoo-config:/etc/odoo
     environment:

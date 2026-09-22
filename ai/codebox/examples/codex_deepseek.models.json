@@ -1,0 +1,12 @@
+{
+  "models": [
+    {
+      "slug": "deepseek-v4-pro",
+      "context_window": 1048576,
+      "max_context_window": 1048576,
+      "supports_parallel_tool_calls": true,
+      "input_modalities": ["text", "image"],
+      "apply_patch_tool_type": "freeform"
+    }
+  ]
+}

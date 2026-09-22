@@ -51,6 +51,8 @@ omp config set compaction.midTurnEnabled true
 omp config set compaction.autoContinue true
 
 omp models refresh
+
+omp config set defaultThinkingLevel medium
 ``
 
 #### 4. usage

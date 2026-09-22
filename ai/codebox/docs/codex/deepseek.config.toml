@@ -4,7 +4,7 @@
 model = "deepseek-v4-pro"
 model_provider = "deepseek"
 model_reasoning_effort = "high"
-model_catalog_json = "/home/appuser/.local/share/codex/deepseek-models.json"
+model_catalog_json = "/home/appuser/.codex/deepseek.models.json"
 
 [model_providers.deepseek]
 name = "deepseek"
