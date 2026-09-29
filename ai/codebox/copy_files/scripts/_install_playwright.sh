@@ -29,3 +29,20 @@ playwright install --list
 
 #@appuser
 #playwright-cli install --skills
+
+exit
+case "$TARGETARCH" in
+amd64) LP_ARCH="x86_64" ;;
+arm64) LP_ARCH="aarch64" ;;
+*) echo "Unsupported arch: $TARGETARCH" && exit 1 ;;
+esac
+
+curl -L \
+  -o /usr/local/bin/lightpanda \
+  "https://github.com/lightpanda-io/browser/releases/download/nightly/lightpanda-${LP_ARCH}-linux"
+
+chmod 0755 /usr/local/bin/lightpanda
+lightpanda version
+
+exit
+curl -fsSL https://pkg.lightpanda.io/install.sh | bash

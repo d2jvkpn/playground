@@ -42,7 +42,7 @@ ln -s /usr/bin/batcat /usr/bin/bat
 ####
 echo "==> Installing difft"
 tag_name=$(curl -fsSL https://api.github.com/repos/Wilfred/difftastic/releases/latest | jq -r .tag_name)
-prefix=difft-x86_64-unknown-linux-gnu
+prefix=difft-${tag_name}-x86_64-unknown-linux-gnu
 curl -fL -o $prefix.tar.gz \
   https://github.com/Wilfred/difftastic/releases/download/${tag_name}/$prefix.tar.gz
 tar -xvf $prefix.tar.gz -C /usr/local/bin/

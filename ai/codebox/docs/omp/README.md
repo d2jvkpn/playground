@@ -24,6 +24,20 @@ providers:
     disableStrictTools: true
     models:
     - { id: claude-sonnet-4-6, name: "Claude Sonnet 4.6", reasoning: true, input: [text, image] }
+
+  openrouter:
+    baseUrl: https://openrouter.ai/api/v1
+    api: openai-completions
+    apiKey: OPENROUTER_API_KEY
+    authHeader: true
+    models:
+    - id: deepseek/deepseek-v4-pro-0813
+      name: DeepSeek V4 Pro 0813 (OpenRouter)
+      reasoning: true
+      thinking: { minLevel: high, maxLevel: xhigh, mode: effort }
+      input: [text]
+      contextWindow: 1048576
+      maxTokens: 384000
 ```
 
 #### 2. commands
