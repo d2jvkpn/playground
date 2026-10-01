@@ -16,8 +16,8 @@ else
     claude \
       --settings "$settings" \
       --tools "Bash,Read,Edit,Write,Glob,Grep,Monitor,Agent,Skill" \
-      --disallowedTools "mcp__*"
-      "$@"
+      --disallowedTools "mcp__*" \
+      $@
 fi
 
 exit
