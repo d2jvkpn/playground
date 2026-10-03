@@ -19,9 +19,9 @@ LINE 3:             FROM ir_module_module
 ```
 
 ````bash
-docker compose stop odoo
-docker compose run --rm odoo odoo -d odoo -i base --without-demo=all --stop-after-init
-docker compose up -d odoo
+docker compose stop <container>
+docker compose run --rm <container> odoo -d <db> -i base --without-demo=all --stop-after-init
+docker compose up -d <container>
 ```
 
 3. mount local dir to container's odoo-web (/var/lib/odoo)

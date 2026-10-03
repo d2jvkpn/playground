@@ -7,7 +7,7 @@
 
 CREATE USER <user> WITH LOGIN PASSWORD '<password>';
 
-CREATE DATABASE <dbname> WITH ENCODING = 'UTF8' TEMPLATE = template0 owner = <user>;
+CREATE DATABASE <dbname> WITH TEMPLATE = template0 owner = <user>;
 
 GRANT ALL PRIVILEGES ON DATABASE <dbname> TO <user>;
 

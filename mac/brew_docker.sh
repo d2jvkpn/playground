@@ -23,3 +23,5 @@ brew services start colima
 exit
 docker version
 docker run hello-world
+
+cat ~/Library/LaunchAgents/sh.brew.colima.plist
