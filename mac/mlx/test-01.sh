@@ -54,3 +54,10 @@ PY
 curl -s http://127.0.0.1:11234/tokenize \
   -H 'Content-Type: application/json' \
   --data-binary @/tmp/tokenize.json
+
+python -m mlx_vlm.generate \
+  --model mlx-community/Muse-Glimmer-30B-8bit \
+  --max-tokens 100 \
+  --temperature 0 \
+  --prompt "Describe this image." \
+  --image image.jpg

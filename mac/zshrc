@@ -1,0 +1,46 @@
+# path: ~/.zshrc
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+bindkey -e
+
+# 光标移动
+bindkey '^A' beginning-of-line
+bindkey '^E' end-of-line
+bindkey '^B' backward-char
+bindkey '^F' forward-char
+
+# 按单词移动
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+
+# 删除
+bindkey '^H' backward-delete-char
+bindkey '^?' backward-delete-char
+bindkey '^W' backward-kill-word
+bindkey '^U' backward-kill-line
+bindkey '^K' kill-line
+
+# 历史
+bindkey '^P' up-history
+bindkey '^N' down-history
+bindkey '^R' history-incremental-search-backward
+
+# 编辑
+bindkey '^Y' yank
+bindkey '^T' transpose-chars
+bindkey '^L' clear-screen
+
+# Home / End
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
+
+# Delete
+bindkey '^[[3~' delete-char
+
+# Alt/Option + Backspace
+bindkey '^[^?' backward-kill-word
+
+# Alt/Option + Left / Right
+bindkey '^[[1;3D' backward-word
+bindkey '^[[1;3C' forward-word

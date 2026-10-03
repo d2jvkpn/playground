@@ -10,15 +10,18 @@ fi
 wg_key=$(wg genkey)
 wg_pub=$(echo $wg_key | wg pubkey)
 
-cat > /etc/wireguard/wireguard.yaml <<EOF
+cd /etc/wireguard/
+# ls /usr/local/etc/wireguard/ /opt/homebrew/etc/wireguard/
+
+cat > wireguard.yaml <<EOF
 wg0:
   key: $wg_key
   pub: $wg_pub
 EOF
 
-ls -al /etc/wireguard/wireguard.yaml
+ls -al wireguard.yaml
 
-cat > /etc/wireguard/wg0.conf <<EOF
+cat > wg0.conf <<EOF
 [Interface]
 PrivateKey = $wg_key
 Address = <ip>/24
@@ -32,4 +35,4 @@ PublicKey = <node_pubkey>
 AllowedIPs = <node_ip>/32
 EOF
 
-ls -al /etc/wireguard/wg0.conf
+ls -al wg0.conf

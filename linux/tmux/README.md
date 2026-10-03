@@ -23,6 +23,7 @@ session
 - list all sessions: tmux ls
 - create a new session: tmux
 - create a new session: tmux new -s mywork
+- rename a session: tmux rename-session -t 0 monitor
 - attach to the last session: tmux attach
 - attach to a session: tmux attach -t mywork
 - kill a session: tmux kill-session -t mywork

@@ -34,3 +34,16 @@ providers:
       input: [text]
       contextWindow: 1048576
       maxTokens: 384000
+
+  local:
+    baseUrl: http://192.168.1.3:11234/v1
+    api: openai-responses
+    auth: none
+    #auth: oauth
+    #apiKey: sk-xxxx-xxxx
+
+    models:
+    - id: mlx-community/Qwen3.6-35B-A3B-8bit
+      name: Qwen3.6 35B A3B Q8 Local
+      contextWindow: 150000
+      maxTokens: 32768

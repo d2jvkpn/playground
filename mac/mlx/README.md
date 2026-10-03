@@ -79,6 +79,7 @@ mlx-serve serve \
   --port 11234
 
 # --model-dir ~/models/Qwen3.6-35B-A3B-8bit
-# --ctx-size 262144
 # --ctx-size 131072
+# --ctx-size 262144
+# --prefill-chunk 1024
 ```
