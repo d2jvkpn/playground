@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eu -o pipefail
 
+. /opt/scripts/arch.sh
 
 ####
 tag_name=$(
@@ -8,7 +9,8 @@ tag_name=$(
   jq -r .tag_name
 )
 
-curl -fL "https://github.com/mikefarah/yq/releases/download/${tag_name}/yq_linux_amd64" \
+# yq_linux_amd64
+curl -fL "https://github.com/mikefarah/yq/releases/download/${tag_name}/yq_linux_${ARCH}" \
   -o /usr/local/bin/yq
 
 chmod a+x /usr/local/bin/yq

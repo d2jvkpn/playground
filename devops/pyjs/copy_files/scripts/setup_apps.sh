@@ -12,4 +12,3 @@ mkdir -p "$HOME/apps/npm"
 # npm install -g http-server
 # npm config get prefix
 export NPM_CONFIG_PREFIX=$HOME/apps/npm
-
