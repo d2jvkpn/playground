@@ -6,6 +6,8 @@ mkdir -p ~/.local/bin
 mkdir -p ~/.local/share/agents
 ln -s ~/.local/share/agents ~/.agents
 
+. /opt/scripts/arch.sh
+
 #### claude code
 echo "==> Installing claude code"
 # CLAUDE_CONFIG_DIR=~/.claude ===> ~/.config/claude
@@ -52,11 +54,12 @@ ln -s ~/.local/share/gemini ~/.gemini
 #### codewhale
 echo "==> Installing codewhale"
 # npm install -g codewhale
+# codewhale-linux-x64
 curl -fL -o ~/.local/bin/codewhale \
-  https://github.com/Hmbown/CodeWhale/releases/latest/download/codewhale-linux-x64
+  https://github.com/Hmbown/CodeWhale/releases/latest/download/codewhale-linux-${ARCH_NODE}
 
 curl -fL -o ~/.local/bin/codewhale-tui \
-  https://github.com/Hmbown/CodeWhale/releases/latest/download/codewhale-tui-linux-x64
+  https://github.com/Hmbown/CodeWhale/releases/latest/download/codewhale-tui-linux-${ARCH_NODE}
 
 chmod a+x ~/.local/bin/codewhale ~/.local/bin/codewhale-tui
 mkdir -p ~/.local/share/codewhale
@@ -82,8 +85,9 @@ ln -s ~/.local/share/openclaude/openclaude.json ~/.openclaude.json
 #### omp
 echo "==> Installing omp"
 #curl -fsSL https://omp.sh/install | sh
+#omp-linux-x64
 curl -fL -o ~/.local/bin/omp \
-  https://github.com/can1357/oh-my-pi/releases/latest/download/omp-linux-x64
+  https://github.com/can1357/oh-my-pi/releases/latest/download/omp-linux-${ARCH_NODE}
 chmod a+x ~/.local/bin/omp
 mkdir -p ~/.omp
 mv ~/.omp ~/.local/share/omp

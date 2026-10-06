@@ -13,6 +13,7 @@ ENV http_proxy="$http_proxy" https_proxy="$https_proxy" no_proxy="$no_proxy"
 USER root
 
 COPY ./copy_files/scripts/. /opt/scripts
+RUN bash /opt/scripts/_install_packages.sh
 RUN bash /opt/scripts/_install_tools.sh
 RUN bash /opt/scripts/_install_services.sh
 

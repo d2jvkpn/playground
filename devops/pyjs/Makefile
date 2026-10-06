@@ -8,10 +8,10 @@ create_dirs:
 	mkdir -p data/apps data/workspace data/site-packages \
 	  data/config data/cache data/share data/state
 
-# make docker_build NO_CACHE=
-NO_CACHE := --no-cache
+# make docker_build build_args=
+build_args := --no-cache
 build_image:
-	docker build $(NO_CACHE) -f Containerfile \
+	docker build $(build_args) -f Containerfile \
 	  --network=host \
 	  --build-arg user_gid=$(user_gid) \
 	  --build-arg user_uid=$(user_uid) \

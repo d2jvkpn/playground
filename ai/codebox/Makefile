@@ -7,21 +7,21 @@ create_dirs:
 	  logs configs configs/sshd_config.d configs/ssh
 
 create_share:
-	mkdir -p data/share/claude data/share/codex data/share/deepseek data/share/gemini
+	mkdir -p data/share/claude data/share/codex data/share/pi data/share/omp data/share/agents
 
-# make docker_build NO_CACHE=
-NO_CACHE := --no-cache
+# make docker_build build_args="--no-cache"
+# build_args := --no-cache
 build_base:
-	docker build $(NO_CACHE) -f Containerfile.base \
+	docker build $(build_args) -f Containerfile.base \
 	  --network=host \
 	  --build-arg https_proxy=$(proxy) \
 	  --build-arg http_proxy=$(proxy) \
 	  -t q.local/codebox:base ./
 
-# make docker_build NO_CACHE=
-NO_CACHE := --no-cache
+# make docker_build build_args="--no-cache"
+# build_args := --no-cache
 build_latest:
-	docker build $(NO_CACHE) -f Containerfile.latest \
+	docker build $(build_args) -f Containerfile.latest \
 	  --network=host \
 	  --build-arg https_proxy=$(proxy) \
 	  --build-arg http_proxy=$(proxy) \

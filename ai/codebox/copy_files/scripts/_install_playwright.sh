@@ -2,6 +2,8 @@
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
+. /opt/scripts/arch.sh
+
 /opt/scripts/apt.sh update
 /opt/scripts/apt.sh install imagemagick ffmpeg net-tools xvfb fonts-noto-cjk
 /opt/scripts/apt.sh clean
@@ -30,16 +32,9 @@ playwright install --list
 #@appuser
 #playwright-cli install --skills
 
-exit
-case "$TARGETARCH" in
-amd64) LP_ARCH="x86_64" ;;
-arm64) LP_ARCH="aarch64" ;;
-*) echo "Unsupported arch: $TARGETARCH" && exit 1 ;;
-esac
-
 curl -L \
   -o /usr/local/bin/lightpanda \
-  "https://github.com/lightpanda-io/browser/releases/download/nightly/lightpanda-${LP_ARCH}-linux"
+  "https://github.com/lightpanda-io/browser/releases/download/nightly/lightpanda-${RAW_ARCH}-linux"
 
 chmod 0755 /usr/local/bin/lightpanda
 lightpanda version

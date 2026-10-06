@@ -71,6 +71,7 @@ mlx-serve serve \
   --prefix-cache-disk 20GB \
   --prefix-cache-entries 8 \
   --prefix-cache-mem 4GB \
+  --metrics \
   --max-concurrent 1 \
   --pld \
   --kv-quant 8 \
