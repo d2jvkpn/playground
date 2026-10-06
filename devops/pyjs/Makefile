@@ -1,15 +1,26 @@
-user_gid ?= 1000
 user_uid ?= 1000
+user_gid ?= 1000
 
-container := $(shell yq .services.pyjs.container_name compose.yaml)
-proxy ?= http://127.0.0.1:1080
+# docker run --privileged --rm tonistiigi/binfmt --install arm64
+# make build_image build_args="--platform=linux/arm64 user_uid=501 user_gid=20"
+
+container := $(shell yq .services.pyjs.container_name compose.yaml &> /dev/null || true)
+#proxy ?= http://127.0.0.1:1080
+proxy := ""
+
+build_args := --no-cache
+# build_args
+
+.DEFAULT_GOAL := init
+
+init:
+	echo "user_uid: $(user_uid), user_gid: $(user_gid), proxy=$(proxy), build_args: $(build_args)"
 
 create_dirs:
 	mkdir -p data/apps data/workspace data/site-packages \
 	  data/config data/cache data/share data/state
 
-# make docker_build build_args=
-build_args := --no-cache
+# make docker_build build_args="" proxy=
 build_image:
 	docker build $(build_args) -f Containerfile \
 	  --network=host \
@@ -20,7 +31,7 @@ build_image:
 	  -t q.local/pyjs:trixie ./
 
 update_image:
-	docker build --no-cache -f data/Containerfile.update \
+	docker build $(build_args) -f data/Containerfile.update \
 	  --network=host \
 	  --build-arg user_gid=$(user_gid) \
 	  --build-arg user_uid=$(user_uid) \

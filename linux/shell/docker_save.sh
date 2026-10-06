@@ -6,6 +6,7 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 out_dir=${out_dir:-./}
 pull=${pull:-false}
 remove=${remove:-false}
+platform=${platform:-}
 
 image=$1
 if [[ "$image" != *":"* ]]; then
@@ -17,20 +18,32 @@ basename=$(echo "$image" | sed 's#/#--#g; s#:#--#')
 tag=$(echo "$image" | awk -F ":" '{print $2}')
 
 if [[ "$tag" == "latest" ]]; then
-    #basename="$basename.$(date +%F)"
-    created=$(docker inspect $image | jq -r '.[0].Created' | awk -F "T" '{print $1; exit}')
+    if [[ -n "$platform" ]]; then
+        created=$(docker image inspect --platform "$platform" "$image" 2>/dev/null \
+                  | jq -r '.[0].Created' | awk -F "T" '{print $1; exit}')
+    else
+        created=$(docker inspect "$image" | jq -r '.[0].Created' | awk -F "T" '{print $1; exit}')
+    fi
     basename="$basename.$created"
+fi
+
+# 平台后缀，用于区分不同平台的 tar 包
+if [[ -n "$platform" ]]; then
+    platform_suffix=$(echo "$platform" | sed 's#[/,]#-#g')
+    basename="${basename}.${platform_suffix}"
 fi
 
 ####
 if [[ "$pull" == "true" ]]; then
-    echo "$(date +%F:%T%:z) Pulling $image"
-    docker pull "$image"
+    echo "$(date +%F:%T%:z) Pulling $image${platform:+ (platform=$platform)}"
+    if [[ -n "$platform" ]]; then
+        docker pull --platform "$platform" "$image"
+    else
+        docker pull "$image"
+    fi
 fi
 
-echo "$(date +%F:%T%:z) Exporting $image: $basename"
-#docker save "$image" -o "$basename".tar
-#pigz -f "$basename".tar
+echo "$(date +%F:%T%:z) Exporting $image${platform:+ (platform=$platform)}: $basename"
 
 zipper=gzip
 if command -v pigz >/dev/null 2>&1; then
@@ -38,7 +51,11 @@ if command -v pigz >/dev/null 2>&1; then
 fi
 
 mkdir -p "$out_dir"
-docker save "$image" | $zipper -c > "$out_dir/$basename".tgz.tmp
+if [[ -n "$platform" ]]; then
+    docker save --platform "$platform" "$image" | $zipper -c > "$out_dir/$basename".tgz.tmp
+else
+    docker save "$image" | $zipper -c > "$out_dir/$basename".tgz.tmp
+fi
 mv "$out_dir/$basename".tgz.tmp "$out_dir/$basename".tgz
 echo "$(date +%F:%T%:z) Saved $image to $out_dir/$basename.tgz"
 

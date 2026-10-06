@@ -41,8 +41,8 @@ echo "==> Installing lazygit"
 # https://github.com/jesseduffield/lazygit/releases/download/v0.62.2/lazygit_0.62.2_linux_x86_64.tar.gz
 tag_name=$(curl -fsSL https://api.github.com/repos/jesseduffield/lazygit/releases/latest | jq -r .tag_name)
 #prefix=lazygit_${tag_name#v}_linux_x86_64
-if [[ "ARCH" == "amd64" ]]; then
-    prefix=lazygit_${tag_name#v}_linux_${ARCH_NODE} # "x84_64"
+if [[ "$ARCH" == "amd64" ]]; then
+    prefix=lazygit_${tag_name#v}_linux_${ARCH_GNU} # "x84_64"
 else
     prefix=lazygit_${tag_name#v}_linux_${ARCH}      # arm64
 fi

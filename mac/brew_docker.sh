@@ -2,7 +2,7 @@
 set -eu -o pipefail; _wd=$(pwd); _dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}")" &>/dev/null && pwd -P)
 
 
-brew install docker docker-compose colima
+brew install docker docker-buildx docker-compose colima
 colima start
 
 mkdir -p ~/.docker/cli-plugins
