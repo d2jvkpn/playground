@@ -2,13 +2,13 @@ services:
   opencode:
     image: q.local/codebox:latest
     restart: always
-    container_name: opencode
-    hostname: opencode # opencode-hostname
+    container_name: omp
+    hostname: omp # omp-hostname
     cpus: 2.0
     mem_limit: 2g
     network_mode: bridge
     #networks: [net]
-    ports: ["127.0.0.1:4096:4096"] # "127.0.0.1:1455:1455"
+    #ports: ["127.0.0.1:4222:4222", "127.0.0.1:7681:7681"]
     user: appuser:appuser
     volumes:
     - ./data/config:/home/appuser/.config
@@ -26,6 +26,4 @@ services:
       # OPENCODE_SERVER_USERNAME: opencode
       # OPENCODE_SERVER_PASSWORD: ""
     entrypoint: ["/opt/scripts/entrypoint.sh"]
-    command: ["opencode", "web", "--hostname=0.0.0.0", "--port=4096"]
-    #command: ["opencode", "/path/to/project/with_tui"]
-    #command: [sleep, infinity]
+    command: [sleep, infinity]
