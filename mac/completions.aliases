@@ -1,0 +1,10 @@
+# path: ~/apps/completions.aliases
+
+fpath=(
+  "$HOME/.zsh/completions"
+  "$(brew --prefix)/share/zsh-completions"
+  $fpath
+)
+
+autoload -Uz compinit
+compinit

@@ -1,12 +1,15 @@
 # path: ~/.zshrc
 
+## global
 eval "$(/opt/homebrew/bin/brew shellenv)"
 export PATH=$HOME/apps/bin:$PATH
-
-alias blender="/Applications/Blender.app/Contents/MacOS/Blender"
 alias ll="ls -lh"
+source ~/apps/apps.aliases
 
-# bindkey
+## apps
+alias blender="/Applications/Blender.app/Contents/MacOS/Blender"
+
+## bindkey
 bindkey -e
 
 # 光标移动

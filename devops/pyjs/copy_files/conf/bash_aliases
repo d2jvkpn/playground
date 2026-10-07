@@ -29,6 +29,6 @@ for d in $(ls -d $HOME/.local/*/bin/ $HOME/apps/*/bin/ 2>/dev/null); do
 done
 
 
-if [ -f $HOME/apps/apps.env ]; then
-    . $HOME/apps/apps.env
+if [ -s $HOME/apps/apps.aliases ]; then
+    . $HOME/apps/apps.aliases
 fi
