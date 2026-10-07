@@ -2,7 +2,8 @@ container := $(shell yq .services.openclaw.container_name compose.yaml &> /dev/n
 #proxy ?= http://127.0.0.1:1080
 proxy := ""
 
-# make build_image build_args="--platform=linux/arm64 user_uid=501 user_gid=20"
+# make build_image args="--platform=linux/amd64 --no-cache"
+# make build_image args="--platform=linux/arm64"
 
 .DEFAULT_GOAL := init
 

@@ -18,6 +18,8 @@
 - /new, /clear
 - /memory
 - shortcuts: Shift+Tab, Esc, <-, ->
+- claude login               # 28 days
+- claude claude setup-token  # 1 year
 
 #### 2. Manage plugins
 - /plugin marketplace add anthropics/claude-plugins-official
