@@ -5,14 +5,18 @@ alias codebox_root='docker exec -it -u root -w "/app" codebox bash'
 function codebox() {
     local wd=${wd:-workspace}
     local cmd=${1:-bash}
-    shift
+
+    (( $# > 0 )) && shift
+
     docker exec -it -u appuser -w "/home/appuser/$wd" codebox "$cmd" $@
 }
 
 function omp() {
     local wd=${wd:-workspace}
     local cmd=${1:-bash}
-    shift
+
+    (( $# > 0 )) && shift
+
     docker exec -it -u appuser -w "/home/appuser/$wd" omp "$cmd" $@
 }
 
@@ -23,7 +27,7 @@ function codebox_wd() {
     fi
 
     local project="$1"
-    shift
+    (( $# > 0 )) && shift
 
     if [ $# -eq 0 ]; then
         set -- bash
