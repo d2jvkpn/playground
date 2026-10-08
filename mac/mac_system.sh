@@ -42,6 +42,10 @@ EOF"
 sudo systemsetup -setremotelogin off
 sudo systemsetup -setremotelogin on
 
+sudo launchctl kickstart -k system/com.openssh.sshd
+sudo launchctl bootout system /System/Library/LaunchDaemons/ssh.plist
+sudo launchctl bootstrap system /System/Library/LaunchDaemons/ssh.plist
+
 ps aux | grep sshd
 
 ## upgrade bash

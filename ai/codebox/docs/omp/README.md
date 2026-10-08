@@ -33,6 +33,15 @@ omp config set compaction.autoContinue true
 omp models refresh
 
 omp config set defaultThinkingLevel medium
+
+omp login anthropic
+omp login openai-codex
+
+ANTHROPIC_OAUTH_TOKEN=sk-xxx omp
+
+cat > ~/.omp/agent/.env <<'EOF'
+ANTHROPIC_OAUTH_TOKEN=sk-xxx
+EOF
 ``
 
 #### 4. usage

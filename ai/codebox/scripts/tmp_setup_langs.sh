@@ -3,7 +3,11 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 ####
-go env -w GOPATH="${HOME}/.local/share/go" GOBIN=${HOME}/apps/bin GOPROXY="https://goproxy.cn,direct"
+go env \
+  -w GOPATH="${HOME}/.local/share/go" \
+  GOBIN=${HOME}/apps/bin \
+  GOPROXY="https://goproxy.cn,direct"
+
 cat ~/.config/go/env
 
 export GOCACHE=${HOME}/.cache/go-build

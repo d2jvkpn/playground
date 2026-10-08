@@ -26,7 +26,9 @@ services:
     - ./data/share:/home/appuser/.local/share
     - ./data/state:/home/appuser/.local/state
     - ./data/apps:/home/appuser/apps
+    #- ${HOME}/Workspace/container_apps:/home/appuser/apps
     - ./data/workspace:/home/appuser/workspace
+    #- ${HOME}/Workspace/container_workspace:/home/appuser/workspace
 
     #- ./configs/:/app/configs
     #- ./logs:/app/logs

@@ -12,7 +12,7 @@
         <string>/opt/homebrew/bin/caddy</string>
         <string>run</string>
         <string>--config</string>
-        <string>/opt/homebrew/etc/Caddyfile</string>
+        <string>/opt/homebrew/etc/caddy/Caddyfile</string>
         <string>--adapter</string>
         <string>caddyfile</string>
     </array>

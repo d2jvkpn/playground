@@ -7,6 +7,14 @@ alias ll="ls -lh"
 source ~/apps/apps.aliases
 
 ## apps
+export PATH=~/apps/bin:$PATH
+for d in $(ls -d ~/apps/*/ 2> /dev/null); do
+    d=${d%/}
+    b=$(basename $d)
+    [ -d $d/bin ] && d=$d/bin
+    export PATH=$d:$PATH
+done
+
 alias blender="/Applications/Blender.app/Contents/MacOS/Blender"
 
 ## bindkey

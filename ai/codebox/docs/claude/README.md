@@ -1,7 +1,7 @@
 # Claude
 ---
 
-#### 1. commands
+## 1. commands
 - init
 - /help: help
 - /usage: token usages
@@ -18,10 +18,13 @@
 - /new, /clear
 - /memory
 - shortcuts: Shift+Tab, Esc, <-, ->
-- claude login               # 28 days
-- claude claude setup-token  # 1 year
 
-#### 2. Manage plugins
+## 2. auth
+- claude login        # 28 days
+- claude setup-token  # 1 year
+- CLAUDE_CODE_OAUTH_TOKEN=sk-xxx claue
+
+## 3. Manage plugins
 - /plugin marketplace add anthropics/claude-plugins-official
 - /plugin marketplace update anthropics/claude-plugins-official
 - claude plugin install superpowers@superpowers-marketplace
@@ -30,11 +33,11 @@
 - /plugin install playwright@claude-plugins-official
 - /plugin install gopls-lsp@claude-plugins-official
 
-#### 3. workflow
+## 4. workflow
 - spec
 - writting-plans
 
-#### 4. Permissions
+## 5. Permissions
 - claude --permission-mode bypassPermissions
 - - ~/.claude/settings.json
 ```
@@ -55,7 +58,7 @@
 }
 ```
 
-#### 5. openrouter api key
+## 6. openrouter api key
 path: ~/.claude/settings.json
 - disbale tracing: disbale-tracing.json
 - api: api.json
