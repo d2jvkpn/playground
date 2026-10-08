@@ -9,7 +9,13 @@ brew install duf tmux iftop jq yq btop tree watch wget curl awk
 
 exit
 
+brew update
+
 brew install zsh-completions
+
+brew trust --cask ddalcu/mlx-serve/mlx-serve
+brew install mlx-serve
+brew upgrade mlx-serve
 
 print -l $fpath
 
