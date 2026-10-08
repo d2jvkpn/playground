@@ -2,16 +2,16 @@
 ---
 
 
-#### 1. config
+## 1. config
 - ./agnets.yaml
 - ./models.yaml
 
-#### 2. commands
+## 2. commands
 - /login
 - /logout
 - /compact
 
-#### 3. config
+## 3. config
 ```
 omp config get compaction.enabled
 omp config get compaction.strategy
@@ -44,7 +44,15 @@ ANTHROPIC_OAUTH_TOKEN=sk-xxx
 EOF
 ``
 
-#### 4. usage
+## 3. custom edit mode
+```
+omp config set edit.modelVariants '{"Qwen3.6-35B-A3B":"replace"}'
+
+printf 'hello\n' > test.txt
+echo "Read test.txt, then use the edit tool to replace "hello" with "world". Do not use the write tool."
+```
+
+## 4. usage
 ```
 omp --tools read,grep,find,bash
 ```

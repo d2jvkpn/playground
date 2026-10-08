@@ -13,8 +13,13 @@ brew update
 
 brew install zsh-completions
 
+brew tap ddalcu/mlx-serve https://github.com/ddalcu/mlx-serve
+brew trust ddalcu/mlx-serve
+brew install mlx-serve         # CLI + server only, no GUI
+
 brew trust --cask ddalcu/mlx-serve/mlx-serve
-brew install mlx-serve
+brew install --cask mlx-serve  # the app (recommended)
+
 brew upgrade mlx-serve
 
 print -l $fpath
