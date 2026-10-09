@@ -1,13 +1,21 @@
-# path: /opt/homebrew/etc/Caddyfile
+# path: /opt/homebrew/etc/caddy/Caddyfile
 
-:11234 {
+:11235 {
     @api {
         header Authorization "Bearer sk-XXXXXXXX"
     }
 
     handle @api {
-        reverse_proxy 127.0.0.1:11235 {
+        reverse_proxy 127.0.0.1:11234 {
             flush_interval -1
+
+            transport http {
+                dial_timeout 10s
+                response_header_timeout 0
+                read_timeout 0
+                write_timeout 0
+                keepalive off
+            }
         }
     }
 
@@ -16,8 +24,13 @@
             __USERNAME__ __$(caddy hash-password --plaintext 'YOUR_PASSWORD')__
         }
 
-        reverse_proxy 127.0.0.1:11235 {
+        reverse_proxy 127.0.0.1:11234 {
             flush_interval -1
+
+            transport http {
+                dial_timeout 10s
+                keepalive off
+            }
         }
     }
 }

@@ -1,0 +1,18 @@
+#if [ ! -d "$HOME/apps/venv" ]; then
+#    python3 -m venv "$HOME/apps/venv"
+#fi
+
+## rust
+export CARGO_HOME=$HOME/apps/cargo
+export RUSTUP_HOME=$HOME/apps/rustup
+
+#export RUSTUP_UPDATE_ROOT=https://mirrors.tuna.tsinghua.edu.cn/rustup/rustup
+#export RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup
+
+## npm
+mkdir -p "$HOME/apps/npm"
+
+# npm config set prefix "$HOME/apps/npm"
+# npm install -g http-server
+# npm config get prefix
+export NPM_CONFIG_PREFIX=$HOME/apps/npm

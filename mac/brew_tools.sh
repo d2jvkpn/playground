@@ -6,6 +6,7 @@ brew install macmon  # sudo macmon
 
 brew install duf tmux iftop jq yq btop tree watch wget curl awk
 
+brew install huggingface-cli
 
 exit
 

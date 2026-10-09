@@ -19,7 +19,6 @@ for d in "$HOME/.local/bin" "$HOME/apps/bin"; do
     esac
 done
 
-
 for d in $(ls -d $HOME/.local/*/bin/ $HOME/apps/*/bin/ 2>/dev/null); do
     d=${d%/}
 
