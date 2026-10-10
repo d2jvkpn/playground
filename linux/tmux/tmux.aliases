@@ -1,0 +1,7 @@
+function Tmux() {
+    if (( $# > 0 )); then
+        tmux new-session -A -s "$1"
+    else
+        tmux ls
+    fi
+}
