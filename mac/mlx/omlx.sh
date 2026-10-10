@@ -14,9 +14,10 @@ ln -s \
 
 omlx serve \
   --model-dir=~/.omlx/models \
-  --memory-guard-gb=52 \
+  --memory-guard-gb=56 \
   --paged-ssd-cache-dir=~/.omlx/cache \
   --paged-ssd-cache-max-size=20GB \
+  --hot-cache-max-size=4GB \
   --api-key=sk-xxxxxxxx \
   --host=0.0.0.0 \
   --port=11234

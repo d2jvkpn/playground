@@ -9,11 +9,11 @@ mlx-serve serve \
   --max-concurrent 1 \
   --pld \
   --skip-mem-preflight \
-  --kv-quant 8 \
   --ctx-size 256000 \
   --host 0.0.0.0 \
   --port 11234
 
+#   --kv-quant 8
 # --model-dir ~/models/Qwen3.6-35B-A3B-8bit
 # --ctx-size 131072
 # --ctx-size 262144
