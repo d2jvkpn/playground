@@ -27,7 +27,16 @@ docker ps
 sudo launchctl list
 ```
 
-## 4.
+## 4. Caddy
+```
+brew install caddy
+
+brew services start caddy
+
+caddy hash-password --plaintext 'YOUR_BROWSER_PASSWORD'
+```
+
+## 5.
 ```
 sudo launchctl unload /Library/LaunchDaemons/com.caddy.server.plist
 

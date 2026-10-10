@@ -1,5 +1,5 @@
-user_uid ?= 1000
-user_gid ?= 1000
+PUID ?= 1000
+PGID ?= 1000
 
 # docker run --privileged --rm tonistiigi/binfmt --install arm64
 
@@ -16,7 +16,7 @@ build_args := --no-cache
 .DEFAULT_GOAL := init
 
 init:
-	echo "user_uid: $(user_uid), user_gid: $(user_gid), proxy=$(proxy), build_args: $(build_args)"
+	echo "PUID: $(PUID), PGID: $(PGID), proxy=$(proxy), build_args: $(build_args)"
 
 create_dirs:
 	mkdir -p data/apps data/workspace data/site-packages \
@@ -26,8 +26,8 @@ create_dirs:
 build_image:
 	docker build $(build_args) -f Containerfile \
 	  --network=host \
-	  --build-arg user_gid=$(user_gid) \
-	  --build-arg user_uid=$(user_uid) \
+	  --build-arg PGID=$(PGID) \
+	  --build-arg PUID=$(PUID) \
 	  --build-arg https_proxy=$(proxy) \
 	  --build-arg http_proxy=$(proxy) \
 	  -t q.local/pyjs:trixie ./
@@ -35,8 +35,8 @@ build_image:
 update_image:
 	docker build $(build_args) -f data/Containerfile.update \
 	  --network=host \
-	  --build-arg user_gid=$(user_gid) \
-	  --build-arg user_uid=$(user_uid) \
+	  --build-arg PGID=$(PGID) \
+	  --build-arg PUID=$(PUID) \
 	  --build-arg https_proxy=$(proxy) \
 	  --build-arg http_proxy=$(proxy) \
 	  -t q.local/pyjs:trixie ./

@@ -9,8 +9,8 @@ ENV http_proxy=$http_proxy \
     https_proxy=$https_proxy \
     no_proxy=$no_proxy
 
-ARG user_uid=1000
-ARG user_gid=1000
+ARG PUID=1000
+ARG PGID=1000
 
 # DEBIAN_FRONTEND=noninteractive
 
@@ -45,8 +45,8 @@ RUN npm install -g npm@latest && \
 
 #### 3. build
 # userdel -r ubuntu || true
-RUN groupadd -g $user_gid appuser && \
-    useradd -s /bin/bash -m -u $user_uid -g $user_gid appuser
+RUN groupadd -g $PGID appuser && \
+    useradd -s /bin/bash -m -u $PUID -g $PGID appuser
 # -D -H -h /app -s /sbin/nologin
 
 RUN mkdir -p /app/configs /app/data /app/logs && \
