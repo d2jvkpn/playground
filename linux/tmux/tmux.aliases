@@ -1,5 +1,6 @@
 function Tmux() {
     if (( $# > 0 )); then
+         #tmux attach -t "$1"
         tmux new-session -A -s "$1"
     else
         tmux ls

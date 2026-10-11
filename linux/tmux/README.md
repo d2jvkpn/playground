@@ -39,6 +39,8 @@ session
 - resize a pane: alt + ←/↑/→/↓
 - resize a pane command: resize-pane -L/-R/-U/-D 10
 - command mode: Ctrl + b + :
+- show all sessions: Ctrl + b + s
+- copy mode(use ↑/↓, pgUp/pgDown to view previous outputs): Ctrl + b+ [
 
 4. window shortcuts
 - create a new window: c

@@ -18,6 +18,7 @@ omlx serve \
   --paged-ssd-cache-dir=~/.omlx/cache \
   --paged-ssd-cache-max-size=20GB \
   --hot-cache-max-size=4GB \
+  --max-concurrent-requests=1 \
   --api-key=sk-xxxxxxxx \
   --host=0.0.0.0 \
   --port=11234
