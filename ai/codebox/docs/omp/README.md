@@ -55,4 +55,22 @@ echo "Read test.txt, then use the edit tool to replace "hello" with "world". Do 
 ## 4. usage
 ```
 omp --tools read,grep,find,bash
+
+# switch profiles
+omp --profile home
+omp --profile office
+```
+
+```tree
+~/.omp/
+├── agent/                    # defaukt
+└── profiles/
+    ├── home/
+    │   └── agent/
+    │       ├── config.yml
+    │       └── models.yml
+    └── office/
+        └── agent/
+            ├── config.yml
+            └── models.yml
 ```
