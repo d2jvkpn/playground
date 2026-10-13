@@ -11,3 +11,4 @@ version: 0.1.0
 1. docs
 - https://github.com/MetaCubeX/mihomo
 - https://hub.docker.com/r/metacubex/mihomo
+- https://github.com/clash-download/Clash

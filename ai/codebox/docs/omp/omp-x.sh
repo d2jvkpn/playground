@@ -1,33 +1,43 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DIR="$HOME/.omp/agent"
-PROFILE="${1:-}"
+config_dir="$HOME/.omp/agent"
+target="$config_dir/models.yml"
 
-case "$PROFILE" in
+if [[ ! -L "$target" ]]; then
+    echo "Error: $target is not a symlink." >&2
+    exit 1
+fi
+
+if [[ $# -eq 0 ]]; then
+    current=$(readlink "$target")
+    profile="${current#models.}"
+    profile="${profile%.yml}"
+    echo "Current OMP profile: $profile"
+    exit 0
+fi
+
+profile="$1"
+
+case "$profile" in
     home|office) ;;
     *)
-        echo "Usage: $(basename "$0") {home|office} [omp args...]" >&2
+        echo "Usage: $(basename "$0") [home|office]" >&2
         exit 1
         ;;
 esac
 
-SOURCE="models.${PROFILE}.yml"
-TARGET="$DIR/models.yml"
+source_file="models.${profile}.yml"
 
-if [[ ! -f "$DIR/$SOURCE" ]]; then
-    echo "Error: $DIR/$SOURCE not found" >&2
+if [[ ! -f "$config_dir/$source_file" ]]; then
+    echo "Error: $config_dir/$source_file not found" >&2
     exit 1
 fi
 
-if [[ -e "$TARGET" && ! -L "$TARGET" ]]; then
-    echo "Error: $TARGET is a regular file. Back it up first." >&2
-    exit 1
-fi
+ln -sfn "$source_file" "$target"
 
-ln -sfn "$SOURCE" "$TARGET"
-
-echo "OMP model profile: $PROFILE"
+echo "OMP model profile: $profile"
 
 shift
-exec omp "$@"
+sleep 0.5
+omp "$@"

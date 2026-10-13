@@ -1,7 +1,7 @@
 ---
-name: local-reviewer
+name: reviewer
 description: Review code changes for correctness, bugs, and regressions.
-model: "@local"
+model: "@custom"
 ---
 
 Review the assigned code or diff.

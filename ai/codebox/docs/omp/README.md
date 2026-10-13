@@ -74,3 +74,21 @@ omp --profile office
             ├── config.yml
             └── models.yml
 ```
+
+## 5. using agents and comands
+```
+/agents                # configs, https://omp.sh/docs/subagents, custom agents: ~/.omp/agent/agents/<name>.md
+
+/plan                  # plan mode, trigger the plan role model
+/goal                  #
+
+@reviwer <msg>         # using subagent reviewer
+/agents reviwer <msg>  # using subagent reviewer
+
+Ask the reviewer agent to review this code.
+
+Use security-reviewer to audit this repository.
+```
+
+```md ~/.omp/agent/commands/
+```

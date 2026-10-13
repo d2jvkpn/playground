@@ -78,31 +78,3 @@ sudo softwareupdate -ia --restart
 sudo reboot now
 
 sudo powermetrics --samplers cpu_power,gpu_power -i 1000
-
-## gpu memory
-sysctl -n iogpu.wired_limit_mb
-
-python3 - <<'PY'
-import json
-import mlx.core as mx
-
-print(json.dumps(mx.device_info(), ensure_ascii=False, indent=2))
-
-print("active:", mx.get_active_memory() / 1024**3, "GiB")
-print("peak:", mx.get_peak_memory() / 1024**3, "GiB")
-print("cache:", mx.get_cache_memory() / 1024**3, "GiB")
-PY
-
-sysctl -n iogpu.wired_limit_mb=53084 # default_bytes: 55662788608
-sysctl -n iogpu.wired_limit_mb=57344
-
-## hostname
-
-sudo scutil --set HostName new-hostname
-sudo scutil --set LocalHostName new-hostname
-sudo scutil --set ComputerName "New Hostname"
-
-scutil --get HostName
-scutil --get LocalHostName
-scutil --get ComputerName
-hostname

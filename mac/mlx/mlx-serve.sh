@@ -13,7 +13,8 @@ mlx-serve serve \
   --host 0.0.0.0 \
   --port 11234
 
-#   --kv-quant 8
+# --kv-quant 8
+# 
 # --model-dir ~/models/Qwen3.6-35B-A3B-8bit
 # --ctx-size 131072
 # --ctx-size 262144

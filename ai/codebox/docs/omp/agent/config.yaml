@@ -11,22 +11,20 @@ codexResets:
 extendedContext: true
 
 modelRoles:
-  default: anthropic/claude-sonnet-5-5:medium
+  default: "@task"
 
   plan: anthropic/claude-sonnet-5-5
   slow: anthropic/claude-opus-5-5:high
-  #advisor: anthropic/claude-opus-4-6:high
-  advisor: local/mlx-community/Qwen3.6-35B-A3B-8bit
+  advisor: anthropic/claude-opus-4-6:high
 
+  task: mlx/Qwen3.6-35B-A3B-8bit
+  memory: "@task"
+  smol: "@task"
+  commit: "@task"
+  tiny: "@task"
   # vision: none
-  memory: "@tiny"
-  task: "@local"
-  smol: "@local"
-  commit: "@local"
-  tiny: "@local"
 
-  reviewer: "@local"
-  local: local/mlx-community/Qwen3.6-35B-A3B-8bit
+  #custom: "@task"
 
 edit:
   mode: hashline

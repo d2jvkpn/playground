@@ -2,7 +2,7 @@
 ---
 
 
-#### 1. commands
+## 1. commands
 - /usage
 - /status
 - /plugins
@@ -11,7 +11,7 @@
 - /pemissions
 - codex --sandbox workspace-write --ask-for-approval on-request
 
-#### 2. plugins
+## 2. plugins
 - codex plugin list --json
 - codex plugin marketplace upgrade <marketplace> --ref main     # git marketplaces only
 - codex plugin marketplace remove <marketplace>
@@ -20,10 +20,10 @@
 - codex plugin add superpowers@openai-curated
 - codex plugin marketplace add https://github.com/example/plugins.git --sparse .agents/plugins
 
-#### 3. install
+## 3. install
 - npm install -g @openai/codex
 
-#### 4. comapaction
+## 4. comapaction
 ~/.codex/config.toml
 ```
 model = "gpt-5.6"
@@ -38,7 +38,7 @@ model_auto_compact_token_limit = 220000
 model_auto_compact_token_limit_scope = "total"
 ```
 
-#### 5. in container without bubblewrap
+## 5. in container without bubblewrap
 ```
 codex --sandbox danger-full-access --ask-for-approval on-request
 ```
@@ -50,17 +50,17 @@ sandbox_mode = "danger-full-access"
 approval_policy = "on-request"
 ```
 
-#### 5. configuration
+## 5. configuration
 - global skills: ~/.agents/skills/
 - repository skills: <repo>/.agents/skills/
 - global instructions: ~/.codex/AGENTS.md
 - repository instructions: <repo>/AGENTS.md
 
-#### 6. using deepseek
+## 6. using deepseek
 - config: ~/.codex/deepseek.config.toml
 - models: ~/.local/share/codex/deepseek-models.json
 
-#### 7. disable a skill
+## 7. disable a skill
 ```toml path=~/.codex/config.toml
 [[skills.config]]
 path = "/path/to/skill/SKILL.md"
