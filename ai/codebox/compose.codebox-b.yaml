@@ -1,0 +1,49 @@
+services:
+  codebox-b:
+    image: q.local/codebox:latest
+    restart: always # unless-stopped
+    container_name: codebox-b
+    hostname: codebox-b # codebox-hostname
+    init: true
+    cap_add: ["NET_ADMIN"]
+    security_opt: ["apparmor:unconfined", "systempaths=unconfined", "seccomp=unconfined"]
+    pids_limit: 512
+    cpus: 2.0
+    mem_limit: 4g
+    devices: ["/dev/net/tun:/dev/net/tun"]
+    sysctls:
+      net.ipv6.conf.default.disable_ipv6: "0"
+    extra_hosts:
+      host.docker.internal: host-gateway
+    network_mode: bridge
+    #networks: [net]
+    #ports: ["127.0.0.1:4222:4222", "127.0.0.1:7681:7681"]
+    user: root:root
+    volumes:
+    - ./configs/resolv.conf:/etc/resolv.conf
+
+    - ./data/config:/home/appuser/.config
+    - ./data/cache:/home/appuser/.cache
+    - ./data/share:/home/appuser/.local/share
+    - ./data/state:/home/appuser/.local/state
+    - ./data/apps:/home/appuser/apps
+    #- ${HOME}/Workspace/container_apps:/home/appuser/apps
+    - ./data/workspace:/home/appuser/workspace
+    #- ${HOME}/Workspace/container_workspace:/home/appuser/workspace
+
+    #- ./configs/:/app/configs
+    #- ./logs:/app/logs
+    #- ./configs/sshd_config.d:/etc/ssh/sshd_config.d
+    #- ./configs/ssh:/home/appuser/.ssh
+    working_dir: /home/appuser/workspace
+    environment:
+      TZ: Asia/Shanghai
+    entrypoint: []
+    command:
+    command:
+    - tun2proxy
+    - --setup
+    - --dns=virtual
+    - --virtual-dns-pool 198.18.0.0/15
+    - --proxy=socks5://172.17.0.1:1080
+    - --bypass=172.17.0.1

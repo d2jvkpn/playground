@@ -14,6 +14,8 @@ apps:
   - name: Sublime Text
   - name: gVim
   - name: VSCodium
-commands
+commands:
 - name: Task Scheduler
   command: taskschd.msc
+install:
+- winget install --id=astral-sh.uv -e

@@ -1,0 +1,30 @@
+{
+  "inbounds": [
+    {
+      "type": "socks",
+      "tag": "socks-in",
+      "listen": "0.0.0.0",
+      "listen_port": 1080,
+      "users": [
+        {
+          "username": "admin",
+          "password": "your-strong-password"
+        }
+      ]
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "inbound": ["socks-in"],
+        "source_ip_cidr": [
+          "192.168.1.10/32",
+          "192.168.1.20/32"
+        ],
+        "invert": true,
+        "action": "reject"
+      }
+    ],
+    "final": "direct"
+  }
+}

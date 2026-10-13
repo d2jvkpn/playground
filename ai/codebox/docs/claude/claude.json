@@ -13,11 +13,18 @@
     "DISABLE_GROWTHBOOK": "1",
     "CLAUDE_CODE_HIDE_CWD": "0",
 
+    "CLAUDE_CODE_NO_FLICKER": "1",
+    "DISABLE_INSTALLATION_CHECKS": "1",
+    "DISABLE_LOGIN_COMMAND": "1",
+    "DISABLE_LOGOUT_COMMAND": "1",
+    "DISABLE_UPGRADE_COMMAND": "1",
+
     "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "180000",
     "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "90",
 
     "ANTHROPIC_BASE_URL": "https://openrouter.ai/api",
-    "ANTHROPIC_AUTH_TOKEN": "sk-xxxxxxxx"
+    "ANTHROPIC_AUTH_TOKEN": "sk-xxxxxxxx",
+    "ANTHROPIC_API_KEY": ""
   },
 
   "autoCompactEnabled": true
