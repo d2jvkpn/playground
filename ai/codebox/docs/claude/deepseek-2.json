@@ -4,6 +4,8 @@
     "ANTHROPIC_BASE_URL": "https://api.deepseek.com/anthropic",
     "ANTHROPIC_AUTH_TOKEN": "<DeepSeek API Key>",
 
-    "CLAUDE_CODE_EFFORT_LEVEL": "medium"
+    "CLAUDE_CODE_EFFORT_LEVEL": "medium",
+    "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "163840",
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "131072"
   }
 }

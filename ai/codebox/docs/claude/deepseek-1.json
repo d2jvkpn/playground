@@ -3,11 +3,14 @@
   "env": {
     "ANTHROPIC_BASE_URL": "https://api.deepseek.com/anthropic",
     "ANTHROPIC_AUTH_TOKEN": "<DeepSeek API Key>",
-
     "CLAUDE_CODE_EFFORT_LEVEL": "medium"
+
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "deepseek-v4-pro",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "deepseek-v4-pro",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-v4-flash",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-v4-flash"
+    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-v4-flash",
+
+    "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "131072",
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "110000"
   }
 }
