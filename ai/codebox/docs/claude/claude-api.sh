@@ -3,7 +3,8 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
 if [ $# -eq 0 ]; then
-    claude
+    #claude
+    ls $HOME/.claude/settings/claude.*.json | sed 's#.*/##; s#claude.##; s#.json$##'
 else
     settings="$HOME/.claude/settings/claude.$1.json"
 
