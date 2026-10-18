@@ -1,4 +1,6 @@
-FROM q.local/codebox:latest
+ARG platform=amd64
+
+FROM q.local/codebox:${platform}-latest
 
 ####
 ARG http_proxy

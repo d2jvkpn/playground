@@ -1,6 +1,7 @@
 container := $(shell yq .services.openclaw.container_name compose.yaml &> /dev/null || true)
 #proxy ?= http://127.0.0.1:1080
 proxy := ""
+platform := "amd64" # arm64
 
 # make build_image args="--platform=linux/amd64 --no-cache"
 # make build_image args="--platform=linux/arm64"
@@ -8,44 +9,34 @@ proxy := ""
 .DEFAULT_GOAL := init
 
 init:
-	echo "proxy=$(proxy), build_args: $(build_args)"
+	echo "Args: proxy=$(proxy), build_args: $(build_args)"
 
-create_dirs:
+create-dirs:
 	mkdir -p data/apps data/workspace/configs data/workspace/logs \
 	  data/config data/cache data/share data/state \
 	  logs configs configs/sshd_config.d configs/ssh
 
-create_share:
-	mkdir -p data/share/claude data/share/codex data/share/pi data/share/omp data/share/agents
-
-# make docker_build build_args="--no-cache"
+# make build-image build_args="--no-cache"
 # build_args := --no-cache
-build_base:
-	docker build $(build_args) -f Containerfile.base \
+build-image:
+	docker build $(build_args) -f Containerfile \
 	  --network=host \
 	  --build-arg https_proxy=$(proxy) \
 	  --build-arg http_proxy=$(proxy) \
-	  -t q.local/codebox:base ./
+	  --platform=linux/$(platform) \
+	  -t q.local/codebox:$(platform)-latest ./
 
-# make docker_build build_args="--no-cache"
-# build_args := --no-cache
-build_latest:
-	docker build $(build_args) -f Containerfile.latest \
-	  --network=host \
-	  --build-arg https_proxy=$(proxy) \
-	  --build-arg http_proxy=$(proxy) \
-	  -t q.local/codebox:latest ./
-
-tag_image:
+tag-image:
 	#docker tag q.local/codebox:latest q.local/codebox:$$(date +%Y.%-m.%-d)
-	docker tag q.local/codebox:latest q.local/codebox:$$(date +%Y-%m-%d)
+	docker tag q.local/codebox:$(platform)-latest q.local/codebox:$(platform)-$$(date +%Y-%m-%d)
 
-update_image:
+update-image:
 	docker build -f data/Containerfile.update \
 	  --network=host \
 	  --build-arg https_proxy=$(proxy) \
 	  --build-arg http_proxy=$(proxy) \
-	  -t q.local/codebox:latest ./
+	  --platform=linux/$(platform) \
+	  -t q.local/codebox:$(platform)-latest ./
 
 root:
 	docker exec -it -u root codebox bash

@@ -1,0 +1,62 @@
+FROM q.local/pyjs:trixie
+
+####
+ARG http_proxy
+ARG https_proxy
+ARG no_proxy
+
+ARG build_region
+
+ENV http_proxy="$http_proxy" https_proxy="$https_proxy" no_proxy="$no_proxy"
+
+####
+USER root
+
+COPY ./copy_files/scripts/. /opt/scripts
+RUN bash /opt/scripts/_install_packages.sh
+RUN bash /opt/scripts/_install_tools.sh
+RUN bash /opt/scripts/_install_services.sh
+
+ENV PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
+RUN bash /opt/scripts/_install_playwright.sh
+
+####
+USER appuser
+WORKDIR /home/appuser
+
+RUN if [ "$build_region" = "cn" ]; then \
+        bash /opt/scripts/config_cn.sh pip; \
+        bash /opt/scripts/config_cn.sh npm; \
+    fi
+
+RUN cp .bashrc .bashrc.bk && \
+    cp .bash_profile .bash_profile.bk && \
+    bash /opt/scripts/_install_codebox.sh && \
+    mv .bashrc.bk .bashrc && \
+    mv .bash_profile.bk .bash_profile
+
+ENV BASH_ENV=/home/appuser/.bash_aliases
+
+####
+ENV https_proxy="" http_proxy="" no_proxy=""
+
+ENV TZ=Asia/Shanghai
+
+# webui: 4096, ttyd: 7681, ssh: 4222, auth_callback: 1455
+EXPOSE 4096
+EXPOSE 7681
+EXPOSE 4222
+
+WORKDIR /home/appuser/workspace
+
+# opencode webui
+CMD ["opencode", "web", "--hostname=127.0.0.1", "--port=4096"]
+# --cors http://localhost:4096 --cors https://app.example.com
+# Works exclusively on the host network model: --mdns fase --mdns-domain opencode.local
+
+# opencode tui
+#CMD ["opencode"]
+
+#CMD ["sing-box", "run", "-c=/app/configs/sing-box.tun.json"]
+
+#CMD ["supervisord", "-l", "/app/logs/supervisord.log", "-c", "/app/configs/supervisord.conf"]
