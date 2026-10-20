@@ -22,3 +22,6 @@ pip3 config set install.trusted-host 'pypi.douban/simple'
 
 pip3 config list
 pip3 install pandas numpy polars
+
+export PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
+export PIP_TRUSTED_HOST=pypi.tuna.tsinghua.edu.cn

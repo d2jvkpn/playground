@@ -3,7 +3,7 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$
 
 
 brew tap jundot/omlx https://github.com/jundot/omlx
-brew install jundot/omlx/omlx
+brew install omlx
 
 mkdir -p ~/.omlx/models
 
