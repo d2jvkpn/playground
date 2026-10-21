@@ -78,3 +78,13 @@ sudo softwareupdate -ia --restart
 sudo reboot now
 
 sudo powermetrics --samplers cpu_power,gpu_power -i 1000
+
+
+# 1. 修改电脑名称 (ComputerName)
+sudo scutil --set ComputerName "<computer_name>"
+
+# 2. 修改本地主机名 (LocalHostName)
+sudo scutil --set LocalHostName "<name>"
+
+# 3. 修改系统主机名 (HostName)
+sudo scutil --set HostName  "<name>"

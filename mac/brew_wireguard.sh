@@ -8,6 +8,17 @@ exit
 brew uninstall wireguard-tools
 brew autoremove
 
+umask 077
+# wg genkey | tee /etc/wireguard/wg0.key | wg pubkey > /etc/wireguard/wg0.pub
+wg_key=$(wg genkey)
+wg_pub=$(echo $wg_key | wg pubkey)
+
+cat > /etc/wireguard/wireguard.yaml <<EOF
+wg0:
+  key: $wg_key
+  pub: $wg_pub
+EOF
+
 chmod 600 /etc/wireguard/wg0.conf
 chown root:wheel /etc/wireguard/wg0.conf
 

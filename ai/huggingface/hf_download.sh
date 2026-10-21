@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 set -eu -o pipefail
 
-model="$1"
+models=("$@")
+echo "==> Models: ${#models[@]}"
 
-hf download "$model" --local-dir "$HOME/Workspace/hf_models/$model"
+for model in "${models[@]}"; do
+    echo "--> model: $model"
+    output_dir="$HOME/Workspace/hf_models/$model"
+    hf download "$model" --local-dir "$output_dir.temp"
+    mv "$output_dir.temp" "$output_dir"
+done
+
+date +"<== Exit"
