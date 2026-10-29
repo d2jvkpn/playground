@@ -28,7 +28,7 @@ RUN /opt/scripts/apt.sh update && \
       zip unzip jq ripgrep vim git wget curl bash-completion rsync \
       mtr netcat-openbsd iproute2 lsof nftables bind9-dnsutils \
       gosu file tree less uuid xxd tmux \
-      supervisor openssh-server bubblewrap && \
+      supervisor openssh-server autossh bubblewrap && \
     /opt/scripts/apt.sh clean && \
     update-ca-certificates
 # sudo, iptables, gh

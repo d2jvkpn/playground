@@ -68,10 +68,10 @@ config=${config:-""}
 # autossh -f -p 22 -i ~/.ssh/id_rsa -o "UserKnownHostsFile=~/.ssh/known_hosts"
 if [ ! -z "$config" ]; then
     set -x
-    ssh -NC -F "$config" -D "$address" "$remote_host"
+    AUTOSSH_GATETIME=0 autossh -NC -M 0 -F "$config" -D "$address" "$remote_host"
 else
     set -x
-    ssh -NC -D "$address" \
+    AUTOSSH_GATETIME=0 autossh -NC -M 0 -D "$address" \
       -o TCPKeepAlive=yes \
       -o ServerAliveInterval=5 \
       -o ServerAliveCountMax=3 \

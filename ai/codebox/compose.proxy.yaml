@@ -46,4 +46,6 @@ services:
     - --dns=virtual
     - --virtual-dns-pool=198.18.0.0/15
     - --proxy=socks5://172.17.0.1:1080
-    - --bypass=172.17.0.1
+    - --bypass=172.17.0.0/16
+    - --bypass=192.168.1.0/24
+    - --bypass=10.1.0.0/16

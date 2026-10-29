@@ -91,4 +91,25 @@ Use security-reviewer to audit this repository.
 ```
 
 ```md ~/.omp/agent/commands/
+# TODO
+```
+
+## 6.
+```
+# 强化委派
+omp config set task.eager always
+
+# 适度鼓励委派
+omp config set task.eager preferred
+
+omp config get task.eager
+
+# 恢复默认行为
+omp config set task.eager default
+
+# 开启批量子任务（你已经开启）
+omp config set task.batch true
+
+# 查看所有 task 配置
+omp config list | grep 'task.'
 ```
