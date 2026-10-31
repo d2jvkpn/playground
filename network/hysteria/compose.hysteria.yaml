@@ -5,6 +5,6 @@ services:
     restart: always
     network_mode: "host"
     volumes:
-    - ./configs/hysteria.yaml:/app/config/hysteria.yaml
+    - ./configs:/app/configs
     #- ./data/acme:/acme
-    command: ["server", "-c", "/app/config/hysteria.yaml"]
+    command: ["server", "-c", "/app/configs/hysteria.yaml"]
