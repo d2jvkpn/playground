@@ -1,6 +1,7 @@
 package.json
 package-lock.json
 docs/
+node_modules/
 
 *.min.css
 *.min.js

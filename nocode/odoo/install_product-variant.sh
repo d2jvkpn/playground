@@ -4,7 +4,8 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$
 git clone \
   --depth 1 \
   --branch 19.0 \
-  https://github.com/OCA/product-variant.git
+  https://github.com/OCA/product-variant.git \
+  data/OCA--product-variant.git
 
 echo <<EOF
 location:

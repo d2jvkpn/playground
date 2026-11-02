@@ -24,11 +24,9 @@ data/
 logs/
 target/
 
-##
 bin/
 vendor/
 __pycache__/
-
 dist/
-build/
 node_modules/
+#build/

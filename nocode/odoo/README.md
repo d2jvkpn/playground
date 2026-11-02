@@ -6,6 +6,7 @@
 - https://www.odoo.com
 - https://hub.docker.com/_/odoo/tags
 - https://github.com/odoo/docker
+- https://exmample.com/web/database/manager
 
 2. seteup
 ```
