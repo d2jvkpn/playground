@@ -8,7 +8,7 @@ brew install macmon socat
 #  TCP-LISTEN:1080,bind=192.168.1.2,reuseaddr,fork,range=192.168.1.42/32 \
 #  TCP:127.0.0.1:1080
 
-brew install duf tmux iftop jq yq btop tree watch wget curl awk
+brew install duf tmux iftop jq yq btop tree watch wget curl awk pigz skopeo
 
 brew install huggingface-cli
 

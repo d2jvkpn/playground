@@ -4,7 +4,9 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 output_dir=${output_dir:-./}
 name=$1
-prefix=${output_dir%/}/$(echo "$name" | sed 's#/#--#g; s#:#--#')
+arch=${2:-amd64}
+
+prefix=${output_dir%/}/$(echo "$name" | sed 's#/#--#g; s#:#--#').$arch
 
 first="${name%%/*}"
 if [[ "$first" == "localhost" || "$first" == *.* || "$first" == *:* ]]; then
@@ -19,7 +21,9 @@ echo "==> image: $image"
 #pigz $prefix.tar
 #mv $prefix.tar.gz $prefix.tgz
 
-skopeo copy --quiet docker://$image docker-archive:/dev/stdout:$image |
+skopeo copy \
+  --override-os linux --override-arch "$arch" \
+  --quiet docker://$image docker-archive:/dev/stdout:$image |
   pigz -c > $prefix.tgz
 
 echo "<== saved: $prefix.tgz"

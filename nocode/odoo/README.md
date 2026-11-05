@@ -57,3 +57,9 @@ docker run --rm \
   odoo:19 \
   tar -xzf /backup/$voulme.tar.gz -C /data/$voulme
 ```
+
+## Modules
+- Sales
+- Stock
+- Contacts
+- Project

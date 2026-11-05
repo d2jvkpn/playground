@@ -21,7 +21,7 @@ EOF
 container=odoo
 db=odoo
 
-docker compose exec "$container" \
+docker exec "$container" \
   odoo \
   --database="$db" \
   --init=helpdesk_mgmt \
