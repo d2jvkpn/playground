@@ -19,3 +19,4 @@ commands:
   command: taskschd.msc
 install:
 - winget install --id=astral-sh.uv -e
+- winget install --id Google.Chrome -e --source winget
