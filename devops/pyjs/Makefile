@@ -8,7 +8,7 @@ PGID ?= 1000
 
 container := $(shell yq .services.pyjs.container_name compose.yaml &> /dev/null || true)
 #proxy ?= http://127.0.0.1:1080
-proxy := ""
+proxy :=
 
 build_args := --no-cache
 # build_args

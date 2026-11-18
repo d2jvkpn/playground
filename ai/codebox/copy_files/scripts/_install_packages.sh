@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
+
+##
 npm install -g --allow-scripts=core-js \
     markdownlint-cli bash-language-server yaml-language-server \
     pyright vscode-langservers-extracted typescript typescript-language-server \
@@ -15,7 +17,8 @@ pip install --no-cache-dir --upgrade markdownify ast-grep-cli \
 
 # pip install pdf-inspector
 
-####
+
+##
 mkdir -p /etc/apt/keyrings
 
 curl -fsSL https://repo.charm.sh/apt/gpg.key | gpg --dearmor -o /etc/apt/keyrings/charm.gpg
@@ -33,7 +36,25 @@ echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *
 # $ rg, bat, fdfind, sd
 # go install github.com/charmbracelet/glow/v2@latest
 
-/opt/scripts/apt.sh clean
-
 ln -s /usr/bin/batcat /usr/bin/bat
+
+
+## nerd-fonts
+/opt/scripts/apt.sh install curl unzip fontconfig
+
+mkdir -p /usr/local/share/fonts/nerd-fonts
+
+curl -fL \
+  https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip \
+  -o /tmp/JetBrainsMono.zip
+
+unzip -o /tmp/JetBrainsMono.zip '*.ttf' -d /usr/local/share/fonts/nerd-fonts
+
+fc-cache -fv
+
+rm /tmp/JetBrainsMono.zip
+
+
+##
+/opt/scripts/apt.sh clean
 rm -rf ~/.cache/* ~/.npm

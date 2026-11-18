@@ -7,7 +7,7 @@ version: 0.1.0
 ```
 
 
-#### ch01. 
+## ch01. 
 1. docs
 1) oh-my-opencode（oho）到底是什么
 = 它本质是 opencode 的“配置+提示词（skills/agents）增强包”：帮你预设一组 agents（比如 Sisyphus/Hephaestus/Prometheus/Atlas），并把它们映射到常见工作流：计划/实现/评审/整理。

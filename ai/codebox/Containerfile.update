@@ -2,14 +2,14 @@ ARG platform=amd64
 
 FROM q.local/codebox:${platform}-latest
 
-####
+##
 ARG http_proxy
 ARG https_proxy
 ARG no_proxy
 
 ENV http_proxy="$http_proxy" https_proxy="$https_proxy" no_proxy="$no_proxy"
 
-####
+##
 USER root
 ADD copy_files/scripts/_install_playwright.sh /opt/scripts/_install_playwright.sh
 
@@ -21,5 +21,5 @@ WORKDIR /home/appuser
 
 WORKDIR /home/appuser/workspace
 
-####
+##
 ENV https_proxy="" http_proxy="" no_proxy=""

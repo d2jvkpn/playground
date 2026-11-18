@@ -2,7 +2,7 @@
 ---
 
 
-#### 1. 
+## 1. 
 git diff | delta --side-by-side
 
 ```

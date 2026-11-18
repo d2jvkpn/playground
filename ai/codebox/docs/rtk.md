@@ -2,7 +2,7 @@
 ---
 
 
-#### 1. installation
+## 1. installation
 ```
 curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
 ls ~/.local/bin
@@ -12,7 +12,7 @@ ls ~/.local/bin
 cargo install --git https://github.com/rtk-ai/rtk
 ```
 
-#### 2. config
+## 2. config
 - rtk init -g
 
 - rtk init -g --codex

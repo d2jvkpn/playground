@@ -1,0 +1,22 @@
+domains:
+- openrouter.ai
+- api.deepseek.com
+- dashscope.aliyuncs.com
+- api.z.aiapi.kimi.com
+- open.bigmodel.cn
+- pypi.tuna.tsinghua.edu.cn
+- goproxy.cn
+- registry.npmmirror.com
+
+domain_suffixes:
+- .svc
+- .lan
+- .local
+- .test
+- .internal
+
+ip_cidrs:
+- 127.0.0.1
+- 172.16.0.1/12
+- 10.1.0.0/8
+- 192.168.1.0/16

@@ -6,11 +6,11 @@ authors: []
 version: 0.1.0
 ```
 
-#### ch01. 
+## ch01. 
 docs:
 - https://docs.kernel.org/process/coding-assistants.html
 
-#### ch02.
+## ch02.
 1. Vibe-Coding
 2. Prompt-driven Development
 3. Spec-driven development (SDD)
@@ -26,7 +26,7 @@ docs:
 12. Check
 13. Test
 
-#### ch03. Cli-Tools
+## ch03. Cli-Tools
 1. Claude Code
 - https://code.claude.com/docs/en/env-vars
 2. OpenAI Codex CLI
@@ -52,7 +52,7 @@ docs:
 - https://omp.sh/
 - https://github.com/can1357/oh-my-pi
 
-#### ch04. IDE
+## ch04. IDE
 1. Winsurf
 2. Cursor
 - https://cursor.com
@@ -68,7 +68,7 @@ docs:
 7. orca: About Orca is the ADE for working with a fleet of parallel agents. Run any coding agent with your own subscription. Available on desktop and mobile.
 - https://github.com/stablyai/orca
 
-#### ch05. Web
+## ch05. Web
 1. vibe-kanban
 - https://www.vibekanban.com
 - https://github.com/BloopAI/vibe-kanban
@@ -76,7 +76,7 @@ docs:
 - https://vibekanban.com/docs/agents/opencode
 2. opencode
 
-#### ch06. Alternatives
+## ch06. Alternatives
 - name: Lovable
 - name: Comate
 - name: Qoder
@@ -108,7 +108,7 @@ mv opendev-cli-x86_64-unknown-linux-gnu/opendev ~/.local/bin
 rm -rf opendev-cli-x86_64-unknown-linux-gnu opendev-cli-x86_64-unknown-linux-gnu.tar.xz
 ```
 
-#### ch07. IDEs
+## ch07. IDEs
 - vscodium
   - https://vscodium.com/
   - https://github.com/VSCodium/vscodium
@@ -116,7 +116,7 @@ rm -rf opendev-cli-x86_64-unknown-linux-gnu opendev-cli-x86_64-unknown-linux-gnu
   - https://github.com/coder/code-server
   - https://coder.com/
 
-#### ch08. Claude
+## ch08. Claude
 - https://github.com/AbsolutelySkilled/AbsolutelySkilled/blob/main/skills/contract-drafting/SKILL.md
 ```
 path: ~/.claude/skills/contract-drafting, ./.claude/skills/contract-drafting

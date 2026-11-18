@@ -1,4 +1,4 @@
-#### 1.
+## 1.
 ```
                  User
                    │
@@ -43,7 +43,7 @@ brainstorming              AGENTS.md
              Codex /review
 ```
 
-#### 2.
+## 2.
 ```
 AGENTS.md
       │
@@ -73,7 +73,7 @@ docs/
       └── plans/
 ```
 
-#### 3.
+## 3.
 ```
                  request
                     │
@@ -104,7 +104,7 @@ docs/
                   review
 ```
 
-#### 4.
+## 4.
 ```
 implementation
 ↓

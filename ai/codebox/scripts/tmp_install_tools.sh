@@ -30,7 +30,7 @@ rm -rf ~/.npm ~/.cache
 opencode --version | awk '{print "opencode: "$1}'
 
 exit
-####
+##
 npm install -g @charmland/crush
 
 openspec --version | awk '{print "openspec: "$1}'

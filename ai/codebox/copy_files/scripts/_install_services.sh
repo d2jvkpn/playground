@@ -17,6 +17,7 @@ tar -xf $filename -C /opt/
 ln -sf /opt/${filename%.tar.gz}/sing-box /usr/local/bin/
 rm -f $filename
 
+
 ## tun2proxy
 tag_name=$(
   curl -fsSL https://api.github.com/repos/tun2proxy/tun2proxy/releases/latest |
@@ -32,6 +33,7 @@ ln -sf /opt/tun2proxy/tun2proxy-bin /usr/local/bin/tun2proxy
 rm -f $filename
 
 ## TODO: dnscrypt-proxy + tun2socks
+
 
 ## ttyd
 curl -fL "https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.${RAW_ARCH}" -o /usr/local/bin/ttyd

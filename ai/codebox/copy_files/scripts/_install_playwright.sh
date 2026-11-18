@@ -10,10 +10,14 @@ set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 export PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
 
-npm install -g playwright@latest @playwright/cli@latest \
-  @playwright/mcp@latest chrome-devtools-mcp@latest
+npm install -g \
+  playwright@latest \
+  @playwright/cli@latest \
+  @playwright/mcp@latest \
+  chrome-devtools-mcp@latest
 
 # @appuser $ npx -y @playwright/mcp@latest
+# @git $ npm install playwright-core
 
 mkdir -p "${PLAYWRIGHT_BROWSERS_PATH}"
 playwright install --with-deps chromium
@@ -29,8 +33,7 @@ npm cache clean --force
 playwright --version
 playwright install --list
 
-#@appuser
-#playwright-cli install --skills
+#@appuser playwright-cli install --skills
 
 curl -L \
   -o /usr/local/bin/lightpanda \
@@ -39,5 +42,5 @@ curl -L \
 chmod 0755 /usr/local/bin/lightpanda
 lightpanda version
 
-exit
-curl -fsSL https://pkg.lightpanda.io/install.sh | bash
+# curl -fsSL https://pkg.lightpanda.io/install.sh | bash
+# lightpanda serve --host 127.0.0.1 --port 9222

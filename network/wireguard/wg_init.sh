@@ -7,9 +7,11 @@ if [ ! command wg ]; then
     apt install -y wireguard wireguard-tools
 fi
 
+exit
 wg_key=$(wg genkey)
 wg_pub=$(echo $wg_key | wg pubkey)
 
+exit
 cd /etc/wireguard/
 # ls /usr/local/etc/wireguard/ /opt/homebrew/etc/wireguard/
 

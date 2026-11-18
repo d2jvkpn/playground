@@ -2,14 +2,14 @@
 ---
 
 
-#### 1. 
+## 1. 
 ```
 git worktree add ../project-agent-api -b agent/api
 git worktree add ../project-agent-storage -b agent/storage
 git worktree add ../project-agent-tests -b agent/testss
 ```
 
-#### 2. 
+## 2. 
 ```
 cd ../project-agent-api
 codex
@@ -21,21 +21,21 @@ cd ../project-agent-tests
 opencode
 ```
 
-#### 3. 
+## 3. 
 ```
 git merge agent/storage
 git merge agent/api
 git merge agent/tests
 ```
 
-#### 4. 
+## 4. 
 - Planner
 - Implementer
 - Test
 - Reviewer
 - Integrator
 
-#### 5. 
+## 5. 
 理解任务 → 探索代码库 → 制定计划 → 修改代码 → 验证 → 审查 → 交付
 
 1. Read       阅读任务和相关代码

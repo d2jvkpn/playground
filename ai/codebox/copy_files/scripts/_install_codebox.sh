@@ -8,7 +8,7 @@ ln -s ~/.local/share/agents ~/.agents
 
 . /opt/scripts/arch.sh
 
-#### claude code
+## claude code
 echo "==> Installing claude code"
 # CLAUDE_CONFIG_DIR=~/.claude ===> ~/.config/claude
 curl -fsSL https://claude.ai/install.sh | bash
@@ -28,14 +28,16 @@ ln -s ~/.local/share/claude/claude.json ~/.claude.json
 #/reload-plugins
 #/codex:setup
 
-#### opencode
+
+## opencode
 echo "==> Installing opencode"
 curl -fsSL https://opencode.ai/install | bash
 curl -fsSL https://opencode.ai/v2/install | bash
 mv ~/.opencode/bin/opencode ~/.local/bin/
 rm -r ~/.opencode
 
-#### codex
+
+## codex
 echo "==> Installing codex"
 # CODEX_HOME=~/.codex ===> ~/.local/share/codex
 npm install -g @openai/codex
@@ -44,14 +46,16 @@ mkdir -p ~/.local/share/codex
 rm -rf ~/.codex
 ln -s ~/.local/share/codex ~/.codex
 
-#### antigravity
+
+## antigravity
 echo "==> Installing antigravity"
 curl -fsSL https://antigravity.google/cli/install.sh | bash
 mkdir -p ~/.local/share/gemini
 rm -rf ~/.gemini
 ln -s ~/.local/share/gemini ~/.gemini
 
-#### codewhale
+
+## codewhale
 echo "==> Installing codewhale"
 # npm install -g codewhale
 # codewhale-linux-x64
@@ -71,7 +75,8 @@ ln -s ~/.local/share/codewhale ~/.codewhale
 #OPENAI_BASE_URL="https://openai-compatible.example/v4" \
 #codewhale --provider openai --model glm-5
 
-#### openclaude
+
+## openclaude
 echo "==> Installing openclaude"
 npm install -g @gitlawb/openclaude@latest
 # CLAUDE_CONFIG_DIR=~/.openclaude
@@ -82,7 +87,8 @@ touch ~/.openclaude.json
 mv ~/.openclaude.json ~/.local/share/openclaude/
 ln -s ~/.local/share/openclaude/openclaude.json ~/.openclaude.json
 
-#### omp
+
+## omp
 echo "==> Installing omp"
 #curl -fsSL https://omp.sh/install | sh
 #omp-linux-x64
@@ -93,7 +99,8 @@ mkdir -p ~/.omp
 mv ~/.omp ~/.local/share/omp
 ln -s ~/.local/share/omp ~/.omp
 
-#### pi
+
+## pi
 echo "==> Installing pi"
 curl -fsSL https://pi.dev/install.sh | sh
 #pi update
@@ -102,12 +109,14 @@ mkdir -p ~/.local/share/pi
 rm -rf ~/.pi
 ln -s ~/.local/share/pi ~/.pi
 
-#### goose
+
+## goose
 echo "==> Installing goose"
 curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh |
   CONFIGURE=false bash
 
-#### jcode
+
+## jcode
 echo "==> Installing jcode"
 curl -fsSL https://jcode.sh/install | bash
 rm ~/.local/bin/jcode
@@ -116,7 +125,8 @@ rm -rf ~/.jcode/builds/
 mv ~/.jcode ~/.local/share/jcode
 ln -s ~/.local/share/jcode ~/.jcode
 
-####
+
+## agent tools
 echo "==> Installing codebox tools"
 #CC_SWITCH_CONFIG_DIR=~/.cc-switch
 curl -fsSL https://github.com/SaladDay/cc-switch-cli/releases/latest/download/install.sh | bash
@@ -126,7 +136,9 @@ ln -s ~/.local/share/cc-switch ~/.cc-switch
 
 npm install -g @fission-ai/openspec@latest
 
-npm install -g @mermaid-js/mermaid-cli@11.16.0
+npm install -g @mermaid-js/mermaid-cli@latest
+# npm install -g @mermaid-js/mermaid-cli@11.16.0
+# https://github.com/1jehuang/mermaid-rs-renderer/releases/download/v0.3.1/mmdr-x86_64-unknown-linux-gnu.tar.gz
 
 npm install -g @firecrawl/anydoc
 # npx skills add firecrawl/anydoc
@@ -138,6 +150,6 @@ curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/instal
 
 curl -sSL https://mqlang.org/install.sh | bash
 
-# https://github.com/1jehuang/mermaid-rs-renderer/releases/download/v0.3.1/mmdr-x86_64-unknown-linux-gnu.tar.gz
+curl -fsSL https://d2lang.com/install.sh | sh -s --
 
 rm -rf ~/.cache/* ~/.npm

@@ -2,7 +2,7 @@
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
 
-####
+##
 go env \
   -w GOPATH="${HOME}/.local/share/go" \
   GOBIN=${HOME}/apps/bin \
@@ -14,11 +14,11 @@ export GOCACHE=${HOME}/.cache/go-build
 
 # go install golang.org/x/tools/gopls@latest
 
-####
+##
 rustup default stable
 
 cat >> ~/apps/apps.env <<'EOF'
-#### rust
+## rust
 export CARGO_HOME=$HOME/apps/cargo
 export RUSTUP_HOME=$HOME/apps/rustup
 

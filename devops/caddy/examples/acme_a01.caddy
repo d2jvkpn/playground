@@ -17,8 +17,8 @@ app1.example.com {
 app2.example.com {
   tls {
     dns alidns {
-      access_key_id {env.ALIYUN_ACCESS_KEY_ID}
-      access_key_secret {env.ALIYUN_ACCESS_KEY_SECRET}
+      access_key_id {env.ALIYUN_APP2_ACCESS_KEY_ID}
+      access_key_secret {env.ALIYUN_APP2_ACCESS_KEY_SECRET}
     }
   }
 

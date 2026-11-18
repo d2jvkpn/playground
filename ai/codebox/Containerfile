@@ -1,6 +1,6 @@
 FROM q.local/pyjs:trixie
 
-####
+##
 ARG http_proxy
 ARG https_proxy
 ARG no_proxy
@@ -9,7 +9,7 @@ ARG build_region
 
 ENV http_proxy="$http_proxy" https_proxy="$https_proxy" no_proxy="$no_proxy"
 
-####
+##
 USER root
 
 COPY ./copy_files/scripts/. /opt/scripts
@@ -20,7 +20,7 @@ RUN bash /opt/scripts/_install_services.sh
 ENV PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
 RUN bash /opt/scripts/_install_playwright.sh
 
-####
+##
 USER appuser
 WORKDIR /home/appuser
 
@@ -37,7 +37,7 @@ RUN cp .bashrc .bashrc.bk && \
 
 ENV BASH_ENV=/home/appuser/.bash_aliases
 
-####
+##
 ENV https_proxy="" http_proxy="" no_proxy=""
 
 ENV TZ=Asia/Shanghai

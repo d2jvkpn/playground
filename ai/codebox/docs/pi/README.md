@@ -2,12 +2,12 @@
 ---
 
 
-#### 1. commands
+## 1. commands
 - /login
 - /logout
 - /compact
 
-#### 2. config
+## 2. config
 ```json ~/.pi/agent/settings.json
 {
   "compaction": {

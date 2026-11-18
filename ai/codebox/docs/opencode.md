@@ -6,7 +6,7 @@ authors: []
 version: 0.1.0
 ```
 
-#### ch01. 
+## ch01. 
 1. courses
 - Opencode Is Probably The Best Coding Agent I've Ever Used
   https://www.youtube.com/watch?v=e9j2iEwJru0
@@ -60,7 +60,7 @@ version: 0.1.0
 - supermemory
   - link: https://github.com/supermemoryai/opencode-supermemory
 
-#### ch02.
+## ch02.
 1. commands
 ```
 opencode auth login
@@ -85,4 +85,4 @@ opencode mcp debug <server-name>
 - Vue → vue
 ```
 
-#### ch03. multi-agents
+## ch03. multi-agents

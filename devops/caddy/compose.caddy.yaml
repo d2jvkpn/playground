@@ -11,7 +11,7 @@ services:
     ports: ["80:80", "443:443"]
     user: "1000:1000"
     volumes:
-    - ./configs/Caddyfile:/etc/caddy/Caddyfile
+    - ./configs:/etc/caddy
     - ./data/config:/config # XDG_CONFIG_HOME
     - ./data/caddy:/data    # XDG_DATA_HOME
     - ./logs:/logs

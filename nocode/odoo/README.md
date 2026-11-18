@@ -10,7 +10,7 @@
 
 2. seteup
 ```
-docker run --rm --entrypoint= odoo:19 cat /etc/odoo/odoo.conf > odoo.conf
+docker run --rm --entrypoint= odoo:19 cat /etc/odoo/odoo.conf > odoo.default.conf
 
 mkdir -p data/odoo-web
 sudo chown -R 100:101 data/odoo-web

@@ -15,7 +15,9 @@ umask 077
 wg_key=$(wg genkey)
 wg_pub=$(echo $wg_key | wg pubkey)
 
-cat > /etc/wireguard/wireguard.yaml <<EOF
+cd /etc/wireguard/
+
+cat > wireguard.yaml <<EOF
 wg0:
   key: $wg_key
   pub: $wg_pub

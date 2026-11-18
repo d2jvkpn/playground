@@ -1,0 +1,20 @@
+*.example.org {
+    ## odoo
+    @odoo-api {
+        host odoo.example.org
+        path /jsonrpc /jsonrpc/* /xmlrpc /xmlrpc/* /xmlrpc/2 /xmlrpc/2/* /json/2 /json/2/*
+    }
+
+    handle @odoo-api {
+        respond "Forbidden" 403
+    }
+
+    @odoo-dev host odoo.example.org
+    handle @odoo-dev {
+        reverse_proxy odoo-dev.svc:8069
+    }
+
+    handle {
+        respond "Not Found" 404
+    }
+}

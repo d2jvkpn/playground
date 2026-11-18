@@ -1,7 +1,9 @@
 #!/bin/bash
 set -eu -o pipefail; _wd=$(pwd); _dir=$(readlink -f `dirname "$0"`)
 
+
 . /opt/scripts/arch.sh
+
 
 echo "==> Installing difft"
 tag_name=$(curl -fsSL https://api.github.com/repos/Wilfred/difftastic/releases/latest | jq -r .tag_name)
@@ -12,6 +14,7 @@ echo "url: $url"
 curl -fL -o $prefix.tar.gz $url
 tar -xvf $prefix.tar.gz -C /usr/local/bin/
 rm -f $prefix.tar.gz
+
 
 echo "==> Installing eza"
 # https://github.com/eza-community/eza/releases/download/v0.23.4/eza_x86_64-unknown-linux-gnu.tar.gz
@@ -27,6 +30,7 @@ chmod a+x /usr/local/bin/eza && \
 rm -f $prefix.tar.gz
 # $ eza
 
+
 echo "==> Installing dasel"
 # https://github.com/TomWright/dasel/releases/download/v3.4.1/dasel_linux_amd64
 tag_name=$(curl -fsSL https://api.github.com/repos/TomWright/dasel/releases/latest | jq -r .tag_name)
@@ -36,6 +40,7 @@ url="https://github.com/TomWright/dasel/releases/download/$tag_name/$prefix"
 echo "url: $url"
 curl -fL -o /usr/local/bin/dasel $url
 chmod a+x /usr/local/bin/dasel
+
 
 echo "==> Installing lazygit"
 # https://github.com/jesseduffield/lazygit/releases/download/v0.62.2/lazygit_0.62.2_linux_x86_64.tar.gz
@@ -52,6 +57,7 @@ curl -fL -o $prefix.tar.gz $url
 tar -xvf $prefix.tar.gz -C /usr/local/bin/ lazygit
 rm -f $prefix.tar.gz
 
+
 echo "==> Installing delta"
 tag_name=$(curl -fsSL https://api.github.com/repos/dandavison/delta/releases/latest | jq -r .tag_name)
 #prefix=delta-${tag_name}-x86_64-unknown-linux-gnu
@@ -62,6 +68,7 @@ curl -fL -o $prefix.tar.gz $url
 tar -xf $prefix.tar.gz
 mv $prefix/delta /usr/local/bin/
 rm -r $prefix $prefix.tar.gz
+
 
 echo "==> Installing golangci-lint"
 tag_name=$(curl -fsSL https://api.github.com/repos/golangci/golangci-lint/releases/latest | jq -r .tag_name)
@@ -74,5 +81,10 @@ tar -xf $prefix.tar.gz
 mv $prefix/golangci-lint /usr/local/bin/
 rm -rf $prefix.tar.gz $prefix
 
+
 #?? gitleaks
 #go install github.com/air-verse/air@latest
+
+#curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip
+#unzip rclone-current-linux-amd64.zip
+#cd rclone-*-linux-amd64

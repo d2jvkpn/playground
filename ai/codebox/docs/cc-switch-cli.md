@@ -2,12 +2,12 @@
 ---
 
 
-#### 1. Installation
+## 1. Installation
 ```
 curl -fsSL https://github.com/SaladDay/cc-switch-cli/releases/latest/download/install.sh | bash
 ```
 
-#### 2. Usage
+## 2. Usage
 ```
 cc-switch                                             # 进入 TUI
 

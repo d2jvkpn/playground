@@ -10,6 +10,8 @@ brew install macmon socat
 
 brew install duf tmux iftop jq yq btop tree watch wget curl awk pigz skopeo
 
+brew install dua-cli dust
+
 brew install huggingface-cli
 
 exit

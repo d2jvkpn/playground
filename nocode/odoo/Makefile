@@ -1,11 +1,11 @@
 .PHONY: create_dirs cp_config init_db
 
 create_dirs:
-	mkdir -p data/odoo-addons data/odoo-config
+	mkdir -p data/odoo-extra-addons data/odoo-config data/odoo-web
 
 cp_config:
-	mkdir -p data/odoo-config
-	docker run --rm -it odoo:19 cat /etc/odoo/odoo.conf > data/odoo-config/odoo.default.conf
+	mkdir -p data/examples
+	docker run --rm -it odoo:19 cat /etc/odoo/odoo.conf > data/examples/odoo.default.conf
 
 init_db:
 	docker compose stop odoo
