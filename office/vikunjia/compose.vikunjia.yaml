@@ -1,0 +1,25 @@
+networks:
+  net: { name: local, driver: bridge, external: true }
+
+services:
+  vikunja:
+    image: vikunja/vikunja:latest
+    restart: unless-stopped
+    container_name: vikunja
+    networks:
+      net: { aliases: ["vikunja.svc"] }
+    ports: ["3456:3456"]
+    user: "1000:1000"
+    volumes:
+    - ./data/vikunja/files:/app/vikunja/files
+    - ./data/vikunja/db:/app/vikunja/db
+    environment:
+      TZ: Asia/Shanghai
+      VIKUNJA_SERVICE_ENABLEREGISTRATION: "true"
+      VIKUNJA_SERVICE_SECRET: "$(openssl rand -hex 32)"
+      VIKUNJA_SERVICE_PUBLICURL: http://localhost:3456
+      # VIKUNJA_CORS_ENABLE: "false"
+      # The official image already presets this to /db/vikunja.db; it is shown
+      # explicitly here so the database file lives in the ./db volume below and
+      # state is persisted even if the container is destroyed.
+      VIKUNJA_DATABASE_PATH: /app/vikunja/db/vikunja.db

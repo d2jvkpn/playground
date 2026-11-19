@@ -28,3 +28,8 @@ git reset --soft ORIG_HEAD
 git commit -m "feat: merge dev changes"
 
 git switch -c main --track origin/main
+
+exit
+add-apt-repository ppa:git-core/ppa
+apt update
+apt install git

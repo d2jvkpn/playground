@@ -76,8 +76,16 @@
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs"
       },
       {
+        "type": "local", "tag": "geosite-cn-local", "format": "binary",
+        "path": "/app/configs/geosite-cn.srs"
+      },
+      {
         "type": "remote", "tag": "geoip-cn", "format": "binary",
         "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs"
+      },
+      {
+        "type": "local", "tag": "geoip-cn-local", "format": "binary",
+        "url": "/app/configs/geoip-cn.srs"
       }
     ],
     "rules": [
