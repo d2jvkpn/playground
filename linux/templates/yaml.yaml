@@ -1,2 +1,4 @@
 hello:
   world: 42
+  attrs: { shape: "triangle" }
+  tags: ["class-a"]

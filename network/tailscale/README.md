@@ -11,6 +11,21 @@ description:
 ## Installation
 ```
 curl -fsSL https://tailscale.com/install.sh | sh
+
+tailscale status
+tailscale ip -4
+
+ifconfig tailscale
+
+# ??
+tailscale up --adertise-routes=192.168.10.0/24
+tailscale up --ssh
+
+# 阻止其他节点访问本机
+sudo tailscale set --shields-up
+
+# 恢复其他节点访问本机
+sudo tailscale set --shields-up=false
 ```
 
 ## headscale

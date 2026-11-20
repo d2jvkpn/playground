@@ -1,0 +1,27 @@
+{
+    layer4 {
+        :1080 {
+            route {
+                proxy {
+                    upstream 10.0.0.1:1080
+                    upstream 10.0.0.2:1080
+                    upstream 10.0.0.3:1080
+
+                    lb_policy round_robin
+
+                    # 主动 TCP 健康检查
+                    health_interval 10s
+                    health_timeout 3s
+
+                    # 被动故障检测
+                    fail_duration 30s
+                    max_fails 1
+
+                    # 故障重试
+                    lb_try_duration 5s
+                    lb_try_interval 250ms
+                }
+            }
+        }
+    }
+}
