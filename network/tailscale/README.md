@@ -8,12 +8,15 @@ description:
 ```
 
 
-## Docs
+## Installation
+```
+curl -fsSL https://tailscale.com/install.sh | sh
+```
+
+## headscale
 - headscale: https://github.com/juanfont/headscale
 
-
-## 
-```
+- ```
 mkdir -p configs
 curl -o configs/headscale.yaml https://raw.githubusercontent.com/juanfont/headscale/v0.29.3/config-example.yaml
 ```
