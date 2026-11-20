@@ -7,15 +7,21 @@ version: 0.1.0
 description: 
 ```
 
+## Docs
+- https://tailscale.com
+- https://github.com/tailscale/tailscale
+- https://tailscale.com/pricing
 
 ## Installation
 ```
 curl -fsSL https://tailscale.com/install.sh | sh
 
-tailscale status
+ifconfig tailscale
 tailscale ip -4
 
-ifconfig tailscale
+tailscale status
+tailscale netcheck
+tailscale ping 100.x.x.x
 
 # ??
 tailscale up --adertise-routes=192.168.10.0/24

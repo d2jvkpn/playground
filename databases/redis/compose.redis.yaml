@@ -1,26 +1,26 @@
 #volumes:
 #  redis: { name: redis, driver: local }
 
-#networks:
-#  net: { name: "local", driver: bridge, external: false }
+networks:
+  net: { name: "local", driver: bridge, external: true }
 
 services:
   redis:
     image: redis:8-alpine
     restart: always
-    user: ${USER_UID}:${USER_GID}
+    user: 1000:1000
     healthcheck:
       test: ["CMD-SHELL", "REDISCLI_AUTH=$$(cat /run/secrets/redis.pass) redis-cli ping | grep PONG"]
       interval: 10s
       timeout: 5s
       retries: 5
-    network_mode: host
+    #network_mode: host
     #networks: ["net"]
-    #ports: ["127.0.0.1:${REDIS_Port}:6379"]
+    ports: ["127.0.0.1:6379:6379"]
     container_name: redis
     deploy:
       resources:
-        limits: { cpus: "2", memory: 2G }
+        limits: { cpus: "1", memory: 1G }
         reservations: { cpus: "0.05", memory: 128M }
     environment:
       TZ: Asia/Shanghai
@@ -32,4 +32,4 @@ services:
     - ./data/redis:/data:rw
     #command: redis-server /etc/redis.conf --loglevel warning --save 300 10 --requirepass d2jvkpn
     #command: redis-server /etc/redis.conf --loglevel warning --appendonly yes --appendfsync everysec --requirepass d2jvkpn
-    command: redis-server /app/configs/redis.conf
+    command: redis-server /data/redis.conf
