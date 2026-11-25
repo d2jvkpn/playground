@@ -59,7 +59,8 @@ docker run --rm \
 ```
 
 ## Modules
-- Sales
-- Stock
-- Contacts
-- Project
+- sales
+- contacts
+- stock
+- HelpDesk
+- ?Project

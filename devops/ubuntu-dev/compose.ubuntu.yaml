@@ -1,0 +1,27 @@
+networks:
+  net: { name: local, external: true }
+  
+#volumes:
+#  ssh_host_keys:
+
+services:
+  ubuntu:
+    #build:
+    #  context: .
+    #  dockerfile: Containerfile
+    #pull_policy: build
+    image: q.local/ubuntu:dev
+    restart: always # unless-stopped
+    container_name: ubuntu
+    hostname: ubuntu
+    cpus: 2.0
+    mem_limit: 4g
+    pids_limit: 512
+    networks: ["net"]
+    ports: ["127.0.0.1:2222:22"]
+    working_dir: /home/ubuntu
+    volumes:
+    #- ssh_host_keys:/etc/ssh
+    - ./data/ssh:/etc/ssh
+    - ./data/ubuntu-auth:/run/ubuntu-auth:ro
+    - ./data/ubuntu-home:/home/ubuntu
